@@ -1,0 +1,65 @@
+/**
+#if($implementation.getDocumentation())
+ * $tool.getJavadocComment($implementation.getDocumentation().getText("en"), " * ")
+#end
+#if($modelManager.getSpecifications($implementation.getIdentifier()))
+ * <p><b>Specifications</b><ul>
+#foreach($reference in $modelManager.getSpecifications($implementation.getIdentifier()))
+#set($specification = $modelManager.getSpecification($reference.getIdentifier()))
+ * <li>{@code $specification.getIdentifier()}#if($reference.getVersion()) {@code $reference.getVersion()}#end<blockquote>
+ * Object applies to $specification.getScope().value() scope.
+#if($specification.isStateless())
+ * State does not need to be retained across operations to operate as
+ * specified.</blockquote></li>
+#end
+#if(!$specification.isStateless())
+ * State must be retained across operations to operate as specified.</blockquote></li>
+#end
+#end
+ * </ul></p>
+#end
+#if($implementation.getProperties())
+ * <p><b>Properties</b><ul>
+#foreach($property in $implementation.getProperties().getProperty())
+ * <li>"{@link #$tool.getPropertyGetterMethodName($property) $property.getName()}"<blockquote>
+ * Property of type {@code $property.getType().value()}#if($property.getValue()) with value "$property.getValue()"#end.</blockquote></li>
+#end
+ * </ul></p>
+#end
+#if($implementation.getDependencies())
+ * <p><b>Dependencies</b><ul>
+#foreach($dependency in $implementation.getDependencies().getDependency())
+#set($specification = $modelManager.getSpecification($dependency.getIdentifier()))
+ * <li>"{@link #$tool.getDependencyGetterMethodName($dependency) $dependency.getName()}"<blockquote>
+ * Dependency on {@code $dependency.getIdentifier()}#if($dependency.getVersion()) at specification level $dependency.getVersion()#end applying to $specification.getScope().value() scope#if($dependency.isBound()) bound to an instance#end.</blockquote></li>
+#end
+ * </ul></p>
+#end
+#if($implementation.getMessages())
+ * <p><b>Messages</b><ul>
+#foreach($message in $implementation.getMessages().getMessage())
+ * <li>"{@link #$tool.getMessageGetterMethodName($message) $message.getName()}"<table>
+#foreach($text in $message.getTemplate().getText())
+ * <tr><td valign="top">$tool.getDisplayLanguage($text.getLanguage()):</td><td valign="top"><pre>$tool.getJavadocComment($message.getTemplate().getText($text.getLanguage()), "     * ")</pre></td></tr>
+#end
+ * </table>
+#end
+#foreach($reference in $implementation.getMessages().getReference())
+#set($message = $module.getMessages().getMessage($reference.getName()))
+ * <li>"{@link #$tool.getMessageGetterMethodName($message) $message.getName()}"<table>
+#foreach($text in $message.getTemplate().getText())
+ * <tr><td valign="top">$tool.getDisplayLanguage($text.getLanguage()):</td><td valign="top"><pre>$tool.getJavadocComment($message.getTemplate().getText($text.getLanguage()), "     * ")</pre></td></tr>
+#end
+ * </table>
+ * </li>
+#end
+ * </ul></p>
+#end
+ *
+#if($implementation.getAuthors())
+#foreach($author in $implementation.getAuthors().getAuthor())
+ * @author #if($author.getMail())<a href="mailto:$author.getMail()">#end$author.getName()#if($author.getMail())</a>#end $author.getVersion()
+#end
+#end
+ * @version $Id$
+ */

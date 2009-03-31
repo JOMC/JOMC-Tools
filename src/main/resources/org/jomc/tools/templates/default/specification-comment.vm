@@ -1,0 +1,30 @@
+/**
+#if($specification.getDocumentation())
+ * $tool.getJavadocComment($specification.getDocumentation().getText("en"), " * ")
+#end
+ * <p>This specification applies to $specification.getScope().value() scope.
+#if($specification.getMultiplicity().value() == "one")
+ * An application assembler is required to provide exactly one implementation of
+ * this specification. Use of class {@link org.jomc.ObjectManager ObjectManager}
+ * is supported for getting that implementation.<pre>
+ *   ${tool.getJavaTypeName($specification)} object = (${tool.getJavaTypeName($specification)}) ObjectManager.getInstance().getObject( ${tool.getJavaTypeName($specification)}.class );
+ * </pre></p>
+#end
+#if($specification.getMultiplicity().value() == "many")
+ * An application assembler may provide multiple implementations of this
+ * specification. Use of class
+ * {@link org.jomc.ObjectManager ObjectManager} is supported for getting these
+ * implementations or for selecting a single implementation.<pre>
+ * ${tool.getJavaTypeName($specification)}[] objects = (${tool.getJavaTypeName($specification)}[]) ObjectManager.getInstance().getObject( ${tool.getJavaTypeName($specification)}.class );
+ * ${tool.getJavaTypeName($specification)} object = (${tool.getJavaTypeName($specification)}) ObjectManager.getInstance().getObject( ${tool.getJavaTypeName($specification)}.class, "<i>implementation name</i>" );
+ * </pre> Note that both {@code getObject} methods return {@code null} if no
+ * implementation is available.</p>
+#end
+ *
+#if($specification.getAuthors())
+#foreach($author in $specification.getAuthors().getAuthor())
+ * @author #if($author.getMail())<a href="mailto:$author.getMail()">#end$author.getName()#if($author.getMail())</a>#end $author.getVersion()
+#end
+#end
+ * @version $Id$
+ */

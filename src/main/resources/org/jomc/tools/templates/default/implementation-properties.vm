@@ -1,0 +1,34 @@
+## @param modules The modules to resolve references with.
+## @param implementation The implementation to get the properties section of.
+## @param modelManager The model manager.
+## @param tool The builder of the template.
+#set($properties = $modelManager.getProperties($implementation.getIdentifier()))
+#if($properties)
+#foreach($property in $properties.getProperty())
+
+    /**
+     * Gets the value of the {@code $property.getName()} property.
+#if($property.getDocumentation())
+     * @return $tool.getJavadocComment($property.getDocumentation().getText("en"), "     * ")
+#end
+#if(!$property.getDocumentation())
+     * @return The value of the {@code $property.getName()} property.
+#end
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "$tool.getClass().getName()",
+        comments = "See ${pom.url}"
+    )
+    $tool.getPropertyJavaModifier($implementation,$property) $property.getType().value() $tool.getPropertyGetterMethodName($property)() throws org.jomc.ObjectManagementException
+    {
+#if($tool.getJavaTypeName($property) != $property.getType().value())
+        return ( ($tool.getJavaTypeName($property)) org.jomc.ObjectManager.getInstance().getProperty( this, "$property.getName()" ) ).$property.getType().value()Value();
+#end
+#if($tool.getJavaTypeName($property) == $property.getType().value())
+        return ($property.getType().value()) org.jomc.ObjectManager.getInstance().getProperty( this, "$property.getName()" );
+#end
+    }
+#end
+#end

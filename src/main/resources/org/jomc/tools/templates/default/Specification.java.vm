@@ -1,0 +1,16 @@
+## @param specification The specification of the template.
+## @param modelManager The model manager.
+## @param tool The builder of the template.
+// SECTION-START[License Header]
+// SECTION-END
+package ${tool.getJavaPackageName($specification)};
+
+// SECTION-START[Specification Comment]
+// SECTION-END
+// SECTION-START[Annotations]
+// SECTION-END
+public interface ${tool.getJavaTypeName($specification)}
+{
+    // SECTION-START[${tool.getJavaTypeName($specification)}]
+    // SECTION-END
+}

@@ -1,0 +1,11 @@
+## @param modules The modules to resolve references with.
+## @param module The module to resolve references with.
+## @param implementation The implementation to get the messages section of.
+## @param modelManager The model manager.
+## @param tool The builder of the template.
+#set($messages = $modelManager.getMessages($implementation.getIdentifier()))
+#if($messages)
+#foreach($message in $messages.getMessage())
+#parse($tool.getTemplateLocation("implementation-message.vm"))
+#end
+#end

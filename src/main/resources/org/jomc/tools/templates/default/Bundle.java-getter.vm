@@ -1,0 +1,55 @@
+#if($comment)
+  /**
+   * Gets the text of the message with key {@code "$message.getName()"}.
+   *
+   * @return #foreach($text in $message.getTemplate().getText() )<blockquote><pre>$tool.getJavadocComment($text,"   * ")</pre></blockquote>
+   * #end
+
+   */
+#if(!$message.getArguments() || $message.getArguments().getArgument().isEmpty() )
+  String $tool.getJavaAccessorMethodName($message)
+  (
+    final Locale locale
+  )
+  {
+    return this.getMessage( "$message.getName()", locale );
+  }
+#end
+#if($message.getArguments() && !$message.getArguments().getArgument().isEmpty() )
+  String $tool.getMessageGetterMethodName($message)
+  (
+      Locale locale
+#foreach( $argument in $message.getArguments().getArgument() )
+#if($argument.getType().value() == "number")
+    , final java.lang.Number $argument.getName()
+#end
+#if($argument.getType().value() == "date")
+    , final java.util.Date $argument.getName()
+#end
+#if($argument.getType().value() == "time")
+    , final java.util.Date $argument.getName()
+#end
+#if($argument.getType().value() == "text")
+    , final java.lang.String $argument.getName()
+#end
+#end
+  )
+  {
+    if ( locale == null )
+    {
+      locale = Locale.getDefault();
+    }
+
+    return new MessageFormat( this.getMessage(
+        "$message.getName()", locale ), locale ).format(
+        new Object[]
+        {
+#foreach( $argument in $message.getArguments().getArgument() )
+            $argument.getName(),
+#end
+            null
+        } );
+
+  }
+#end
+#end

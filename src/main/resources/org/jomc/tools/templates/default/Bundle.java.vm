@@ -1,0 +1,84 @@
+package ${tool.getJavaPackageName($implementation)};
+
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.text.MessageFormat;
+
+#if($comment)
+/**
+ * Accessor methods for the
+ * {@code "$tool.getJavaClasspathLocation($implementation)${classSuffix}"}
+ * {@code ResourceBundle}.
+ */
+#end
+@javax.annotation.Generated
+(
+  value = "$tool.getClass().getName()",
+  comments = "See ${pom.url}",
+  date = "$now"
+)
+class ${tool.getJavaTypeName($implementation)}${classSuffix}
+{
+
+#if($comment)
+  /** Singleton instance. */
+#end
+  private static final ${tool.getJavaTypeName($implementation)}${classSuffix} instance =
+    new ${tool.getJavaTypeName($implementation)}${classSuffix}();
+
+#if($comment)
+  /** Creates a new <code>${tool.getJavaTypeName($implementation)}${classSuffix}</code> instance. */
+#end
+  ${tool.getJavaTypeName($implementation)}${classSuffix}()
+  {
+#foreach($message in $implementation.getMessages().getMessage())
+    this.getMessage ( "$message.getName()", Locale.getDefault() );
+#end
+#foreach($messageReference in $implementation.getMessages().getReference())
+    this.getMessage ( "$messageReference.getName()", Locale.getDefault() );
+#end
+  }
+
+#if($comment)
+  /**
+   * Gets the <code>${tool.getJavaTypeName($implementation)}${classSuffix}</code> singleton.
+   *
+   * @return The <code>${tool.getJavaTypeName($implementation)}${classSuffix}</code> singleton.
+   */
+#end
+  static ${tool.getJavaTypeName($implementation)}${classSuffix} getInstance()
+  {
+    return instance;
+  }
+
+#foreach($message in $implementation.getMessages().getMessage())
+#parse($tool.getTemplateLocation("Bundle.java-getter.vm"))
+#end
+#foreach($messageReference in $implementation.getMessages().getReference())
+#set($message = $modelManager.getMessage( $module.getMessages(), $messageReference.getName() ) )
+#parse($tool.getTemplateLocation("Bundle.java-getter.vm"))
+#end
+
+#if($comment)
+  /**
+   * Gets a message for a given key and locale.
+   *
+   * @param key The key of the message to return.
+   * @param locale The locale of the message.
+   *
+   * @return Message for {@code key} using {@code locale}.
+   */
+#end
+  private String getMessage( final String key, Locale locale )
+  {
+    if ( locale == null )
+    {
+      locale = Locale.getDefault();
+    }
+
+    return ResourceBundle.getBundle(
+        "$tool.getJavaClasspathLocation($implementation)${classSuffix}", locale ).
+        getString( key );
+
+  }
+}

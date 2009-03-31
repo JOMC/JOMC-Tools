@@ -1,0 +1,60 @@
+## @param implementation The implementation to get the dependencies section of.
+## @param modelManager The model manager.
+## @param tool The builder of the template.
+#set($dependencies = $modelManager.getDependencies($implementation.getIdentifier()))
+#if($dependencies)
+#foreach($dependency in $dependencies.getDependency())
+#set($specification = $modelManager.getSpecification($dependency.getIdentifier()))
+
+    /**
+     * Gets the {@code $dependency.getName()} dependency.
+#if($specification.getMultiplicity().value() == "one")
+#if($dependency.getImplementationName())
+     * <p>This method returns the "{@code $dependency.getImplementationName()}"
+     * object of the {@code $dependency.getIdentifier()} specification#if($dependency.getVersion()) at specification level $dependency.getVersion()#end.</p>
+#end
+#if(!$dependency.getImplementationName())
+     * <p>This method returns any available object of the {@code $dependency.getIdentifier()} specification#if($dependency.getVersion()) at specification level $dependency.getVersion()#end.</p>
+#end
+#end
+#if($specification.getMultiplicity().value() == "many")
+#if($dependency.getImplementationName())
+     * <p>This method returns the "{@code $dependency.getImplementationName()}"
+     * object of the {@code $dependency.getIdentifier()} specification#if($dependency.getVersion()) at specification level $dependency.getVersion()#end or {@code null} if that object is not available.</p>
+#end
+#if(!$dependency.getImplementationName())
+     * <p>This method returns all available objects of the {@code $dependency.getIdentifier()} specification#if($dependency.getVersion()) at specification level $dependency.getVersion()#end or {@code null} if no objects are available.</p>
+#end
+#end
+     * </p>
+#if($dependency.getProperties())
+     * <p><b>Properties</b><dl>
+#foreach($property in $dependency.getProperties().getProperty())
+     * <dt>"{@code $property.getName()}"</dt>
+     * <dd>Property of type {@code $property.getType().value()}#if($property.getValue()) with value "$property.getValue()"#end.
+#if($property.getDocumentation())
+     * <blockquote>$tool.getJavadocComment($property.getDocumentation().getText("en"), "     * ")</blockquote>
+#end
+     * </dd>
+#end
+     * </dl>
+#end
+#if($dependency.getDocumentation())
+     * @return $tool.getJavadocComment($dependency.getDocumentation().getText("en"), "     * ")
+#end
+#if(!$dependency.getDocumentation())
+     * @return The {@code $dependency.getName()} dependency.
+#end
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "$tool.getClass().getName()",
+        comments = "See ${pom.url}"
+    )
+    $tool.getDependencyJavaModifier($implementation) $tool.getDependencyJavaType($dependency) $tool.getDependencyGetterMethodName($dependency)() throws org.jomc.ObjectManagementException
+    {
+        return ($tool.getDependencyJavaType($dependency)) org.jomc.ObjectManager.getInstance().getDependency( this, "$dependency.getName()" );
+    }
+#end
+#end

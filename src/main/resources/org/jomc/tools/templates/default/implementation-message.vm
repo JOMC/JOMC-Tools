@@ -1,0 +1,37 @@
+## @param implementation The implementation to get the messages section of.
+## @param message The message to render.
+## @param modelManager The model manager.
+## @param tool The builder of the template.
+
+    /**
+     * Gets the text of the {@code $message.getName()} message.
+     * <p><b>Templates</b><br/><table>
+#foreach($text in $message.getTemplate().getText())
+     * <tr><td valign="top">$tool.getDisplayLanguage($text.getLanguage()):</td><td valign="top"><pre>$tool.getJavadocComment($message.getTemplate().getText($text.getLanguage()), "     * ")</pre></td></tr>
+#end
+     * </table></p>
+     * @param locale The locale of the message to return.
+#if($message.getArguments() && !$message.getArguments().getArgument().isEmpty())
+#foreach($argument in $message.getArguments().getArgument())
+     * @param $argument.getName() #if($argument.getDocumentation())$tool.getJavadocComment($argument.getDocumentation().getText("en"), "     * ")#end#if(!$argument.getDocumentation())Format argument.#end
+
+#end
+#end
+#if($message.getDocumentation())
+     * @return $tool.getJavadocComment($message.getDocumentation().getText("en"), "     * ")
+#end
+#if(!$message.getDocumentation())
+     * @return The text of the {@code $message.getName()} message.
+#end
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "$tool.getClass().getName()",
+        comments = "See ${pom.url}"
+    )
+    $tool.getMessageJavaModifier($implementation) String $tool.getMessageGetterMethodName($message)( final java.util.Locale locale#if($message.getArguments())#foreach($argument in $message.getArguments().getArgument()), final $tool.getJavaTypeName($argument) $argument.getName()#end#end ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManager.getInstance().getMessage( this, "$message.getName()", locale, #if($message.getArguments() && !$message.getArguments().isEmpty())new Object[] {#foreach($argument in $message.getArguments().getArgument()) $argument.getName(),#end null }#end#if(!$message.getArguments() || $message.getArguments().isEmpty()) null#end );
+    }

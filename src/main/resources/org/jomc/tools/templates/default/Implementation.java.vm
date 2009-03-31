@@ -1,0 +1,35 @@
+## @param implementation The implementation of the template.
+## @param modelManager The model manager.
+## @param tool The builder of the template.
+// SECTION-START[License Header]
+// SECTION-END
+package ${tool.getJavaPackageName($implementation)};
+
+// SECTION-START[Implementation Comment]
+// SECTION-END
+// SECTION-START[Annotations]
+// SECTION-END
+public class ${tool.getJavaTypeName($implementation)}
+#set($references = ${modelManager.getSpecifications($implementation.getIdentifier())})
+#if($references)
+implements
+#set($i = $references.size() - 1)
+#foreach($reference in $references)
+    $reference.getIdentifier()#set($i = $i - 1)#if($i >= 0),#end
+
+#end
+#end
+{
+    // SECTION-START[${tool.getJavaTypeName($implementation)}]
+    // SECTION-END
+    // SECTION-START[Constructors]
+        // SECTION-START[Default Constructor]
+        // SECTION-END
+    // SECTION-END
+    // SECTION-START[Dependencies]
+    // SECTION-END
+    // SECTION-START[Properties]
+    // SECTION-END
+    // SECTION-START[Messages]
+    // SECTION-END
+}
