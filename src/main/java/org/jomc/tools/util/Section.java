@@ -1,5 +1,5 @@
 /*
- *  JOMC :: Tools
+ *  JOMC Tools
  *  Copyright (c) 2005 Christian Schulte <cs@schulte.it>
  *
  *  This library is free software; you can redistribute it and/or

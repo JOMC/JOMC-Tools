@@ -1,5 +1,5 @@
 /*
- *  JOMC :: Tools
+ *  JOMC Tools
  *  Copyright (c) 2005 Christian Schulte <cs@schulte.it>
  *
  *  This library is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ import org.jomc.tools.util.SectionEditor;
 import org.jomc.tools.util.TrailingWhitespaceEditor;
 
 /**
- * Manages container source code.
+ * Manages java source code.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$

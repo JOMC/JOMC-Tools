@@ -1,5 +1,5 @@
 /*
- *  JOMC :: Tools
+ *  JOMC Tools
  *  Copyright (c) 2005 Christian Schulte <cs@schulte.it>
  *
  *  This library is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ import org.jomc.model.Text;
 import org.jomc.model.Texts;
 
 /**
- * Assembles container modules.
+ * Assembles modules.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
