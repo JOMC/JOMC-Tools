@@ -22,7 +22,7 @@ package org.jomc.tools.mojo;
 import java.io.File;
 
 /**
- * Assembles container modules.
+ * Assembles modules.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
@@ -36,7 +36,7 @@ public class ModuleAssemblerMojo extends AbstractJomcMojo
 
     /**
      * Directory holding documents to merge.
-     * @parameter default-value="src/main/container"
+     * @parameter default-value="src/main/jomc"
      * @optional
      */
     private File mergeDirectory;
@@ -50,16 +50,16 @@ public class ModuleAssemblerMojo extends AbstractJomcMojo
 
     /**
      * File to write the assembled modules to.
-     * @parameter
-     * @required
+     * @parameter default-value="${project.build.directory}/jomc/META-INF/jomc.xml"
+     * @optional
      */
     private File modulesFile;
 
     @Override
     public void executeTool() throws Exception
     {
-        this.getModuleAssemblerTool().assembleModules( this.modulesFile, this.mergeDirectory,
-                                                       this.includeClasspathModule );
+        this.getModuleAssemblerTool().assembleModules(
+            this.modulesFile, this.mergeDirectory, this.includeClasspathModule );
 
     }
 
