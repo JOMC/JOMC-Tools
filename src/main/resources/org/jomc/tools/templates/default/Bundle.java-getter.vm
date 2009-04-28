@@ -2,9 +2,25 @@
   /**
    * Gets the text of the message with key {@code "$message.getName()"}.
    *
-   * @return #foreach($text in $message.getTemplate().getText() )<blockquote><pre>$tool.getJavadocComment($text,"   * ")</pre></blockquote>
-   * #end
+   * <p><b>Templates</b><br/><table>
+#foreach($text in $message.getTemplate().getText())
+   * <tr><td valign="top">$tool.getDisplayLanguage($text.getLanguage()):</td><td valign="top"><pre>$tool.getJavadocComment($message.getTemplate().getText($text.getLanguage()), "   * ")</pre></td></tr>
+#end
+   * </table></p>
+   * @param locale The locale of the message to return.
+#if($message.getArguments() && !$message.getArguments().getArgument().isEmpty())
+#foreach($argument in $message.getArguments().getArgument())
+   * @param $argument.getName() #if($argument.getDocumentation())$tool.getJavadocComment($argument.getDocumentation().getText("en"), "   * ")#end#if(!$argument.getDocumentation())Format argument.#end
 
+#end
+#end
+   *
+#if($message.getDocumentation())
+   * @return $tool.getJavadocComment($message.getDocumentation().getText("en"), "   * ")
+#end
+#if(!$message.getDocumentation())
+   * @return The text of the {@code $message.getName()} message.
+#end
    */
 #if(!$message.getArguments() || $message.getArguments().getArgument().isEmpty() )
   String $tool.getJavaAccessorMethodName($message)
@@ -20,16 +36,16 @@
   (
       Locale locale
 #foreach( $argument in $message.getArguments().getArgument() )
-#if($argument.getType().value() == "number")
+#if($argument.getType().value() == "Number")
     , final java.lang.Number $argument.getName()
 #end
-#if($argument.getType().value() == "date")
+#if($argument.getType().value() == "Date")
     , final java.util.Date $argument.getName()
 #end
-#if($argument.getType().value() == "time")
+#if($argument.getType().value() == "Time")
     , final java.util.Date $argument.getName()
 #end
-#if($argument.getType().value() == "text")
+#if($argument.getType().value() == "Text")
     , final java.lang.String $argument.getName()
 #end
 #end

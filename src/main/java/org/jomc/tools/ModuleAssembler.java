@@ -21,8 +21,13 @@ package org.jomc.tools;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Iterator;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
 import org.jomc.model.DefaultModelManager;
 import org.jomc.model.Dependencies;
 import org.jomc.model.Dependency;
@@ -30,6 +35,7 @@ import org.jomc.model.Implementation;
 import org.jomc.model.Implementations;
 import org.jomc.model.Message;
 import org.jomc.model.Messages;
+import org.jomc.model.ModelException;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.Properties;
@@ -38,6 +44,7 @@ import org.jomc.model.Specification;
 import org.jomc.model.Specifications;
 import org.jomc.model.Text;
 import org.jomc.model.Texts;
+import org.xml.sax.SAXException;
 
 /**
  * Assembles modules.
@@ -55,13 +62,13 @@ public class ModuleAssembler extends JomcTool
     }
 
     /**
-     * Creates a new {@code ModuleAssembler} instance taking a classloader.
+     * Creates a new {@code ModuleAssembler} instance taking a {@code JomcTool} instance to initialize the instance with.
      *
-     * @param classLoader The classlaoder of the instance.
+     * @param tool The instance to initialize the new instance with,
      */
-    public ModuleAssembler( final ClassLoader classLoader )
+    public ModuleAssembler( final JomcTool tool )
     {
-        super( classLoader );
+        super( tool );
     }
 
     /**
@@ -69,119 +76,176 @@ public class ModuleAssembler extends JomcTool
      *
      * @param modulesFile The file to write the assembled modules to.
      * @param mergeDirectory The directory to scan for documents to merge.
-     * @param includeClasspathModule {@code true} to preserve any entities resolved from the tools classpath;
-     * {@code false} to remove any entities resolved from the tools classpath.
+     * @param classLoader The classloader to search for classes.
+     * @param includeClasspathModule {@code true} to preserve any entities resolved from the tool's classpath;
+     * {@code false} to remove any entities resolved from the tool's classpath.
      *
      * @throws NullPointerException if {@code modulesFile} is {@code null}.
-     * @throws Exception if assembling modules fails.
+     * @throws IOException if assembling modules fails.
+     * @throws ModelException if the assembled modules are invalid.
      */
     public void assembleModules( final File modulesFile, final File mergeDirectory,
-                                 final boolean includeClasspathModule ) throws Exception
+                                 final ClassLoader classLoader, final boolean includeClasspathModule )
+        throws IOException, ModelException
     {
         if ( modulesFile == null )
         {
             throw new NullPointerException( "modulesFile" );
         }
 
-        final Modules modules = this.getModelManager().getModules();
-
-        if ( !includeClasspathModule )
+        try
         {
-            for ( Iterator<Module> it = modules.getModule().iterator(); it.hasNext(); )
+            final Modules m = new Modules();
+            m.setAuthors( this.getModules().getAuthors() );
+            m.setCreateDate( this.getModules().getCreateDate() );
+            m.setDocumentation( this.getModules().getDocumentation() );
+            m.getModule().addAll( this.getModules().getModule() );
+
+            if ( !includeClasspathModule )
             {
-                if ( DefaultModelManager.CLASSPATH_MODULE_NAME.equals( it.next().getName() ) )
+                for ( Iterator<Module> it = m.getModule().iterator(); it.hasNext(); )
                 {
-                    it.remove();
-                    break;
-                }
-            }
-        }
-
-        if ( mergeDirectory != null && mergeDirectory.exists() && mergeDirectory.isDirectory() )
-        {
-            final String[] mergeDocuments = mergeDirectory.list( new FilenameFilter()
-            {
-
-                public boolean accept( final File dir, final String name )
-                {
-                    return name.endsWith( ".xml" );
-                }
-
-            } );
-
-            if ( mergeDocuments != null )
-            {
-                for ( String name : mergeDocuments )
-                {
-                    final File document = new File( mergeDirectory, name );
-                    if ( document.isFile() )
+                    if ( DefaultModelManager.CLASSPATH_MODULE_NAME.equals( it.next().getName() ) )
                     {
-                        this.mergeDocument( document );
+                        it.remove();
+                        break;
                     }
                 }
             }
-        }
 
-        if ( !modulesFile.getParentFile().exists() )
+            if ( mergeDirectory != null && mergeDirectory.exists() && mergeDirectory.isDirectory() )
+            {
+                final String[] mergeDocuments = mergeDirectory.list( new FilenameFilter()
+                {
+
+                    public boolean accept( final File dir, final String name )
+                    {
+                        return name.endsWith( ".xml" );
+                    }
+
+                } );
+
+                if ( mergeDocuments != null )
+                {
+                    for ( String name : mergeDocuments )
+                    {
+                        final File document = new File( mergeDirectory, name );
+                        if ( document.isFile() )
+                        {
+                            this.mergeDocument( m, document );
+                        }
+                    }
+                }
+            }
+
+            if ( !modulesFile.getParentFile().exists() )
+            {
+                modulesFile.getParentFile().mkdirs();
+            }
+
+            if ( modulesFile.exists() && !modulesFile.delete() )
+            {
+                this.log( Level.WARNING, this.getMessage( "couldNotDelete", new Object[]
+                    {
+                        modulesFile.getCanonicalPath()
+                    } ), null );
+
+            }
+
+            this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                {
+                    modulesFile.getCanonicalPath()
+                } ), null );
+
+            final JavaClasses javaClasses = new JavaClasses( this );
+            javaClasses.validateModules( classLoader );
+
+            this.getModelManager().getMarshaller( false, true ).marshal(
+                this.getModelManager().getObjectFactory().createModules( m ), modulesFile );
+
+        }
+        catch ( SAXException e )
         {
-            modulesFile.getParentFile().mkdirs();
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-
-        this.getModelResolver().getMarshaller( false, true ).
-            marshal( this.getModelResolver().getObjectFactory().createModules( modules ), modulesFile );
-
+        catch ( JAXBException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
     }
 
     /**
      * Merges the modules of the instance with a given document.
      *
+     * @param modules The modules to merge.
      * @param document The document to merge.
      *
      * @throws NullPointerException if {@code document} is {@code null}.
-     * @throws Exception if merging {@code document} fails.
+     * @throws IOException if merging {@code document} fails.
      */
-    public void mergeDocument( final File document ) throws Exception
+    public void mergeDocument( final Modules modules, final File document ) throws IOException
     {
-        Object content = this.getModelResolver().getUnmarshaller( false ).unmarshal( document );
-        if ( content instanceof JAXBElement )
-        {
-            content = ( (JAXBElement) content ).getValue();
-        }
+        this.log( Level.INFO, this.getMessage( "merging", new Object[]
+            {
+                document.getCanonicalPath()
+            } ), null );
 
-        if ( content instanceof Specifications )
+        try
         {
-            for ( Specification s : ( (Specifications) content ).getSpecification() )
+            Object content = this.getModelManager().getUnmarshaller( false ).unmarshal( document );
+            if ( content instanceof JAXBElement )
             {
-                this.mergeSpecification( s );
+                content = ( (JAXBElement) content ).getValue();
+            }
+
+            if ( content instanceof Specifications )
+            {
+                for ( Specification s : ( (Specifications) content ).getSpecification() )
+                {
+                    this.mergeSpecification( modules, s );
+                }
+            }
+            else if ( content instanceof Specification )
+            {
+                this.mergeSpecification( modules, (Specification) content );
+            }
+            else if ( content instanceof Implementations )
+            {
+                for ( Implementation i : ( (Implementations) content ).getImplementation() )
+                {
+                    this.mergeImplementation( modules, i );
+                }
+            }
+            else if ( content instanceof Implementation )
+            {
+                this.mergeImplementation( modules, (Implementation) content );
             }
         }
-        else if ( content instanceof Specification )
+        catch ( SAXException e )
         {
-            this.mergeSpecification( (Specification) content );
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-        else if ( content instanceof Implementations )
+        catch ( JAXBException e )
         {
-            for ( Implementation i : ( (Implementations) content ).getImplementation() )
-            {
-                this.mergeImplementation( i );
-            }
-        }
-        else if ( content instanceof Implementation )
-        {
-            this.mergeImplementation( (Implementation) content );
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
     }
 
     /**
      * Merges the modules of the instance with a given specification.
      *
+     * @param modules The modules to merge.
      * @param specification The specification to merge.
      *
-     * @throws NullPointerException if {@code specification} is {@code null}.
+     * @throws NullPointerException if {@code modules} or {@code specification} is {@code null}.
      * @throws Exception if merging {@code specification} fails.
      */
-    public void mergeSpecification( final Specification specification ) throws Exception
+    public void mergeSpecification( final Modules modules, final Specification specification )
     {
+        if ( modules == null )
+        {
+            throw new NullPointerException( "modules" );
+        }
         if ( specification == null )
         {
             throw new NullPointerException( "specification" );
@@ -189,7 +253,7 @@ public class ModuleAssembler extends JomcTool
 
         if ( specification.getProperties() != null )
         {
-            final Specification s = this.getModelManager().getSpecification( specification.getIdentifier() );
+            final Specification s = modules.getSpecification( specification.getIdentifier() );
 
             if ( s != null )
             {
@@ -202,25 +266,38 @@ public class ModuleAssembler extends JomcTool
                     this.mergeProperties( specification.getProperties(), s.getProperties() );
                 }
             }
+            else
+            {
+                this.log( Level.WARNING, this.getMessage( "missingSpecification", new Object[]
+                    {
+                        specification.getIdentifier()
+                    } ), null );
+
+            }
         }
     }
 
     /**
      * Merges the modules of the instance with a given implementation.
      *
+     * @param modules The modules to merge.
      * @param implementation The implementation to merge.
      *
-     * @throws NullPointerException if {@code implementation} is {@code null}.
+     * @throws NullPointerException if {@code modules} or {@code implementation} is {@code null}.
      * @throws Exception if merging {@code implementation} fails.
      */
-    public void mergeImplementation( final Implementation implementation ) throws Exception
+    public void mergeImplementation( final Modules modules, final Implementation implementation )
     {
+        if ( modules == null )
+        {
+            throw new NullPointerException( "modules" );
+        }
         if ( implementation == null )
         {
             throw new NullPointerException( "implementation" );
         }
 
-        final Implementation i = this.getModelManager().getImplementation( implementation.getIdentifier() );
+        final Implementation i = modules.getImplementation( implementation.getIdentifier() );
 
         if ( i != null )
         {
@@ -259,6 +336,14 @@ public class ModuleAssembler extends JomcTool
                     this.mergeMessages( implementation.getMessages(), i.getMessages() );
                 }
             }
+        }
+        else
+        {
+            this.log( Level.WARNING, this.getMessage( "missingImplementation", new Object[]
+                {
+                    implementation.getIdentifier()
+                } ), null );
+
         }
     }
 
@@ -332,6 +417,13 @@ public class ModuleAssembler extends JomcTool
                 target.getText().add( t );
             }
         }
+    }
+
+    private String getMessage( final String key, final Object args )
+    {
+        final ResourceBundle b = ResourceBundle.getBundle( "org/jomc/tools/ModuleAssembler" );
+        final MessageFormat f = new MessageFormat( b.getString( key ) );
+        return f.format( args );
     }
 
 }

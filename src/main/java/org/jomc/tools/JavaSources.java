@@ -20,14 +20,15 @@
 package org.jomc.tools;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import org.apache.commons.io.FileUtils;
 import org.apache.velocity.VelocityContext;
 import org.jomc.model.Implementation;
-import org.jomc.model.Module;
 import org.jomc.model.Specification;
 import org.jomc.tools.util.LineEditor;
 import org.jomc.tools.util.Section;
@@ -35,7 +36,7 @@ import org.jomc.tools.util.SectionEditor;
 import org.jomc.tools.util.TrailingWhitespaceEditor;
 
 /**
- * Manages java source code.
+ * Manages Java source code.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
@@ -107,8 +108,11 @@ public class JavaSources extends JomcTool
     /** Name of the {@code Specification.java.vm} template. */
     private static final String SPECIFICATION_TEMPLATE = "Specification.java.vm";
 
-    /** Name of the {@code annotations.vm} template. */
-    private static final String ANNOTATIONS_TEMPLATE = "annotations.vm";
+    /** Name of the {@code specification-annotations.vm} template. */
+    private static final String SPECIFICATION_ANNOTATIONS_TEMPLATE = "specification-annotations.vm";
+
+    /** Name of the {@code implementation-annotations.vm} template. */
+    private static final String IMPLEMENTATION_ANNOTATIONS_TEMPLATE = "implementation-annotations.vm";
 
     /** Creates a new {@code JavaSources} instance. */
     public JavaSources()
@@ -117,24 +121,24 @@ public class JavaSources extends JomcTool
     }
 
     /**
-     * Creates a new {@code JavaSources} instance taking a classloader.
+     * Creates a new {@code JavaSources} instance taking a {@code JomcTool} instance to initialize the instance with.
      *
-     * @param classLoader The classlaoder of the instance.
+     * @param tool The instance to initialize the new instance with,
      */
-    public JavaSources( final ClassLoader classLoader )
+    public JavaSources( final JomcTool tool )
     {
-        super( classLoader );
+        super( tool );
     }
 
     /**
-     * Edits the java source code of the module of the instance.
+     * Edits the Java source code of the module of the instance.
      *
      * @param sourceDirectory The directory holding the source files to edit.
      *
      * @throws NullPointerException if {@code sourcesDirectory} is {@code null}.
-     * @throws Exception if editing fails.
+     * @throws IOException if editing fails.
      */
-    public void editModuleSources( final File sourceDirectory ) throws Exception
+    public void editModuleSources( final File sourceDirectory ) throws IOException
     {
         if ( sourceDirectory == null )
         {
@@ -143,37 +147,18 @@ public class JavaSources extends JomcTool
 
         if ( this.getModule() != null )
         {
+            this.log( Level.INFO, this.getMessage( "processingModule", new Object[]
+                {
+                    this.getModule().getName()
+                } ), null );
+
             if ( this.getModule().getSpecifications() != null )
             {
                 for ( Specification s : this.getModule().getSpecifications().getSpecification() )
                 {
-                    if ( this.getModelManager().getImplementation( s.getIdentifier() ) != null )
+                    if ( this.getModules().getImplementation( s.getIdentifier() ) == null )
                     {
-                        // Ignore.
-                        continue;
-                    }
-
-                    final File f = new File( sourceDirectory, s.getIdentifier().replace( '.', '/' ) + ".java" );
-
-                    String content;
-                    if ( f.exists() )
-                    {
-                        content = FileUtils.readFileToString( f, this.getEncoding() );
-                    }
-                    else
-                    {
-                        if ( !f.getParentFile().exists() )
-                        {
-                            f.getParentFile().mkdirs();
-                        }
-
-                        content = this.getSpecificationTemplate( s );
-                    }
-
-                    final String edited = this.editSpecification( s, content );
-                    if ( !edited.equals( content ) )
-                    {
-                        FileUtils.writeStringToFile( f, edited, this.getEncoding() );
+                        this.editSpecificationSource( s, sourceDirectory );
                     }
                 }
             }
@@ -181,37 +166,22 @@ public class JavaSources extends JomcTool
             {
                 for ( Implementation i : this.getModule().getImplementations().getImplementation() )
                 {
-                    if ( !i.getIdentifier().equals( i.getClazz() ) )
+                    if ( i.getIdentifier().equals( i.getClazz() ) )
                     {
-                        // Ignore.
-                        continue;
-                    }
-
-                    final File f = new File( sourceDirectory, i.getClazz().replace( '.', '/' ) + ".java" );
-
-                    String content;
-                    if ( f.exists() )
-                    {
-                        content = FileUtils.readFileToString( f, this.getEncoding() );
-                    }
-                    else
-                    {
-                        if ( !f.getParentFile().exists() )
-                        {
-                            f.getParentFile().mkdirs();
-                        }
-
-                        content = this.getImplementationTemplate( i );
-                    }
-
-                    final String edited = this.editImplementation( i, content );
-
-                    if ( !edited.equals( content ) )
-                    {
-                        FileUtils.writeStringToFile( f, edited, this.getEncoding() );
+                        this.editImplementationSource( i, sourceDirectory );
                     }
                 }
             }
+
+            this.log( Level.INFO, this.getMessage( "upToDate", null ), null );
+        }
+        else
+        {
+            this.log( Level.WARNING, this.getMessage( "missingModule", new Object[]
+                {
+                    this.getModuleName()
+                } ), null );
+
         }
     }
 
@@ -219,31 +189,46 @@ public class JavaSources extends JomcTool
      * Edits the source code of a specification.
      *
      * @param specification The specification to edit.
-     * @param source The source code of {@code specification}.
+     * @param sourceDirectory The directory holding the source file to edit.
      *
-     * @return The edited source code of {@code specification}.
-     *
-     * @throws NullPointerException if {@code specification} or {@code source} is {@code null}.
-     *
-     * @throws Exception if editing the specification fails.
+     * @throws NullPointerException if {@code specification} or {@code sourceDirectory} is {@code null}.
+     * @throws IOException if editing the specification fails.
      */
-    public String editSpecification( final Specification specification, final String source ) throws Exception
+    public void editSpecificationSource( final Specification specification, final File sourceDirectory )
+        throws IOException
     {
         if ( specification == null )
         {
             throw new NullPointerException( "specification" );
         }
-        if ( source == null )
+        if ( sourceDirectory == null )
         {
-            throw new NullPointerException( "source" );
+            throw new NullPointerException( "sourceDirectory" );
         }
 
-        final JavaEditor editor = this.getJavaEditor( specification );
-        final String edited = editor.edit( source );
+        final File f = new File( sourceDirectory, specification.getIdentifier().replace( '.', '/' ) + ".java" );
+
+        String content;
+        if ( f.exists() )
+        {
+            content = FileUtils.readFileToString( f, this.getEncoding() );
+        }
+        else
+        {
+            if ( !f.getParentFile().exists() )
+            {
+                f.getParentFile().mkdirs();
+            }
+
+            content = this.getSpecificationTemplate( specification );
+        }
+
+        final JavaEditor editor = this.newJavaEditor( specification );
+        final String edited = editor.edit( content );
 
         if ( !editor.isAnnotationsSectionEdited() )
         {
-            throw new Exception( this.getMessage( "missingSection", new Object[]
+            throw new IOException( this.getMessage( "missingSection", new Object[]
                 {
                     ANNOTATIONS_SECTION_NAME,
                     specification.getIdentifier()
@@ -251,38 +236,61 @@ public class JavaSources extends JomcTool
 
         }
 
-        return edited;
+        if ( !edited.equals( content ) )
+        {
+            FileUtils.writeStringToFile( f, edited, this.getEncoding() );
+            this.log( Level.INFO, this.getMessage( "editing", new Object[]
+                {
+                    f.getCanonicalPath()
+                } ), null );
+
+        }
     }
 
     /**
      * Edits the source code of an implementation.
      *
      * @param implementation The implementation to edit.
-     * @param source The source code of {@code implementation}.
+     * @param sourceDirectory The directory holding the source file to edit.
      *
-     * @return The edited source code of {@code implementation}.
-     *
-     * @throws NullPointerException if {@code implementation} or {@code source} is {@code null}.
-     *
-     * @throws Exception if editing the implementation fails.
+     * @throws NullPointerException if {@code implementation} or {@code sourceDirectory} is {@code null}.
+     * @throws IOException if editing the implementation fails.
      */
-    public String editImplementation( final Implementation implementation, final String source ) throws Exception
+    public void editImplementationSource( final Implementation implementation, final File sourceDirectory )
+        throws IOException
     {
         if ( implementation == null )
         {
             throw new NullPointerException( "implementation" );
         }
-        if ( source == null )
+        if ( sourceDirectory == null )
         {
-            throw new NullPointerException( "source" );
+            throw new NullPointerException( "sourceDirectory" );
         }
 
-        final JavaEditor editor = this.getJavaEditor( implementation );
-        final String edited = editor.edit( source );
+        final File f = new File( sourceDirectory, implementation.getClazz().replace( '.', '/' ) + ".java" );
+
+        String content;
+        if ( f.exists() )
+        {
+            content = FileUtils.readFileToString( f, this.getEncoding() );
+        }
+        else
+        {
+            if ( !f.getParentFile().exists() )
+            {
+                f.getParentFile().mkdirs();
+            }
+
+            content = this.getImplementationTemplate( implementation );
+        }
+
+        final JavaEditor editor = this.newJavaEditor( implementation );
+        final String edited = editor.edit( content );
 
         if ( editor.isConstructorsSectionEdited() && !editor.isDefaultConstructorSectionEdited() )
         {
-            throw new Exception( this.getMessage( "missingSection", new Object[]
+            throw new IOException( this.getMessage( "missingSection", new Object[]
                 {
                     CONSTRUCTORS_SECTION_NAME,
                     implementation.getIdentifier()
@@ -292,7 +300,7 @@ public class JavaSources extends JomcTool
         if ( implementation.getSpecifications() != null &&
              !implementation.getSpecifications().getReference().isEmpty() && !editor.isConstructorsSectionEdited() )
         {
-            throw new Exception( this.getMessage( "missingSection", new Object[]
+            throw new IOException( this.getMessage( "missingSection", new Object[]
                 {
                     CONSTRUCTORS_SECTION_NAME,
                     implementation.getIdentifier()
@@ -302,7 +310,7 @@ public class JavaSources extends JomcTool
         if ( implementation.getProperties() != null &&
              !implementation.getProperties().getProperty().isEmpty() && !editor.isPropertiesSectionEdited() )
         {
-            throw new Exception( this.getMessage( "missingSection", new Object[]
+            throw new IOException( this.getMessage( "missingSection", new Object[]
                 {
                     PROPERTIES_SECTION_NAME,
                     implementation.getIdentifier()
@@ -312,7 +320,7 @@ public class JavaSources extends JomcTool
         if ( implementation.getDependencies() != null &&
              !implementation.getDependencies().getDependency().isEmpty() && !editor.isDependenciesSectionEdited() )
         {
-            throw new Exception( this.getMessage( "missingSection", new Object[]
+            throw new IOException( this.getMessage( "missingSection", new Object[]
                 {
                     DEPENDENCIES_SECTION_NAME,
                     implementation.getIdentifier()
@@ -323,7 +331,7 @@ public class JavaSources extends JomcTool
              !( implementation.getMessages().getReference().isEmpty() &&
                 implementation.getMessages().getMessage().isEmpty() ) && !editor.isMessagesSectionEdited() )
         {
-            throw new Exception( this.getMessage( "missingSection", new Object[]
+            throw new IOException( this.getMessage( "missingSection", new Object[]
                 {
                     MESSAGES_SECTION_NAME,
                     implementation.getIdentifier()
@@ -332,7 +340,7 @@ public class JavaSources extends JomcTool
         }
         if ( !editor.isAnnotationsSectionEdited() )
         {
-            throw new Exception( this.getMessage( "missingSection", new Object[]
+            throw new IOException( this.getMessage( "missingSection", new Object[]
                 {
                     ANNOTATIONS_SECTION_NAME,
                     implementation.getIdentifier()
@@ -340,7 +348,15 @@ public class JavaSources extends JomcTool
 
         }
 
-        return edited;
+        if ( !edited.equals( content ) )
+        {
+            FileUtils.writeStringToFile( f, edited, this.getEncoding() );
+            this.log( Level.INFO, this.getMessage( "editing", new Object[]
+                {
+                    f.getCanonicalPath()
+                } ), null );
+
+        }
     }
 
     /**
@@ -350,7 +366,7 @@ public class JavaSources extends JomcTool
      *
      * @return A new editor for editing an implementation source code file.
      */
-    public JavaEditor getJavaEditor( final Implementation implementation )
+    public JavaEditor newJavaEditor( final Implementation implementation )
     {
         return new JavaEditor( new TrailingWhitespaceEditor(), implementation );
     }
@@ -362,7 +378,7 @@ public class JavaSources extends JomcTool
      *
      * @return A new editor for editing a specification source code file.
      */
-    public JavaEditor getJavaEditor( final Specification specification )
+    public JavaEditor newJavaEditor( final Specification specification )
     {
         return new JavaEditor( new TrailingWhitespaceEditor(), specification );
     }
@@ -386,17 +402,24 @@ public class JavaSources extends JomcTool
      *
      * @param implementation The implementation to get the constructors section head content of.
      *
-     * @throws Exception if getting the source code section fails.
+     * @throws IOException if getting the source code section fails.
      */
-    private String getConstructorsSectionHeadContent( final Implementation implementation ) throws Exception
+    private String getConstructorsSectionHeadContent( final Implementation implementation ) throws IOException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final String template = this.getTemplateLocation( CONSTRUCTORS_HEAD_TEMPLATE );
-        ctx.put( "implementation", implementation );
-        ctx.put( "templateLocation", template );
-        this.getVelocity().mergeTemplate( template, this.getEncoding(), ctx, writer );
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( CONSTRUCTORS_HEAD_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
     }
 
     /**
@@ -404,17 +427,24 @@ public class JavaSources extends JomcTool
      *
      * @param implementation The implementation to get the constructors section tail content of.
      *
-     * @throws Exception if getting the source code section fails.
+     * @throws IOException if getting the source code section fails.
      */
-    private String getConstructorsSectionTailContent( final Implementation implementation ) throws Exception
+    private String getConstructorsSectionTailContent( final Implementation implementation ) throws IOException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final String template = this.getTemplateLocation( CONSTRUCTORS_TAIL_TEMPLATE );
-        ctx.put( "implementation", implementation );
-        ctx.put( "templateLocation", template );
-        this.getVelocity().mergeTemplate( template, this.getEncoding(), ctx, writer );
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( CONSTRUCTORS_TAIL_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
     }
 
     /**
@@ -422,17 +452,24 @@ public class JavaSources extends JomcTool
      *
      * @param implementation The implementation to get the source code of the dependencies section of.
      *
-     * @throws Exception if getting the source code section fails.
+     * @throws IOException if getting the source code section fails.
      */
-    private String getDependenciesSection( final Implementation implementation ) throws Exception
+    private String getDependenciesSection( final Implementation implementation ) throws IOException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final String template = this.getTemplateLocation( DEPENDENCIES_TEMPLATE );
-        ctx.put( "implementation", implementation );
-        ctx.put( "templateLocation", template );
-        this.getVelocity().mergeTemplate( template, this.getEncoding(), ctx, writer );
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( DEPENDENCIES_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
     }
 
     /**
@@ -440,17 +477,24 @@ public class JavaSources extends JomcTool
      *
      * @param implementation The implementation to get the source code of the properties section of.
      *
-     * @throws Exception if getting the source code section fails.
+     * @throws IOException if getting the source code section fails.
      */
-    private String getPropertiesSection( final Implementation implementation ) throws Exception
+    private String getPropertiesSection( final Implementation implementation ) throws IOException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final String template = this.getTemplateLocation( PROPERTIES_TEMPLATE );
-        ctx.put( "implementation", implementation );
-        ctx.put( "templateLocation", template );
-        this.getVelocity().mergeTemplate( template, this.getEncoding(), ctx, writer );
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( PROPERTIES_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
     }
 
     /**
@@ -458,17 +502,24 @@ public class JavaSources extends JomcTool
      *
      * @param implementation The implementation to get the source code of the messages section of.
      *
-     * @throws Exception if getting the source code section fails.
+     * @throws IOException if getting the source code section fails.
      */
-    private String getMessagesSection( final Implementation implementation ) throws Exception
+    private String getMessagesSection( final Implementation implementation ) throws IOException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final String template = this.getTemplateLocation( MESSAGES_TEMPLATE );
-        ctx.put( "implementation", implementation );
-        ctx.put( "templateLocation", template );
-        this.getVelocity().mergeTemplate( template, this.getEncoding(), ctx, writer );
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( MESSAGES_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
     }
 
     /**
@@ -476,17 +527,24 @@ public class JavaSources extends JomcTool
      *
      * @param implementation The implementation to get the source code of the license section of.
      *
-     * @throws Exception if getting the source code section fails.
+     * @throws IOException if getting the source code section fails.
      */
-    private String getLicenseSection( final Implementation implementation ) throws Exception
+    private String getLicenseSection( final Implementation implementation ) throws IOException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final String template = this.getTemplateLocation( LICENSE_TEMPLATE );
-        ctx.put( "implementation", implementation );
-        ctx.put( "templateLocation", template );
-        this.getVelocity().mergeTemplate( template, this.getEncoding(), ctx, writer );
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( LICENSE_TEMPLATE );
+            ctx.put( "authors", implementation.getAuthors() );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
     }
 
     /**
@@ -494,17 +552,24 @@ public class JavaSources extends JomcTool
      *
      * @param specification The specification to get the source code of the license section of.
      *
-     * @throws Exception if getting the source code section fails.
+     * @throws IOException if getting the source code section fails.
      */
-    private String getLicenseSection( final Specification specification ) throws Exception
+    private String getLicenseSection( final Specification specification ) throws IOException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final String template = this.getTemplateLocation( LICENSE_TEMPLATE );
-        ctx.put( "specification", specification );
-        ctx.put( "templateLocation", template );
-        this.getVelocity().mergeTemplate( template, this.getEncoding(), ctx, writer );
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( LICENSE_TEMPLATE );
+            ctx.put( "authors", specification.getAuthors() );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
     }
 
     /**
@@ -512,17 +577,24 @@ public class JavaSources extends JomcTool
      *
      * @param specification The specification to get the source code section of.
      *
-     * @throws Exception if getting the source code section fails.
+     * @throws IOException if getting the source code section fails.
      */
-    private String getCommentSection( final Specification specification ) throws Exception
+    private String getCommentSection( final Specification specification ) throws IOException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final String template = this.getTemplateLocation( SPECIFICATION_COMMENT_TEMPLATE );
-        ctx.put( "specification", specification );
-        ctx.put( "templateLocation", template );
-        this.getVelocity().mergeTemplate( template, this.getEncoding(), ctx, writer );
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( SPECIFICATION_COMMENT_TEMPLATE );
+            ctx.put( "specification", specification );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
     }
 
     /**
@@ -530,17 +602,24 @@ public class JavaSources extends JomcTool
      *
      * @param implementation The implementation to get the source code section of.
      *
-     * @throws Exception if getting the source code section fails.
+     * @throws IOException if getting the source code section fails.
      */
-    private String getCommentSection( final Implementation implementation ) throws Exception
+    private String getCommentSection( final Implementation implementation ) throws IOException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final String template = this.getTemplateLocation( IMPLEMENTATION_COMMENT_TEMPLATE );
-        ctx.put( "implementation", implementation );
-        ctx.put( "templateLocation", template );
-        this.getVelocity().mergeTemplate( template, this.getEncoding(), ctx, writer );
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( IMPLEMENTATION_COMMENT_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
     }
 
     /**
@@ -548,17 +627,24 @@ public class JavaSources extends JomcTool
      *
      * @param implementation The implementation to get the source code template of.
      *
-     * @throws Exception if getting the source code section fails.
+     * @throws IOException if getting the source code section fails.
      */
-    private String getImplementationTemplate( final Implementation implementation ) throws Exception
+    private String getImplementationTemplate( final Implementation implementation ) throws IOException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final String template = this.getTemplateLocation( IMPLEMENTATION_TEMPLATE );
-        ctx.put( "implementation", implementation );
-        ctx.put( "templateLocation", template );
-        this.getVelocity().mergeTemplate( template, this.getEncoding(), ctx, writer );
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( IMPLEMENTATION_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
     }
 
     /**
@@ -566,17 +652,24 @@ public class JavaSources extends JomcTool
      *
      * @param specification The specification to get the source code template of.
      *
-     * @throws Exception if getting the source code section fails.
+     * @throws IOException if getting the source code section fails.
      */
-    private String getSpecificationTemplate( final Specification specification ) throws Exception
+    private String getSpecificationTemplate( final Specification specification ) throws IOException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final String template = this.getTemplateLocation( SPECIFICATION_TEMPLATE );
-        ctx.put( "specification", specification );
-        ctx.put( "templateLocation", template );
-        this.getVelocity().mergeTemplate( template, this.getEncoding(), ctx, writer );
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( SPECIFICATION_TEMPLATE );
+            ctx.put( "specification", specification );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
     }
 
     /**
@@ -584,17 +677,24 @@ public class JavaSources extends JomcTool
      *
      * @param specification The specification to get the source code of the annotations section of.
      *
-     * @throws Exception if getting the source code section fails.
+     * @throws IOException if getting the source code section fails.
      */
-    private String getAnnotationsTemplate( final Specification specification ) throws Exception
+    private String getSpecificationAnnotationsTemplate( final Specification specification ) throws IOException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final String template = this.getTemplateLocation( ANNOTATIONS_TEMPLATE );
-        ctx.put( "value", this.getSerializedSpecification( specification ) );
-        ctx.put( "templateLocation", template );
-        this.getVelocity().mergeTemplate( template, this.getEncoding(), ctx, writer );
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( SPECIFICATION_ANNOTATIONS_TEMPLATE );
+            ctx.put( "specification", specification );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
     }
 
     /**
@@ -602,65 +702,24 @@ public class JavaSources extends JomcTool
      *
      * @param implementation The implementation to get the source code of the annotations section of.
      *
-     * @throws Exception if getting the source code section fails.
+     * @throws IOException if getting the source code section fails.
      */
-    private String getAnnotationsTemplate( final Implementation implementation ) throws Exception
+    private String getImplementationAnnotationsTemplate( final Implementation implementation ) throws IOException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final String template = this.getTemplateLocation( ANNOTATIONS_TEMPLATE );
-        ctx.put( "value", this.getSerializedImplementation( implementation ) );
-        ctx.put( "templateLocation", template );
-        this.getVelocity().mergeTemplate( template, this.getEncoding(), ctx, writer );
-        return writer.toString();
-    }
-
-    /**
-     * Serializes a given specification.
-     *
-     * @param specification The specification to serialize.
-     *
-     * @return {@code specification} serialized to a byte array.
-     *
-     * @throws Exception if serialization fails.
-     */
-    public String getSerializedSpecification( final Specification specification ) throws Exception
-    {
-        if ( specification == null )
+        try
         {
-            throw new NullPointerException( "specification" );
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( IMPLEMENTATION_ANNOTATIONS_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            return writer.toString();
         }
-
-        final StringWriter writer = new StringWriter();
-        this.getModelResolver().getMarshaller( true, false ).
-            marshal( this.getModelResolver().getObjectFactory().createSpecification( specification ), writer );
-
-        return writer.toString();
-    }
-
-    /**
-     * Serializes a given implementation.
-     *
-     * @param implementation The implementation to serialize.
-     *
-     * @return {@code implementation} serialized to a byte array.
-     *
-     * @throws NullPointerException if {@code implementation} is {@code null}.
-     * @throws Exception if serialization fails.
-     */
-    public String getSerializedImplementation( final Implementation implementation ) throws Exception
-    {
-        if ( implementation == null )
+        catch ( Exception e )
         {
-            throw new NullPointerException( "implementation" );
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-
-        final StringWriter writer = new StringWriter();
-        final Module m = this.getModelManager().getImplementationModule( implementation.getIdentifier() );
-        this.getModelResolver().getMarshaller( true, false ).marshal( this.getModelResolver().getObjectFactory().
-            createModule( m ), writer );
-
-        return writer.toString();
     }
 
     private String getMessage( final String key, final Object args )
@@ -793,7 +852,7 @@ public class JavaSources extends JomcTool
             }
         }
 
-        public void editLicenseSection( final Section s ) throws Exception
+        public void editLicenseSection( final Section s ) throws IOException
         {
             s.getHeadContent().setLength( 0 );
             if ( this.specification != null )
@@ -808,7 +867,7 @@ public class JavaSources extends JomcTool
             this.licenseSectionEdited = true;
         }
 
-        public void editConstructorsSection( final Section s ) throws Exception
+        public void editConstructorsSection( final Section s ) throws IOException
         {
             s.getHeadContent().setLength( 0 );
             s.getTailContent().setLength( 0 );
@@ -829,52 +888,52 @@ public class JavaSources extends JomcTool
             this.defaultConstructorSectionEdited = true;
         }
 
-        public void editDependenciesSection( final Section s ) throws Exception
+        public void editDependenciesSection( final Section s ) throws IOException
         {
             s.getHeadContent().setLength( 0 );
             s.getHeadContent().append( getDependenciesSection( implementation ) );
             this.dependenciesSectionEdited = true;
         }
 
-        public void editMessagesSection( final Section s ) throws Exception
+        public void editMessagesSection( final Section s ) throws IOException
         {
             s.getHeadContent().setLength( 0 );
             s.getHeadContent().append( getMessagesSection( implementation ) );
             this.messagesSectionEdited = true;
         }
 
-        public void editPropertiesSection( final Section s ) throws Exception
+        public void editPropertiesSection( final Section s ) throws IOException
         {
             s.getHeadContent().setLength( 0 );
             s.getHeadContent().append( getPropertiesSection( implementation ) );
             this.propertiesSectionEdited = true;
         }
 
-        public void editImplementationCommentSection( final Section s ) throws Exception
+        public void editImplementationCommentSection( final Section s ) throws IOException
         {
             s.getHeadContent().setLength( 0 );
             s.getHeadContent().append( getCommentSection( implementation ) );
             this.implementationCommentSectionEdited = true;
         }
 
-        public void editImplementationAnnotationsSection( final Section s ) throws Exception
+        public void editImplementationAnnotationsSection( final Section s ) throws IOException
         {
             s.getHeadContent().setLength( 0 );
-            s.getHeadContent().append( getAnnotationsTemplate( implementation ) );
+            s.getHeadContent().append( getImplementationAnnotationsTemplate( implementation ) );
             this.annotationsSectionEdited = true;
         }
 
-        public void editSpecificationCommentSection( final Section s ) throws Exception
+        public void editSpecificationCommentSection( final Section s ) throws IOException
         {
             s.getHeadContent().setLength( 0 );
             s.getHeadContent().append( getCommentSection( specification ) );
             this.specificationCommentSectionEdited = true;
         }
 
-        public void editSpecificationAnnotationsSection( final Section s ) throws Exception
+        public void editSpecificationAnnotationsSection( final Section s ) throws IOException
         {
             s.getHeadContent().setLength( 0 );
-            s.getHeadContent().append( getAnnotationsTemplate( specification ) );
+            s.getHeadContent().append( getSpecificationAnnotationsTemplate( specification ) );
             this.annotationsSectionEdited = true;
         }
 

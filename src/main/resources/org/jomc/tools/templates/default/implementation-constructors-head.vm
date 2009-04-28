@@ -1,5 +1,5 @@
-## @param implementation The implementation to get the constructors section of.
-## @param modelManager The model manager.
+## @param modules The modules declaring implementation.
+## @param implementation The implementation of the template.
 ## @param tool The builder of the template.
 
     /** Default implementation constructor. */

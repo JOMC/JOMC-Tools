@@ -1,16 +1,18 @@
+## @param modules The modules declaring implementation.
+## @param implementation The implementation of the template.
+## @param tool The builder of the template.
 /**
 #if($implementation.getDocumentation())
  * $tool.getJavadocComment($implementation.getDocumentation().getText("en"), " * ")
 #end
-#if($modelManager.getSpecifications($implementation.getIdentifier()))
+#if($modules.getSpecifications($implementation.getIdentifier()))
  * <p><b>Specifications</b><ul>
-#foreach($reference in $modelManager.getSpecifications($implementation.getIdentifier()))
-#set($specification = $modelManager.getSpecification($reference.getIdentifier()))
+#foreach($reference in $modules.getSpecifications($implementation.getIdentifier()))
+#set($specification = $modules.getSpecification($reference.getIdentifier()))
  * <li>{@code $specification.getIdentifier()}#if($reference.getVersion()) {@code $reference.getVersion()}#end<blockquote>
  * Object applies to $specification.getScope().value() scope.
 #if($specification.isStateless())
- * State does not need to be retained across operations to operate as
- * specified.</blockquote></li>
+ * State does not need to be retained across operations to operate as specified.</blockquote></li>
 #end
 #if(!$specification.isStateless())
  * State must be retained across operations to operate as specified.</blockquote></li>
@@ -29,7 +31,7 @@
 #if($implementation.getDependencies())
  * <p><b>Dependencies</b><ul>
 #foreach($dependency in $implementation.getDependencies().getDependency())
-#set($specification = $modelManager.getSpecification($dependency.getIdentifier()))
+#set($specification = $modules.getSpecification($dependency.getIdentifier()))
  * <li>"{@link #$tool.getDependencyGetterMethodName($dependency) $dependency.getName()}"<blockquote>
  * Dependency on {@code $dependency.getIdentifier()}#if($dependency.getVersion()) at specification level $dependency.getVersion()#end applying to $specification.getScope().value() scope#if($dependency.isBound()) bound to an instance#end.</blockquote></li>
 #end

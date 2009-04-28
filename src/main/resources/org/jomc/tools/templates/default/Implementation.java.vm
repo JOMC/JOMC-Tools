@@ -1,5 +1,5 @@
+## @param modules The modules declaring implementation.
 ## @param implementation The implementation of the template.
-## @param modelManager The model manager.
 ## @param tool The builder of the template.
 // SECTION-START[License Header]
 // SECTION-END
@@ -10,7 +10,7 @@ package ${tool.getJavaPackageName($implementation)};
 // SECTION-START[Annotations]
 // SECTION-END
 public class ${tool.getJavaTypeName($implementation)}
-#set($references = ${modelManager.getSpecifications($implementation.getIdentifier())})
+#set($references = ${modules.getSpecifications($implementation.getIdentifier())})
 #if($references)
 implements
 #set($i = $references.size() - 1)

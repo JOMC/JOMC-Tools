@@ -5,11 +5,7 @@ import java.util.ResourceBundle;
 import java.text.MessageFormat;
 
 #if($comment)
-/**
- * Accessor methods for the
- * {@code "$tool.getJavaClasspathLocation($implementation)${classSuffix}"}
- * {@code ResourceBundle}.
- */
+/** Accessor methods for the {@code "$tool.getJavaClasspathLocation($implementation)${classSuffix}"} {@code ResourceBundle}. */
 #end
 @javax.annotation.Generated
 (
@@ -23,8 +19,7 @@ class ${tool.getJavaTypeName($implementation)}${classSuffix}
 #if($comment)
   /** Singleton instance. */
 #end
-  private static final ${tool.getJavaTypeName($implementation)}${classSuffix} instance =
-    new ${tool.getJavaTypeName($implementation)}${classSuffix}();
+  private static final ${tool.getJavaTypeName($implementation)}${classSuffix} instance = new ${tool.getJavaTypeName($implementation)}${classSuffix}();
 
 #if($comment)
   /** Creates a new <code>${tool.getJavaTypeName($implementation)}${classSuffix}</code> instance. */
@@ -55,7 +50,7 @@ class ${tool.getJavaTypeName($implementation)}${classSuffix}
 #parse($tool.getTemplateLocation("Bundle.java-getter.vm"))
 #end
 #foreach($messageReference in $implementation.getMessages().getReference())
-#set($message = $modelManager.getMessage( $module.getMessages(), $messageReference.getName() ) )
+#set($message = $module.getMessages().getMessage($messageReference.getName()))
 #parse($tool.getTemplateLocation("Bundle.java-getter.vm"))
 #end
 

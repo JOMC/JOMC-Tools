@@ -1,26 +1,16 @@
+## @param modules The modules declaring module.
+## @param module The module of the template.
+## @param authors The authors of the template.
+## @param tool The builder of the template.
 /*
  *  $module.getName()
-#if($implementation)
-#if($implementation.getAuthors())
-#foreach($author in $implementation.getAuthors().getAuthor())
+#if($authors)
+#foreach($author in $authors.getAuthor())
  *  Copyright (C) $author.getCreateDate().getYear() $author.getName() #if($author.getMail())<$author.getMail()>#end
 
 #if($author.getDocumentation())
  *    $tool.getJavadocComment($author.getDocumentation().getText("en"), " *    ")
  *
-#end
-#end
-#end
-#end
-#if($specification)
-#if($specification.getAuthors())
-#foreach($author in $specification.getAuthors().getAuthor())
- *  Copyright (C) $author.getCreateDate().getYear() $author.getName() #if($author.getMail())<$author.getMail()>#end
-
-#if($author.getDocumentation())
- *    $tool.getJavadocComment($author.getDocumentation().getText("en"), " *    ")
- *
-#end
 #end
 #end
 #end

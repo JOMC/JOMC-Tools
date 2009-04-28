@@ -1,8 +1,7 @@
-## @param modules The modules to resolve references with.
-## @param implementation The implementation to get the properties section of.
-## @param modelManager The model manager.
+## @param modules The modules declaring implementation.
+## @param implementation The implementation of the template.
 ## @param tool The builder of the template.
-#set($properties = $modelManager.getProperties($implementation.getIdentifier()))
+#set($properties = $modules.getProperties($implementation.getIdentifier()))
 #if($properties)
 #foreach($property in $properties.getProperty())
 

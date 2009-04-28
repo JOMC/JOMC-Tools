@@ -1,24 +1,24 @@
+## @param modules The modules declaring specification.
+## @param specification The specification of the template.
+## @param tool The builder of the template.
 /**
 #if($specification.getDocumentation())
  * $tool.getJavadocComment($specification.getDocumentation().getText("en"), " * ")
 #end
  * <p>This specification applies to $specification.getScope().value() scope.
-#if($specification.getMultiplicity().value() == "one")
- * An application assembler is required to provide exactly one implementation of
- * this specification. Use of class {@link org.jomc.ObjectManager ObjectManager}
- * is supported for getting that implementation.<pre>
- *   ${tool.getJavaTypeName($specification)} object = (${tool.getJavaTypeName($specification)}) ObjectManager.getInstance().getObject( ${tool.getJavaTypeName($specification)}.class );
+#if($specification.getMultiplicity().value() == "One")
+ * An application assembler is required to provide exactly one implementation of this specification. Use of class
+ * {@link org.jomc.ObjectManager ObjectManager} is supported for getting that implementation.<pre>
+ * ${tool.getJavaTypeName($specification)} object = (${tool.getJavaTypeName($specification)}) ObjectManager.getInstance().getObject( ${tool.getJavaTypeName($specification)}.class );
  * </pre></p>
 #end
-#if($specification.getMultiplicity().value() == "many")
- * An application assembler may provide multiple implementations of this
- * specification. Use of class
- * {@link org.jomc.ObjectManager ObjectManager} is supported for getting these
- * implementations or for selecting a single implementation.<pre>
+#if($specification.getMultiplicity().value() == "Many")
+ * An application assembler may provide multiple implementations of this specification (including none). Use of class
+ * {@link org.jomc.ObjectManager ObjectManager} is supported for getting these implementations or for selecting a
+ * single implementation.<pre>
  * ${tool.getJavaTypeName($specification)}[] objects = (${tool.getJavaTypeName($specification)}[]) ObjectManager.getInstance().getObject( ${tool.getJavaTypeName($specification)}.class );
  * ${tool.getJavaTypeName($specification)} object = (${tool.getJavaTypeName($specification)}) ObjectManager.getInstance().getObject( ${tool.getJavaTypeName($specification)}.class, "<i>implementation name</i>" );
- * </pre> Note that both {@code getObject} methods return {@code null} if no
- * implementation is available.</p>
+ * </pre></p>
 #end
  *
 #if($specification.getAuthors())

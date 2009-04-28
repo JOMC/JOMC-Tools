@@ -20,19 +20,28 @@
 package org.jomc.tools;
 
 import java.io.File;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.RuntimeServices;
+import org.apache.velocity.runtime.log.LogChute;
 import org.jomc.model.Argument;
 import org.jomc.model.ArgumentType;
 import org.jomc.model.DefaultModelManager;
 import org.jomc.model.Dependency;
 import org.jomc.model.Implementation;
 import org.jomc.model.Message;
-import org.jomc.model.ModelResolver;
+import org.jomc.model.ModelManager;
 import org.jomc.model.Module;
+import org.jomc.model.Modules;
 import org.jomc.model.Multiplicity;
 import org.jomc.model.Properties;
 import org.jomc.model.Property;
@@ -41,13 +50,28 @@ import org.jomc.model.Specification;
 import org.jomc.model.Text;
 
 /**
- * Base class of tool classes.
+ * Base tool class.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  */
-public class JomcTool
+public abstract class JomcTool
 {
+
+    /** Listener interface. */
+    public static abstract class Listener
+    {
+
+        /**
+         * Get called on logging.
+         *
+         * @param level The level of the event.
+         * @param message The message of the event or {@code null}.
+         * @param throwable The throwable of the event or {@code null}.
+         */
+        public abstract void onLog( Level level, String message, Throwable throwable );
+
+    }
 
     /** The prefix of the template location. */
     private static final String TEMPLATE_PREFIX = "org/jomc/tools/templates/";
@@ -56,17 +80,14 @@ public class JomcTool
     private static final String VELOCITY_RESOURCE_LOADER =
         "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader";
 
-    /** The model manager of the instance. */
-    private DefaultModelManager modelManager;
+    /** The modules of the instance. */
+    private Modules modules;
 
-    /** The model resolver of the instance. */
-    private ModelResolver modelResolver;
+    /** The model manager of the instance. */
+    private ModelManager modelManager;
 
     /** {@code VelocityEngine} of the generator. */
     private VelocityEngine velocityEngine;
-
-    /** The classloader of the instance. */
-    private ClassLoader classLoader;
 
     /** The name of the module to process. */
     private String moduleName;
@@ -80,29 +101,73 @@ public class JomcTool
     /** The build directory of the instance. */
     private File buildDirectory;
 
-    /** Creates a new {@code JavaTool} instance. */
+    /** The listeners of the instance. */
+    private List<Listener> listeners;
+
+    /** Creates a new {@code JomcTool} instance. */
     public JomcTool()
     {
-        this( null );
-    }
-
-    /**
-     * Creates a new {@code JavaTool} instance taking a classloader.
-     *
-     * @param classLoader The classlaoder of the instance.
-     */
-    public JomcTool( final ClassLoader classLoader )
-    {
         super();
-        this.classLoader = classLoader;
     }
 
     /**
-     * Gets the java package name of a specification.
+     * Creates a new {@code JomcTool} instance taking a {@code JomcTool} instance to initialize the new instance with.
      *
-     * @param specification The specification to get the java package name of.
+     * @param tool The instance to initialize the new instance with.
+     */
+    public JomcTool( final JomcTool tool )
+    {
+        this();
+        if ( tool != null )
+        {
+            try
+            {
+                this.setBuildDirectory( tool.getBuildDirectory() );
+                this.setEncoding( tool.getEncoding() );
+                this.setModelManager( tool.getModelManager() );
+                this.setModuleName( tool.getModuleName() );
+                this.setModules( tool.getModules() );
+                this.setProfile( tool.getProfile() );
+                this.setVelocityEngine( tool.getVelocityEngine() );
+                this.getListeners().add( new Listener()
+                {
+
+                    @Override
+                    public void onLog( final Level level, final String message, final Throwable throwable )
+                    {
+                        tool.log( level, message, throwable );
+                    }
+
+                } );
+            }
+            catch ( Exception e )
+            {
+                this.log( Level.SEVERE, e.getMessage(), e );
+            }
+        }
+    }
+
+    /**
+     * Gets the list of registered listeners.
      *
-     * @return The java package name of {@code specification}.
+     * @return The list of registered listeners.
+     */
+    public List<Listener> getListeners()
+    {
+        if ( this.listeners == null )
+        {
+            this.listeners = new LinkedList<Listener>();
+        }
+
+        return this.listeners;
+    }
+
+    /**
+     * Gets the Java package name of a specification.
+     *
+     * @param specification The specification to get the Java package name of.
+     *
+     * @return The Java package name of {@code specification}.
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
      */
@@ -117,11 +182,11 @@ public class JomcTool
     }
 
     /**
-     * Gets the java type name of a specification.
+     * Gets the Java type name of a specification.
      *
-     * @param specification The specification to get the java type name of.
+     * @param specification The specification to get the Java type name of.
      *
-     * @return The java type name of {@code specification}.
+     * @return The Java type name of {@code specification}.
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
      */
@@ -136,12 +201,11 @@ public class JomcTool
     }
 
     /**
-     * Gets the java classpath location of a specification.
+     * Gets the Java classpath location of a specification.
      *
-     * @return specification The specification to return the java
-     * classpath location of.
+     * @return specification The specification to return the Java classpath location of.
      *
-     * @return the java classpath location of {@code specification}.
+     * @return the Java classpath location of {@code specification}.
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
      */
@@ -158,11 +222,11 @@ public class JomcTool
     }
 
     /**
-     * Gets the java package name of an implementation.
+     * Gets the Java package name of an implementation.
      *
-     * @param implementation The implementation to get the java package name of.
+     * @param implementation The implementation to get the Java package name of.
      *
-     * @return The java package name of {@code implementation}.
+     * @return The Java package name of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      */
@@ -177,11 +241,11 @@ public class JomcTool
     }
 
     /**
-     * Gets the java type name of an implementation.
+     * Gets the Java type name of an implementation.
      *
-     * @param implementation The implementation to get the java type name of.
+     * @param implementation The implementation to get the Java type name of.
      *
-     * @return The java type name of {@code implementation}.
+     * @return The Java type name of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      */
@@ -196,11 +260,11 @@ public class JomcTool
     }
 
     /**
-     * Gets the java type name of an argument.
+     * Gets the Java type name of an argument.
      *
-     * @param argument The argument to get the java type name of.
+     * @param argument The argument to get the Java type name of.
      *
-     * @return The java type name of {@code argument}.
+     * @return The Java type name of {@code argument}.
      *
      * @throws NullPointerException if {@code argument} is {@code null}.
      */
@@ -230,11 +294,11 @@ public class JomcTool
     }
 
     /**
-     * Gets the java type name of a property.
+     * Gets the Java type name of a property.
      *
-     * @param property The property to get the java type name of.
+     * @param property The property to get the Java type name of.
      *
-     * @return The java type name of {@code property}.
+     * @return The Java type name of {@code property}.
      *
      * @throws NullPointerException if {@code property} is {@code null}.
      */
@@ -270,12 +334,11 @@ public class JomcTool
     }
 
     /**
-     * Gets the java classpath location of an implementation.
+     * Gets the Java classpath location of an implementation.
      *
-     * @return implementation The implementation to return the java
-     * classpath location of.
+     * @return implementation The implementation to return the Java classpath location of.
      *
-     * @return the java classpath location of {@code implementation}.
+     * @return the Java classpath location of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      */
@@ -292,15 +355,14 @@ public class JomcTool
     }
 
     /**
-     * Formats a text to a javadoc comment.
+     * Formats a text to a Javadoc comment.
      *
-     * @param text The text to format to a javadoc comment.
+     * @param text The text to format to a Javadoc comment.
      * @param linebreak The text to replace linebreaks with.
      *
-     * @return {@code text} formatted as a javadoc comment.
+     * @return {@code text} formatted as a Javadoc comment.
      *
-     * @throws NullPointerException if {@code text} or {@code linebreak} is
-     * {@code null}.
+     * @throws NullPointerException if {@code text} or {@code linebreak} is {@code null}.
      */
     public String getJavadocComment( final Text text, final String linebreak )
     {
@@ -321,11 +383,11 @@ public class JomcTool
     }
 
     /**
-     * Formats a string to a java string with unicode escapes.
+     * Formats a string to a Java string with unicode escapes.
      *
-     * @param string The string to format to a java string.
+     * @param string The string to format to a Java string.
      *
-     * @return {@code string} formatted as a java string.
+     * @return {@code string} formatted as a Java string.
      *
      * @throws NullPointerException if {@code string} is {@code null}.
      */
@@ -392,13 +454,11 @@ public class JomcTool
     }
 
     /**
-     * Gets the name of a java modifier of a dependency of a given
-     * implementation.
+     * Gets the name of a Java modifier of a dependency of a given implementation.
      *
-     * @param implementation The implementation to get a dependency java
-     * modifier name of.
+     * @param implementation The implementation to get a dependency Java modifier name of.
      *
-     * @return The java modifier name of a dependency of {@code implementation}.
+     * @return The Java modifier name of a dependency of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      */
@@ -413,11 +473,11 @@ public class JomcTool
     }
 
     /**
-     * Gets the name of a java type of a given dependency.
+     * Gets the name of a Java type of a given dependency.
      *
-     * @param dependency The dependency to get a dependency java type name of.
+     * @param dependency The dependency to get a dependency Java type name of.
      *
-     * @return The java type name of {@code dependency}.
+     * @return The Java type name of {@code dependency}.
      *
      * @throws NullPointerException if {@code dependency} is {@code null}.
      */
@@ -429,7 +489,7 @@ public class JomcTool
         }
 
         String typeName = dependency.getIdentifier();
-        final Specification s = this.getModelManager().getSpecification( dependency.getIdentifier() );
+        final Specification s = this.getModules().getSpecification( dependency.getIdentifier() );
 
         if ( s != null && s.getMultiplicity() == Multiplicity.MANY && dependency.getImplementationName() == null )
         {
@@ -440,12 +500,11 @@ public class JomcTool
     }
 
     /**
-     * Gets the name of a java modifier of a message of a given implementation.
+     * Gets the name of a Java modifier of a message of a given implementation.
      *
-     * @param implementation The implementation to get a message java modifier
-     * name of.
+     * @param implementation The implementation to get a message Java modifier name of.
      *
-     * @return The java modifier name of a message of {@code implementation}.
+     * @return The Java modifier name of a message of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      */
@@ -460,17 +519,14 @@ public class JomcTool
     }
 
     /**
-     * Gets the name of a java modifier for a given property of a given
-     * implementation.
+     * Gets the name of a Java modifier for a given property of a given implementation.
      *
      * @param implementation The implementation declaring {@code property}.
-     * @param property The property to get a java modifier name for.
+     * @param property The property to get a Java modifier name for.
      *
-     * @return The java modifier name for {@code property} of
-     * {@code implementation}.
+     * @return The Java modifier name for {@code property} of {@code implementation}.
      *
-     * @throws NullPointerException if {@code implementation} or
-     * {@code property} is {@code null}.
+     * @throws NullPointerException if {@code implementation} or {@code property} is {@code null}.
      */
     public String getPropertyJavaModifier( final Implementation implementation, final Property property )
     {
@@ -484,7 +540,7 @@ public class JomcTool
         }
 
         String modifier = "private";
-        final Properties specified = this.getModelManager().getSpecifiedProperties( implementation.getIdentifier() );
+        final Properties specified = this.getModules().getSpecifiedProperties( implementation.getIdentifier() );
 
         if ( specified != null && specified.getProperty( property.getName() ) != null )
         {
@@ -495,11 +551,11 @@ public class JomcTool
     }
 
     /**
-     * Gets the name of a java accessor method of a given dependency.
+     * Gets the name of a Java accessor method of a given dependency.
      *
-     * @param dependency The dependency to get a java accessor method name of.
+     * @param dependency The dependency to get a Java accessor method name of.
      *
-     * @return The java accessor method name of {@code dependency}.
+     * @return The Java accessor method name of {@code dependency}.
      *
      * @throws NullPointerException if {@code dependency} is {@code null}.
      */
@@ -516,11 +572,11 @@ public class JomcTool
     }
 
     /**
-     * Gets the name of a java accessor method of a given message.
+     * Gets the name of a Java accessor method of a given message.
      *
-     * @param message The message to get a java accessor method name of.
+     * @param message The message to get a Java accessor method name of.
      *
-     * @return The java accessor method name of {@code message}.
+     * @return The Java accessor method name of {@code message}.
      *
      * @throws NullPointerException if {@code message} is {@code null}.
      */
@@ -537,11 +593,11 @@ public class JomcTool
     }
 
     /**
-     * Gets the name of a java accessor method of a given property.
+     * Gets the name of a Java accessor method of a given property.
      *
-     * @param property The property to get a java accessor method name of.
+     * @param property The property to get a Java accessor method name of.
      *
-     * @return The java accessor method name of {@code property}.
+     * @return The Java accessor method name of {@code property}.
      *
      * @throws NullPointerException if {@code property} is {@code null}.
      */
@@ -577,55 +633,136 @@ public class JomcTool
     }
 
     /**
+     * Gets the modules of the instance.
+     *
+     * @return The modules of the instance.
+     */
+    public Modules getModules()
+    {
+        if ( this.modules == null )
+        {
+            this.modules = new Modules();
+        }
+
+        return this.modules;
+    }
+
+    /**
+     * Sets the modules of the instance.
+     *
+     * @param value The new modules of the instance.
+     */
+    public void setModules( final Modules value )
+    {
+        this.modules = value;
+    }
+
+    /**
      * Gets the model manager of the instance.
      *
      * @return The model manager of the instance.
      */
-    public DefaultModelManager getModelManager()
+    public ModelManager getModelManager()
     {
         if ( this.modelManager == null )
         {
-            this.modelManager = new DefaultModelManager( this.getClassLoader() );
+            this.modelManager = new DefaultModelManager();
         }
 
         return this.modelManager;
     }
 
     /**
-     * Gets the model resolver of the instance.
+     * Sets the model manager of the instance.
      *
-     * @return The model resolver of the instance.
+     * @param value The new model manager of the instance.
      */
-    public ModelResolver getModelResolver()
+    public void setModelManager( final ModelManager value )
     {
-        if ( this.modelResolver == null )
-        {
-            this.modelResolver = new ModelResolver( this.getClassLoader() );
-        }
-
-        return this.modelResolver;
+        this.modelManager = value;
     }
 
     /**
      * Gets the {@code VelocityEngine} used for generating source code.
      *
-     * @return the {@code VelocityEngine} used for generating source code.
+     * @return The {@code VelocityEngine} used for generating source code.
      *
      * @throws Exception if initializing a new velocity engine fails.
      */
-    public VelocityEngine getVelocity() throws Exception
+    public VelocityEngine getVelocityEngine() throws Exception
     {
         if ( this.velocityEngine == null )
         {
-            final VelocityEngine engine = new VelocityEngine();
             final java.util.Properties props = new java.util.Properties();
             props.put( "resource.loader", "class" );
             props.put( "class.resource.loader.class", VELOCITY_RESOURCE_LOADER );
+
+            final VelocityEngine engine = new VelocityEngine();
+            engine.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, new LogChute()
+            {
+
+                public void init( final RuntimeServices runtimeServices ) throws Exception
+                {
+                }
+
+                public void log( final int level, final String message )
+                {
+                    this.log( level, message, null );
+                }
+
+                public void log( final int level, final String message, final Throwable throwable )
+                {
+                    JomcTool.this.log( this.toLevel( level ), message, throwable );
+                }
+
+                public boolean isLevelEnabled( final int level )
+                {
+                    return true;
+                }
+
+                private Level toLevel( final int logChuteLevel )
+                {
+                    switch ( logChuteLevel )
+                    {
+                        case LogChute.DEBUG_ID:
+                            return Level.FINE;
+
+                        case LogChute.ERROR_ID:
+                            return Level.SEVERE;
+
+                        case LogChute.INFO_ID:
+                            return Level.INFO;
+
+                        case LogChute.TRACE_ID:
+                            return Level.FINER;
+
+                        case LogChute.WARN_ID:
+                            return Level.WARNING;
+
+                        default:
+                            return Level.FINEST;
+
+                    }
+                }
+
+            } );
+
             engine.init( props );
+
             this.velocityEngine = engine;
         }
 
         return this.velocityEngine;
+    }
+
+    /**
+     * Sets the {@code VelocityEngine} of the instance.
+     *
+     * @param value The new {@code VelocityEngine} of the instance.
+     */
+    public void setVelocityEngine( final VelocityEngine value ) throws Exception
+    {
+        this.velocityEngine = value;
     }
 
     /**
@@ -636,30 +773,11 @@ public class JomcTool
     public VelocityContext getVelocityContext()
     {
         final VelocityContext ctx = new VelocityContext();
-        ctx.put( "modelManager", this.getModelManager() );
-        ctx.put( "tool", this );
+        ctx.put( "modules", this.getModules() );
         ctx.put( "module", this.getModule() );
+        ctx.put( "tool", this );
         ctx.put( "now", new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSZ" ).format( new Date() ) );
         return ctx;
-    }
-
-    /**
-     * Gets the classloader of the instance.
-     *
-     * @return The classloader of the instance.
-     */
-    public ClassLoader getClassLoader()
-    {
-        if ( this.classLoader == null )
-        {
-            this.classLoader = this.getClass().getClassLoader();
-            if ( this.classLoader == null )
-            {
-                this.classLoader = ClassLoader.getSystemClassLoader();
-            }
-        }
-
-        return this.classLoader;
     }
 
     /**
@@ -669,7 +787,7 @@ public class JomcTool
      */
     public Module getModule()
     {
-        return this.getModelManager().getModules().getModule( this.getModuleName() );
+        return this.getModules().getModule( this.getModuleName() );
     }
 
     /**
@@ -702,6 +820,11 @@ public class JomcTool
         if ( this.encoding == null )
         {
             this.encoding = "UTF-8";
+            this.log( Level.INFO, this.getMessage( "defaultEncoding", new Object[]
+                {
+                    this.encoding
+                } ), null );
+
         }
 
         return this.encoding;
@@ -727,6 +850,11 @@ public class JomcTool
         if ( this.profile == null )
         {
             this.profile = "default";
+            this.log( Level.INFO, this.getMessage( "defaultProfile", new Object[]
+                {
+                    this.profile
+                } ), null );
+
         }
 
         return this.profile;
@@ -764,6 +892,11 @@ public class JomcTool
         if ( this.buildDirectory == null )
         {
             this.buildDirectory = new File( System.getProperty( "java.io.tmpdir" ) );
+            this.log( Level.INFO, this.getMessage( "defaultBuildDirectory", new Object[]
+                {
+                    this.buildDirectory.getAbsolutePath()
+                } ), null );
+
         }
 
         return this.buildDirectory;
@@ -777,6 +910,21 @@ public class JomcTool
     public void setBuildDirectory( final File value )
     {
         this.buildDirectory = value;
+    }
+
+    /**
+     * Notifies registered listeners.
+     *
+     * @param level The level of the event.
+     * @param message The message of the event.
+     * @param throwable The throwable of the event.
+     */
+    protected void log( final Level level, final String message, final Throwable throwable )
+    {
+        for ( Listener l : this.getListeners() )
+        {
+            l.onLog( level, message, throwable );
+        }
     }
 
     /**
@@ -794,5 +942,12 @@ public class JomcTool
     {
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
     };
+
+    private String getMessage( final String key, final Object args )
+    {
+        final ResourceBundle b = ResourceBundle.getBundle( "org/jomc/tools/JomcTool" );
+        final MessageFormat f = new MessageFormat( b.getString( key ) );
+        return f.format( args );
+    }
 
 }

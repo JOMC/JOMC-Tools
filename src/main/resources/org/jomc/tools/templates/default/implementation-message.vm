@@ -1,6 +1,6 @@
-## @param implementation The implementation to get the messages section of.
+## @param modules The modules declaring implementation.
+## @param implementation The implementation of the template.
 ## @param message The message to render.
-## @param modelManager The model manager.
 ## @param tool The builder of the template.
 
     /**

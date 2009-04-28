@@ -22,6 +22,7 @@ package org.jomc.tools;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
@@ -31,24 +32,24 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
 import java.util.logging.Level;
 import org.apache.commons.io.FileUtils;
 import org.apache.velocity.VelocityContext;
 import org.jomc.model.Argument;
+import org.jomc.model.Arguments;
 import org.jomc.model.Implementation;
 import org.jomc.model.Message;
 import org.jomc.model.MessageReference;
 import org.jomc.model.Module;
 import org.jomc.model.Text;
+import org.jomc.model.Texts;
 
 /**
- * Generates java bundles.
+ * Generates Java bundles.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
- * @see #writeModuleSources(java.io.File)
- * @see #writeModuleResources(java.io.File)
+ * @see #writeModuleBundles(java.io.File, java.io.File)
  */
 public class JavaBundles extends JomcTool
 {
@@ -75,13 +76,13 @@ public class JavaBundles extends JomcTool
     }
 
     /**
-     * Creates a new {@code JavaBundles} instance taking a classloader.
+     * Creates a new {@code JavaBundles} instance taking a {@code JomcTool} instance to initialize the instance with.
      *
-     * @param classLoader The classlaoder of the instance.
+     * @param tool The instance to initialize the new instance with,
      */
-    public JavaBundles( final ClassLoader classLoader )
+    public JavaBundles( final JomcTool tool )
     {
-        super( classLoader );
+        super( tool );
     }
 
     /**
@@ -94,6 +95,11 @@ public class JavaBundles extends JomcTool
         if ( this.defaultLocale == null )
         {
             this.defaultLocale = Locale.getDefault();
+            this.log( Level.INFO, this.getMessage( "defaultLocale", new Object[]
+                {
+                    this.defaultLocale.toString()
+                } ), null );
+
         }
 
         return this.defaultLocale;
@@ -110,14 +116,14 @@ public class JavaBundles extends JomcTool
     }
 
     /**
-     * Writes java resource bundle sources of the module of the instance to a given directories.
+     * Writes Java resource bundle sources of the module of the instance to a given directories.
      *
      * @param sourcesDirectory The directory to write sources to.
      *
      * @throws NullPointerException if {@code sourcesDirectory} is {@code null}.
-     * @throws Exception if writing fails.
+     * @throws IOException if writing fails.
      */
-    public void writeModuleSources( final File sourcesDirectory ) throws Exception
+    public void writeModuleSources( final File sourcesDirectory ) throws IOException
     {
         if ( sourcesDirectory == null )
         {
@@ -128,15 +134,14 @@ public class JavaBundles extends JomcTool
     }
 
     /**
-     * Writes java resource bundle resources of the module of the instance to a given directories.
+     * Writes Java resource bundle resources of the module of the instance to a given directories.
      *
      * @param resourcesDirectory The directory to write resources to.
      *
      * @throws NullPointerException if {@code resourcesDirectory} is {@code null}.
-     * @throws Exception if writing fails.
+     * @throws IOException if writing fails.
      */
-    public void writeModuleResources( final File resourcesDirectory )
-        throws Exception
+    public void writeModuleResources( final File resourcesDirectory ) throws IOException
     {
         if ( resourcesDirectory == null )
         {
@@ -147,118 +152,136 @@ public class JavaBundles extends JomcTool
     }
 
     /**
-     * Writes java resource bundles of the module of the instance to given directories.
+     * Writes Java resource bundles of the module of the instance to given directories.
      *
      * @param sourcesDirectory The directory to write sources to or {@code null} to not write any sources.
      * @param resourcesDirectory The directory to write resources to or {@code null} to not write any resources.
      *
-     * @throws Exception if writing fails.
+     * @throws IOException if writing fails.
      */
-    public void writeModuleBundles( final File sourcesDirectory, final File resourcesDirectory ) throws Exception
+    public void writeModuleBundles( final File sourcesDirectory, final File resourcesDirectory ) throws IOException
     {
-        if ( !this.getBuildDirectory().exists() )
+        if ( this.getModule() != null )
         {
-            this.getBuildDirectory().mkdirs();
-        }
-
-        this.assertValidTemplates( this.getModule() );
-
-        final Properties bundleHashcodes = new Properties();
-        final File hashFile = new File( this.getBuildDirectory(), "java-bundles.properties" );
-
-        if ( !hashFile.exists() )
-        {
-            hashFile.createNewFile();
-        }
-
-        final InputStream in = new FileInputStream( hashFile );
-        bundleHashcodes.load( in );
-        in.close();
-
-        Logger.getLogger( this.getClass().getName() ).log( Level.INFO, this.getMessage( "hashFile", new Object[]
+            if ( !this.getBuildDirectory().exists() )
             {
-                hashFile.getAbsolutePath()
-            } ) );
+                this.getBuildDirectory().mkdirs();
+            }
 
-        final String lastProfile = bundleHashcodes.getProperty( PROP_PROFILE );
-        if ( lastProfile != null && !lastProfile.equals( this.getProfile() ) )
-        {
-            bundleHashcodes.clear();
-            bundleHashcodes.setProperty( PROP_PROFILE, this.getProfile() );
-        }
-
-        if ( this.getModule().getImplementations() != null )
-        {
-            for ( Implementation i : this.getModule().getImplementations().getImplementation() )
-            {
-                if ( i.getMessages() != null )
+            this.log( Level.INFO, this.getMessage( "processingModule", new Object[]
                 {
-                    final int bundleHash = this.getHashCode( this.getModule(), i );
+                    this.getModule().getName()
+                } ), null );
 
-                    if ( sourcesDirectory != null )
+            this.assertValidTemplates( this.getModule() );
+
+            final Properties bundleHashcodes = new Properties();
+            final File hashFile = new File( this.getBuildDirectory(), "java-bundles.properties" );
+
+            if ( !hashFile.exists() )
+            {
+                hashFile.createNewFile();
+            }
+
+            final InputStream in = new FileInputStream( hashFile );
+            bundleHashcodes.load( in );
+            in.close();
+
+            final String lastProfile = bundleHashcodes.getProperty( PROP_PROFILE );
+            if ( lastProfile != null && !lastProfile.equals( this.getProfile() ) )
+            {
+                bundleHashcodes.clear();
+                bundleHashcodes.setProperty( PROP_PROFILE, this.getProfile() );
+            }
+
+            if ( this.getModule().getImplementations() != null )
+            {
+                for ( Implementation i : this.getModule().getImplementations().getImplementation() )
+                {
+                    if ( i.getMessages() != null )
                     {
-                        final String propertyName =
-                            i.getIdentifier() + sourcesDirectory.getAbsolutePath().hashCode();
+                        final int bundleHash = this.getHashCode( this.getModule(), i );
 
-                        final String propertyHash = bundleHashcodes.getProperty( propertyName );
-
-                        if ( propertyHash == null || Integer.valueOf( propertyHash ).intValue() != bundleHash )
+                        if ( sourcesDirectory != null )
                         {
-                            bundleHashcodes.setProperty( propertyName, Integer.toString( bundleHash ) );
-                            this.writeResourceBundleSource( i, sourcesDirectory );
+                            final String propertyName =
+                                i.getIdentifier() + sourcesDirectory.getAbsolutePath().hashCode();
+
+                            final String propertyHash = bundleHashcodes.getProperty( propertyName );
+
+                            if ( propertyHash == null || Integer.valueOf( propertyHash ).intValue() != bundleHash )
+                            {
+                                bundleHashcodes.setProperty( propertyName, Integer.toString( bundleHash ) );
+                                this.writeResourceBundleSource( i, sourcesDirectory );
+                            }
                         }
-                    }
 
-                    if ( resourcesDirectory != null )
-                    {
-                        final String propertyName =
-                            i.getIdentifier() + resourcesDirectory.getAbsolutePath().hashCode();
-
-                        final String propertyHash = bundleHashcodes.getProperty( propertyName );
-
-                        if ( propertyHash == null || Integer.valueOf( propertyHash ).intValue() != bundleHash )
+                        if ( resourcesDirectory != null )
                         {
-                            bundleHashcodes.setProperty( propertyName, Integer.toString( bundleHash ) );
-                            this.writeResourceBundleProperties( i, resourcesDirectory );
+                            final String propertyName =
+                                i.getIdentifier() + resourcesDirectory.getAbsolutePath().hashCode();
+
+                            final String propertyHash = bundleHashcodes.getProperty( propertyName );
+
+                            if ( propertyHash == null || Integer.valueOf( propertyHash ).intValue() != bundleHash )
+                            {
+                                bundleHashcodes.setProperty( propertyName, Integer.toString( bundleHash ) );
+                                this.writeResourceBundleProperties( i, resourcesDirectory );
+                            }
                         }
                     }
                 }
             }
-        }
 
-        final OutputStream out = new FileOutputStream( hashFile );
-        bundleHashcodes.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
-        out.close();
+            final OutputStream out = new FileOutputStream( hashFile );
+            bundleHashcodes.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
+            out.close();
+
+            this.log( Level.INFO, this.getMessage( "upToDate", null ), null );
+        }
+        else
+        {
+            this.log( Level.WARNING, this.getMessage( "missingModule", new Object[]
+                {
+                    this.getModuleName()
+                } ), null );
+
+        }
     }
 
     /**
-     * Gets the source code of the java class for accessing the resource bundle
-     * of a given implementation.
+     * Gets the source code of the Java class for accessing the resource bundle of a given implementation.
      *
      * @param implementation The implementation to get the source code of.
      *
-     * @return The source code of the java class for accessing the resource
-     * bundle of {@code implementation}.
+     * @return The source code of the Java class for accessing the resource bundle of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
-     * @throws Exception if creating source code fails.
+     * @throws IOException if rendering source code fails.
      */
-    public String getResourceBundleSource( final Implementation implementation ) throws Exception
+    public String getResourceBundleSource( final Implementation implementation ) throws IOException
     {
         if ( implementation == null )
         {
             throw new NullPointerException( "implementation" );
         }
 
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        ctx.put( "implementation", implementation );
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            ctx.put( "implementation", implementation );
 
-        this.getVelocity().mergeTemplate(
-            this.getTemplateLocation( BUNDLE_TEMPLATE ), this.getEncoding(), ctx, writer );
+            this.getVelocityEngine().mergeTemplate(
+                this.getTemplateLocation( BUNDLE_TEMPLATE ), this.getEncoding(), ctx, writer );
 
-        writer.close();
-        return writer.toString();
+            writer.close();
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
     }
 
     /**
@@ -325,17 +348,17 @@ public class JavaBundles extends JomcTool
     }
 
     /**
-     * Writes the source code of the java class for accessing the resource bundle of a given implementation to a
+     * Writes the source code of the Java class for accessing the resource bundle of a given implementation to a
      * directory.
      *
      * @param implementation The implementation of the bundle.
      * @param sourceDirectory The directory to write to.
      *
      * @throws NullPointerException if {@code implementation} or {@code sourceDirectory} is {@code null}.
-     * @throws Exception if writing fails.
+     * @throws IOException if writing fails.
      */
     public void writeResourceBundleSource( final Implementation implementation, final File sourceDirectory )
-        throws Exception
+        throws IOException
     {
         if ( implementation == null )
         {
@@ -356,20 +379,25 @@ public class JavaBundles extends JomcTool
             bundleFile.getParentFile().mkdirs();
         }
 
+        this.log( Level.INFO, this.getMessage( "writing", new Object[]
+            {
+                bundleFile.getCanonicalPath()
+            } ), null );
+
         FileUtils.writeStringToFile( bundleFile, this.getResourceBundleSource( implementation ), this.getEncoding() );
     }
 
     /**
-     * Writes given resource bundle properties to a directory.
+     * Writes the resource bundle properties of a given implementation to a directory.
      *
      * @param implementation The implementation of the bundle.
      * @param resourceDirectory The directory to write to.
      *
      * @throws NullPointerException if {@code implementation} or {@code resourceDirectory} is {@code null}.
-     * @throws Exception if writing fails.
+     * @throws IOException if writing fails.
      */
     public void writeResourceBundleProperties( final Implementation implementation, final File resourceDirectory )
-        throws Exception
+        throws IOException
     {
         if ( implementation == null )
         {
@@ -390,13 +418,18 @@ public class JavaBundles extends JomcTool
         {
             final String language = e.getKey().getLanguage();
             final java.util.Properties p = e.getValue();
-            File file = new File( resourceDirectory, bundlePath + "_" + language.toLowerCase( Locale.ENGLISH ) +
-                                                     ".properties" );
+            final File file = new File( resourceDirectory, bundlePath + "_" + language.toLowerCase( Locale.ENGLISH ) +
+                                                           ".properties" );
 
             if ( !file.getParentFile().exists() )
             {
                 file.getParentFile().mkdirs();
             }
+
+            this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                {
+                    file.getCanonicalPath()
+                } ), null );
 
             OutputStream out = new FileOutputStream( file );
             p.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
@@ -416,6 +449,11 @@ public class JavaBundles extends JomcTool
         }
 
         final File file = new File( resourceDirectory, bundlePath + ".properties" );
+        this.log( Level.INFO, this.getMessage( "writing", new Object[]
+            {
+                file.getCanonicalPath()
+            } ), null );
+
         final OutputStream out = new FileOutputStream( file );
         defProperties.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
         out.close();
@@ -431,8 +469,6 @@ public class JavaBundles extends JomcTool
     {
         final VelocityContext ctx = super.getVelocityContext();
         ctx.put( "classSuffix", "Bundle" );
-        ctx.put( "generatorName", GENERATOR_NAME );
-        ctx.put( "generatorVersion", GENERATOR_VERSION );
         ctx.put( "comment", Boolean.TRUE );
         ctx.put( "templateLocation", this.getTemplateLocation( BUNDLE_TEMPLATE ) );
         return ctx;
@@ -465,44 +501,65 @@ public class JavaBundles extends JomcTool
         {
             for ( Message message : implementation.getMessages().getMessage() )
             {
-                bundleHash = 37 * bundleHash + message.getName().hashCode();
-                for ( Text text : message.getTemplate().getText() )
-                {
-                    bundleHash = 37 * bundleHash + text.getLanguage().hashCode();
-                    bundleHash = 37 * bundleHash + text.getValue().hashCode();
-                }
-
-                if ( message.getArguments() != null )
-                {
-                    for ( Argument argument : message.getArguments().getArgument() )
-                    {
-                        bundleHash = 37 * bundleHash + argument.getName().hashCode();
-                        bundleHash = 37 * bundleHash + argument.getType().toString().hashCode();
-                    }
-                }
+                bundleHash = 37 * bundleHash + this.getHashCode( message );
             }
 
             for ( MessageReference messageReference : implementation.getMessages().getReference() )
             {
                 final Message message = module.getMessages().getMessage( messageReference.getName() );
-                for ( Text text : message.getTemplate().getText() )
-                {
-                    bundleHash = 37 * bundleHash + text.getLanguage().hashCode();
-                    bundleHash = 37 * bundleHash + text.getValue().hashCode();
-                }
-
-                if ( message.getArguments() != null )
-                {
-                    for ( Argument argument : message.getArguments().getArgument() )
-                    {
-                        bundleHash = 37 * bundleHash + argument.getName().hashCode();
-                        bundleHash = 37 * bundleHash + argument.getType().toString().hashCode();
-                    }
-                }
+                bundleHash = 37 * bundleHash + this.getHashCode( message );
             }
         }
 
         return bundleHash;
+    }
+
+    private int getHashCode( final Message message )
+    {
+        int hash = 23;
+
+        if ( message != null )
+        {
+            hash = 37 * hash + message.getName().hashCode();
+            hash = 37 * hash + this.getHashCode( message.getDocumentation() );
+            hash = 37 * hash + this.getHashCode( message.getTemplate() );
+            hash = 37 * hash + this.getHashCode( message.getArguments() );
+        }
+
+        return hash;
+    }
+
+    private int getHashCode( final Texts texts )
+    {
+        int hash = 23;
+
+        if ( texts != null )
+        {
+            for ( Text t : texts.getText() )
+            {
+                hash = 37 * hash + t.getLanguage().hashCode();
+                hash = 37 * hash + t.getValue().hashCode();
+            }
+        }
+
+        return hash;
+    }
+
+    private int getHashCode( final Arguments arguments )
+    {
+        int hash = 23;
+
+        if ( arguments != null )
+        {
+            for ( Argument a : arguments.getArgument() )
+            {
+                hash = 37 * hash + this.getHashCode( a.getDocumentation() );
+                hash = 37 * hash + a.getName().hashCode();
+                hash = 37 * hash + a.getType().toString().hashCode();
+            }
+        }
+
+        return hash;
     }
 
     private void assertValidTemplates( final Module module ) throws IllegalArgumentException

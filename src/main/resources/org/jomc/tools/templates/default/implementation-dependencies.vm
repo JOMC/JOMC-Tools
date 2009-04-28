@@ -1,32 +1,19 @@
-## @param implementation The implementation to get the dependencies section of.
-## @param modelManager The model manager.
+## @param modules The modules declaring implementation.
+## @param implementation The implementation of the template.
 ## @param tool The builder of the template.
-#set($dependencies = $modelManager.getDependencies($implementation.getIdentifier()))
+#set($dependencies = $modules.getDependencies($implementation.getIdentifier()))
 #if($dependencies)
 #foreach($dependency in $dependencies.getDependency())
-#set($specification = $modelManager.getSpecification($dependency.getIdentifier()))
+#set($specification = $modules.getSpecification($dependency.getIdentifier()))
 
     /**
      * Gets the {@code $dependency.getName()} dependency.
-#if($specification.getMultiplicity().value() == "one")
 #if($dependency.getImplementationName())
-     * <p>This method returns the "{@code $dependency.getImplementationName()}"
-     * object of the {@code $dependency.getIdentifier()} specification#if($dependency.getVersion()) at specification level $dependency.getVersion()#end.</p>
+     * <p>This method returns the "{@code $dependency.getImplementationName()}" object of the {@code $dependency.getIdentifier()} specification#if($dependency.getVersion()) at specification level $dependency.getVersion()#end.</p>
 #end
 #if(!$dependency.getImplementationName())
      * <p>This method returns any available object of the {@code $dependency.getIdentifier()} specification#if($dependency.getVersion()) at specification level $dependency.getVersion()#end.</p>
 #end
-#end
-#if($specification.getMultiplicity().value() == "many")
-#if($dependency.getImplementationName())
-     * <p>This method returns the "{@code $dependency.getImplementationName()}"
-     * object of the {@code $dependency.getIdentifier()} specification#if($dependency.getVersion()) at specification level $dependency.getVersion()#end or {@code null} if that object is not available.</p>
-#end
-#if(!$dependency.getImplementationName())
-     * <p>This method returns all available objects of the {@code $dependency.getIdentifier()} specification#if($dependency.getVersion()) at specification level $dependency.getVersion()#end or {@code null} if no objects are available.</p>
-#end
-#end
-     * </p>
 #if($dependency.getProperties())
      * <p><b>Properties</b><dl>
 #foreach($property in $dependency.getProperties().getProperty())
