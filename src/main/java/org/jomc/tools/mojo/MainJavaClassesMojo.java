@@ -22,31 +22,30 @@ package org.jomc.tools.mojo;
 import java.io.File;
 
 /**
- * Manages a projects' main java sources.
+ * Manages a projects' main java classes.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  *
- * @phase process-resources
- * @goal main-java-sources
+ * @phase process-classes
+ * @goal main-java-classes
  * @requiresDependencyResolution runtime
  */
-public final class MainJavaSourcesMojo extends AbstractJomcMojo
+public final class MainJavaClassesMojo extends AbstractJomcMojo
 {
 
     @Override
     public void executeTool() throws Exception
     {
-        File sourceDirectory = new File( this.getMavenProject().getBuild().getSourceDirectory() );
-
-        if ( !sourceDirectory.isAbsolute() )
+        File classesDirectory = new File( this.getMavenProject().getBuild().getOutputDirectory() );
+        if ( !classesDirectory.isAbsolute() )
         {
-            sourceDirectory = new File( this.getMavenProject().getBasedir(),
-                                        this.getMavenProject().getBuild().getSourceDirectory() );
+            classesDirectory = new File( this.getMavenProject().getBasedir(),
+                                         this.getMavenProject().getBuild().getOutputDirectory() );
 
         }
 
-        this.getMainJavaSourcesTool().editModuleSources( sourceDirectory );
+        this.getMainJavaClassesTool().commitModuleClasses( classesDirectory );
     }
 
 }

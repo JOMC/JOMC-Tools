@@ -22,31 +22,30 @@ package org.jomc.tools.mojo;
 import java.io.File;
 
 /**
- * Manages a projects' main java sources.
+ * Validates a projects' test java classes.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $Id$
  *
- * @phase process-resources
- * @goal main-java-sources
+ * @phase verify
+ * @goal verify-test-java-classes
  * @requiresDependencyResolution runtime
  */
-public final class MainJavaSourcesMojo extends AbstractJomcMojo
+public class VerifyTestJavaClassesMojo extends AbstractJomcMojo
 {
 
     @Override
-    public void executeTool() throws Exception
+    protected void executeTool() throws Exception
     {
-        File sourceDirectory = new File( this.getMavenProject().getBuild().getSourceDirectory() );
-
-        if ( !sourceDirectory.isAbsolute() )
+        File classesDirectory = new File( this.getMavenProject().getBuild().getTestOutputDirectory() );
+        if ( !classesDirectory.isAbsolute() )
         {
-            sourceDirectory = new File( this.getMavenProject().getBasedir(),
-                                        this.getMavenProject().getBuild().getSourceDirectory() );
+            classesDirectory = new File( this.getMavenProject().getBasedir(),
+                                         this.getMavenProject().getBuild().getTestOutputDirectory() );
 
         }
 
-        this.getMainJavaSourcesTool().editModuleSources( sourceDirectory );
+        this.getTestJavaClassesTool().validateModuleClasses( classesDirectory );
     }
 
 }

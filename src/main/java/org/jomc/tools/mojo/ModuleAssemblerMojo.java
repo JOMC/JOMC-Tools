@@ -31,7 +31,7 @@ import java.io.File;
  * @goal assemble-modules
  * @requiresDependencyResolution runtime
  */
-public class ModuleAssemblerMojo extends AbstractJomcMojo
+public final class ModuleAssemblerMojo extends AbstractJomcMojo
 {
 
     /**
@@ -59,7 +59,7 @@ public class ModuleAssemblerMojo extends AbstractJomcMojo
     public void executeTool() throws Exception
     {
         this.getModuleAssemblerTool().assembleModules(
-            this.modulesFile, this.mergeDirectory, this.includeClasspathModule );
+            this.modulesFile, this.mergeDirectory, this.getMainClassLoader(), this.includeClasspathModule );
 
     }
 
