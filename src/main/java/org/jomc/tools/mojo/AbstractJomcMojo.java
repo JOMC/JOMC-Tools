@@ -60,6 +60,20 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 {
 
     /**
+     * The encoding to use for reading and writing text files.
+     *
+     * @parameter default-value="${project.build.sourceEncoding}"
+     */
+    private String sourceEncoding;
+
+    /**
+     * The template profile to use when accessing templates.
+     *
+     * @parameter default-value="default"
+     */
+    private String profile;
+
+    /**
      * The Maven project of the instance.
      * @parameter expression="${project}"
      * @required
@@ -423,6 +437,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
         tool.setBuildDirectory( new File( this.getMavenProject().getBasedir(),
                                           this.getMavenProject().getBuild().getDirectory() ) );
+
+        tool.setEncoding( this.sourceEncoding );
+        tool.setProfile( this.profile );
 
         if ( tool.getModelManager() instanceof DefaultModelManager )
         {
