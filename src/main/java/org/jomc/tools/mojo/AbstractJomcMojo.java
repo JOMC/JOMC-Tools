@@ -37,7 +37,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.text.MessageFormat;
@@ -48,6 +47,7 @@ import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
@@ -62,6 +62,7 @@ import org.jomc.tools.JavaClasses;
 import org.jomc.tools.JavaSources;
 import org.jomc.tools.JomcTool;
 import org.jomc.tools.ModuleAssembler;
+import org.xml.sax.SAXException;
 
 /**
  * Base mojo class for executing {@code JomcTool}s.
@@ -131,7 +132,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @return The tool for managing sources.
      */
     public JavaSources getMainJavaSourcesTool()
-        throws IOException, MojoFailureException, ModelException
+        throws DependencyResolutionRequiredException, ModelException, IOException, SAXException, JAXBException
     {
         if ( this.mainJavaSourcesTool == null )
         {
@@ -149,7 +150,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @return The tool for managing sources.
      */
     public JavaSources getTestJavaSourcesTool()
-        throws IOException, MojoFailureException, ModelException
+        throws DependencyResolutionRequiredException, ModelException, IOException, SAXException, JAXBException
     {
         if ( this.testJavaSourcesTool == null )
         {
@@ -167,7 +168,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @return The tool for merging modules.
      */
     public ModuleAssembler getModuleAssemblerTool()
-        throws IOException, MojoFailureException, ModelException
+        throws DependencyResolutionRequiredException, ModelException, IOException, SAXException, JAXBException
     {
         if ( this.moduleAssemblerTool == null )
         {
@@ -184,7 +185,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @return The tool for managing classes.
      */
     public JavaClasses getMainJavaClassesTool()
-        throws IOException, MojoFailureException, ModelException
+        throws DependencyResolutionRequiredException, ModelException, IOException, SAXException, JAXBException
     {
         if ( this.mainJavaClassesTool == null )
         {
@@ -202,7 +203,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @return The tool for managing classes.
      */
     public JavaClasses getTestJavaClassesTool()
-        throws IOException, MojoFailureException, ModelException
+        throws DependencyResolutionRequiredException, ModelException, IOException, SAXException, JAXBException
     {
         if ( this.testJavaClassesTool == null )
         {
@@ -220,42 +221,32 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @return A {@code ClassLoader} initialized with the project's runtime classpath including any provided
      * dependencies.
      *
-     * @throws MojoFailureException for unrecoverable errors.
+     * @throws DependencyResolutionRequiredException for any unresolved dependency scopes.
+     * @throws IOException if building the classpath of the classloader fails.
      */
-    public ClassLoader getMainClassLoader() throws MojoFailureException
+    public ClassLoader getMainClassLoader() throws DependencyResolutionRequiredException, IOException
     {
-        try
+        if ( this.mainClassLoader == null )
         {
-            if ( this.mainClassLoader == null )
+            final Iterator it;
+            final Collection urls = new LinkedList();
+            for ( it = this.getMainClasspathElements().iterator(); it.hasNext(); )
             {
-                final Iterator it;
-                final Collection urls = new LinkedList();
-                for ( it = this.getMainClasspathElements().iterator(); it.hasNext(); )
+                final String element = (String) it.next();
+                final URL url = new File( element ).toURI().toURL();
+                if ( !urls.contains( url ) )
                 {
-                    final String element = (String) it.next();
-                    final URL url = new File( element ).toURI().toURL();
-                    if ( !urls.contains( url ) )
-                    {
-                        urls.add( url );
-                        this.log( Level.FINE, this.getClasspathElementMessage( url.toExternalForm() ), null );
-                    }
+                    urls.add( url );
+                    this.log( Level.FINE, this.getClasspathElementMessage( url.toExternalForm() ), null );
                 }
-
-                this.mainClassLoader = new URLClassLoader( (URL[]) urls.toArray( new URL[ urls.size() ] ),
-                                                           Thread.currentThread().getContextClassLoader() );
-
             }
 
-            return this.mainClassLoader;
+            this.mainClassLoader = new URLClassLoader( (URL[]) urls.toArray( new URL[ urls.size() ] ),
+                                                       Thread.currentThread().getContextClassLoader() );
+
         }
-        catch ( DependencyResolutionRequiredException e )
-        {
-            throw (MojoFailureException) new MojoFailureException( e.getMessage() ).initCause( e );
-        }
-        catch ( MalformedURLException e )
-        {
-            throw (MojoFailureException) new MojoFailureException( e.getMessage() ).initCause( e );
-        }
+
+        return this.mainClassLoader;
     }
 
     /**
@@ -263,42 +254,32 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *
      * @return A {@code ClassLoader} initialized with the project's test classpath including any provided dependencies.
      *
-     * @throws MojoFailureException for unrecoverable errors.
+     * @throws DependencyResolutionRequiredException for any unresolved dependency scopes.
+     * @throws IOException if building the classpath of the classloader fails.
      */
-    public ClassLoader getTestClassLoader() throws MojoFailureException
+    public ClassLoader getTestClassLoader() throws DependencyResolutionRequiredException, IOException
     {
-        try
+        if ( this.testClassLoader == null )
         {
-            if ( this.testClassLoader == null )
+            final Iterator it;
+            final Collection urls = new LinkedList();
+            for ( it = this.getTestClasspathElements().iterator(); it.hasNext(); )
             {
-                final Iterator it;
-                final Collection urls = new LinkedList();
-                for ( it = this.getTestClasspathElements().iterator(); it.hasNext(); )
+                final String element = (String) it.next();
+                final URL url = new File( element ).toURI().toURL();
+                if ( !urls.contains( url ) )
                 {
-                    final String element = (String) it.next();
-                    final URL url = new File( element ).toURI().toURL();
-                    if ( !urls.contains( url ) )
-                    {
-                        urls.add( url );
-                        this.log( Level.FINE, this.getClasspathElementMessage( url.toExternalForm() ), null );
-                    }
+                    urls.add( url );
+                    this.log( Level.FINE, this.getClasspathElementMessage( url.toExternalForm() ), null );
                 }
-
-                this.testClassLoader = new URLClassLoader( (URL[]) urls.toArray( new URL[ urls.size() ] ),
-                                                           Thread.currentThread().getContextClassLoader() );
-
             }
 
-            return this.testClassLoader;
+            this.testClassLoader = new URLClassLoader( (URL[]) urls.toArray( new URL[ urls.size() ] ),
+                                                       Thread.currentThread().getContextClassLoader() );
+
         }
-        catch ( DependencyResolutionRequiredException e )
-        {
-            throw (MojoFailureException) new MojoFailureException( e.getMessage() ).initCause( e );
-        }
-        catch ( MalformedURLException e )
-        {
-            throw (MojoFailureException) new MojoFailureException( e.getMessage() ).initCause( e );
-        }
+
+        return this.testClassLoader;
     }
 
     /**
@@ -307,8 +288,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @return A set of classpath element strings.
      *
      * @throws DependencyResolutionRequiredException for any unresolved dependency scopes.
+     * @throws IOException if getting main classpath elements fails.
      */
-    public Set getMainClasspathElements() throws DependencyResolutionRequiredException
+    public Set getMainClasspathElements() throws DependencyResolutionRequiredException, IOException
     {
         final Set elements = new HashSet();
 
@@ -353,8 +335,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @return A set of classpath element strings.
      *
      * @throws DependencyResolutionRequiredException for any unresolved dependency scopes.
+     * @throws IOException if getting test classpath elements fails.
      */
-    public Set getTestClasspathElements() throws DependencyResolutionRequiredException
+    public Set getTestClasspathElements() throws DependencyResolutionRequiredException, IOException
     {
         final Set elements = new HashSet();
 
@@ -381,13 +364,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     public void execute() throws MojoExecutionException, MojoFailureException
     {
-        this.logSeparator( Level.INFO );
-        this.log( Level.INFO, this.getMessage( "title" ).format( null ), null );
-        this.logSeparator( Level.INFO );
-
         try
         {
+            this.logSeparator( Level.INFO );
+            this.log( Level.INFO, this.getMessage( "title" ).format( null ), null );
+            this.logSeparator( Level.INFO );
             this.executeTool();
+            this.logSeparator( Level.INFO );
         }
         catch ( ModelException e )
         {
@@ -424,16 +407,12 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         {
             throw new MojoExecutionException( e.getMessage(), e );
         }
-        finally
-        {
-            this.logSeparator( Level.INFO );
-        }
     }
 
     protected abstract void executeTool() throws Exception;
 
     private void setupTool( final JomcTool tool, final ClassLoader classLoader )
-        throws IOException, ModelException
+        throws ModelException, IOException, SAXException, JAXBException
     {
         final String toolName = tool.getClass().getName().substring( tool.getClass().getName().lastIndexOf( '.' ) + 1 );
         this.log( Level.INFO, this.getInitializingMessage( toolName ), null );
@@ -443,7 +422,15 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             public void onLog( final Level level, final String message, final Throwable t )
             {
-                log( level, message, t );
+                try
+                {
+                    log( level, message, t );
+                }
+                catch ( IOException e )
+                {
+                    System.err.println( "[" + level.toString() + "] " + message );
+                    e.printStackTrace();
+                }
             }
 
         } );
@@ -464,7 +451,15 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 @Override
                 public void onLog( final Level level, final String message, final Throwable t )
                 {
-                    log( level, message, t );
+                    try
+                    {
+                        log( level, message, t );
+                    }
+                    catch ( IOException e )
+                    {
+                        System.err.println( "[" + level.toString() + "] " + message );
+                        e.printStackTrace();
+                    }
                 }
 
             } );
@@ -561,48 +556,41 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     }
 
-    protected void logSeparator( final Level level )
+    protected void logSeparator( final Level level ) throws IOException
     {
         this.log( level, this.getMessage( "separator" ).format( null ), null );
     }
 
-    protected void log( final Level level, final String message, final Throwable throwable )
+    protected void log( final Level level, final String message, final Throwable throwable ) throws IOException
     {
-        try
-        {
-            String line;
-            final BufferedReader reader = new BufferedReader( new StringReader( message ) );
+        String line;
+        final BufferedReader reader = new BufferedReader( new StringReader( message ) );
 
-            while ( ( line = reader.readLine() ) != null )
+        while ( ( line = reader.readLine() ) != null )
+        {
+            final String mojoMessage = "[JOMC] " + line;
+
+            if ( ( level.equals( Level.CONFIG ) || level.equals( Level.FINE ) || level.equals( Level.FINER ) ||
+                   level.equals( Level.FINEST ) ) && this.getLog().isDebugEnabled() )
             {
-                final String mojoMessage = "[JOMC] " + line;
-
-                if ( ( level.equals( Level.CONFIG ) || level.equals( Level.FINE ) || level.equals( Level.FINER ) ||
-                       level.equals( Level.FINEST ) ) && this.getLog().isDebugEnabled() )
-                {
-                    this.getLog().debug( mojoMessage, throwable );
-                }
-                else if ( level.equals( Level.INFO ) && this.getLog().isInfoEnabled() )
-                {
-                    this.getLog().info( mojoMessage, throwable );
-                }
-                else if ( level.equals( Level.SEVERE ) && this.getLog().isErrorEnabled() )
-                {
-                    this.getLog().error( mojoMessage, throwable );
-                }
-                else if ( level.equals( Level.WARNING ) && this.getLog().isWarnEnabled() )
-                {
-                    this.getLog().warn( mojoMessage, throwable );
-                }
-                else if ( this.getLog().isDebugEnabled() )
-                {
-                    this.getLog().debug( mojoMessage, throwable );
-                }
+                this.getLog().debug( mojoMessage, throwable );
             }
-        }
-        catch ( IOException e )
-        {
-            throw new AssertionError( e );
+            else if ( level.equals( Level.INFO ) && this.getLog().isInfoEnabled() )
+            {
+                this.getLog().info( mojoMessage, throwable );
+            }
+            else if ( level.equals( Level.SEVERE ) && this.getLog().isErrorEnabled() )
+            {
+                this.getLog().error( mojoMessage, throwable );
+            }
+            else if ( level.equals( Level.WARNING ) && this.getLog().isWarnEnabled() )
+            {
+                this.getLog().warn( mojoMessage, throwable );
+            }
+            else if ( this.getLog().isDebugEnabled() )
+            {
+                this.getLog().debug( mojoMessage, throwable );
+            }
         }
     }
 
