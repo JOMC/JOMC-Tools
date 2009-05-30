@@ -72,7 +72,7 @@
     )
     $tool.getDependencyJavaModifier($implementation) $tool.getDependencyJavaType($dependency) $tool.getDependencyGetterMethodName($dependency)() throws org.jomc.ObjectManagementException
     {
-        return ($tool.getDependencyJavaType($dependency)) org.jomc.ObjectManager.getInstance().getDependency( this, "$dependency.getName()" );
+        return ($tool.getDependencyJavaType($dependency)) org.jomc.ObjectManagerFactory.getObjectManager().getDependency( this, "$dependency.getName()" );
     }
 #end
 #end

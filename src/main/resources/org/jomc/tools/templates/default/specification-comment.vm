@@ -38,17 +38,17 @@
 #end
  * <p>This specification applies to $specification.getScope().value() scope.
 #if($specification.getMultiplicity().value() == "One")
- * An application assembler is required to provide exactly one implementation of this specification. Use of class
- * {@link org.jomc.ObjectManager ObjectManager} is supported for getting that implementation.<pre>
- * ${tool.getJavaTypeName($specification)} object = (${tool.getJavaTypeName($specification)}) ObjectManager.getInstance().getObject( ${tool.getJavaTypeName($specification)}.class );
+ * An application assembler is required to provide no more than one implementation of this specification (including none).
+ * Use of class {@link org.jomc.ObjectManager ObjectManager} is supported for getting that implementation.<pre>
+ * ${tool.getJavaTypeName($specification)} object = (${tool.getJavaTypeName($specification)}) ObjectManagerFactory.getObjectManager().getObject( ${tool.getJavaTypeName($specification)}.class );
  * </pre></p>
 #end
 #if($specification.getMultiplicity().value() == "Many")
- * An application assembler may provide multiple implementations of this specification (including none). Use of class
- * {@link org.jomc.ObjectManager ObjectManager} is supported for getting these implementations or for selecting a
- * single implementation.<pre>
- * ${tool.getJavaTypeName($specification)}[] objects = (${tool.getJavaTypeName($specification)}[]) ObjectManager.getInstance().getObject( ${tool.getJavaTypeName($specification)}.class );
- * ${tool.getJavaTypeName($specification)} object = (${tool.getJavaTypeName($specification)}) ObjectManager.getInstance().getObject( ${tool.getJavaTypeName($specification)}.class, "<i>implementation name</i>" );
+ * An application assembler may provide multiple implementations of this specification (including none).
+ * Use of class {@link org.jomc.ObjectManager ObjectManager} is supported for getting these implementations or for
+ * selecting a single implementation.<pre>
+ * ${tool.getJavaTypeName($specification)}[] objects = (${tool.getJavaTypeName($specification)}[]) ObjectManagerFactory.getObjectManager().getObject( ${tool.getJavaTypeName($specification)}.class );
+ * ${tool.getJavaTypeName($specification)} object = (${tool.getJavaTypeName($specification)}) ObjectManagerFactory.getObjectManager().getObject( ${tool.getJavaTypeName($specification)}.class, "<i>implementation name</i>" );
  * </pre></p>
 #end
  *

@@ -41,13 +41,7 @@
 #foreach($reference in $modules.getSpecifications($implementation.getIdentifier()))
 #set($specification = $modules.getSpecification($reference.getIdentifier()))
  * <li>{@code $specification.getIdentifier()}#if($reference.getVersion()) {@code $reference.getVersion()}#end<blockquote>
- * Object applies to $specification.getScope().value() scope.
-#if($specification.isStateless())
- * State does not need to be retained across operations to operate as specified.</blockquote></li>
-#end
-#if(!$specification.isStateless())
- * State must be retained across operations to operate as specified.</blockquote></li>
-#end
+ * Object applies to $specification.getScope().value() scope.</blockquote></li>
 #end
  * </ul></p>
 #end

@@ -54,10 +54,10 @@
     $tool.getPropertyJavaModifier($implementation,$property) $property.getType().value() $tool.getPropertyGetterMethodName($property)() throws org.jomc.ObjectManagementException
     {
 #if($tool.getJavaTypeName($property) != $property.getType().value())
-        return ( ($tool.getJavaTypeName($property)) org.jomc.ObjectManager.getInstance().getProperty( this, "$property.getName()" ) ).$property.getType().value()Value();
+        return ( ($tool.getJavaTypeName($property)) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "$property.getName()" ) ).$property.getType().value()Value();
 #end
 #if($tool.getJavaTypeName($property) == $property.getType().value())
-        return ($property.getType().value()) org.jomc.ObjectManager.getInstance().getProperty( this, "$property.getName()" );
+        return ($property.getType().value()) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "$property.getName()" );
 #end
     }
 #end

@@ -64,5 +64,5 @@
     )
     $tool.getMessageJavaModifier($implementation) String $tool.getMessageGetterMethodName($message)( final java.util.Locale locale#if($message.getArguments())#foreach($argument in $message.getArguments().getArgument()), final $tool.getJavaTypeName($argument) $argument.getName()#end#end ) throws org.jomc.ObjectManagementException
     {
-        return org.jomc.ObjectManager.getInstance().getMessage( this, "$message.getName()", locale, #if($message.getArguments() && !$message.getArguments().isEmpty())new Object[] {#foreach($argument in $message.getArguments().getArgument()) $argument.getName(),#end null }#end#if(!$message.getArguments() || $message.getArguments().isEmpty()) null#end );
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "$message.getName()", locale, #if($message.getArguments() && !$message.getArguments().isEmpty())new Object[] {#foreach($argument in $message.getArguments().getArgument()) $argument.getName(),#end null }#end#if(!$message.getArguments() || $message.getArguments().isEmpty()) null#end );
     }
