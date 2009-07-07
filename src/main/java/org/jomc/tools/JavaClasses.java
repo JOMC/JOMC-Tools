@@ -411,7 +411,7 @@ public class JavaClasses extends JomcTool
      *
      * @param implementation The implementation to process.
      * @param classFileName The name of the classfile of {@code implementation}.
-     * @param classesFile The classfile of {@code implementation}.
+     * @param classFile The classfile of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} or {@code classesFile} is {@code null}.
      * @throws IOException if reading {@code classFile} fails.
