@@ -63,6 +63,7 @@ import org.jomc.model.Properties;
 import org.jomc.model.Property;
 import org.jomc.model.PropertyType;
 import org.jomc.model.Specification;
+import org.jomc.model.SpecificationReference;
 import org.jomc.model.Text;
 
 /**
@@ -201,19 +202,30 @@ public abstract class JomcTool
      * Gets the Java type name of a specification.
      *
      * @param specification The specification to get the Java type name of.
+     * @param qualified {@code true} to return the fully qualified type name (with package name prepended);
+     * {@code false} to return the short type name (without package name prepended).
      *
      * @return The Java type name of {@code specification}.
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
      */
-    public String getJavaTypeName( final Specification specification )
+    public String getJavaTypeName( final Specification specification, final boolean qualified )
     {
         if ( specification == null )
         {
             throw new NullPointerException( "specification" );
         }
 
-        return specification.getIdentifier().substring( specification.getIdentifier().lastIndexOf( '.' ) + 1 );
+        final StringBuffer typeName = new StringBuffer();
+        final String javaPackageName = this.getJavaPackageName( specification );
+
+        if ( qualified )
+        {
+            typeName.append( javaPackageName ).append( '.' );
+        }
+
+        typeName.append( specification.getIdentifier().substring( javaPackageName.length() + 1 ) );
+        return typeName.toString();
     }
 
     /**
@@ -232,9 +244,56 @@ public abstract class JomcTool
             throw new NullPointerException( "specification" );
         }
 
-        return ( this.getJavaPackageName( specification ) + '.' +
-                 this.getJavaTypeName( specification ) ).replace( '.', '/' );
+        return ( this.getJavaTypeName( specification, true ) ).replace( '.', '/' );
+    }
 
+    /**
+     * Gets the Java package name of a specification reference.
+     *
+     * @param reference The specification reference to get the Java package name of.
+     *
+     * @return The Java package name of {@code reference}.
+     *
+     * @throws NullPointerException if {@code reference} is {@code null}.
+     */
+    public String getJavaPackageName( final SpecificationReference reference )
+    {
+        if ( reference == null )
+        {
+            throw new NullPointerException( "reference" );
+        }
+
+        return reference.getIdentifier().substring( 0, reference.getIdentifier().lastIndexOf( '.' ) );
+    }
+
+    /**
+     * Gets the name of a Java type of a given specification reference.
+     *
+     * @param reference The specification reference to get a Java type name of.
+     * @param qualified {@code true} to return the fully qualified type name (with package name prepended);
+     * {@code false} to return the short type name (without package name prepended).
+     *
+     * @return The Java type name of {@code reference}.
+     *
+     * @throws NullPointerException if {@code reference} is {@code null}.
+     */
+    public String getJavaTypeName( final SpecificationReference reference, final boolean qualified )
+    {
+        if ( reference == null )
+        {
+            throw new NullPointerException( "reference" );
+        }
+
+        final StringBuffer typeName = new StringBuffer();
+        final String javaPackageName = this.getJavaPackageName( reference );
+
+        if ( qualified )
+        {
+            typeName.append( javaPackageName ).append( '.' );
+        }
+
+        typeName.append( reference.getIdentifier().substring( javaPackageName.length() + 1 ) );
+        return typeName.toString();
     }
 
     /**
@@ -260,19 +319,47 @@ public abstract class JomcTool
      * Gets the Java type name of an implementation.
      *
      * @param implementation The implementation to get the Java type name of.
+     * @param qualified {@code true} to return the fully qualified type name (with package name prepended);
+     * {@code false} to return the short type name (without package name prepended).
      *
      * @return The Java type name of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      */
-    public String getJavaTypeName( final Implementation implementation )
+    public String getJavaTypeName( final Implementation implementation, final boolean qualified )
     {
         if ( implementation == null )
         {
             throw new NullPointerException( "implementation" );
         }
 
-        return implementation.getClazz().substring( implementation.getClazz().lastIndexOf( '.' ) + 1 );
+        final StringBuffer typeName = new StringBuffer();
+        final String javaPackageName = this.getJavaPackageName( implementation );
+        if ( qualified )
+        {
+            typeName.append( javaPackageName ).append( '.' );
+        }
+        typeName.append( implementation.getClazz().substring( javaPackageName.length() + 1 ) );
+        return typeName.toString();
+    }
+
+    /**
+     * Gets the Java classpath location of an implementation.
+     *
+     * @return implementation The implementation to return the Java classpath location of.
+     *
+     * @return the Java classpath location of {@code implementation}.
+     *
+     * @throws NullPointerException if {@code implementation} is {@code null}.
+     */
+    public String getJavaClasspathLocation( final Implementation implementation )
+    {
+        if ( implementation == null )
+        {
+            throw new NullPointerException( "implementation" );
+        }
+
+        return ( this.getJavaTypeName( implementation, true ) ).replace( '.', '/' );
     }
 
     /**
@@ -350,24 +437,180 @@ public abstract class JomcTool
     }
 
     /**
-     * Gets the Java classpath location of an implementation.
+     * Gets the name of a Java accessor method of a given property.
      *
-     * @return implementation The implementation to return the Java classpath location of.
+     * @param property The property to get a Java accessor method name of.
      *
-     * @return the Java classpath location of {@code implementation}.
+     * @return The Java accessor method name of {@code property}.
      *
-     * @throws NullPointerException if {@code implementation} is {@code null}.
+     * @throws NullPointerException if {@code property} is {@code null}.
      */
-    public String getJavaClasspathLocation( final Implementation implementation )
+    public String getJavaGetterMethodName( final Property property )
+    {
+        if ( property == null )
+        {
+            throw new NullPointerException( "property" );
+        }
+
+        final char[] name = property.getName().toCharArray();
+        name[0] = Character.toUpperCase( name[0] );
+        String prefix = "get";
+        if ( property.getType() == PropertyType.BOOLEAN || property.getType() == PropertyType.JAVA_LANG_BOOLEAN )
+        {
+            prefix = "is";
+        }
+
+        return prefix + String.valueOf( name );
+    }
+
+    /**
+     * Gets the name of a Java type of a given dependency.
+     *
+     * @param dependency The dependency to get a dependency Java type name of.
+     *
+     * @return The Java type name of {@code dependency}.
+     *
+     * @throws NullPointerException if {@code dependency} is {@code null}.
+     */
+    public String getJavaTypeName( final Dependency dependency )
+    {
+        if ( dependency == null )
+        {
+            throw new NullPointerException( "dependency" );
+        }
+
+        final StringBuffer typeName = new StringBuffer();
+        typeName.append( this.getJavaTypeName( (SpecificationReference) dependency, true ) );
+
+        final Specification s = this.getModules().getSpecification( dependency.getIdentifier() );
+        if ( s != null && s.getMultiplicity() == Multiplicity.MANY && dependency.getImplementationName() == null )
+        {
+            typeName.append( "[]" );
+        }
+
+        return typeName.toString();
+    }
+
+    /**
+     * Gets the name of a Java accessor method of a given dependency.
+     *
+     * @param dependency The dependency to get a Java accessor method name of.
+     *
+     * @return The Java accessor method name of {@code dependency}.
+     *
+     * @throws NullPointerException if {@code dependency} is {@code null}.
+     */
+    public String getJavaGetterMethodName( final Dependency dependency )
+    {
+        if ( dependency == null )
+        {
+            throw new NullPointerException( "dependency" );
+        }
+
+        final char[] name = dependency.getName().toCharArray();
+        name[0] = Character.toUpperCase( name[0] );
+        return "get" + String.valueOf( name );
+    }
+
+    /**
+     * Gets the name of a Java accessor method of a given message.
+     *
+     * @param message The message to get a Java accessor method name of.
+     *
+     * @return The Java accessor method name of {@code message}.
+     *
+     * @throws NullPointerException if {@code message} is {@code null}.
+     */
+    public String getJavaGetterMethodName( final Message message )
+    {
+        if ( message == null )
+        {
+            throw new NullPointerException( "message" );
+        }
+
+        final char[] name = message.getName().toCharArray();
+        name[0] = Character.toUpperCase( name[0] );
+        return "get" + String.valueOf( name ) + "Message";
+    }
+
+    /**
+     * Gets the name of a Java modifier of a dependency of a given implementation.
+     *
+     * @param implementation The implementation to get a dependency Java modifier name of.
+     * @param dependency The dependency to get a Java modifier name of.
+     *
+     * @return The Java modifier name of {@code dependency} of {@code implementation}.
+     *
+     * @throws NullPointerException if {@code implementation} or {@code dependency} is {@code null}.
+     */
+    public String getJavaModifierName( final Implementation implementation, final Dependency dependency )
     {
         if ( implementation == null )
         {
             throw new NullPointerException( "implementation" );
         }
+        if ( dependency == null )
+        {
+            throw new NullPointerException( "dependency" );
+        }
 
-        return ( this.getJavaPackageName( implementation ) + '.' +
-                 this.getJavaTypeName( implementation ) ).replace( '.', '/' );
+        return "private";
+    }
 
+    /**
+     * Gets the name of a Java modifier of a message of a given implementation.
+     *
+     * @param implementation The implementation to get a message Java modifier name of.
+     * @param message The message to get a Java modifier name of.
+     *
+     * @return The Java modifier name of {@code message} of {@code implementation}.
+     *
+     * @throws NullPointerException if {@code implementation} or {@code message} is {@code null}.
+     */
+    public String getJavaModifierName( final Implementation implementation, final Message message )
+    {
+        if ( implementation == null )
+        {
+            throw new NullPointerException( "implementation" );
+        }
+        if ( message == null )
+        {
+            throw new NullPointerException( "message" );
+        }
+
+        return "private";
+    }
+
+    /**
+     * Gets the name of a Java modifier for a given property of a given implementation.
+     *
+     * @param implementation The implementation declaring {@code property}.
+     * @param property The property to get a Java modifier name for.
+     *
+     * @return The Java modifier name for {@code property} of {@code implementation}.
+     *
+     * @throws NullPointerException if {@code implementation} or {@code property} is {@code null}.
+     */
+    public String getJavaModifierName( final Implementation implementation, final Property property )
+    {
+        if ( implementation == null )
+        {
+            throw new NullPointerException( "implementation" );
+        }
+        if ( property == null )
+        {
+            throw new NullPointerException( "property" );
+        }
+
+        String modifier = "private";
+        final Properties specified = this.getModules().getSpecifiedProperties( implementation.getIdentifier() );
+
+        if ( specified != null && specified.getProperty( property.getName() ) != null )
+        {
+            modifier = "public";
+        }
+
+        return modifier;
     }
 
     /**
@@ -467,172 +710,6 @@ public abstract class JomcTool
         }
 
         return buf.toString();
-    }
-
-    /**
-     * Gets the name of a Java modifier of a dependency of a given implementation.
-     *
-     * @param implementation The implementation to get a dependency Java modifier name of.
-     *
-     * @return The Java modifier name of a dependency of {@code implementation}.
-     *
-     * @throws NullPointerException if {@code implementation} is {@code null}.
-     */
-    public String getDependencyJavaModifier( final Implementation implementation )
-    {
-        if ( implementation == null )
-        {
-            throw new NullPointerException( "implementation" );
-        }
-
-        return "private";
-    }
-
-    /**
-     * Gets the name of a Java type of a given dependency.
-     *
-     * @param dependency The dependency to get a dependency Java type name of.
-     *
-     * @return The Java type name of {@code dependency}.
-     *
-     * @throws NullPointerException if {@code dependency} is {@code null}.
-     */
-    public String getDependencyJavaType( final Dependency dependency )
-    {
-        if ( dependency == null )
-        {
-            throw new NullPointerException( "dependency" );
-        }
-
-        String typeName = dependency.getIdentifier();
-        final Specification s = this.getModules().getSpecification( dependency.getIdentifier() );
-
-        if ( s != null && s.getMultiplicity() == Multiplicity.MANY && dependency.getImplementationName() == null )
-        {
-            typeName += "[]";
-        }
-
-        return typeName;
-    }
-
-    /**
-     * Gets the name of a Java modifier of a message of a given implementation.
-     *
-     * @param implementation The implementation to get a message Java modifier name of.
-     *
-     * @return The Java modifier name of a message of {@code implementation}.
-     *
-     * @throws NullPointerException if {@code implementation} is {@code null}.
-     */
-    public String getMessageJavaModifier( final Implementation implementation )
-    {
-        if ( implementation == null )
-        {
-            throw new NullPointerException( "implementation" );
-        }
-
-        return "private";
-    }
-
-    /**
-     * Gets the name of a Java modifier for a given property of a given implementation.
-     *
-     * @param implementation The implementation declaring {@code property}.
-     * @param property The property to get a Java modifier name for.
-     *
-     * @return The Java modifier name for {@code property} of {@code implementation}.
-     *
-     * @throws NullPointerException if {@code implementation} or {@code property} is {@code null}.
-     */
-    public String getPropertyJavaModifier( final Implementation implementation, final Property property )
-    {
-        if ( property == null )
-        {
-            throw new NullPointerException( "property" );
-        }
-        if ( implementation == null )
-        {
-            throw new NullPointerException( "implementation" );
-        }
-
-        String modifier = "private";
-        final Properties specified = this.getModules().getSpecifiedProperties( implementation.getIdentifier() );
-
-        if ( specified != null && specified.getProperty( property.getName() ) != null )
-        {
-            modifier = "public";
-        }
-
-        return modifier;
-    }
-
-    /**
-     * Gets the name of a Java accessor method of a given dependency.
-     *
-     * @param dependency The dependency to get a Java accessor method name of.
-     *
-     * @return The Java accessor method name of {@code dependency}.
-     *
-     * @throws NullPointerException if {@code dependency} is {@code null}.
-     */
-    public String getDependencyGetterMethodName( final Dependency dependency )
-    {
-        if ( dependency == null )
-        {
-            throw new NullPointerException( "dependency" );
-        }
-
-        final char[] name = dependency.getName().toCharArray();
-        name[0] = Character.toUpperCase( name[0] );
-        return "get" + String.valueOf( name );
-    }
-
-    /**
-     * Gets the name of a Java accessor method of a given message.
-     *
-     * @param message The message to get a Java accessor method name of.
-     *
-     * @return The Java accessor method name of {@code message}.
-     *
-     * @throws NullPointerException if {@code message} is {@code null}.
-     */
-    public String getMessageGetterMethodName( final Message message )
-    {
-        if ( message == null )
-        {
-            throw new NullPointerException( "message" );
-        }
-
-        final char[] name = message.getName().toCharArray();
-        name[0] = Character.toUpperCase( name[0] );
-        return "get" + String.valueOf( name ) + "Message";
-    }
-
-    /**
-     * Gets the name of a Java accessor method of a given property.
-     *
-     * @param property The property to get a Java accessor method name of.
-     *
-     * @return The Java accessor method name of {@code property}.
-     *
-     * @throws NullPointerException if {@code property} is {@code null}.
-     */
-    public String getPropertyGetterMethodName( final Property property )
-    {
-        if ( property == null )
-        {
-            throw new NullPointerException( "property" );
-        }
-
-        final char[] name = property.getName().toCharArray();
-        name[0] = Character.toUpperCase( name[0] );
-        String prefix = "get";
-        if ( property.getType() == PropertyType.BOOLEAN || property.getType() == PropertyType.JAVA_LANG_BOOLEAN )
-        {
-            prefix = "is";
-        }
-
-        return prefix + String.valueOf( name );
     }
 
     /**

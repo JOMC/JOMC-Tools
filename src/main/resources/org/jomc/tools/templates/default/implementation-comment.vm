@@ -40,7 +40,7 @@
  * <p><b>Specifications</b><ul>
 #foreach($reference in $modules.getSpecifications($implementation.getIdentifier()))
 #set($specification = $modules.getSpecification($reference.getIdentifier()))
- * <li>{@code $specification.getIdentifier()}#if($reference.getVersion()) {@code $reference.getVersion()}#end<blockquote>
+ * <li>{@code $tool.getJavaTypeName($reference,true)}#if($reference.getVersion()) {@code $reference.getVersion()}#end<blockquote>
  * Object applies to $specification.getScope().value() scope.</blockquote></li>
 #end
  * </ul></p>
@@ -48,7 +48,7 @@
 #if($implementation.getProperties())
  * <p><b>Properties</b><ul>
 #foreach($property in $implementation.getProperties().getProperty())
- * <li>"{@link #$tool.getPropertyGetterMethodName($property) $property.getName()}"<blockquote>
+ * <li>"{@link #$tool.getJavaGetterMethodName($property) $property.getName()}"<blockquote>
  * Property of type {@code $property.getType().value()}#if($property.getValue()) with value "$property.getValue()"#end.</blockquote></li>
 #end
  * </ul></p>
@@ -57,7 +57,7 @@
  * <p><b>Dependencies</b><ul>
 #foreach($dependency in $implementation.getDependencies().getDependency())
 #set($specification = $modules.getSpecification($dependency.getIdentifier()))
- * <li>"{@link #$tool.getDependencyGetterMethodName($dependency) $dependency.getName()}"<blockquote>
+ * <li>"{@link #$tool.getJavaGetterMethodName($dependency) $dependency.getName()}"<blockquote>
  * Dependency on {@code $dependency.getIdentifier()}#if($dependency.getVersion()) at specification level $dependency.getVersion()#end applying to $specification.getScope().value() scope#if($dependency.isBound()) bound to an instance#end.</blockquote></li>
 #end
  * </ul></p>
@@ -65,7 +65,7 @@
 #if($implementation.getMessages())
  * <p><b>Messages</b><ul>
 #foreach($message in $implementation.getMessages().getMessage())
- * <li>"{@link #$tool.getMessageGetterMethodName($message) $message.getName()}"<table>
+ * <li>"{@link #$tool.getJavaGetterMethodName($message) $message.getName()}"<table>
 #foreach($text in $message.getTemplate().getText())
  * <tr><td valign="top">$tool.getDisplayLanguage($text.getLanguage()):</td><td valign="top"><pre>$tool.getJavadocComment($message.getTemplate().getText($text.getLanguage()), "     * ")</pre></td></tr>
 #end
@@ -73,7 +73,7 @@
 #end
 #foreach($reference in $implementation.getMessages().getReference())
 #set($message = $module.getMessages().getMessage($reference.getName()))
- * <li>"{@link #$tool.getMessageGetterMethodName($message) $message.getName()}"<table>
+ * <li>"{@link #$tool.getJavaGetterMethodName($message) $message.getName()}"<table>
 #foreach($text in $message.getTemplate().getText())
  * <tr><td valign="top">$tool.getDisplayLanguage($text.getLanguage()):</td><td valign="top"><pre>$tool.getJavadocComment($message.getTemplate().getText($text.getLanguage()), "     * ")</pre></td></tr>
 #end

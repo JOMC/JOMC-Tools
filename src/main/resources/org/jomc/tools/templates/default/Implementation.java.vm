@@ -36,22 +36,31 @@
 // SECTION-END
 package ${tool.getJavaPackageName($implementation)};
 
+import java.lang.*;
+
 // SECTION-START[Implementation Comment]
 // SECTION-END
 // SECTION-START[Annotations]
 // SECTION-END
-public class ${tool.getJavaTypeName($implementation)}
+public class ${tool.getJavaTypeName($implementation,false)}
 #set($references = ${modules.getSpecifications($implementation.getIdentifier())})
 #if($references)
 implements
-#set($i = $references.size() - 1)
+#set($i = $references.size())
+#set($i = $i - 1)
 #foreach($reference in $references)
-    $reference.getIdentifier()#set($i = $i - 1)#if($i >= 0),#end
+    $tool.getJavaTypeName($reference,true)#if($i > 0),#end
 
 #end
 #end
 {
-    // SECTION-START[${tool.getJavaTypeName($implementation)}]
+#if($references)
+#foreach($reference in $references)
+    // SECTION-START[$tool.getJavaTypeName($reference,false)]
+    // SECTION-END
+#end
+#end
+    // SECTION-START[${tool.getJavaTypeName($implementation,false)}]
     // SECTION-END
     // SECTION-START[Constructors]
         // SECTION-START[Default Constructor]

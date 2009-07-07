@@ -39,5 +39,5 @@
         value = "$tool.getClass().getName()",
         comments = "See ${pom.url}"
     )
-    public $tool.getJavaTypeName($implementation)()
+    public $tool.getJavaTypeName($implementation,false)()
     {

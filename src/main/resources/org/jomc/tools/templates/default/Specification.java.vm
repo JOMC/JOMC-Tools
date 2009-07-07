@@ -36,12 +36,14 @@
 // SECTION-END
 package ${tool.getJavaPackageName($specification)};
 
+import java.lang.*;
+
 // SECTION-START[Specification Comment]
 // SECTION-END
 // SECTION-START[Annotations]
 // SECTION-END
-public interface ${tool.getJavaTypeName($specification)}
+public interface ${tool.getJavaTypeName($specification,false)}
 {
-    // SECTION-START[${tool.getJavaTypeName($specification)}]
+    // SECTION-START[${tool.getJavaTypeName($specification,false)}]
     // SECTION-END
 }

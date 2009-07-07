@@ -44,18 +44,18 @@ import java.text.MessageFormat;
   comments = "See ${pom.url}",
   date = "$now"
 )
-class ${tool.getJavaTypeName($implementation)}${classSuffix}
+class ${tool.getJavaTypeName($implementation,false)}${classSuffix}
 {
 
 #if($comment)
   /** Singleton instance. */
 #end
-  private static final ${tool.getJavaTypeName($implementation)}${classSuffix} instance = new ${tool.getJavaTypeName($implementation)}${classSuffix}();
+  private static final ${tool.getJavaTypeName($implementation,false)}${classSuffix} instance = new ${tool.getJavaTypeName($implementation,false)}${classSuffix}();
 
 #if($comment)
-  /** Creates a new <code>${tool.getJavaTypeName($implementation)}${classSuffix}</code> instance. */
+  /** Creates a new <code>${tool.getJavaTypeName($implementation,false)}${classSuffix}</code> instance. */
 #end
-  ${tool.getJavaTypeName($implementation)}${classSuffix}()
+  ${tool.getJavaTypeName($implementation,false)}${classSuffix}()
   {
 #if($implementation.getMessages())
 #foreach($message in $implementation.getMessages().getMessage())
@@ -69,12 +69,12 @@ class ${tool.getJavaTypeName($implementation)}${classSuffix}
 
 #if($comment)
   /**
-   * Gets the <code>${tool.getJavaTypeName($implementation)}${classSuffix}</code> singleton.
+   * Gets the <code>${tool.getJavaTypeName($implementation,false)}${classSuffix}</code> singleton.
    *
-   * @return The <code>${tool.getJavaTypeName($implementation)}${classSuffix}</code> singleton.
+   * @return The <code>${tool.getJavaTypeName($implementation,false)}${classSuffix}</code> singleton.
    */
 #end
-  static ${tool.getJavaTypeName($implementation)}${classSuffix} getInstance()
+  static ${tool.getJavaTypeName($implementation,false)}${classSuffix} getInstance()
   {
     return instance;
   }

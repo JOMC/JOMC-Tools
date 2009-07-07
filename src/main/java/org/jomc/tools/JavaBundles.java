@@ -79,6 +79,9 @@ public class JavaBundles extends JomcTool
     /** Location of the {@code Bundle.java.vm} template. */
     private static final String BUNDLE_TEMPLATE = "Bundle.java.vm";
 
+    /** Constant for the suffix appended to implementation identifiers. */
+    private static final String BUNDLE_SUFFIX = "Bundle";
+
     /** The language of the default language properties file of the bundle. */
     private Locale defaultLocale;
 
@@ -323,7 +326,7 @@ public class JavaBundles extends JomcTool
                 {
                     final String language = text.getLanguage().toLowerCase();
 
-                    java.util.Properties bundleProperties = properties.get( language );
+                    java.util.Properties bundleProperties = properties.get( new Locale( language ) );
 
                     if ( bundleProperties == null )
                     {
@@ -344,7 +347,7 @@ public class JavaBundles extends JomcTool
                 {
                     final String language = text.getLanguage().toLowerCase();
 
-                    java.util.Properties bundleProperties = properties.get( language );
+                    java.util.Properties bundleProperties = properties.get( new Locale( language ) );
 
                     if ( bundleProperties == null )
                     {
@@ -382,8 +385,8 @@ public class JavaBundles extends JomcTool
             throw new NullPointerException( "sourceDirectory" );
         }
 
-        final String bundlePath = ( this.getJavaPackageName( implementation ) + '.' + this.getJavaTypeName(
-            implementation ) + "Bundle" ).replace( '.', File.separatorChar );
+        final String bundlePath =
+            ( this.getJavaTypeName( implementation, true ) + BUNDLE_SUFFIX ).replace( '.', File.separatorChar );
 
         final File bundleFile = new File( sourceDirectory, bundlePath + ".java" );
 
@@ -421,8 +424,8 @@ public class JavaBundles extends JomcTool
             throw new NullPointerException( "resourceDirectory" );
         }
 
-        final String bundlePath = ( this.getJavaPackageName( implementation ) + '.' + this.getJavaTypeName(
-            implementation ) + "Bundle" ).replace( '.', File.separatorChar );
+        final String bundlePath =
+            ( this.getJavaTypeName( implementation, true ) + BUNDLE_SUFFIX ).replace( '.', File.separatorChar );
 
         Properties defProperties = null;
         Properties fallbackProperties = null;
@@ -481,7 +484,7 @@ public class JavaBundles extends JomcTool
     public VelocityContext getVelocityContext()
     {
         final VelocityContext ctx = super.getVelocityContext();
-        ctx.put( "classSuffix", "Bundle" );
+        ctx.put( "classSuffix", BUNDLE_SUFFIX );
         ctx.put( "comment", Boolean.TRUE );
         ctx.put( "templateLocation", this.getTemplateLocation( BUNDLE_TEMPLATE ) );
         return ctx;

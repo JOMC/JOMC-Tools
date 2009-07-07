@@ -51,7 +51,7 @@
         value = "$tool.getClass().getName()",
         comments = "See ${pom.url}"
     )
-    $tool.getPropertyJavaModifier($implementation,$property) $property.getType().value() $tool.getPropertyGetterMethodName($property)() throws org.jomc.ObjectManagementException
+    $tool.getJavaModifierName($implementation,$property) $property.getType().value() $tool.getJavaGetterMethodName($property)() throws org.jomc.ObjectManagementException
     {
 #if($tool.getJavaTypeName($property) != $property.getType().value())
         return ( ($tool.getJavaTypeName($property)) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "$property.getName()" ) ).$property.getType().value()Value();
