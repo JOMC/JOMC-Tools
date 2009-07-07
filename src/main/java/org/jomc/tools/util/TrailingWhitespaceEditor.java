@@ -1,6 +1,6 @@
 /*
  *   Copyright (c) 2009 The JOMC Project
- *   Copyright (c) 2005 Christian Schulte <cs@schulte.it>
+ *   Copyright (c) 2005 Christian Schulte <schulte2005@users.sourceforge.net>
  *   All rights reserved.
  *
  *   Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,7 @@ package org.jomc.tools.util;
 /**
  * {@code LineEditor} removing trailing whitespace.
  *
- * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
+ * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
 public class TrailingWhitespaceEditor extends LineEditor
