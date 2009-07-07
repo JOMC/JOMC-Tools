@@ -40,7 +40,10 @@
    * </table></p>
    * @param locale The locale of the message to return.
 #if($message.getArguments() && !$message.getArguments().getArgument().isEmpty())
+#set($i = 0)
 #foreach($argument in $message.getArguments().getArgument())
+#set($argument = $message.getArguments().getArgument($i))
+#set($i = $i + 1)
    * @param $argument.getName() #if($argument.getDocumentation())$tool.getJavadocComment($argument.getDocumentation().getText("en"), "   * ")#end#if(!$argument.getDocumentation())Format argument.#end
 
 #end
@@ -54,7 +57,7 @@
 #end
    */
 #if(!$message.getArguments() || $message.getArguments().getArgument().isEmpty() )
-  String $tool.getJavaAccessorMethodName($message)
+  String $tool.getMessageGetterMethodName($message)
   (
     final Locale locale
   )
@@ -66,7 +69,10 @@
   String $tool.getMessageGetterMethodName($message)
   (
       Locale locale
-#foreach( $argument in $message.getArguments().getArgument() )
+#set($i = 0)
+#foreach($argument in $message.getArguments().getArgument())
+#set($argument = $message.getArguments().getArgument($i))
+#set($i = $i + 1)
 #if($argument.getType().value() == "Number")
     , final java.lang.Number $argument.getName()
 #end
@@ -91,7 +97,10 @@
         "$message.getName()", locale ), locale ).format(
         new Object[]
         {
-#foreach( $argument in $message.getArguments().getArgument() )
+#set($i = 0)
+#foreach($argument in $message.getArguments().getArgument())
+#set($argument = $message.getArguments().getArgument($i))
+#set($i = $i + 1)
             $argument.getName(),
 #end
             null

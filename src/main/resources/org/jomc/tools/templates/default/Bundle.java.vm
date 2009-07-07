@@ -57,11 +57,13 @@ class ${tool.getJavaTypeName($implementation)}${classSuffix}
 #end
   ${tool.getJavaTypeName($implementation)}${classSuffix}()
   {
+#if($implementation.getMessages())
 #foreach($message in $implementation.getMessages().getMessage())
     this.getMessage ( "$message.getName()", Locale.getDefault() );
 #end
 #foreach($messageReference in $implementation.getMessages().getReference())
     this.getMessage ( "$messageReference.getName()", Locale.getDefault() );
+#end
 #end
   }
 
@@ -77,12 +79,14 @@ class ${tool.getJavaTypeName($implementation)}${classSuffix}
     return instance;
   }
 
+#if($implementation.getMessages())
 #foreach($message in $implementation.getMessages().getMessage())
 #parse($tool.getTemplateLocation("Bundle.java-getter.vm"))
 #end
 #foreach($messageReference in $implementation.getMessages().getReference())
 #set($message = $module.getMessages().getMessage($messageReference.getName()))
 #parse($tool.getTemplateLocation("Bundle.java-getter.vm"))
+#end
 #end
 
 #if($comment)
