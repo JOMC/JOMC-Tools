@@ -289,7 +289,7 @@ public class JavaBundles extends JomcTool
             ctx.put( "implementation", implementation );
 
             this.getVelocityEngine().mergeTemplate(
-                this.getTemplateLocation( BUNDLE_TEMPLATE ), this.getEncoding(), ctx, writer );
+                this.getTemplateLocation( BUNDLE_TEMPLATE ), this.getTemplateEncoding(), ctx, writer );
 
             writer.close();
             return writer.toString();
@@ -400,7 +400,9 @@ public class JavaBundles extends JomcTool
                 bundleFile.getCanonicalPath()
             } ), null );
 
-        FileUtils.writeStringToFile( bundleFile, this.getResourceBundleSource( implementation ), this.getEncoding() );
+        FileUtils.writeStringToFile( bundleFile, this.getResourceBundleSource( implementation ),
+                                     this.getOutputEncoding() );
+
     }
 
     /**

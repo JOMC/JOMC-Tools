@@ -32,7 +32,11 @@
  */
 package org.jomc.tools;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.MessageFormat;
@@ -90,6 +94,11 @@ public abstract class JomcTool
 
     }
 
+    /** Empty byte array. */
+    private static final byte[] NO_BYTES =
+    {
+    };
+
     /** The prefix of the template location. */
     private static final String TEMPLATE_PREFIX = "org/jomc/tools/templates/";
 
@@ -109,8 +118,14 @@ public abstract class JomcTool
     /** The name of the module to process. */
     private String moduleName;
 
-    /** The encoding to use for reading and writing text files. */
-    private String encoding;
+    /** The encoding to use for reading templates. */
+    private String templateEncoding;
+
+    /** The encoding to use for reading files. */
+    private String inputEncoding;
+
+    /** The encoding to use for writing files. */
+    private String outputEncoding;
 
     /** The profile of the instance. */
     private String profile;
@@ -140,7 +155,9 @@ public abstract class JomcTool
             try
             {
                 this.setBuildDirectory( tool.getBuildDirectory() );
-                this.setEncoding( tool.getEncoding() );
+                this.setTemplateEncoding( tool.getTemplateEncoding() );
+                this.setInputEncoding( tool.getInputEncoding() );
+                this.setOutputEncoding( tool.getOutputEncoding() );
                 this.setModelManager( tool.getModelManager() );
                 this.setModuleName( tool.getModuleName() );
                 this.setModules( tool.getModules() );
@@ -1009,33 +1026,88 @@ public abstract class JomcTool
     }
 
     /**
-     * Gets the encoding to use for reading and writing text files.
+     * Gets the encoding to use for reading templates.
      *
-     * @return The encoding to use for reading and writing text files.
+     * @return The encoding to use for reading templates.
      */
-    public String getEncoding()
+    public String getTemplateEncoding()
     {
-        if ( this.encoding == null )
+        if ( this.templateEncoding == null )
         {
-            this.encoding = "UTF-8";
-            this.log( Level.INFO, this.getMessage( "defaultEncoding", new Object[]
+            this.templateEncoding = this.getMessage( "buildSourceEncoding", null );
+        }
+
+        return this.templateEncoding;
+    }
+
+    /**
+     * Sets the encoding to use for reading templates.
+     *
+     * @param value The encoding to use for reading templates.
+     */
+    public void setTemplateEncoding( final String value )
+    {
+        this.templateEncoding = value;
+    }
+
+    /**
+     * Gets the encoding to use for reading files.
+     *
+     * @return The encoding to use for reading files.
+     */
+    public String getInputEncoding()
+    {
+        if ( this.inputEncoding == null )
+        {
+            this.inputEncoding = new InputStreamReader( new ByteArrayInputStream( NO_BYTES ) ).getEncoding();
+            this.log( Level.INFO, this.getMessage( "defaultInputEncoding", new Object[]
                 {
-                    this.encoding
+                    this.inputEncoding
                 } ), null );
 
         }
 
-        return this.encoding;
+        return this.inputEncoding;
     }
 
     /**
-     * Sets the encoding to use for reading and writing text files.
+     * Sets the encoding to use for reading files.
      *
-     * @param value The encoding to use for reading and writing text files.
+     * @param value The encoding to use for reading files.
      */
-    public void setEncoding( final String value )
+    public void setInputEncoding( final String value )
     {
-        this.encoding = value;
+        this.inputEncoding = value;
+    }
+
+    /**
+     * Gets the encoding to use for writing files.
+     *
+     * @return The encoding to use for writing files.
+     */
+    public String getOutputEncoding()
+    {
+        if ( this.outputEncoding == null )
+        {
+            this.outputEncoding = new OutputStreamWriter( new ByteArrayOutputStream() ).getEncoding();
+            this.log( Level.INFO, this.getMessage( "defaultOutputEncoding", new Object[]
+                {
+                    this.outputEncoding
+                } ), null );
+
+        }
+
+        return this.outputEncoding;
+    }
+
+    /**
+     * Sets the encoding to use for writing files.
+     *
+     * @param value The encoding to use for writing files.
+     */
+    public void setOutputEncoding( final String value )
+    {
+        this.outputEncoding = value;
     }
 
     /**

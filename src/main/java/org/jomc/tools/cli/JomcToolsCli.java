@@ -105,8 +105,17 @@ public class JomcToolsCli
             Locale.getDefault().getDisplayLanguage()
         } ) );
 
-    /** Option taking an encoding to use when processing. */
-    private static final Option ENCODING_OPTION = new Option( "e", "encoding", true, getMessage( "encoding", null ) );
+    /** Option taking an encoding to use for reading templates. */
+    private static final Option TEMPLATE_ENCODING_OPTION =
+        new Option( "T", "template-encoding", true, getMessage( "templateEncoding", null ) );
+
+    /** Option taking an encoding to use for reading files. */
+    private static final Option INPUT_ENCODING_OPTION =
+        new Option( "I", "input-encoding", true, getMessage( "inputEncoding", null ) );
+
+    /** Option taking an encoding to use for writing files. */
+    private static final Option OUTPUT_ENCODING_OPTION =
+        new Option( "O", "output-encoding", true, getMessage( "outputEncoding", null ) );
 
     /** Option taking a directory name to write source files to. */
     private static final Option SOURCES_OPTION = new Option( "s", "source-dir", true, getMessage( "sources", null ) );
@@ -162,7 +171,9 @@ public class JomcToolsCli
         OPTIONS.addOption( TOOL_OPTION );
         OPTIONS.addOption( MODULE_OPTION );
         OPTIONS.addOption( LANGUAGE_OPTION );
-        OPTIONS.addOption( ENCODING_OPTION );
+        OPTIONS.addOption( TEMPLATE_ENCODING_OPTION );
+        OPTIONS.addOption( INPUT_ENCODING_OPTION );
+        OPTIONS.addOption( OUTPUT_ENCODING_OPTION );
         OPTIONS.addOption( VERBOSE_OPTION );
         OPTIONS.addOption( DEBUG_OPTION );
         OPTIONS.addOption( SOURCES_OPTION );
@@ -423,23 +434,9 @@ public class JomcToolsCli
         throws IOException, SAXException, JAXBException, ModelException
     {
         setupTool( javaBundles, classLoader, commandLine );
-        javaBundles.setModuleName( commandLine.getOptionValue( MODULE_OPTION.getOpt() ) );
-
         if ( commandLine.hasOption( LANGUAGE_OPTION.getOpt() ) )
         {
             javaBundles.setDefaultLocale( new Locale( commandLine.getOptionValue( LANGUAGE_OPTION.getOpt() ) ) );
-        }
-        if ( commandLine.hasOption( ENCODING_OPTION.getOpt() ) )
-        {
-            javaBundles.setEncoding( commandLine.getOptionValue( ENCODING_OPTION.getOpt() ) );
-        }
-        if ( commandLine.hasOption( BUILD_OPTION.getOpt() ) )
-        {
-            javaBundles.setBuildDirectory( new File( commandLine.getOptionValue( BUILD_OPTION.getOpt() ) ) );
-        }
-        if ( commandLine.hasOption( PROFILE_OPTION.getOpt() ) )
-        {
-            javaBundles.setProfile( commandLine.getOptionValue( PROFILE_OPTION.getOpt() ) );
         }
     }
 
@@ -448,16 +445,6 @@ public class JomcToolsCli
         throws IOException, SAXException, JAXBException, ModelException
     {
         setupTool( javaSources, classLoader, commandLine );
-        javaSources.setModuleName( commandLine.getOptionValue( MODULE_OPTION.getOpt() ) );
-
-        if ( commandLine.hasOption( ENCODING_OPTION.getOpt() ) )
-        {
-            javaSources.setEncoding( commandLine.getOptionValue( ENCODING_OPTION.getOpt() ) );
-        }
-        if ( commandLine.hasOption( PROFILE_OPTION.getOpt() ) )
-        {
-            javaSources.setProfile( commandLine.getOptionValue( PROFILE_OPTION.getOpt() ) );
-        }
     }
 
     private static void setupJavaClasses( final JavaClasses javaClasses, final ClassLoader classLoader,
@@ -465,7 +452,6 @@ public class JomcToolsCli
         throws IOException, SAXException, JAXBException, ModelException
     {
         setupTool( javaClasses, classLoader, commandLine );
-        javaClasses.setModuleName( commandLine.getOptionValue( MODULE_OPTION.getOpt() ) );
     }
 
     private static void setupModuleAssembler( final ModuleAssembler moduleAssembler, final ClassLoader classLoader,
@@ -478,7 +464,9 @@ public class JomcToolsCli
     private static void setupTool( final JomcTool tool, final ClassLoader classLoader, final CommandLine commandLine )
         throws IOException, SAXException, JAXBException, ModelException
     {
-        final String toolName = tool.getClass().getName().substring( tool.getClass().getName().lastIndexOf( '.' ) + 1 );
+        final String toolName =
+            tool.getClass().getName().substring( tool.getClass().getPackage().getName().length() + 1 );
+
         log( commandLine, Level.INFO, null, getMessage( "initializing", new Object[]
             {
                 toolName
@@ -489,12 +477,35 @@ public class JomcToolsCli
 
             public void onLog( final Level level, final String message, final Throwable t )
             {
-                log( commandLine, level, tool.getClass().getName().substring(
-                    tool.getClass().getName().lastIndexOf( '.' ) + 1 ), message, t );
-
+                log( commandLine, level, toolName, message, t );
             }
 
         } );
+
+        if ( commandLine.hasOption( TEMPLATE_ENCODING_OPTION.getOpt() ) )
+        {
+            tool.setTemplateEncoding( commandLine.getOptionValue( TEMPLATE_ENCODING_OPTION.getOpt() ) );
+        }
+        if ( commandLine.hasOption( INPUT_ENCODING_OPTION.getOpt() ) )
+        {
+            tool.setInputEncoding( commandLine.getOptionValue( INPUT_ENCODING_OPTION.getOpt() ) );
+        }
+        if ( commandLine.hasOption( OUTPUT_ENCODING_OPTION.getOpt() ) )
+        {
+            tool.setOutputEncoding( commandLine.getOptionValue( OUTPUT_ENCODING_OPTION.getOpt() ) );
+        }
+        if ( commandLine.hasOption( BUILD_OPTION.getOpt() ) )
+        {
+            tool.setBuildDirectory( new File( commandLine.getOptionValue( BUILD_OPTION.getOpt() ) ) );
+        }
+        if ( commandLine.hasOption( PROFILE_OPTION.getOpt() ) )
+        {
+            tool.setProfile( commandLine.getOptionValue( PROFILE_OPTION.getOpt() ) );
+        }
+        if ( commandLine.hasOption( MODULE_OPTION.getOpt() ) )
+        {
+            tool.setModuleName( commandLine.getOptionValue( MODULE_OPTION.getOpt() ) );
+        }
 
         if ( tool.getModelManager() instanceof DefaultModelManager )
         {

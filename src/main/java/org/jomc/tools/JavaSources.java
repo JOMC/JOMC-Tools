@@ -224,7 +224,7 @@ public class JavaSources extends JomcTool
         String content;
         if ( f.exists() )
         {
-            content = FileUtils.readFileToString( f, this.getEncoding() );
+            content = FileUtils.readFileToString( f, this.getInputEncoding() );
         }
         else
         {
@@ -251,7 +251,7 @@ public class JavaSources extends JomcTool
 
         if ( !edited.equals( content ) )
         {
-            FileUtils.writeStringToFile( f, edited, this.getEncoding() );
+            FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
             this.log( Level.INFO, this.getMessage( "editing", new Object[]
                 {
                     f.getCanonicalPath()
@@ -286,7 +286,7 @@ public class JavaSources extends JomcTool
         String content;
         if ( f.exists() )
         {
-            content = FileUtils.readFileToString( f, this.getEncoding() );
+            content = FileUtils.readFileToString( f, this.getInputEncoding() );
         }
         else
         {
@@ -363,7 +363,7 @@ public class JavaSources extends JomcTool
 
         if ( !edited.equals( content ) )
         {
-            FileUtils.writeStringToFile( f, edited, this.getEncoding() );
+            FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
             this.log( Level.INFO, this.getMessage( "editing", new Object[]
                 {
                     f.getCanonicalPath()
@@ -426,7 +426,7 @@ public class JavaSources extends JomcTool
             final String template = this.getTemplateLocation( CONSTRUCTORS_HEAD_TEMPLATE );
             ctx.put( "implementation", implementation );
             ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
         catch ( Exception e )
@@ -451,7 +451,7 @@ public class JavaSources extends JomcTool
             final String template = this.getTemplateLocation( CONSTRUCTORS_TAIL_TEMPLATE );
             ctx.put( "implementation", implementation );
             ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
         catch ( Exception e )
@@ -476,7 +476,7 @@ public class JavaSources extends JomcTool
             final String template = this.getTemplateLocation( DEPENDENCIES_TEMPLATE );
             ctx.put( "implementation", implementation );
             ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
         catch ( Exception e )
@@ -501,7 +501,7 @@ public class JavaSources extends JomcTool
             final String template = this.getTemplateLocation( PROPERTIES_TEMPLATE );
             ctx.put( "implementation", implementation );
             ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
         catch ( Exception e )
@@ -526,7 +526,7 @@ public class JavaSources extends JomcTool
             final String template = this.getTemplateLocation( MESSAGES_TEMPLATE );
             ctx.put( "implementation", implementation );
             ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
         catch ( Exception e )
@@ -551,7 +551,7 @@ public class JavaSources extends JomcTool
             final String template = this.getTemplateLocation( LICENSE_TEMPLATE );
             ctx.put( "authors", implementation.getAuthors() );
             ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
         catch ( Exception e )
@@ -576,7 +576,7 @@ public class JavaSources extends JomcTool
             final String template = this.getTemplateLocation( LICENSE_TEMPLATE );
             ctx.put( "authors", specification.getAuthors() );
             ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
         catch ( Exception e )
@@ -601,7 +601,7 @@ public class JavaSources extends JomcTool
             final String template = this.getTemplateLocation( SPECIFICATION_COMMENT_TEMPLATE );
             ctx.put( "specification", specification );
             ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
         catch ( Exception e )
@@ -626,7 +626,7 @@ public class JavaSources extends JomcTool
             final String template = this.getTemplateLocation( IMPLEMENTATION_COMMENT_TEMPLATE );
             ctx.put( "implementation", implementation );
             ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
         catch ( Exception e )
@@ -651,7 +651,7 @@ public class JavaSources extends JomcTool
             final String template = this.getTemplateLocation( IMPLEMENTATION_TEMPLATE );
             ctx.put( "implementation", implementation );
             ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
         catch ( Exception e )
@@ -676,7 +676,7 @@ public class JavaSources extends JomcTool
             final String template = this.getTemplateLocation( SPECIFICATION_TEMPLATE );
             ctx.put( "specification", specification );
             ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
         catch ( Exception e )
@@ -701,7 +701,7 @@ public class JavaSources extends JomcTool
             final String template = this.getTemplateLocation( SPECIFICATION_ANNOTATIONS_TEMPLATE );
             ctx.put( "specification", specification );
             ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
         catch ( Exception e )
@@ -726,7 +726,7 @@ public class JavaSources extends JomcTool
             final String template = this.getTemplateLocation( IMPLEMENTATION_ANNOTATIONS_TEMPLATE );
             ctx.put( "implementation", implementation );
             ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getEncoding(), ctx, writer );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
         catch ( Exception e )
