@@ -35,7 +35,6 @@ package org.jomc.tools;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -46,8 +45,8 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+import javax.xml.transform.stream.StreamSource;
 import org.apache.bcel.classfile.Attribute;
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.Constant;
@@ -55,15 +54,18 @@ import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.classfile.ConstantUtf8;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.classfile.Unknown;
+import org.jomc.model.Dependencies;
 import org.jomc.model.Dependency;
 import org.jomc.model.Implementation;
-import org.jomc.model.Instance;
 import org.jomc.model.Message;
-import org.jomc.model.MessageReference;
+import org.jomc.model.Messages;
 import org.jomc.model.ModelException;
 import org.jomc.model.Module;
+import org.jomc.model.Properties;
 import org.jomc.model.Property;
 import org.jomc.model.Specification;
+import org.jomc.model.SpecificationReference;
+import org.jomc.model.Specifications;
 import org.xml.sax.SAXException;
 
 /**
@@ -75,12 +77,6 @@ import org.xml.sax.SAXException;
  */
 public class JavaClasses extends JomcTool
 {
-
-    /** Constant for the name of the classfile attribute holding specification data. */
-    private static final String SPECIFICATION_ATTRIBUTE = Specification.class.getName();
-
-    /** Constant for the name of the classfile attribute holding implementation data. */
-    private static final String IMPLEMENTATION_ATTRIBUTE = Module.class.getName();
 
     /** Creates a new {@code JavaClasses} instance. */
     public JavaClasses()
@@ -125,7 +121,17 @@ public class JavaClasses extends JomcTool
             {
                 for ( Specification s : this.getModule().getSpecifications().getSpecification() )
                 {
-                    this.commitSpecificationClass( s, classesDirectory );
+                    final String classLocation = s.getIdentifier().replace( '.', File.separatorChar ) + ".class";
+                    final File classFile = new File( classesDirectory, classLocation );
+                    final long oldLength = classFile.length();
+                    final JavaClass clazz = this.getJavaClass( classFile );
+                    this.commitSpecificationClass( s, clazz );
+                    clazz.dump( classFile );
+                    this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                        {
+                            classFile.getAbsolutePath(), classFile.length() - oldLength
+                        } ), null );
+
                 }
             }
             if ( this.getModule().getImplementations() != null )
@@ -134,7 +140,17 @@ public class JavaClasses extends JomcTool
                 {
                     if ( i.getIdentifier().equals( i.getClazz() ) )
                     {
-                        this.commitImplementationClass( i, classesDirectory );
+                        final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
+                        final File classFile = new File( classesDirectory, classLocation );
+                        final long oldLength = classFile.length();
+                        final JavaClass clazz = this.getJavaClass( classFile );
+                        this.commitImplementationClass( i, clazz );
+                        clazz.dump( classFile );
+                        this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                            {
+                                classFile.getAbsolutePath(), classFile.length() - oldLength
+                            } ), null );
+
                     }
                 }
             }
@@ -152,88 +168,12 @@ public class JavaClasses extends JomcTool
     }
 
     /**
-     * Commits specification meta-data to the classfile of a given specification.
-     *
-     * @param specification The specification to process.
-     * @param classesDirectory The directory holding the classfile of {@code specification}.
-     *
-     * @throws NullPointerException if {@code specification} or {@code classesDirectory} is {@code null}.
-     * @throws IOException if committing meta-data fails.
-     */
-    public void commitSpecificationClass( final Specification specification, final File classesDirectory )
-        throws IOException
-    {
-        if ( specification == null )
-        {
-            throw new NullPointerException( "specification" );
-        }
-        if ( classesDirectory == null )
-        {
-            throw new NullPointerException( "classesDirectory" );
-        }
-
-        try
-        {
-            final String classLocation = specification.getIdentifier().replace( '.', File.separatorChar ) + ".class";
-            final File classFile = new File( classesDirectory, classLocation );
-            this.setClassfileAttribute( classFile, SPECIFICATION_ATTRIBUTE, this.encodeSpecification( specification ) );
-        }
-        catch ( SAXException e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
-        catch ( JAXBException e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
-    }
-
-    /**
-     * Commits implementation meta-data to the classfile of a given implementation.
-     *
-     * @param implementation The implementation to process.
-     * @param classesDirectory The directory holding the classfile of {@code implementation}.
-     *
-     * @throws NullPointerException if {@code implementation} or {@code classesDirectory} is {@code null}.
-     * @throws IOException if committing meta-data fails.
-     */
-    public void commitImplementationClass( final Implementation implementation, final File classesDirectory )
-        throws IOException
-    {
-        if ( implementation == null )
-        {
-            throw new NullPointerException( "implementation" );
-        }
-        if ( classesDirectory == null )
-        {
-            throw new NullPointerException( "classesDirectory" );
-        }
-
-        try
-        {
-            final String classLocation = implementation.getClazz().replace( '.', File.separatorChar ) + ".class";
-            final File classFile = new File( classesDirectory, classLocation );
-            this.setClassfileAttribute( classFile, IMPLEMENTATION_ATTRIBUTE,
-                                        this.encodeImplementation( implementation ) );
-
-        }
-        catch ( SAXException e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
-        catch ( JAXBException e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
-    }
-
-    /**
      * Validates compiled Java classes of the module of the instance to comply with the module of the instance.
      *
      * @param classesDirectory The directory holding the compiled class files of the module of the instance.
      *
      * @throws NullPointerException if {@code classesDirectory} is {@code null}.
-     * @throws IOException if reading classfiles fails.
+     * @throws IOException if reading class files fails.
      * @throws ModelException if any of the compiled Java classes of the module of the instance does not comply with
      * the module of the instance.
      */
@@ -263,9 +203,7 @@ public class JavaClasses extends JomcTool
 
                     try
                     {
-                        this.validateSpecificationClass(
-                            s, classFile.getName(), new FileInputStream( classFile ) );
-
+                        this.validateSpecificationClass( s, this.getJavaClass( classFile ) );
                     }
                     catch ( ModelException e )
                     {
@@ -284,9 +222,7 @@ public class JavaClasses extends JomcTool
 
                         try
                         {
-                            this.validateImplementationClass(
-                                i, classFile.getName(), new FileInputStream( classFile ) );
-
+                            this.validateImplementationClass( i, this.getJavaClass( classFile ) );
                         }
                         catch ( ModelException e )
                         {
@@ -320,31 +256,255 @@ public class JavaClasses extends JomcTool
     }
 
     /**
-     * Validates the compiled Java class of a given specification to comply with that specification.
+     * Validates compiled Java classes to comply with the modules of the instance.
      *
-     * @param specification The specification to process.
-     * @param classFileName The name of the classfile of {@code specification}.
-     * @param classFile The classfile of {@code specification}.
+     * @param classLoader The class loader to search for classes.
      *
-     * @throws NullPointerException if {@code specification} or {@code classFile} is {@code null}.
-     * @throws IOException if reading {@code classFile} fails.
-     * @throws ModelException if {@code classFile} does not comply with {@code specification}.
+     * @throws NullPointerException if {@code classLoader} is {@code null}.
+     * @throws IOException if reading class files fails.
+     * @throws ModelException if any of the found class files does not comply with the given modules.
      */
-    public void validateSpecificationClass( final Specification specification, final String classFileName,
-                                            final InputStream classFile ) throws IOException, ModelException
+    public void validateModules( final ClassLoader classLoader ) throws IOException, ModelException
+    {
+        if ( classLoader == null )
+        {
+            throw new NullPointerException( "classLoader" );
+        }
+
+        final List<ModelException.Detail> details = new LinkedList<ModelException.Detail>();
+
+        for ( Module m : this.getModules().getModule() )
+        {
+            if ( m.getSpecifications() != null )
+            {
+                for ( Specification s : m.getSpecifications().getSpecification() )
+                {
+                    final String classLocation = s.getIdentifier().replace( '.', File.separatorChar ) + ".class";
+                    final URL classUrl = classLoader.getResource( classLocation );
+
+                    if ( classUrl != null )
+                    {
+                        try
+                        {
+                            this.validateSpecificationClass( s, this.getJavaClass( classUrl, classLocation ) );
+                        }
+                        catch ( ModelException e )
+                        {
+                            details.addAll( e.getDetails() );
+                        }
+                    }
+                    else
+                    {
+                        this.log( Level.WARNING, this.getMessage( "missingClassfile", new Object[]
+                            {
+                                s.getIdentifier()
+                            } ), null );
+
+                    }
+                }
+            }
+            if ( m.getImplementations() != null )
+            {
+                for ( Implementation i : m.getImplementations().getImplementation() )
+                {
+                    if ( i.getIdentifier().equals( i.getClazz() ) )
+                    {
+                        final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
+                        final URL classUrl = classLoader.getResource( classLocation );
+
+                        if ( classUrl != null )
+                        {
+                            try
+                            {
+                                this.validateImplementationClass( i, this.getJavaClass( classUrl, classLocation ) );
+                            }
+                            catch ( ModelException e )
+                            {
+                                details.addAll( e.getDetails() );
+                            }
+                        }
+                        else
+                        {
+                            this.log( Level.WARNING, this.getMessage( "missingClassfile", new Object[]
+                                {
+                                    i.getClazz()
+                                } ), null );
+
+                        }
+                    }
+                }
+            }
+
+            if ( !details.isEmpty() )
+            {
+                final ModelException modelException = new ModelException();
+                modelException.getDetails().addAll( details );
+                throw modelException;
+            }
+        }
+    }
+
+    /**
+     * Commits specification meta-data to the class file of a given specification.
+     *
+     * @param specification The specification to commit.
+     * @param clazz The class of {@code specification}.
+     *
+     * @throws NullPointerException if {@code specification} or {@code clazz} is {@code null}.
+     * @throws IOException if committing meta-data fails.
+     */
+    public void commitSpecificationClass( final Specification specification, final JavaClass clazz )
+        throws IOException
     {
         if ( specification == null )
         {
             throw new NullPointerException( "specification" );
         }
-        if ( classFile == null )
+        if ( clazz == null )
+        {
+            throw new NullPointerException( "clazz" );
+        }
+
+        try
+        {
+            this.setClassfileAttribute( clazz, Specification.class.getName(),
+                                        this.encodeSpecification( specification ) );
+
+        }
+        catch ( SAXException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+        catch ( JAXBException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+    }
+
+    /**
+     * Commits implementation meta-data to the class file of a given implementation.
+     *
+     * @param implementation The implementation to process.
+     * @param clazz The class of {@code implementation}.
+     *
+     * @throws NullPointerException if {@code implementation} or {@code classFile} is {@code null}.
+     * @throws IOException if committing meta-data fails.
+     */
+    public void commitImplementationClass( final Implementation implementation, final JavaClass clazz )
+        throws IOException
+    {
+        if ( implementation == null )
+        {
+            throw new NullPointerException( "implementation" );
+        }
+        if ( clazz == null )
+        {
+            throw new NullPointerException( "clazz" );
+        }
+
+        try
+        {
+            final Dependencies dependencies = this.getModules().getDependencies( implementation.getIdentifier() );
+            final Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
+            final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
+            final Specifications specifications = new Specifications();
+            final List<SpecificationReference> specificationReferences =
+                this.getModules().getSpecifications( implementation.getIdentifier() );
+
+            if ( specificationReferences != null )
+            {
+                for ( SpecificationReference r : specificationReferences )
+                {
+                    final Specification s = this.getModules().getSpecification( r.getIdentifier() );
+                    if ( s != null )
+                    {
+                        if ( specifications.getSpecification( s.getIdentifier() ) != null )
+                        {
+                            specifications.getSpecification().add( s );
+                        }
+                    }
+                    else
+                    {
+                        this.log( Level.WARNING, this.getMessage( "unresolvedSpecification", new Object[]
+                            {
+                                r.getIdentifier(), implementation.getIdentifier()
+                            } ), null );
+
+                    }
+                }
+            }
+
+            if ( dependencies != null )
+            {
+                for ( Dependency d : dependencies.getDependency() )
+                {
+                    final Specification s = this.getModules().getSpecification( d.getIdentifier() );
+                    if ( s != null )
+                    {
+                        if ( specifications.getSpecification( s.getIdentifier() ) != null )
+                        {
+                            specifications.getSpecification().add( s );
+                        }
+                    }
+                    else
+                    {
+                        this.log( Level.WARNING, this.getMessage( "unresolvedDependencySpecification", new Object[]
+                            {
+                                d.getIdentifier(), d.getName(), implementation.getIdentifier()
+                            } ), null );
+
+                    }
+                }
+            }
+
+            this.setClassfileAttribute( clazz, Dependencies.class.getName(), this.encodeDependencies(
+                dependencies == null ? new Dependencies() : dependencies ) );
+
+            this.setClassfileAttribute( clazz, Properties.class.getName(), this.encodeProperties(
+                properties == null ? new Properties() : properties ) );
+
+            this.setClassfileAttribute( clazz, Messages.class.getName(), this.encodeMessages(
+                messages == null ? new Messages() : messages ) );
+
+            this.setClassfileAttribute( clazz, Specifications.class.getName(), this.encodeSpecifications(
+                specifications == null ? new Specifications() : specifications ) );
+
+        }
+        catch ( SAXException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+        catch ( JAXBException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+    }
+
+    /**
+     * Validates the compiled Java class of a given specification to comply with the specification of the module of the
+     * instance.
+     *
+     * @param specification The specification to process.
+     * @param clazz The class to validate.
+     *
+     * @throws NullPointerException if {@code specification} or {@code clazz} is {@code null}.
+     * @throws ModelException if {@code classFile} does not comply with {@code specification}.
+     */
+    public void validateSpecificationClass( final Specification specification, final JavaClass clazz )
+        throws ModelException, IOException
+    {
+        if ( specification == null )
+        {
+            throw new NullPointerException( "specification" );
+        }
+        if ( clazz == null )
         {
             throw new NullPointerException( "classFile" );
         }
 
         try
         {
-            final Specification decoded = this.decodeSpecification( classFileName, classFile );
+            final Specification decoded = this.decodeSpecification( clazz );
 
             if ( decoded != null )
             {
@@ -391,7 +551,7 @@ public class JavaClasses extends JomcTool
             {
                 this.log( Level.WARNING, this.getMessage( "cannotValidate", new Object[]
                     {
-                        specification.getIdentifier(), SPECIFICATION_ATTRIBUTE
+                        specification.getIdentifier(), Specification.class.getName()
                     } ), null );
 
             }
@@ -407,245 +567,182 @@ public class JavaClasses extends JomcTool
     }
 
     /**
-     * Validates the compiled Java class of a given implementation to comply with that implementation.
+     * Validates the compiled Java class of a given implementation to comply with the implementation of the module of
+     * the instance.
      *
      * @param implementation The implementation to process.
-     * @param classFileName The name of the classfile of {@code implementation}.
-     * @param classFile The classfile of {@code implementation}.
+     * @param clazz The class of {@code implementation}.
      *
-     * @throws NullPointerException if {@code implementation} or {@code classesFile} is {@code null}.
-     * @throws IOException if reading {@code classFile} fails.
-     * @throws ModelException if {@code classFile} does not comply with {@code implementation}.
+     * @throws NullPointerException if {@code implementation} or {@code clazz} is {@code null}.
+     * @throws IOException if reading {@code clazz} fails.
+     * @throws ModelException if {@code clazz} does not comply with {@code implementation}.
      */
-    public void validateImplementationClass( final Implementation implementation, final String classFileName,
-                                             final InputStream classFile ) throws IOException, ModelException
+    public void validateImplementationClass( final Implementation implementation, final JavaClass clazz )
+        throws IOException, ModelException
     {
         if ( implementation == null )
         {
             throw new NullPointerException( "implementation" );
         }
-        if ( classFile == null )
+        if ( clazz == null )
         {
-            throw new NullPointerException( "classFile" );
+            throw new NullPointerException( "clazz" );
         }
 
         try
         {
-            final Module decoded = this.decodeImplementation( classFileName, classFile );
+            final Dependencies dependencies = this.getModules().getDependencies( implementation.getIdentifier() );
+            final Dependencies decodedDependencies = this.decodeDependencies( clazz );
+            final Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
+            final Properties decodedProperties = this.decodeProperties( clazz );
+            final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
+            final Messages decodedMessages = this.decodeMessages( clazz );
+            final Specifications decodedSpecifications = this.decodeSpecifications( clazz );
+            final List<ModelException.Detail> details = new LinkedList<ModelException.Detail>();
 
-            if ( decoded != null )
+            if ( decodedDependencies != null )
             {
-                final Instance instance = this.getModules().getInstance( implementation.getIdentifier() );
-                final Implementation decodedImplementation =
-                    decoded.getImplementations().getImplementation( implementation.getIdentifier() );
-
-                if ( decodedImplementation != null )
+                for ( Dependency decodedDependency : decodedDependencies.getDependency() )
                 {
-                    final List<ModelException.Detail> details = new LinkedList<ModelException.Detail>();
+                    final Dependency dependency =
+                        dependencies == null ? null : dependencies.getDependency( decodedDependency.getName() );
 
-                    if ( decodedImplementation.getProperties() != null )
+                    if ( dependency == null )
                     {
-                        for ( Property decodedProperty : decodedImplementation.getProperties().getProperty() )
-                        {
-                            final Property instanceProperty =
-                                instance.getProperties() == null ? null : instance.getProperties().getProperty(
-                                decodedProperty.getName() );
-
-                            if ( instanceProperty == null )
+                        details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
+                            "missingDependency", new Object[]
                             {
-                                details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
-                                    "missingProperty", new Object[]
-                                    {
-                                        implementation.getIdentifier(), decodedProperty.getName()
-                                    } ) ) );
-
-                            }
-                        }
-                    }
-
-                    if ( decodedImplementation.getDependencies() != null )
-                    {
-                        for ( Dependency decodedDependency : decodedImplementation.getDependencies().getDependency() )
-                        {
-                            final Dependency instanceDependency =
-                                instance.getDependencies() == null ? null : instance.getDependencies().getDependency(
-                                decodedDependency.getName() );
-
-                            if ( instanceDependency == null )
-                            {
-                                details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
-                                    "missingDependency", new Object[]
-                                    {
-                                        implementation.getIdentifier(), decodedDependency.getName()
-                                    } ) ) );
-
-                            }
-                        }
-                    }
-
-                    if ( decodedImplementation.getMessages() != null )
-                    {
-                        for ( Message decodedMessage : decodedImplementation.getMessages().getMessage() )
-                        {
-                            final Message instanceMessage =
-                                instance.getMessages() == null ? null : instance.getMessages().getMessage(
-                                decodedMessage.getName() );
-
-                            if ( instanceMessage == null )
-                            {
-                                details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
-                                    "missingMessage", new Object[]
-                                    {
-                                        implementation.getIdentifier(), decodedMessage.getName()
-                                    } ) ) );
-
-                            }
-                        }
-
-
-                        for ( MessageReference decodedMessageRef : decodedImplementation.getMessages().getReference() )
-                        {
-                            final Message instanceMessage =
-                                instance.getMessages() == null ? null : instance.getMessages().getMessage(
-                                decodedMessageRef.getName() );
-
-                            if ( instanceMessage == null )
-                            {
-                                details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
-                                    "missingMessage", new Object[]
-                                    {
-                                        implementation.getIdentifier(), decodedMessageRef.getName()
-                                    } ) ) );
-
-                            }
-                        }
-                    }
-
-                    if ( !details.isEmpty() )
-                    {
-                        final ModelException modelException = new ModelException();
-                        modelException.getDetails().addAll( details );
-                        throw modelException;
-                    }
-                    else
-                    {
-                        this.log( Level.FINE, this.getMessage( "validatedClass", new Object[]
-                            {
-                                implementation.getClazz()
-                            } ), null );
+                                implementation.getIdentifier(), decodedDependency.getName()
+                            } ) ) );
 
                     }
-                }
-                else
-                {
-                    throw new IOException( this.getMessage( "illegalClassfile", new Object[]
-                        {
-                            implementation.getClazz()
-                        } ) );
-
                 }
             }
             else
             {
                 this.log( Level.WARNING, this.getMessage( "cannotValidate", new Object[]
                     {
-                        implementation.getClazz(), IMPLEMENTATION_ATTRIBUTE
+                        implementation.getClazz(), Dependencies.class.getName()
                     } ), null );
 
             }
-        }
-        catch ( SAXException e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
-        catch ( JAXBException e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
-    }
 
-    /**
-     * Validates compiled Java classes to comply with the modules of the instance.
-     *
-     * @param classLoader The classloader to search for classes.
-     *
-     * @throws NullPointerException if {@code classLoader} is {@code null}.
-     * @throws IOException if reading classfiles fails.
-     * @throws ModelException if any of the found classfiles does not comply with the given modules.
-     */
-    public void validateModules( final ClassLoader classLoader ) throws IOException, ModelException
-    {
-        if ( classLoader == null )
-        {
-            throw new NullPointerException( "classLoader" );
-        }
-
-        final List<ModelException.Detail> details = new LinkedList<ModelException.Detail>();
-
-        for ( Module m : this.getModules().getModule() )
-        {
-            if ( m.getSpecifications() != null )
+            if ( decodedProperties != null )
             {
-                for ( Specification s : m.getSpecifications().getSpecification() )
+                for ( Property decodedProperty : decodedProperties.getProperty() )
                 {
-                    final String classLocation = s.getIdentifier().replace( '.', File.separatorChar ) + ".class";
-                    final URL classUrl = classLoader.getResource( classLocation );
+                    final Property property =
+                        properties == null ? null : properties.getProperty( decodedProperty.getName() );
 
-                    if ( classUrl != null )
+                    if ( property == null )
                     {
-                        try
-                        {
-                            final InputStream in = classUrl.openStream();
-                            this.validateSpecificationClass( s, classLocation, in );
-                            in.close();
-                        }
-                        catch ( ModelException e )
-                        {
-                            details.addAll( e.getDetails() );
-                        }
+                        details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
+                            "missingProperty", new Object[]
+                            {
+                                implementation.getIdentifier(), decodedProperty.getName()
+                            } ) ) );
+
                     }
                     else
                     {
-                        this.log( Level.WARNING, this.getMessage( "missingClassfile", new Object[]
+                        if ( decodedProperty.getType() != property.getType() )
+                        {
+                            details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
+                                "illegalPropertyType", new Object[]
+                                {
+                                    implementation.getIdentifier(), decodedProperty.getName(),
+                                    property.getType().value(), decodedProperty.getType().value()
+                                } ) ) );
+
+                        }
+                    }
+                }
+            }
+            else
+            {
+                this.log( Level.WARNING, this.getMessage( "cannotValidate", new Object[]
+                    {
+                        implementation.getClazz(), Properties.class.getName()
+                    } ), null );
+
+            }
+
+            if ( decodedMessages != null )
+            {
+                for ( Message decodedMessage : decodedMessages.getMessage() )
+                {
+                    final Message message =
+                        messages == null ? null : messages.getMessage( decodedMessage.getName() );
+
+                    if ( message == null )
+                    {
+                        details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
+                            "missingMessage", new Object[]
                             {
-                                s.getIdentifier()
-                            } ), null );
+                                implementation.getIdentifier(), decodedMessage.getName()
+                            } ) ) );
 
                     }
                 }
             }
-            if ( m.getImplementations() != null )
+            else
             {
-                for ( Implementation i : m.getImplementations().getImplementation() )
-                {
-                    if ( i.getIdentifier().equals( i.getClazz() ) )
+                this.log( Level.WARNING, this.getMessage( "cannotValidate", new Object[]
                     {
-                        final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
-                        final URL classUrl = classLoader.getResource( classLocation );
+                        implementation.getClazz(), Messages.class.getName()
+                    } ), null );
 
-                        if ( classUrl != null )
-                        {
-                            try
+            }
+
+            if ( decodedSpecifications != null )
+            {
+                for ( Specification decodedSpecification : decodedSpecifications.getSpecification() )
+                {
+                    final Specification specification = this.getModules().getSpecification(
+                        decodedSpecification.getIdentifier() );
+
+                    if ( specification == null )
+                    {
+                        details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
+                            "missingSpecification", new Object[]
                             {
-                                final InputStream in = classUrl.openStream();
-                                this.validateImplementationClass( i, classLocation, in );
-                                in.close();
-                            }
-                            catch ( ModelException e )
-                            {
-                                details.addAll( e.getDetails() );
-                            }
-                        }
-                        else
+                                implementation.getIdentifier(), decodedSpecification.getIdentifier()
+                            } ) ) );
+
+                    }
+                    else
+                    {
+                        if ( decodedSpecification.getMultiplicity() != specification.getMultiplicity() )
                         {
-                            this.log( Level.WARNING, this.getMessage( "missingClassfile", new Object[]
+                            details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
+                                "illegalMultiplicity", new Object[]
                                 {
-                                    i.getClazz()
-                                } ), null );
+                                    specification.getIdentifier(), specification.getMultiplicity().value(),
+                                    decodedSpecification.getMultiplicity().value()
+                                } ) ) );
+
+                        }
+
+                        if ( decodedSpecification.getScope() != specification.getScope() )
+                        {
+                            details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
+                                "illegalScope", new Object[]
+                                {
+                                    specification.getIdentifier(), specification.getScope().value(),
+                                    decodedSpecification.getScope().value()
+                                } ) ) );
 
                         }
                     }
                 }
+            }
+            else
+            {
+                this.log( Level.WARNING, this.getMessage( "cannotValidate", new Object[]
+                    {
+                        implementation.getClazz(), Specifications.class.getName()
+                    } ), null );
+
             }
 
             if ( !details.isEmpty() )
@@ -654,139 +751,81 @@ public class JavaClasses extends JomcTool
                 modelException.getDetails().addAll( details );
                 throw modelException;
             }
+            else
+            {
+                this.log( Level.FINE, this.getMessage( "validatedClass", new Object[]
+                    {
+                        implementation.getClazz()
+                    } ), null );
+
+            }
         }
-    }
-
-    /**
-     * Encodes a specification into a byte array.
-     *
-     * @param specification The specification to encode.
-     *
-     * @return GZIP compressed XML document for {@code specification}.
-     *
-     * @throws NullPointerException if {@code specification} is {@code null}.
-     */
-    public byte[] encodeSpecification( final Specification specification )
-        throws IOException, SAXException, JAXBException
-    {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final GZIPOutputStream out = new GZIPOutputStream( baos );
-
-        this.getModelManager().getMarshaller( false, false ).marshal(
-            this.getModelManager().getObjectFactory().createSpecification( specification ), out );
-
-        out.close();
-        return baos.toByteArray();
-    }
-
-    /**
-     * Decodes an encoded specification.
-     *
-     * @param classFileName The name of the classfile to decode.
-     * @param classFile The classfile to decode.
-     *
-     * @return The {@code Specification} decoded from {@code classFile} or {@code null} if {@code classFile} does not
-     * contain a specification attribute.
-     *
-     * @throws NullPointerException if {@code classFile} is {@code null}.
-     */
-    public Specification decodeSpecification( final String classFileName, final InputStream classFile )
-        throws IOException, SAXException, JAXBException
-    {
-        if ( classFile == null )
+        catch ( SAXException e )
         {
-            throw new NullPointerException( "classFile" );
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-
-        Specification decoded = null;
-        final byte[] attributeValue = this.getClassfileAttribute( classFileName, classFile, SPECIFICATION_ATTRIBUTE );
-
-        if ( attributeValue != null )
+        catch ( JAXBException e )
         {
-            final ByteArrayInputStream bais = new ByteArrayInputStream( attributeValue );
-            final GZIPInputStream in = new GZIPInputStream( bais );
-            decoded = ( (JAXBElement<Specification>) this.getModelManager().getUnmarshaller( false ).unmarshal( in ) ).
-                getValue();
-
-            in.close();
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-
-        return decoded;
     }
 
     /**
-     * Encodes an implementation into a byte array.
+     * Parses a class file.
      *
-     * @param implementation The implementation to encode.
+     * @param classFile The class file to parse.
      *
-     * @return GZIP compressed XML document for {@code implementation}.
+     * @return The parsed class file.
      *
-     * @throws NullPointerException if {@code implementation} is {@code null}.
+     * @throws IOException if parsing {@code classFile} fails.
      */
-    public byte[] encodeImplementation( final Implementation implementation )
-        throws IOException, SAXException, JAXBException
+    protected JavaClass getJavaClass( final File classFile ) throws IOException
     {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final GZIPOutputStream out = new GZIPOutputStream( baos );
-
-        this.getModelManager().getMarshaller( false, false ).marshal(
-            this.getModelManager().getObjectFactory().createModule(
-            this.getModules().getImplementationModule( implementation.getIdentifier() ) ), out );
-
-        out.close();
-        return baos.toByteArray();
+        return this.getJavaClass( classFile.toURI().toURL(), classFile.getName() );
     }
 
     /**
-     * Decodes an encoded implementation.
+     * Parses a class file.
      *
-     * @param classFileName The name of the classfile to decode.
-     * @param classFile The classfile to decode.
+     * @param url The URL of the class file to parse.
+     * @param className The name of the class at {@code url}.
      *
-     * @return The {@code Implementation} decoded from {@code classFile}.
+     * @return The parsed class file.
      *
-     * @throws NullPointerException if {@code classFile} is {@code null}.
+     * @throws IOException if parsing fails.
      */
-    public Module decodeImplementation( final String classFileName, final InputStream classFile )
-        throws IOException, SAXException, JAXBException
+    protected JavaClass getJavaClass( final URL url, final String className ) throws IOException
     {
-        if ( classFile == null )
-        {
-            throw new NullPointerException( "classFile" );
-        }
-
-        Module decoded = null;
-        final byte[] attributeValue = this.getClassfileAttribute( classFileName, classFile, IMPLEMENTATION_ATTRIBUTE );
-
-        if ( attributeValue != null )
-        {
-            final ByteArrayInputStream bais = new ByteArrayInputStream( attributeValue );
-            final GZIPInputStream in = new GZIPInputStream( bais );
-            decoded =
-                ( (JAXBElement<Module>) this.getModelManager().getUnmarshaller( false ).unmarshal( in ) ).getValue();
-
-            in.close();
-        }
-
-        return decoded;
+        final InputStream in = url.openStream();
+        final ClassParser parser = new ClassParser( in, className );
+        final JavaClass clazz = parser.parse();
+        in.close();
+        return clazz;
     }
 
     /**
-     * Gets an attribute from a classfile.
+     * Gets an attribute from a java class.
      *
-     * @param classFile The classfile to process.
-     * @param attributeName The name of the attribute to return.
+     * @param clazz The java class to get an attribute from.
+     * @param attributeName The name of the attribute to get.
      *
-     * @return The value of attribute {@code attributeName} of {@code classFile} or {@code null} if no such attribute
+     * @return The value of attribute {@code attributeName} of {@code clazz} or {@code null} if no such attribute
      * exists.
      *
-     * @throws IOException if processing the classfile fails.
+     * @throws NullPointerException if {@code clazz} or {@code attributeName} is {@code null}.
+     * @throws IOException if getting the attribute fails.
      */
-    public byte[] getClassfileAttribute( final String classFileName, final InputStream classFile,
-                                         final String attributeName ) throws IOException
+    protected byte[] getClassfileAttribute( final JavaClass clazz, final String attributeName ) throws IOException
     {
-        final ClassParser parser = new ClassParser( classFile, classFileName );
-        final JavaClass clazz = parser.parse();
+        if ( clazz == null )
+        {
+            throw new NullPointerException( "clazz" );
+        }
+        if ( attributeName == null )
+        {
+            throw new NullPointerException( "attributeName" );
+        }
+
         Attribute[] attributes = clazz.getAttributes();
 
         for ( int i = attributes.length - 1; i >= 0; i-- )
@@ -807,21 +846,21 @@ public class JavaClasses extends JomcTool
     }
 
     /**
-     * Adds or updates an attribute in a classfile.
+     * Adds or updates an attribute in a java class.
      *
-     * @param classFile The classfile to process.
+     * @param clazz The class to update.
      * @param attributeName The name of the attribute to update.
-     * @param meta The new data of the attribute to update the {@code classFile} with.
+     * @param data The new data of the attribute to update the {@code classFile} with.
      *
-     * @throws NullPointerException if {@code classFile} or {@code attributeName} is {@code null}.
-     * @throws IOException if updating the classfile fails.
+     * @throws NullPointerException if {@code clazz} or {@code attributeName} is {@code null}.
+     * @throws IOException if updating the class file fails.
      */
-    public void setClassfileAttribute( final File classFile, final String attributeName, final byte[] meta )
+    protected void setClassfileAttribute( final JavaClass clazz, final String attributeName, final byte[] data )
         throws IOException
     {
-        if ( classFile == null )
+        if ( clazz == null )
         {
-            throw new NullPointerException( "classFile" );
+            throw new NullPointerException( "clazz" );
         }
         if ( attributeName == null )
         {
@@ -837,9 +876,6 @@ public class JavaClasses extends JomcTool
         not allowed to affect the semantics of the class file, but only to
         provide additional descriptive information (§4.7.1).
          */
-        final long length = classFile.length();
-        final ClassParser parser = new ClassParser( new FileInputStream( classFile ), classFile.getName() );
-        final JavaClass clazz = parser.parse();
         Attribute[] attributes = clazz.getAttributes();
 
         int attributeIndex = -1;
@@ -869,7 +905,7 @@ public class JavaClasses extends JomcTool
             clazz.setConstantPool( new ConstantPool( tmp ) );
         }
 
-        final Unknown unknown = new Unknown( nameIndex, meta.length, meta, clazz.getConstantPool() );
+        final Unknown unknown = new Unknown( nameIndex, data.length, data, clazz.getConstantPool() );
 
         if ( attributeIndex == -1 )
         {
@@ -885,17 +921,286 @@ public class JavaClasses extends JomcTool
         }
 
         clazz.setAttributes( attributes );
-        clazz.dump( classFile );
+    }
 
-        final long delta = classFile.length() - length;
-        if ( delta != 0 )
+    /**
+     * Encodes a specification into a byte array.
+     *
+     * @param specification The specification to encode.
+     *
+     * @return GZIP compressed XML document for {@code specification}.
+     *
+     * @throws NullPointerException if {@code specification} is {@code null}.
+     */
+    private byte[] encodeSpecification( final Specification specification )
+        throws IOException, SAXException, JAXBException
+    {
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final GZIPOutputStream out = new GZIPOutputStream( baos );
+
+        this.getModelManager().getMarshaller( false, false ).marshal(
+            this.getModelManager().getObjectFactory().createSpecification( specification ), out );
+
+        out.close();
+        return baos.toByteArray();
+    }
+
+    /**
+     * Encodes specifications into a byte array.
+     *
+     * @param specifications The specifications to encode.
+     *
+     * @return GZIP compressed XML document for {@code specifications}.
+     *
+     * @throws NullPointerException if {@code specifications} is {@code null}.
+     */
+    private byte[] encodeSpecifications( final Specifications specifications )
+        throws IOException, SAXException, JAXBException
+    {
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final GZIPOutputStream out = new GZIPOutputStream( baos );
+
+        this.getModelManager().getMarshaller( false, false ).marshal(
+            this.getModelManager().getObjectFactory().createSpecifications( specifications ), out );
+
+        out.close();
+        return baos.toByteArray();
+    }
+
+    /**
+     * Encodes dependencies into a byte array.
+     *
+     * @param dependencies The dependencies to encode.
+     *
+     * @return GZIP compressed XML document for {@code dependencies}.
+     *
+     * @throws NullPointerException if {@code dependencies} is {@code null}.
+     */
+    private byte[] encodeDependencies( final Dependencies dependencies )
+        throws IOException, SAXException, JAXBException
+    {
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final GZIPOutputStream out = new GZIPOutputStream( baos );
+
+        this.getModelManager().getMarshaller( false, false ).marshal(
+            this.getModelManager().getObjectFactory().createDependencies( dependencies ), out );
+
+        out.close();
+        return baos.toByteArray();
+    }
+
+    /**
+     * Encodes properties into a byte array.
+     *
+     * @param properties The properties to encode.
+     *
+     * @return GZIP compressed XML document for {@code properties}.
+     *
+     * @throws NullPointerException if {@code properties} is {@code null}.
+     */
+    private byte[] encodeProperties( final Properties properties )
+        throws IOException, SAXException, JAXBException
+    {
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final GZIPOutputStream out = new GZIPOutputStream( baos );
+
+        this.getModelManager().getMarshaller( false, false ).marshal(
+            this.getModelManager().getObjectFactory().createProperties( properties ), out );
+
+        out.close();
+        return baos.toByteArray();
+    }
+
+    /**
+     * Encodes messages into a byte array.
+     *
+     * @param messages The messages to encode.
+     *
+     * @return GZIP compressed XML document for {@code messages}.
+     *
+     * @throws NullPointerException if {@code messages} is {@code null}.
+     */
+    private byte[] encodeMessages( final Messages messages )
+        throws IOException, SAXException, JAXBException
+    {
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final GZIPOutputStream out = new GZIPOutputStream( baos );
+
+        this.getModelManager().getMarshaller( false, false ).marshal(
+            this.getModelManager().getObjectFactory().createMessages( messages ), out );
+
+        out.close();
+        return baos.toByteArray();
+    }
+
+    /**
+     * Decodes a specification from a class file.
+     *
+     * @param clazz The class to decode a specification from.
+     *
+     * @return The {@code Specification} decoded from {@code clazz} or {@code null} if {@code clazz} does not
+     * contain a corresponding attribute.
+     *
+     * @throws NullPointerException if {@code clazz} is {@code null}.
+     */
+    private Specification decodeSpecification( final JavaClass clazz )
+        throws IOException, SAXException, JAXBException
+    {
+        if ( clazz == null )
         {
-            this.log( Level.INFO, this.getMessage( "writing", new Object[]
-                {
-                    classFile.getCanonicalPath(), new Long( delta )
-                } ), null );
-
+            throw new NullPointerException( "clazz" );
         }
+
+        Specification decoded = null;
+        final byte[] attributeValue = this.getClassfileAttribute( clazz, Specification.class.getName() );
+
+        if ( attributeValue != null )
+        {
+            final ByteArrayInputStream bais = new ByteArrayInputStream( attributeValue );
+            final GZIPInputStream in = new GZIPInputStream( bais );
+            decoded = this.getModelManager().getUnmarshaller( false ).unmarshal(
+                new StreamSource( in ), Specification.class ).getValue();
+
+            in.close();
+        }
+
+        return decoded;
+    }
+
+    /**
+     * Decodes specifications from a class file.
+     *
+     * @param clazz The class to decode specifications from.
+     *
+     * @return The {@code Specifications} decoded from {@code clazz} or {@code null} if {@code clazz} does not
+     * contain a corresponding attribute.
+     *
+     * @throws NullPointerException if {@code clazz} is {@code null}.
+     */
+    private Specifications decodeSpecifications( final JavaClass clazz )
+        throws IOException, SAXException, JAXBException
+    {
+        if ( clazz == null )
+        {
+            throw new NullPointerException( "clazz" );
+        }
+
+        Specifications decoded = null;
+        final byte[] attributeValue = this.getClassfileAttribute( clazz, Specifications.class.getName() );
+
+        if ( attributeValue != null )
+        {
+            final ByteArrayInputStream bais = new ByteArrayInputStream( attributeValue );
+            final GZIPInputStream in = new GZIPInputStream( bais );
+            decoded = this.getModelManager().getUnmarshaller( false ).unmarshal(
+                new StreamSource( in ), Specifications.class ).getValue();
+
+            in.close();
+        }
+
+        return decoded;
+    }
+
+    /**
+     * Decodes dependencies from a class file.
+     *
+     * @param clazz The class to decode dependencies from.
+     *
+     * @return The {@code Dependencies} decoded from {@code clazz} or {@code null} if {@code clazz} does not
+     * contain a corresponding attribute.
+     *
+     * @throws NullPointerException if {@code clazz} is {@code null}.
+     */
+    private Dependencies decodeDependencies( final JavaClass clazz )
+        throws IOException, SAXException, JAXBException
+    {
+        if ( clazz == null )
+        {
+            throw new NullPointerException( "clazz" );
+        }
+
+        Dependencies decoded = null;
+        final byte[] attributeValue = this.getClassfileAttribute( clazz, Dependencies.class.getName() );
+
+        if ( attributeValue != null )
+        {
+            final ByteArrayInputStream bais = new ByteArrayInputStream( attributeValue );
+            final GZIPInputStream in = new GZIPInputStream( bais );
+            decoded = this.getModelManager().getUnmarshaller( false ).unmarshal(
+                new StreamSource( in ), Dependencies.class ).getValue();
+
+            in.close();
+        }
+
+        return decoded;
+    }
+
+    /**
+     * Decodes properties from a class file.
+     *
+     * @param clazz The class to decode properties from.
+     *
+     * @return The {@code Properties} decoded from {@code clazz} or {@code null} if {@code clazz} does not contain a
+     * corresponding attribute.
+     *
+     * @throws NullPointerException if {@code clazz} is {@code null}.
+     */
+    private Properties decodeProperties( final JavaClass clazz )
+        throws IOException, SAXException, JAXBException
+    {
+        if ( clazz == null )
+        {
+            throw new NullPointerException( "clazz" );
+        }
+
+        Properties decoded = null;
+        final byte[] attributeValue = this.getClassfileAttribute( clazz, Properties.class.getName() );
+
+        if ( attributeValue != null )
+        {
+            final ByteArrayInputStream bais = new ByteArrayInputStream( attributeValue );
+            final GZIPInputStream in = new GZIPInputStream( bais );
+            decoded = this.getModelManager().getUnmarshaller( false ).unmarshal(
+                new StreamSource( in ), Properties.class ).getValue();
+
+            in.close();
+        }
+
+        return decoded;
+    }
+
+    /**
+     * Decodes messages from a class file.
+     *
+     * @param clazz The class to decode messages from.
+     *
+     * @return The {@code Messages} decoded from {@code clazz} or {@code null} if {@code clazz} does not contain a
+     * corresponding attribute.
+     *
+     * @throws NullPointerException if {@code clazz} is {@code null}.
+     */
+    private Messages decodeMessages( final JavaClass clazz )
+        throws IOException, SAXException, JAXBException
+    {
+        if ( clazz == null )
+        {
+            throw new NullPointerException( "clazz" );
+        }
+
+        Messages decoded = null;
+        final byte[] attributeValue = this.getClassfileAttribute( clazz, Properties.class.getName() );
+
+        if ( attributeValue != null )
+        {
+            final ByteArrayInputStream bais = new ByteArrayInputStream( attributeValue );
+            final GZIPInputStream in = new GZIPInputStream( bais );
+            decoded = this.getModelManager().getUnmarshaller( false ).unmarshal(
+                new StreamSource( in ), Messages.class ).getValue();
+
+            in.close();
+        }
+
+        return decoded;
     }
 
     private String getMessage( final String key, final Object args )
