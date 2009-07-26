@@ -246,11 +246,11 @@ public abstract class JomcTool
     }
 
     /**
-     * Gets the Java classpath location of a specification.
+     * Gets the Java class path location of a specification.
      *
-     * @return specification The specification to return the Java classpath location of.
+     * @return specification The specification to return the Java class path location of.
      *
-     * @return the Java classpath location of {@code specification}.
+     * @return the Java class path location of {@code specification}.
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
      */
@@ -361,11 +361,11 @@ public abstract class JomcTool
     }
 
     /**
-     * Gets the Java classpath location of an implementation.
+     * Gets the Java class path location of an implementation.
      *
-     * @return implementation The implementation to return the Java classpath location of.
+     * @return implementation The implementation to return the Java class path location of.
      *
-     * @return the Java classpath location of {@code implementation}.
+     * @return the Java class path location of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      */
@@ -634,7 +634,7 @@ public abstract class JomcTool
      * Formats a text to a Javadoc comment.
      *
      * @param text The text to format to a Javadoc comment.
-     * @param linebreak The text to replace linebreaks with.
+     * @param linebreak The text to replace line breaks with.
      *
      * @return {@code text} formatted as a Javadoc comment.
      *
