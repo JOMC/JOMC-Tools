@@ -48,7 +48,7 @@
  * Use of class {@link org.jomc.ObjectManager ObjectManager} is supported for getting these implementations or for
  * selecting a single implementation.<pre>
  * ${tool.getJavaTypeName($specification,false)}[] objects = (${tool.getJavaTypeName($specification,false)}[]) ObjectManagerFactory.getObjectManager().getObject( ${tool.getJavaTypeName($specification,false)}.class );
- * ${tool.getJavaTypeName($specification,false)} object = (${tool.getJavaTypeName($specification,false)}) ObjectManagerFactory.getObjectManager().getObject( ${tool.getJavaTypeName($specification,false)}.class, "<i>implementation name</i>" );
+ * ${tool.getJavaTypeName($specification,false)} object = ObjectManagerFactory.getObjectManager().getObject( ${tool.getJavaTypeName($specification,false)}.class, "<i>implementation name</i>" );
  * </pre></p>
 #end
  *
