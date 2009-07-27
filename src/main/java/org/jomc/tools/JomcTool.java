@@ -1216,8 +1216,7 @@ public abstract class JomcTool
     private String getMessage( final String key, final Object args )
     {
         final ResourceBundle b = ResourceBundle.getBundle( "org/jomc/tools/JomcTool" );
-        final MessageFormat f = new MessageFormat( b.getString( key ) );
-        return f.format( args );
+        return args == null ? b.getString( key ) : new MessageFormat( b.getString( key ) ).format( args );
     }
 
 }

@@ -43,7 +43,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jomc-tools</artifactId>
   <name>JOMC Tools</name>
-  <description><![CDATA[Object management and configuration tools.]]></description>
+  <description>Object management and configuration tools.</description>
   <build>
     <resources>
       <resource>
@@ -62,9 +62,9 @@
             </goals>
             <configuration>
               <resourceBundles>
-                <resourceBundle>org.jomc:jomc-resources:${jomcVersion}</resourceBundle>
-               </resourceBundles>
-               <properties>
+                <resourceBundle>org.jomc:jomc-resources:${pom.version}</resourceBundle>
+              </resourceBundles>
+              <properties>
                 <buildNumber>${buildNumber}</buildNumber>
               </properties>
             </configuration>
