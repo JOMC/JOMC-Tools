@@ -44,7 +44,7 @@
   <artifactId>maven-jomc-plugin</artifactId>
   <packaging>maven-plugin</packaging>
   <name>JOMC Maven Plugin</name>
-  <description><![CDATA[Object management and configuration tools for Apache Maven.]]></description>
+  <description>Object management and configuration tools for Apache Maven.</description>
   <build>
     <resources>
       <resource>
@@ -63,9 +63,9 @@
             </goals>
             <configuration>
               <resourceBundles>
-                <resourceBundle>org.jomc:jomc-resources:${jomcVersion}</resourceBundle>
-               </resourceBundles>
-               <properties>
+                <resourceBundle>org.jomc:jomc-resources:${pom.version}</resourceBundle>
+              </resourceBundles>
+              <properties>
                 <buildNumber>${buildNumber}</buildNumber>
               </properties>
             </configuration>
