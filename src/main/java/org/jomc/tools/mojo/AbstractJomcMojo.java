@@ -508,9 +508,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             this.log( Level.FINE, "\n", null );
         }
 
-        tool.getModelManager().validateModelObject(
-            tool.getModelManager().getObjectFactory().createModules( tool.getModules() ) );
-
+        tool.getModelManager().validateModules( tool.getModules() );
     }
 
     private MessageFormat getMessage( final String key )
