@@ -36,7 +36,6 @@ package org.jomc.tools.cli.commands;
 
 import java.io.File;
 import java.io.PrintStream;
-import java.util.Locale;
 import java.util.logging.Level;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
