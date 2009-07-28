@@ -1155,20 +1155,10 @@ public abstract class JomcTool
     /**
      * Gets the build directory of the instance.
      *
-     * @return The build directory of the instance.
+     * @return The build directory of the instance or {@code null}.
      */
     public File getBuildDirectory()
     {
-        if ( this.buildDirectory == null )
-        {
-            this.buildDirectory = new File( System.getProperty( "java.io.tmpdir" ) );
-            this.log( Level.INFO, this.getMessage( "defaultBuildDirectory", new Object[]
-                {
-                    this.buildDirectory.getAbsolutePath()
-                } ), null );
-
-        }
-
         return this.buildDirectory;
     }
 

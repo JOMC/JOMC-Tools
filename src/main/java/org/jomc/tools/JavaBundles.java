@@ -179,9 +179,21 @@ public class JavaBundles extends JomcTool
     {
         if ( this.getModule() != null )
         {
-            if ( !this.getBuildDirectory().exists() )
+            File hashFile = null;
+            final File buildDirectory = this.getBuildDirectory();
+
+            if ( buildDirectory != null )
             {
-                this.getBuildDirectory().mkdirs();
+                if ( !buildDirectory.exists() )
+                {
+                    buildDirectory.mkdirs();
+                }
+
+                hashFile = new File( buildDirectory, "java-bundles.properties" );
+                if ( !hashFile.exists() )
+                {
+                    hashFile.createNewFile();
+                }
             }
 
             this.log( Level.INFO, this.getMessage( "processingModule", new Object[]
@@ -192,16 +204,13 @@ public class JavaBundles extends JomcTool
             this.assertValidTemplates( this.getModule() );
 
             final Properties bundleHashcodes = new Properties();
-            final File hashFile = new File( this.getBuildDirectory(), "java-bundles.properties" );
 
-            if ( !hashFile.exists() )
+            if ( hashFile != null )
             {
-                hashFile.createNewFile();
+                final InputStream in = new FileInputStream( hashFile );
+                bundleHashcodes.load( in );
+                in.close();
             }
-
-            final InputStream in = new FileInputStream( hashFile );
-            bundleHashcodes.load( in );
-            in.close();
 
             final String lastProfile = bundleHashcodes.getProperty( PROP_PROFILE );
             if ( lastProfile != null && !lastProfile.equals( this.getProfile() ) )
@@ -249,9 +258,12 @@ public class JavaBundles extends JomcTool
                 }
             }
 
-            final OutputStream out = new FileOutputStream( hashFile );
-            bundleHashcodes.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
-            out.close();
+            if ( hashFile != null )
+            {
+                final OutputStream out = new FileOutputStream( hashFile );
+                bundleHashcodes.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
+                out.close();
+            }
 
             this.log( Level.INFO, this.getMessage( "upToDate", null ), null );
         }
