@@ -632,7 +632,7 @@ public class JavaBundles extends JomcTool
 
     private String getMessage( final String key, final Object args )
     {
-        final ResourceBundle b = ResourceBundle.getBundle( "org/jomc/tools/JavaBundles" );
+        final ResourceBundle b = ResourceBundle.getBundle( JavaBundles.class.getName().replace( '.', '/' ) );
         final MessageFormat f = new MessageFormat( b.getString( key ) );
         return f.format( args );
     }

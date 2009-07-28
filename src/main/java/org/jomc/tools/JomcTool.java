@@ -53,6 +53,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.log.LogChute;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.jomc.model.Argument;
 import org.jomc.model.ArgumentType;
 import org.jomc.model.DefaultModelManager;
@@ -100,11 +101,11 @@ public abstract class JomcTool
     };
 
     /** The prefix of the template location. */
-    private static final String TEMPLATE_PREFIX = "org/jomc/tools/templates/";
+    private static final String TEMPLATE_PREFIX =
+        JomcTool.class.getPackage().getName().replace( '.', '/' ) + "/templates/";
 
     /** Name of the velocity classpath resource loader implementation. */
-    private static final String VELOCITY_RESOURCE_LOADER =
-        "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader";
+    private static final String VELOCITY_RESOURCE_LOADER = ClasspathResourceLoader.class.getName();
 
     /** The modules of the instance. */
     private Modules modules;
@@ -1205,7 +1206,7 @@ public abstract class JomcTool
 
     private String getMessage( final String key, final Object args )
     {
-        final ResourceBundle b = ResourceBundle.getBundle( "org/jomc/tools/JomcTool" );
+        final ResourceBundle b = ResourceBundle.getBundle( JomcTool.class.getName().replace( '.', '/' ) );
         return args == null ? b.getString( key ) : new MessageFormat( b.getString( key ) ).format( args );
     }
 

@@ -432,7 +432,7 @@ public class ModuleAssembler extends JomcTool
 
     private String getMessage( final String key, final Object args )
     {
-        final ResourceBundle b = ResourceBundle.getBundle( "org/jomc/tools/ModuleAssembler" );
+        final ResourceBundle b = ResourceBundle.getBundle( ModuleAssembler.class.getName().replace( '.', '/' ) );
         final MessageFormat f = new MessageFormat( b.getString( key ) );
         return f.format( args );
     }

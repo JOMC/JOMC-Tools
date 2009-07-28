@@ -737,7 +737,7 @@ public class JavaSources extends JomcTool
 
     private String getMessage( final String key, final Object args )
     {
-        final ResourceBundle b = ResourceBundle.getBundle( this.getClass().getName().replace( '.', '/' ) );
+        final ResourceBundle b = ResourceBundle.getBundle( JavaSources.class.getName().replace( '.', '/' ) );
         final MessageFormat f = new MessageFormat( b.getString( key ) );
         return f.format( args );
     }
@@ -884,8 +884,8 @@ public class JavaSources extends JomcTool
         {
             s.getHeadContent().setLength( 0 );
             s.getTailContent().setLength( 0 );
-            s.getHeadContent().append( getConstructorsSectionHeadContent( implementation ) );
-            s.getTailContent().append( getConstructorsSectionTailContent( implementation ) );
+            s.getHeadContent().append( getConstructorsSectionHeadContent( this.implementation ) );
+            s.getTailContent().append( getConstructorsSectionTailContent( this.implementation ) );
             this.constructorsSectionEdited = true;
         }
 
