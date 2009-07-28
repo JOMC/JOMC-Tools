@@ -161,13 +161,15 @@ public class ModuleAssembler extends JomcTool
 
             }
 
+            this.getModelManager().validateModules( m );
+
+            final JavaClasses javaClasses = new JavaClasses( this );
+            javaClasses.validateModules( classLoader );
+
             this.log( Level.INFO, this.getMessage( "writing", new Object[]
                 {
                     modulesFile.getCanonicalPath()
                 } ), null );
-
-            final JavaClasses javaClasses = new JavaClasses( this );
-            javaClasses.validateModules( classLoader );
 
             this.getModelManager().getMarshaller( false, true ).marshal(
                 this.getModelManager().getObjectFactory().createModules( m ), modulesFile );
