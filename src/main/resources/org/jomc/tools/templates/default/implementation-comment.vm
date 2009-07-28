@@ -45,40 +45,31 @@
 #end
  * </ul></p>
 #end
-#if($implementation.getProperties())
+#if($modules.getProperties($implementation.getIdentifier()))
  * <p><b>Properties</b><ul>
-#foreach($property in $implementation.getProperties().getProperty())
+#foreach($property in $modules.getProperties($implementation.getIdentifier()).getProperty())
  * <li>"{@link #$tool.getJavaGetterMethodName($property) $property.getName()}"<blockquote>
  * Property of type {@code $property.getType().value()}#if($property.getValue()) with value "$property.getValue()"#end.</blockquote></li>
 #end
  * </ul></p>
 #end
-#if($implementation.getDependencies())
+#if($modules.getDependencies($implementation.getIdentifier()))
  * <p><b>Dependencies</b><ul>
-#foreach($dependency in $implementation.getDependencies().getDependency())
+#foreach($dependency in $modules.getDependencies($implementation.getIdentifier()).getDependency())
 #set($specification = $modules.getSpecification($dependency.getIdentifier()))
  * <li>"{@link #$tool.getJavaGetterMethodName($dependency) $dependency.getName()}"<blockquote>
  * Dependency on {@code $dependency.getIdentifier()}#if($dependency.getVersion()) at specification level $dependency.getVersion()#end applying to $specification.getScope().value() scope#if($dependency.isBound()) bound to an instance#end.</blockquote></li>
 #end
  * </ul></p>
 #end
-#if($implementation.getMessages())
+#if($modules.getMessages($implementation.getIdentifier()))
  * <p><b>Messages</b><ul>
-#foreach($message in $implementation.getMessages().getMessage())
+#foreach($message in $modules.getMessages($implementation.getIdentifier()).getMessage())
  * <li>"{@link #$tool.getJavaGetterMethodName($message) $message.getName()}"<table>
 #foreach($text in $message.getTemplate().getText())
  * <tr><td valign="top">$tool.getDisplayLanguage($text.getLanguage()):</td><td valign="top"><pre>$tool.getJavadocComment($message.getTemplate().getText($text.getLanguage()), "     * ")</pre></td></tr>
 #end
  * </table>
-#end
-#foreach($reference in $implementation.getMessages().getReference())
-#set($message = $module.getMessages().getMessage($reference.getName()))
- * <li>"{@link #$tool.getJavaGetterMethodName($message) $message.getName()}"<table>
-#foreach($text in $message.getTemplate().getText())
- * <tr><td valign="top">$tool.getDisplayLanguage($text.getLanguage()):</td><td valign="top"><pre>$tool.getJavadocComment($message.getTemplate().getText($text.getLanguage()), "     * ")</pre></td></tr>
-#end
- * </table>
- * </li>
 #end
  * </ul></p>
 #end

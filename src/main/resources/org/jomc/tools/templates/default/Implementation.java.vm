@@ -45,11 +45,11 @@ import java.lang.*;
 public class ${tool.getJavaTypeName($implementation,false)}
 #set($references = ${modules.getSpecifications($implementation.getIdentifier())})
 #if($references)
-implements
+    implements
 #set($i = $references.size())
 #set($i = $i - 1)
 #foreach($reference in $references)
-    $tool.getJavaTypeName($reference,true)#if($i > 0),#end
+        $tool.getJavaTypeName($reference,true)#if($i > 0),#end
 
 #end
 #end
