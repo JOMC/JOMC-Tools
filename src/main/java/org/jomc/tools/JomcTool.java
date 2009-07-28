@@ -1061,7 +1061,7 @@ public abstract class JomcTool
         if ( this.inputEncoding == null )
         {
             this.inputEncoding = new InputStreamReader( new ByteArrayInputStream( NO_BYTES ) ).getEncoding();
-            this.log( Level.INFO, this.getMessage( "defaultInputEncoding", new Object[]
+            this.log( Level.FINE, this.getMessage( "defaultInputEncoding", new Object[]
                 {
                     this.inputEncoding
                 } ), null );
@@ -1091,7 +1091,7 @@ public abstract class JomcTool
         if ( this.outputEncoding == null )
         {
             this.outputEncoding = new OutputStreamWriter( new ByteArrayOutputStream() ).getEncoding();
-            this.log( Level.INFO, this.getMessage( "defaultOutputEncoding", new Object[]
+            this.log( Level.FINE, this.getMessage( "defaultOutputEncoding", new Object[]
                 {
                     this.outputEncoding
                 } ), null );
@@ -1121,7 +1121,7 @@ public abstract class JomcTool
         if ( this.profile == null )
         {
             this.profile = "default";
-            this.log( Level.INFO, this.getMessage( "defaultProfile", new Object[]
+            this.log( Level.FINE, this.getMessage( "defaultProfile", new Object[]
                 {
                     this.profile
                 } ), null );
