@@ -58,6 +58,7 @@ import org.apache.maven.project.MavenProject;
 import org.jomc.model.DefaultModelManager;
 import org.jomc.model.ModelException;
 import org.jomc.model.Module;
+import org.jomc.model.Modules;
 import org.jomc.tools.JavaClasses;
 import org.jomc.tools.JavaSources;
 import org.jomc.tools.JomcTool;
@@ -92,7 +93,15 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *
      * @parameter default-value="default"
      */
-    private String profile;
+    private String templateProfile;
+
+    /**
+     * The location to search for documents.
+     *
+     * @parameter
+     * @optional
+     */
+    private String documentLocation;
 
     /**
      * The Maven project of the instance.
@@ -117,10 +126,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /** The tool for managing classes. */
     private JavaClasses testJavaClassesTool;
 
-    /** The classloader of the project's runtime classpath including any provided dependencies. */
+    /** The class loader of the project's runtime classpath including any provided dependencies. */
     private ClassLoader mainClassLoader;
 
-    /** The classloader of the project's test classpath including any provided dependencies. */
+    /** The class loader of the project's test classpath including any provided dependencies. */
     private ClassLoader testClassLoader;
 
     /**
@@ -145,7 +154,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         {
             this.mainJavaSourcesTool = new JavaSources();
             this.mainJavaSourcesTool.setModuleName( this.getMavenProject().getName() );
-            this.setupTool( this.mainJavaSourcesTool, this.getMainClassLoader() );
+            this.setupTool( this.mainJavaSourcesTool, this.getMainClassLoader(), true );
         }
 
         return this.mainJavaSourcesTool;
@@ -163,7 +172,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         {
             this.testJavaSourcesTool = new JavaSources();
             this.testJavaSourcesTool.setModuleName( this.getMavenProject().getName() + " Tests" );
-            this.setupTool( this.testJavaSourcesTool, this.getTestClassLoader() );
+            this.setupTool( this.testJavaSourcesTool, this.getTestClassLoader(), true );
         }
 
         return this.testJavaSourcesTool;
@@ -180,7 +189,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         if ( this.moduleAssemblerTool == null )
         {
             this.moduleAssemblerTool = new ModuleAssembler();
-            this.setupTool( this.moduleAssemblerTool, this.getMainClassLoader() );
+            this.setupTool( this.moduleAssemblerTool, this.getMainClassLoader(), false );
         }
 
         return this.moduleAssemblerTool;
@@ -198,7 +207,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         {
             this.mainJavaClassesTool = new JavaClasses();
             this.mainJavaClassesTool.setModuleName( this.getMavenProject().getName() );
-            this.setupTool( this.mainJavaClassesTool, this.getMainClassLoader() );
+            this.setupTool( this.mainJavaClassesTool, this.getMainClassLoader(), true );
         }
 
         return this.mainJavaClassesTool;
@@ -216,20 +225,20 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         {
             this.testJavaClassesTool = new JavaClasses();
             this.testJavaClassesTool.setModuleName( this.getMavenProject().getName() + " Tests" );
-            this.setupTool( this.testJavaClassesTool, this.getTestClassLoader() );
+            this.setupTool( this.testJavaClassesTool, this.getTestClassLoader(), true );
         }
 
         return this.testJavaClassesTool;
     }
 
     /**
-     * Gets a classloader of the project's runtime classpath including any provided dependencies.
+     * Gets a class loader of the project's runtime classpath including any provided dependencies.
      *
      * @return A {@code ClassLoader} initialized with the project's runtime classpath including any provided
      * dependencies.
      *
      * @throws DependencyResolutionRequiredException for any unresolved dependency scopes.
-     * @throws IOException if building the classpath of the classloader fails.
+     * @throws IOException if building the classpath of the class loader fails.
      */
     public ClassLoader getMainClassLoader() throws DependencyResolutionRequiredException, IOException
     {
@@ -257,12 +266,12 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
-     * Gets a classloader of the project's test classpath including any provided dependencies.
+     * Gets a class loader of the project's test classpath including any provided dependencies.
      *
      * @return A {@code ClassLoader} initialized with the project's test classpath including any provided dependencies.
      *
      * @throws DependencyResolutionRequiredException for any unresolved dependency scopes.
-     * @throws IOException if building the classpath of the classloader fails.
+     * @throws IOException if building the classpath of the class loader fails.
      */
     public ClassLoader getTestClassLoader() throws DependencyResolutionRequiredException, IOException
     {
@@ -383,25 +392,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         {
             try
             {
-                if ( !e.getDetails().isEmpty() )
-                {
-                    this.logSeparator( Level.INFO );
-                    final Marshaller m = new DefaultModelManager().getMarshaller( false, true );
-
-                    for ( ModelException.Detail detail : e.getDetails() )
-                    {
-                        this.log( detail.getLevel(), detail.getMessage(), null );
-
-                        if ( detail.getElement() != null )
-                        {
-                            final StringWriter stringWriter = new StringWriter();
-                            m.marshal( detail.getElement(), stringWriter );
-
-                            this.log( Level.FINE, "\n", null );
-                            this.log( Level.FINE, stringWriter.toString(), null );
-                        }
-                    }
-                }
+                this.log( Level.SEVERE, e );
             }
             catch ( Exception e2 )
             {
@@ -418,10 +409,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     protected abstract void executeTool() throws Exception;
 
-    private void setupTool( final JomcTool tool, final ClassLoader classLoader )
+    private void setupTool( final JomcTool tool, final ClassLoader classLoader, final boolean includeClasspathModule )
         throws ModelException, IOException, SAXException, JAXBException
     {
-        final String toolName = tool.getClass().getName().substring( tool.getClass().getName().lastIndexOf( '.' ) + 1 );
+        Modules modulesToValidate = null;
+        final String toolName = tool.getClass().getName().substring(
+            tool.getClass().getPackage().getName().length() + 1 );
+
         this.log( Level.INFO, this.getInitializingMessage( toolName ), null );
 
         tool.getListeners().add( new JomcTool.Listener()
@@ -442,13 +436,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
         } );
 
-        tool.setBuildDirectory( new File( this.getMavenProject().getBasedir(),
-                                          this.getMavenProject().getBuild().getDirectory() ) );
-
+        tool.setBuildDirectory( new File( this.getMavenProject().getBuild().getDirectory() ) );
         tool.setTemplateEncoding( this.templateEncoding );
         tool.setInputEncoding( this.sourceEncoding );
         tool.setOutputEncoding( this.sourceEncoding );
-        tool.setProfile( this.profile );
+        tool.setProfile( this.templateProfile );
 
         if ( tool.getModelManager() instanceof DefaultModelManager )
         {
@@ -473,25 +465,28 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             } );
 
-            tool.setModules( defaultModelManager.getClasspathModules(
-                DefaultModelManager.DEFAULT_DOCUMENT_LOCATION ) );
+            final Modules classpathModules = defaultModelManager.getClasspathModules(
+                this.documentLocation == null
+                ? defaultModelManager.getDefaultDocumentLocation() : this.documentLocation );
 
-            final Module classpathModule = defaultModelManager.getClasspathModule( tool.getModules() );
+            final Modules modulesWithoutClasspath = new Modules( classpathModules );
+            final Module classpathModule = defaultModelManager.getClasspathModule( classpathModules );
+
             if ( classpathModule != null )
             {
-                tool.getModules().getModule().add( classpathModule );
+                classpathModules.getModule().add( classpathModule );
             }
 
             this.log( Level.FINE, "\n", null );
             this.log( Level.FINE, this.getMessage( "modulesReport" ).format( null ), null );
 
-            if ( tool.getModules().getModule().isEmpty() )
+            if ( classpathModules.getModule().isEmpty() )
             {
                 this.log( Level.FINE, "\t" + this.getMessage( "missingModules" ).format( null ), null );
             }
             else
             {
-                for ( Module m : tool.getModules().getModule() )
+                for ( Module m : classpathModules.getModule() )
                 {
                     final StringBuffer moduleInfo = new StringBuffer().append( '\t' );
                     moduleInfo.append( m.getName() );
@@ -506,9 +501,17 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
 
             this.log( Level.FINE, "\n", null );
+
+            modulesToValidate = classpathModules;
+            tool.setModules( includeClasspathModule ? classpathModules : modulesWithoutClasspath );
         }
 
-        tool.getModelManager().validateModules( tool.getModules() );
+        if ( modulesToValidate != null )
+        {
+            tool.getModelManager().validateModelObject(
+                tool.getModelManager().getObjectFactory().createModules( modulesToValidate ) );
+
+        }
     }
 
     private MessageFormat getMessage( final String key )
@@ -597,6 +600,38 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             else if ( this.getLog().isDebugEnabled() )
             {
                 this.getLog().debug( mojoMessage, throwable );
+            }
+        }
+    }
+
+    protected void log( final Level level, final ModelException e ) throws IOException, SAXException, JAXBException
+    {
+        this.logSeparator( level );
+        if ( e.getMessage() != null )
+        {
+            this.log( level, e.getMessage(), null );
+        }
+
+        if ( !e.getDetails().isEmpty() )
+        {
+            Marshaller marshaller = null;
+            for ( ModelException.Detail detail : e.getDetails() )
+            {
+                this.log( detail.getLevel(), detail.getMessage(), null );
+
+                if ( detail.getElement() != null )
+                {
+                    if ( marshaller == null )
+                    {
+                        marshaller = new DefaultModelManager().getMarshaller( false, true );
+                    }
+
+                    final StringWriter stringWriter = new StringWriter();
+                    marshaller.marshal( detail.getElement(), stringWriter );
+
+                    this.log( Level.FINE, "\n", null );
+                    this.log( Level.FINE, stringWriter.toString(), null );
+                }
             }
         }
     }

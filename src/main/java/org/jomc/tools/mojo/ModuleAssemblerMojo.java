@@ -33,6 +33,8 @@
 package org.jomc.tools.mojo;
 
 import java.io.File;
+import java.util.Arrays;
+import org.jomc.tools.ModuleAssembler;
 
 /**
  * Assembles modules.
@@ -48,6 +50,31 @@ public final class ModuleAssemblerMojo extends AbstractJomcMojo
 {
 
     /**
+     * File to write the assembled module to.
+     * @parameter default-value="${project.build.directory}/jomc/META-INF/jomc.xml"
+     * @optional
+     */
+    private File moduleFile;
+
+    /**
+     * Name of the merged module.
+     * @parameter default-value="${project.name}"
+     */
+    private String moduleName;
+
+    /**
+     * Version of the merged module.
+     * @parameter default-value="${project.version}"
+     */
+    private String moduleVersion;
+
+    /**
+     * Vendor of the merged module.
+     * @parameter default-value="${project.organization.name}"
+     */
+    private String moduleVendor;
+
+    /**
      * Directory holding documents to merge.
      * @parameter default-value="src/main/jomc"
      * @optional
@@ -55,24 +82,39 @@ public final class ModuleAssemblerMojo extends AbstractJomcMojo
     private File mergeDirectory;
 
     /**
-     * Flag indicating if entities resolved from the classpath should be preserved in the assembled modules.
-     * @parameter default-value="false"
+     * Class relocations.
+     * @parameter
      * @optional
      */
-    private boolean includeClasspathModule;
+    private ModelObjectRelocation[] relocations;
 
     /**
-     * File to write the assembled modules to.
-     * @parameter default-value="${project.build.directory}/jomc/META-INF/jomc.xml"
+     * Class relocation exclusions.
+     * @parameter
      * @optional
      */
-    private File modulesFile;
+    private String[] relocationExclusions;
 
     @Override
     public void executeTool() throws Exception
     {
-        this.getModuleAssemblerTool().assembleModules(
-            this.modulesFile, this.mergeDirectory, this.getMainClassLoader(), this.includeClasspathModule );
+        final ModuleAssembler assembler = this.getModuleAssemblerTool();
+
+        if ( this.relocations != null )
+        {
+            for ( ModelObjectRelocation r : this.relocations )
+            {
+                assembler.getRelocationMap().put( r.getSource(), r.getTarget() );
+            }
+        }
+
+        if ( this.relocationExclusions != null )
+        {
+            assembler.getRelocationExclusions().addAll( Arrays.asList( this.relocationExclusions ) );
+        }
+
+        assembler.assembleModules( this.moduleFile, this.moduleName, this.moduleVersion, this.moduleVendor,
+                                   this.mergeDirectory, this.getMainClassLoader() );
 
     }
 
