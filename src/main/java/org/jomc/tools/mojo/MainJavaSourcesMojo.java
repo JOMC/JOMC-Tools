@@ -33,6 +33,8 @@
 package org.jomc.tools.mojo;
 
 import java.io.File;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
 
 /**
  * Manages a projects' main java sources.
@@ -50,16 +52,28 @@ public final class MainJavaSourcesMojo extends AbstractJomcMojo
     @Override
     public void executeTool() throws Exception
     {
-        File sourceDirectory = new File( this.getMavenProject().getBuild().getSourceDirectory() );
-
-        if ( !sourceDirectory.isAbsolute() )
+        if ( !this.isJavaSourceProcessingDisabled() )
         {
-            sourceDirectory = new File( this.getMavenProject().getBasedir(),
-                                        this.getMavenProject().getBuild().getSourceDirectory() );
+            File sourceDirectory = new File( this.getMavenProject().getBuild().getSourceDirectory() );
 
+            if ( !sourceDirectory.isAbsolute() )
+            {
+                sourceDirectory = new File( this.getMavenProject().getBasedir(),
+                                            this.getMavenProject().getBuild().getSourceDirectory() );
+
+            }
+
+            this.getMainJavaSourcesTool().editModuleSources( sourceDirectory );
         }
+        else
+        {
+            this.log( Level.INFO, this.getMessage( "disabled" ), null );
+        }
+    }
 
-        this.getMainJavaSourcesTool().editModuleSources( sourceDirectory );
+    private String getMessage( final String key )
+    {
+        return ResourceBundle.getBundle( MainJavaSourcesMojo.class.getName().replace( '.', '/' ) ).getString( key );
     }
 
 }

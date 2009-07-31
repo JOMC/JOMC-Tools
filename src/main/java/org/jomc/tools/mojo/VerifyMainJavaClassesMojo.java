@@ -33,6 +33,8 @@
 package org.jomc.tools.mojo;
 
 import java.io.File;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
 
 /**
  * Validates a projects' main java classes.
@@ -50,15 +52,27 @@ public class VerifyMainJavaClassesMojo extends AbstractJomcMojo
     @Override
     protected void executeTool() throws Exception
     {
-        File classesDirectory = new File( this.getMavenProject().getBuild().getOutputDirectory() );
-        if ( !classesDirectory.isAbsolute() )
+        if ( !this.isJavaClassProcessingDisabled() )
         {
-            classesDirectory = new File( this.getMavenProject().getBasedir(),
-                                         this.getMavenProject().getBuild().getOutputDirectory() );
+            File classesDirectory = new File( this.getMavenProject().getBuild().getOutputDirectory() );
+            if ( !classesDirectory.isAbsolute() )
+            {
+                classesDirectory = new File( this.getMavenProject().getBasedir(),
+                                             this.getMavenProject().getBuild().getOutputDirectory() );
 
+            }
+
+            this.getMainJavaClassesTool().validateModuleClasses( classesDirectory );
         }
+        else
+        {
+            this.log( Level.INFO, this.getMessage( "disabled" ), null );
+        }
+    }
 
-        this.getMainJavaClassesTool().validateModuleClasses( classesDirectory );
+    private String getMessage( final String key )
+    {
+        return ResourceBundle.getBundle( VerifyMainJavaClassesMojo.class.getName().replace( '.', '/' ) ).getString( key );
     }
 
 }

@@ -111,6 +111,20 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     private MavenProject mavenProject;
 
+    /**
+     * Contols processing of java sources.
+     *
+     * @parameter expression="${jomc.javaSources.disabled}" default-value="false
+     */
+    private boolean javaSourceProcessingDisabled;
+
+    /**
+     * Contols processing of java classes.
+     *
+     * @parameter expression="${jomc.javaClasses.disabled}" default-value="false
+     */
+    private boolean javaClassProcessingDisabled;
+
     /** The tool for managing sources. */
     private JavaSources mainJavaSourcesTool;
 
@@ -376,6 +390,26 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
 
         return elements;
+    }
+
+    /**
+     * Gets a flag indicating the processing of Java sources is disabled.
+     *
+     * @return {@code true} if processing of Java sources is disabled; {@code false} else.
+     */
+    public boolean isJavaSourceProcessingDisabled()
+    {
+        return this.javaSourceProcessingDisabled;
+    }
+
+    /**
+     * Gets a flag indicating the processing of Java classes is disabled.
+     *
+     * @return {@code true} if processing of Java classes is disabled; {@code false} else.
+     */
+    public boolean isJavaClassProcessingDisabled()
+    {
+        return this.javaClassProcessingDisabled;
     }
 
     public void execute() throws MojoExecutionException, MojoFailureException

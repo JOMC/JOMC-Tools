@@ -33,6 +33,8 @@
 package org.jomc.tools.mojo;
 
 import java.io.File;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
 
 /**
  * Manages a projects' test java sources.
@@ -50,16 +52,28 @@ public final class TestJavaSourcesMojo extends AbstractJomcMojo
     @Override
     public void executeTool() throws Exception
     {
-        File testSourceDirectory = new File( this.getMavenProject().getBuild().getTestSourceDirectory() );
-
-        if ( !testSourceDirectory.isAbsolute() )
+        if ( !this.isJavaSourceProcessingDisabled() )
         {
-            testSourceDirectory = new File( this.getMavenProject().getBasedir(),
-                                            this.getMavenProject().getBuild().getTestSourceDirectory() );
+            File testSourceDirectory = new File( this.getMavenProject().getBuild().getTestSourceDirectory() );
 
+            if ( !testSourceDirectory.isAbsolute() )
+            {
+                testSourceDirectory = new File( this.getMavenProject().getBasedir(),
+                                                this.getMavenProject().getBuild().getTestSourceDirectory() );
+
+            }
+
+            this.getTestJavaSourcesTool().editModuleSources( testSourceDirectory );
         }
+        else
+        {
+            this.log( Level.INFO, this.getMessage( "disabled" ), null );
+        }
+    }
 
-        this.getTestJavaSourcesTool().editModuleSources( testSourceDirectory );
+    private String getMessage( final String key )
+    {
+        return ResourceBundle.getBundle( TestJavaSourcesMojo.class.getName().replace( '.', '/' ) ).getString( key );
     }
 
 }

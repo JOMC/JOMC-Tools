@@ -33,6 +33,8 @@
 package org.jomc.tools.mojo;
 
 import java.io.File;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
 
 /**
  * Manages a projects' main java classes.
@@ -50,15 +52,27 @@ public final class MainJavaClassesMojo extends AbstractJomcMojo
     @Override
     public void executeTool() throws Exception
     {
-        File classesDirectory = new File( this.getMavenProject().getBuild().getOutputDirectory() );
-        if ( !classesDirectory.isAbsolute() )
+        if ( !this.isJavaClassProcessingDisabled() )
         {
-            classesDirectory = new File( this.getMavenProject().getBasedir(),
-                                         this.getMavenProject().getBuild().getOutputDirectory() );
+            File classesDirectory = new File( this.getMavenProject().getBuild().getOutputDirectory() );
+            if ( !classesDirectory.isAbsolute() )
+            {
+                classesDirectory = new File( this.getMavenProject().getBasedir(),
+                                             this.getMavenProject().getBuild().getOutputDirectory() );
 
+            }
+
+            this.getMainJavaClassesTool().commitModuleClasses( classesDirectory );
         }
+        else
+        {
+            this.log( Level.INFO, this.getMessage( "disabled" ), null );
+        }
+    }
 
-        this.getMainJavaClassesTool().commitModuleClasses( classesDirectory );
+    private String getMessage( final String key )
+    {
+        return ResourceBundle.getBundle( MainJavaClassesMojo.class.getName().replace( '.', '/' ) ).getString( key );
     }
 
 }

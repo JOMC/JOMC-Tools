@@ -33,6 +33,8 @@
 package org.jomc.tools.mojo;
 
 import java.io.File;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
 
 /**
  * Manages a projects' test java classes.
@@ -50,15 +52,27 @@ public class TestJavaClassesMojo extends AbstractJomcMojo
     @Override
     public void executeTool() throws Exception
     {
-        File classesDirectory = new File( this.getMavenProject().getBuild().getTestOutputDirectory() );
-        if ( !classesDirectory.isAbsolute() )
+        if ( !this.isJavaClassProcessingDisabled() )
         {
-            classesDirectory = new File( this.getMavenProject().getBasedir(),
-                                         this.getMavenProject().getBuild().getTestOutputDirectory() );
+            File classesDirectory = new File( this.getMavenProject().getBuild().getTestOutputDirectory() );
+            if ( !classesDirectory.isAbsolute() )
+            {
+                classesDirectory = new File( this.getMavenProject().getBasedir(),
+                                             this.getMavenProject().getBuild().getTestOutputDirectory() );
 
+            }
+
+            this.getTestJavaClassesTool().commitModuleClasses( classesDirectory );
         }
+        else
+        {
+            this.log( Level.INFO, this.getMessage( "disabled" ), null );
+        }
+    }
 
-        this.getTestJavaClassesTool().commitModuleClasses( classesDirectory );
+    private String getMessage( final String key )
+    {
+        return ResourceBundle.getBundle( TestJavaClassesMojo.class.getName().replace( '.', '/' ) ).getString( key );
     }
 
 }
