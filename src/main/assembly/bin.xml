@@ -60,31 +60,38 @@
         <include>README.txt</include>
       </includes>
     </fileSet>
-    <fileSet>
-      <directory>target/appassembler/bin</directory>
-      <outputDirectory>bin</outputDirectory>
-      <includes>
-        <include>*.bat</include>
-      </includes>
-      <lineEnding>dos</lineEnding>
-    </fileSet>
-    <fileSet>
-      <directory>target/appassembler/bin</directory>
-      <outputDirectory>bin</outputDirectory>
-      <includes>
-        <include>jomc</include>
-      </includes>
-      <lineEnding>unix</lineEnding>
-      <fileMode>0755</fileMode>
-    </fileSet>
-    <fileSet>
-      <directory>target/appassembler/lib</directory>
-      <outputDirectory>lib</outputDirectory>
-      <fileMode>0755</fileMode>
-      <excludes>
-        <exclude>*.xml</exclude>
-        <exclude>*.pom</exclude>
-      </excludes>
-    </fileSet>
   </fileSets>
+  <dependencySets>
+    <dependencySet>
+      <directoryMode>0755</directoryMode>
+      <fileMode>0644</fileMode>
+      <scope>compile</scope>
+      <includes>
+        <include>org.jomc:jomc-cli</include>
+      </includes>
+    </dependencySet>
+    <dependencySet>
+      <directoryMode>0755</directoryMode>
+      <fileMode>0644</fileMode>
+      <scope>runtime</scope>
+      <outputDirectory>/ext</outputDirectory>
+      <excludes>
+        <exclude>org.jomc:jomc-api</exclude>
+        <exclude>org.jomc:jomc-spi</exclude>
+        <exclude>org.jomc:jomc-model</exclude>
+        <exclude>org.jomc:jomc-ri</exclude>
+        <exclude>org.jomc:jomc-tools</exclude>
+        <exclude>org.jomc:jomc-cli</exclude>
+        <exclude>commons-cli:commons-cli</exclude>
+        <exclude>commons-collections:commons-collections</exclude>
+        <exclude>commons-io:commons-io</exclude>
+        <exclude>commons-lang:commons-lang</exclude>
+        <exclude>jakarta-regexp:jakarta-regexp</exclude>
+        <exclude>oro:oro</exclude>
+        <exclude>org.apache.velocity:velocity</exclude>
+        <exclude>org.apache.bcel:bcel</exclude>
+        <exclude>javax.annotation:jsr250-api</exclude>
+      </excludes>
+    </dependencySet>
+  </dependencySets>
 </assembly>

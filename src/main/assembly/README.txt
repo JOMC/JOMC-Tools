@@ -5,4 +5,8 @@
 
   ${pom.description}
 
-  See the output of the 'jomc' application.
+      See the output of 'java -jar ${project.build.finalName}.jar' for further
+      information. The 'ext' directory contains Java archives needed to run the
+      application with JDK 1.5.
+
+      java -Djava.ext.dirs=ext -jar ${project.build.finalName}.jar

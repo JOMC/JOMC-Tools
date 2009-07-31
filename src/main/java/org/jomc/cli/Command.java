@@ -32,7 +32,7 @@
  *
  */
 // SECTION-END
-package org.jomc.tools.cli;
+package org.jomc.cli;
 
 import java.io.PrintStream;
 import java.util.Locale;
@@ -77,6 +77,13 @@ public interface Command
      * @return The name of the command.
      */
     String getName();
+
+    /**
+     * Gets the abbreviated name of the command.
+     *
+     * @return The abbreviated  name of the command.
+     */
+    String getAbbreviatedName();
 
     /**
      * Gets the description of the command.

@@ -32,7 +32,7 @@
  *
  */
 // SECTION-END
-package org.jomc.tools.cli.commands;
+package org.jomc.cli.commands;
 
 import java.io.File;
 import java.io.PrintStream;
@@ -45,12 +45,14 @@ import org.jomc.tools.JavaClasses;
 
 // SECTION-START[Implementation Comment]
 /**
- * Command line interface for verifying classes with the {@code JavaClasses} tool.
+ * Command line interface for committing classes with the {@code JavaClasses} tool.
  * <p><b>Specifications</b><ul>
- * <li>{@code org.jomc.tools.cli.Command} {@code 1.0}<blockquote>
+ * <li>{@code org.jomc.cli.Command} {@code 1.0}<blockquote>
  * Object applies to Multiton scope.</blockquote></li>
  * </ul></p>
  * <p><b>Properties</b><ul>
+ * <li>"{@link #getAbbreviatedCommandName abbreviatedCommandName}"<blockquote>
+ * Property of type {@code java.lang.String} with value "cjc".</blockquote></li>
  * <li>"{@link #getBuildDirectoryOptionLongName buildDirectoryOptionLongName}"<blockquote>
  * Property of type {@code java.lang.String} with value "build-dir".</blockquote></li>
  * <li>"{@link #getBuildDirectoryOptionShortName buildDirectoryOptionShortName}"<blockquote>
@@ -64,11 +66,15 @@ import org.jomc.tools.JavaClasses;
  * <li>"{@link #getClasspathOptionShortName classpathOptionShortName}"<blockquote>
  * Property of type {@code java.lang.String} with value "cp".</blockquote></li>
  * <li>"{@link #getCommandName commandName}"<blockquote>
- * Property of type {@code java.lang.String} with value "verify-java-classes".</blockquote></li>
+ * Property of type {@code java.lang.String} with value "commit-java-classes".</blockquote></li>
  * <li>"{@link #getDebugOptionLongName debugOptionLongName}"<blockquote>
  * Property of type {@code java.lang.String} with value "debug".</blockquote></li>
  * <li>"{@link #getDebugOptionShortName debugOptionShortName}"<blockquote>
  * Property of type {@code java.lang.String} with value "D".</blockquote></li>
+ * <li>"{@link #getDocumentLocationOptionLongName documentLocationOptionLongName}"<blockquote>
+ * Property of type {@code java.lang.String} with value "document-location".</blockquote></li>
+ * <li>"{@link #getDocumentLocationOptionShortName documentLocationOptionShortName}"<blockquote>
+ * Property of type {@code java.lang.String} with value "dl".</blockquote></li>
  * <li>"{@link #getDocumentsOptionLongName documentsOptionLongName}"<blockquote>
  * Property of type {@code java.lang.String} with value "documents".</blockquote></li>
  * <li>"{@link #getDocumentsOptionShortName documentsOptionShortName}"<blockquote>
@@ -87,33 +93,75 @@ import org.jomc.tools.JavaClasses;
  * Dependency on {@code java.util.Locale} at specification level 1.1 applying to Multiton scope bound to an instance.</blockquote></li>
  * </ul></p>
  * <p><b>Messages</b><ul>
+ * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-07-31T09:56:53+0000</pre></td></tr>
+ * </table>
  * <li>"{@link #getBuildDirectoryOptionMessage buildDirectoryOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Work directory of the process.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Arbeitsverzeichnis des Vorgangs.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getBuildDirectoryOptionArgNameMessage buildDirectoryOptionArgName}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>directory</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis</pre></td></tr>
  * </table>
  * <li>"{@link #getClassesDirectoryOptionMessage classesDirectoryOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Directory holding the class files to process..</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis mit den zu verarbeitenden Klassendateien.</pre></td></tr>
  * </table>
+ * <li>"{@link #getClassesDirectoryOptionArgNameMessage classesDirectoryOptionArgName}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>directory</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis</pre></td></tr>
+ * </table>
+ * <li>"{@link #getClasspathElementMessage classpathElement}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath element: ''{0}''</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Klassenpfad-Element: ''{0}''</pre></td></tr>
+ * </table>
  * <li>"{@link #getClasspathOptionMessage classpathOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath elements separated by '':''. If starting with a ''@'' character, a file name of a file holding classpath elements.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Klassenpfad-Elemente mit '':'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Klassenpfad-Elementen.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getClasspathOptionArgNameMessage classpathOptionArgName}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>elements</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Elemente</pre></td></tr>
  * </table>
  * <li>"{@link #getDebugOptionMessage debugOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Enables debug output.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert Diagnose-Ausgaben.</pre></td></tr>
  * </table>
  * <li>"{@link #getDescriptionMessage description}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Verifies Java class files.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Prüft Java Klassendateien.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Commits Java class files.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Schreibt Java Klassendateien fest.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getDocumentFileMessage documentFile}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Document file: ''{0}''</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Datei: ''{0}''</pre></td></tr>
+ * </table>
+ * <li>"{@link #getDocumentLocationOptionMessage documentLocationOption}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Location of classpath documents.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort der Klassenpfad-Dokumente.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getDocumentLocationOptionArgNameMessage documentLocationOptionArgName}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>location</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort</pre></td></tr>
  * </table>
  * <li>"{@link #getDocumentsOptionMessage documentsOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Document filenames separated by '':''. If starting with a ''@'' character, a file name of a file holding document filenames.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Dateinamen mit '':'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Dokument-Dateinamen.</pre></td></tr>
  * </table>
+ * <li>"{@link #getDocumentsOptionArgNameMessage documentsOptionArgName}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>files</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dateien</pre></td></tr>
+ * </table>
  * <li>"{@link #getModuleNameOptionMessage moduleNameOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Name of the module to process.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Name des zu verarbeitenden Moduls.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getModuleNameOptionArgNameMessage moduleNameOptionArgName}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>name</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Name</pre></td></tr>
+ * </table>
+ * <li>"{@link #getSeparatorMessage separator}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>--------------------------------------------------------------------------------</pre></td></tr>
  * </table>
  * <li>"{@link #getVerboseOptionMessage verboseOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Enables verbose output.</pre></td></tr>
@@ -132,9 +180,9 @@ import org.jomc.tools.JavaClasses;
     comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
 )
 // SECTION-END
-public class VerifyJavaClassesCommand
+public class CommitJavaClassesCommand
     extends AbstractJomcCommand
-    implements org.jomc.tools.cli.Command
+    implements org.jomc.cli.Command
 {
     // SECTION-START[Command]
 
@@ -148,7 +196,6 @@ public class VerifyJavaClassesCommand
         {
             this.options = super.getOptions();
             this.options.addOption( this.getClassesDirectoryOption() );
-            this.options.addOption( this.getModuleNameOption() );
         }
 
         return this.options;
@@ -156,7 +203,7 @@ public class VerifyJavaClassesCommand
 
     public int execute( final PrintStream printStream, final CommandLine commandLine )
     {
-        int status = STATUS_OK;
+        int status = super.execute( commandLine, printStream );
 
         final boolean verbose = commandLine.hasOption( this.getVerboseOption().getOpt() );
         final boolean debug = commandLine.hasOption( this.getDebugOption().getOpt() );
@@ -164,10 +211,10 @@ public class VerifyJavaClassesCommand
         try
         {
             final JavaClasses tool = new JavaClasses();
-            this.configureTool( tool, commandLine, printStream );
+            this.configureTool( tool, commandLine, printStream, true );
             tool.setModuleName( commandLine.getOptionValue( this.getModuleNameOption().getOpt() ) );
 
-            tool.validateModuleClasses(
+            tool.commitModuleClasses(
                 new File( commandLine.getOptionValue( this.getClassesDirectoryOption().getOpt() ) ) );
 
         }
@@ -187,14 +234,14 @@ public class VerifyJavaClassesCommand
             status = STATUS_FAILURE;
         }
 
+        this.log( Level.INFO, this.getSeparatorMessage( this.getLocale() ), null, printStream, verbose, debug );
+
         return status;
     }
 
     // SECTION-END
-    // SECTION-START[VerifyJavaClassesCommand]
+    // SECTION-START[CommitJavaClassesCommand]
     private Option classesDirectoryOption;
-
-    private Option moduleNameOption;
 
     public Option getClassesDirectoryOption()
     {
@@ -205,23 +252,10 @@ public class VerifyJavaClassesCommand
                                                       this.getClassesDirectoryOptionMessage( this.getLocale() ) );
 
             this.classesDirectoryOption.setRequired( true );
+            this.classesDirectoryOption.setArgName( this.getClassesDirectoryOptionArgNameMessage( this.getLocale() ) );
         }
 
         return this.classesDirectoryOption;
-    }
-
-    public Option getModuleNameOption()
-    {
-        if ( this.moduleNameOption == null )
-        {
-            this.moduleNameOption = new Option( this.getModuleNameOptionShortName(),
-                                                this.getModuleNameOptionLongName(),
-                                                true, this.getModuleNameOptionMessage( this.getLocale() ) );
-
-            this.moduleNameOption.setRequired( true );
-        }
-
-        return this.moduleNameOption;
     }
 
     // SECTION-END
@@ -233,7 +267,7 @@ public class VerifyJavaClassesCommand
         value = "org.jomc.tools.JavaSources",
         comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
     )
-    public VerifyJavaClassesCommand()
+    public CommitJavaClassesCommand()
     {
         // SECTION-START[Default Constructor]
         super();
@@ -259,6 +293,21 @@ public class VerifyJavaClassesCommand
     }
     // SECTION-END
     // SECTION-START[Properties]
+
+    /**
+     * Gets the value of the {@code abbreviatedCommandName} property.
+     * @return Abbreviated name of the command.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private java.lang.String getAbbreviatedCommandName() throws org.jomc.ObjectManagementException
+    {
+        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "abbreviatedCommandName" );
+    }
 
     /**
      * Gets the value of the {@code buildDirectoryOptionLongName} property.
@@ -396,6 +445,36 @@ public class VerifyJavaClassesCommand
     }
 
     /**
+     * Gets the value of the {@code documentLocationOptionLongName} property.
+     * @return Long name of the 'document-location' option.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private java.lang.String getDocumentLocationOptionLongName() throws org.jomc.ObjectManagementException
+    {
+        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "documentLocationOptionLongName" );
+    }
+
+    /**
+     * Gets the value of the {@code documentLocationOptionShortName} property.
+     * @return Name of the 'document-location' option.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private java.lang.String getDocumentLocationOptionShortName() throws org.jomc.ObjectManagementException
+    {
+        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "documentLocationOptionShortName" );
+    }
+
+    /**
      * Gets the value of the {@code documentsOptionLongName} property.
      * @return Long name of the 'documents' option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
@@ -488,6 +567,26 @@ public class VerifyJavaClassesCommand
     // SECTION-START[Messages]
 
     /**
+     * Gets the text of the {@code applicationTitle} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-07-31T09:56:53+0000</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code applicationTitle} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getApplicationTitleMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "applicationTitle", locale,  null );
+    }
+
+    /**
      * Gets the text of the {@code buildDirectoryOption} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Work directory of the process.</pre></td></tr>
@@ -506,6 +605,27 @@ public class VerifyJavaClassesCommand
     private String getBuildDirectoryOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
     {
         return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "buildDirectoryOption", locale,  null );
+    }
+
+    /**
+     * Gets the text of the {@code buildDirectoryOptionArgName} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>directory</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code buildDirectoryOptionArgName} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getBuildDirectoryOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "buildDirectoryOptionArgName", locale,  null );
     }
 
     /**
@@ -530,6 +650,49 @@ public class VerifyJavaClassesCommand
     }
 
     /**
+     * Gets the text of the {@code classesDirectoryOptionArgName} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>directory</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code classesDirectoryOptionArgName} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getClassesDirectoryOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "classesDirectoryOptionArgName", locale,  null );
+    }
+
+    /**
+     * Gets the text of the {@code classpathElement} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath element: ''{0}''</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Klassenpfad-Element: ''{0}''</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param classpathElement Format argument.
+     * @return The text of the {@code classpathElement} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getClasspathElementMessage( final java.util.Locale locale, final java.lang.String classpathElement ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "classpathElement", locale, new Object[] { classpathElement, null } );
+    }
+
+    /**
      * Gets the text of the {@code classpathOption} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath elements separated by '':''. If starting with a ''@'' character, a file name of a file holding classpath elements.</pre></td></tr>
@@ -548,6 +711,27 @@ public class VerifyJavaClassesCommand
     private String getClasspathOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
     {
         return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "classpathOption", locale,  null );
+    }
+
+    /**
+     * Gets the text of the {@code classpathOptionArgName} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>elements</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Elemente</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code classpathOptionArgName} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getClasspathOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "classpathOptionArgName", locale,  null );
     }
 
     /**
@@ -574,8 +758,8 @@ public class VerifyJavaClassesCommand
     /**
      * Gets the text of the {@code description} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Verifies Java class files.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Prüft Java Klassendateien.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Commits Java class files.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Schreibt Java Klassendateien fest.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code description} message.
@@ -590,6 +774,70 @@ public class VerifyJavaClassesCommand
     private String getDescriptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
     {
         return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "description", locale,  null );
+    }
+
+    /**
+     * Gets the text of the {@code documentFile} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Document file: ''{0}''</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Datei: ''{0}''</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param documentFile Format argument.
+     * @return The text of the {@code documentFile} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getDocumentFileMessage( final java.util.Locale locale, final java.lang.String documentFile ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentFile", locale, new Object[] { documentFile, null } );
+    }
+
+    /**
+     * Gets the text of the {@code documentLocationOption} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Location of classpath documents.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort der Klassenpfad-Dokumente.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code documentLocationOption} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getDocumentLocationOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentLocationOption", locale,  null );
+    }
+
+    /**
+     * Gets the text of the {@code documentLocationOptionArgName} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>location</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code documentLocationOptionArgName} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getDocumentLocationOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentLocationOptionArgName", locale,  null );
     }
 
     /**
@@ -614,6 +862,27 @@ public class VerifyJavaClassesCommand
     }
 
     /**
+     * Gets the text of the {@code documentsOptionArgName} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>files</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dateien</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code documentsOptionArgName} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getDocumentsOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentsOptionArgName", locale,  null );
+    }
+
+    /**
      * Gets the text of the {@code moduleNameOption} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Name of the module to process.</pre></td></tr>
@@ -632,6 +901,47 @@ public class VerifyJavaClassesCommand
     private String getModuleNameOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
     {
         return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "moduleNameOption", locale,  null );
+    }
+
+    /**
+     * Gets the text of the {@code moduleNameOptionArgName} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>name</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Name</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code moduleNameOptionArgName} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getModuleNameOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "moduleNameOptionArgName", locale,  null );
+    }
+
+    /**
+     * Gets the text of the {@code separator} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>--------------------------------------------------------------------------------</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code separator} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getSeparatorMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "separator", locale,  null );
     }
 
     /**

@@ -32,7 +32,7 @@
  *
  */
 // SECTION-END
-package org.jomc.tools.cli;
+package org.jomc.cli;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -46,20 +46,30 @@ import org.apache.commons.cli.ParseException;
 // SECTION-START[Implementation Comment]
 /**
  * JOMC command line interface.
+ * <p><b>Properties</b><ul>
+ * <li>"{@link #getDescPad descPad}"<blockquote>
+ * Property of type {@code int} with value "2".</blockquote></li>
+ * <li>"{@link #getHelpCommandName helpCommandName}"<blockquote>
+ * Property of type {@code java.lang.String} with value "help".</blockquote></li>
+ * <li>"{@link #getLeftPad leftPad}"<blockquote>
+ * Property of type {@code int} with value "2".</blockquote></li>
+ * <li>"{@link #getWidth width}"<blockquote>
+ * Property of type {@code int} with value "80".</blockquote></li>
+ * </ul></p>
  * <p><b>Dependencies</b><ul>
  * <li>"{@link #getCommands Commands}"<blockquote>
- * Dependency on {@code org.jomc.tools.cli.Command} at specification level 1.0-alpha-1-SNAPSHOT applying to Multiton scope.</blockquote></li>
+ * Dependency on {@code org.jomc.cli.Command} at specification level 1.0-alpha-1-SNAPSHOT applying to Multiton scope.</blockquote></li>
  * <li>"{@link #getLocale Locale}"<blockquote>
  * Dependency on {@code java.util.Locale} at specification level 1.1 applying to Multiton scope bound to an instance.</blockquote></li>
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getIllegalArgumentsMessage illegalArguments}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal arguments. Try ''jomc {0} help''.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ungültige Argumente. Versuchen Sie ''jomc {0} help''.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal arguments. Try ''jomc {0} {1}''.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ungültige Argumente. Versuchen Sie ''jomc {0} {1}''.</pre></td></tr>
  * </table>
  * <li>"{@link #getUsageMessage usage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Type ''jomc <command> help'' for further information.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Geben Sie ''jomc <Befehl> help'' für weitere Hilfe ein.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Type ''jomc <command> {0}'' for further information.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Geben Sie ''jomc <Befehl> {0}'' für weitere Hilfe ein.</pre></td></tr>
  * </table>
  * </ul></p>
  *
@@ -86,6 +96,14 @@ public class Jomc
 
     /** Print stream of the instance. */
     private PrintStream printStream;
+
+    /** Constant for the name of the system property controlling the bootstrap document location. */
+    private static final String SYS_BOOTSTRAP_DOCUMENT_LOCATION =
+        "org.jomc.model.DefaultModelManager.bootstrapDocumentLocation";
+
+    /** Constant for the name of the system property controlling the default document location. */
+    private static final String SYS_DEFAULT_DOCUMENT_LOCATION =
+        "org.jomc.model.DefaultModelManager.defaultDocumentLocation";
 
     /**
      * Gets the print stream of the instance.
@@ -123,25 +141,33 @@ public class Jomc
     {
         Command cmd = null;
 
+        final String currentBootstrapDocumentLocation = System.getProperty( SYS_BOOTSTRAP_DOCUMENT_LOCATION );
+        final String currentDefaultDocumentLocation = System.getProperty( SYS_DEFAULT_DOCUMENT_LOCATION );
+
         try
         {
+            System.setProperty( SYS_BOOTSTRAP_DOCUMENT_LOCATION, "META-INF/jomc-cli-bootstrap.xml" );
+            System.setProperty( SYS_DEFAULT_DOCUMENT_LOCATION, "META-INF/jomc-cli.xml" );
+
             final StringBuffer commandInfo = new StringBuffer();
 
             for ( Command c : this.getCommands() )
             {
-                if ( cmd == null && args != null && args.length > 0 && args[0].equals( c.getName() ) )
+                if ( cmd == null && args != null && args.length > 0 &&
+                     ( args[0].equals( c.getName() ) || args[0].equals( c.getAbbreviatedName() ) ) )
                 {
                     cmd = c;
                 }
 
-                commandInfo.append( c.getName() ).append( '\t' ).append( c.getDescription( this.getLocale() ) ).
+                commandInfo.append( c.getName() ).append( "\t" ).append( c.getDescription( this.getLocale() ) ).
+                    append( " (" ).append( c.getAbbreviatedName() ).append( ")" ).
                     append( System.getProperty( "line.separator" ) );
 
             }
 
             if ( cmd == null )
             {
-                this.getPrintStream().println( this.getUsageMessage( this.getLocale() ) );
+                this.getPrintStream().println( this.getUsageMessage( this.getLocale(), this.getHelpCommandName() ) );
                 this.getPrintStream().println();
                 this.getPrintStream().println( commandInfo.toString() );
                 return STATUS_FAILURE;
@@ -150,18 +176,18 @@ public class Jomc
             final String[] commandArguments = new String[ args.length - 1 ];
             System.arraycopy( args, 1, commandArguments, 0, commandArguments.length );
 
-            if ( commandArguments.length > 0 && "help".equals( commandArguments[0] ) )
+            if ( commandArguments.length > 0 && this.getHelpCommandName().equals( commandArguments[0] ) )
             {
                 final StringWriter usage = new StringWriter();
                 final StringWriter opts = new StringWriter();
                 final HelpFormatter formatter = new HelpFormatter();
 
                 PrintWriter pw = new PrintWriter( usage );
-                formatter.printUsage( pw, 72, cmd.getName(), cmd.getOptions() );
+                formatter.printUsage( pw, this.getWidth(), cmd.getName(), cmd.getOptions() );
                 pw.close();
 
                 pw = new PrintWriter( opts );
-                formatter.printOptions( pw, 72, cmd.getOptions(), 5, 5 );
+                formatter.printOptions( pw, this.getWidth(), cmd.getOptions(), this.getLeftPad(), this.getDescPad() );
                 pw.close();
 
                 this.getPrintStream().println( usage.toString() );
@@ -171,18 +197,35 @@ public class Jomc
 
             final CommandLineParser parser = new GnuParser();
             final CommandLine commandLine = parser.parse( cmd.getOptions(), commandArguments );
+
+            System.clearProperty( SYS_BOOTSTRAP_DOCUMENT_LOCATION );
+            System.clearProperty( SYS_DEFAULT_DOCUMENT_LOCATION );
+
             return cmd.execute( this.getPrintStream(), commandLine );
         }
         catch ( ParseException e )
         {
             this.getPrintStream().println( e.getMessage() );
-            this.getPrintStream().println( this.getIllegalArgumentsMessage( this.getLocale(), cmd.getName() ) );
+            this.getPrintStream().println( this.getIllegalArgumentsMessage(
+                this.getLocale(), cmd.getName(), this.getHelpCommandName() ) );
+
             return STATUS_FAILURE;
         }
         catch ( Throwable t )
         {
             t.printStackTrace( this.getPrintStream() );
             return STATUS_FAILURE;
+        }
+        finally
+        {
+            if ( currentBootstrapDocumentLocation != null )
+            {
+                System.setProperty( SYS_BOOTSTRAP_DOCUMENT_LOCATION, currentBootstrapDocumentLocation );
+            }
+            if ( currentDefaultDocumentLocation != null )
+            {
+                System.setProperty( SYS_DEFAULT_DOCUMENT_LOCATION, currentDefaultDocumentLocation );
+            }
         }
     }
 
@@ -216,7 +259,7 @@ public class Jomc
 
     /**
      * Gets the {@code Commands} dependency.
-     * <p>This method returns any available object of the {@code org.jomc.tools.cli.Command} specification at specification level 1.0-alpha-1-SNAPSHOT.</p>
+     * <p>This method returns any available object of the {@code org.jomc.cli.Command} specification at specification level 1.0-alpha-1-SNAPSHOT.</p>
      * @return The {@code Commands} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -225,9 +268,9 @@ public class Jomc
         value = "org.jomc.tools.JavaSources",
         comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
     )
-    private org.jomc.tools.cli.Command[] getCommands() throws org.jomc.ObjectManagementException
+    private org.jomc.cli.Command[] getCommands() throws org.jomc.ObjectManagementException
     {
-        return (org.jomc.tools.cli.Command[]) org.jomc.ObjectManagerFactory.getObjectManager().getDependency( this, "Commands" );
+        return (org.jomc.cli.Command[]) org.jomc.ObjectManagerFactory.getObjectManager().getDependency( this, "Commands" );
     }
 
     /**
@@ -247,17 +290,78 @@ public class Jomc
     }
     // SECTION-END
     // SECTION-START[Properties]
+
+    /**
+     * Gets the value of the {@code descPad} property.
+     * @return The number of characters of padding to be prefixed to each description line.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private int getDescPad() throws org.jomc.ObjectManagementException
+    {
+        return ( (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "descPad" ) ).intValue();
+    }
+
+    /**
+     * Gets the value of the {@code helpCommandName} property.
+     * @return The name of the command used to request help.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private java.lang.String getHelpCommandName() throws org.jomc.ObjectManagementException
+    {
+        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "helpCommandName" );
+    }
+
+    /**
+     * Gets the value of the {@code leftPad} property.
+     * @return The number of characters of padding to be prefixed to each line.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private int getLeftPad() throws org.jomc.ObjectManagementException
+    {
+        return ( (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "leftPad" ) ).intValue();
+    }
+
+    /**
+     * Gets the value of the {@code width} property.
+     * @return The number of characters per line for the usage statement.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private int getWidth() throws org.jomc.ObjectManagementException
+    {
+        return ( (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "width" ) ).intValue();
+    }
     // SECTION-END
     // SECTION-START[Messages]
 
     /**
      * Gets the text of the {@code illegalArguments} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal arguments. Try ''jomc {0} help''.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ungültige Argumente. Versuchen Sie ''jomc {0} help''.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal arguments. Try ''jomc {0} {1}''.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ungültige Argumente. Versuchen Sie ''jomc {0} {1}''.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @param command Format argument.
+     * @param helpCommandName Format argument.
      * @return The text of the {@code illegalArguments} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
@@ -267,18 +371,19 @@ public class Jomc
         value = "org.jomc.tools.JavaSources",
         comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
     )
-    private String getIllegalArgumentsMessage( final java.util.Locale locale, final java.lang.String command ) throws org.jomc.ObjectManagementException
+    private String getIllegalArgumentsMessage( final java.util.Locale locale, final java.lang.String command, final java.lang.String helpCommandName ) throws org.jomc.ObjectManagementException
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "illegalArguments", locale, new Object[] { command, null } );
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "illegalArguments", locale, new Object[] { command, helpCommandName, null } );
     }
 
     /**
      * Gets the text of the {@code usage} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Type ''jomc <command> help'' for further information.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Geben Sie ''jomc <Befehl> help'' für weitere Hilfe ein.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Type ''jomc <command> {0}'' for further information.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Geben Sie ''jomc <Befehl> {0}'' für weitere Hilfe ein.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
+     * @param helpCommandName Format argument.
      * @return The text of the {@code usage} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
@@ -288,9 +393,9 @@ public class Jomc
         value = "org.jomc.tools.JavaSources",
         comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
     )
-    private String getUsageMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    private String getUsageMessage( final java.util.Locale locale, final java.lang.String helpCommandName ) throws org.jomc.ObjectManagementException
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "usage", locale,  null );
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "usage", locale, new Object[] { helpCommandName, null } );
     }
     // SECTION-END
 }
