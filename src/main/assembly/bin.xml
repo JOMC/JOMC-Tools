@@ -60,12 +60,35 @@
         <include>README.txt</include>
       </includes>
     </fileSet>
+    <fileSet>
+      <directory>src/main/assembly/bin</directory>
+      <outputDirectory>/bin</outputDirectory>
+      <lineEnding>dos</lineEnding>
+      <directoryMode>0755</directoryMode>
+      <fileMode>0555</fileMode>
+      <filtered>true</filtered>
+      <includes>
+        <include>jomc.bat</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>src/main/assembly/bin</directory>
+      <outputDirectory>/bin</outputDirectory>
+      <lineEnding>unix</lineEnding>
+      <directoryMode>0755</directoryMode>
+      <fileMode>0555</fileMode>
+      <filtered>true</filtered>
+      <includes>
+        <include>jomc</include>
+      </includes>
+    </fileSet>
   </fileSets>
   <dependencySets>
     <dependencySet>
       <directoryMode>0755</directoryMode>
       <fileMode>0644</fileMode>
       <scope>compile</scope>
+      <outputDirectory>/lib</outputDirectory>
       <includes>
         <include>org.jomc:jomc-cli</include>
       </includes>
@@ -74,7 +97,7 @@
       <directoryMode>0755</directoryMode>
       <fileMode>0644</fileMode>
       <scope>runtime</scope>
-      <outputDirectory>/ext</outputDirectory>
+      <outputDirectory>/lib/ext</outputDirectory>
       <excludes>
         <exclude>org.jomc:jomc-api</exclude>
         <exclude>org.jomc:jomc-spi</exclude>
