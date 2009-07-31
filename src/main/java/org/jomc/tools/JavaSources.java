@@ -33,10 +33,15 @@
 package org.jomc.tools;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringWriter;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.commons.io.FileUtils;
@@ -126,6 +131,9 @@ public class JavaSources extends JomcTool
 
     /** Name of the {@code implementation-annotations.vm} template. */
     private static final String IMPLEMENTATION_ANNOTATIONS_TEMPLATE = "implementation-annotations.vm";
+
+    /** Constant for the name of the properties file holding modification timestamps. */
+    private static final String TIMESTAMPS_FILE_NAME = "java-sources.properties";
 
     /** Creates a new {@code JavaSources} instance. */
     public JavaSources()
@@ -220,43 +228,84 @@ public class JavaSources extends JomcTool
         }
 
         final File f = new File( sourceDirectory, specification.getIdentifier().replace( '.', '/' ) + ".java" );
+        final Properties timestampProperties = new Properties();
+        File timestampsFile = null;
 
-        String content;
-        if ( f.exists() )
+        if ( this.getBuildDirectory() != null )
         {
-            content = FileUtils.readFileToString( f, this.getInputEncoding() );
-        }
-        else
-        {
-            if ( !f.getParentFile().exists() )
+            timestampsFile = new File( this.getBuildDirectory(), TIMESTAMPS_FILE_NAME );
+            if ( !this.getBuildDirectory().exists() )
             {
-                f.getParentFile().mkdirs();
+                this.getBuildDirectory().mkdirs();
+            }
+            if ( !timestampsFile.exists() )
+            {
+                timestampsFile.createNewFile();
             }
 
-            content = this.getSpecificationTemplate( specification );
-        }
+            final InputStream in = new FileInputStream( timestampsFile );
+            timestampProperties.load( in );
+            in.close();
 
-        final JavaEditor editor = this.newJavaEditor( specification );
-        final String edited = editor.edit( content );
-
-        if ( !editor.isAnnotationsSectionEdited() )
-        {
-            throw new IOException( this.getMessage( "missingSection", new Object[]
+            this.log( Level.FINE, this.getMessage( "timestampsFile", new Object[]
                 {
-                    ANNOTATIONS_SECTION_NAME,
-                    specification.getIdentifier()
-                } ) );
-
-        }
-
-        if ( !edited.equals( content ) )
-        {
-            FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
-            this.log( Level.INFO, this.getMessage( "editing", new Object[]
-                {
-                    f.getCanonicalPath()
+                    timestampsFile.getAbsolutePath()
                 } ), null );
 
+        }
+
+        long lastModified = -1L;
+        if ( timestampProperties.getProperty( f.getAbsolutePath() + "@" + this.getProfile() ) != null )
+        {
+            lastModified =
+                Long.valueOf( timestampProperties.getProperty( f.getAbsolutePath() + "@" + this.getProfile() ) );
+
+        }
+
+        if ( lastModified == -1L || lastModified != f.lastModified() )
+        {
+            final String content = f.exists()
+                                   ? FileUtils.readFileToString( f, this.getInputEncoding() )
+                                   : this.getSpecificationTemplate( specification );
+
+            final JavaEditor editor = this.newJavaEditor( specification );
+            final String edited = editor.edit( content );
+
+            if ( !editor.isAnnotationsSectionEdited() )
+            {
+                throw new IOException( this.getMessage( "missingSection", new Object[]
+                    {
+                        ANNOTATIONS_SECTION_NAME,
+                        specification.getIdentifier()
+                    } ) );
+
+            }
+
+            if ( !edited.equals( content ) )
+            {
+                if ( !f.getParentFile().exists() )
+                {
+                    f.getParentFile().mkdirs();
+                }
+
+                FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
+                this.log( Level.INFO, this.getMessage( "editing", new Object[]
+                    {
+                        f.getCanonicalPath()
+                    } ), null );
+
+            }
+
+            timestampProperties.setProperty(
+                f.getAbsolutePath() + "@" + this.getProfile(), Long.valueOf( f.lastModified() ).toString() );
+
+        }
+
+        if ( timestampsFile != null )
+        {
+            final OutputStream out = new FileOutputStream( timestampsFile );
+            timestampProperties.store( out, this.getClass().getName() );
+            out.close();
         }
     }
 
@@ -282,93 +331,134 @@ public class JavaSources extends JomcTool
         }
 
         final File f = new File( sourceDirectory, implementation.getClazz().replace( '.', '/' ) + ".java" );
+        final Properties timestampProperties = new Properties();
+        File timestampsFile = null;
 
-        String content;
-        if ( f.exists() )
+        if ( this.getBuildDirectory() != null )
         {
-            content = FileUtils.readFileToString( f, this.getInputEncoding() );
-        }
-        else
-        {
-            if ( !f.getParentFile().exists() )
+            timestampsFile = new File( this.getBuildDirectory(), TIMESTAMPS_FILE_NAME );
+            if ( !this.getBuildDirectory().exists() )
             {
-                f.getParentFile().mkdirs();
+                this.getBuildDirectory().mkdirs();
+            }
+            if ( !timestampsFile.exists() )
+            {
+                timestampsFile.createNewFile();
             }
 
-            content = this.getImplementationTemplate( implementation );
-        }
+            final InputStream in = new FileInputStream( timestampsFile );
+            timestampProperties.load( in );
+            in.close();
 
-        final JavaEditor editor = this.newJavaEditor( implementation );
-        final String edited = editor.edit( content );
-
-        if ( editor.isConstructorsSectionEdited() && !editor.isDefaultConstructorSectionEdited() )
-        {
-            throw new IOException( this.getMessage( "missingSection", new Object[]
+            this.log( Level.FINE, this.getMessage( "timestampsFile", new Object[]
                 {
-                    CONSTRUCTORS_SECTION_NAME,
-                    implementation.getIdentifier()
-                } ) );
-
-        }
-        if ( implementation.getSpecifications() != null &&
-             !implementation.getSpecifications().getReference().isEmpty() && !editor.isConstructorsSectionEdited() )
-        {
-            throw new IOException( this.getMessage( "missingSection", new Object[]
-                {
-                    CONSTRUCTORS_SECTION_NAME,
-                    implementation.getIdentifier()
-                } ) );
-
-        }
-        if ( implementation.getProperties() != null &&
-             !implementation.getProperties().getProperty().isEmpty() && !editor.isPropertiesSectionEdited() )
-        {
-            throw new IOException( this.getMessage( "missingSection", new Object[]
-                {
-                    PROPERTIES_SECTION_NAME,
-                    implementation.getIdentifier()
-                } ) );
-
-        }
-        if ( implementation.getDependencies() != null &&
-             !implementation.getDependencies().getDependency().isEmpty() && !editor.isDependenciesSectionEdited() )
-        {
-            throw new IOException( this.getMessage( "missingSection", new Object[]
-                {
-                    DEPENDENCIES_SECTION_NAME,
-                    implementation.getIdentifier()
-                } ) );
-
-        }
-        if ( implementation.getMessages() != null &&
-             !( implementation.getMessages().getReference().isEmpty() &&
-                implementation.getMessages().getMessage().isEmpty() ) && !editor.isMessagesSectionEdited() )
-        {
-            throw new IOException( this.getMessage( "missingSection", new Object[]
-                {
-                    MESSAGES_SECTION_NAME,
-                    implementation.getIdentifier()
-                } ) );
-
-        }
-        if ( !editor.isAnnotationsSectionEdited() )
-        {
-            throw new IOException( this.getMessage( "missingSection", new Object[]
-                {
-                    ANNOTATIONS_SECTION_NAME,
-                    implementation.getIdentifier()
-                } ) );
-
-        }
-
-        if ( !edited.equals( content ) )
-        {
-            FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
-            this.log( Level.INFO, this.getMessage( "editing", new Object[]
-                {
-                    f.getCanonicalPath()
+                    timestampsFile.getAbsolutePath()
                 } ), null );
 
+        }
+
+        long lastModified = -1L;
+        if ( timestampProperties.getProperty( f.getAbsolutePath() + "@" + this.getProfile() ) != null )
+        {
+            lastModified =
+                Long.valueOf( timestampProperties.getProperty( f.getAbsolutePath() + "@" + this.getProfile() ) );
+
+        }
+
+        if ( lastModified == -1L || lastModified != f.lastModified() )
+        {
+            final String content = f.exists()
+                                   ? FileUtils.readFileToString( f, this.getInputEncoding() )
+                                   : this.getImplementationTemplate( implementation );
+
+            final JavaEditor editor = this.newJavaEditor( implementation );
+            final String edited = editor.edit( content );
+
+            if ( editor.isConstructorsSectionEdited() && !editor.isDefaultConstructorSectionEdited() )
+            {
+                throw new IOException( this.getMessage( "missingSection", new Object[]
+                    {
+                        CONSTRUCTORS_SECTION_NAME,
+                        implementation.getIdentifier()
+                    } ) );
+
+            }
+            if ( implementation.getSpecifications() != null &&
+                 !implementation.getSpecifications().getReference().isEmpty() && !editor.isConstructorsSectionEdited() )
+            {
+                throw new IOException( this.getMessage( "missingSection", new Object[]
+                    {
+                        CONSTRUCTORS_SECTION_NAME,
+                        implementation.getIdentifier()
+                    } ) );
+
+            }
+            if ( implementation.getProperties() != null &&
+                 !implementation.getProperties().getProperty().isEmpty() && !editor.isPropertiesSectionEdited() )
+            {
+                throw new IOException( this.getMessage( "missingSection", new Object[]
+                    {
+                        PROPERTIES_SECTION_NAME,
+                        implementation.getIdentifier()
+                    } ) );
+
+            }
+            if ( implementation.getDependencies() != null &&
+                 !implementation.getDependencies().getDependency().isEmpty() && !editor.isDependenciesSectionEdited() )
+            {
+                throw new IOException( this.getMessage( "missingSection", new Object[]
+                    {
+                        DEPENDENCIES_SECTION_NAME,
+                        implementation.getIdentifier()
+                    } ) );
+
+            }
+            if ( implementation.getMessages() != null &&
+                 !( implementation.getMessages().getReference().isEmpty() &&
+                    implementation.getMessages().getMessage().isEmpty() ) && !editor.isMessagesSectionEdited() )
+            {
+                throw new IOException( this.getMessage( "missingSection", new Object[]
+                    {
+                        MESSAGES_SECTION_NAME,
+                        implementation.getIdentifier()
+                    } ) );
+
+            }
+            if ( !editor.isAnnotationsSectionEdited() )
+            {
+                throw new IOException( this.getMessage( "missingSection", new Object[]
+                    {
+                        ANNOTATIONS_SECTION_NAME,
+                        implementation.getIdentifier()
+                    } ) );
+
+            }
+
+            if ( !edited.equals( content ) )
+            {
+                if ( !f.getParentFile().exists() )
+                {
+                    f.getParentFile().mkdirs();
+                }
+
+                FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
+                this.log( Level.INFO, this.getMessage( "editing", new Object[]
+                    {
+                        f.getCanonicalPath()
+                    } ), null );
+
+            }
+
+            timestampProperties.setProperty(
+                f.getAbsolutePath() + "@" + this.getProfile(), Long.valueOf( f.lastModified() ).toString() );
+
+        }
+
+        if ( timestampsFile != null )
+        {
+            final OutputStream out = new FileOutputStream( timestampsFile );
+            timestampProperties.store( out, this.getClass().getName() );
+            out.close();
         }
     }
 

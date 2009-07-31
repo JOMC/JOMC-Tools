@@ -35,8 +35,11 @@ package org.jomc.tools;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.LinkedList;
@@ -78,6 +81,9 @@ import org.xml.sax.SAXException;
 public class JavaClasses extends JomcTool
 {
 
+    /** Constant for the name of the properties file holding modification timestamps. */
+    private static final String TIMESTAMPS_FILE_NAME = "java-classes.properties";
+
     /** Creates a new {@code JavaClasses} instance. */
     public JavaClasses()
     {
@@ -116,6 +122,30 @@ public class JavaClasses extends JomcTool
                     this.getModule().getName()
                 } ), null );
 
+            File timestampsFile = null;
+            final java.util.Properties timestampProperties = new java.util.Properties();
+            if ( this.getBuildDirectory() != null )
+            {
+                timestampsFile = new File( this.getBuildDirectory(), TIMESTAMPS_FILE_NAME );
+                if ( !this.getBuildDirectory().exists() )
+                {
+                    this.getBuildDirectory().mkdirs();
+                }
+                if ( !timestampsFile.exists() )
+                {
+                    timestampsFile.createNewFile();
+                }
+
+                final InputStream in = new FileInputStream( timestampsFile );
+                timestampProperties.load( in );
+                in.close();
+
+                this.log( Level.FINE, this.getMessage( "timestampsFile", new Object[]
+                    {
+                        timestampsFile.getAbsolutePath()
+                    } ), null );
+
+            }
 
             if ( this.getModule().getSpecifications() != null )
             {
@@ -123,14 +153,28 @@ public class JavaClasses extends JomcTool
                 {
                     final String classLocation = s.getIdentifier().replace( '.', File.separatorChar ) + ".class";
                     final File classFile = new File( classesDirectory, classLocation );
-                    final long oldLength = classFile.length();
-                    final JavaClass clazz = this.getJavaClass( classFile );
-                    this.commitSpecificationClass( s, clazz );
-                    clazz.dump( classFile );
-                    this.log( Level.INFO, this.getMessage( "writing", new Object[]
-                        {
-                            classFile.getAbsolutePath(), classFile.length() - oldLength
-                        } ), null );
+
+                    long lastModified = -1L;
+                    if ( timestampProperties.getProperty( classFile.getAbsolutePath() ) != null )
+                    {
+                        lastModified = Long.valueOf( timestampProperties.getProperty( classFile.getAbsolutePath() ) );
+                    }
+
+                    if ( lastModified == -1L || lastModified != classFile.lastModified() )
+                    {
+                        final long oldLength = classFile.length();
+                        final JavaClass clazz = this.getJavaClass( classFile );
+                        this.commitSpecificationClass( s, clazz );
+                        clazz.dump( classFile );
+                        this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                            {
+                                classFile.getAbsolutePath(), classFile.length() - oldLength
+                            } ), null );
+
+                    }
+
+                    timestampProperties.setProperty(
+                        classFile.getAbsolutePath(), Long.valueOf( classFile.lastModified() ).toString() );
 
                 }
             }
@@ -142,17 +186,39 @@ public class JavaClasses extends JomcTool
                     {
                         final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
                         final File classFile = new File( classesDirectory, classLocation );
-                        final long oldLength = classFile.length();
-                        final JavaClass clazz = this.getJavaClass( classFile );
-                        this.commitImplementationClass( i, clazz );
-                        clazz.dump( classFile );
-                        this.log( Level.INFO, this.getMessage( "writing", new Object[]
-                            {
-                                classFile.getAbsolutePath(), classFile.length() - oldLength
-                            } ), null );
+
+                        long lastModified = -1L;
+                        if ( timestampProperties.getProperty( classFile.getAbsolutePath() ) != null )
+                        {
+                            lastModified =
+                                Long.valueOf( timestampProperties.getProperty( classFile.getAbsolutePath() ) );
+                        }
+
+                        if ( lastModified == -1L || lastModified != classFile.lastModified() )
+                        {
+                            final long oldLength = classFile.length();
+                            final JavaClass clazz = this.getJavaClass( classFile );
+                            this.commitImplementationClass( i, clazz );
+                            clazz.dump( classFile );
+                            this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                                {
+                                    classFile.getAbsolutePath(), classFile.length() - oldLength
+                                } ), null );
+
+                        }
+
+                        timestampProperties.setProperty(
+                            classFile.getAbsolutePath(), Long.valueOf( classFile.lastModified() ).toString() );
 
                     }
                 }
+            }
+
+            if ( timestampsFile != null )
+            {
+                final OutputStream out = new FileOutputStream( timestampsFile );
+                timestampProperties.store( out, this.getClass().getName() );
+                out.close();
             }
 
             this.log( Level.INFO, this.getMessage( "upToDate", null ), null );
