@@ -36,10 +36,8 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
@@ -52,14 +50,12 @@ import org.jomc.model.Implementations;
 import org.jomc.model.Message;
 import org.jomc.model.MessageReference;
 import org.jomc.model.Messages;
-import org.jomc.model.ModelException;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.Properties;
 import org.jomc.model.Property;
 import org.jomc.model.PropertyReference;
 import org.jomc.model.Specification;
-import org.jomc.model.SpecificationReference;
 import org.jomc.model.Specifications;
 import org.jomc.model.Text;
 import org.jomc.model.Texts;
@@ -70,15 +66,10 @@ import org.xml.sax.SAXException;
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
+ * @see #mergeModules(java.lang.String, java.lang.String, java.lang.String, java.io.File, org.jomc.tools.ModelObjectRelocator)
  */
 public class ModuleAssembler extends JomcTool
 {
-
-    /** Relocation map of the instance. */
-    private Map<String, String> relocationMap;
-
-    /** Relocation exclusions of the instance. */
-    private Set<String> relocationExclusions;
 
     /** Creates a new {@code ModuleAssembler} instance. */
     public ModuleAssembler()
@@ -97,255 +88,176 @@ public class ModuleAssembler extends JomcTool
     }
 
     /**
-     * Gets a map of class name relocations.
+     * Assembles the modules of the instance and optionally merges documents from a given directory.
      *
-     * @return A map of class name relocations.
-     */
-    public Map<String, String> getRelocationMap()
-    {
-        if ( this.relocationMap == null )
-        {
-            this.relocationMap = new HashMap<String, String>();
-        }
-
-        return this.relocationMap;
-    }
-
-    /**
-     * Gets a set of class name relocation exclusions.
-     *
-     * @return A set of class name relocation exclusions.
-     */
-    public Set<String> getRelocationExclusions()
-    {
-        if ( this.relocationExclusions == null )
-        {
-            this.relocationExclusions = new HashSet<String>();
-        }
-
-        return this.relocationExclusions;
-    }
-
-    /**
-     * Assembles the modules of the instance by merging any documents from a given directory.
-     *
-     * @param moduleFile The file to write the assembled modules to.
      * @param moduleName The name of the merged module.
-     * @param moduleVersion The version of the merged module.
-     * @param moduleVendor The vendor of the merged module.
-     * @param mergeDirectory The directory to scan for documents to merge.
-     * @param classLoader The class loader to search for classes.
+     * @param moduleVersion The version of the merged module or {@code null}.
+     * @param moduleVendor The vendor of the merged module or {@code null}.
+     * @param mergeDirectory The directory to scan for documents to merge or {@code null}.
+     * @param modelObjectRelocator The relocator to use for relocating model objects or {@code null}.
      *
-     * @throws NullPointerException if {@code moduleFile}, {@code moduleName} or {@code classLoader} is {@code null}.
-     * @throws IOException if assembling modules fails.
-     * @throws ModelException if the assembled modules are invalid.
+     * @throws NullPointerException if {@code moduleName} is {@code null}.
+     * @throws IOException if merging modules fails.
      */
-    public void assembleModules( final File moduleFile, final String moduleName, final String moduleVersion,
-                                 final String moduleVendor, final File mergeDirectory, final ClassLoader classLoader )
-        throws IOException, ModelException
+    public Module mergeModules( final String moduleName, final String moduleVersion, final String moduleVendor,
+                                final File mergeDirectory, final ModelObjectRelocator modelObjectRelocator )
+        throws IOException
     {
-        if ( moduleFile == null )
-        {
-            throw new NullPointerException( "moduleFile" );
-        }
         if ( moduleName == null )
         {
             throw new NullPointerException( "moduleName" );
         }
-        if ( classLoader == null )
+
+        final Module mergedModule = new Module();
+        final Modules modules = new Modules( this.getModules() );
+
+        mergedModule.setName( moduleName );
+        mergedModule.setVersion( moduleVersion );
+        mergedModule.setVendor( moduleVendor );
+
+        if ( mergeDirectory != null && mergeDirectory.exists() && mergeDirectory.isDirectory() )
         {
-            throw new NullPointerException( "classLoader" );
-        }
-
-        try
-        {
-            Module mergedModule = new Module();
-            final Modules modules = new Modules( this.getModules() );
-
-            mergedModule.setName( moduleName );
-            mergedModule.setVersion( moduleVersion );
-            mergedModule.setVendor( moduleVendor );
-
-            if ( mergeDirectory != null && mergeDirectory.exists() && mergeDirectory.isDirectory() )
+            final String[] mergeDocuments = mergeDirectory.list( new FilenameFilter()
             {
-                final String[] mergeDocuments = mergeDirectory.list( new FilenameFilter()
+
+                public boolean accept( final File dir, final String name )
                 {
+                    return name.endsWith( ".xml" );
+                }
 
-                    public boolean accept( final File dir, final String name )
-                    {
-                        return name.endsWith( ".xml" );
-                    }
+            } );
 
-                } );
-
-                if ( mergeDocuments != null )
+            if ( mergeDocuments != null )
+            {
+                for ( String name : mergeDocuments )
                 {
-                    for ( String name : mergeDocuments )
+                    final File document = new File( mergeDirectory, name );
+                    if ( document.isFile() )
                     {
-                        final File document = new File( mergeDirectory, name );
-                        if ( document.isFile() )
-                        {
-                            this.mergeDocument( modules, document );
-                        }
+                        this.mergeDocument( modules, document );
                     }
                 }
             }
+        }
 
-            for ( Module module : modules.getModule() )
+        for ( Module module : modules.getModule() )
+        {
+            final Set<String> referencedMessages = new HashSet<String>();
+            final Set<String> referencedProperties = new HashSet<String>();
+
+            if ( module.getImplementations() != null )
             {
-                final Set<String> referencedMessages = new HashSet<String>();
-                final Set<String> referencedProperties = new HashSet<String>();
-
-                if ( module.getImplementations() != null )
+                for ( Implementation i : module.getImplementations().getImplementation() )
                 {
-                    for ( Implementation i : module.getImplementations().getImplementation() )
+                    if ( mergedModule.getImplementations() == null )
                     {
-                        if ( mergedModule.getImplementations() == null )
-                        {
-                            mergedModule.setImplementations( new Implementations() );
-                        }
-
-                        if ( i.getMessages() != null && !i.getMessages().getReference().isEmpty() )
-                        {
-                            for ( Iterator<MessageReference> it = i.getMessages().getReference().iterator();
-                                  it.hasNext(); )
-                            {
-                                final String messageName = it.next().getName();
-                                i.getMessages().getMessage().add( module.getMessages().getMessage( messageName ) );
-                                referencedMessages.add( messageName );
-                                it.remove();
-                            }
-                        }
-
-                        if ( i.getProperties() != null && !i.getProperties().getReference().isEmpty() )
-                        {
-                            for ( Iterator<PropertyReference> it = i.getProperties().getReference().iterator(); it.
-                                hasNext(); )
-                            {
-                                final String propertyName = it.next().getName();
-                                i.getProperties().getProperty().add(
-                                    module.getProperties().getProperty( propertyName ) );
-
-                                referencedProperties.add( propertyName );
-                                it.remove();
-                            }
-                        }
-
-                        mergedModule.getImplementations().getImplementation().add( i );
-                    }
-                }
-
-                if ( module.getSpecifications() != null )
-                {
-                    if ( mergedModule.getSpecifications() == null )
-                    {
-                        mergedModule.setSpecifications( new Specifications() );
+                        mergedModule.setImplementations( new Implementations() );
                     }
 
-                    for ( Specification s : module.getSpecifications().getSpecification() )
+                    if ( i.getMessages() != null && !i.getMessages().getReference().isEmpty() )
                     {
-                        if ( s.getProperties() != null && !s.getProperties().getReference().isEmpty() )
+                        for ( Iterator<MessageReference> it = i.getMessages().getReference().iterator();
+                              it.hasNext(); )
                         {
-                            for ( Iterator<PropertyReference> it = s.getProperties().getReference().iterator();
-                                  it.hasNext(); )
-                            {
-                                final String propertyName = it.next().getName();
-                                s.getProperties().getProperty().add(
-                                    module.getProperties().getProperty( propertyName ) );
-
-                                referencedProperties.add( propertyName );
-                                it.remove();
-                            }
-                        }
-
-                        mergedModule.getSpecifications().getSpecification().add( s );
-                    }
-                }
-
-                for ( String messageName : referencedMessages )
-                {
-                    for ( Iterator<Message> it = module.getMessages().getMessage().iterator(); it.hasNext(); )
-                    {
-                        if ( messageName.equals( it.next().getName() ) )
-                        {
+                            final String messageName = it.next().getName();
+                            i.getMessages().getMessage().add( module.getMessages().getMessage( messageName ) );
+                            referencedMessages.add( messageName );
                             it.remove();
-                            break;
                         }
                     }
-                }
 
-                for ( String propertyName : referencedProperties )
-                {
-                    for ( Iterator<Property> it = module.getProperties().getProperty().iterator(); it.hasNext(); )
+                    if ( i.getProperties() != null && !i.getProperties().getReference().isEmpty() )
                     {
-                        if ( propertyName.equals( it.next().getName() ) )
+                        for ( Iterator<PropertyReference> it = i.getProperties().getReference().iterator(); it.hasNext(); )
                         {
+                            final String propertyName = it.next().getName();
+                            i.getProperties().getProperty().add(
+                                module.getProperties().getProperty( propertyName ) );
+
+                            referencedProperties.add( propertyName );
                             it.remove();
-                            break;
                         }
                     }
+
+                    mergedModule.getImplementations().getImplementation().add( i );
+                }
+            }
+
+            if ( module.getSpecifications() != null )
+            {
+                if ( mergedModule.getSpecifications() == null )
+                {
+                    mergedModule.setSpecifications( new Specifications() );
                 }
 
-                if ( module.getProperties() != null && !module.getProperties().getProperty().isEmpty() )
+                for ( Specification s : module.getSpecifications().getSpecification() )
                 {
-                    if ( mergedModule.getProperties() == null )
+                    if ( s.getProperties() != null && !s.getProperties().getReference().isEmpty() )
                     {
-                        mergedModule.setProperties( new Properties() );
+                        for ( Iterator<PropertyReference> it = s.getProperties().getReference().iterator();
+                              it.hasNext(); )
+                        {
+                            final String propertyName = it.next().getName();
+                            s.getProperties().getProperty().add(
+                                module.getProperties().getProperty( propertyName ) );
+
+                            referencedProperties.add( propertyName );
+                            it.remove();
+                        }
                     }
 
-                    mergedModule.getProperties().getProperty().addAll( module.getProperties().getProperty() );
+                    mergedModule.getSpecifications().getSpecification().add( s );
                 }
+            }
 
-                if ( module.getMessages() != null && !module.getMessages().getMessage().isEmpty() )
+            for ( String messageName : referencedMessages )
+            {
+                for ( Iterator<Message> it = module.getMessages().getMessage().iterator(); it.hasNext(); )
                 {
-                    if ( mergedModule.getMessages() == null )
+                    if ( messageName.equals( it.next().getName() ) )
                     {
-                        mergedModule.setMessages( new Messages() );
+                        it.remove();
+                        break;
                     }
-
-                    mergedModule.getMessages().getMessage().addAll( module.getMessages().getMessage() );
                 }
             }
 
-            if ( !this.getRelocationMap().isEmpty() )
+            for ( String propertyName : referencedProperties )
             {
-                mergedModule = this.relocate( mergedModule );
-            }
-
-            if ( !moduleFile.getParentFile().exists() )
-            {
-                moduleFile.getParentFile().mkdirs();
-            }
-
-            if ( moduleFile.exists() && !moduleFile.delete() )
-            {
-                this.log( Level.WARNING, this.getMessage( "couldNotDelete", new Object[]
-                    {
-                        moduleFile.getCanonicalPath()
-                    } ), null );
-
-            }
-
-            final JAXBElement<Module> moduleElement =
-                this.getModelManager().getObjectFactory().createModule( mergedModule );
-
-            this.getModelManager().validateModelObject( moduleElement );
-
-            this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                for ( Iterator<Property> it = module.getProperties().getProperty().iterator(); it.hasNext(); )
                 {
-                    moduleFile.getCanonicalPath()
-                } ), null );
+                    if ( propertyName.equals( it.next().getName() ) )
+                    {
+                        it.remove();
+                        break;
+                    }
+                }
+            }
 
-            this.getModelManager().getMarshaller( false, true ).marshal( moduleElement, moduleFile );
+            if ( module.getProperties() != null && !module.getProperties().getProperty().isEmpty() )
+            {
+                if ( mergedModule.getProperties() == null )
+                {
+                    mergedModule.setProperties( new Properties() );
+                }
+
+                mergedModule.getProperties().getProperty().addAll( module.getProperties().getProperty() );
+            }
+
+            if ( module.getMessages() != null && !module.getMessages().getMessage().isEmpty() )
+            {
+                if ( mergedModule.getMessages() == null )
+                {
+                    mergedModule.setMessages( new Messages() );
+                }
+
+                mergedModule.getMessages().getMessage().addAll( module.getMessages().getMessage() );
+            }
         }
-        catch ( SAXException e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
-        catch ( JAXBException e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
+
+        return modelObjectRelocator == null
+               ? mergedModule : modelObjectRelocator.relocateModelObject( mergedModule, Module.class );
+
     }
 
     /**
@@ -591,134 +503,6 @@ public class ModuleAssembler extends JomcTool
                 target.getText().add( t );
             }
         }
-    }
-
-    private Module relocate( final Module module )
-    {
-        final Module m = new Module( module );
-
-        if ( m.getImplementations() != null )
-        {
-            for ( Implementation i : m.getImplementations().getImplementation() )
-            {
-                this.relocate( i );
-            }
-        }
-        if ( m.getSpecifications() != null )
-        {
-            for ( Specification s : m.getSpecifications().getSpecification() )
-            {
-                this.relocate( s );
-            }
-        }
-
-        return m;
-    }
-
-    private void relocate( final Implementation implementation )
-    {
-        if ( implementation.getClazz() != null )
-        {
-            final Map.Entry<String, String> relocation = this.getRelocation( implementation.getClazz() );
-            if ( relocation != null )
-            {
-                implementation.setClazz( implementation.getClazz().replace(
-                    relocation.getKey(), relocation.getValue() ) );
-
-            }
-        }
-        if ( implementation.getIdentifier() != null )
-        {
-            final Map.Entry<String, String> relocation = this.getRelocation( implementation.getIdentifier() );
-            if ( relocation != null )
-            {
-                implementation.setIdentifier( implementation.getIdentifier().replace(
-                    relocation.getKey(), relocation.getValue() ) );
-
-            }
-        }
-        if ( implementation.getParent() != null )
-        {
-            final Map.Entry<String, String> relocation = this.getRelocation( implementation.getParent() );
-            if ( relocation != null )
-            {
-                implementation.setParent( implementation.getParent().replace(
-                    relocation.getKey(), relocation.getValue() ) );
-
-            }
-        }
-        if ( implementation.getSpecifications() != null )
-        {
-            for ( SpecificationReference ref : implementation.getSpecifications().getReference() )
-            {
-                this.relocate( ref );
-            }
-        }
-        if ( implementation.getDependencies() != null )
-        {
-            for ( Dependency d : implementation.getDependencies().getDependency() )
-            {
-                this.relocate( d );
-            }
-        }
-    }
-
-    private void relocate( final Specification specification )
-    {
-        if ( specification.getIdentifier() != null )
-        {
-            final Map.Entry<String, String> relocation = this.getRelocation( specification.getIdentifier() );
-            if ( relocation != null )
-            {
-                specification.setIdentifier( specification.getIdentifier().replace(
-                    relocation.getKey(), relocation.getValue() ) );
-
-            }
-        }
-    }
-
-    private void relocate( final SpecificationReference specification )
-    {
-        if ( specification.getIdentifier() != null )
-        {
-            final Map.Entry<String, String> relocation = this.getRelocation( specification.getIdentifier() );
-            if ( relocation != null )
-            {
-                specification.setIdentifier( specification.getIdentifier().replace(
-                    relocation.getKey(), relocation.getValue() ) );
-
-            }
-        }
-    }
-
-    private Map.Entry<String, String> getRelocation( final String source )
-    {
-        Map.Entry<String, String> relocation = null;
-
-        for ( Map.Entry<String, String> e : this.getRelocationMap().entrySet() )
-        {
-            if ( source.startsWith( e.getKey() ) )
-            {
-                if ( relocation == null || relocation.getKey().length() < e.getKey().length() )
-                {
-                    relocation = e;
-                }
-            }
-        }
-
-        if ( relocation != null )
-        {
-            for ( String exlusion : this.getRelocationExclusions() )
-            {
-                if ( source.startsWith( exlusion ) )
-                {
-                    relocation = null;
-                    break;
-                }
-            }
-        }
-
-        return relocation;
     }
 
     private String getMessage( final String key, final Object args )

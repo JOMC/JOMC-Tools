@@ -77,6 +77,8 @@ import org.xml.sax.SAXException;
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  * @see #commitModuleClasses(java.io.File)
+ * @see #validateModuleClasses(java.io.File)
+ * @see #validateModules(java.lang.ClassLoader)
  */
 public class JavaClasses extends JomcTool
 {
@@ -837,6 +839,61 @@ public class JavaClasses extends JomcTool
     }
 
     /**
+     * Relocates a given Java class.
+     *
+     * @param clazz The class to relocate.
+     * @param relocator The relocator to use for relocating.
+     *
+     * @return {@code true} if {@code clazz} got changed due to relocation; {@code false} else.
+     *
+     * @throws NullPointerException if {@code clazz} or {@code relocator} is {@code null}.
+     */
+    public boolean relocateJavaClass( final JavaClass clazz, final ModelObjectRelocator relocator )
+        throws IOException, SAXException, JAXBException
+    {
+        if ( clazz == null )
+        {
+            throw new NullPointerException( "clazz" );
+        }
+        if ( relocator == null )
+        {
+            throw new NullPointerException( "relocator" );
+        }
+
+        boolean relocated = false;
+
+        final Specification decodedSpecification = this.decodeSpecification( clazz );
+        final Dependencies decodedDependencies = this.decodeDependencies( clazz );
+        final Specifications decodedSpecifications = this.decodeSpecifications( clazz );
+
+        if ( decodedSpecification != null )
+        {
+            this.setClassfileAttribute( clazz, Specification.class.getName(), this.encodeSpecification(
+                relocator.relocateModelObject( decodedSpecification, Specification.class ) ) );
+
+            relocated = true;
+        }
+
+        if ( decodedDependencies != null )
+        {
+            this.setClassfileAttribute( clazz, Dependencies.class.getName(), this.encodeDependencies(
+                relocator.relocateModelObject( decodedDependencies, Dependencies.class ) ) );
+
+            relocated = true;
+        }
+
+        if ( decodedSpecifications != null )
+        {
+            this.setClassfileAttribute( clazz, Specifications.class.getName(), this.encodeSpecifications(
+                relocator.relocateModelObject( decodedSpecifications, Specifications.class ) ) );
+
+            relocated = true;
+        }
+
+        return relocated;
+    }
+
+    /**
      * Parses a class file.
      *
      * @param classFile The class file to parse.
@@ -845,7 +902,7 @@ public class JavaClasses extends JomcTool
      *
      * @throws IOException if parsing {@code classFile} fails.
      */
-    protected JavaClass getJavaClass( final File classFile ) throws IOException
+    public JavaClass getJavaClass( final File classFile ) throws IOException
     {
         return this.getJavaClass( classFile.toURI().toURL(), classFile.getName() );
     }
@@ -860,12 +917,26 @@ public class JavaClasses extends JomcTool
      *
      * @throws IOException if parsing fails.
      */
-    protected JavaClass getJavaClass( final URL url, final String className ) throws IOException
+    public JavaClass getJavaClass( final URL url, final String className ) throws IOException
     {
-        final InputStream in = url.openStream();
-        final ClassParser parser = new ClassParser( in, className );
+        return this.getJavaClass( url.openStream(), className );
+    }
+
+    /**
+     * Parses a class file.
+     *
+     * @param stream The stream to read the class file from.
+     * @param className The name of the class to read from {@code stream}.
+     *
+     * @return The parsed class file.
+     *
+     * @throws IOException if parsing fails.
+     */
+    public JavaClass getJavaClass( final InputStream stream, final String className ) throws IOException
+    {
+        final ClassParser parser = new ClassParser( stream, className );
         final JavaClass clazz = parser.parse();
-        in.close();
+        stream.close();
         return clazz;
     }
 
