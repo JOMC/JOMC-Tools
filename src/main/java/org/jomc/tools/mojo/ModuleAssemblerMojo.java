@@ -34,6 +34,9 @@ package org.jomc.tools.mojo;
 
 import java.io.File;
 import java.util.Arrays;
+import org.jomc.model.Module;
+import org.jomc.tools.ModelObjectRelocation;
+import org.jomc.tools.ModelObjectRelocator;
 import org.jomc.tools.ModuleAssembler;
 
 /**
@@ -82,39 +85,29 @@ public final class ModuleAssemblerMojo extends AbstractJomcMojo
     private File mergeDirectory;
 
     /**
-     * Class relocations.
+     * Model object relocations.
      * @parameter
      * @optional
      */
-    private ModelObjectRelocation[] relocations;
-
-    /**
-     * Class relocation exclusions.
-     * @parameter
-     * @optional
-     */
-    private String[] relocationExclusions;
+    private ModelObjectRelocation[] modelObjectRelocations;
 
     @Override
     public void executeTool() throws Exception
     {
         final ModuleAssembler assembler = this.getModuleAssemblerTool();
+        ModelObjectRelocator relocator = null;
 
-        if ( this.relocations != null )
+        if ( this.modelObjectRelocations != null )
         {
-            for ( ModelObjectRelocation r : this.relocations )
-            {
-                assembler.getRelocationMap().put( r.getSource(), r.getTarget() );
-            }
+            relocator = new ModelObjectRelocator();
+            relocator.getModelObjectRelocations().addAll( Arrays.asList( this.modelObjectRelocations ) );
         }
 
-        if ( this.relocationExclusions != null )
-        {
-            assembler.getRelocationExclusions().addAll( Arrays.asList( this.relocationExclusions ) );
-        }
+        final Module mergedModule = assembler.mergeModules( this.moduleName, this.moduleVersion, this.moduleVendor,
+                                                            this.mergeDirectory, relocator );
 
-        assembler.assembleModules( this.moduleFile, this.moduleName, this.moduleVersion, this.moduleVendor,
-                                   this.mergeDirectory, this.getMainClassLoader() );
+        assembler.getModelManager().getMarshaller( true, true ).marshal(
+            assembler.getModelManager().getObjectFactory().createModule( mergedModule ), this.moduleFile );
 
     }
 
