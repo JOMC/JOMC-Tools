@@ -522,7 +522,7 @@
                     parent="org.jomc.cli.commands.AbstractJomcCommand">
 
       <documentation defaultLanguage="en">
-        <text language="en">Command line interface for committing classes with the {@code JavaClasses} tool.</text>
+        <text language="en">Command line interface for committing Java classes with the {@code JavaClasses} tool.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0"
@@ -574,7 +574,7 @@
                     parent="org.jomc.cli.commands.AbstractJomcCommand">
 
       <documentation defaultLanguage="en">
-        <text language="en">Command line interface for verifying classes with the {@code JavaClasses} tool.</text>
+        <text language="en">Command line interface for verifying Java classes with the {@code JavaClasses} tool.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0"
@@ -750,6 +750,7 @@
             <text language="de">Hersteller</text>
           </template>
         </message>
+        <reference name="writing"/>
       </messages>
     </implementation>
   </implementations>
@@ -937,6 +938,16 @@
         <text language="en">directory</text>
         <text language="de">Verzeichnis</text>
       </template>
+    </message>
+    <!-- ******************************************************************* -->
+    <message name="writing">
+      <template defaultLanguage="en">
+        <text language="en">Writing ''{0}''.</text>
+        <text language="de">Schreibt ''{0}''.</text>
+      </template>
+      <arguments>
+        <argument index="0" name="fileName"/>
+      </arguments>
     </message>
   </messages>
 </module>

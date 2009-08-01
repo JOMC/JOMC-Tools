@@ -41,6 +41,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.jomc.model.ModelException;
+import org.jomc.model.Module;
 import org.jomc.tools.ModuleAssembler;
 
 // SECTION-START[Implementation Comment]
@@ -106,7 +107,7 @@ import org.jomc.tools.ModuleAssembler;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-07-31T21:01:33+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-01T07:33:42+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getBuildDirectoryOptionMessage buildDirectoryOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Work directory of the process.</pre></td></tr>
@@ -203,6 +204,10 @@ import org.jomc.tools.ModuleAssembler;
  * <tr><td valign="top">English:</td><td valign="top"><pre>Enables verbose output.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert ausführliche Ausgaben.</pre></td></tr>
  * </table>
+ * <li>"{@link #getWritingMessage writing}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Writing ''{0}''.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Schreibt ''{0}''.</pre></td></tr>
+ * </table>
  * </ul></p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
@@ -271,10 +276,17 @@ public class AssembleModulesCommand
                 moduleVendor = commandLine.getOptionValue( this.getModuleVendorOption().getOpt() );
             }
 
-            tool.assembleModules( new File( commandLine.getOptionValue( this.getDocumentOption().getOpt() ) ),
-                                  commandLine.getOptionValue( this.getModuleNameOption().getOpt() ),
-                                  moduleVersion, moduleVendor, mergeDirectory,
-                                  this.getClassLoader( commandLine, printStream ) );
+            final Module mergedModule =
+                tool.mergeModules( commandLine.getOptionValue( this.getModuleNameOption().getOpt() ),
+                                   moduleVersion, moduleVendor, mergeDirectory, null );
+
+            final File moduleFile = new File( commandLine.getOptionValue( this.getDocumentOption().getOpt() ) );
+
+            tool.getModelManager().getMarshaller( true, true ).marshal(
+                tool.getModelManager().getObjectFactory().createModule( mergedModule ), moduleFile );
+
+            this.log( Level.INFO, this.getWritingMessage( this.getLocale(), moduleFile.getAbsolutePath() ), null,
+                      printStream, verbose, debug );
 
         }
         catch ( ModelException e )
@@ -765,7 +777,7 @@ public class AssembleModulesCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-07-31T21:01:33+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-01T07:33:42+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -1285,6 +1297,28 @@ public class AssembleModulesCommand
     private String getVerboseOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
     {
         return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "verboseOption", locale,  null );
+    }
+
+    /**
+     * Gets the text of the {@code writing} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Writing ''{0}''.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Schreibt ''{0}''.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param fileName Format argument.
+     * @return The text of the {@code writing} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getWritingMessage( final java.util.Locale locale, final java.lang.String fileName ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "writing", locale, new Object[] { fileName, null } );
     }
     // SECTION-END
 }

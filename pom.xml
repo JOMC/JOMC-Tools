@@ -76,44 +76,6 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.jomc</groupId>
-        <artifactId>maven-jomc-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>merge</id>
-            <phase>process-classes</phase>
-            <goals>
-              <goal>assemble-modules</goal>
-            </goals>
-            <configuration>
-              <moduleFile>${project.build.outputDirectory}/META-INF/jomc-cli.xml</moduleFile>
-              <relocations>
-                <relocation>
-                  <source>org.jomc.ObjectManager</source>
-                  <target>org.jomc.cli.util.ObjectManager</target>
-                </relocation>
-                <relocation>
-                  <source>org.jomc.ObjectManagerFactory</source>
-                  <target>org.jomc.cli.util.ObjectManagerFactory</target>
-                </relocation>
-                <relocation>
-                  <source>org.jomc.ObjectManagementException</source>
-                  <target>org.jomc.cli.util.ObjectManagementException</target>
-                </relocation>
-                <relocation>
-                  <source>org.jomc.spi</source>
-                  <target>org.jomc.cli.util.spi</target>
-                </relocation>
-                <relocation>
-                  <source>org.jomc.ri</source>
-                  <target>org.jomc.cli.util</target>
-                </relocation>
-              </relocations>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
@@ -123,6 +85,10 @@
             </manifest>
           </archive>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.jomc</groupId>
+        <artifactId>maven-jomc-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -294,11 +260,40 @@
                 </filter>
               </filters>
               <transformers>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
-                  <resource>META-INF/jomc.xml</resource>
-                </transformer>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
-                  <resource>META-INF/jomc-bootstrap.xml</resource>
+                <transformer implementation="org.jomc.tools.util.JomcResourceTransformer">
+                  <moduleName>${pom.name}</moduleName>
+                  <moduleVersion>${pom.version}</moduleVersion>
+                  <moduleVendor>${pom.organization.name}</moduleVendor>
+                  <moduleResource>META-INF/jomc-cli.xml</moduleResource>
+                  <moduleResources>
+                    <moduleResource>META-INF/jomc.xml</moduleResource>
+                  </moduleResources>
+                  <bootstrapResource>META-INF/jomc-cli-bootstrap.xml</bootstrapResource>
+                  <bootstrapResources>
+                    <bootstrapResource>META-INF/jomc-bootstrap.xml</bootstrapResource>
+                  </bootstrapResources>
+                  <modelObjectRelocations>
+                    <modelObjectRelocation>
+                      <sourcePattern>org.jomc.ObjectManager</sourcePattern>
+                      <replacementPattern>org.jomc.cli.util.ObjectManager</replacementPattern>
+                    </modelObjectRelocation>
+                    <modelObjectRelocation>
+                      <sourcePattern>org.jomc.ObjectManagerFactory</sourcePattern>
+                      <replacementPattern>org.jomc.cli.util.ObjectManagerFactory</replacementPattern>
+                    </modelObjectRelocation>
+                    <modelObjectRelocation>
+                      <sourcePattern>org.jomc.ObjectManagementException</sourcePattern>
+                      <replacementPattern>org.jomc.cli.util.ObjectManagementException</replacementPattern>
+                    </modelObjectRelocation>
+                    <modelObjectRelocation>
+                      <sourcePattern>org.jomc.spi</sourcePattern>
+                      <replacementPattern>org.jomc.cli.util.spi</replacementPattern>
+                    </modelObjectRelocation>
+                    <modelObjectRelocation>
+                      <sourcePattern>org.jomc.ri</sourcePattern>
+                      <replacementPattern>org.jomc.cli.util</replacementPattern>
+                    </modelObjectRelocation>
+                  </modelObjectRelocations>
                 </transformer>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>
               </transformers>
