@@ -257,12 +257,10 @@ public class ModelObjectRelocator
 
         for ( ModelObjectRelocation r : this.getModelObjectRelocations() )
         {
-            if ( source.startsWith( r.getSourcePattern() ) )
+            if ( source.startsWith( r.getSourcePattern() ) &&
+                 ( relocation == null || relocation.getSourcePattern().length() < r.getSourcePattern().length() ) )
             {
-                if ( relocation == null || relocation.getSourcePattern().length() < r.getSourcePattern().length() )
-                {
-                    relocation = r;
-                }
+                relocation = r;
             }
         }
 

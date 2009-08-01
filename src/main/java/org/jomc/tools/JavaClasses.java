@@ -969,13 +969,10 @@ public class JavaClasses extends JomcTool
         {
             final Constant constant = clazz.getConstantPool().getConstant( attributes[i].getNameIndex() );
 
-            if ( constant instanceof ConstantUtf8 )
+            if ( constant instanceof ConstantUtf8 && attributeName.equals( ( (ConstantUtf8) constant ).getBytes() ) )
             {
-                if ( attributeName.equals( ( (ConstantUtf8) constant ).getBytes() ) )
-                {
-                    final Unknown unknown = (Unknown) attributes[i];
-                    return unknown.getBytes();
-                }
+                final Unknown unknown = (Unknown) attributes[i];
+                return unknown.getBytes();
             }
         }
 
@@ -1022,13 +1019,10 @@ public class JavaClasses extends JomcTool
         {
             final Constant constant = clazz.getConstantPool().getConstant( attributes[i].getNameIndex() );
 
-            if ( constant instanceof ConstantUtf8 )
+            if ( constant instanceof ConstantUtf8 && attributeName.equals( ( (ConstantUtf8) constant ).getBytes() ) )
             {
-                if ( attributeName.equals( ( (ConstantUtf8) constant ).getBytes() ) )
-                {
-                    attributeIndex = i;
-                    nameIndex = attributes[i].getNameIndex();
-                }
+                attributeIndex = i;
+                nameIndex = attributes[i].getNameIndex();
             }
         }
 
