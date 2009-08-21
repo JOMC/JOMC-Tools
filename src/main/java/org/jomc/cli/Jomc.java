@@ -43,7 +43,7 @@ import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.ParseException;
 
-// SECTION-START[Implementation Comment]
+// SECTION-START[Documentation]
 /**
  * JOMC command line interface.
  * <p><b>Properties</b><ul>
@@ -58,9 +58,9 @@ import org.apache.commons.cli.ParseException;
  * </ul></p>
  * <p><b>Dependencies</b><ul>
  * <li>"{@link #getCommands Commands}"<blockquote>
- * Dependency on {@code org.jomc.cli.Command} at specification level 1.0-alpha-1-SNAPSHOT applying to Multiton scope.</blockquote></li>
+ * Dependency on {@code org.jomc.cli.Command} at specification level 1.0-alpha-1-SNAPSHOT.</blockquote></li>
  * <li>"{@link #getLocale Locale}"<blockquote>
- * Dependency on {@code java.util.Locale} at specification level 1.1 applying to Multiton scope bound to an instance.</blockquote></li>
+ * Dependency on {@code java.util.Locale} at specification level 1.1 bound to an instance.</blockquote></li>
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getIllegalArgumentsMessage illegalArguments}"<table>
@@ -242,7 +242,7 @@ public class Jomc
     // SECTION-END
     // SECTION-START[Constructors]
 
-    /** Default implementation constructor. */
+    /** Creates a new {@code Jomc} instance. */
     @javax.annotation.Generated
     (
         value = "org.jomc.tools.JavaSources",
@@ -303,7 +303,7 @@ public class Jomc
     )
     private int getDescPad() throws org.jomc.ObjectManagementException
     {
-        return ( (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "descPad" ) ).intValue();
+        return ((java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "descPad" )).intValue();
     }
 
     /**
@@ -333,7 +333,7 @@ public class Jomc
     )
     private int getLeftPad() throws org.jomc.ObjectManagementException
     {
-        return ( (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "leftPad" ) ).intValue();
+        return ((java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "leftPad" )).intValue();
     }
 
     /**
@@ -348,7 +348,7 @@ public class Jomc
     )
     private int getWidth() throws org.jomc.ObjectManagementException
     {
-        return ( (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "width" ) ).intValue();
+        return ((java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "width" )).intValue();
     }
     // SECTION-END
     // SECTION-START[Messages]

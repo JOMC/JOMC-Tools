@@ -74,7 +74,7 @@ goto endInit
 @REM Reaching here means variables are defined and arguments have been captured
 :endInit
 
-%JAVACMD% %JOMC_OPTS% %EXTRA_JVM_ARGUMENTS% -jar %JARNAME% org.jomc.cli.Jomc %CMD_LINE_ARGS%
+%JAVACMD% %JOMC_OPTS% %EXTRA_JVM_ARGUMENTS% -jar %JARNAME% %CMD_LINE_ARGS%
 if ERRORLEVEL 1 goto error
 goto end
 

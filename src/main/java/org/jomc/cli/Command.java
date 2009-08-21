@@ -39,16 +39,17 @@ import java.util.Locale;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 
-// SECTION-START[Specification Comment]
+// SECTION-START[Documentation]
 /**
  * Command.
- * <p>This specification applies to Multiton scope.
+ * <p>This specification declares a multiplicity of {@code Many}.
  * An application assembler may provide multiple implementations of this specification (including none).
  * Use of class {@link org.jomc.ObjectManager ObjectManager} is supported for getting these implementations or for
  * selecting a single implementation.<pre>
  * Command[] objects = (Command[]) ObjectManagerFactory.getObjectManager().getObject( Command.class );
  * Command object = ObjectManagerFactory.getObjectManager().getObject( Command.class, "<i>implementation name</i>" );
- * </pre></p>
+ * </pre>
+ * </p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
  * @version $Id$
