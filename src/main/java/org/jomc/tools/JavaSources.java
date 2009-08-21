@@ -51,10 +51,10 @@ import org.jomc.model.Messages;
 import org.jomc.model.Properties;
 import org.jomc.model.Specification;
 import org.jomc.model.SpecificationReference;
-import org.jomc.tools.util.LineEditor;
-import org.jomc.tools.util.Section;
-import org.jomc.tools.util.SectionEditor;
-import org.jomc.tools.util.TrailingWhitespaceEditor;
+import org.jomc.util.LineEditor;
+import org.jomc.util.Section;
+import org.jomc.util.SectionEditor;
+import org.jomc.util.TrailingWhitespaceEditor;
 
 /**
  * Manages Java source code.

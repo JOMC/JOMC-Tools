@@ -79,13 +79,73 @@ class ${tool.getJavaTypeName($implementation,false)}${classSuffix}
     return instance;
   }
 
-#if($implementation.getMessages())
-#foreach($message in $implementation.getMessages().getMessage())
-#parse($tool.getTemplateLocation("Bundle.java-getter.vm"))
+#set($messages = $modules.getMessages($implementation.getIdentifier()))
+#if($messages)
+#foreach($message in $messages.getMessage())
+#if($comment)
+  /**
+   * Gets the text of the message with key {@code "$message.getName()"}.
+   *
+   * <p><b>Templates</b><br/><table>
+#foreach($text in $message.getTemplate().getText())
+   * <tr><td valign="top">$tool.getDisplayLanguage($text.getLanguage()):</td><td valign="top"><pre>$tool.getJavadocComment($message.getTemplate().getText($text.getLanguage()), "   * ")</pre></td></tr>
 #end
-#foreach($messageReference in $implementation.getMessages().getReference())
-#set($message = $module.getMessages().getMessage($messageReference.getName()))
-#parse($tool.getTemplateLocation("Bundle.java-getter.vm"))
+   * </table></p>
+   * @param locale The locale of the message to return.
+#if($message.getArguments() && !$message.getArguments().getArgument().isEmpty())
+#set($i = 0)
+#foreach($argument in $message.getArguments().getArgument())
+#set($argument = $message.getArguments().getArgument($i))
+#set($i = $i + 1)
+   * @param $argument.getName() #if($argument.getDocumentation())$tool.getJavadocComment($argument.getDocumentation().getText("en"), "   * ")#end#if(!$argument.getDocumentation())Format argument.#end
+
+#end
+#end
+   *
+#if($message.getDocumentation())
+   * @return $tool.getJavadocComment($message.getDocumentation().getText("en"), "   * ")
+#end
+#if(!$message.getDocumentation())
+   * @return The text of the {@code $message.getName()} message.
+#end
+   */
+#if(!$message.getArguments() || $message.getArguments().getArgument().isEmpty() )
+  String $tool.getJavaGetterMethodName($message)( final Locale locale )
+  {
+    return this.getMessage( "$message.getName()", locale );
+  }
+#end
+#if($message.getArguments() && !$message.getArguments().getArgument().isEmpty() )
+  String $tool.getJavaGetterMethodName($message)
+  (
+      Locale locale
+#set($i = 0)
+#foreach($argument in $message.getArguments().getArgument())
+#set($argument = $message.getArguments().getArgument($i))
+#set($i = $i + 1)
+    , final $tool.getJavaTypeName($argument) $argument.getName()
+#end
+  )
+  {
+    if ( locale == null )
+    {
+      locale = Locale.getDefault();
+    }
+
+    return new MessageFormat( this.getMessage( "$message.getName()", locale ), locale ).format( new Object[]
+        {
+#set($i = 0)
+#foreach($argument in $message.getArguments().getArgument())
+#set($argument = $message.getArguments().getArgument($i))
+#set($i = $i + 1)
+            $argument.getName(),
+#end
+            null
+        } );
+
+  }
+#end
+#end
 #end
 #end
 
@@ -106,9 +166,6 @@ class ${tool.getJavaTypeName($implementation,false)}${classSuffix}
       locale = Locale.getDefault();
     }
 
-    return ResourceBundle.getBundle(
-        "$tool.getJavaClasspathLocation($implementation)${classSuffix}", locale ).
-        getString( key );
-
+    return ResourceBundle.getBundle(${tool.getJavaTypeName($implementation,false)}${classSuffix}.class.getName().replace( '.', '/' ), locale ).getString( key );
   }
 }

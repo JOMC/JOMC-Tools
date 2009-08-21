@@ -56,6 +56,11 @@
     <!-- Compile -->
     <dependency>
       <groupId>org.jomc</groupId>
+      <artifactId>jomc-util</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jomc</groupId>
       <artifactId>jomc-model</artifactId>
       <scope>compile</scope>
     </dependency>

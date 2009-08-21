@@ -30,7 +30,7 @@
  *   $Id$
  *
  */
-package org.jomc.tools.util;
+package org.jomc.tools;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,17 +46,12 @@ import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.bootstrap.Schema;
 import org.jomc.model.bootstrap.Schemas;
-import org.jomc.tools.BootstrapObjectRelocation;
-import org.jomc.tools.BootstrapObjectRelocator;
-import org.jomc.tools.ModelObjectRelocation;
-import org.jomc.tools.ModelObjectRelocator;
-import org.jomc.tools.ModuleAssembler;
 import org.xml.sax.SAXException;
 
 /**
  * Maven Shade Plugin {@code ResourceTransformer} implementation for assembling JOMC resources.
  * <p><b>Usage</b><pre>
- * &lt;transformer implementation="org.jomc.tools.util.JomcResourceTransformer"&gt;
+ * &lt;transformer implementation="org.jomc.tools.JomcResourceTransformer"&gt;
  *   &lt;moduleName&gt;${pom.name}&lt;/moduleName&gt;
  *   &lt;moduleVersion&gt;${pom.version}&lt;/moduleVersion&gt;
  *   &lt;moduleVendor&gt;${pom.organization.name}&lt;/moduleVendor&gt;
