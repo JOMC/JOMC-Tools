@@ -105,6 +105,7 @@
                 <includes>
                   <include>org.jomc:jomc-api</include>
                   <include>org.jomc:jomc-spi</include>
+                  <include>org.jomc:jomc-util</include>
                   <include>org.jomc:jomc-model</include>
                   <include>org.jomc:jomc-ri</include>
                   <include>org.jomc:jomc-tools</include>
@@ -141,32 +142,42 @@
                   <shadedPattern>org.jomc.cli.util</shadedPattern>
                 </relocation>
                 <relocation>
-                  <pattern>org.jomc.model.util</pattern>
-                  <shadedPattern>org.jomc.cli.util.versioning</shadedPattern>
+                  <pattern>org.jomc.util</pattern>
+                  <shadedPattern>org.jomc.cli.util.text</shadedPattern>
                   <excludes>
-                    <exclude>org.jomc.model.util.WeakIdentityHashMap*</exclude>
+                    <exclude>org.jomc.util.WeakIdentityHashMap*</exclude>
+                    <exclude>org.jomc.util.ParseException</exclude>
+                    <exclude>org.jomc.util.SimpleCharStream</exclude>
+                    <exclude>org.jomc.util.Token*</exclude>
+                    <exclude>org.jomc.util.Version*</exclude>
                   </excludes>
                 </relocation>
                 <relocation>
-                  <pattern>org.jomc.model.util</pattern>
+                  <pattern>org.jomc.util</pattern>
                   <shadedPattern>org.jomc.cli.util.collections.map</shadedPattern>
                   <excludes>
-                    <exclude>org.jomc.model.util.ParseException</exclude>
-                    <exclude>org.jomc.model.util.SimpleCharStream</exclude>
-                    <exclude>org.jomc.model.util.Token*</exclude>
-                    <exclude>org.jomc.model.util.Version*</exclude>
+                    <exclude>org.jomc.util.Line*</exclude>
+                    <exclude>org.jomc.util.Section*</exclude>
+                    <exclude>org.jomc.util.Trailing*</exclude>
+                    <exclude>org.jomc.util.ParseException</exclude>
+                    <exclude>org.jomc.util.SimpleCharStream</exclude>
+                    <exclude>org.jomc.util.Token*</exclude>
+                    <exclude>org.jomc.util.Version*</exclude>
+                  </excludes>
+                </relocation>
+                <relocation>
+                  <pattern>org.jomc.util</pattern>
+                  <shadedPattern>org.jomc.cli.util.versioning</shadedPattern>
+                  <excludes>
+                    <exclude>org.jomc.util.Line*</exclude>
+                    <exclude>org.jomc.util.Section*</exclude>
+                    <exclude>org.jomc.util.Trailing*</exclude>
+                    <exclude>org.jomc.util.WeakIdentityHashMap*</exclude>
                   </excludes>
                 </relocation>
                 <relocation>
                   <pattern>org.jomc.tools</pattern>
                   <shadedPattern>org.jomc.cli.util.tools</shadedPattern>
-                  <excludes>
-                    <exclude>org.jomc.tools.util.*</exclude>
-                  </excludes>
-                </relocation>
-                <relocation>
-                  <pattern>org.jomc.tools.util</pattern>
-                  <shadedPattern>org.jomc.cli.util.text</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>org.apache.commons.cli</pattern>
@@ -260,7 +271,7 @@
                 </filter>
               </filters>
               <transformers>
-                <transformer implementation="org.jomc.tools.util.JomcResourceTransformer">
+                <transformer implementation="org.jomc.tools.JomcResourceTransformer">
                   <moduleName>${pom.name}</moduleName>
                   <moduleVersion>${pom.version}</moduleVersion>
                   <moduleVendor>${pom.organization.name}</moduleVendor>
@@ -326,6 +337,11 @@
     <dependency>
       <groupId>org.jomc</groupId>
       <artifactId>jomc-api</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jomc</groupId>
+      <artifactId>jomc-util</artifactId>
       <scope>compile</scope>
     </dependency>
     <dependency>
