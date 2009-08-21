@@ -99,7 +99,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * The location to search for documents.
      *
      * @parameter
-     * @optional
      */
     private String documentLocation;
 

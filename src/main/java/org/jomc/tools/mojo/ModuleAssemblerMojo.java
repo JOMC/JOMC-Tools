@@ -55,7 +55,6 @@ public final class ModuleAssemblerMojo extends AbstractJomcMojo
     /**
      * File to write the assembled module to.
      * @parameter default-value="${project.build.directory}/jomc/META-INF/jomc.xml"
-     * @optional
      */
     private File moduleFile;
 
@@ -80,14 +79,12 @@ public final class ModuleAssemblerMojo extends AbstractJomcMojo
     /**
      * Directory holding documents to merge.
      * @parameter default-value="src/main/jomc"
-     * @optional
      */
     private File mergeDirectory;
 
     /**
      * Model object relocations.
      * @parameter
-     * @optional
      */
     private ModelObjectRelocation[] modelObjectRelocations;
 
