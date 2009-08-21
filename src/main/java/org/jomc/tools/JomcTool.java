@@ -66,7 +66,6 @@ import org.jomc.model.Modules;
 import org.jomc.model.Multiplicity;
 import org.jomc.model.Properties;
 import org.jomc.model.Property;
-import org.jomc.model.PropertyType;
 import org.jomc.model.Specification;
 import org.jomc.model.SpecificationReference;
 import org.jomc.model.Text;
@@ -418,40 +417,87 @@ public abstract class JomcTool
      * Gets the Java type name of a property.
      *
      * @param property The property to get the Java type name of.
+     * @param boxify {@code true} to return the name of the Java wrapper class when the type is a Java primitive type;
+     * {@code false} to return the exact binary name (unboxed name) of the Java type.
      *
      * @return The Java type name of {@code property}.
      *
      * @throws NullPointerException if {@code property} is {@code null}.
      */
-    public String getJavaTypeName( final Property property )
+    public String getJavaTypeName( final Property property, final boolean boxify )
     {
         if ( property == null )
         {
             throw new NullPointerException( "property" );
         }
 
-        switch ( property.getType() )
+        if ( property.getAny() != null )
         {
-            case BOOLEAN:
-                return Boolean.class.getName();
-            case BYTE:
-                return Byte.class.getName();
-            case CHAR:
-                return Character.class.getName();
-            case DOUBLE:
-                return Double.class.getName();
-            case FLOAT:
-                return Float.class.getName();
-            case INT:
-                return Integer.class.getName();
-            case LONG:
-                return Long.class.getName();
-            case SHORT:
-                return Short.class.getName();
-            default:
-                return property.getType().value();
-
+            return Object.class.getName();
         }
+        if ( property.getType() != null )
+        {
+            String typeName = property.getType();
+
+            if ( boxify )
+            {
+                if ( Boolean.TYPE.getName().equals( typeName ) )
+                {
+                    return Boolean.class.getName();
+                }
+                if ( Byte.TYPE.getName().equals( typeName ) )
+                {
+                    return Byte.class.getName();
+                }
+                if ( Character.TYPE.getName().equals( typeName ) )
+                {
+                    return Character.class.getName();
+                }
+                if ( Double.TYPE.getName().equals( typeName ) )
+                {
+                    return Double.class.getName();
+                }
+                if ( Float.TYPE.getName().equals( typeName ) )
+                {
+                    return Float.class.getName();
+                }
+                if ( Integer.TYPE.getName().equals( typeName ) )
+                {
+                    return Integer.class.getName();
+                }
+                if ( Long.TYPE.getName().equals( typeName ) )
+                {
+                    return Long.class.getName();
+                }
+                if ( Short.TYPE.getName().equals( typeName ) )
+                {
+                    return Short.class.getName();
+                }
+            }
+
+            return typeName;
+        }
+
+        return String.class.getName();
+    }
+
+    /**
+     * Gets a flag indicating if the type of a given property is a Java primitive.
+     *
+     * @param property The property to query.
+     *
+     * @return {@code true} if the type of {@code property} is a Java primitive; {@code false} if not.
+     *
+     * @throws NullPointerException if {@code property} is {@code null}.
+     */
+    public boolean isJavaPrimitiveType( final Property property )
+    {
+        if ( property == null )
+        {
+            throw new NullPointerException( "property" );
+        }
+
+        return !this.getJavaTypeName( property, false ).equals( this.getJavaTypeName( property, true ) );
     }
 
     /**
@@ -473,7 +519,9 @@ public abstract class JomcTool
         final char[] name = property.getName().toCharArray();
         name[0] = Character.toUpperCase( name[0] );
         String prefix = "get";
-        if ( property.getType() == PropertyType.BOOLEAN || property.getType() == PropertyType.JAVA_LANG_BOOLEAN )
+
+        final String javaTypeName = this.getJavaTypeName( property, true );
+        if ( Boolean.class.getName().equals( javaTypeName ) )
         {
             prefix = "is";
         }
@@ -997,9 +1045,12 @@ public abstract class JomcTool
     }
 
     /**
-     * Gets the module to process.
+     * Gets the module matching the name returned by method {@code getModuleName()}.
      *
-     * @return The module to process or {@code null}.
+     * @return The module matching the name returned by method {@code getModuleName()} or {@code null} if method
+     * {@code getModuleName()} returns {@code null} or no module is found matching that name.
+     *
+     * @see #getModuleName()
      */
     public Module getModule()
     {

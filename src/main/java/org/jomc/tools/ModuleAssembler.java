@@ -98,6 +98,8 @@ public class ModuleAssembler extends JomcTool
      *
      * @throws NullPointerException if {@code moduleName} is {@code null}.
      * @throws IOException if merging modules fails.
+     *
+     * @see #getModules()
      */
     public Module mergeModules( final String moduleName, final String moduleVersion, final String moduleVendor,
                                 final File mergeDirectory, final ModelObjectRelocator modelObjectRelocator )

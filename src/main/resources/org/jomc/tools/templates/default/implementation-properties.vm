@@ -51,13 +51,12 @@
         value = "$tool.getClass().getName()",
         comments = "See ${pom.url}"
     )
-    $tool.getJavaModifierName($implementation,$property) $property.getType().value() $tool.getJavaGetterMethodName($property)() throws org.jomc.ObjectManagementException
+    $tool.getJavaModifierName($implementation,$property) $tool.getJavaTypeName($property,false) $tool.getJavaGetterMethodName($property)() throws org.jomc.ObjectManagementException
     {
-#if($tool.getJavaTypeName($property) != $property.getType().value())
-        return ( ($tool.getJavaTypeName($property)) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "$property.getName()" ) ).$property.getType().value()Value();
-#end
-#if($tool.getJavaTypeName($property) == $property.getType().value())
-        return ($property.getType().value()) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "$property.getName()" );
+#if($tool.isJavaPrimitiveType($property))
+        return (($tool.getJavaTypeName($property,true)) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "$property.getName()" )).$tool.getJavaTypeName($property,false)Value();
+#else
+        return ($tool.getJavaTypeName($property,false)) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "$property.getName()" );
 #end
     }
 #end

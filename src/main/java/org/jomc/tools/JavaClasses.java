@@ -78,7 +78,7 @@ import org.xml.sax.SAXException;
  * @version $Id$
  * @see #commitModuleClasses(java.io.File)
  * @see #validateModuleClasses(java.io.File)
- * @see #validateModules(java.lang.ClassLoader)
+ * @see #validateClasses(java.lang.ClassLoader)
  */
 public class JavaClasses extends JomcTool
 {
@@ -109,6 +109,8 @@ public class JavaClasses extends JomcTool
      *
      * @throws NullPointerException if {@code classesDirectory} is {@code null}.
      * @throws IOException if committing meta-data fails.
+     *
+     * @see #getModule()
      */
     public void commitModuleClasses( final File classesDirectory ) throws IOException
     {
@@ -244,6 +246,8 @@ public class JavaClasses extends JomcTool
      * @throws IOException if reading class files fails.
      * @throws ModelException if any of the compiled Java classes of the module of the instance does not comply with
      * the module of the instance.
+     *
+     * @see #getModule()
      */
     public void validateModuleClasses( final File classesDirectory ) throws IOException, ModelException
     {
@@ -332,7 +336,7 @@ public class JavaClasses extends JomcTool
      * @throws IOException if reading class files fails.
      * @throws ModelException if any of the found class files does not comply with the given modules.
      */
-    public void validateModules( final ClassLoader classLoader ) throws IOException, ModelException
+    public void validateClasses( final ClassLoader classLoader ) throws IOException, ModelException
     {
         if ( classLoader == null )
         {
@@ -589,17 +593,6 @@ public class JavaClasses extends JomcTool
 
                 }
 
-                if ( decoded.getScope() != specification.getScope() )
-                {
-                    details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
-                        "illegalScope", new Object[]
-                        {
-                            specification.getIdentifier(), specification.getScope().value(),
-                            decoded.getScope().value()
-                        } ) ) );
-
-                }
-
                 if ( !details.isEmpty() )
                 {
                     final ModelException modelException = new ModelException();
@@ -713,13 +706,16 @@ public class JavaClasses extends JomcTool
                     }
                     else
                     {
-                        if ( decodedProperty.getType() != property.getType() )
+                        if ( decodedProperty.getType() == null
+                             ? property.getType() != null
+                             : !decodedProperty.getType().equals( property.getType() ) )
                         {
                             details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
                                 "illegalPropertyType", new Object[]
                                 {
                                     implementation.getIdentifier(), decodedProperty.getName(),
-                                    property.getType().value(), decodedProperty.getType().value()
+                                    property.getType() == null ? "default" : property.getType(),
+                                    decodedProperty.getType() == null ? "default" : decodedProperty.getType()
                                 } ) ) );
 
                         }
@@ -787,17 +783,6 @@ public class JavaClasses extends JomcTool
                                 {
                                     specification.getIdentifier(), specification.getMultiplicity().value(),
                                     decodedSpecification.getMultiplicity().value()
-                                } ) ) );
-
-                        }
-
-                        if ( decodedSpecification.getScope() != specification.getScope() )
-                        {
-                            details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
-                                "illegalScope", new Object[]
-                                {
-                                    specification.getIdentifier(), specification.getScope().value(),
-                                    decodedSpecification.getScope().value()
                                 } ) ) );
 
                         }

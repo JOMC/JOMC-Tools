@@ -35,6 +35,41 @@
 #set($messages = $modules.getMessages($implementation.getIdentifier()))
 #if($messages)
 #foreach($message in $messages.getMessage())
-#parse($tool.getTemplateLocation("implementation-message.vm"))
+
+    /**
+     * Gets the text of the {@code $message.getName()} message.
+     * <p><b>Templates</b><br/><table>
+#foreach($text in $message.getTemplate().getText())
+     * <tr><td valign="top">$tool.getDisplayLanguage($text.getLanguage()):</td><td valign="top"><pre>$tool.getJavadocComment($message.getTemplate().getText($text.getLanguage()), "     * ")</pre></td></tr>
+#end
+     * </table></p>
+     * @param locale The locale of the message to return.
+#if($message.getArguments() && !$message.getArguments().getArgument().isEmpty())
+#set($i = 0)
+#foreach($argument in $message.getArguments().getArgument())
+#set($argument = $message.getArguments().getArgument($i))
+#set($i = $i + 1)
+     * @param $argument.getName() #if($argument.getDocumentation())$tool.getJavadocComment($argument.getDocumentation().getText("en"), "     * ")#end#if(!$argument.getDocumentation())Format argument.#end
+
+#end
+#end
+#if($message.getDocumentation())
+     * @return $tool.getJavadocComment($message.getDocumentation().getText("en"), "     * ")
+#end
+#if(!$message.getDocumentation())
+     * @return The text of the {@code $message.getName()} message.
+#end
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "$tool.getClass().getName()",
+        comments = "See ${pom.url}"
+    )
+    $tool.getJavaModifierName($implementation,$message) String $tool.getJavaGetterMethodName($message)( final java.util.Locale locale#if($message.getArguments() && !$message.getArguments().isEmpty())#set($i = 0)#foreach($argument in $message.getArguments().getArgument())#set($argument = $message.getArguments().getArgument($i))#set($i = $i + 1), final $tool.getJavaTypeName($argument) $argument.getName()#end#end ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "$message.getName()", locale, #if($message.getArguments() && !$message.getArguments().getArgument().isEmpty())new Object[] {#set($i = 0)#foreach($argument in $message.getArguments().getArgument())#set($argument = $message.getArguments().getArgument($i))#set($i = $i + 1) $argument.getName(),#end null }#end#if(!$message.getArguments() || $message.getArguments().isEmpty()) null#end );
+    }
 #end
 #end

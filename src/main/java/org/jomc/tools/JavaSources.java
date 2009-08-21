@@ -41,13 +41,16 @@ import java.io.OutputStream;
 import java.io.StringWriter;
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.commons.io.FileUtils;
 import org.apache.velocity.VelocityContext;
+import org.jomc.model.Dependencies;
 import org.jomc.model.Implementation;
+import org.jomc.model.Messages;
+import org.jomc.model.Properties;
 import org.jomc.model.Specification;
+import org.jomc.model.SpecificationReference;
 import org.jomc.tools.util.LineEditor;
 import org.jomc.tools.util.Section;
 import org.jomc.tools.util.SectionEditor;
@@ -81,11 +84,8 @@ public class JavaSources extends JomcTool
     /** Constant for the name of the license source code section. */
     private static final String LICENSE_SECTION_NAME = "License Header";
 
-    /** Constant for the name of the specification comment source code section. */
-    private static final String SPECIFICATION_COMMENT_SECTION_NAME = "Specification Comment";
-
-    /** Constant for the name of the implementation comment source code section. */
-    private static final String IMPLEMENTATION_COMMENT_SECTION_NAME = "Implementation Comment";
+    /** Constant for the name of the documentation source code section. */
+    private static final String DOCUMENTATION_SECTION_NAME = "Documentation";
 
     /** Constant for the name of the implementation annotations source code section. */
     private static final String ANNOTATIONS_SECTION_NAME = "Annotations";
@@ -111,14 +111,17 @@ public class JavaSources extends JomcTool
     /** Name of the {@code implementation-messages.vm} template. */
     private static final String MESSAGES_TEMPLATE = "implementation-messages.vm";
 
-    /** Name of the {@code license-header.vm} template. */
-    private static final String LICENSE_TEMPLATE = "license-header.vm";
+    /** Name of the {@code specification-license.vm} template. */
+    private static final String SPECIFICATION_LICENSE_TEMPLATE = "specification-license.vm";
 
-    /** Name of the {@code specification-comment.vm} template. */
-    private static final String SPECIFICATION_COMMENT_TEMPLATE = "specification-comment.vm";
+    /** Name of the {@code implementation-license.vm} template. */
+    private static final String IMPLEMENTATION_LICENSE_TEMPLATE = "implementation-license.vm";
 
-    /** Name of the {@code implementation-comment.vm} template. */
-    private static final String IMPLEMENTATION_COMMENT_TEMPLATE = "implementation-comment.vm";
+    /** Name of the {@code specification-documentation.vm} template. */
+    private static final String SPECIFICATION_DOCUMENTATION_TEMPLATE = "specification-documentation.vm";
+
+    /** Name of the {@code implementation-documentation.vm} template. */
+    private static final String IMPLEMENTATION_DOCUMENTATION_TEMPLATE = "implementation-documentation.vm";
 
     /** Name of the {@code Implementation.java.vm} template. */
     private static final String IMPLEMENTATION_TEMPLATE = "Implementation.java.vm";
@@ -158,6 +161,8 @@ public class JavaSources extends JomcTool
      *
      * @throws NullPointerException if {@code sourcesDirectory} is {@code null}.
      * @throws IOException if editing fails.
+     *
+     * @see #getModule()
      */
     public void editModuleSources( final File sourceDirectory ) throws IOException
     {
@@ -228,7 +233,7 @@ public class JavaSources extends JomcTool
         }
 
         final File f = new File( sourceDirectory, specification.getIdentifier().replace( '.', '/' ) + ".java" );
-        final Properties timestampProperties = new Properties();
+        final java.util.Properties timestampProperties = new java.util.Properties();
         File timestampsFile = null;
 
         if ( this.getBuildDirectory() != null )
@@ -268,16 +273,36 @@ public class JavaSources extends JomcTool
                                    ? FileUtils.readFileToString( f, this.getInputEncoding() )
                                    : this.getSpecificationTemplate( specification );
 
-            final JavaEditor editor = this.newJavaEditor( specification );
+            final JavaSpecificationEditor editor = this.getSpecificationEditor( specification );
             final String edited = editor.edit( content );
 
-            if ( !editor.isAnnotationsSectionEdited() )
+            if ( !editor.isLicenseSectionPresent() )
+            {
+                this.log( Level.WARNING, this.getMessage( "missingOptionalSection", new Object[]
+                    {
+                        LICENSE_SECTION_NAME,
+                        specification.getIdentifier()
+                    } ), null );
+
+            }
+
+            if ( !editor.isAnnotationsSectionPresent() )
             {
                 throw new IOException( this.getMessage( "missingSection", new Object[]
                     {
                         ANNOTATIONS_SECTION_NAME,
                         specification.getIdentifier()
                     } ) );
+
+            }
+
+            if ( !editor.isDocumentationSectionPresent() )
+            {
+                this.log( Level.WARNING, this.getMessage( "missingOptionalSection", new Object[]
+                    {
+                        DOCUMENTATION_SECTION_NAME,
+                        specification.getIdentifier()
+                    } ), null );
 
             }
 
@@ -331,7 +356,7 @@ public class JavaSources extends JomcTool
         }
 
         final File f = new File( sourceDirectory, implementation.getClazz().replace( '.', '/' ) + ".java" );
-        final Properties timestampProperties = new Properties();
+        final java.util.Properties timestampProperties = new java.util.Properties();
         File timestampsFile = null;
 
         if ( this.getBuildDirectory() != null )
@@ -371,60 +396,20 @@ public class JavaSources extends JomcTool
                                    ? FileUtils.readFileToString( f, this.getInputEncoding() )
                                    : this.getImplementationTemplate( implementation );
 
-            final JavaEditor editor = this.newJavaEditor( implementation );
+            final JavaImplementationEditor editor = this.getImplementationEditor( implementation );
             final String edited = editor.edit( content );
 
-            if ( editor.isConstructorsSectionEdited() && !editor.isDefaultConstructorSectionEdited() )
+            if ( !editor.isLicenseSectionPresent() )
             {
-                throw new IOException( this.getMessage( "missingSection", new Object[]
+                this.log( Level.WARNING, this.getMessage( "missingOptionalSection", new Object[]
                     {
-                        CONSTRUCTORS_SECTION_NAME,
+                        LICENSE_SECTION_NAME,
                         implementation.getIdentifier()
-                    } ) );
+                    } ), null );
 
             }
-            if ( implementation.getSpecifications() != null &&
-                 !implementation.getSpecifications().getReference().isEmpty() && !editor.isConstructorsSectionEdited() )
-            {
-                throw new IOException( this.getMessage( "missingSection", new Object[]
-                    {
-                        CONSTRUCTORS_SECTION_NAME,
-                        implementation.getIdentifier()
-                    } ) );
 
-            }
-            if ( implementation.getProperties() != null &&
-                 !implementation.getProperties().getProperty().isEmpty() && !editor.isPropertiesSectionEdited() )
-            {
-                throw new IOException( this.getMessage( "missingSection", new Object[]
-                    {
-                        PROPERTIES_SECTION_NAME,
-                        implementation.getIdentifier()
-                    } ) );
-
-            }
-            if ( implementation.getDependencies() != null &&
-                 !implementation.getDependencies().getDependency().isEmpty() && !editor.isDependenciesSectionEdited() )
-            {
-                throw new IOException( this.getMessage( "missingSection", new Object[]
-                    {
-                        DEPENDENCIES_SECTION_NAME,
-                        implementation.getIdentifier()
-                    } ) );
-
-            }
-            if ( implementation.getMessages() != null &&
-                 !( implementation.getMessages().getReference().isEmpty() &&
-                    implementation.getMessages().getMessage().isEmpty() ) && !editor.isMessagesSectionEdited() )
-            {
-                throw new IOException( this.getMessage( "missingSection", new Object[]
-                    {
-                        MESSAGES_SECTION_NAME,
-                        implementation.getIdentifier()
-                    } ) );
-
-            }
-            if ( !editor.isAnnotationsSectionEdited() )
+            if ( !editor.isAnnotationsSectionPresent() )
             {
                 throw new IOException( this.getMessage( "missingSection", new Object[]
                     {
@@ -432,6 +417,122 @@ public class JavaSources extends JomcTool
                         implementation.getIdentifier()
                     } ) );
 
+            }
+
+            if ( !editor.isDocumentationSectionPresent() )
+            {
+                this.log( Level.WARNING, this.getMessage( "missingOptionalSection", new Object[]
+                    {
+                        DOCUMENTATION_SECTION_NAME,
+                        implementation.getIdentifier()
+                    } ), null );
+
+            }
+
+            if ( !editor.isConstructorsSectionPresent() )
+            {
+                final List<SpecificationReference> specifications =
+                    this.getModules().getSpecifications( implementation.getIdentifier() );
+
+                if ( specifications != null && !specifications.isEmpty() )
+                {
+                    throw new IOException( this.getMessage( "missingSection", new Object[]
+                        {
+                            CONSTRUCTORS_SECTION_NAME,
+                            implementation.getIdentifier()
+                        } ) );
+
+                }
+                else
+                {
+                    this.log( Level.WARNING, this.getMessage( "missingOptionalSection", new Object[]
+                        {
+                            CONSTRUCTORS_SECTION_NAME,
+                            implementation.getIdentifier()
+                        } ), null );
+
+                }
+            }
+            else if ( !editor.isDefaultConstructorSectionPresent() )
+            {
+                throw new IOException( this.getMessage( "missingSection", new Object[]
+                    {
+                        DEFAULT_CONSTRUCTOR_SECTION_NAME,
+                        implementation.getIdentifier()
+                    } ) );
+
+            }
+
+            if ( !editor.isPropertiesSectionPresent() )
+            {
+                final Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
+
+                if ( properties != null && !properties.getProperty().isEmpty() )
+                {
+                    throw new IOException( this.getMessage( "missingSection", new Object[]
+                        {
+                            PROPERTIES_SECTION_NAME,
+                            implementation.getIdentifier()
+                        } ) );
+
+                }
+                else
+                {
+                    this.log( Level.WARNING, this.getMessage( "missingOptionalSection", new Object[]
+                        {
+                            PROPERTIES_SECTION_NAME,
+                            implementation.getIdentifier()
+                        } ), null );
+
+                }
+            }
+
+            if ( !editor.isDependenciesSectionPresent() )
+            {
+                final Dependencies dependencies = this.getModules().getDependencies( implementation.getIdentifier() );
+
+                if ( dependencies != null && !dependencies.getDependency().isEmpty() )
+                {
+                    throw new IOException( this.getMessage( "missingSection", new Object[]
+                        {
+                            DEPENDENCIES_SECTION_NAME,
+                            implementation.getIdentifier()
+                        } ) );
+
+                }
+                else
+                {
+                    this.log( Level.WARNING, this.getMessage( "missingOptionalSection", new Object[]
+                        {
+                            DEPENDENCIES_SECTION_NAME,
+                            implementation.getIdentifier()
+                        } ), null );
+
+                }
+            }
+
+            if ( !editor.isMessagesSectionPresent() )
+            {
+                final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
+
+                if ( messages != null && !messages.getMessage().isEmpty() )
+                {
+                    throw new IOException( this.getMessage( "missingSection", new Object[]
+                        {
+                            MESSAGES_SECTION_NAME,
+                            implementation.getIdentifier()
+                        } ) );
+
+                }
+                else
+                {
+                    this.log( Level.WARNING, this.getMessage( "missingOptionalSection", new Object[]
+                        {
+                            MESSAGES_SECTION_NAME,
+                            implementation.getIdentifier()
+                        } ), null );
+
+                }
             }
 
             if ( !edited.equals( content ) )
@@ -463,27 +564,27 @@ public class JavaSources extends JomcTool
     }
 
     /**
-     * Gets a new editor for editing an implementation source code file.
-     *
-     * @param implementation The implementation to create a new editor for.
-     *
-     * @return A new editor for editing an implementation source code file.
-     */
-    public JavaEditor newJavaEditor( final Implementation implementation )
-    {
-        return new JavaEditor( new TrailingWhitespaceEditor(), implementation );
-    }
-
-    /**
-     * Gets a new editor for editing a specification source code file.
+     * Gets a new editor for editing Java specification source code.
      *
      * @param specification The specification to create a new editor for.
      *
-     * @return A new editor for editing a specification source code file.
+     * @return A new editor for editing the source code of {@code specification}.
      */
-    public JavaEditor newJavaEditor( final Specification specification )
+    public JavaSpecificationEditor getSpecificationEditor( final Specification specification )
     {
-        return new JavaEditor( new TrailingWhitespaceEditor(), specification );
+        return new JavaSpecificationEditor( new TrailingWhitespaceEditor(), specification );
+    }
+
+    /**
+     * Gets a new editor for editing Java implementation source code.
+     *
+     * @param implementation The implementation to create a new editor for.
+     *
+     * @return A new editor for editing the source code of {@code implementation}.
+     */
+    public JavaImplementationEditor getImplementationEditor( final Implementation implementation )
+    {
+        return new JavaImplementationEditor( new TrailingWhitespaceEditor(), implementation );
     }
 
     /**
@@ -501,257 +602,7 @@ public class JavaSources extends JomcTool
     }
 
     /**
-     * Gets the source code of the constructors section head content of an implemenation.
-     *
-     * @param implementation The implementation to get the constructors section head content of.
-     *
-     * @throws IOException if getting the source code section fails.
-     */
-    private String getConstructorsSectionHeadContent( final Implementation implementation ) throws IOException
-    {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( CONSTRUCTORS_HEAD_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
-    }
-
-    /**
-     * Gets the source code of the constructors section tail content of an implemenation.
-     *
-     * @param implementation The implementation to get the constructors section tail content of.
-     *
-     * @throws IOException if getting the source code section fails.
-     */
-    private String getConstructorsSectionTailContent( final Implementation implementation ) throws IOException
-    {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( CONSTRUCTORS_TAIL_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
-    }
-
-    /**
-     * Gets the source code of the dependencies section.
-     *
-     * @param implementation The implementation to get the source code of the dependencies section of.
-     *
-     * @throws IOException if getting the source code section fails.
-     */
-    private String getDependenciesSection( final Implementation implementation ) throws IOException
-    {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( DEPENDENCIES_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
-    }
-
-    /**
-     * Gets the source code of the properties section.
-     *
-     * @param implementation The implementation to get the source code of the properties section of.
-     *
-     * @throws IOException if getting the source code section fails.
-     */
-    private String getPropertiesSection( final Implementation implementation ) throws IOException
-    {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( PROPERTIES_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
-    }
-
-    /**
-     * Gets the source code of the messages section.
-     *
-     * @param implementation The implementation to get the source code of the messages section of.
-     *
-     * @throws IOException if getting the source code section fails.
-     */
-    private String getMessagesSection( final Implementation implementation ) throws IOException
-    {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( MESSAGES_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
-    }
-
-    /**
-     * Gets the source code of the license section.
-     *
-     * @param implementation The implementation to get the source code of the license section of.
-     *
-     * @throws IOException if getting the source code section fails.
-     */
-    private String getLicenseSection( final Implementation implementation ) throws IOException
-    {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( LICENSE_TEMPLATE );
-            ctx.put( "authors", implementation.getAuthors() );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
-    }
-
-    /**
-     * Gets the source code of the license section.
-     *
-     * @param specification The specification to get the source code of the license section of.
-     *
-     * @throws IOException if getting the source code section fails.
-     */
-    private String getLicenseSection( final Specification specification ) throws IOException
-    {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( LICENSE_TEMPLATE );
-            ctx.put( "authors", specification.getAuthors() );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
-    }
-
-    /**
-     * Gets the source code of the specification comment section.
-     *
-     * @param specification The specification to get the source code section of.
-     *
-     * @throws IOException if getting the source code section fails.
-     */
-    private String getCommentSection( final Specification specification ) throws IOException
-    {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( SPECIFICATION_COMMENT_TEMPLATE );
-            ctx.put( "specification", specification );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
-    }
-
-    /**
-     * Gets the source code of the implementation comment section.
-     *
-     * @param implementation The implementation to get the source code section of.
-     *
-     * @throws IOException if getting the source code section fails.
-     */
-    private String getCommentSection( final Implementation implementation ) throws IOException
-    {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( IMPLEMENTATION_COMMENT_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
-    }
-
-    /**
-     * Gets the source code template of an implementation.
-     *
-     * @param implementation The implementation to get the source code template of.
-     *
-     * @throws IOException if getting the source code section fails.
-     */
-    private String getImplementationTemplate( final Implementation implementation ) throws IOException
-    {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( IMPLEMENTATION_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
-    }
-
-    /**
-     * Gets the source code template of a specification.
+     * Gets the Java source code template of specification.
      *
      * @param specification The specification to get the source code template of.
      *
@@ -776,13 +627,88 @@ public class JavaSources extends JomcTool
     }
 
     /**
-     * Gets the source code of the specification annotations section.
+     * Gets the Java source code template of an implementation.
+     *
+     * @param implementation The implementation to get the source code template of.
+     *
+     * @throws IOException if getting the source code section fails.
+     */
+    private String getImplementationTemplate( final Implementation implementation ) throws IOException
+    {
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( IMPLEMENTATION_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+    }
+
+    /**
+     * Gets the Java source code of the license section of a specification.
+     *
+     * @param specification The specification to get the source code of the license section of.
+     *
+     * @throws IOException if getting the source code section fails.
+     */
+    private String getLicenseSection( final Specification specification ) throws IOException
+    {
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( SPECIFICATION_LICENSE_TEMPLATE );
+            ctx.put( "specification", specification );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+    }
+
+    /**
+     * Gets the Java source code of the license section of an implementation..
+     *
+     * @param implementation The implementation to get the source code of the license section of.
+     *
+     * @throws IOException if getting the source code section fails.
+     */
+    private String getLicenseSection( final Implementation implementation ) throws IOException
+    {
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( IMPLEMENTATION_LICENSE_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+    }
+
+    /**
+     * Gets the Java source code of the specification annotations section.
      *
      * @param specification The specification to get the source code of the annotations section of.
      *
      * @throws IOException if getting the source code section fails.
      */
-    private String getSpecificationAnnotationsTemplate( final Specification specification ) throws IOException
+    private String getAnnotationsSection( final Specification specification ) throws IOException
     {
         try
         {
@@ -801,19 +727,194 @@ public class JavaSources extends JomcTool
     }
 
     /**
-     * Gets the source code of the implementation annotations section.
+     * Gets the Java source code of the implementation annotations section.
      *
      * @param implementation The implementation to get the source code of the annotations section of.
      *
      * @throws IOException if getting the source code section fails.
      */
-    private String getImplementationAnnotationsTemplate( final Implementation implementation ) throws IOException
+    private String getAnnotationsSection( final Implementation implementation ) throws IOException
     {
         try
         {
             final StringWriter writer = new StringWriter();
             final VelocityContext ctx = this.getVelocityContext();
             final String template = this.getTemplateLocation( IMPLEMENTATION_ANNOTATIONS_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+    }
+
+    /**
+     * Gets the Java source code of the documentation section of a specification.
+     *
+     * @param specification The specification to get the source code section of.
+     *
+     * @throws IOException if getting the source code section fails.
+     */
+    private String getDocumentationSection( final Specification specification ) throws IOException
+    {
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( SPECIFICATION_DOCUMENTATION_TEMPLATE );
+            ctx.put( "specification", specification );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+    }
+
+    /**
+     * Gets the Java source code of the documentation section of an implementation.
+     *
+     * @param implementation The implementation to get the source code section of.
+     *
+     * @throws IOException if getting the source code section fails.
+     */
+    private String getDocumentationSection( final Implementation implementation ) throws IOException
+    {
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( IMPLEMENTATION_DOCUMENTATION_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+    }
+
+    /**
+     * Gets the Java source code of the constructors section head content of an implementation.
+     *
+     * @param implementation The implementation to get the constructors section head content of.
+     *
+     * @throws IOException if getting the source code section fails.
+     */
+    private String getConstructorsSectionHeadContent( final Implementation implementation ) throws IOException
+    {
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( CONSTRUCTORS_HEAD_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+    }
+
+    /**
+     * Gets the Java source code of the constructors section tail content of an implementation.
+     *
+     * @param implementation The implementation to get the constructors section tail content of.
+     *
+     * @throws IOException if getting the source code section fails.
+     */
+    private String getConstructorsSectionTailContent( final Implementation implementation ) throws IOException
+    {
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( CONSTRUCTORS_TAIL_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+    }
+
+    /**
+     * Gets the Java source code of the dependencies section of an implementation.
+     *
+     * @param implementation The implementation to get the source code of the dependencies section of.
+     *
+     * @throws IOException if getting the source code section fails.
+     */
+    private String getDependenciesSection( final Implementation implementation ) throws IOException
+    {
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( DEPENDENCIES_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+    }
+
+    /**
+     * Gets the Java source code of the properties section of an implementation.
+     *
+     * @param implementation The implementation to get the source code of the properties section of.
+     *
+     * @throws IOException if getting the source code section fails.
+     */
+    private String getPropertiesSection( final Implementation implementation ) throws IOException
+    {
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( PROPERTIES_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "templateLocation", template );
+            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
+            return writer.toString();
+        }
+        catch ( Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+    }
+
+    /**
+     * Gets the Java source code of the messages section of an implementation.
+     *
+     * @param implementation The implementation to get the source code of the messages section of.
+     *
+     * @throws IOException if getting the source code section fails.
+     */
+    private String getMessagesSection( final Implementation implementation ) throws IOException
+    {
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final String template = this.getTemplateLocation( MESSAGES_TEMPLATE );
             ctx.put( "implementation", implementation );
             ctx.put( "templateLocation", template );
             this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
@@ -832,50 +933,266 @@ public class JavaSources extends JomcTool
         return f.format( args );
     }
 
-    public class JavaEditor extends SectionEditor
+    /**
+     * Extension to {@code SectionEditor} for editing Java source code.
+     * 
+     * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+     * @version $Id$
+     */
+    public abstract class JavaEditor extends SectionEditor
     {
 
+        /** Flag indicating that the source code of the editor contains a license section. */
+        private boolean licenseSectionPresent;
+
+        /** Flag indicating that the source code of the editor contains an annotations section. */
+        private boolean annotationsSectionPresent;
+
+        /** Flag indicating that the source code of the editor contains a documentation section. */
+        private boolean documentationSectionPresent;
+
+        /** Creates a new {@code JavaEditor} instance. */
+        public JavaEditor()
+        {
+            super();
+        }
+
+        /**
+         * Creates a new {@code JavaEditor} instance taking a {@code LineEditor} to chain.
+         *
+         * @param lineEditor The editor to chain.
+         */
+        public JavaEditor( final LineEditor lineEditor )
+        {
+            super( lineEditor );
+        }
+
+        @Override
+        public String getOutput( final Section root )
+        {
+            try
+            {
+                for ( Section s : root.getSections() )
+                {
+                    if ( LICENSE_SECTION_NAME.equals( s.getName() ) )
+                    {
+                        this.editLicenseSection( s );
+                        this.licenseSectionPresent = true;
+                    }
+                    if ( ANNOTATIONS_SECTION_NAME.equals( s.getName() ) )
+                    {
+                        this.editAnnotationsSection( s );
+                        this.annotationsSectionPresent = true;
+                    }
+                    if ( DOCUMENTATION_SECTION_NAME.equals( s.getName() ) )
+                    {
+                        this.editDocumentationSection( s );
+                        this.documentationSectionPresent = true;
+                    }
+                }
+
+                return super.getOutput( root );
+            }
+            catch ( Exception e )
+            {
+                throw new RuntimeException( e );
+            }
+        }
+
+        /**
+         * Edits the license section of the source code of the editor.
+         *
+         * @param s The section to edit.
+         *
+         * @throws IOException if editing {@code s} fails.
+         */
+        public abstract void editLicenseSection( final Section s ) throws IOException;
+
+        /**
+         * Edits the annotations section of the source code of the editor.
+         *
+         * @param s The section to edit.
+         *
+         * @throws IOException if editing {@code s} fails.
+         */
+        public abstract void editAnnotationsSection( final Section s ) throws IOException;
+
+        /**
+         * Edits the documentation section of the source code of the editor.
+         *
+         * @param s The section to edit.
+         *
+         * @throws IOException if editing {@code s} fails.
+         */
+        public abstract void editDocumentationSection( final Section s ) throws IOException;
+
+        /**
+         * Gets a flag indicating that the source code of the editor contains a license section.
+         *
+         * @return {@code true} if the source code of the editor contains a license section; {@code false} if the
+         * source code of the editor does not contain a license section.
+         */
+        public boolean isLicenseSectionPresent()
+        {
+            return this.licenseSectionPresent;
+        }
+
+        /**
+         * Gets a flag indicating that the source code of the editor contains an annotations section.
+         *
+         * @return {@code true} if the source code of the editor contains an annotations section; {@code false} if the
+         * source code of the editor does not contain an annotations section.
+         */
+        public boolean isAnnotationsSectionPresent()
+        {
+            return this.annotationsSectionPresent;
+        }
+
+        /**
+         * Gets a flag indicating that the source code of the editor contains a documentation section.
+         *
+         * @return {@code true} if the source code of the editor contains a documentation section; {@code false} if the
+         * source code of the editor does not contain a documentation section.
+         */
+        public boolean isDocumentationSectionPresent()
+        {
+            return this.documentationSectionPresent;
+        }
+
+    }
+
+    /**
+     * Extension to {@code JavaEditor} for editing specification source code.
+     *
+     * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+     * @version $Id$
+     */
+    public class JavaSpecificationEditor extends JavaEditor
+    {
+
+        /** The specification to edit. */
         private Specification specification;
 
-        private Implementation implementation;
-
-        private boolean licenseSectionEdited;
-
-        private boolean constructorsSectionEdited;
-
-        private boolean defaultConstructorSectionEdited;
-
-        private boolean implementationCommentSectionEdited;
-
-        private boolean specificationCommentSectionEdited;
-
-        private boolean messagesSectionEdited;
-
-        private boolean dependenciesSectionEdited;
-
-        private boolean propertiesSectionEdited;
-
-        private boolean annotationsSectionEdited;
-
-        public JavaEditor( final Specification specification )
+        /**
+         * Creates a new {@code JavaSpecificationEditor} instance for editing the source code of a given specification.
+         *
+         * @param specification The specification to edit.
+         */
+        public JavaSpecificationEditor( final Specification specification )
         {
             super();
             this.specification = specification;
         }
 
-        public JavaEditor( final Implementation implementation )
-        {
-            super();
-            this.implementation = implementation;
-        }
-
-        public JavaEditor( final LineEditor lineEditor, final Specification specification )
+        /**
+         * Creates a new {@code JavaSpecificationEditor} instance for editing the source code of a given specification
+         * taking a {@code LineEditor} to chain.
+         *
+         * @param lineEditor The editor to chain.
+         * @param specification The specification to edit.
+         */
+        public JavaSpecificationEditor( final LineEditor lineEditor, final Specification specification )
         {
             super( lineEditor );
             this.specification = specification;
         }
 
-        public JavaEditor( final LineEditor lineEditor, final Implementation implementation )
+        /**
+         * Edits the license section of the source code of the editor.
+         *
+         * @param s The section to edit.
+         *
+         * @throws IOException if editing {@code s} fails.
+         */
+        public void editLicenseSection( final Section s ) throws IOException
+        {
+            s.getHeadContent().setLength( 0 );
+            if ( this.specification != null )
+            {
+                s.getHeadContent().append( getLicenseSection( this.specification ) );
+            }
+        }
+
+        /**
+         * Edits the annotations section of the source code of the editor.
+         *
+         * @param s The section to edit.
+         *
+         * @throws IOException if editing {@code s} fails.
+         */
+        public void editAnnotationsSection( final Section s ) throws IOException
+        {
+            s.getHeadContent().setLength( 0 );
+            if ( this.specification != null )
+            {
+                s.getHeadContent().append( getAnnotationsSection( this.specification ) );
+            }
+        }
+
+        /**
+         * Edits the documentation section of the source code of the editor.
+         *
+         * @param s The section to edit.
+         *
+         * @throws IOException if editing {@code s} fails.
+         */
+        public void editDocumentationSection( final Section s ) throws IOException
+        {
+            s.getHeadContent().setLength( 0 );
+            if ( this.specification != null )
+            {
+                s.getHeadContent().append( getDocumentationSection( this.specification ) );
+            }
+        }
+
+    }
+
+    /**
+     * Extension to {@code JavaEditor} for editing implementation source code.
+     *
+     * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+     * @version $Id$
+     */
+    public class JavaImplementationEditor extends JavaEditor
+    {
+
+        /** The implementation to edit. */
+        private Implementation implementation;
+
+        /** Flag indicating that the source code of the editor contains a constructors section. */
+        private boolean constructorsSectionPresent;
+
+        /** Flag indicating that the source code of the editor contains a default constructor section. */
+        private boolean defaultConstructorSectionPresent;
+
+        /** Flag indicating that the source code of the editor contains a messages section. */
+        private boolean messagesSectionPresent;
+
+        /** Flag indicating that the source code of the editor contains a dependencies section. */
+        private boolean dependenciesSectionPresent;
+
+        /** Flag indicating that the source code of the editor contains a properties section. */
+        private boolean propertiesSectionPresent;
+
+        /**
+         * Creates a new {@code JavaImplementationEditor} instance for editing the source code of a given implementation.
+         *
+         * @param implementation The implementation to edit.
+         */
+        public JavaImplementationEditor( final Implementation implementation )
+        {
+            super();
+            this.implementation = implementation;
+        }
+
+        /**
+         * Creates a new {@code JavaImplementationEditor} instance for editing the source code of a given implementation
+         * taking a {@code LineEditor} to chain.
+         *
+         * @param lineEditor The editor to chain.
+         * @param implementation The implementation to edit.
+         */
+        public JavaImplementationEditor( final LineEditor lineEditor, final Implementation implementation )
         {
             super( lineEditor );
             this.implementation = implementation;
@@ -887,64 +1204,45 @@ public class JavaSources extends JomcTool
             try
             {
                 Section ctorSection = null;
-                List<Section> sections = root.getSections();
-                for ( Section s : sections )
+
+                for ( Section s : root.getSections() )
                 {
-                    if ( LICENSE_SECTION_NAME.equals( s.getName() ) )
+                    if ( CONSTRUCTORS_SECTION_NAME.equals( s.getName() ) )
                     {
-                        this.editLicenseSection( s );
+                        ctorSection = s;
+                        this.editConstructorsSection( s );
+                        this.constructorsSectionPresent = true;
                     }
-                    if ( this.implementation != null )
+                    else if ( DEFAULT_CONSTRUCTOR_SECTION_NAME.equals( s.getName() ) )
                     {
-                        if ( CONSTRUCTORS_SECTION_NAME.equals( s.getName() ) )
-                        {
-                            this.editConstructorsSection( s );
-                            ctorSection = s;
-                        }
-                        else if ( DEFAULT_CONSTRUCTOR_SECTION_NAME.equals( s.getName() ) )
-                        {
-                            this.editDefaultConstructorSection( s );
-                        }
-                        else if ( DEPENDENCIES_SECTION_NAME.equals( s.getName() ) )
-                        {
-                            this.editDependenciesSection( s );
-                        }
-                        else if ( IMPLEMENTATION_COMMENT_SECTION_NAME.equals( s.getName() ) )
-                        {
-                            this.editImplementationCommentSection( s );
-                        }
-                        else if ( MESSAGES_SECTION_NAME.equals( s.getName() ) )
-                        {
-                            this.editMessagesSection( s );
-                        }
-                        else if ( PROPERTIES_SECTION_NAME.equals( s.getName() ) )
-                        {
-                            this.editPropertiesSection( s );
-                        }
-                        else if ( ANNOTATIONS_SECTION_NAME.equals( s.getName() ) )
-                        {
-                            this.editImplementationAnnotationsSection( s );
-                        }
+                        this.editDefaultConstructorSection( s );
+                        this.defaultConstructorSectionPresent = true;
                     }
-                    else if ( this.specification != null )
+                    else if ( DEPENDENCIES_SECTION_NAME.equals( s.getName() ) )
                     {
-                        if ( SPECIFICATION_COMMENT_SECTION_NAME.equals( s.getName() ) )
-                        {
-                            this.editSpecificationCommentSection( s );
-                        }
-                        else if ( ANNOTATIONS_SECTION_NAME.equals( s.getName() ) )
-                        {
-                            this.editSpecificationAnnotationsSection( s );
-                        }
+                        this.editDependenciesSection( s );
+                        this.dependenciesSectionPresent = true;
+                    }
+                    else if ( MESSAGES_SECTION_NAME.equals( s.getName() ) )
+                    {
+                        this.editMessagesSection( s );
+                        this.messagesSectionPresent = true;
+                    }
+                    else if ( PROPERTIES_SECTION_NAME.equals( s.getName() ) )
+                    {
+                        this.editPropertiesSection( s );
+                        this.propertiesSectionPresent = true;
                     }
                 }
 
-                if ( this.isConstructorsSectionEdited() && !this.isDefaultConstructorSectionEdited() )
+                if ( ctorSection != null && !this.isDefaultConstructorSectionPresent() )
                 {
-                    ctorSection.getHeadContent().append( "        // SECTION-START[Default Constructor]\n" );
+                    ctorSection.getHeadContent().append( "        // SECTION-START[" ).
+                        append( DEFAULT_CONSTRUCTOR_SECTION_NAME ).append( "\n" );
+
                     ctorSection.getHeadContent().append( "        super();\n" );
                     ctorSection.getHeadContent().append( "        // SECTION-END\n" );
-                    this.defaultConstructorSectionEdited = true;
+                    this.defaultConstructorSectionPresent = true;
                 }
 
                 return super.getOutput( root );
@@ -955,134 +1253,190 @@ public class JavaSources extends JomcTool
             }
         }
 
+        /**
+         * Edits the license section of the source code of the editor.
+         *
+         * @param s The section to edit.
+         *
+         * @throws IOException if editing {@code s} fails.
+         */
         public void editLicenseSection( final Section s ) throws IOException
         {
             s.getHeadContent().setLength( 0 );
-            if ( this.specification != null )
-            {
-                s.getHeadContent().append( getLicenseSection( this.specification ) );
-            }
             if ( this.implementation != null )
             {
                 s.getHeadContent().append( getLicenseSection( this.implementation ) );
             }
-
-            this.licenseSectionEdited = true;
         }
 
+        /**
+         * Edits the annotations section of the source code of the editor.
+         *
+         * @param s The section to edit.
+         *
+         * @throws IOException if editing {@code s} fails.
+         */
+        public void editAnnotationsSection( final Section s ) throws IOException
+        {
+            s.getHeadContent().setLength( 0 );
+            if ( this.implementation != null )
+            {
+                s.getHeadContent().append( getAnnotationsSection( this.implementation ) );
+            }
+        }
+
+        /**
+         * Edits the documentation section of the source code of the editor.
+         *
+         * @param s The section to edit.
+         *
+         * @throws IOException if editing {@code s} fails.
+         */
+        public void editDocumentationSection( final Section s ) throws IOException
+        {
+            s.getHeadContent().setLength( 0 );
+            if ( this.implementation != null )
+            {
+                s.getHeadContent().append( getDocumentationSection( this.implementation ) );
+            }
+        }
+
+        /**
+         * Edits the constructors section of the source code of the editor.
+         *
+         * @param s The section to edit.
+         *
+         * @throws IOException if editing {@code s} fails.
+         */
         public void editConstructorsSection( final Section s ) throws IOException
         {
             s.getHeadContent().setLength( 0 );
             s.getTailContent().setLength( 0 );
-            s.getHeadContent().append( getConstructorsSectionHeadContent( this.implementation ) );
-            s.getTailContent().append( getConstructorsSectionTailContent( this.implementation ) );
-            this.constructorsSectionEdited = true;
+
+            if ( this.implementation != null )
+            {
+                s.getHeadContent().append( getConstructorsSectionHeadContent( this.implementation ) );
+                s.getTailContent().append( getConstructorsSectionTailContent( this.implementation ) );
+            }
         }
 
+        /**
+         * Edits the default constructor section of the source code of the editor.
+         *
+         * @param s The section to edit.
+         *
+         * @throws IOException if editing {@code s} fails.
+         */
         public void editDefaultConstructorSection( final Section s )
         {
             if ( s.getHeadContent().toString().trim().length() == 0 )
             {
                 s.getHeadContent().setLength( 0 );
                 s.getHeadContent().append( "        super();\n" ).toString();
-
             }
-
-            this.defaultConstructorSectionEdited = true;
         }
 
+        /**
+         * Edits the dependencies section of the source code of the editor.
+         *
+         * @param s The section to edit.
+         *
+         * @throws IOException if editing {@code s} fails.
+         */
         public void editDependenciesSection( final Section s ) throws IOException
         {
             s.getHeadContent().setLength( 0 );
-            s.getHeadContent().append( getDependenciesSection( implementation ) );
-            this.dependenciesSectionEdited = true;
+            if ( this.implementation != null )
+            {
+                s.getHeadContent().append( getDependenciesSection( this.implementation ) );
+            }
         }
 
+        /**
+         * Edits the messages section of the source code of the editor.
+         *
+         * @param s The section to edit.
+         *
+         * @throws IOException if editing {@code s} fails.
+         */
         public void editMessagesSection( final Section s ) throws IOException
         {
             s.getHeadContent().setLength( 0 );
-            s.getHeadContent().append( getMessagesSection( implementation ) );
-            this.messagesSectionEdited = true;
+            if ( this.implementation != null )
+            {
+                s.getHeadContent().append( getMessagesSection( this.implementation ) );
+            }
         }
 
+        /**
+         * Edits the properties section of the source code of the editor.
+         *
+         * @param s The section to edit.
+         *
+         * @throws IOException if editing {@code s} fails.
+         */
         public void editPropertiesSection( final Section s ) throws IOException
         {
             s.getHeadContent().setLength( 0 );
-            s.getHeadContent().append( getPropertiesSection( implementation ) );
-            this.propertiesSectionEdited = true;
+            if ( this.implementation != null )
+            {
+                s.getHeadContent().append( getPropertiesSection( this.implementation ) );
+            }
         }
 
-        public void editImplementationCommentSection( final Section s ) throws IOException
+        /**
+         * Gets a flag indicating that the source code of the editor contains a constructors section.
+         *
+         * @return {@code true} if the source code of the editor contains a constructors section; {@code false} if the
+         * source code of the editor does not contain a constructors section.
+         */
+        public boolean isConstructorsSectionPresent()
         {
-            s.getHeadContent().setLength( 0 );
-            s.getHeadContent().append( getCommentSection( implementation ) );
-            this.implementationCommentSectionEdited = true;
+            return this.constructorsSectionPresent;
         }
 
-        public void editImplementationAnnotationsSection( final Section s ) throws IOException
+        /**
+         * Gets a flag indicating that the source code of the editor contains a default constructor section.
+         *
+         * @return {@code true} if the source code of the editor contains a default constructor section; {@code false}
+         * if the source code of the editor does not contain a default constructor section.
+         */
+        public boolean isDefaultConstructorSectionPresent()
         {
-            s.getHeadContent().setLength( 0 );
-            s.getHeadContent().append( getImplementationAnnotationsTemplate( implementation ) );
-            this.annotationsSectionEdited = true;
+            return this.defaultConstructorSectionPresent;
         }
 
-        public void editSpecificationCommentSection( final Section s ) throws IOException
+        /**
+         * Gets a flag indicating that the source code of the editor contains a messages section.
+         *
+         * @return {@code true} if the source code of the editor contains a messages section; {@code false}
+         * if the source code of the editor does not contain a messages section.
+         */
+        public boolean isMessagesSectionPresent()
         {
-            s.getHeadContent().setLength( 0 );
-            s.getHeadContent().append( getCommentSection( specification ) );
-            this.specificationCommentSectionEdited = true;
+            return this.messagesSectionPresent;
         }
 
-        public void editSpecificationAnnotationsSection( final Section s ) throws IOException
+        /**
+         * Gets a flag indicating that the source code of the editor contains a dependencies section.
+         *
+         * @return {@code true} if the source code of the editor contains a dependencies section; {@code false}
+         * if the source code of the editor does not contain a dependencies section.
+         */
+        public boolean isDependenciesSectionPresent()
         {
-            s.getHeadContent().setLength( 0 );
-            s.getHeadContent().append( getSpecificationAnnotationsTemplate( specification ) );
-            this.annotationsSectionEdited = true;
+            return this.dependenciesSectionPresent;
         }
 
-        public boolean isLicenseSectionEdited()
+        /**
+         * Gets a flag indicating that the source code of the editor contains a properties section.
+         *
+         * @return {@code true} if the source code of the editor contains a properties section; {@code false}
+         * if the source code of the editor does not contain a properties section.
+         */
+        public boolean isPropertiesSectionPresent()
         {
-            return this.licenseSectionEdited;
-        }
-
-        public boolean isConstructorsSectionEdited()
-        {
-            return this.constructorsSectionEdited;
-        }
-
-        public boolean isDefaultConstructorSectionEdited()
-        {
-            return this.defaultConstructorSectionEdited;
-        }
-
-        public boolean isImplementationCommentSectionEdited()
-        {
-            return this.implementationCommentSectionEdited;
-        }
-
-        public boolean isSpecificationCommentSectionEdited()
-        {
-            return this.specificationCommentSectionEdited;
-        }
-
-        public boolean isMessagesSectionEdited()
-        {
-            return this.messagesSectionEdited;
-        }
-
-        public boolean isDependenciesSectionEdited()
-        {
-            return this.dependenciesSectionEdited;
-        }
-
-        public boolean isPropertiesSectionEdited()
-        {
-            return this.propertiesSectionEdited;
-        }
-
-        public boolean isAnnotationsSectionEdited()
-        {
-            return this.annotationsSectionEdited;
+            return this.propertiesSectionPresent;
         }
 
     }

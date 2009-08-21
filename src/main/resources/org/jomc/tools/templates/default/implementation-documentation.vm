@@ -40,8 +40,7 @@
  * <p><b>Specifications</b><ul>
 #foreach($reference in $modules.getSpecifications($implementation.getIdentifier()))
 #set($specification = $modules.getSpecification($reference.getIdentifier()))
- * <li>{@code $tool.getJavaTypeName($reference,true)}#if($reference.getVersion()) {@code $reference.getVersion()}#end<blockquote>
- * Object applies to $specification.getScope().value() scope.</blockquote></li>
+ * <li>{@code $tool.getJavaTypeName($reference,true)}#if($reference.getVersion()) {@code $reference.getVersion()}#end</li>
 #end
  * </ul></p>
 #end
@@ -49,7 +48,7 @@
  * <p><b>Properties</b><ul>
 #foreach($property in $modules.getProperties($implementation.getIdentifier()).getProperty())
  * <li>"{@link #$tool.getJavaGetterMethodName($property) $property.getName()}"<blockquote>
- * Property of type {@code $property.getType().value()}#if($property.getValue()) with value "$property.getValue()"#end.</blockquote></li>
+ * Property of type {@code $tool.getJavaTypeName($property,false)}#if($property.getValue()) with value "$property.getValue()"#end.</blockquote></li>
 #end
  * </ul></p>
 #end
@@ -58,7 +57,7 @@
 #foreach($dependency in $modules.getDependencies($implementation.getIdentifier()).getDependency())
 #set($specification = $modules.getSpecification($dependency.getIdentifier()))
  * <li>"{@link #$tool.getJavaGetterMethodName($dependency) $dependency.getName()}"<blockquote>
- * Dependency on {@code $dependency.getIdentifier()}#if($dependency.getVersion()) at specification level $dependency.getVersion()#end applying to $specification.getScope().value() scope#if($dependency.isBound()) bound to an instance#end.</blockquote></li>
+ * Dependency on {@code $dependency.getIdentifier()}#if($dependency.getVersion()) at specification level $dependency.getVersion()#end#if($dependency.isBound()) bound to an instance#end.</blockquote></li>
 #end
  * </ul></p>
 #end

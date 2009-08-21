@@ -34,6 +34,7 @@ package org.jomc.tools;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -44,6 +45,9 @@ import java.util.Set;
  */
 public class BootstrapObjectRelocation implements Serializable
 {
+
+    /** Serial version UID for compatibility with 1.0.x object streams. */
+    private static final long serialVersionUID = -4103126644590646445L;
 
     /**
      * The source pattern to relocate.
@@ -116,6 +120,42 @@ public class BootstrapObjectRelocation implements Serializable
         }
 
         return this.exclusionPatterns;
+    }
+
+    /**
+     * Creates and returns a string representation of the object.
+     *
+     * @return A string representation of the object.
+     */
+    private String toStringInternal()
+    {
+        final StringBuffer b = new StringBuffer().append( '{' ).
+            append( "sourcePattern=" ).append( this.sourcePattern ).
+            append( ", replacementPattern=" ).append( this.replacementPattern ).
+            append( ", exclusionPatterns={" );
+
+        for ( Iterator<String> it = this.getExclusionPatterns().iterator(); it.hasNext(); )
+        {
+            b.append( it.next() );
+            if ( it.hasNext() )
+            {
+                b.append( ", " );
+            }
+        }
+        b.append( "}}" );
+
+        return b.toString();
+    }
+
+    /**
+     * Creates and returns a string representation of the object.
+     *
+     * @return A string representation of the object.
+     */
+    @Override
+    public String toString()
+    {
+        return super.toString() + this.toStringInternal();
     }
 
 }

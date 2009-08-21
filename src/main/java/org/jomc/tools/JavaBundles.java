@@ -132,12 +132,14 @@ public class JavaBundles extends JomcTool
     }
 
     /**
-     * Writes Java resource bundle sources of the module of the instance to a given directories.
+     * Writes Java resource bundle sources of the module of the instance to a given directory.
      *
      * @param sourcesDirectory The directory to write sources to.
      *
      * @throws NullPointerException if {@code sourcesDirectory} is {@code null}.
      * @throws IOException if writing fails.
+     *
+     * @see #getModule()
      */
     public void writeModuleSources( final File sourcesDirectory ) throws IOException
     {
@@ -150,12 +152,14 @@ public class JavaBundles extends JomcTool
     }
 
     /**
-     * Writes Java resource bundle resources of the module of the instance to a given directories.
+     * Writes Java resource bundle resources of the module of the instance to a given directory.
      *
      * @param resourcesDirectory The directory to write resources to.
      *
      * @throws NullPointerException if {@code resourcesDirectory} is {@code null}.
      * @throws IOException if writing fails.
+     *
+     * @see #getModule()
      */
     public void writeModuleResources( final File resourcesDirectory ) throws IOException
     {
@@ -174,6 +178,8 @@ public class JavaBundles extends JomcTool
      * @param resourcesDirectory The directory to write resources to or {@code null} to not write any resources.
      *
      * @throws IOException if writing fails.
+     *
+     * @see #getModule()
      */
     public void writeModuleBundles( final File sourcesDirectory, final File resourcesDirectory ) throws IOException
     {
@@ -194,6 +200,12 @@ public class JavaBundles extends JomcTool
                 {
                     hashFile.createNewFile();
                 }
+
+                this.log( Level.CONFIG, this.getMessage( "usingBuildDirectory", new Object[]
+                    {
+                        buildDirectory.getAbsolutePath()
+                    } ), null );
+
             }
 
             this.log( Level.INFO, this.getMessage( "processingModule", new Object[]
@@ -505,12 +517,12 @@ public class JavaBundles extends JomcTool
     }
 
     /**
-     * Computes the hashcode of an implementation.
+     * Computes the hash code of an implementation.
      *
      * @param module The module to use for resolving references.
-     * @param implementation The implementation to compute the hashcode of.
+     * @param implementation The implementation to compute the hash code of.
      *
-     * @return The hashcode of {@code implementation}.
+     * @return The hash code of {@code implementation}.
      *
      * @throws NullPointerException if {@code module} or {@code implementation} is {@code null}.
      */

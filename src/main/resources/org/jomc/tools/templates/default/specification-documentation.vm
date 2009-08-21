@@ -36,12 +36,12 @@
 #if($specification.getDocumentation())
  * $tool.getJavadocComment($specification.getDocumentation().getText("en"), " * ")
 #end
- * <p>This specification applies to $specification.getScope().value() scope.
+ * <p>This specification declares a multiplicity of {@code $specification.getMultiplicity().value()}.
 #if($specification.getMultiplicity().value() == "One")
  * An application assembler is required to provide no more than one implementation of this specification (including none).
  * Use of class {@link org.jomc.ObjectManager ObjectManager} is supported for getting that implementation.<pre>
  * ${tool.getJavaTypeName($specification,false)} object = (${tool.getJavaTypeName($specification,false)}) ObjectManagerFactory.getObjectManager().getObject( ${tool.getJavaTypeName($specification,false)}.class );
- * </pre></p>
+ * </pre>
 #end
 #if($specification.getMultiplicity().value() == "Many")
  * An application assembler may provide multiple implementations of this specification (including none).
@@ -49,8 +49,9 @@
  * selecting a single implementation.<pre>
  * ${tool.getJavaTypeName($specification,false)}[] objects = (${tool.getJavaTypeName($specification,false)}[]) ObjectManagerFactory.getObjectManager().getObject( ${tool.getJavaTypeName($specification,false)}.class );
  * ${tool.getJavaTypeName($specification,false)} object = ObjectManagerFactory.getObjectManager().getObject( ${tool.getJavaTypeName($specification,false)}.class, "<i>implementation name</i>" );
- * </pre></p>
+ * </pre>
 #end
+ * </p>
  *
 #if($specification.getAuthors())
 #foreach($author in $specification.getAuthors().getAuthor())

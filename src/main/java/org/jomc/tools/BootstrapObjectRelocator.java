@@ -33,6 +33,7 @@
 package org.jomc.tools;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import org.jomc.model.bootstrap.BootstrapObject;
 import org.jomc.model.bootstrap.Schema;
@@ -163,6 +164,39 @@ public class BootstrapObjectRelocator
         }
 
         return relocation;
+    }
+
+    /**
+     * Creates and returns a string representation of the object.
+     *
+     * @return A string representation of the object.
+     */
+    private String toStringInternal()
+    {
+        final StringBuffer b = new StringBuffer().append( '{' ).append( "bootstrapObjectRelocations={" );
+
+        for ( Iterator<BootstrapObjectRelocation> it = this.getBootstrapObjectRelocations().iterator(); it.hasNext(); )
+        {
+            b.append( it.next() );
+            if ( it.hasNext() )
+            {
+                b.append( ", " );
+            }
+        }
+        b.append( "}}" );
+
+        return b.toString();
+    }
+
+    /**
+     * Creates and returns a string representation of the object.
+     *
+     * @return A string representation of the object.
+     */
+    @Override
+    public String toString()
+    {
+        return super.toString() + this.toStringInternal();
     }
 
 }

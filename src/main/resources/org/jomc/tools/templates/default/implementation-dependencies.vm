@@ -41,8 +41,7 @@
      * Gets the {@code $dependency.getName()} dependency.
 #if($dependency.getImplementationName())
      * <p>This method returns the "{@code $dependency.getImplementationName()}" object of the {@code $dependency.getIdentifier()} specification#if($dependency.getVersion()) at specification level $dependency.getVersion()#end.</p>
-#end
-#if(!$dependency.getImplementationName())
+#else
      * <p>This method returns any available object of the {@code $dependency.getIdentifier()} specification#if($dependency.getVersion()) at specification level $dependency.getVersion()#end.</p>
 #end
 #if($dependency.getProperties())
@@ -59,8 +58,7 @@
 #end
 #if($dependency.getDocumentation())
      * @return $tool.getJavadocComment($dependency.getDocumentation().getText("en"), "     * ")
-#end
-#if(!$dependency.getDocumentation())
+#else
      * @return The {@code $dependency.getName()} dependency.
 #end
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.

@@ -31,7 +31,7 @@
 ##
 ## @param modules The modules declaring module.
 ## @param module The module of the template.
-## @param authors The authors of the template.
+## @param implementation The implementation of the template.
 ## @param tool The builder of the template.
 /*
 #if($module.getVendor())
@@ -41,8 +41,8 @@
  *   Copyright (c) $year $module.getVendor()
 #end
 #end
-#if($authors)
-#foreach($author in $authors.getAuthor())
+#if($implementation.getAuthors())
+#foreach($author in $implementation.getAuthors().getAuthor())
 #if($author.getCreateDate())
  *   Copyright (c) $author.getCreateDate().getYear() $author.getName()#if($author.getMail()) <$author.getMail()>#end
 

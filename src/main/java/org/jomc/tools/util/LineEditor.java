@@ -69,19 +69,19 @@ public class LineEditor
     }
 
     /**
-     * Edits strings.
+     * Edits texts.
      * <p>This method splits the given string into lines and passes every line to method {@code getNextLine} in order of
      * occurence in the given string.</p>
      *
-     * @param string The string to edit.
+     * @param text The text to edit.
      *
-     * @return The edited string.
+     * @return The edited text.
      */
-    public final String edit( String string )
+    public final String edit( String text )
     {
         try
         {
-            final BufferedReader reader = new BufferedReader( new StringReader( string ) );
+            final BufferedReader reader = new BufferedReader( new StringReader( text ) );
             final StringBuffer edited = new StringBuffer();
 
             String line = null;
@@ -100,19 +100,21 @@ public class LineEditor
                 edited.append( replacement );
             }
 
-            string = edited.toString();
+            if ( !text.equals( ( text = edited.toString() ) ) )
+            {
+                this.inputModified = true;
+            }
 
             if ( this.editor != null )
             {
-                final String chained = this.editor.edit( string );
-                if ( !string.equals( chained ) )
+                text = this.editor.edit( text );
+                if ( this.editor.isInputModified() )
                 {
                     this.inputModified = true;
-                    string = chained;
                 }
             }
 
-            return string;
+            return text;
         }
         catch ( IOException e )
         {

@@ -38,7 +38,7 @@ package ${tool.getJavaPackageName($specification)};
 
 import java.lang.*;
 
-// SECTION-START[Specification Comment]
+// SECTION-START[Documentation]
 // SECTION-END
 // SECTION-START[Annotations]
 // SECTION-END

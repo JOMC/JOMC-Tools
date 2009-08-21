@@ -155,8 +155,8 @@ public class JomcResourceTransformer implements ResourceTransformer
 
     public boolean canTransformResource( final String arg )
     {
-        // Relocating committed class files is not supported since class files are not provided to resource transformers
-        // and the shade plugin does not expose its class remappers.
+        // Relocating model data of committed class files is not supported since class files are not provided to
+        // resource transformers and the shade plugin does not expose its remappers.
 
         if ( this.moduleResources != null )
         {

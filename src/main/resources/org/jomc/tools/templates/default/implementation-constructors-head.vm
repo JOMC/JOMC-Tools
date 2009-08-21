@@ -33,7 +33,7 @@
 ## @param implementation The implementation of the template.
 ## @param tool The builder of the template.
 
-    /** Default implementation constructor. */
+    /** Creates a new {@code $tool.getJavaTypeName($implementation,false)} instance. */
     @javax.annotation.Generated
     (
         value = "$tool.getClass().getName()",
