@@ -30,15 +30,14 @@
 ##   $Id$
 ##
 ## @param modules The modules declaring module.
-## @param module The module of the template.
 ## @param implementation The implementation of the template.
 ## @param tool The builder of the template.
 /*
-#if($module.getVendor())
-#if($module.getCreateDate())
- *   Copyright (c) $module.getCreateDate().getYear() $module.getVendor()
+#if($implementation.getVendor())
+#if($implementation.getCreateDate())
+ *   Copyright (c) $implementation.getCreateDate().getYear() $implementation.getVendor()
 #else
- *   Copyright (c) $year $module.getVendor()
+ *   Copyright (c) $year $implementation.getVendor()
 #end
 #end
 #if($implementation.getAuthors())

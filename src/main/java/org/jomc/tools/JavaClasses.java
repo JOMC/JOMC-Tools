@@ -35,11 +35,8 @@ package org.jomc.tools;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.LinkedList;
@@ -49,6 +46,8 @@ import java.util.logging.Level;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import javax.xml.bind.JAXBException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.bcel.classfile.Attribute;
 import org.apache.bcel.classfile.ClassParser;
@@ -74,17 +73,30 @@ import org.xml.sax.SAXException;
 /**
  * Manages Java classes.
  *
+ * <p><b>Use cases</b><br/><ul>
+ * <li>{@link #commitClasses(java.io.File) }</li>
+ * <li>{@link #commitClasses(org.jomc.model.Module, java.io.File) }</li>
+ * <li>{@link #commitClasses(org.jomc.model.Specification, java.io.File) }</li>
+ * <li>{@link #commitClasses(org.jomc.model.Implementation, java.io.File) }</li>
+ * <li>{@link #validateClasses(java.io.File) }</li>
+ * <li>{@link #validateClasses(java.lang.ClassLoader) }</li>
+ * <li>{@link #validateClasses(org.jomc.model.Module, java.io.File) }</li>
+ * <li>{@link #validateClasses(org.jomc.model.Module, java.lang.ClassLoader) }</li>
+ * <li>{@link #validateClasses(org.jomc.model.Specification, org.apache.bcel.classfile.JavaClass) }</li>
+ * <li>{@link #validateClasses(org.jomc.model.Implementation, org.apache.bcel.classfile.JavaClass) }</li>
+ * <li>{@link #transformClasses(java.io.File, javax.xml.transform.Transformer) }</li>
+ * <li>{@link #transformClasses(org.jomc.model.Module, java.io.File, javax.xml.transform.Transformer) }</li>
+ * <li>{@link #transformClasses(org.jomc.model.Specification, org.apache.bcel.classfile.JavaClass, javax.xml.transform.Transformer) }</li>
+ * <li>{@link #transformClasses(org.jomc.model.Implementation, org.apache.bcel.classfile.JavaClass, javax.xml.transform.Transformer) }</li>
+ * </ul></p>
+ *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
- * @see #commitModuleClasses(java.io.File)
- * @see #validateModuleClasses(java.io.File)
- * @see #validateClasses(java.lang.ClassLoader)
+ *
+ * @see #getModules()
  */
 public class JavaClasses extends JomcTool
 {
-
-    /** Constant for the name of the properties file holding modification timestamps. */
-    private static final String TIMESTAMPS_FILE_NAME = "java-classes.properties";
 
     /** Creates a new {@code JavaClasses} instance. */
     public JavaClasses()
@@ -93,354 +105,110 @@ public class JavaClasses extends JomcTool
     }
 
     /**
-     * Creates a new {@code JavaClasses} instance taking a {@code JomcTool} instance to initialize the instance with.
+     * Creates a new {@code JavaClasses} instance taking a {@code JavaClasses} instance to initialize the instance with.
      *
      * @param tool The instance to initialize the new instance with,
      */
-    public JavaClasses( final JomcTool tool )
+    public JavaClasses( final JavaClasses tool )
     {
         super( tool );
     }
 
     /**
-     * Commits meta-data of the module of the instance to compiled Java classes.
+     * Commits meta-data of the modules of the instance to compiled Java classes.
      *
-     * @param classesDirectory The directory holding the compiled class files of the module of the instance.
+     * @param classesDirectory The directory holding the compiled class files.
      *
      * @throws NullPointerException if {@code classesDirectory} is {@code null}.
      * @throws IOException if committing meta-data fails.
      *
-     * @see #getModule()
+     * @see #commitClasses(org.jomc.model.Module, java.io.File)
      */
-    public void commitModuleClasses( final File classesDirectory ) throws IOException
+    public void commitClasses( final File classesDirectory ) throws IOException
     {
         if ( classesDirectory == null )
         {
             throw new NullPointerException( "classesDirectory" );
         }
-
-        if ( this.getModule() != null )
-        {
-            this.log( Level.INFO, this.getMessage( "processingModule", new Object[]
-                {
-                    this.getModule().getName()
-                } ), null );
-
-            File timestampsFile = null;
-            final java.util.Properties timestampProperties = new java.util.Properties();
-            if ( this.getBuildDirectory() != null )
-            {
-                timestampsFile = new File( this.getBuildDirectory(), TIMESTAMPS_FILE_NAME );
-                if ( !this.getBuildDirectory().exists() )
-                {
-                    this.getBuildDirectory().mkdirs();
-                }
-                if ( !timestampsFile.exists() )
-                {
-                    timestampsFile.createNewFile();
-                }
-
-                final InputStream in = new FileInputStream( timestampsFile );
-                timestampProperties.load( in );
-                in.close();
-
-                this.log( Level.FINE, this.getMessage( "timestampsFile", new Object[]
-                    {
-                        timestampsFile.getAbsolutePath()
-                    } ), null );
-
-            }
-
-            if ( this.getModule().getSpecifications() != null )
-            {
-                for ( Specification s : this.getModule().getSpecifications().getSpecification() )
-                {
-                    final String classLocation = s.getIdentifier().replace( '.', File.separatorChar ) + ".class";
-                    final File classFile = new File( classesDirectory, classLocation );
-
-                    long lastModified = -1L;
-                    if ( timestampProperties.getProperty( classFile.getAbsolutePath() ) != null )
-                    {
-                        lastModified = Long.valueOf( timestampProperties.getProperty( classFile.getAbsolutePath() ) );
-                    }
-
-                    if ( lastModified == -1L || lastModified != classFile.lastModified() )
-                    {
-                        final long oldLength = classFile.length();
-                        final JavaClass clazz = this.getJavaClass( classFile );
-                        this.commitSpecificationClass( s, clazz );
-                        clazz.dump( classFile );
-                        this.log( Level.INFO, this.getMessage( "writing", new Object[]
-                            {
-                                classFile.getAbsolutePath(), classFile.length() - oldLength
-                            } ), null );
-
-                    }
-
-                    timestampProperties.setProperty(
-                        classFile.getAbsolutePath(), Long.valueOf( classFile.lastModified() ).toString() );
-
-                }
-            }
-            if ( this.getModule().getImplementations() != null )
-            {
-                for ( Implementation i : this.getModule().getImplementations().getImplementation() )
-                {
-                    if ( i.getIdentifier().equals( i.getClazz() ) )
-                    {
-                        final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
-                        final File classFile = new File( classesDirectory, classLocation );
-
-                        long lastModified = -1L;
-                        if ( timestampProperties.getProperty( classFile.getAbsolutePath() ) != null )
-                        {
-                            lastModified =
-                                Long.valueOf( timestampProperties.getProperty( classFile.getAbsolutePath() ) );
-                        }
-
-                        if ( lastModified == -1L || lastModified != classFile.lastModified() )
-                        {
-                            final long oldLength = classFile.length();
-                            final JavaClass clazz = this.getJavaClass( classFile );
-                            this.commitImplementationClass( i, clazz );
-                            clazz.dump( classFile );
-                            this.log( Level.INFO, this.getMessage( "writing", new Object[]
-                                {
-                                    classFile.getAbsolutePath(), classFile.length() - oldLength
-                                } ), null );
-
-                        }
-
-                        timestampProperties.setProperty(
-                            classFile.getAbsolutePath(), Long.valueOf( classFile.lastModified() ).toString() );
-
-                    }
-                }
-            }
-
-            if ( timestampsFile != null )
-            {
-                final OutputStream out = new FileOutputStream( timestampsFile );
-                timestampProperties.store( out, this.getClass().getName() );
-                out.close();
-            }
-
-            this.log( Level.INFO, this.getMessage( "upToDate", null ), null );
-        }
-        else
-        {
-            this.log( Level.WARNING, this.getMessage( "missingModule", new Object[]
-                {
-                    this.getModuleName()
-                } ), null );
-
-        }
-    }
-
-    /**
-     * Validates compiled Java classes of the module of the instance to comply with the module of the instance.
-     *
-     * @param classesDirectory The directory holding the compiled class files of the module of the instance.
-     *
-     * @throws NullPointerException if {@code classesDirectory} is {@code null}.
-     * @throws IOException if reading class files fails.
-     * @throws ModelException if any of the compiled Java classes of the module of the instance does not comply with
-     * the module of the instance.
-     *
-     * @see #getModule()
-     */
-    public void validateModuleClasses( final File classesDirectory ) throws IOException, ModelException
-    {
-        if ( classesDirectory == null )
-        {
-            throw new NullPointerException( "classesDirectory" );
-        }
-
-        final List<ModelException.Detail> details = new LinkedList<ModelException.Detail>();
-
-        if ( this.getModule() != null )
-        {
-            this.log( Level.INFO, this.getMessage( "processingModule", new Object[]
-                {
-                    this.getModule().getName()
-                } ), null );
-
-
-            if ( this.getModule().getSpecifications() != null )
-            {
-                for ( Specification s : this.getModule().getSpecifications().getSpecification() )
-                {
-                    final String classLocation = s.getIdentifier().replace( '.', File.separatorChar ) + ".class";
-                    final File classFile = new File( classesDirectory, classLocation );
-
-                    try
-                    {
-                        this.validateSpecificationClass( s, this.getJavaClass( classFile ) );
-                    }
-                    catch ( ModelException e )
-                    {
-                        details.addAll( e.getDetails() );
-                    }
-                }
-            }
-            if ( this.getModule().getImplementations() != null )
-            {
-                for ( Implementation i : this.getModule().getImplementations().getImplementation() )
-                {
-                    if ( i.getIdentifier().equals( i.getClazz() ) )
-                    {
-                        final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
-                        final File classFile = new File( classesDirectory, classLocation );
-
-                        try
-                        {
-                            this.validateImplementationClass( i, this.getJavaClass( classFile ) );
-                        }
-                        catch ( ModelException e )
-                        {
-                            details.addAll( e.getDetails() );
-                        }
-                    }
-                }
-            }
-
-            if ( !details.isEmpty() )
-            {
-                final ModelException modelException = new ModelException();
-                modelException.getDetails().addAll( details );
-                throw modelException;
-            }
-
-            this.log( Level.INFO, this.getMessage( "validated", new Object[]
-                {
-                    this.getModule().getName()
-                } ), null );
-
-        }
-        else
-        {
-            this.log( Level.WARNING, this.getMessage( "missingModule", new Object[]
-                {
-                    this.getModuleName()
-                } ), null );
-
-        }
-    }
-
-    /**
-     * Validates compiled Java classes to comply with the modules of the instance.
-     *
-     * @param classLoader The class loader to search for classes.
-     *
-     * @throws NullPointerException if {@code classLoader} is {@code null}.
-     * @throws IOException if reading class files fails.
-     * @throws ModelException if any of the found class files does not comply with the given modules.
-     */
-    public void validateClasses( final ClassLoader classLoader ) throws IOException, ModelException
-    {
-        if ( classLoader == null )
-        {
-            throw new NullPointerException( "classLoader" );
-        }
-
-        final List<ModelException.Detail> details = new LinkedList<ModelException.Detail>();
 
         for ( Module m : this.getModules().getModule() )
         {
-            if ( m.getSpecifications() != null )
+            this.commitClasses( m, classesDirectory );
+        }
+    }
+
+    /**
+     * Commits meta-data of a given module of the modules of the instance to compiled Java classes.
+     *
+     * @param module The module to process.
+     * @param classesDirectory The directory holding the compiled class files.
+     *
+     * @throws NullPointerException if {@code module} or {@code classesDirectory} is {@code null}.
+     * @throws IOException if committing meta-data fails.
+     *
+     * @see #commitClasses(org.jomc.model.Specification, java.io.File)
+     * @see #commitClasses(org.jomc.model.Implementation, java.io.File)
+     */
+    public void commitClasses( final Module module, final File classesDirectory ) throws IOException
+    {
+        if ( module == null )
+        {
+            throw new NullPointerException( "module" );
+        }
+        if ( classesDirectory == null )
+        {
+            throw new NullPointerException( "classesDirectory" );
+        }
+
+        if ( module.getSpecifications() != null )
+        {
+            for ( Specification s : module.getSpecifications().getSpecification() )
             {
-                for ( Specification s : m.getSpecifications().getSpecification() )
-                {
-                    final String classLocation = s.getIdentifier().replace( '.', File.separatorChar ) + ".class";
-                    final URL classUrl = classLoader.getResource( classLocation );
-
-                    if ( classUrl != null )
-                    {
-                        try
-                        {
-                            this.validateSpecificationClass( s, this.getJavaClass( classUrl, classLocation ) );
-                        }
-                        catch ( ModelException e )
-                        {
-                            details.addAll( e.getDetails() );
-                        }
-                    }
-                    else
-                    {
-                        this.log( Level.WARNING, this.getMessage( "missingClassfile", new Object[]
-                            {
-                                s.getIdentifier()
-                            } ), null );
-
-                    }
-                }
+                this.commitClasses( s, classesDirectory );
             }
-            if ( m.getImplementations() != null )
+        }
+        if ( module.getImplementations() != null )
+        {
+            for ( Implementation i : module.getImplementations().getImplementation() )
             {
-                for ( Implementation i : m.getImplementations().getImplementation() )
-                {
-                    if ( i.getIdentifier().equals( i.getClazz() ) )
-                    {
-                        final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
-                        final URL classUrl = classLoader.getResource( classLocation );
-
-                        if ( classUrl != null )
-                        {
-                            try
-                            {
-                                this.validateImplementationClass( i, this.getJavaClass( classUrl, classLocation ) );
-                            }
-                            catch ( ModelException e )
-                            {
-                                details.addAll( e.getDetails() );
-                            }
-                        }
-                        else
-                        {
-                            this.log( Level.WARNING, this.getMessage( "missingClassfile", new Object[]
-                                {
-                                    i.getClazz()
-                                } ), null );
-
-                        }
-                    }
-                }
-            }
-
-            if ( !details.isEmpty() )
-            {
-                final ModelException modelException = new ModelException();
-                modelException.getDetails().addAll( details );
-                throw modelException;
+                this.commitClasses( i, classesDirectory );
             }
         }
     }
 
     /**
-     * Commits specification meta-data to the class file of a given specification.
+     * Commits meta-data of a given specification of the modules of the instance to compiled Java classes.
      *
-     * @param specification The specification to commit.
-     * @param clazz The class of {@code specification}.
+     * @param specification The specification to process.
+     * @param classesDirectory The directory holding the compiled class files.
      *
-     * @throws NullPointerException if {@code specification} or {@code clazz} is {@code null}.
+     * @throws NullPointerException if {@code specification} or {@code classesDirectory} is {@code null}.
      * @throws IOException if committing meta-data fails.
      */
-    public void commitSpecificationClass( final Specification specification, final JavaClass clazz )
-        throws IOException
+    public void commitClasses( final Specification specification, final File classesDirectory ) throws IOException
     {
         if ( specification == null )
         {
             throw new NullPointerException( "specification" );
         }
-        if ( clazz == null )
+        if ( classesDirectory == null )
         {
-            throw new NullPointerException( "clazz" );
+            throw new NullPointerException( "classesDirectory" );
         }
 
         try
         {
-            this.setClassfileAttribute( clazz, Specification.class.getName(),
+            final String classLocation = specification.getIdentifier().replace( '.', File.separatorChar ) + ".class";
+            final File classFile = new File( classesDirectory, classLocation );
+            final JavaClass javaClass = this.getJavaClass( classFile );
+            this.setClassfileAttribute( javaClass, Specification.class.getName(),
                                         this.encodeSpecification( specification ) );
+
+            javaClass.dump( classFile );
+            this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                {
+                    classFile.getAbsolutePath()
+                } ), null );
 
         }
         catch ( SAXException e )
@@ -454,24 +222,23 @@ public class JavaClasses extends JomcTool
     }
 
     /**
-     * Commits implementation meta-data to the class file of a given implementation.
+     * Commits meta-data of a given implementation of the modules of the instance to compiled Java classes.
      *
      * @param implementation The implementation to process.
-     * @param clazz The class of {@code implementation}.
+     * @param classesDirectory The directory holding the compiled class files.
      *
-     * @throws NullPointerException if {@code implementation} or {@code classFile} is {@code null}.
+     * @throws NullPointerException if {@code implementation} or {@code classesDirectory} is {@code null}.
      * @throws IOException if committing meta-data fails.
      */
-    public void commitImplementationClass( final Implementation implementation, final JavaClass clazz )
-        throws IOException
+    public void commitClasses( final Implementation implementation, final File classesDirectory ) throws IOException
     {
         if ( implementation == null )
         {
             throw new NullPointerException( "implementation" );
         }
-        if ( clazz == null )
+        if ( classesDirectory == null )
         {
-            throw new NullPointerException( "clazz" );
+            throw new NullPointerException( "classesDirectory" );
         }
 
         try
@@ -529,17 +296,27 @@ public class JavaClasses extends JomcTool
                 }
             }
 
-            this.setClassfileAttribute( clazz, Dependencies.class.getName(), this.encodeDependencies(
+            final String classLocation = implementation.getClazz().replace( '.', File.separatorChar ) + ".class";
+            final File classFile = new File( classesDirectory, classLocation );
+            final JavaClass javaClass = this.getJavaClass( classFile );
+
+            this.setClassfileAttribute( javaClass, Dependencies.class.getName(), this.encodeDependencies(
                 dependencies == null ? new Dependencies() : dependencies ) );
 
-            this.setClassfileAttribute( clazz, Properties.class.getName(), this.encodeProperties(
+            this.setClassfileAttribute( javaClass, Properties.class.getName(), this.encodeProperties(
                 properties == null ? new Properties() : properties ) );
 
-            this.setClassfileAttribute( clazz, Messages.class.getName(), this.encodeMessages(
+            this.setClassfileAttribute( javaClass, Messages.class.getName(), this.encodeMessages(
                 messages == null ? new Messages() : messages ) );
 
-            this.setClassfileAttribute( clazz, Specifications.class.getName(), this.encodeSpecifications(
+            this.setClassfileAttribute( javaClass, Specifications.class.getName(), this.encodeSpecifications(
                 specifications == null ? new Specifications() : specifications ) );
+
+            javaClass.dump( classFile );
+            this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                {
+                    classFile.getAbsolutePath()
+                } ), null );
 
         }
         catch ( SAXException e )
@@ -553,30 +330,304 @@ public class JavaClasses extends JomcTool
     }
 
     /**
-     * Validates the compiled Java class of a given specification to comply with the specification of the module of the
-     * instance.
+     * Validates compiled Java classes against the modules of the instance.
+     *
+     * @param classesDirectory The directory holding the compiled class files.
+     *
+     * @throws NullPointerException if {@code classesDirectory} is {@code null}.
+     * @throws IOException if reading class files fails.
+     * @throws ModelException if invalid classes are found.
+     *
+     * @see #validateClasses(org.jomc.model.Module, java.io.File)
+     */
+    public void validateClasses( final File classesDirectory ) throws IOException, ModelException
+    {
+        if ( classesDirectory == null )
+        {
+            throw new NullPointerException( "classesDirectory" );
+        }
+
+        final List<ModelException.Detail> details = new LinkedList<ModelException.Detail>();
+        ModelException thrown = null;
+
+        for ( Module m : this.getModules().getModule() )
+        {
+            try
+            {
+                this.validateClasses( m, classesDirectory );
+            }
+            catch ( ModelException e )
+            {
+                thrown = e;
+                details.addAll( e.getDetails() );
+            }
+        }
+
+
+        if ( !details.isEmpty() )
+        {
+            final ModelException modelException = new ModelException();
+            modelException.getDetails().addAll( details );
+            throw modelException;
+        }
+        if ( thrown != null )
+        {
+            throw thrown;
+        }
+    }
+
+    /**
+     * Validates compiled Java classes against the modules of the instance.
+     *
+     * @param classLoader The class loader to search for classes.
+     *
+     * @throws NullPointerException if {@code classLoader} is {@code null}.
+     * @throws IOException if reading class files fails.
+     * @throws ModelException if invalid classes are found.
+     *
+     * @see #validateClasses(org.jomc.model.Module, java.lang.ClassLoader)
+     */
+    public void validateClasses( final ClassLoader classLoader ) throws IOException, ModelException
+    {
+        if ( classLoader == null )
+        {
+            throw new NullPointerException( "classLoader" );
+        }
+
+        final List<ModelException.Detail> details = new LinkedList<ModelException.Detail>();
+        ModelException thrown = null;
+
+        for ( Module m : this.getModules().getModule() )
+        {
+            try
+            {
+                this.validateClasses( m, classLoader );
+            }
+            catch ( ModelException e )
+            {
+                thrown = e;
+                details.addAll( e.getDetails() );
+            }
+        }
+
+        if ( !details.isEmpty() )
+        {
+            final ModelException modelException = new ModelException();
+            modelException.getDetails().addAll( details );
+            throw modelException;
+        }
+        if ( thrown != null )
+        {
+            throw thrown;
+        }
+    }
+
+    /**
+     * Validates compiled Java classes against a given module of the modules of the instance.
+     *
+     * @param module The module to process.
+     * @param classesDirectory The directory holding the compiled class files.
+     *
+     * @throws NullPointerException if {@code module} or {@code classesDirectory} is {@code null}.
+     * @throws IOException if reading class files fails.
+     * @throws ModelException if invalid classes are found.
+     *
+     * @see #validateClasses(org.jomc.model.Specification, org.apache.bcel.classfile.JavaClass)
+     * @see #validateClasses(org.jomc.model.Implementation, org.apache.bcel.classfile.JavaClass)
+     */
+    public void validateClasses( final Module module, final File classesDirectory ) throws IOException, ModelException
+    {
+        if ( module == null )
+        {
+            throw new NullPointerException( "module" );
+        }
+        if ( classesDirectory == null )
+        {
+            throw new NullPointerException( "classesDirectory" );
+        }
+
+        final List<ModelException.Detail> details = new LinkedList<ModelException.Detail>();
+        ModelException thrown = null;
+
+        if ( module.getSpecifications() != null )
+        {
+            for ( Specification s : module.getSpecifications().getSpecification() )
+            {
+                final String classLocation = s.getIdentifier().replace( '.', File.separatorChar ) + ".class";
+                final File classFile = new File( classesDirectory, classLocation );
+
+                try
+                {
+                    this.validateClasses( s, this.getJavaClass( classFile ) );
+                }
+                catch ( ModelException e )
+                {
+                    thrown = e;
+                    details.addAll( e.getDetails() );
+                }
+            }
+        }
+        if ( module.getImplementations() != null )
+        {
+            for ( Implementation i : module.getImplementations().getImplementation() )
+            {
+                if ( i.getClazz() != null )
+                {
+                    final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
+                    final File classFile = new File( classesDirectory, classLocation );
+                    final JavaClass javaClass = this.getJavaClass( classFile );
+
+                    try
+                    {
+                        this.validateClasses( i, javaClass );
+                    }
+                    catch ( ModelException e )
+                    {
+                        thrown = e;
+                        details.addAll( e.getDetails() );
+                    }
+                }
+            }
+        }
+
+        if ( !details.isEmpty() )
+        {
+            final ModelException modelException = new ModelException();
+            modelException.getDetails().addAll( details );
+            throw modelException;
+        }
+        if ( thrown != null )
+        {
+            throw thrown;
+        }
+    }
+
+    /**
+     * Validates compiled Java classes against a given module of the modules of the instance.
+     *
+     * @param module The module to process.
+     * @param classLoader The class loader to search for classes.
+     *
+     * @throws NullPointerException if {@code module} or {@code classLoader} is {@code null}.
+     * @throws IOException if reading class files fails.
+     * @throws ModelException if invalid classes are found.
+     *
+     * @see #validateClasses(org.jomc.model.Specification, org.apache.bcel.classfile.JavaClass)
+     * @see #validateClasses(org.jomc.model.Implementation, org.apache.bcel.classfile.JavaClass)
+     */
+    public void validateClasses( final Module module, final ClassLoader classLoader ) throws IOException, ModelException
+    {
+        if ( module == null )
+        {
+            throw new NullPointerException( "module" );
+        }
+        if ( classLoader == null )
+        {
+            throw new NullPointerException( "classLoader" );
+        }
+
+        final List<ModelException.Detail> details = new LinkedList<ModelException.Detail>();
+        ModelException thrown = null;
+
+        if ( module.getSpecifications() != null )
+        {
+            for ( Specification s : module.getSpecifications().getSpecification() )
+            {
+                final String classLocation = s.getIdentifier().replace( '.', File.separatorChar ) + ".class";
+                final URL classUrl = classLoader.getResource( classLocation );
+
+                if ( classUrl != null )
+                {
+                    try
+                    {
+                        this.validateClasses( s, this.getJavaClass( classUrl, classLocation ) );
+                    }
+                    catch ( ModelException e )
+                    {
+                        thrown = e;
+                        details.addAll( e.getDetails() );
+                    }
+                }
+                else
+                {
+                    this.log( Level.WARNING, this.getMessage( "missingClassfile", new Object[]
+                        {
+                            s.getIdentifier()
+                        } ), null );
+
+                }
+            }
+        }
+        if ( module.getImplementations() != null )
+        {
+            for ( Implementation i : module.getImplementations().getImplementation() )
+            {
+                if ( i.getIdentifier().equals( i.getClazz() ) )
+                {
+                    final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
+                    final URL classUrl = classLoader.getResource( classLocation );
+
+                    if ( classUrl != null )
+                    {
+                        try
+                        {
+                            this.validateClasses( i, this.getJavaClass( classUrl, classLocation ) );
+                        }
+                        catch ( ModelException e )
+                        {
+                            thrown = e;
+                            details.addAll( e.getDetails() );
+                        }
+                    }
+                    else
+                    {
+                        this.log( Level.WARNING, this.getMessage( "missingClassfile", new Object[]
+                            {
+                                i.getClazz()
+                            } ), null );
+
+                    }
+                }
+            }
+        }
+
+        if ( !details.isEmpty() )
+        {
+            final ModelException modelException = new ModelException();
+            modelException.getDetails().addAll( details );
+            throw modelException;
+        }
+        if ( thrown != null )
+        {
+            throw thrown;
+        }
+    }
+
+    /**
+     * Validates compiled Java classes against a given specification of the modules of the instance.
      *
      * @param specification The specification to process.
-     * @param clazz The class to validate.
+     * @param javaClass The class to validate.
      *
-     * @throws NullPointerException if {@code specification} or {@code clazz} is {@code null}.
-     * @throws ModelException if {@code classFile} does not comply with {@code specification}.
+     * @throws NullPointerException if {@code specification} or {@code javaClass} is {@code null}.
+     * @throws IOException if reading class files fails.
+     * @throws ModelException if invalid classes are found.
      */
-    public void validateSpecificationClass( final Specification specification, final JavaClass clazz )
-        throws ModelException, IOException
+    public void validateClasses( final Specification specification, final JavaClass javaClass )
+        throws IOException, ModelException
     {
         if ( specification == null )
         {
             throw new NullPointerException( "specification" );
         }
-        if ( clazz == null )
+        if ( javaClass == null )
         {
-            throw new NullPointerException( "classFile" );
+            throw new NullPointerException( "javaClass" );
         }
 
         try
         {
-            final Specification decoded = this.decodeSpecification( clazz );
+            final Specification decoded = this.decodeSpecification( javaClass );
 
             if ( decoded != null )
             {
@@ -601,7 +652,7 @@ public class JavaClasses extends JomcTool
                 }
                 else
                 {
-                    this.log( Level.FINE, this.getMessage( "validatedClass", new Object[]
+                    this.log( Level.INFO, this.getMessage( "validatedClass", new Object[]
                         {
                             specification.getIdentifier()
                         } ), null );
@@ -628,37 +679,36 @@ public class JavaClasses extends JomcTool
     }
 
     /**
-     * Validates the compiled Java class of a given implementation to comply with the implementation of the module of
-     * the instance.
+     * Validates compiled Java classes against a given implementation of the modules of the instance.
      *
      * @param implementation The implementation to process.
-     * @param clazz The class of {@code implementation}.
+     * @param javaClass The class to validate.
      *
-     * @throws NullPointerException if {@code implementation} or {@code clazz} is {@code null}.
-     * @throws IOException if reading {@code clazz} fails.
-     * @throws ModelException if {@code clazz} does not comply with {@code implementation}.
+     * @throws NullPointerException if {@code implementation} or {@code javaClass} is {@code null}.
+     * @throws IOException if reading class files fails.
+     * @throws ModelException if invalid classes are found.
      */
-    public void validateImplementationClass( final Implementation implementation, final JavaClass clazz )
+    public void validateClasses( final Implementation implementation, final JavaClass javaClass )
         throws IOException, ModelException
     {
         if ( implementation == null )
         {
             throw new NullPointerException( "implementation" );
         }
-        if ( clazz == null )
+        if ( javaClass == null )
         {
-            throw new NullPointerException( "clazz" );
+            throw new NullPointerException( "javaClass" );
         }
 
         try
         {
             final Dependencies dependencies = this.getModules().getDependencies( implementation.getIdentifier() );
-            final Dependencies decodedDependencies = this.decodeDependencies( clazz );
+            final Dependencies decodedDependencies = this.decodeDependencies( javaClass );
             final Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
-            final Properties decodedProperties = this.decodeProperties( clazz );
+            final Properties decodedProperties = this.decodeProperties( javaClass );
             final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
-            final Messages decodedMessages = this.decodeMessages( clazz );
-            final Specifications decodedSpecifications = this.decodeSpecifications( clazz );
+            final Messages decodedMessages = this.decodeMessages( javaClass );
+            final Specifications decodedSpecifications = this.decodeSpecifications( javaClass );
             final List<ModelException.Detail> details = new LinkedList<ModelException.Detail>();
 
             if ( decodedDependencies != null )
@@ -806,7 +856,7 @@ public class JavaClasses extends JomcTool
             }
             else
             {
-                this.log( Level.FINE, this.getMessage( "validatedClass", new Object[]
+                this.log( Level.INFO, this.getMessage( "validatedClass", new Object[]
                     {
                         implementation.getClazz()
                     } ), null );
@@ -824,58 +874,225 @@ public class JavaClasses extends JomcTool
     }
 
     /**
-     * Relocates a given Java class.
+     * Transforms committed meta-data of compiled Java classes of the modules of the instance.
      *
-     * @param clazz The class to relocate.
-     * @param relocator The relocator to use for relocating.
+     * @param classesDirectory The directory holding the compiled class files.
+     * @param transformer The transformer to use for transforming the classes.
      *
-     * @return {@code true} if {@code clazz} got changed due to relocation; {@code false} else.
+     * @throws NullPointerException if {@code classesDirectory} or {@code transformer} is {@code null}.
+     * @throws IOException if accessing class files fails.
+     * @throws TransformerException if transforming class files fails.
      *
-     * @throws NullPointerException if {@code clazz} or {@code relocator} is {@code null}.
+     * @see #transformClasses(org.jomc.model.Module, java.io.File, javax.xml.transform.Transformer)
      */
-    public boolean relocateJavaClass( final JavaClass clazz, final ModelObjectRelocator relocator )
-        throws IOException, SAXException, JAXBException
+    public void transformClasses( final File classesDirectory, final Transformer transformer )
+        throws IOException, TransformerException
     {
-        if ( clazz == null )
+        if ( transformer == null )
         {
-            throw new NullPointerException( "clazz" );
+            throw new NullPointerException( "transformer" );
         }
-        if ( relocator == null )
+        if ( classesDirectory == null )
         {
-            throw new NullPointerException( "relocator" );
-        }
-
-        boolean relocated = false;
-
-        final Specification decodedSpecification = this.decodeSpecification( clazz );
-        final Dependencies decodedDependencies = this.decodeDependencies( clazz );
-        final Specifications decodedSpecifications = this.decodeSpecifications( clazz );
-
-        if ( decodedSpecification != null )
-        {
-            this.setClassfileAttribute( clazz, Specification.class.getName(), this.encodeSpecification(
-                relocator.relocateModelObject( decodedSpecification, Specification.class ) ) );
-
-            relocated = true;
+            throw new NullPointerException( "classesDirectory" );
         }
 
-        if ( decodedDependencies != null )
+        for ( Module m : this.getModules().getModule() )
         {
-            this.setClassfileAttribute( clazz, Dependencies.class.getName(), this.encodeDependencies(
-                relocator.relocateModelObject( decodedDependencies, Dependencies.class ) ) );
+            this.transformClasses( m, classesDirectory, transformer );
+        }
+    }
 
-            relocated = true;
+    /**
+     * Transforms committed meta-data of compiled Java classes of a given module of the modules of the instance.
+     *
+     * @param module The module to process.
+     * @param classesDirectory The directory holding the compiled class files.
+     * @param transformer The transformer to use for transforming the classes.
+     *
+     * @throws NullPointerException if {@code module}, {@code classesDirectory} or {@code transformer} is {@code null}.
+     * @throws IOException if accessing class files fails.
+     * @throws TransformerException if transforming class files fails.
+     *
+     * @see #transformClasses(org.jomc.model.Specification, org.apache.bcel.classfile.JavaClass, javax.xml.transform.Transformer)
+     * @see #transformClasses(org.jomc.model.Implementation, org.apache.bcel.classfile.JavaClass, javax.xml.transform.Transformer)
+     */
+    public void transformClasses( final Module module, final File classesDirectory, final Transformer transformer )
+        throws IOException, TransformerException
+    {
+        if ( module == null )
+        {
+            throw new NullPointerException( "module" );
+        }
+        if ( transformer == null )
+        {
+            throw new NullPointerException( "transformer" );
+        }
+        if ( classesDirectory == null )
+        {
+            throw new NullPointerException( "classesDirectory" );
         }
 
-        if ( decodedSpecifications != null )
+        if ( module.getSpecifications() != null )
         {
-            this.setClassfileAttribute( clazz, Specifications.class.getName(), this.encodeSpecifications(
-                relocator.relocateModelObject( decodedSpecifications, Specifications.class ) ) );
+            for ( Specification s : module.getSpecifications().getSpecification() )
+            {
+                final String classLocation = s.getIdentifier().replace( '.', File.separatorChar ) + ".class";
+                final File classFile = new File( classesDirectory, classLocation );
+                final JavaClass javaClass = this.getJavaClass( classFile );
+                this.transformClasses( s, javaClass, transformer );
+                javaClass.dump( classFile );
+                this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                    {
+                        classFile.getAbsolutePath()
+                    } ), null );
 
-            relocated = true;
+            }
+        }
+        if ( module.getImplementations() != null )
+        {
+            for ( Implementation i : module.getImplementations().getImplementation() )
+            {
+                if ( i.getClazz() != null )
+                {
+                    final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
+                    final File classFile = new File( classesDirectory, classLocation );
+                    final JavaClass javaClass = this.getJavaClass( classFile );
+                    this.transformClasses( i, javaClass, transformer );
+                    javaClass.dump( classFile );
+                    this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                        {
+                            classFile.getAbsolutePath()
+                        } ), null );
+
+                }
+            }
+        }
+    }
+
+    /**
+     * Transforms committed meta-data of compiled Java classes of a given specification of the modules of the instance.
+     *
+     * @param specification The specification to process.
+     * @param javaClass The java class to process.
+     * @param transformer The transformer to use for transforming the classes.
+     *
+     * @throws NullPointerException if {@code specification}, {@code javaClass} or {@code transformer} is {@code null}.
+     * @throws IOException if accessing class files fails.
+     * @throws TransformerException if transforming class files fails.
+     */
+    public void transformClasses( final Specification specification, final JavaClass javaClass,
+                                  final Transformer transformer ) throws IOException, TransformerException
+    {
+        if ( specification == null )
+        {
+            throw new NullPointerException( "specification" );
+        }
+        if ( javaClass == null )
+        {
+            throw new NullPointerException( "javaClass" );
+        }
+        if ( transformer == null )
+        {
+            throw new NullPointerException( "transformer" );
         }
 
-        return relocated;
+        try
+        {
+            final Specification decodedSpecification = this.decodeSpecification( javaClass );
+
+            if ( decodedSpecification != null )
+            {
+                this.setClassfileAttribute( javaClass, Specification.class.getName(), this.encodeSpecification(
+                    this.getModelManager().transformModelObject( this.getModelManager().getObjectFactory().
+                    createSpecification( specification ), transformer ) ) );
+
+            }
+        }
+        catch ( SAXException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+        catch ( JAXBException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+    }
+
+    /**
+     * Transforms committed meta-data of compiled Java classes of a given implementation of the modules of the instance.
+     *
+     * @param implementation The implementation to process.
+     * @param javaClass The java class to process.
+     * @param transformer The transformer to use for transforming the classes.
+     *
+     * @throws NullPointerException if {@code specification}, {@code javaClass} or {@code transformer} is {@code null}.
+     * @throws IOException if accessing class files fails.
+     * @throws TransformerException if transforming class files fails.
+     */
+    public void transformClasses( final Implementation implementation, final JavaClass javaClass,
+                                  final Transformer transformer ) throws TransformerException, IOException
+    {
+        if ( implementation == null )
+        {
+            throw new NullPointerException( "implementation" );
+        }
+        if ( javaClass == null )
+        {
+            throw new NullPointerException( "javaClass" );
+        }
+        if ( transformer == null )
+        {
+            throw new NullPointerException( "transformer" );
+        }
+
+        try
+        {
+            final Dependencies decodedDependencies = this.decodeDependencies( javaClass );
+            final Messages decodedMessages = this.decodeMessages( javaClass );
+            final Properties decodedProperties = this.decodeProperties( javaClass );
+            final Specifications decodedSpecifications = this.decodeSpecifications( javaClass );
+
+            if ( decodedDependencies != null )
+            {
+                this.setClassfileAttribute( javaClass, Dependencies.class.getName(), this.encodeDependencies(
+                    this.getModelManager().transformModelObject( this.getModelManager().getObjectFactory().
+                    createDependencies( decodedDependencies ), transformer ) ) );
+
+            }
+
+            if ( decodedMessages != null )
+            {
+                this.setClassfileAttribute( javaClass, Messages.class.getName(), this.encodeMessages(
+                    this.getModelManager().transformModelObject( this.getModelManager().getObjectFactory().
+                    createMessages( decodedMessages ), transformer ) ) );
+
+            }
+
+            if ( decodedProperties != null )
+            {
+                this.setClassfileAttribute( javaClass, Properties.class.getName(), this.encodeProperties(
+                    this.getModelManager().transformModelObject( this.getModelManager().getObjectFactory().
+                    createProperties( decodedProperties ), transformer ) ) );
+
+            }
+
+            if ( decodedSpecifications != null )
+            {
+                this.setClassfileAttribute( javaClass, Specifications.class.getName(), this.encodeSpecifications(
+                    this.getModelManager().transformModelObject( this.getModelManager().getObjectFactory().
+                    createSpecifications( decodedSpecifications ), transformer ) ) );
+
+            }
+        }
+        catch ( SAXException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+        catch ( JAXBException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
     }
 
     /**
@@ -937,7 +1154,7 @@ public class JavaClasses extends JomcTool
      * @throws NullPointerException if {@code clazz} or {@code attributeName} is {@code null}.
      * @throws IOException if getting the attribute fails.
      */
-    protected byte[] getClassfileAttribute( final JavaClass clazz, final String attributeName ) throws IOException
+    public byte[] getClassfileAttribute( final JavaClass clazz, final String attributeName ) throws IOException
     {
         if ( clazz == null )
         {
@@ -974,7 +1191,7 @@ public class JavaClasses extends JomcTool
      * @throws NullPointerException if {@code clazz} or {@code attributeName} is {@code null}.
      * @throws IOException if updating the class file fails.
      */
-    protected void setClassfileAttribute( final JavaClass clazz, final String attributeName, final byte[] data )
+    public void setClassfileAttribute( final JavaClass clazz, final String attributeName, final byte[] data )
         throws IOException
     {
         if ( clazz == null )

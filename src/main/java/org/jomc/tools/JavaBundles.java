@@ -33,10 +33,8 @@
 package org.jomc.tools;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.text.MessageFormat;
@@ -48,21 +46,28 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.commons.io.FileUtils;
 import org.apache.velocity.VelocityContext;
-import org.jomc.model.Argument;
-import org.jomc.model.Arguments;
 import org.jomc.model.Implementation;
 import org.jomc.model.Message;
-import org.jomc.model.MessageReference;
+import org.jomc.model.Messages;
 import org.jomc.model.Module;
 import org.jomc.model.Text;
-import org.jomc.model.Texts;
 
 /**
  * Generates Java bundles.
  *
+ * <p><b>Use cases</b><br/><ul>
+ * <li>{@link #writeBundleResources(java.io.File) }</li>
+ * <li>{@link #writeBundleResources(org.jomc.model.Module, java.io.File) }</li>
+ * <li>{@link #writeBundleResources(org.jomc.model.Implementation, java.io.File) }</li>
+ * <li>{@link #writeBundleSources(java.io.File) }</li>
+ * <li>{@link #writeBundleSources(org.jomc.model.Module, java.io.File) }</li>
+ * <li>{@link #writeBundleSources(org.jomc.model.Implementation, java.io.File) }</li>
+ * </ul></p>
+ *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
- * @see #writeModuleBundles(java.io.File, java.io.File)
+ *
+ * @see #getModules()
  */
 public class JavaBundles extends JomcTool
 {
@@ -72,9 +77,6 @@ public class JavaBundles extends JomcTool
 
     /** Constant for the version of the generator. */
     private static final String GENERATOR_VERSION = "1.0";
-
-    /** Constant for the name of a property holding a profile. */
-    private static final String PROP_PROFILE = JavaBundles.class.getName() + ".profile";
 
     /** Location of the {@code Bundle.java.vm} template. */
     private static final String BUNDLE_TEMPLATE = "Bundle.java.vm";
@@ -92,11 +94,11 @@ public class JavaBundles extends JomcTool
     }
 
     /**
-     * Creates a new {@code JavaBundles} instance taking a {@code JomcTool} instance to initialize the instance with.
+     * Creates a new {@code JavaBundles} instance taking a {@code JavaBundles} instance to initialize the instance with.
      *
      * @param tool The instance to initialize the new instance with,
      */
-    public JavaBundles( final JomcTool tool )
+    public JavaBundles( final JavaBundles tool )
     {
         super( tool );
     }
@@ -105,6 +107,8 @@ public class JavaBundles extends JomcTool
      * Gets the language of the default language properties file of the bundle.
      *
      * @return The language of the default language properties file of the bundle.
+     *
+     * @see #setDefaultLocale(java.util.Locale)
      */
     public Locale getDefaultLocale()
     {
@@ -125,6 +129,8 @@ public class JavaBundles extends JomcTool
      * Sets the language of the default language properties file of the bundle.
      *
      * @param value The language of the default language properties file of the bundle.
+     *
+     * @see #getDefaultLocale()
      */
     public void setDefaultLocale( final Locale value )
     {
@@ -132,160 +138,238 @@ public class JavaBundles extends JomcTool
     }
 
     /**
-     * Writes Java resource bundle sources of the module of the instance to a given directory.
+     * Writes bundle sources of the modules of the instance to a given directory.
      *
      * @param sourcesDirectory The directory to write sources to.
      *
      * @throws NullPointerException if {@code sourcesDirectory} is {@code null}.
      * @throws IOException if writing fails.
      *
-     * @see #getModule()
+     * @see #writeBundleSources(org.jomc.model.Module, java.io.File)
      */
-    public void writeModuleSources( final File sourcesDirectory ) throws IOException
+    public void writeBundleSources( final File sourcesDirectory ) throws IOException
     {
         if ( sourcesDirectory == null )
         {
             throw new NullPointerException( "sourcesDirectory" );
         }
 
-        this.writeModuleBundles( sourcesDirectory, null );
+        for ( Module m : this.getModules().getModule() )
+        {
+            this.writeBundleSources( m, sourcesDirectory );
+        }
     }
 
     /**
-     * Writes Java resource bundle resources of the module of the instance to a given directory.
+     * Writes bundle sources of a given module from the modules of the instance to a given directory.
+     *
+     * @param module The module to process.
+     * @param sourcesDirectory The directory to write sources to.
+     *
+     * @throws NullPointerException if {@code module} or {@code sourcesDirectory} is {@code null}.
+     * @throws IOException if writing fails.
+     *
+     * @see #writeBundleSources(org.jomc.model.Implementation, java.io.File)
+     */
+    public void writeBundleSources( final Module module, final File sourcesDirectory ) throws IOException
+    {
+        if ( module == null )
+        {
+            throw new NullPointerException( "module" );
+        }
+        if ( sourcesDirectory == null )
+        {
+            throw new NullPointerException( "sourcesDirectory" );
+        }
+
+        if ( module.getImplementations() != null )
+        {
+            for ( Implementation i : module.getImplementations().getImplementation() )
+            {
+                this.writeBundleSources( i, sourcesDirectory );
+            }
+        }
+    }
+
+    /**
+     * Writes bundle sources of a given implementation from the modules of the instance to a given directory.
+     *
+     * @param implementation The implementation to process.
+     * @param sourcesDirectory The directory to write sources to.
+     *
+     * @throws NullPointerException if {@code implementation} or {@code sourcesDirectory} is {@code null}.
+     * @throws IOException if writing fails.
+     *
+     * @see #getResourceBundleSources(org.jomc.model.Implementation)
+     */
+    public void writeBundleSources( final Implementation implementation, final File sourcesDirectory )
+        throws IOException
+    {
+        if ( implementation == null )
+        {
+            throw new NullPointerException( "implementation" );
+        }
+        if ( sourcesDirectory == null )
+        {
+            throw new NullPointerException( "sourcesDirectory" );
+        }
+
+        this.assertValidTemplates( implementation );
+
+        final String bundlePath =
+            ( this.getJavaTypeName( implementation, true ) + BUNDLE_SUFFIX ).replace( '.', File.separatorChar );
+
+        final File bundleFile = new File( sourcesDirectory, bundlePath + ".java" );
+
+        if ( !bundleFile.getParentFile().exists() )
+        {
+            bundleFile.getParentFile().mkdirs();
+        }
+
+        this.log( Level.INFO, this.getMessage( "writing", new Object[]
+            {
+                bundleFile.getCanonicalPath()
+            } ), null );
+
+        FileUtils.writeStringToFile( bundleFile, this.getResourceBundleSources( implementation ),
+                                     this.getOutputEncoding() );
+
+    }
+
+    /**
+     * Writes bundle resources of the modules of the instance to a given directory.
      *
      * @param resourcesDirectory The directory to write resources to.
      *
      * @throws NullPointerException if {@code resourcesDirectory} is {@code null}.
      * @throws IOException if writing fails.
      *
-     * @see #getModule()
+     * @see #writeBundleResources(org.jomc.model.Module, java.io.File)
      */
-    public void writeModuleResources( final File resourcesDirectory ) throws IOException
+    public void writeBundleResources( final File resourcesDirectory ) throws IOException
     {
         if ( resourcesDirectory == null )
         {
             throw new NullPointerException( "resourcesDirectory" );
         }
 
-        this.writeModuleBundles( null, resourcesDirectory );
+        for ( Module m : this.getModules().getModule() )
+        {
+            this.writeBundleResources( m, resourcesDirectory );
+        }
     }
 
     /**
-     * Writes Java resource bundles of the module of the instance to given directories.
+     * Writes bundle resources of a given module from the modules of the instance to a given directory.
      *
-     * @param sourcesDirectory The directory to write sources to or {@code null} to not write any sources.
-     * @param resourcesDirectory The directory to write resources to or {@code null} to not write any resources.
+     * @param module The module to process.
+     * @param resourcesDirectory The directory to write resources to.
      *
+     * @throws NullPointerException if {@code module} or {@code resourcesDirectory} is {@code null}.
      * @throws IOException if writing fails.
      *
-     * @see #getModule()
+     * @see #writeBundleResources(org.jomc.model.Implementation, java.io.File)
      */
-    public void writeModuleBundles( final File sourcesDirectory, final File resourcesDirectory ) throws IOException
+    public void writeBundleResources( final Module module, final File resourcesDirectory ) throws IOException
     {
-        if ( this.getModule() != null )
+        if ( module == null )
         {
-            File hashFile = null;
-            final File buildDirectory = this.getBuildDirectory();
-
-            if ( buildDirectory != null )
-            {
-                if ( !buildDirectory.exists() )
-                {
-                    buildDirectory.mkdirs();
-                }
-
-                hashFile = new File( buildDirectory, "java-bundles.properties" );
-                if ( !hashFile.exists() )
-                {
-                    hashFile.createNewFile();
-                }
-
-                this.log( Level.CONFIG, this.getMessage( "usingBuildDirectory", new Object[]
-                    {
-                        buildDirectory.getAbsolutePath()
-                    } ), null );
-
-            }
-
-            this.log( Level.INFO, this.getMessage( "processingModule", new Object[]
-                {
-                    this.getModule().getName()
-                } ), null );
-
-            this.assertValidTemplates( this.getModule() );
-
-            final Properties bundleHashcodes = new Properties();
-
-            if ( hashFile != null )
-            {
-                final InputStream in = new FileInputStream( hashFile );
-                bundleHashcodes.load( in );
-                in.close();
-            }
-
-            final String lastProfile = bundleHashcodes.getProperty( PROP_PROFILE );
-            if ( lastProfile != null && !lastProfile.equals( this.getProfile() ) )
-            {
-                bundleHashcodes.clear();
-                bundleHashcodes.setProperty( PROP_PROFILE, this.getProfile() );
-            }
-
-            if ( this.getModule().getImplementations() != null )
-            {
-                for ( Implementation i : this.getModule().getImplementations().getImplementation() )
-                {
-                    if ( i.getMessages() != null )
-                    {
-                        final int bundleHash = this.getHashCode( this.getModule(), i );
-
-                        if ( sourcesDirectory != null )
-                        {
-                            final String propertyName =
-                                i.getIdentifier() + sourcesDirectory.getAbsolutePath().hashCode();
-
-                            final String propertyHash = bundleHashcodes.getProperty( propertyName );
-
-                            if ( propertyHash == null || Integer.valueOf( propertyHash ).intValue() != bundleHash )
-                            {
-                                bundleHashcodes.setProperty( propertyName, Integer.toString( bundleHash ) );
-                                this.writeResourceBundleSource( i, sourcesDirectory );
-                            }
-                        }
-
-                        if ( resourcesDirectory != null )
-                        {
-                            final String propertyName =
-                                i.getIdentifier() + resourcesDirectory.getAbsolutePath().hashCode();
-
-                            final String propertyHash = bundleHashcodes.getProperty( propertyName );
-
-                            if ( propertyHash == null || Integer.valueOf( propertyHash ).intValue() != bundleHash )
-                            {
-                                bundleHashcodes.setProperty( propertyName, Integer.toString( bundleHash ) );
-                                this.writeResourceBundleProperties( i, resourcesDirectory );
-                            }
-                        }
-                    }
-                }
-            }
-
-            if ( hashFile != null )
-            {
-                final OutputStream out = new FileOutputStream( hashFile );
-                bundleHashcodes.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
-                out.close();
-            }
-
-            this.log( Level.INFO, this.getMessage( "upToDate", null ), null );
+            throw new NullPointerException( "module" );
         }
-        else
+        if ( resourcesDirectory == null )
         {
-            this.log( Level.WARNING, this.getMessage( "missingModule", new Object[]
+            throw new NullPointerException( "resourcesDirectory" );
+        }
+
+        if ( module.getImplementations() != null )
+        {
+            for ( Implementation i : module.getImplementations().getImplementation() )
+            {
+                this.writeBundleResources( i, resourcesDirectory );
+            }
+        }
+    }
+
+    /**
+     * Writes the bundle resources of a given implementation from the modules of the instance to a directory.
+     *
+     * @param implementation The implementation to process.
+     * @param resourcesDirectory The directory to write resources to.
+     *
+     * @throws NullPointerException if {@code implementation} or {@code resourcesDirectory} is {@code null}.
+     * @throws IOException if writing fails.
+     *
+     * @see #getResourceBundleResources(org.jomc.model.Implementation)
+     */
+    public void writeBundleResources( final Implementation implementation, final File resourcesDirectory )
+        throws IOException
+    {
+        if ( implementation == null )
+        {
+            throw new NullPointerException( "implementation" );
+        }
+        if ( resourcesDirectory == null )
+        {
+            throw new NullPointerException( "resourcesDirectory" );
+        }
+
+        this.assertValidTemplates( implementation );
+
+        final String bundlePath =
+            ( this.getJavaTypeName( implementation, true ) + BUNDLE_SUFFIX ).replace( '.', File.separatorChar );
+
+        Properties defProperties = null;
+        Properties fallbackProperties = null;
+
+        for ( Map.Entry<Locale, Properties> e : this.getResourceBundleResources( implementation ).entrySet() )
+        {
+            final String language = e.getKey().getLanguage().toLowerCase();
+            final java.util.Properties p = e.getValue();
+            final File file = new File( resourcesDirectory, bundlePath + "_" + language + ".properties" );
+
+            if ( !file.getParentFile().exists() )
+            {
+                file.getParentFile().mkdirs();
+            }
+
+            this.log( Level.INFO, this.getMessage( "writing", new Object[]
                 {
-                    this.getModuleName()
+                    file.getCanonicalPath()
                 } ), null );
 
+            OutputStream out = new FileOutputStream( file );
+            p.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
+            out.close();
+
+            if ( this.getDefaultLocale().getLanguage().equalsIgnoreCase( language ) )
+            {
+                defProperties = p;
+            }
+
+            fallbackProperties = p;
+        }
+
+        if ( defProperties == null )
+        {
+            defProperties = fallbackProperties;
+        }
+
+        if ( defProperties != null )
+        {
+            final File file = new File( resourcesDirectory, bundlePath + ".properties" );
+            if ( !file.getParentFile().exists() )
+            {
+                file.getParentFile().mkdirs();
+            }
+
+            this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                {
+                    file.getCanonicalPath()
+                } ), null );
+
+            final OutputStream out = new FileOutputStream( file );
+            defProperties.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
+            out.close();
         }
     }
 
@@ -297,9 +381,9 @@ public class JavaBundles extends JomcTool
      * @return The source code of the Java class for accessing the resource bundle of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
-     * @throws IOException if rendering source code fails.
+     * @throws IOException if getting the source code fails.
      */
-    public String getResourceBundleSource( final Implementation implementation ) throws IOException
+    public String getResourceBundleSources( final Implementation implementation ) throws IOException
     {
         if ( implementation == null )
         {
@@ -332,8 +416,9 @@ public class JavaBundles extends JomcTool
      * @return Resource bundle properties of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
+     * @throws IOException if getting the resources fails.
      */
-    public Map<Locale, java.util.Properties> getResourceBundleProperties( final Implementation implementation )
+    public Map<Locale, Properties> getResourceBundleResources( final Implementation implementation ) throws IOException
     {
         if ( implementation == null )
         {
@@ -341,164 +426,32 @@ public class JavaBundles extends JomcTool
         }
 
         final Map<Locale, java.util.Properties> properties = new HashMap<Locale, java.util.Properties>( 10 );
+        final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
 
-        if ( implementation.getMessages() != null )
+        if ( messages != null )
         {
-            for ( Message message : implementation.getMessages().getMessage() )
+            for ( Message message : messages.getMessage() )
             {
-                for ( Text text : message.getTemplate().getText() )
+                if ( message.getTemplate() != null )
                 {
-                    final String language = text.getLanguage().toLowerCase();
-
-                    java.util.Properties bundleProperties = properties.get( new Locale( language ) );
-
-                    if ( bundleProperties == null )
+                    for ( Text text : message.getTemplate().getText() )
                     {
-                        bundleProperties = new java.util.Properties();
-                        properties.put( new Locale( language ), bundleProperties );
+                        final Locale locale = new Locale( text.getLanguage().toLowerCase() );
+                        Properties bundleProperties = properties.get( locale );
+
+                        if ( bundleProperties == null )
+                        {
+                            bundleProperties = new Properties();
+                            properties.put( locale, bundleProperties );
+                        }
+
+                        bundleProperties.setProperty( message.getName(), text.getValue() );
                     }
-
-                    bundleProperties.setProperty( message.getName(), text.getValue() );
-                }
-            }
-
-            for ( MessageReference messageReference : implementation.getMessages().getReference() )
-            {
-                final Message message =
-                    this.getModule().getMessages().getMessage( messageReference.getName() );
-
-                for ( Text text : message.getTemplate().getText() )
-                {
-                    final String language = text.getLanguage().toLowerCase();
-
-                    java.util.Properties bundleProperties = properties.get( new Locale( language ) );
-
-                    if ( bundleProperties == null )
-                    {
-                        bundleProperties = new java.util.Properties();
-                        properties.put( new Locale( language ), bundleProperties );
-                    }
-
-                    bundleProperties.setProperty( message.getName(), text.getValue() );
                 }
             }
         }
 
         return properties;
-    }
-
-    /**
-     * Writes the source code of the Java class for accessing the resource bundle of a given implementation to a
-     * directory.
-     *
-     * @param implementation The implementation of the bundle.
-     * @param sourceDirectory The directory to write to.
-     *
-     * @throws NullPointerException if {@code implementation} or {@code sourceDirectory} is {@code null}.
-     * @throws IOException if writing fails.
-     */
-    public void writeResourceBundleSource( final Implementation implementation, final File sourceDirectory )
-        throws IOException
-    {
-        if ( implementation == null )
-        {
-            throw new NullPointerException( "implementation" );
-        }
-        if ( sourceDirectory == null )
-        {
-            throw new NullPointerException( "sourceDirectory" );
-        }
-
-        final String bundlePath =
-            ( this.getJavaTypeName( implementation, true ) + BUNDLE_SUFFIX ).replace( '.', File.separatorChar );
-
-        final File bundleFile = new File( sourceDirectory, bundlePath + ".java" );
-
-        if ( !bundleFile.getParentFile().exists() )
-        {
-            bundleFile.getParentFile().mkdirs();
-        }
-
-        this.log( Level.INFO, this.getMessage( "writing", new Object[]
-            {
-                bundleFile.getCanonicalPath()
-            } ), null );
-
-        FileUtils.writeStringToFile( bundleFile, this.getResourceBundleSource( implementation ),
-                                     this.getOutputEncoding() );
-
-    }
-
-    /**
-     * Writes the resource bundle properties of a given implementation to a directory.
-     *
-     * @param implementation The implementation of the bundle.
-     * @param resourceDirectory The directory to write to.
-     *
-     * @throws NullPointerException if {@code implementation} or {@code resourceDirectory} is {@code null}.
-     * @throws IOException if writing fails.
-     */
-    public void writeResourceBundleProperties( final Implementation implementation, final File resourceDirectory )
-        throws IOException
-    {
-        if ( implementation == null )
-        {
-            throw new NullPointerException( "implementation" );
-        }
-        if ( resourceDirectory == null )
-        {
-            throw new NullPointerException( "resourceDirectory" );
-        }
-
-        final String bundlePath =
-            ( this.getJavaTypeName( implementation, true ) + BUNDLE_SUFFIX ).replace( '.', File.separatorChar );
-
-        Properties defProperties = null;
-        Properties fallbackProperties = null;
-
-        for ( Map.Entry<Locale, java.util.Properties> e : this.getResourceBundleProperties( implementation ).entrySet() )
-        {
-            final String language = e.getKey().getLanguage();
-            final java.util.Properties p = e.getValue();
-            final File file = new File( resourceDirectory, bundlePath + "_" + language.toLowerCase( Locale.ENGLISH ) +
-                                                           ".properties" );
-
-            if ( !file.getParentFile().exists() )
-            {
-                file.getParentFile().mkdirs();
-            }
-
-            this.log( Level.INFO, this.getMessage( "writing", new Object[]
-                {
-                    file.getCanonicalPath()
-                } ), null );
-
-            OutputStream out = new FileOutputStream( file );
-            p.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
-            out.close();
-
-            if ( this.getDefaultLocale().getLanguage().equalsIgnoreCase( language ) )
-            {
-                defProperties = p;
-            }
-
-            fallbackProperties = p;
-        }
-
-        if ( defProperties == null )
-        {
-            defProperties = fallbackProperties;
-        }
-
-        final File file = new File( resourceDirectory, bundlePath + ".properties" );
-        this.log( Level.INFO, this.getMessage( "writing", new Object[]
-            {
-                file.getCanonicalPath()
-            } ), null );
-
-        final OutputStream out = new FileOutputStream( file );
-        defProperties.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
-        out.close();
     }
 
     /**
@@ -516,128 +469,25 @@ public class JavaBundles extends JomcTool
         return ctx;
     }
 
-    /**
-     * Computes the hash code of an implementation.
-     *
-     * @param module The module to use for resolving references.
-     * @param implementation The implementation to compute the hash code of.
-     *
-     * @return The hash code of {@code implementation}.
-     *
-     * @throws NullPointerException if {@code module} or {@code implementation} is {@code null}.
-     */
-    private int getHashCode( final Module module, final Implementation implementation )
+    private void assertValidTemplates( final Implementation implementation )
     {
-        if ( module == null )
-        {
-            throw new NullPointerException( "module" );
-        }
         if ( implementation == null )
         {
             throw new NullPointerException( "implementation" );
         }
 
-        int bundleHash = 23;
-
-        if ( implementation.getMessages() != null )
+        final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
+        if ( messages != null )
         {
-            for ( Message message : implementation.getMessages().getMessage() )
+            for ( Message m : messages.getMessage() )
             {
-                bundleHash = 37 * bundleHash + this.getHashCode( message );
-            }
-
-            for ( MessageReference messageReference : implementation.getMessages().getReference() )
-            {
-                final Message message = module.getMessages().getMessage( messageReference.getName() );
-                bundleHash = 37 * bundleHash + this.getHashCode( message );
-            }
-        }
-
-        return bundleHash;
-    }
-
-    private int getHashCode( final Message message )
-    {
-        int hash = 23;
-
-        if ( message != null )
-        {
-            hash = 37 * hash + message.getName().hashCode();
-            hash = 37 * hash + this.getHashCode( message.getDocumentation() );
-            hash = 37 * hash + this.getHashCode( message.getTemplate() );
-            hash = 37 * hash + this.getHashCode( message.getArguments() );
-        }
-
-        return hash;
-    }
-
-    private int getHashCode( final Texts texts )
-    {
-        int hash = 23;
-
-        if ( texts != null )
-        {
-            for ( Text t : texts.getText() )
-            {
-                hash = 37 * hash + t.getLanguage().hashCode();
-                hash = 37 * hash + t.getValue().hashCode();
-            }
-        }
-
-        return hash;
-    }
-
-    private int getHashCode( final Arguments arguments )
-    {
-        int hash = 23;
-
-        if ( arguments != null )
-        {
-            for ( Argument a : arguments.getArgument() )
-            {
-                hash = 37 * hash + this.getHashCode( a.getDocumentation() );
-                hash = 37 * hash + a.getName().hashCode();
-                hash = 37 * hash + a.getType().toString().hashCode();
-            }
-        }
-
-        return hash;
-    }
-
-    private void assertValidTemplates( final Module module ) throws IllegalArgumentException
-    {
-        if ( module.getImplementations() != null )
-        {
-            for ( Implementation i : module.getImplementations().getImplementation() )
-            {
-                if ( i.getMessages() == null )
+                if ( m.getTemplate() != null )
                 {
-                    continue;
+                    for ( Text t : m.getTemplate().getText() )
+                    {
+                        new MessageFormat( t.getValue() );
+                    }
                 }
-
-                for ( Message m : i.getMessages().getMessage() )
-                {
-                    this.assertValidMessage( m );
-                }
-            }
-        }
-
-        if ( module.getMessages() != null )
-        {
-            for ( Message m : module.getMessages().getMessage() )
-            {
-                this.assertValidMessage( m );
-            }
-        }
-    }
-
-    private void assertValidMessage( final Message message ) throws IllegalArgumentException
-    {
-        if ( message.getTemplate() != null )
-        {
-            for ( Text t : message.getTemplate().getText() )
-            {
-                new MessageFormat( t.getValue() );
             }
         }
     }

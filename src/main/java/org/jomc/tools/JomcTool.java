@@ -34,7 +34,6 @@ package org.jomc.tools;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.DateFormat;
@@ -61,7 +60,6 @@ import org.jomc.model.Dependency;
 import org.jomc.model.Implementation;
 import org.jomc.model.Message;
 import org.jomc.model.ModelManager;
-import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.Multiplicity;
 import org.jomc.model.Properties;
@@ -115,9 +113,6 @@ public abstract class JomcTool
     /** {@code VelocityEngine} of the generator. */
     private VelocityEngine velocityEngine;
 
-    /** The name of the module to process. */
-    private String moduleName;
-
     /** The encoding to use for reading templates. */
     private String templateEncoding;
 
@@ -129,9 +124,6 @@ public abstract class JomcTool
 
     /** The profile of the instance. */
     private String profile;
-
-    /** The build directory of the instance. */
-    private File buildDirectory;
 
     /** The listeners of the instance. */
     private List<Listener> listeners;
@@ -154,25 +146,14 @@ public abstract class JomcTool
         {
             try
             {
-                this.setBuildDirectory( tool.getBuildDirectory() );
                 this.setTemplateEncoding( tool.getTemplateEncoding() );
                 this.setInputEncoding( tool.getInputEncoding() );
                 this.setOutputEncoding( tool.getOutputEncoding() );
                 this.setModelManager( tool.getModelManager() );
-                this.setModuleName( tool.getModuleName() );
                 this.setModules( tool.getModules() );
                 this.setProfile( tool.getProfile() );
                 this.setVelocityEngine( tool.getVelocityEngine() );
-                this.getListeners().add( new Listener()
-                {
-
-                    @Override
-                    public void onLog( final Level level, final String message, final Throwable throwable )
-                    {
-                        tool.log( level, message, throwable );
-                    }
-
-                } );
+                this.getListeners().addAll( tool.getListeners() );
             }
             catch ( Exception e )
             {
@@ -891,6 +872,8 @@ public abstract class JomcTool
      * Gets the modules of the instance.
      *
      * @return The modules of the instance.
+     *
+     * @see #setModules(org.jomc.model.Modules)
      */
     public Modules getModules()
     {
@@ -906,6 +889,8 @@ public abstract class JomcTool
      * Sets the modules of the instance.
      *
      * @param value The new modules of the instance.
+     *
+     * @see #getModules()
      */
     public void setModules( final Modules value )
     {
@@ -916,6 +901,8 @@ public abstract class JomcTool
      * Gets the model manager of the instance.
      *
      * @return The model manager of the instance.
+     *
+     * @see #setModelManager(org.jomc.model.ModelManager)
      */
     public ModelManager getModelManager()
     {
@@ -931,6 +918,8 @@ public abstract class JomcTool
      * Sets the model manager of the instance.
      *
      * @param value The new model manager of the instance.
+     *
+     * @see #getModelManager()
      */
     public void setModelManager( final ModelManager value )
     {
@@ -943,6 +932,8 @@ public abstract class JomcTool
      * @return The {@code VelocityEngine} used for generating source code.
      *
      * @throws Exception if initializing a new velocity engine fails.
+     *
+     * @see #setVelocityEngine(org.apache.velocity.app.VelocityEngine)
      */
     public VelocityEngine getVelocityEngine() throws Exception
     {
@@ -1014,6 +1005,8 @@ public abstract class JomcTool
      * Sets the {@code VelocityEngine} of the instance.
      *
      * @param value The new {@code VelocityEngine} of the instance.
+     *
+     * @see #getVelocityEngine()
      */
     public void setVelocityEngine( final VelocityEngine value ) throws Exception
     {
@@ -1030,7 +1023,6 @@ public abstract class JomcTool
         final Date now = new Date();
         final VelocityContext ctx = new VelocityContext();
         ctx.put( "modules", this.getModules() );
-        ctx.put( "module", this.getModule() );
         ctx.put( "tool", this );
         ctx.put( "calendar", Calendar.getInstance() );
         ctx.put( "now", new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSZ" ).format( now ) );
@@ -1045,42 +1037,11 @@ public abstract class JomcTool
     }
 
     /**
-     * Gets the module matching the name returned by method {@code getModuleName()}.
-     *
-     * @return The module matching the name returned by method {@code getModuleName()} or {@code null} if method
-     * {@code getModuleName()} returns {@code null} or no module is found matching that name.
-     *
-     * @see #getModuleName()
-     */
-    public Module getModule()
-    {
-        return this.getModules().getModule( this.getModuleName() );
-    }
-
-    /**
-     * Gets the name of the module to process.
-     *
-     * @return The name of the module to process or {@code null}.
-     */
-    public String getModuleName()
-    {
-        return this.moduleName;
-    }
-
-    /**
-     * Sets the name of the module to process.
-     *
-     * @param value The new name of the module to process or {@code null}.
-     */
-    public void setModuleName( final String value )
-    {
-        this.moduleName = value;
-    }
-
-    /**
      * Gets the encoding to use for reading templates.
      *
      * @return The encoding to use for reading templates.
+     *
+     * @see #setTemplateEncoding(java.lang.String)
      */
     public String getTemplateEncoding()
     {
@@ -1096,6 +1057,8 @@ public abstract class JomcTool
      * Sets the encoding to use for reading templates.
      *
      * @param value The encoding to use for reading templates.
+     *
+     * @see #getTemplateEncoding()
      */
     public void setTemplateEncoding( final String value )
     {
@@ -1106,6 +1069,8 @@ public abstract class JomcTool
      * Gets the encoding to use for reading files.
      *
      * @return The encoding to use for reading files.
+     *
+     * @see #setInputEncoding(java.lang.String)
      */
     public String getInputEncoding()
     {
@@ -1126,6 +1091,8 @@ public abstract class JomcTool
      * Sets the encoding to use for reading files.
      *
      * @param value The encoding to use for reading files.
+     *
+     * @see #getInputEncoding()
      */
     public void setInputEncoding( final String value )
     {
@@ -1136,6 +1103,8 @@ public abstract class JomcTool
      * Gets the encoding to use for writing files.
      *
      * @return The encoding to use for writing files.
+     *
+     * @see #setOutputEncoding(java.lang.String)
      */
     public String getOutputEncoding()
     {
@@ -1156,6 +1125,8 @@ public abstract class JomcTool
      * Sets the encoding to use for writing files.
      *
      * @param value The encoding to use for writing files.
+     *
+     * @see #getOutputEncoding()
      */
     public void setOutputEncoding( final String value )
     {
@@ -1166,6 +1137,8 @@ public abstract class JomcTool
      * Gets the profile of the instance.
      *
      * @return The profile of the instance.
+     *
+     * @see #setProfile(java.lang.String)
      */
     public String getProfile()
     {
@@ -1186,6 +1159,8 @@ public abstract class JomcTool
      * Sets the profile of the instance.
      *
      * @param value The profile of the instance.
+     *
+     * @see #getProfile()
      */
     public void setProfile( final String value )
     {
@@ -1205,31 +1180,13 @@ public abstract class JomcTool
     }
 
     /**
-     * Gets the build directory of the instance.
-     *
-     * @return The build directory of the instance or {@code null}.
-     */
-    public File getBuildDirectory()
-    {
-        return this.buildDirectory;
-    }
-
-    /**
-     * Sets the build directory of the instance.
-     *
-     * @param value The build directory of the instance.
-     */
-    public void setBuildDirectory( final File value )
-    {
-        this.buildDirectory = value;
-    }
-
-    /**
      * Notifies registered listeners.
      *
      * @param level The level of the event.
      * @param message The message of the event.
      * @param throwable The throwable of the event.
+     *
+     * @see #getListeners()
      */
     protected void log( final Level level, final String message, final Throwable throwable )
     {

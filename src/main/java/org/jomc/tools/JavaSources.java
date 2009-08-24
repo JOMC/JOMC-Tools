@@ -33,11 +33,7 @@
 package org.jomc.tools;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.StringWriter;
 import java.text.MessageFormat;
 import java.util.List;
@@ -48,6 +44,7 @@ import org.apache.velocity.VelocityContext;
 import org.jomc.model.Dependencies;
 import org.jomc.model.Implementation;
 import org.jomc.model.Messages;
+import org.jomc.model.Module;
 import org.jomc.model.Properties;
 import org.jomc.model.Specification;
 import org.jomc.model.SpecificationReference;
@@ -59,9 +56,17 @@ import org.jomc.util.TrailingWhitespaceEditor;
 /**
  * Manages Java source code.
  *
+ * <p><b>Use cases</b><br/><ul>
+ * <li>{@link #manageSources(java.io.File) }</li>
+ * <li>{@link #manageSources(org.jomc.model.Module, java.io.File) }</li>
+ * <li>{@link #manageSources(org.jomc.model.Specification, java.io.File) }</li>
+ * <li>{@link #manageSources(org.jomc.model.Implementation, java.io.File) }</li>
+ * </ul></p>
+ *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
- * @see #editModuleSources(java.io.File)
+ *
+ * @see #getModules()
  */
 public class JavaSources extends JomcTool
 {
@@ -135,9 +140,6 @@ public class JavaSources extends JomcTool
     /** Name of the {@code implementation-annotations.vm} template. */
     private static final String IMPLEMENTATION_ANNOTATIONS_TEMPLATE = "implementation-annotations.vm";
 
-    /** Constant for the name of the properties file holding modification timestamps. */
-    private static final String TIMESTAMPS_FILE_NAME = "java-sources.properties";
-
     /** Creates a new {@code JavaSources} instance. */
     public JavaSources()
     {
@@ -145,130 +147,107 @@ public class JavaSources extends JomcTool
     }
 
     /**
-     * Creates a new {@code JavaSources} instance taking a {@code JomcTool} instance to initialize the instance with.
+     * Creates a new {@code JavaSources} instance taking a {@code JavaSources} instance to initialize the instance with.
      *
      * @param tool The instance to initialize the new instance with,
      */
-    public JavaSources( final JomcTool tool )
+    public JavaSources( final JavaSources tool )
     {
         super( tool );
     }
 
     /**
-     * Edits the Java source code of the module of the instance.
+     * Manages the source code of the modules of the instance.
      *
-     * @param sourceDirectory The directory holding the source files to edit.
+     * @param sourcesDirectory The directory holding the sources to manage.
      *
      * @throws NullPointerException if {@code sourcesDirectory} is {@code null}.
-     * @throws IOException if editing fails.
+     * @throws IOException if managing sources fails.
      *
-     * @see #getModule()
+     * @see #manageSources(org.jomc.model.Module, java.io.File)
      */
-    public void editModuleSources( final File sourceDirectory ) throws IOException
+    public void manageSources( final File sourcesDirectory ) throws IOException
     {
-        if ( sourceDirectory == null )
+        if ( sourcesDirectory == null )
         {
-            throw new NullPointerException( "sourceDirectory" );
+            throw new NullPointerException( "sourcesDirectory" );
         }
 
-        if ( this.getModule() != null )
+        for ( Module m : this.getModules().getModule() )
         {
-            this.log( Level.INFO, this.getMessage( "processingModule", new Object[]
-                {
-                    this.getModule().getName()
-                } ), null );
-
-            if ( this.getModule().getSpecifications() != null )
-            {
-                for ( Specification s : this.getModule().getSpecifications().getSpecification() )
-                {
-                    if ( this.getModules().getImplementation( s.getIdentifier() ) == null )
-                    {
-                        this.editSpecificationSource( s, sourceDirectory );
-                    }
-                }
-            }
-            if ( this.getModule().getImplementations() != null )
-            {
-                for ( Implementation i : this.getModule().getImplementations().getImplementation() )
-                {
-                    if ( i.getIdentifier().equals( i.getClazz() ) )
-                    {
-                        this.editImplementationSource( i, sourceDirectory );
-                    }
-                }
-            }
-
-            this.log( Level.INFO, this.getMessage( "upToDate", null ), null );
-        }
-        else
-        {
-            this.log( Level.WARNING, this.getMessage( "missingModule", new Object[]
-                {
-                    this.getModuleName()
-                } ), null );
-
+            this.manageSources( m, sourcesDirectory );
         }
     }
 
     /**
-     * Edits the source code of a specification.
+     * Manages the source code of a given module of the modules of the instance.
      *
-     * @param specification The specification to edit.
-     * @param sourceDirectory The directory holding the source file to edit.
+     * @param module The module to process.
+     * @param sourcesDirectory The directory holding the sources to manage.
      *
-     * @throws NullPointerException if {@code specification} or {@code sourceDirectory} is {@code null}.
-     * @throws IOException if editing the specification fails.
+     * @throws NullPointerException if {@code module} or {@code sourcesDirectory} is {@code null}.
+     * @throws IOException if managing sources fails.
+     *
+     * @see #manageSources(org.jomc.model.Specification, java.io.File)
+     * @see #manageSources(org.jomc.model.Implementation, java.io.File)
      */
-    public void editSpecificationSource( final Specification specification, final File sourceDirectory )
-        throws IOException
+    public void manageSources( final Module module, final File sourcesDirectory ) throws IOException
+    {
+        if ( module == null )
+        {
+            throw new NullPointerException( "module" );
+        }
+        if ( sourcesDirectory == null )
+        {
+            throw new NullPointerException( "sourcesDirectory" );
+        }
+
+        if ( module.getSpecifications() != null )
+        {
+            for ( Specification s : module.getSpecifications().getSpecification() )
+            {
+                this.manageSources( s, sourcesDirectory );
+            }
+        }
+        if ( module.getImplementations() != null )
+        {
+            for ( Implementation i : module.getImplementations().getImplementation() )
+            {
+                this.manageSources( i, sourcesDirectory );
+            }
+        }
+    }
+
+    /**
+     * Manages the source code of a given specification of the modules of the instance.
+     *
+     * @param specification The specification to process.
+     * @param sourcesDirectory The directory holding the sources to manage.
+     *
+     * @throws NullPointerException if {@code specification} or {@code sourcesDirectory} is {@code null}.
+     * @throws IOException if managing sources fails.
+     *
+     * @see #getSpecificationEditor(org.jomc.model.Specification)
+     */
+    public void manageSources( final Specification specification, final File sourcesDirectory ) throws IOException
     {
         if ( specification == null )
         {
             throw new NullPointerException( "specification" );
         }
-        if ( sourceDirectory == null )
+        if ( sourcesDirectory == null )
         {
-            throw new NullPointerException( "sourceDirectory" );
+            throw new NullPointerException( "sourcesDirectory" );
         }
 
-        final File f = new File( sourceDirectory, specification.getIdentifier().replace( '.', '/' ) + ".java" );
-        final java.util.Properties timestampProperties = new java.util.Properties();
-        File timestampsFile = null;
-
-        if ( this.getBuildDirectory() != null )
+        final Implementation i = this.getModules().getImplementation( specification.getIdentifier() );
+        if ( i != null && i.getClazz() != null && i.getClazz().equals( i.getIdentifier() ) )
         {
-            timestampsFile = new File( this.getBuildDirectory(), TIMESTAMPS_FILE_NAME );
-            if ( !this.getBuildDirectory().exists() )
-            {
-                this.getBuildDirectory().mkdirs();
-            }
-            if ( !timestampsFile.exists() )
-            {
-                timestampsFile.createNewFile();
-            }
-
-            final InputStream in = new FileInputStream( timestampsFile );
-            timestampProperties.load( in );
-            in.close();
-
-            this.log( Level.FINE, this.getMessage( "timestampsFile", new Object[]
-                {
-                    timestampsFile.getAbsolutePath()
-                } ), null );
-
+            this.manageSources( i, sourcesDirectory );
         }
-
-        long lastModified = -1L;
-        if ( timestampProperties.getProperty( f.getAbsolutePath() + "@" + this.getProfile() ) != null )
+        else
         {
-            lastModified =
-                Long.valueOf( timestampProperties.getProperty( f.getAbsolutePath() + "@" + this.getProfile() ) );
-
-        }
-
-        if ( lastModified == -1L || lastModified != f.lastModified() )
-        {
+            final File f = new File( sourcesDirectory, specification.getIdentifier().replace( '.', '/' ) + ".java" );
             final String content = f.exists()
                                    ? FileUtils.readFileToString( f, this.getInputEncoding() )
                                    : this.getSpecificationTemplate( specification );
@@ -278,7 +257,7 @@ public class JavaSources extends JomcTool
 
             if ( !editor.isLicenseSectionPresent() )
             {
-                this.log( Level.WARNING, this.getMessage( "missingOptionalSection", new Object[]
+                this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                     {
                         LICENSE_SECTION_NAME,
                         specification.getIdentifier()
@@ -298,7 +277,7 @@ public class JavaSources extends JomcTool
 
             if ( !editor.isDocumentationSectionPresent() )
             {
-                this.log( Level.WARNING, this.getMessage( "missingOptionalSection", new Object[]
+                this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                     {
                         DOCUMENTATION_SECTION_NAME,
                         specification.getIdentifier()
@@ -320,246 +299,188 @@ public class JavaSources extends JomcTool
                     } ), null );
 
             }
-
-            timestampProperties.setProperty(
-                f.getAbsolutePath() + "@" + this.getProfile(), Long.valueOf( f.lastModified() ).toString() );
-
-        }
-
-        if ( timestampsFile != null )
-        {
-            final OutputStream out = new FileOutputStream( timestampsFile );
-            timestampProperties.store( out, this.getClass().getName() );
-            out.close();
         }
     }
 
     /**
-     * Edits the source code of an implementation.
+     * Manages the source code of a given implementation of the modules of the instance.
      *
-     * @param implementation The implementation to edit.
-     * @param sourceDirectory The directory holding the source file to edit.
+     * @param implementation The implementation to process.
+     * @param sourcesDirectory The directory holding the sources to manage.
      *
-     * @throws NullPointerException if {@code implementation} or {@code sourceDirectory} is {@code null}.
-     * @throws IOException if editing the implementation fails.
+     * @throws NullPointerException if {@code implementation} or {@code sourcesDirectory} is {@code null}.
+     * @throws IOException if managing sources fails.
+     *
+     * @see #getImplementationEditor(org.jomc.model.Implementation)
      */
-    public void editImplementationSource( final Implementation implementation, final File sourceDirectory )
-        throws IOException
+    public void manageSources( final Implementation implementation, final File sourcesDirectory ) throws IOException
     {
         if ( implementation == null )
         {
             throw new NullPointerException( "implementation" );
         }
-        if ( sourceDirectory == null )
+        if ( sourcesDirectory == null )
         {
-            throw new NullPointerException( "sourceDirectory" );
+            throw new NullPointerException( "sourcesDirectory" );
         }
 
-        final File f = new File( sourceDirectory, implementation.getClazz().replace( '.', '/' ) + ".java" );
-        final java.util.Properties timestampProperties = new java.util.Properties();
-        File timestampsFile = null;
+        final File f = new File( sourcesDirectory, implementation.getClazz().replace( '.', '/' ) + ".java" );
+        final String content = f.exists()
+                               ? FileUtils.readFileToString( f, this.getInputEncoding() )
+                               : this.getImplementationTemplate( implementation );
 
-        if ( this.getBuildDirectory() != null )
+        final JavaImplementationEditor editor = this.getImplementationEditor( implementation );
+        final String edited = editor.edit( content );
+
+        if ( !editor.isLicenseSectionPresent() )
         {
-            timestampsFile = new File( this.getBuildDirectory(), TIMESTAMPS_FILE_NAME );
-            if ( !this.getBuildDirectory().exists() )
-            {
-                this.getBuildDirectory().mkdirs();
-            }
-            if ( !timestampsFile.exists() )
-            {
-                timestampsFile.createNewFile();
-            }
-
-            final InputStream in = new FileInputStream( timestampsFile );
-            timestampProperties.load( in );
-            in.close();
-
-            this.log( Level.FINE, this.getMessage( "timestampsFile", new Object[]
+            this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                 {
-                    timestampsFile.getAbsolutePath()
+                    LICENSE_SECTION_NAME,
+                    implementation.getIdentifier()
                 } ), null );
 
         }
 
-        long lastModified = -1L;
-        if ( timestampProperties.getProperty( f.getAbsolutePath() + "@" + this.getProfile() ) != null )
+        if ( !editor.isAnnotationsSectionPresent() )
         {
-            lastModified =
-                Long.valueOf( timestampProperties.getProperty( f.getAbsolutePath() + "@" + this.getProfile() ) );
+            throw new IOException( this.getMessage( "missingSection", new Object[]
+                {
+                    ANNOTATIONS_SECTION_NAME,
+                    implementation.getIdentifier()
+                } ) );
 
         }
 
-        if ( lastModified == -1L || lastModified != f.lastModified() )
+        if ( !editor.isDocumentationSectionPresent() )
         {
-            final String content = f.exists()
-                                   ? FileUtils.readFileToString( f, this.getInputEncoding() )
-                                   : this.getImplementationTemplate( implementation );
+            this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
+                {
+                    DOCUMENTATION_SECTION_NAME,
+                    implementation.getIdentifier()
+                } ), null );
 
-            final JavaImplementationEditor editor = this.getImplementationEditor( implementation );
-            final String edited = editor.edit( content );
+        }
 
-            if ( !editor.isLicenseSectionPresent() )
-            {
-                this.log( Level.WARNING, this.getMessage( "missingOptionalSection", new Object[]
-                    {
-                        LICENSE_SECTION_NAME,
-                        implementation.getIdentifier()
-                    } ), null );
+        if ( !editor.isConstructorsSectionPresent() )
+        {
+            final List<SpecificationReference> specifications =
+                this.getModules().getSpecifications( implementation.getIdentifier() );
 
-            }
-
-            if ( !editor.isAnnotationsSectionPresent() )
+            if ( specifications != null && !specifications.isEmpty() )
             {
                 throw new IOException( this.getMessage( "missingSection", new Object[]
                     {
-                        ANNOTATIONS_SECTION_NAME,
+                        CONSTRUCTORS_SECTION_NAME,
                         implementation.getIdentifier()
                     } ) );
 
             }
-
-            if ( !editor.isDocumentationSectionPresent() )
+            else
             {
-                this.log( Level.WARNING, this.getMessage( "missingOptionalSection", new Object[]
+                this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                     {
-                        DOCUMENTATION_SECTION_NAME,
+                        CONSTRUCTORS_SECTION_NAME,
                         implementation.getIdentifier()
                     } ), null );
 
             }
-
-            if ( !editor.isConstructorsSectionPresent() )
-            {
-                final List<SpecificationReference> specifications =
-                    this.getModules().getSpecifications( implementation.getIdentifier() );
-
-                if ( specifications != null && !specifications.isEmpty() )
+        }
+        else if ( !editor.isDefaultConstructorSectionPresent() )
+        {
+            throw new IOException( this.getMessage( "missingSection", new Object[]
                 {
-                    throw new IOException( this.getMessage( "missingSection", new Object[]
-                        {
-                            CONSTRUCTORS_SECTION_NAME,
-                            implementation.getIdentifier()
-                        } ) );
+                    DEFAULT_CONSTRUCTOR_SECTION_NAME,
+                    implementation.getIdentifier()
+                } ) );
 
-                }
-                else
-                {
-                    this.log( Level.WARNING, this.getMessage( "missingOptionalSection", new Object[]
-                        {
-                            CONSTRUCTORS_SECTION_NAME,
-                            implementation.getIdentifier()
-                        } ), null );
+        }
 
-                }
-            }
-            else if ( !editor.isDefaultConstructorSectionPresent() )
+        if ( !editor.isPropertiesSectionPresent() )
+        {
+            final Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
+
+            if ( properties != null && !properties.getProperty().isEmpty() )
             {
                 throw new IOException( this.getMessage( "missingSection", new Object[]
                     {
-                        DEFAULT_CONSTRUCTOR_SECTION_NAME,
+                        PROPERTIES_SECTION_NAME,
                         implementation.getIdentifier()
                     } ) );
 
             }
-
-            if ( !editor.isPropertiesSectionPresent() )
+            else
             {
-                final Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
-
-                if ( properties != null && !properties.getProperty().isEmpty() )
-                {
-                    throw new IOException( this.getMessage( "missingSection", new Object[]
-                        {
-                            PROPERTIES_SECTION_NAME,
-                            implementation.getIdentifier()
-                        } ) );
-
-                }
-                else
-                {
-                    this.log( Level.WARNING, this.getMessage( "missingOptionalSection", new Object[]
-                        {
-                            PROPERTIES_SECTION_NAME,
-                            implementation.getIdentifier()
-                        } ), null );
-
-                }
-            }
-
-            if ( !editor.isDependenciesSectionPresent() )
-            {
-                final Dependencies dependencies = this.getModules().getDependencies( implementation.getIdentifier() );
-
-                if ( dependencies != null && !dependencies.getDependency().isEmpty() )
-                {
-                    throw new IOException( this.getMessage( "missingSection", new Object[]
-                        {
-                            DEPENDENCIES_SECTION_NAME,
-                            implementation.getIdentifier()
-                        } ) );
-
-                }
-                else
-                {
-                    this.log( Level.WARNING, this.getMessage( "missingOptionalSection", new Object[]
-                        {
-                            DEPENDENCIES_SECTION_NAME,
-                            implementation.getIdentifier()
-                        } ), null );
-
-                }
-            }
-
-            if ( !editor.isMessagesSectionPresent() )
-            {
-                final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
-
-                if ( messages != null && !messages.getMessage().isEmpty() )
-                {
-                    throw new IOException( this.getMessage( "missingSection", new Object[]
-                        {
-                            MESSAGES_SECTION_NAME,
-                            implementation.getIdentifier()
-                        } ) );
-
-                }
-                else
-                {
-                    this.log( Level.WARNING, this.getMessage( "missingOptionalSection", new Object[]
-                        {
-                            MESSAGES_SECTION_NAME,
-                            implementation.getIdentifier()
-                        } ), null );
-
-                }
-            }
-
-            if ( !edited.equals( content ) )
-            {
-                if ( !f.getParentFile().exists() )
-                {
-                    f.getParentFile().mkdirs();
-                }
-
-                FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
-                this.log( Level.INFO, this.getMessage( "editing", new Object[]
+                this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                     {
-                        f.getCanonicalPath()
+                        PROPERTIES_SECTION_NAME,
+                        implementation.getIdentifier()
                     } ), null );
 
             }
-
-            timestampProperties.setProperty(
-                f.getAbsolutePath() + "@" + this.getProfile(), Long.valueOf( f.lastModified() ).toString() );
-
         }
 
-        if ( timestampsFile != null )
+        if ( !editor.isDependenciesSectionPresent() )
         {
-            final OutputStream out = new FileOutputStream( timestampsFile );
-            timestampProperties.store( out, this.getClass().getName() );
-            out.close();
+            final Dependencies dependencies = this.getModules().getDependencies( implementation.getIdentifier() );
+
+            if ( dependencies != null && !dependencies.getDependency().isEmpty() )
+            {
+                throw new IOException( this.getMessage( "missingSection", new Object[]
+                    {
+                        DEPENDENCIES_SECTION_NAME,
+                        implementation.getIdentifier()
+                    } ) );
+
+            }
+            else
+            {
+                this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
+                    {
+                        DEPENDENCIES_SECTION_NAME,
+                        implementation.getIdentifier()
+                    } ), null );
+
+            }
+        }
+
+        if ( !editor.isMessagesSectionPresent() )
+        {
+            final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
+
+            if ( messages != null && !messages.getMessage().isEmpty() )
+            {
+                throw new IOException( this.getMessage( "missingSection", new Object[]
+                    {
+                        MESSAGES_SECTION_NAME,
+                        implementation.getIdentifier()
+                    } ) );
+
+            }
+            else
+            {
+                this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
+                    {
+                        MESSAGES_SECTION_NAME,
+                        implementation.getIdentifier()
+                    } ), null );
+
+            }
+        }
+
+        if ( !edited.equals( content ) )
+        {
+            if ( !f.getParentFile().exists() )
+            {
+                f.getParentFile().mkdirs();
+            }
+
+            FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
+            this.log( Level.INFO, this.getMessage( "editing", new Object[]
+                {
+                    f.getCanonicalPath()
+                } ), null );
+
         }
     }
 
@@ -935,7 +856,7 @@ public class JavaSources extends JomcTool
 
     /**
      * Extension to {@code SectionEditor} for editing Java source code.
-     * 
+     *
      * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
      * @version $Id$
      */
@@ -1332,7 +1253,11 @@ public class JavaSources extends JomcTool
             if ( s.getHeadContent().toString().trim().length() == 0 )
             {
                 s.getHeadContent().setLength( 0 );
-                s.getHeadContent().append( "        super();\n" ).toString();
+
+                if ( this.implementation != null )
+                {
+                    s.getHeadContent().append( "        super();\n" ).toString();
+                }
             }
         }
 
