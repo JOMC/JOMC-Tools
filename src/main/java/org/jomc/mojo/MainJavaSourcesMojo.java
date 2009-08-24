@@ -30,39 +30,54 @@
  *   $Id$
  *
  */
-package org.jomc.tools.mojo;
+package org.jomc.mojo;
 
 import java.io.File;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+import org.jomc.model.Module;
+import org.jomc.tools.JavaSources;
 
 /**
- * Validates a projects' main java classes.
+ * Manages a projects' main java sources.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  *
- * @phase verify
- * @goal verify-main-java-classes
+ * @phase process-resources
+ * @goal main-java-sources
  * @requiresDependencyResolution runtime
  */
-public class VerifyMainJavaClassesMojo extends AbstractJomcMojo
+public final class MainJavaSourcesMojo extends AbstractJomcMojo
 {
 
     @Override
-    protected void executeTool() throws Exception
+    public void executeTool() throws Exception
     {
-        if ( !this.isJavaClassProcessingDisabled() )
+        if ( !this.isJavaSourceProcessingDisabled() )
         {
-            File classesDirectory = new File( this.getMavenProject().getBuild().getOutputDirectory() );
-            if ( !classesDirectory.isAbsolute() )
+            File sourceDirectory = new File( this.getMavenProject().getBuild().getSourceDirectory() );
+
+            if ( !sourceDirectory.isAbsolute() )
             {
-                classesDirectory = new File( this.getMavenProject().getBasedir(),
-                                             this.getMavenProject().getBuild().getOutputDirectory() );
+                sourceDirectory = new File( this.getMavenProject().getBasedir(),
+                                            this.getMavenProject().getBuild().getSourceDirectory() );
 
             }
 
-            this.getMainJavaClassesTool().validateModuleClasses( classesDirectory );
+            final JavaSources tool = this.getMainJavaSourcesTool();
+            final Module module = tool.getModules().getModule( this.getJomcModuleName() );
+
+            if ( module != null )
+            {
+                this.logProcessingModule( module );
+                tool.manageSources( module, sourceDirectory );
+                this.logToolSuccess();
+            }
+            else
+            {
+                this.logMissingModule( this.getJomcModuleName() );
+            }
         }
         else
         {
@@ -70,9 +85,14 @@ public class VerifyMainJavaClassesMojo extends AbstractJomcMojo
         }
     }
 
+    protected String getToolName()
+    {
+        return "JavaSources";
+    }
+
     private String getMessage( final String key )
     {
-        return ResourceBundle.getBundle( VerifyMainJavaClassesMojo.class.getName().replace( '.', '/' ) ).getString( key );
+        return ResourceBundle.getBundle( MainJavaSourcesMojo.class.getName().replace( '.', '/' ) ).getString( key );
     }
 
 }

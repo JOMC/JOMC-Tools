@@ -30,27 +30,29 @@
  *   $Id$
  *
  */
-package org.jomc.tools.mojo;
+package org.jomc.mojo;
 
 import java.io.File;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+import org.jomc.model.Module;
+import org.jomc.tools.JavaClasses;
 
 /**
- * Validates a projects' test java classes.
+ * Manages a projects' test java classes.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  *
- * @phase verify
- * @goal verify-test-java-classes
+ * @phase process-test-classes
+ * @goal test-java-classes
  * @requiresDependencyResolution runtime
  */
-public class VerifyTestJavaClassesMojo extends AbstractJomcMojo
+public class TestJavaClassesMojo extends AbstractJomcMojo
 {
 
     @Override
-    protected void executeTool() throws Exception
+    public void executeTool() throws Exception
     {
         if ( !this.isJavaClassProcessingDisabled() )
         {
@@ -62,7 +64,19 @@ public class VerifyTestJavaClassesMojo extends AbstractJomcMojo
 
             }
 
-            this.getTestJavaClassesTool().validateModuleClasses( classesDirectory );
+            final JavaClasses tool = this.getTestJavaClassesTool();
+            final Module module = tool.getModules().getModule( this.getJomcTestModuleName() );
+
+            if ( module != null )
+            {
+                this.logProcessingModule( module );
+                tool.commitClasses( module, classesDirectory );
+                this.logToolSuccess();
+            }
+            else
+            {
+                this.logMissingModule( this.getJomcTestModuleName() );
+            }
         }
         else
         {
@@ -70,9 +84,14 @@ public class VerifyTestJavaClassesMojo extends AbstractJomcMojo
         }
     }
 
+    protected String getToolName()
+    {
+        return "JavaClasses";
+    }
+
     private String getMessage( final String key )
     {
-        return ResourceBundle.getBundle( VerifyTestJavaClassesMojo.class.getName().replace( '.', '/' ) ).getString( key );
+        return ResourceBundle.getBundle( TestJavaClassesMojo.class.getName().replace( '.', '/' ) ).getString( key );
     }
 
 }

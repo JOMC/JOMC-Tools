@@ -30,7 +30,7 @@
  *   $Id$
  *
  */
-package org.jomc.tools.mojo;
+package org.jomc.mojo;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -62,7 +62,6 @@ import org.jomc.model.Modules;
 import org.jomc.tools.JavaClasses;
 import org.jomc.tools.JavaSources;
 import org.jomc.tools.JomcTool;
-import org.jomc.tools.ModuleAssembler;
 import org.xml.sax.SAXException;
 
 /**
@@ -130,9 +129,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /** The tool for managing sources. */
     private JavaSources testJavaSourcesTool;
 
-    /** The tool for merging modules. */
-    private ModuleAssembler moduleAssemblerTool;
-
     /** The tool for managing classes. */
     private JavaClasses mainJavaClassesTool;
 
@@ -166,7 +162,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         if ( this.mainJavaSourcesTool == null )
         {
             this.mainJavaSourcesTool = new JavaSources();
-            this.mainJavaSourcesTool.setModuleName( this.getMavenProject().getName() );
             this.setupTool( this.mainJavaSourcesTool, this.getMainClassLoader(), true );
         }
 
@@ -184,28 +179,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         if ( this.testJavaSourcesTool == null )
         {
             this.testJavaSourcesTool = new JavaSources();
-            this.testJavaSourcesTool.setModuleName( this.getMavenProject().getName() + " Tests" );
             this.setupTool( this.testJavaSourcesTool, this.getTestClassLoader(), true );
         }
 
         return this.testJavaSourcesTool;
-    }
-
-    /**
-     * Gets the tool for merging modules.
-     *
-     * @return The tool for merging modules.
-     */
-    public ModuleAssembler getModuleAssemblerTool()
-        throws DependencyResolutionRequiredException, ModelException, IOException, SAXException, JAXBException
-    {
-        if ( this.moduleAssemblerTool == null )
-        {
-            this.moduleAssemblerTool = new ModuleAssembler();
-            this.setupTool( this.moduleAssemblerTool, this.getMainClassLoader(), false );
-        }
-
-        return this.moduleAssemblerTool;
     }
 
     /**
@@ -219,7 +196,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         if ( this.mainJavaClassesTool == null )
         {
             this.mainJavaClassesTool = new JavaClasses();
-            this.mainJavaClassesTool.setModuleName( this.getMavenProject().getName() );
             this.setupTool( this.mainJavaClassesTool, this.getMainClassLoader(), true );
         }
 
@@ -237,7 +213,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         if ( this.testJavaClassesTool == null )
         {
             this.testJavaClassesTool = new JavaClasses();
-            this.testJavaClassesTool.setModuleName( this.getMavenProject().getName() + " Tests" );
             this.setupTool( this.testJavaClassesTool, this.getTestClassLoader(), true );
         }
 
@@ -411,6 +386,26 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         return this.javaClassProcessingDisabled;
     }
 
+    /**
+     * Gets the name of the JOMC module to process.
+     *
+     * @return The name of the JOMC module to process.
+     */
+    public String getJomcModuleName()
+    {
+        return this.getMavenProject().getName();
+    }
+
+    /**
+     * Gets the name of the JOMC test module to process.
+     *
+     * @return The name of the JOMC test module to process.
+     */
+    public String getJomcTestModuleName()
+    {
+        return this.getMavenProject().getName() + " Tests";
+    }
+
     public void execute() throws MojoExecutionException, MojoFailureException
     {
         try
@@ -419,7 +414,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             this.log( Level.INFO, this.getMessage( "title" ).format( null ), null );
             this.logSeparator( Level.INFO );
             this.executeTool();
-            this.logSeparator( Level.INFO );
         }
         catch ( ModelException e )
         {
@@ -429,6 +423,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
             catch ( Exception e2 )
             {
+                this.getLog().error( e );
                 throw new MojoExecutionException( e2.getMessage(), e2 );
             }
 
@@ -438,6 +433,17 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         {
             throw new MojoExecutionException( e.getMessage(), e );
         }
+        finally
+        {
+            try
+            {
+                this.logSeparator( Level.INFO );
+            }
+            catch ( IOException e )
+            {
+                this.getLog().error( e );
+            }
+        }
     }
 
     protected abstract void executeTool() throws Exception;
@@ -446,11 +452,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         throws ModelException, IOException, SAXException, JAXBException
     {
         Modules modulesToValidate = null;
-        final String toolName = tool.getClass().getName().substring(
-            tool.getClass().getPackage().getName().length() + 1 );
-
-        this.log( Level.INFO, this.getInitializingMessage( toolName ), null );
-
         tool.getListeners().add( new JomcTool.Listener()
         {
 
@@ -469,7 +470,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
         } );
 
-        tool.setBuildDirectory( new File( this.getMavenProject().getBuild().getDirectory() ) );
         tool.setTemplateEncoding( this.templateEncoding );
         tool.setInputEncoding( this.sourceEncoding );
         tool.setOutputEncoding( this.sourceEncoding );
@@ -491,8 +491,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     }
                     catch ( IOException e )
                     {
-                        System.err.println( "[" + level.toString() + "] " + message );
-                        e.printStackTrace();
+                        getLog().error( e );
                     }
                 }
 
@@ -549,7 +548,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     private MessageFormat getMessage( final String key )
     {
-        return new MessageFormat( ResourceBundle.getBundle( "org/jomc/tools/mojo/AbstractJomcMojo" ).
+        return new MessageFormat( ResourceBundle.getBundle( AbstractJomcMojo.class.getName().replace( '.', '/' ) ).
             getString( key ) );
 
     }
@@ -590,18 +589,53 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     }
 
-    private String getInitializingMessage( final String entity )
+    private String getProcessingModuleMesage( final Module module )
     {
-        return this.getMessage( "initializing" ).format( new Object[]
+        return this.getMessage( "processingModule" ).format( new Object[]
             {
-                entity
+                this.getToolName(), module.getName()
             } );
 
     }
 
+    private String getToolSuccessMessage()
+    {
+        return this.getMessage( "toolSuccess" ).format( new Object[]
+            {
+                this.getToolName()
+            } );
+
+    }
+
+    private String getMissingModuleMesage( final String moduleName )
+    {
+        return this.getMessage( "missingModule" ).format( new Object[]
+            {
+                moduleName
+            } );
+
+    }
+
+    protected abstract String getToolName();
+
     protected void logSeparator( final Level level ) throws IOException
     {
         this.log( level, this.getMessage( "separator" ).format( null ), null );
+    }
+
+    protected void logProcessingModule( final Module module ) throws IOException
+    {
+        this.log( Level.INFO, this.getProcessingModuleMesage( module ), null );
+    }
+
+    protected void logMissingModule( final String moduleName ) throws IOException
+    {
+        this.log( Level.WARNING, this.getMissingModuleMesage( moduleName ), null );
+    }
+
+    protected void logToolSuccess() throws IOException
+    {
+        this.log( Level.INFO, this.getToolSuccessMessage(), null );
     }
 
     protected void log( final Level level, final String message, final Throwable throwable ) throws IOException
