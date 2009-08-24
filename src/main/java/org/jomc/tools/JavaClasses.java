@@ -243,81 +243,84 @@ public class JavaClasses extends JomcTool
 
         try
         {
-            final Dependencies dependencies = this.getModules().getDependencies( implementation.getIdentifier() );
-            final Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
-            final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
-            final Specifications specifications = new Specifications();
-            final List<SpecificationReference> specificationReferences =
-                this.getModules().getSpecifications( implementation.getIdentifier() );
-
-            if ( specificationReferences != null )
+            if ( this.isJavaClassDeclaration( implementation ) )
             {
-                for ( SpecificationReference r : specificationReferences )
+                final Dependencies dependencies = this.getModules().getDependencies( implementation.getIdentifier() );
+                final Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
+                final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
+                final Specifications specifications = new Specifications();
+                final List<SpecificationReference> specificationReferences =
+                    this.getModules().getSpecifications( implementation.getIdentifier() );
+
+                if ( specificationReferences != null )
                 {
-                    final Specification s = this.getModules().getSpecification( r.getIdentifier() );
-                    if ( s != null )
+                    for ( SpecificationReference r : specificationReferences )
                     {
-                        if ( specifications.getSpecification( s.getIdentifier() ) != null )
+                        final Specification s = this.getModules().getSpecification( r.getIdentifier() );
+                        if ( s != null )
                         {
-                            specifications.getSpecification().add( s );
+                            if ( specifications.getSpecification( s.getIdentifier() ) != null )
+                            {
+                                specifications.getSpecification().add( s );
+                            }
+                        }
+                        else
+                        {
+                            this.log( Level.WARNING, this.getMessage( "unresolvedSpecification", new Object[]
+                                {
+                                    r.getIdentifier(), implementation.getIdentifier()
+                                } ), null );
+
                         }
                     }
-                    else
-                    {
-                        this.log( Level.WARNING, this.getMessage( "unresolvedSpecification", new Object[]
-                            {
-                                r.getIdentifier(), implementation.getIdentifier()
-                            } ), null );
-
-                    }
                 }
-            }
 
-            if ( dependencies != null )
-            {
-                for ( Dependency d : dependencies.getDependency() )
+                if ( dependencies != null )
                 {
-                    final Specification s = this.getModules().getSpecification( d.getIdentifier() );
-                    if ( s != null )
+                    for ( Dependency d : dependencies.getDependency() )
                     {
-                        if ( specifications.getSpecification( s.getIdentifier() ) != null )
+                        final Specification s = this.getModules().getSpecification( d.getIdentifier() );
+                        if ( s != null )
                         {
-                            specifications.getSpecification().add( s );
+                            if ( specifications.getSpecification( s.getIdentifier() ) != null )
+                            {
+                                specifications.getSpecification().add( s );
+                            }
+                        }
+                        else
+                        {
+                            this.log( Level.WARNING, this.getMessage( "unresolvedDependencySpecification", new Object[]
+                                {
+                                    d.getIdentifier(), d.getName(), implementation.getIdentifier()
+                                } ), null );
+
                         }
                     }
-                    else
-                    {
-                        this.log( Level.WARNING, this.getMessage( "unresolvedDependencySpecification", new Object[]
-                            {
-                                d.getIdentifier(), d.getName(), implementation.getIdentifier()
-                            } ), null );
-
-                    }
                 }
+
+                final String classLocation = implementation.getClazz().replace( '.', File.separatorChar ) + ".class";
+                final File classFile = new File( classesDirectory, classLocation );
+                final JavaClass javaClass = this.getJavaClass( classFile );
+
+                this.setClassfileAttribute( javaClass, Dependencies.class.getName(), this.encodeDependencies(
+                    dependencies == null ? new Dependencies() : dependencies ) );
+
+                this.setClassfileAttribute( javaClass, Properties.class.getName(), this.encodeProperties(
+                    properties == null ? new Properties() : properties ) );
+
+                this.setClassfileAttribute( javaClass, Messages.class.getName(), this.encodeMessages(
+                    messages == null ? new Messages() : messages ) );
+
+                this.setClassfileAttribute( javaClass, Specifications.class.getName(), this.encodeSpecifications(
+                    specifications == null ? new Specifications() : specifications ) );
+
+                javaClass.dump( classFile );
+                this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                    {
+                        classFile.getAbsolutePath()
+                    } ), null );
+
             }
-
-            final String classLocation = implementation.getClazz().replace( '.', File.separatorChar ) + ".class";
-            final File classFile = new File( classesDirectory, classLocation );
-            final JavaClass javaClass = this.getJavaClass( classFile );
-
-            this.setClassfileAttribute( javaClass, Dependencies.class.getName(), this.encodeDependencies(
-                dependencies == null ? new Dependencies() : dependencies ) );
-
-            this.setClassfileAttribute( javaClass, Properties.class.getName(), this.encodeProperties(
-                properties == null ? new Properties() : properties ) );
-
-            this.setClassfileAttribute( javaClass, Messages.class.getName(), this.encodeMessages(
-                messages == null ? new Messages() : messages ) );
-
-            this.setClassfileAttribute( javaClass, Specifications.class.getName(), this.encodeSpecifications(
-                specifications == null ? new Specifications() : specifications ) );
-
-            javaClass.dump( classFile );
-            this.log( Level.INFO, this.getMessage( "writing", new Object[]
-                {
-                    classFile.getAbsolutePath()
-                } ), null );
-
         }
         catch ( SAXException e )
         {
@@ -471,7 +474,7 @@ public class JavaClasses extends JomcTool
         {
             for ( Implementation i : module.getImplementations().getImplementation() )
             {
-                if ( i.getClazz() != null )
+                if ( this.isJavaClassDeclaration( i ) )
                 {
                     final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
                     final File classFile = new File( classesDirectory, classLocation );
@@ -562,7 +565,7 @@ public class JavaClasses extends JomcTool
         {
             for ( Implementation i : module.getImplementations().getImplementation() )
             {
-                if ( i.getIdentifier().equals( i.getClazz() ) )
+                if ( this.isJavaClassDeclaration( i ) )
                 {
                     final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
                     final URL classUrl = classLoader.getResource( classLocation );
@@ -953,7 +956,7 @@ public class JavaClasses extends JomcTool
         {
             for ( Implementation i : module.getImplementations().getImplementation() )
             {
-                if ( i.getClazz() != null )
+                if ( this.isJavaClassDeclaration( i ) )
                 {
                     final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
                     final File classFile = new File( classesDirectory, classLocation );

@@ -214,26 +214,29 @@ public class JavaBundles extends JomcTool
             throw new NullPointerException( "sourcesDirectory" );
         }
 
-        this.assertValidTemplates( implementation );
-
-        final String bundlePath =
-            ( this.getJavaTypeName( implementation, true ) + BUNDLE_SUFFIX ).replace( '.', File.separatorChar );
-
-        final File bundleFile = new File( sourcesDirectory, bundlePath + ".java" );
-
-        if ( !bundleFile.getParentFile().exists() )
+        if ( this.isJavaClassDeclaration( implementation ) )
         {
-            bundleFile.getParentFile().mkdirs();
-        }
+            this.assertValidTemplates( implementation );
 
-        this.log( Level.INFO, this.getMessage( "writing", new Object[]
+            final String bundlePath =
+                ( this.getJavaTypeName( implementation, true ) + BUNDLE_SUFFIX ).replace( '.', File.separatorChar );
+
+            final File bundleFile = new File( sourcesDirectory, bundlePath + ".java" );
+
+            if ( !bundleFile.getParentFile().exists() )
             {
-                bundleFile.getCanonicalPath()
-            } ), null );
+                bundleFile.getParentFile().mkdirs();
+            }
 
-        FileUtils.writeStringToFile( bundleFile, this.getResourceBundleSources( implementation ),
-                                     this.getOutputEncoding() );
+            this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                {
+                    bundleFile.getCanonicalPath()
+                } ), null );
 
+            FileUtils.writeStringToFile( bundleFile, this.getResourceBundleSources( implementation ),
+                                         this.getOutputEncoding() );
+
+        }
     }
 
     /**
@@ -313,63 +316,66 @@ public class JavaBundles extends JomcTool
             throw new NullPointerException( "resourcesDirectory" );
         }
 
-        this.assertValidTemplates( implementation );
-
-        final String bundlePath =
-            ( this.getJavaTypeName( implementation, true ) + BUNDLE_SUFFIX ).replace( '.', File.separatorChar );
-
-        Properties defProperties = null;
-        Properties fallbackProperties = null;
-
-        for ( Map.Entry<Locale, Properties> e : this.getResourceBundleResources( implementation ).entrySet() )
+        if ( this.isJavaClassDeclaration( implementation ) )
         {
-            final String language = e.getKey().getLanguage().toLowerCase();
-            final java.util.Properties p = e.getValue();
-            final File file = new File( resourcesDirectory, bundlePath + "_" + language + ".properties" );
+            this.assertValidTemplates( implementation );
 
-            if ( !file.getParentFile().exists() )
+            final String bundlePath =
+                ( this.getJavaTypeName( implementation, true ) + BUNDLE_SUFFIX ).replace( '.', File.separatorChar );
+
+            Properties defProperties = null;
+            Properties fallbackProperties = null;
+
+            for ( Map.Entry<Locale, Properties> e : this.getResourceBundleResources( implementation ).entrySet() )
             {
-                file.getParentFile().mkdirs();
-            }
+                final String language = e.getKey().getLanguage().toLowerCase();
+                final java.util.Properties p = e.getValue();
+                final File file = new File( resourcesDirectory, bundlePath + "_" + language + ".properties" );
 
-            this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                if ( !file.getParentFile().exists() )
                 {
-                    file.getCanonicalPath()
-                } ), null );
+                    file.getParentFile().mkdirs();
+                }
 
-            OutputStream out = new FileOutputStream( file );
-            p.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
-            out.close();
+                this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                    {
+                        file.getCanonicalPath()
+                    } ), null );
 
-            if ( this.getDefaultLocale().getLanguage().equalsIgnoreCase( language ) )
-            {
-                defProperties = p;
-            }
+                OutputStream out = new FileOutputStream( file );
+                p.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
+                out.close();
 
-            fallbackProperties = p;
-        }
-
-        if ( defProperties == null )
-        {
-            defProperties = fallbackProperties;
-        }
-
-        if ( defProperties != null )
-        {
-            final File file = new File( resourcesDirectory, bundlePath + ".properties" );
-            if ( !file.getParentFile().exists() )
-            {
-                file.getParentFile().mkdirs();
-            }
-
-            this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                if ( this.getDefaultLocale().getLanguage().equalsIgnoreCase( language ) )
                 {
-                    file.getCanonicalPath()
-                } ), null );
+                    defProperties = p;
+                }
 
-            final OutputStream out = new FileOutputStream( file );
-            defProperties.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
-            out.close();
+                fallbackProperties = p;
+            }
+
+            if ( defProperties == null )
+            {
+                defProperties = fallbackProperties;
+            }
+
+            if ( defProperties != null )
+            {
+                final File file = new File( resourcesDirectory, bundlePath + ".properties" );
+                if ( !file.getParentFile().exists() )
+                {
+                    file.getParentFile().mkdirs();
+                }
+
+                this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                    {
+                        file.getCanonicalPath()
+                    } ), null );
+
+                final OutputStream out = new FileOutputStream( file );
+                defProperties.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
+                out.close();
+            }
         }
     }
 

@@ -760,6 +760,27 @@ public abstract class JomcTool
     }
 
     /**
+     * Gets a flag indicating if a given implementation declares a Java class.
+     *
+     * @param implementation The implementation to test.
+     *
+     * @return {@code true} if {@code implementation} is declaring the Java class with name
+     * {@code implementation.getClazz()}; {@code false} if {@code implementation.getClazz()} is {@code null} or
+     * {@code implementation} does not declare that class.
+     *
+     * @throws NullPointerException if {@code implementation} is {@code null}.
+     */
+    public boolean isJavaClassDeclaration( final Implementation implementation )
+    {
+        if ( implementation == null )
+        {
+            throw new NullPointerException( "implementation" );
+        }
+
+        return implementation.getClazz() != null && implementation.getClazz().equals( implementation.getIdentifier() );
+    }
+
+    /**
      * Gets the display language of a given language code.
      *
      * @param language The language code to get the display language of.

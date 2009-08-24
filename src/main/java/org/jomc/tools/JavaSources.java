@@ -241,7 +241,7 @@ public class JavaSources extends JomcTool
         }
 
         final Implementation i = this.getModules().getImplementation( specification.getIdentifier() );
-        if ( i != null && i.getClazz() != null && i.getClazz().equals( i.getIdentifier() ) )
+        if ( i != null && this.isJavaClassDeclaration( i ) )
         {
             this.manageSources( i, sourcesDirectory );
         }
@@ -324,163 +324,166 @@ public class JavaSources extends JomcTool
             throw new NullPointerException( "sourcesDirectory" );
         }
 
-        final File f = new File( sourcesDirectory, implementation.getClazz().replace( '.', '/' ) + ".java" );
-        final String content = f.exists()
-                               ? FileUtils.readFileToString( f, this.getInputEncoding() )
-                               : this.getImplementationTemplate( implementation );
-
-        final JavaImplementationEditor editor = this.getImplementationEditor( implementation );
-        final String edited = editor.edit( content );
-
-        if ( !editor.isLicenseSectionPresent() )
+        if ( this.isJavaClassDeclaration( implementation ) )
         {
-            this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
-                {
-                    LICENSE_SECTION_NAME,
-                    implementation.getIdentifier()
-                } ), null );
+            final File f = new File( sourcesDirectory, implementation.getClazz().replace( '.', '/' ) + ".java" );
+            final String content = f.exists()
+                                   ? FileUtils.readFileToString( f, this.getInputEncoding() )
+                                   : this.getImplementationTemplate( implementation );
 
-        }
+            final JavaImplementationEditor editor = this.getImplementationEditor( implementation );
+            final String edited = editor.edit( content );
 
-        if ( !editor.isAnnotationsSectionPresent() )
-        {
-            throw new IOException( this.getMessage( "missingSection", new Object[]
-                {
-                    ANNOTATIONS_SECTION_NAME,
-                    implementation.getIdentifier()
-                } ) );
-
-        }
-
-        if ( !editor.isDocumentationSectionPresent() )
-        {
-            this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
-                {
-                    DOCUMENTATION_SECTION_NAME,
-                    implementation.getIdentifier()
-                } ), null );
-
-        }
-
-        if ( !editor.isConstructorsSectionPresent() )
-        {
-            final List<SpecificationReference> specifications =
-                this.getModules().getSpecifications( implementation.getIdentifier() );
-
-            if ( specifications != null && !specifications.isEmpty() )
-            {
-                throw new IOException( this.getMessage( "missingSection", new Object[]
-                    {
-                        CONSTRUCTORS_SECTION_NAME,
-                        implementation.getIdentifier()
-                    } ) );
-
-            }
-            else
+            if ( !editor.isLicenseSectionPresent() )
             {
                 this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                     {
-                        CONSTRUCTORS_SECTION_NAME,
+                        LICENSE_SECTION_NAME,
                         implementation.getIdentifier()
                     } ), null );
 
             }
-        }
-        else if ( !editor.isDefaultConstructorSectionPresent() )
-        {
-            throw new IOException( this.getMessage( "missingSection", new Object[]
+
+            if ( !editor.isAnnotationsSectionPresent() )
+            {
+                throw new IOException( this.getMessage( "missingSection", new Object[]
+                    {
+                        ANNOTATIONS_SECTION_NAME,
+                        implementation.getIdentifier()
+                    } ) );
+
+            }
+
+            if ( !editor.isDocumentationSectionPresent() )
+            {
+                this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
+                    {
+                        DOCUMENTATION_SECTION_NAME,
+                        implementation.getIdentifier()
+                    } ), null );
+
+            }
+
+            if ( !editor.isConstructorsSectionPresent() )
+            {
+                final List<SpecificationReference> specifications =
+                    this.getModules().getSpecifications( implementation.getIdentifier() );
+
+                if ( specifications != null && !specifications.isEmpty() )
                 {
-                    DEFAULT_CONSTRUCTOR_SECTION_NAME,
-                    implementation.getIdentifier()
-                } ) );
+                    throw new IOException( this.getMessage( "missingSection", new Object[]
+                        {
+                            CONSTRUCTORS_SECTION_NAME,
+                            implementation.getIdentifier()
+                        } ) );
 
-        }
-
-        if ( !editor.isPropertiesSectionPresent() )
-        {
-            final Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
-
-            if ( properties != null && !properties.getProperty().isEmpty() )
-            {
-                throw new IOException( this.getMessage( "missingSection", new Object[]
-                    {
-                        PROPERTIES_SECTION_NAME,
-                        implementation.getIdentifier()
-                    } ) );
-
-            }
-            else
-            {
-                this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
-                    {
-                        PROPERTIES_SECTION_NAME,
-                        implementation.getIdentifier()
-                    } ), null );
-
-            }
-        }
-
-        if ( !editor.isDependenciesSectionPresent() )
-        {
-            final Dependencies dependencies = this.getModules().getDependencies( implementation.getIdentifier() );
-
-            if ( dependencies != null && !dependencies.getDependency().isEmpty() )
-            {
-                throw new IOException( this.getMessage( "missingSection", new Object[]
-                    {
-                        DEPENDENCIES_SECTION_NAME,
-                        implementation.getIdentifier()
-                    } ) );
-
-            }
-            else
-            {
-                this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
-                    {
-                        DEPENDENCIES_SECTION_NAME,
-                        implementation.getIdentifier()
-                    } ), null );
-
-            }
-        }
-
-        if ( !editor.isMessagesSectionPresent() )
-        {
-            final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
-
-            if ( messages != null && !messages.getMessage().isEmpty() )
-            {
-                throw new IOException( this.getMessage( "missingSection", new Object[]
-                    {
-                        MESSAGES_SECTION_NAME,
-                        implementation.getIdentifier()
-                    } ) );
-
-            }
-            else
-            {
-                this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
-                    {
-                        MESSAGES_SECTION_NAME,
-                        implementation.getIdentifier()
-                    } ), null );
-
-            }
-        }
-
-        if ( !edited.equals( content ) )
-        {
-            if ( !f.getParentFile().exists() )
-            {
-                f.getParentFile().mkdirs();
-            }
-
-            FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
-            this.log( Level.INFO, this.getMessage( "editing", new Object[]
+                }
+                else
                 {
-                    f.getCanonicalPath()
-                } ), null );
+                    this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
+                        {
+                            CONSTRUCTORS_SECTION_NAME,
+                            implementation.getIdentifier()
+                        } ), null );
 
+                }
+            }
+            else if ( !editor.isDefaultConstructorSectionPresent() )
+            {
+                throw new IOException( this.getMessage( "missingSection", new Object[]
+                    {
+                        DEFAULT_CONSTRUCTOR_SECTION_NAME,
+                        implementation.getIdentifier()
+                    } ) );
+
+            }
+
+            if ( !editor.isPropertiesSectionPresent() )
+            {
+                final Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
+
+                if ( properties != null && !properties.getProperty().isEmpty() )
+                {
+                    throw new IOException( this.getMessage( "missingSection", new Object[]
+                        {
+                            PROPERTIES_SECTION_NAME,
+                            implementation.getIdentifier()
+                        } ) );
+
+                }
+                else
+                {
+                    this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
+                        {
+                            PROPERTIES_SECTION_NAME,
+                            implementation.getIdentifier()
+                        } ), null );
+
+                }
+            }
+
+            if ( !editor.isDependenciesSectionPresent() )
+            {
+                final Dependencies dependencies = this.getModules().getDependencies( implementation.getIdentifier() );
+
+                if ( dependencies != null && !dependencies.getDependency().isEmpty() )
+                {
+                    throw new IOException( this.getMessage( "missingSection", new Object[]
+                        {
+                            DEPENDENCIES_SECTION_NAME,
+                            implementation.getIdentifier()
+                        } ) );
+
+                }
+                else
+                {
+                    this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
+                        {
+                            DEPENDENCIES_SECTION_NAME,
+                            implementation.getIdentifier()
+                        } ), null );
+
+                }
+            }
+
+            if ( !editor.isMessagesSectionPresent() )
+            {
+                final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
+
+                if ( messages != null && !messages.getMessage().isEmpty() )
+                {
+                    throw new IOException( this.getMessage( "missingSection", new Object[]
+                        {
+                            MESSAGES_SECTION_NAME,
+                            implementation.getIdentifier()
+                        } ) );
+
+                }
+                else
+                {
+                    this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
+                        {
+                            MESSAGES_SECTION_NAME,
+                            implementation.getIdentifier()
+                        } ), null );
+
+                }
+            }
+
+            if ( !edited.equals( content ) )
+            {
+                if ( !f.getParentFile().exists() )
+                {
+                    f.getParentFile().mkdirs();
+                }
+
+                FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
+                this.log( Level.INFO, this.getMessage( "editing", new Object[]
+                    {
+                        f.getCanonicalPath()
+                    } ), null );
+
+            }
         }
     }
 
