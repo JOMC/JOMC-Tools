@@ -42,6 +42,7 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.ParseException;
+import org.apache.commons.lang.StringUtils;
 
 // SECTION-START[Documentation]
 /**
@@ -64,12 +65,12 @@ import org.apache.commons.cli.ParseException;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getIllegalArgumentsMessage illegalArguments}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal arguments. Try ''jomc {0} {1}''.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ungültige Argumente. Versuchen Sie ''jomc {0} {1}''.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal arguments. Type »jomc {0} {1}« for further information.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ungültige Argumente. Geben Sie »jomc {0} {1}« für weitere Informationen ein.</pre></td></tr>
  * </table>
  * <li>"{@link #getUsageMessage usage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Type ''jomc <command> {0}'' for further information.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Geben Sie ''jomc <Befehl> {0}'' für weitere Hilfe ein.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Type »jomc <command> {0}« for further information.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Geben Sie »jomc <Befehl> {0}« für weitere Informationen ein.</pre></td></tr>
  * </table>
  * </ul></p>
  *
@@ -159,9 +160,9 @@ public class Jomc
                     cmd = c;
                 }
 
-                commandInfo.append( c.getName() ).append( "\t" ).append( c.getDescription( this.getLocale() ) ).
-                    append( " (" ).append( c.getAbbreviatedName() ).append( ")" ).
-                    append( System.getProperty( "line.separator" ) );
+                commandInfo.append( StringUtils.rightPad( c.getName(), 25 ) ).append( " : " ).
+                    append( c.getDescription( this.getLocale() ) ).append( " (" ).append( c.getAbbreviatedName() ).
+                    append( ")" ).append( System.getProperty( "line.separator" ) );
 
             }
 
@@ -356,8 +357,8 @@ public class Jomc
     /**
      * Gets the text of the {@code illegalArguments} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal arguments. Try ''jomc {0} {1}''.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ungültige Argumente. Versuchen Sie ''jomc {0} {1}''.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal arguments. Type »jomc {0} {1}« for further information.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ungültige Argumente. Geben Sie »jomc {0} {1}« für weitere Informationen ein.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @param command Format argument.
@@ -379,8 +380,8 @@ public class Jomc
     /**
      * Gets the text of the {@code usage} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Type ''jomc <command> {0}'' for further information.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Geben Sie ''jomc <Befehl> {0}'' für weitere Hilfe ein.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Type »jomc <command> {0}« for further information.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Geben Sie »jomc <Befehl> {0}« für weitere Informationen ein.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @param helpCommandName Format argument.

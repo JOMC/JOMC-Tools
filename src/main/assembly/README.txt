@@ -10,11 +10,15 @@
     is recommended. As a fallback, the Java archive found in the 'lib' directory
     can be executed using the standard Java application launcher.
 
+    bin/jomc (Unix)
+    bin/jomc.bat (Windows)
+    java -jar ${project.build.finalName}.jar
+
     The 'lib/ext' directory contains Java archives needed to run the application
-    with JDK 1.5. You need to set the environment variable 'JOMC_OPTS' to
-    contain the system property 'java.ext.dirs' pointing to that directory.
+    with JDK 1.5.
 
-      export JOMC_OPTS="-Djava.ext.dirs='path to lib/ext directory'".
+    export JOMC_OPTS="-Djava.ext.dirs='path to lib/ext directory'".
+    bin/jomc (Unix)
+    bin/jomc.bat (Windows)
 
-      java -jar ${project.build.finalName}.jar
-      java -Djava.ext.dirs=lib/ext -jar ${project.build.finalName}.jar
+    java -Djava.ext.dirs=lib/ext -jar lib/${project.build.finalName}.jar

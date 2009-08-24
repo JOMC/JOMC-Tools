@@ -82,6 +82,15 @@
         <include>jomc</include>
       </includes>
     </fileSet>
+    <fileSet>
+      <directory>src/main/jomc</directory>
+      <outputDirectory>/examples</outputDirectory>
+      <lineEnding>dos</lineEnding>
+      <filtered>false</filtered>
+      <includes>
+        <include>*.xslt</include>
+      </includes>
+    </fileSet>
   </fileSets>
   <dependencySets>
     <dependencySet>
@@ -104,6 +113,7 @@
         <exclude>org.jomc:jomc-model</exclude>
         <exclude>org.jomc:jomc-ri</exclude>
         <exclude>org.jomc:jomc-tools</exclude>
+        <exclude>org.jomc:jomc-util</exclude>
         <exclude>org.jomc:jomc-cli</exclude>
         <exclude>commons-cli:commons-cli</exclude>
         <exclude>commons-collections:commons-collections</exclude>

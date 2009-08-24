@@ -271,7 +271,7 @@
                 </filter>
               </filters>
               <transformers>
-                <transformer implementation="org.jomc.tools.JomcResourceTransformer">
+                <transformer implementation="org.jomc.mojo.JomcResourceTransformer">
                   <moduleName>${pom.name}</moduleName>
                   <moduleVersion>${pom.version}</moduleVersion>
                   <moduleVendor>${pom.organization.name}</moduleVendor>
@@ -283,28 +283,7 @@
                   <bootstrapResources>
                     <bootstrapResource>META-INF/jomc-bootstrap.xml</bootstrapResource>
                   </bootstrapResources>
-                  <modelObjectRelocations>
-                    <modelObjectRelocation>
-                      <sourcePattern>org.jomc.ObjectManager</sourcePattern>
-                      <replacementPattern>org.jomc.cli.util.ObjectManager</replacementPattern>
-                    </modelObjectRelocation>
-                    <modelObjectRelocation>
-                      <sourcePattern>org.jomc.ObjectManagerFactory</sourcePattern>
-                      <replacementPattern>org.jomc.cli.util.ObjectManagerFactory</replacementPattern>
-                    </modelObjectRelocation>
-                    <modelObjectRelocation>
-                      <sourcePattern>org.jomc.ObjectManagementException</sourcePattern>
-                      <replacementPattern>org.jomc.cli.util.ObjectManagementException</replacementPattern>
-                    </modelObjectRelocation>
-                    <modelObjectRelocation>
-                      <sourcePattern>org.jomc.spi</sourcePattern>
-                      <replacementPattern>org.jomc.cli.util.spi</replacementPattern>
-                    </modelObjectRelocation>
-                    <modelObjectRelocation>
-                      <sourcePattern>org.jomc.ri</sourcePattern>
-                      <replacementPattern>org.jomc.cli.util</replacementPattern>
-                    </modelObjectRelocation>
-                  </modelObjectRelocations>
+                  <modelObjectStylesheet>src/main/jomc/relocations.xslt</modelObjectStylesheet>
                 </transformer>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>
               </transformers>

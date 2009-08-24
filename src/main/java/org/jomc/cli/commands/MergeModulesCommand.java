@@ -37,32 +37,33 @@ package org.jomc.cli.commands;
 import java.io.File;
 import java.io.PrintStream;
 import java.util.logging.Level;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.jomc.model.DefaultModelManager;
 import org.jomc.model.ModelException;
+import org.jomc.model.ModelManager;
 import org.jomc.model.Module;
-import org.jomc.tools.ModuleAssembler;
+import org.jomc.model.Modules;
 
 // SECTION-START[Documentation]
 /**
- * Command line interface for the {@code ModuleAssembler} tool.
+ * Command line interface for merging modules.
  * <p><b>Specifications</b><ul>
  * <li>{@code org.jomc.cli.Command} {@code 1.0}</li>
  * </ul></p>
  * <p><b>Properties</b><ul>
  * <li>"{@link #getAbbreviatedCommandName abbreviatedCommandName}"<blockquote>
- * Property of type {@code java.lang.String} with value "am".</blockquote></li>
- * <li>"{@link #getBuildDirectoryOptionLongName buildDirectoryOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "build-dir".</blockquote></li>
- * <li>"{@link #getBuildDirectoryOptionShortName buildDirectoryOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "bd".</blockquote></li>
+ * Property of type {@code java.lang.String} with value "mm".</blockquote></li>
  * <li>"{@link #getClasspathOptionLongName classpathOptionLongName}"<blockquote>
  * Property of type {@code java.lang.String} with value "classpath".</blockquote></li>
  * <li>"{@link #getClasspathOptionShortName classpathOptionShortName}"<blockquote>
  * Property of type {@code java.lang.String} with value "cp".</blockquote></li>
  * <li>"{@link #getCommandName commandName}"<blockquote>
- * Property of type {@code java.lang.String} with value "assemble-modules".</blockquote></li>
+ * Property of type {@code java.lang.String} with value "merge-modules".</blockquote></li>
  * <li>"{@link #getDebugOptionLongName debugOptionLongName}"<blockquote>
  * Property of type {@code java.lang.String} with value "debug".</blockquote></li>
  * <li>"{@link #getDebugOptionShortName debugOptionShortName}"<blockquote>
@@ -79,10 +80,6 @@ import org.jomc.tools.ModuleAssembler;
  * Property of type {@code java.lang.String} with value "documents".</blockquote></li>
  * <li>"{@link #getDocumentsOptionShortName documentsOptionShortName}"<blockquote>
  * Property of type {@code java.lang.String} with value "df".</blockquote></li>
- * <li>"{@link #getMergeDirectoryOptionLongName mergeDirectoryOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "merge-directory".</blockquote></li>
- * <li>"{@link #getMergeDirectoryOptionShortName mergeDirectoryOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "md".</blockquote></li>
  * <li>"{@link #getModuleNameOptionLongName moduleNameOptionLongName}"<blockquote>
  * Property of type {@code java.lang.String} with value "module".</blockquote></li>
  * <li>"{@link #getModuleNameOptionShortName moduleNameOptionShortName}"<blockquote>
@@ -95,6 +92,10 @@ import org.jomc.tools.ModuleAssembler;
  * Property of type {@code java.lang.String} with value "module-version".</blockquote></li>
  * <li>"{@link #getModuleVersionOptionShortName moduleVersionOptionShortName}"<blockquote>
  * Property of type {@code java.lang.String} with value "mv".</blockquote></li>
+ * <li>"{@link #getStylesheetOptionLongName stylesheetOptionLongName}"<blockquote>
+ * Property of type {@code java.lang.String} with value "stylesheet".</blockquote></li>
+ * <li>"{@link #getStylesheetOptionShortName stylesheetOptionShortName}"<blockquote>
+ * Property of type {@code java.lang.String} with value "xs".</blockquote></li>
  * <li>"{@link #getVerboseOptionLongName verboseOptionLongName}"<blockquote>
  * Property of type {@code java.lang.String} with value "verbose".</blockquote></li>
  * <li>"{@link #getVerboseOptionShortName verboseOptionShortName}"<blockquote>
@@ -106,15 +107,11 @@ import org.jomc.tools.ModuleAssembler;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-21T12:58:42+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-24T14:07:13+0000</pre></td></tr>
  * </table>
- * <li>"{@link #getBuildDirectoryOptionMessage buildDirectoryOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Work directory of the process.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Arbeitsverzeichnis des Vorgangs.</pre></td></tr>
- * </table>
- * <li>"{@link #getBuildDirectoryOptionArgNameMessage buildDirectoryOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>directory</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis</pre></td></tr>
+ * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kann ''{0}'' nicht verarbeiten: {1}</pre></td></tr>
  * </table>
  * <li>"{@link #getClasspathElementMessage classpathElement}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath element: ''{0}''</pre></td></tr>
@@ -133,8 +130,8 @@ import org.jomc.tools.ModuleAssembler;
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert Diagnose-Ausgaben.</pre></td></tr>
  * </table>
  * <li>"{@link #getDescriptionMessage description}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Assembles modules.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Assembliert Module.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Merges modules.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Fügt Module zusammen.</pre></td></tr>
  * </table>
  * <li>"{@link #getDocumentFileMessage documentFile}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Document file: ''{0}''</pre></td></tr>
@@ -149,8 +146,8 @@ import org.jomc.tools.ModuleAssembler;
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort</pre></td></tr>
  * </table>
  * <li>"{@link #getDocumentOptionMessage documentOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Name of the file to write the assembled module to.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Name der Datei in die das assemblierte Modul geschrieben werden soll.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Name of the file to write the merged module to.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Name der Datei in die das zusammengefügte Modul geschrieben werden soll.</pre></td></tr>
  * </table>
  * <li>"{@link #getDocumentOptionArgNameMessage documentOptionArgName}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>file</pre></td></tr>
@@ -164,13 +161,9 @@ import org.jomc.tools.ModuleAssembler;
  * <tr><td valign="top">English:</td><td valign="top"><pre>files</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dateien</pre></td></tr>
  * </table>
- * <li>"{@link #getMergeDirectoryOptionMessage mergeDirectoryOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Directory holding documents to merge.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis mit zusammen zu fügenden Dokumenten.</pre></td></tr>
- * </table>
- * <li>"{@link #getMergeDirectoryOptionArgNameMessage mergeDirectoryOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>directory</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis</pre></td></tr>
+ * <li>"{@link #getMissingModuleMessage missingModule}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul ''{0}'' nicht gefunden.</pre></td></tr>
  * </table>
  * <li>"{@link #getModuleNameOptionMessage moduleNameOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Name of the module to process.</pre></td></tr>
@@ -196,8 +189,32 @@ import org.jomc.tools.ModuleAssembler;
  * <tr><td valign="top">English:</td><td valign="top"><pre>version</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Version</pre></td></tr>
  * </table>
+ * <li>"{@link #getModulesReportMessage modulesReport}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Modules</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Module</pre></td></tr>
+ * </table>
  * <li>"{@link #getSeparatorMessage separator}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>--------------------------------------------------------------------------------</pre></td></tr>
+ * </table>
+ * <li>"{@link #getStartingModuleProcessingMessage startingModuleProcessing}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} with module ''{1}'' ...</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Führt Befehl {0} mit Modul ''{1}'' aus ... </pre></td></tr>
+ * </table>
+ * <li>"{@link #getStartingProcessingMessage startingProcessing}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} ...</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Führt Befehl {0} aus ... </pre></td></tr>
+ * </table>
+ * <li>"{@link #getStylesheetOptionMessage stylesheetOption}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Name of a XSLT file to use for transforming the merged module.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Name einer XSLT Datei mit der das zusammengefügte Modul transformiert werden soll.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getStylesheetOptionArgNameMessage stylesheetOptionArgName}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>XSLT file</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>XSLT-Datei</pre></td></tr>
+ * </table>
+ * <li>"{@link #getToolSuccessMessage toolSuccess}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>{0} successful.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} erfolgreich.</pre></td></tr>
  * </table>
  * <li>"{@link #getVerboseOptionMessage verboseOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Enables verbose output.</pre></td></tr>
@@ -220,7 +237,7 @@ import org.jomc.tools.ModuleAssembler;
     comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
 )
 // SECTION-END
-public class AssembleModulesCommand
+public class MergeModulesCommand
     extends AbstractJomcCommand
     implements
     org.jomc.cli.Command
@@ -235,9 +252,11 @@ public class AssembleModulesCommand
     {
         if ( this.options == null )
         {
+            this.getModuleNameOption().setRequired( true );
+
             this.options = super.getOptions();
-            this.options.addOption( this.getMergeDirectoryOption() );
             this.options.addOption( this.getDocumentOption() );
+            this.options.addOption( this.getStylesheetOption() );
             this.options.addOption( this.getModuleVendorOption() );
             this.options.addOption( this.getModuleVersionOption() );
         }
@@ -254,13 +273,16 @@ public class AssembleModulesCommand
 
         try
         {
-            final ModuleAssembler tool = new ModuleAssembler();
-            this.configureTool( tool, commandLine, printStream, false );
+            this.log( Level.INFO, this.getStartingProcessingMessage( this.getLocale(), this.getCommandName() ), null,
+                      printStream, verbose, debug );
 
-            File mergeDirectory = null;
-            if ( commandLine.hasOption( this.getMergeDirectoryOption().getOpt() ) )
+            final ModelManager modelManager = new DefaultModelManager();
+            final Modules modules = this.getModules( modelManager, commandLine, printStream, false );
+
+            File stylesheetFile = null;
+            if ( commandLine.hasOption( this.getStylesheetOption().getOpt() ) )
             {
-                mergeDirectory = new File( commandLine.getOptionValue( this.getMergeDirectoryOption().getOpt() ) );
+                stylesheetFile = new File( commandLine.getOptionValue( this.getStylesheetOption().getOpt() ) );
             }
 
             String moduleVersion = null;
@@ -275,16 +297,30 @@ public class AssembleModulesCommand
                 moduleVendor = commandLine.getOptionValue( this.getModuleVendorOption().getOpt() );
             }
 
-            final Module mergedModule =
-                tool.mergeModules( commandLine.getOptionValue( this.getModuleNameOption().getOpt() ),
-                                   moduleVersion, moduleVendor, mergeDirectory, null );
+            Module mergedModule = modules.getMergedModule();
+            mergedModule.setName( commandLine.getOptionValue( this.getModuleNameOption().getOpt() ) );
+            mergedModule.setVersion( moduleVersion );
+            mergedModule.setVendor( moduleVendor );
 
             final File moduleFile = new File( commandLine.getOptionValue( this.getDocumentOption().getOpt() ) );
 
-            tool.getModelManager().getMarshaller( true, true ).marshal(
-                tool.getModelManager().getObjectFactory().createModule( mergedModule ), moduleFile );
+            if ( stylesheetFile != null )
+            {
+                final Transformer transformer =
+                    TransformerFactory.newInstance().newTransformer( new StreamSource( stylesheetFile ) );
+
+                mergedModule = modelManager.transformModelObject(
+                    modelManager.getObjectFactory().createModule( mergedModule ), transformer );
+
+            }
+
+            modelManager.getMarshaller( true, true ).marshal(
+                modelManager.getObjectFactory().createModule( mergedModule ), moduleFile );
 
             this.log( Level.INFO, this.getWritingMessage( this.getLocale(), moduleFile.getAbsolutePath() ), null,
+                      printStream, verbose, debug );
+
+            this.log( Level.INFO, this.getToolSuccessMessage( this.getLocale(), this.getCommandName() ), null,
                       printStream, verbose, debug );
 
         }
@@ -310,7 +346,7 @@ public class AssembleModulesCommand
 
     // SECTION-END
     // SECTION-START[AssembleModulesCommand]
-    private Option mergeDirectoryOption;
+    private Option stylesheetOption;
 
     private Option documentOption;
 
@@ -318,18 +354,18 @@ public class AssembleModulesCommand
 
     private Option moduleVendorOption;
 
-    public Option getMergeDirectoryOption()
+    public Option getStylesheetOption()
     {
-        if ( this.mergeDirectoryOption == null )
+        if ( this.stylesheetOption == null )
         {
-            this.mergeDirectoryOption = new Option( this.getMergeDirectoryOptionShortName(),
-                                                    this.getMergeDirectoryOptionLongName(), true,
-                                                    this.getMergeDirectoryOptionMessage( this.getLocale() ) );
+            this.stylesheetOption = new Option( this.getStylesheetOptionShortName(),
+                                                this.getStylesheetOptionLongName(), true,
+                                                this.getStylesheetOptionMessage( this.getLocale() ) );
 
-            this.mergeDirectoryOption.setArgName( this.getMergeDirectoryOptionArgNameMessage( this.getLocale() ) );
+            this.stylesheetOption.setArgName( this.getStylesheetOptionArgNameMessage( this.getLocale() ) );
         }
 
-        return this.mergeDirectoryOption;
+        return this.stylesheetOption;
     }
 
     public Option getDocumentOption()
@@ -378,13 +414,13 @@ public class AssembleModulesCommand
     // SECTION-END
     // SECTION-START[Constructors]
 
-    /** Creates a new {@code AssembleModulesCommand} instance. */
+    /** Creates a new {@code MergeModulesCommand} instance. */
     @javax.annotation.Generated
     (
         value = "org.jomc.tools.JavaSources",
         comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
     )
-    public AssembleModulesCommand()
+    public MergeModulesCommand()
     {
         // SECTION-START[Default Constructor]
         super();
@@ -424,36 +460,6 @@ public class AssembleModulesCommand
     private java.lang.String getAbbreviatedCommandName() throws org.jomc.ObjectManagementException
     {
         return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "abbreviatedCommandName" );
-    }
-
-    /**
-     * Gets the value of the {@code buildDirectoryOptionLongName} property.
-     * @return Long name of the 'build-dir' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private java.lang.String getBuildDirectoryOptionLongName() throws org.jomc.ObjectManagementException
-    {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "buildDirectoryOptionLongName" );
-    }
-
-    /**
-     * Gets the value of the {@code buildDirectoryOptionShortName} property.
-     * @return Name of the 'build-dir' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private java.lang.String getBuildDirectoryOptionShortName() throws org.jomc.ObjectManagementException
-    {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "buildDirectoryOptionShortName" );
     }
 
     /**
@@ -622,36 +628,6 @@ public class AssembleModulesCommand
     }
 
     /**
-     * Gets the value of the {@code mergeDirectoryOptionLongName} property.
-     * @return Long name of the 'merge-directory' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private java.lang.String getMergeDirectoryOptionLongName() throws org.jomc.ObjectManagementException
-    {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "mergeDirectoryOptionLongName" );
-    }
-
-    /**
-     * Gets the value of the {@code mergeDirectoryOptionShortName} property.
-     * @return Name of the 'merge-directory' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private java.lang.String getMergeDirectoryOptionShortName() throws org.jomc.ObjectManagementException
-    {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "mergeDirectoryOptionShortName" );
-    }
-
-    /**
      * Gets the value of the {@code moduleNameOptionLongName} property.
      * @return Long name of the 'module' option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
@@ -742,6 +718,36 @@ public class AssembleModulesCommand
     }
 
     /**
+     * Gets the value of the {@code stylesheetOptionLongName} property.
+     * @return Long name of the 'xslt' option.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private java.lang.String getStylesheetOptionLongName() throws org.jomc.ObjectManagementException
+    {
+        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "stylesheetOptionLongName" );
+    }
+
+    /**
+     * Gets the value of the {@code stylesheetOptionShortName} property.
+     * @return Name of the 'xslt' option.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private java.lang.String getStylesheetOptionShortName() throws org.jomc.ObjectManagementException
+    {
+        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "stylesheetOptionShortName" );
+    }
+
+    /**
      * Gets the value of the {@code verboseOptionLongName} property.
      * @return Long name of the 'verbose' option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
@@ -776,7 +782,7 @@ public class AssembleModulesCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-21T12:58:42+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-24T14:07:13+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -794,13 +800,15 @@ public class AssembleModulesCommand
     }
 
     /**
-     * Gets the text of the {@code buildDirectoryOption} message.
+     * Gets the text of the {@code cannotProcess} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Work directory of the process.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Arbeitsverzeichnis des Vorgangs.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kann ''{0}'' nicht verarbeiten: {1}</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
-     * @return The text of the {@code buildDirectoryOption} message.
+     * @param itemInfo Format argument.
+     * @param detailMessage Format argument.
+     * @return The text of the {@code cannotProcess} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -809,30 +817,9 @@ public class AssembleModulesCommand
         value = "org.jomc.tools.JavaSources",
         comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
     )
-    private String getBuildDirectoryOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    private String getCannotProcessMessage( final java.util.Locale locale, final java.lang.String itemInfo, final java.lang.String detailMessage ) throws org.jomc.ObjectManagementException
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "buildDirectoryOption", locale,  null );
-    }
-
-    /**
-     * Gets the text of the {@code buildDirectoryOptionArgName} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>directory</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code buildDirectoryOptionArgName} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private String getBuildDirectoryOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
-    {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "buildDirectoryOptionArgName", locale,  null );
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "cannotProcess", locale, new Object[] { itemInfo, detailMessage, null } );
     }
 
     /**
@@ -923,8 +910,8 @@ public class AssembleModulesCommand
     /**
      * Gets the text of the {@code description} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Assembles modules.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Assembliert Module.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Merges modules.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Fügt Module zusammen.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code description} message.
@@ -1008,8 +995,8 @@ public class AssembleModulesCommand
     /**
      * Gets the text of the {@code documentOption} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Name of the file to write the assembled module to.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Name der Datei in die das assemblierte Modul geschrieben werden soll.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Name of the file to write the merged module to.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Name der Datei in die das zusammengefügte Modul geschrieben werden soll.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code documentOption} message.
@@ -1090,13 +1077,14 @@ public class AssembleModulesCommand
     }
 
     /**
-     * Gets the text of the {@code mergeDirectoryOption} message.
+     * Gets the text of the {@code missingModule} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Directory holding documents to merge.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis mit zusammen zu fügenden Dokumenten.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul ''{0}'' nicht gefunden.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
-     * @return The text of the {@code mergeDirectoryOption} message.
+     * @param moduleName Format argument.
+     * @return The text of the {@code missingModule} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1105,30 +1093,9 @@ public class AssembleModulesCommand
         value = "org.jomc.tools.JavaSources",
         comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
     )
-    private String getMergeDirectoryOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    private String getMissingModuleMessage( final java.util.Locale locale, final java.lang.String moduleName ) throws org.jomc.ObjectManagementException
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "mergeDirectoryOption", locale,  null );
-    }
-
-    /**
-     * Gets the text of the {@code mergeDirectoryOptionArgName} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>directory</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code mergeDirectoryOptionArgName} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private String getMergeDirectoryOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
-    {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "mergeDirectoryOptionArgName", locale,  null );
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "missingModule", locale, new Object[] { moduleName, null } );
     }
 
     /**
@@ -1258,6 +1225,27 @@ public class AssembleModulesCommand
     }
 
     /**
+     * Gets the text of the {@code modulesReport} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Modules</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Module</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code modulesReport} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getModulesReportMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "modulesReport", locale,  null );
+    }
+
+    /**
      * Gets the text of the {@code separator} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>--------------------------------------------------------------------------------</pre></td></tr>
@@ -1275,6 +1263,115 @@ public class AssembleModulesCommand
     private String getSeparatorMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
     {
         return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "separator", locale,  null );
+    }
+
+    /**
+     * Gets the text of the {@code startingModuleProcessing} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} with module ''{1}'' ...</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Führt Befehl {0} mit Modul ''{1}'' aus ... </pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param toolName Format argument.
+     * @param moduleName Format argument.
+     * @return The text of the {@code startingModuleProcessing} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getStartingModuleProcessingMessage( final java.util.Locale locale, final java.lang.String toolName, final java.lang.String moduleName ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "startingModuleProcessing", locale, new Object[] { toolName, moduleName, null } );
+    }
+
+    /**
+     * Gets the text of the {@code startingProcessing} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} ...</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Führt Befehl {0} aus ... </pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param toolName Format argument.
+     * @return The text of the {@code startingProcessing} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getStartingProcessingMessage( final java.util.Locale locale, final java.lang.String toolName ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "startingProcessing", locale, new Object[] { toolName, null } );
+    }
+
+    /**
+     * Gets the text of the {@code stylesheetOption} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Name of a XSLT file to use for transforming the merged module.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Name einer XSLT Datei mit der das zusammengefügte Modul transformiert werden soll.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code stylesheetOption} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getStylesheetOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "stylesheetOption", locale,  null );
+    }
+
+    /**
+     * Gets the text of the {@code stylesheetOptionArgName} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>XSLT file</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>XSLT-Datei</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code stylesheetOptionArgName} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getStylesheetOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "stylesheetOptionArgName", locale,  null );
+    }
+
+    /**
+     * Gets the text of the {@code toolSuccess} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>{0} successful.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} erfolgreich.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param toolName Format argument.
+     * @return The text of the {@code toolSuccess} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getToolSuccessMessage( final java.util.Locale locale, final java.lang.String toolName ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "toolSuccess", locale, new Object[] { toolName, null } );
     }
 
     /**

@@ -115,8 +115,8 @@
       <messages>
         <message name="usage">
           <template defaultLanguage="en">
-            <text language="en"><![CDATA[Type ''jomc <command> {0}'' for further information.]]></text>
-            <text language="de"><![CDATA[Geben Sie ''jomc <Befehl> {0}'' für weitere Hilfe ein.]]></text>
+            <text language="en"><![CDATA[Type »jomc <command> {0}« for further information.]]></text>
+            <text language="de"><![CDATA[Geben Sie »jomc <Befehl> {0}« für weitere Informationen ein.]]></text>
           </template>
           <arguments>
             <argument index="0" name="helpCommandName"/>
@@ -124,8 +124,8 @@
         </message>
         <message name="illegalArguments">
           <template defaultLanguage="en">
-            <text language="en"><![CDATA[Illegal arguments. Try ''jomc {0} {1}''.]]></text>
-            <text language="de"><![CDATA[Ungültige Argumente. Versuchen Sie ''jomc {0} {1}''.]]></text>
+            <text language="en"><![CDATA[Illegal arguments. Type »jomc {0} {1}« for further information.]]></text>
+            <text language="de"><![CDATA[Ungültige Argumente. Geben Sie »jomc {0} {1}« für weitere Informationen ein.]]></text>
           </template>
           <arguments>
             <argument index="0" name="command"/>
@@ -207,16 +207,6 @@
             <text language="en">Long name of the 'documents' option.</text>
           </documentation>
         </property>
-        <property name="buildDirectoryOptionShortName" value="bd">
-          <documentation defaultLanguage="en">
-            <text language="en">Name of the 'build-dir' option.</text>
-          </documentation>
-        </property>
-        <property name="buildDirectoryOptionLongName" value="build-dir">
-          <documentation defaultLanguage="en">
-            <text language="en">Long name of the 'build-dir' option.</text>
-          </documentation>
-        </property>
         <property name="documentLocationOptionShortName" value="dl">
           <documentation defaultLanguage="en">
             <text language="en">Name of the 'document-location' option.</text>
@@ -281,18 +271,6 @@
             <text language="de">Dateien</text>
           </template>
         </message>
-        <message name="buildDirectoryOption">
-          <template defaultLanguage="en">
-            <text language="en">Work directory of the process.</text>
-            <text language="de">Arbeitsverzeichnis des Vorgangs.</text>
-          </template>
-        </message>
-        <message name="buildDirectoryOptionArgName">
-          <template defaultLanguage="en">
-            <text language="en">directory</text>
-            <text language="de">Verzeichnis</text>
-          </template>
-        </message>
         <message name="documentLocationOption">
           <template defaultLanguage="en">
             <text language="en">Location of classpath documents.</text>
@@ -343,6 +321,59 @@
           </template>
           <arguments>
             <argument index="0" name="documentFile"/>
+          </arguments>
+        </message>
+        <message name="startingProcessing">
+          <template defaultLanguage="en">
+            <text language="en">Executing command {0} ...</text>
+            <text language="de">Führt Befehl {0} aus ... </text>
+          </template>
+          <arguments>
+            <argument index="0" name="toolName"/>
+          </arguments>
+        </message>
+        <message name="startingModuleProcessing">
+          <template defaultLanguage="en">
+            <text language="en">Executing command {0} with module ''{1}'' ...</text>
+            <text language="de">Führt Befehl {0} mit Modul ''{1}'' aus ... </text>
+          </template>
+          <arguments>
+            <argument index="0" name="toolName"/>
+            <argument index="1" name="moduleName"/>
+          </arguments>
+        </message>
+        <message name="toolSuccess">
+          <template defaultLanguage="en">
+            <text language="en">{0} successful.</text>
+            <text language="de">{0} erfolgreich.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="toolName"/>
+          </arguments>
+        </message>
+        <message name="missingModule">
+          <template defaultLanguage="en">
+            <text language="en">Module ''{0}'' not found.</text>
+            <text language="de">Modul ''{0}'' nicht gefunden.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="moduleName"/>
+          </arguments>
+        </message>
+        <message name="modulesReport">
+          <template defaultLanguage="en">
+            <text language="en">Modules</text>
+            <text language="de">Module</text>
+          </template>
+        </message>
+        <message name="cannotProcess">
+          <template defaultLanguage="en">
+            <text language="en">Cannot process ''{0}'': {1}</text>
+            <text language="de">Kann ''{0}'' nicht verarbeiten: {1}</text>
+          </template>
+          <arguments>
+            <argument index="0" name="itemInfo"/>
+            <argument index="1" name="detailMessage"/>
           </arguments>
         </message>
       </messages>
@@ -617,8 +648,8 @@
       </messages>
     </implementation>
     <!-- ******************************************************************* -->
-    <implementation identifier="org.jomc.cli.commands.AssembleModulesCommand"
-                    class="org.jomc.cli.commands.AssembleModulesCommand"
+    <implementation identifier="org.jomc.cli.commands.MergeModulesCommand"
+                    class="org.jomc.cli.commands.MergeModulesCommand"
                     name="${pom.name}"
                     version="${pom.version}"
                     vendor="${pom.organization.name}"
@@ -626,7 +657,7 @@
                     parent="org.jomc.cli.commands.AbstractJomcCommand">
 
       <documentation defaultLanguage="en">
-        <text language="en">Command line interface for the {@code ModuleAssembler} tool.</text>
+        <text language="en">Command line interface for merging modules.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0"
@@ -644,12 +675,12 @@
 
       </dependencies>
       <properties>
-        <property name="commandName" value="assemble-modules">
+        <property name="commandName" value="merge-modules">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
         </property>
-        <property name="abbreviatedCommandName" value="am">
+        <property name="abbreviatedCommandName" value="mm">
           <documentation defaultLanguage="en">
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
@@ -664,14 +695,14 @@
             <text language="en">Long name of the 'document' option.</text>
           </documentation>
         </property>
-        <property name="mergeDirectoryOptionShortName" value="md">
+        <property name="stylesheetOptionShortName" value="xs">
           <documentation defaultLanguage="en">
-            <text language="en">Name of the 'merge-directory' option.</text>
+            <text language="en">Name of the 'xslt' option.</text>
           </documentation>
         </property>
-        <property name="mergeDirectoryOptionLongName" value="merge-directory">
+        <property name="stylesheetOptionLongName" value="stylesheet">
           <documentation defaultLanguage="en">
-            <text language="en">Long name of the 'merge-directory' option.</text>
+            <text language="en">Long name of the 'xslt' option.</text>
           </documentation>
         </property>
         <property name="moduleVersionOptionShortName" value="mv">
@@ -698,14 +729,14 @@
       <messages>
         <message name="description">
           <template defaultLanguage="en">
-            <text language="en">Assembles modules.</text>
-            <text language="de">Assembliert Module.</text>
+            <text language="en">Merges modules.</text>
+            <text language="de">Fügt Module zusammen.</text>
           </template>
         </message>
         <message name="documentOption">
           <template defaultLanguage="en">
-            <text language="en">Name of the file to write the assembled module to.</text>
-            <text language="de">Name der Datei in die das assemblierte Modul geschrieben werden soll.</text>
+            <text language="en">Name of the file to write the merged module to.</text>
+            <text language="de">Name der Datei in die das zusammengefügte Modul geschrieben werden soll.</text>
           </template>
         </message>
         <message name="documentOptionArgName">
@@ -714,16 +745,16 @@
             <text language="de">Datei</text>
           </template>
         </message>
-        <message name="mergeDirectoryOption">
+        <message name="stylesheetOption">
           <template defaultLanguage="en">
-            <text language="en">Directory holding documents to merge.</text>
-            <text language="de">Verzeichnis mit zusammen zu fügenden Dokumenten.</text>
+            <text language="en">Name of a XSLT file to use for transforming the merged module.</text>
+            <text language="de">Name einer XSLT Datei mit der das zusammengefügte Modul transformiert werden soll.</text>
           </template>
         </message>
-        <message name="mergeDirectoryOptionArgName">
+        <message name="stylesheetOptionArgName">
           <template defaultLanguage="en">
-            <text language="en">directory</text>
-            <text language="de">Verzeichnis</text>
+            <text language="en">XSLT file</text>
+            <text language="de">XSLT-Datei</text>
           </template>
         </message>
         <message name="moduleVersionOption">

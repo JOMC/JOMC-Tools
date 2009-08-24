@@ -41,6 +41,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.jomc.model.ModelException;
+import org.jomc.model.Module;
 import org.jomc.tools.JavaSources;
 
 // SECTION-START[Documentation]
@@ -52,10 +53,6 @@ import org.jomc.tools.JavaSources;
  * <p><b>Properties</b><ul>
  * <li>"{@link #getAbbreviatedCommandName abbreviatedCommandName}"<blockquote>
  * Property of type {@code java.lang.String} with value "mjs".</blockquote></li>
- * <li>"{@link #getBuildDirectoryOptionLongName buildDirectoryOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "build-dir".</blockquote></li>
- * <li>"{@link #getBuildDirectoryOptionShortName buildDirectoryOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "bd".</blockquote></li>
  * <li>"{@link #getClasspathOptionLongName classpathOptionLongName}"<blockquote>
  * Property of type {@code java.lang.String} with value "classpath".</blockquote></li>
  * <li>"{@link #getClasspathOptionShortName classpathOptionShortName}"<blockquote>
@@ -109,15 +106,11 @@ import org.jomc.tools.JavaSources;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-21T12:58:42+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-24T14:07:13+0000</pre></td></tr>
  * </table>
- * <li>"{@link #getBuildDirectoryOptionMessage buildDirectoryOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Work directory of the process.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Arbeitsverzeichnis des Vorgangs.</pre></td></tr>
- * </table>
- * <li>"{@link #getBuildDirectoryOptionArgNameMessage buildDirectoryOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>directory</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis</pre></td></tr>
+ * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kann ''{0}'' nicht verarbeiten: {1}</pre></td></tr>
  * </table>
  * <li>"{@link #getClasspathElementMessage classpathElement}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath element: ''{0}''</pre></td></tr>
@@ -167,6 +160,10 @@ import org.jomc.tools.JavaSources;
  * <tr><td valign="top">English:</td><td valign="top"><pre>encoding.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung.</pre></td></tr>
  * </table>
+ * <li>"{@link #getMissingModuleMessage missingModule}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul ''{0}'' nicht gefunden.</pre></td></tr>
+ * </table>
  * <li>"{@link #getModuleNameOptionMessage moduleNameOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Name of the module to process.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Name des zu verarbeitenden Moduls.</pre></td></tr>
@@ -174,6 +171,10 @@ import org.jomc.tools.JavaSources;
  * <li>"{@link #getModuleNameOptionArgNameMessage moduleNameOptionArgName}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>name</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Name</pre></td></tr>
+ * </table>
+ * <li>"{@link #getModulesReportMessage modulesReport}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Modules</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Module</pre></td></tr>
  * </table>
  * <li>"{@link #getOutputEncodingOptionMessage outputEncodingOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Output encoding.</pre></td></tr>
@@ -202,6 +203,14 @@ import org.jomc.tools.JavaSources;
  * <tr><td valign="top">English:</td><td valign="top"><pre>directory</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis</pre></td></tr>
  * </table>
+ * <li>"{@link #getStartingModuleProcessingMessage startingModuleProcessing}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} with module ''{1}'' ...</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Führt Befehl {0} mit Modul ''{1}'' aus ... </pre></td></tr>
+ * </table>
+ * <li>"{@link #getStartingProcessingMessage startingProcessing}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} ...</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Führt Befehl {0} aus ... </pre></td></tr>
+ * </table>
  * <li>"{@link #getTemplateEncodingOptionMessage templateEncodingOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Template encoding.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Vorlagenkodierung.</pre></td></tr>
@@ -209,6 +218,10 @@ import org.jomc.tools.JavaSources;
  * <li>"{@link #getTemplateEncodingOptionArgNameMessage templateEncodingOptionArgName}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>encoding.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getToolSuccessMessage toolSuccess}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>{0} successful.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} erfolgreich.</pre></td></tr>
  * </table>
  * <li>"{@link #getVerboseOptionMessage verboseOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Enables verbose output.</pre></td></tr>
@@ -263,7 +276,7 @@ public class ManageJavaSourcesCommand
         {
             final JavaSources tool = new JavaSources();
             this.configureTool( tool, commandLine, printStream, true );
-            tool.setModuleName( commandLine.getOptionValue( this.getModuleNameOption().getOpt() ) );
+
             if ( commandLine.hasOption( this.getProfileOption().getOpt() ) )
             {
                 tool.setProfile( commandLine.getOptionValue( this.getProfileOption().getOpt() ) );
@@ -281,8 +294,38 @@ public class ManageJavaSourcesCommand
                 tool.setOutputEncoding( commandLine.getOptionValue( this.getOutputEncodingOption().getOpt() ) );
             }
 
-            tool.editModuleSources(
-                new File( commandLine.getOptionValue( this.getSourceDirectoryOption().getOpt() ) ) );
+            final File sourcesDirectory =
+                new File( commandLine.getOptionValue( this.getSourceDirectoryOption().getOpt() ) );
+
+            if ( commandLine.hasOption( this.getModuleNameOption().getOpt() ) )
+            {
+                final String moduleName = commandLine.getOptionValue( this.getModuleNameOption().getOpt() );
+                final Module module = tool.getModules().getModule( moduleName );
+
+                if ( module != null )
+                {
+                    this.log( Level.INFO, this.getStartingModuleProcessingMessage(
+                        this.getLocale(), this.getCommandName(), module.getName() ), null, printStream, verbose, debug );
+
+                    tool.manageSources( module, sourcesDirectory );
+                }
+                else
+                {
+                    this.log( Level.WARNING, this.getMissingModuleMessage(
+                        this.getLocale(), moduleName ), null, printStream, verbose, debug );
+
+                }
+            }
+            else
+            {
+                this.log( Level.INFO, this.getStartingProcessingMessage(
+                    this.getLocale(), this.getCommandName() ), null, printStream, verbose, debug );
+
+                tool.manageSources( sourcesDirectory );
+            }
+
+            this.log( Level.INFO, this.getToolSuccessMessage( this.getLocale(), this.getCommandName() ), null,
+                      printStream, verbose, debug );
 
         }
         catch ( ModelException e )
@@ -437,36 +480,6 @@ public class ManageJavaSourcesCommand
     private java.lang.String getAbbreviatedCommandName() throws org.jomc.ObjectManagementException
     {
         return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "abbreviatedCommandName" );
-    }
-
-    /**
-     * Gets the value of the {@code buildDirectoryOptionLongName} property.
-     * @return Long name of the 'build-dir' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private java.lang.String getBuildDirectoryOptionLongName() throws org.jomc.ObjectManagementException
-    {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "buildDirectoryOptionLongName" );
-    }
-
-    /**
-     * Gets the value of the {@code buildDirectoryOptionShortName} property.
-     * @return Name of the 'build-dir' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private java.lang.String getBuildDirectoryOptionShortName() throws org.jomc.ObjectManagementException
-    {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "buildDirectoryOptionShortName" );
     }
 
     /**
@@ -819,7 +832,7 @@ public class ManageJavaSourcesCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-21T12:58:42+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-24T14:07:13+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -837,13 +850,15 @@ public class ManageJavaSourcesCommand
     }
 
     /**
-     * Gets the text of the {@code buildDirectoryOption} message.
+     * Gets the text of the {@code cannotProcess} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Work directory of the process.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Arbeitsverzeichnis des Vorgangs.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kann ''{0}'' nicht verarbeiten: {1}</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
-     * @return The text of the {@code buildDirectoryOption} message.
+     * @param itemInfo Format argument.
+     * @param detailMessage Format argument.
+     * @return The text of the {@code cannotProcess} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -852,30 +867,9 @@ public class ManageJavaSourcesCommand
         value = "org.jomc.tools.JavaSources",
         comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
     )
-    private String getBuildDirectoryOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    private String getCannotProcessMessage( final java.util.Locale locale, final java.lang.String itemInfo, final java.lang.String detailMessage ) throws org.jomc.ObjectManagementException
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "buildDirectoryOption", locale,  null );
-    }
-
-    /**
-     * Gets the text of the {@code buildDirectoryOptionArgName} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>directory</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code buildDirectoryOptionArgName} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private String getBuildDirectoryOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
-    {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "buildDirectoryOptionArgName", locale,  null );
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "cannotProcess", locale, new Object[] { itemInfo, detailMessage, null } );
     }
 
     /**
@@ -1133,6 +1127,28 @@ public class ManageJavaSourcesCommand
     }
 
     /**
+     * Gets the text of the {@code missingModule} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul ''{0}'' nicht gefunden.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param moduleName Format argument.
+     * @return The text of the {@code missingModule} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getMissingModuleMessage( final java.util.Locale locale, final java.lang.String moduleName ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "missingModule", locale, new Object[] { moduleName, null } );
+    }
+
+    /**
      * Gets the text of the {@code moduleNameOption} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Name of the module to process.</pre></td></tr>
@@ -1172,6 +1188,27 @@ public class ManageJavaSourcesCommand
     private String getModuleNameOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
     {
         return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "moduleNameOptionArgName", locale,  null );
+    }
+
+    /**
+     * Gets the text of the {@code modulesReport} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Modules</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Module</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code modulesReport} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getModulesReportMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "modulesReport", locale,  null );
     }
 
     /**
@@ -1321,6 +1358,51 @@ public class ManageJavaSourcesCommand
     }
 
     /**
+     * Gets the text of the {@code startingModuleProcessing} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} with module ''{1}'' ...</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Führt Befehl {0} mit Modul ''{1}'' aus ... </pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param toolName Format argument.
+     * @param moduleName Format argument.
+     * @return The text of the {@code startingModuleProcessing} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getStartingModuleProcessingMessage( final java.util.Locale locale, final java.lang.String toolName, final java.lang.String moduleName ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "startingModuleProcessing", locale, new Object[] { toolName, moduleName, null } );
+    }
+
+    /**
+     * Gets the text of the {@code startingProcessing} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} ...</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Führt Befehl {0} aus ... </pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param toolName Format argument.
+     * @return The text of the {@code startingProcessing} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getStartingProcessingMessage( final java.util.Locale locale, final java.lang.String toolName ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "startingProcessing", locale, new Object[] { toolName, null } );
+    }
+
+    /**
      * Gets the text of the {@code templateEncodingOption} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Template encoding.</pre></td></tr>
@@ -1360,6 +1442,28 @@ public class ManageJavaSourcesCommand
     private String getTemplateEncodingOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
     {
         return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "templateEncodingOptionArgName", locale,  null );
+    }
+
+    /**
+     * Gets the text of the {@code toolSuccess} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>{0} successful.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} erfolgreich.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param toolName Format argument.
+     * @return The text of the {@code toolSuccess} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getToolSuccessMessage( final java.util.Locale locale, final java.lang.String toolName ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "toolSuccess", locale, new Object[] { toolName, null } );
     }
 
     /**
