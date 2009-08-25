@@ -105,15 +105,15 @@ public interface Command
     /**
      * Executes the command.
      *
-     * @param printStream Stream to print any output to.
      * @param commandLine Command line to execute.
+     * @param printStream Stream to print any output to.
      *
      * @return The status code of the command.
      *
      * @see #STATUS_OK
      * @see #STATUS_FAILURE
      */
-    int execute( PrintStream printStream, CommandLine commandLine );
+    int execute( CommandLine commandLine, PrintStream printStream );
 
     // SECTION-END
 }

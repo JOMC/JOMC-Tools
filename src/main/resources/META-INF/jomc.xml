@@ -227,6 +227,16 @@
             <text language="en">Long name of the 'module' option.</text>
           </documentation>
         </property>
+        <property name="failOnWarningsOptionShortName" value="fw">
+          <documentation defaultLanguage="en">
+            <text language="en">Name of the 'fail-on-warnings' option.</text>
+          </documentation>
+        </property>
+        <property name="failOnWarningsOptionLongName" value="fail-on-warnings">
+          <documentation defaultLanguage="en">
+            <text language="en">Long name of the 'fail-on-warnings' option.</text>
+          </documentation>
+        </property>
       </properties>
       <messages>
         <message name="description">
@@ -295,6 +305,12 @@
             <text language="de">Name</text>
           </template>
         </message>
+        <message name="failOnWarningsOption">
+          <template defaultLanguage="en">
+            <text language="en">Exit with failure on warnings.</text>
+            <text language="de">Bei Warnungen Fehler melden.</text>
+          </template>
+        </message>
         <message name="separator">
           <template defaultLanguage="en">
             <text language="en">--------------------------------------------------------------------------------</text>
@@ -346,6 +362,15 @@
           <template defaultLanguage="en">
             <text language="en">{0} successful.</text>
             <text language="de">{0} erfolgreich.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="toolName"/>
+          </arguments>
+        </message>
+        <message name="toolFailure">
+          <template defaultLanguage="en">
+            <text language="en">{0} failure.</text>
+            <text language="de">{0} fehlgeschlagen.</text>
           </template>
           <arguments>
             <argument index="0" name="toolName"/>
@@ -896,8 +921,8 @@
     <!-- ******************************************************************* -->
     <message name="templateEncodingOptionArgName">
       <template defaultLanguage="en">
-        <text language="en">encoding.</text>
-        <text language="de">Kodierung.</text>
+        <text language="en">encoding</text>
+        <text language="de">Kodierung</text>
       </template>
     </message>
     <!-- ******************************************************************* -->
@@ -910,8 +935,8 @@
     <!-- ******************************************************************* -->
     <message name="inputEncodingOptionArgName">
       <template defaultLanguage="en">
-        <text language="en">encoding.</text>
-        <text language="de">Kodierung.</text>
+        <text language="en">encoding</text>
+        <text language="de">Kodierung</text>
       </template>
     </message>
     <!-- ******************************************************************* -->
@@ -924,8 +949,8 @@
     <!-- ******************************************************************* -->
     <message name="outputEncodingOptionArgName">
       <template defaultLanguage="en">
-        <text language="en">encoding.</text>
-        <text language="de">Kodierung.</text>
+        <text language="en">encoding</text>
+        <text language="de">Kodierung</text>
       </template>
     </message>
     <!-- ******************************************************************* -->

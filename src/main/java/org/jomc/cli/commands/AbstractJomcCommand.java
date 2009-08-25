@@ -90,6 +90,10 @@ import org.xml.sax.SAXException;
  * Property of type {@code java.lang.String} with value "documents".</blockquote></li>
  * <li>"{@link #getDocumentsOptionShortName documentsOptionShortName}"<blockquote>
  * Property of type {@code java.lang.String} with value "df".</blockquote></li>
+ * <li>"{@link #getFailOnWarningsOptionLongName failOnWarningsOptionLongName}"<blockquote>
+ * Property of type {@code java.lang.String} with value "fail-on-warnings".</blockquote></li>
+ * <li>"{@link #getFailOnWarningsOptionShortName failOnWarningsOptionShortName}"<blockquote>
+ * Property of type {@code java.lang.String} with value "fw".</blockquote></li>
  * <li>"{@link #getModuleNameOptionLongName moduleNameOptionLongName}"<blockquote>
  * Property of type {@code java.lang.String} with value "module".</blockquote></li>
  * <li>"{@link #getModuleNameOptionShortName moduleNameOptionShortName}"<blockquote>
@@ -105,7 +109,7 @@ import org.xml.sax.SAXException;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-24T14:07:13+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-25T13:03:17+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -151,6 +155,10 @@ import org.xml.sax.SAXException;
  * <tr><td valign="top">English:</td><td valign="top"><pre>files</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dateien</pre></td></tr>
  * </table>
+ * <li>"{@link #getFailOnWarningsOptionMessage failOnWarningsOption}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Exit with failure on warnings.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Bei Warnungen Fehler melden.</pre></td></tr>
+ * </table>
  * <li>"{@link #getMissingModuleMessage missingModule}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul ''{0}'' nicht gefunden.</pre></td></tr>
@@ -177,6 +185,10 @@ import org.xml.sax.SAXException;
  * <li>"{@link #getStartingProcessingMessage startingProcessing}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} ...</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Führt Befehl {0} aus ... </pre></td></tr>
+ * </table>
+ * <li>"{@link #getToolFailureMessage toolFailure}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>{0} failure.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} fehlgeschlagen.</pre></td></tr>
  * </table>
  * <li>"{@link #getToolSuccessMessage toolSuccess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>{0} successful.</pre></td></tr>
@@ -220,6 +232,12 @@ public abstract class AbstractJomcCommand implements Command
 
     /** 'module-name' option of the instance. */
     private Option moduleNameOption;
+
+    /** 'fail-on-warnings' option of the instance. */
+    private Option failOnWarningsOption;
+
+    /** Greatest severity logged by the command. */
+    private Level severity = Level.ALL;
 
     public Option getVerboseOption()
     {
@@ -303,6 +321,19 @@ public abstract class AbstractJomcCommand implements Command
         return this.moduleNameOption;
     }
 
+    public Option getFailOnWarningsOption()
+    {
+        if ( this.failOnWarningsOption == null )
+        {
+            this.failOnWarningsOption = new Option( this.getFailOnWarningsOptionShortName(),
+                                                    this.getFailOnWarningsOptionLongName(),
+                                                    false, this.getFailOnWarningsOptionMessage( this.getLocale() ) );
+
+        }
+
+        return this.failOnWarningsOption;
+    }
+
     public String getName()
     {
         return this.getCommandName();
@@ -327,19 +358,46 @@ public abstract class AbstractJomcCommand implements Command
         options.addOption( this.getDocumentsOption() );
         options.addOption( this.getDocumentLocationOption() );
         options.addOption( this.getModuleNameOption() );
+        options.addOption( this.getFailOnWarningsOption() );
         return options;
     }
 
-    public int execute( final CommandLine commandLine, final PrintStream printStream )
+    public final int execute( final CommandLine commandLine, final PrintStream printStream )
     {
         final boolean debug = commandLine.hasOption( this.getDebugOption().getOpt() );
         final boolean verbose = commandLine.hasOption( this.getVerboseOption().getOpt() );
+        final boolean failOnWarnings = commandLine.hasOption( this.getFailOnWarningsOption().getOpt() );
 
         this.log( Level.INFO, this.getSeparatorMessage( this.getLocale() ), null, printStream, verbose, debug );
         this.log( Level.INFO, this.getApplicationTitleMessage( this.getLocale() ), null, printStream, verbose, debug );
         this.log( Level.INFO, this.getSeparatorMessage( this.getLocale() ), null, printStream, verbose, debug );
-        return STATUS_OK;
+
+        int status = this.executeCommand( commandLine, printStream );
+
+        if ( status == STATUS_OK && failOnWarnings && this.severity.intValue() >= Level.WARNING.intValue() )
+        {
+            status = STATUS_FAILURE;
+        }
+
+        if ( status == STATUS_OK )
+        {
+            this.log( Level.INFO, this.getToolSuccessMessage( this.getLocale(), this.getCommandName() ), null,
+                      printStream, verbose, debug );
+
+        }
+        else
+        {
+            this.log( Level.INFO, this.getToolFailureMessage( this.getLocale(), this.getCommandName() ), null,
+                      printStream, verbose, debug );
+
+        }
+
+        this.log( Level.INFO, this.getSeparatorMessage( this.getLocale() ), null, printStream, verbose, debug );
+
+        return status;
     }
+
+    protected abstract int executeCommand( final CommandLine commandLine, final PrintStream printStream );
 
     protected ClassLoader getClassLoader( final CommandLine commandLine, final PrintStream printStream )
         throws IOException
@@ -611,6 +669,11 @@ public abstract class AbstractJomcCommand implements Command
                 printStream.print( this.getLoglines( level, stackTrace.toString() ) );
             }
         }
+
+        if ( level.intValue() > this.severity.intValue() )
+        {
+            this.severity = level;
+        }
     }
 
     // SECTION-END
@@ -800,6 +863,36 @@ public abstract class AbstractJomcCommand implements Command
     }
 
     /**
+     * Gets the value of the {@code failOnWarningsOptionLongName} property.
+     * @return Long name of the 'fail-on-warnings' option.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private java.lang.String getFailOnWarningsOptionLongName() throws org.jomc.ObjectManagementException
+    {
+        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "failOnWarningsOptionLongName" );
+    }
+
+    /**
+     * Gets the value of the {@code failOnWarningsOptionShortName} property.
+     * @return Name of the 'fail-on-warnings' option.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private java.lang.String getFailOnWarningsOptionShortName() throws org.jomc.ObjectManagementException
+    {
+        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "failOnWarningsOptionShortName" );
+    }
+
+    /**
      * Gets the value of the {@code moduleNameOptionLongName} property.
      * @return Long name of the 'module' option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
@@ -864,7 +957,7 @@ public abstract class AbstractJomcCommand implements Command
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-24T14:07:13+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-25T13:03:17+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -1117,6 +1210,27 @@ public abstract class AbstractJomcCommand implements Command
     }
 
     /**
+     * Gets the text of the {@code failOnWarningsOption} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Exit with failure on warnings.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Bei Warnungen Fehler melden.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code failOnWarningsOption} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getFailOnWarningsOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "failOnWarningsOption", locale,  null );
+    }
+
+    /**
      * Gets the text of the {@code missingModule} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
@@ -1264,6 +1378,28 @@ public abstract class AbstractJomcCommand implements Command
     private String getStartingProcessingMessage( final java.util.Locale locale, final java.lang.String toolName ) throws org.jomc.ObjectManagementException
     {
         return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "startingProcessing", locale, new Object[] { toolName, null } );
+    }
+
+    /**
+     * Gets the text of the {@code toolFailure} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>{0} failure.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} fehlgeschlagen.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param toolName Format argument.
+     * @return The text of the {@code toolFailure} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getToolFailureMessage( final java.util.Locale locale, final java.lang.String toolName ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "toolFailure", locale, new Object[] { toolName, null } );
     }
 
     /**

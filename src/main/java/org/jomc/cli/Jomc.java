@@ -106,6 +106,10 @@ public class Jomc
     private static final String SYS_DEFAULT_DOCUMENT_LOCATION =
         "org.jomc.model.DefaultModelManager.defaultDocumentLocation";
 
+    /** Constant for the name of the system property controlling the default stylesheet location. */
+    private static final String SYS_DEFAULT_STYLESHEET_LOCATION =
+        "org.jomc.model.DefaultModelManager.defaultStyelsheetLocation";
+
     /**
      * Gets the print stream of the instance.
      *
@@ -144,11 +148,13 @@ public class Jomc
 
         final String currentBootstrapDocumentLocation = System.getProperty( SYS_BOOTSTRAP_DOCUMENT_LOCATION );
         final String currentDefaultDocumentLocation = System.getProperty( SYS_DEFAULT_DOCUMENT_LOCATION );
+        final String currentDefaultStylesheetLocation = System.getProperty( SYS_DEFAULT_STYLESHEET_LOCATION );
 
         try
         {
             System.setProperty( SYS_BOOTSTRAP_DOCUMENT_LOCATION, "META-INF/jomc-cli-bootstrap.xml" );
             System.setProperty( SYS_DEFAULT_DOCUMENT_LOCATION, "META-INF/jomc-cli.xml" );
+            System.setProperty( SYS_DEFAULT_STYLESHEET_LOCATION, "META-INF/jomc-cli.xslt" );
 
             final StringBuffer commandInfo = new StringBuffer();
 
@@ -201,8 +207,9 @@ public class Jomc
 
             System.clearProperty( SYS_BOOTSTRAP_DOCUMENT_LOCATION );
             System.clearProperty( SYS_DEFAULT_DOCUMENT_LOCATION );
+            System.clearProperty( SYS_DEFAULT_STYLESHEET_LOCATION );
 
-            return cmd.execute( this.getPrintStream(), commandLine );
+            return cmd.execute( commandLine, this.getPrintStream() );
         }
         catch ( ParseException e )
         {
@@ -226,6 +233,10 @@ public class Jomc
             if ( currentDefaultDocumentLocation != null )
             {
                 System.setProperty( SYS_DEFAULT_DOCUMENT_LOCATION, currentDefaultDocumentLocation );
+            }
+            if ( currentDefaultStylesheetLocation != null )
+            {
+                System.setProperty( SYS_DEFAULT_STYLESHEET_LOCATION, currentDefaultStylesheetLocation );
             }
         }
     }

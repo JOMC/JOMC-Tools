@@ -73,6 +73,10 @@ import org.jomc.tools.JavaBundles;
  * Property of type {@code java.lang.String} with value "documents".</blockquote></li>
  * <li>"{@link #getDocumentsOptionShortName documentsOptionShortName}"<blockquote>
  * Property of type {@code java.lang.String} with value "df".</blockquote></li>
+ * <li>"{@link #getFailOnWarningsOptionLongName failOnWarningsOptionLongName}"<blockquote>
+ * Property of type {@code java.lang.String} with value "fail-on-warnings".</blockquote></li>
+ * <li>"{@link #getFailOnWarningsOptionShortName failOnWarningsOptionShortName}"<blockquote>
+ * Property of type {@code java.lang.String} with value "fw".</blockquote></li>
  * <li>"{@link #getLanguageOptionLongName languageOptionLongName}"<blockquote>
  * Property of type {@code java.lang.String} with value "language".</blockquote></li>
  * <li>"{@link #getLanguageOptionShortName languageOptionShortName}"<blockquote>
@@ -112,7 +116,7 @@ import org.jomc.tools.JavaBundles;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-24T14:07:13+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-25T13:03:17+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -158,6 +162,10 @@ import org.jomc.tools.JavaBundles;
  * <tr><td valign="top">English:</td><td valign="top"><pre>files</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dateien</pre></td></tr>
  * </table>
+ * <li>"{@link #getFailOnWarningsOptionMessage failOnWarningsOption}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Exit with failure on warnings.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Bei Warnungen Fehler melden.</pre></td></tr>
+ * </table>
  * <li>"{@link #getLanguageOptionMessage languageOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Default language (defaults to ''{0}'').</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Standard-Sprache (Standard ''{0}'').</pre></td></tr>
@@ -187,8 +195,8 @@ import org.jomc.tools.JavaBundles;
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ausgabekodierung.</pre></td></tr>
  * </table>
  * <li>"{@link #getOutputEncodingOptionArgNameMessage outputEncodingOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>encoding.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>encoding</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung</pre></td></tr>
  * </table>
  * <li>"{@link #getProfileOptionMessage profileOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Templates profile to use.</pre></td></tr>
@@ -230,8 +238,12 @@ import org.jomc.tools.JavaBundles;
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Vorlagenkodierung.</pre></td></tr>
  * </table>
  * <li>"{@link #getTemplateEncodingOptionArgNameMessage templateEncodingOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>encoding.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>encoding</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung</pre></td></tr>
+ * </table>
+ * <li>"{@link #getToolFailureMessage toolFailure}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>{0} failure.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} fehlgeschlagen.</pre></td></tr>
  * </table>
  * <li>"{@link #getToolSuccessMessage toolSuccess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>{0} successful.</pre></td></tr>
@@ -254,7 +266,7 @@ import org.jomc.tools.JavaBundles;
     comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
 )
 // SECTION-END
-public class GenerateJavaBundlesCommand
+public final class GenerateJavaBundlesCommand
     extends AbstractJomcCommand
     implements org.jomc.cli.Command
 {
@@ -279,9 +291,9 @@ public class GenerateJavaBundlesCommand
         return this.options;
     }
 
-    public int execute( final PrintStream printStream, final CommandLine commandLine )
+    public int executeCommand( final CommandLine commandLine, final PrintStream printStream )
     {
-        int status = super.execute( commandLine, printStream );
+        int status = STATUS_OK;
 
         final boolean verbose = commandLine.hasOption( this.getVerboseOption().getOpt() );
         final boolean debug = commandLine.hasOption( this.getDebugOption().getOpt() );
@@ -342,10 +354,6 @@ public class GenerateJavaBundlesCommand
                 tool.writeBundleSources( sourcesDirectory );
                 tool.writeBundleResources( resourcesDirectory );
             }
-
-            this.log( Level.INFO, this.getToolSuccessMessage( this.getLocale(), this.getCommandName() ), null,
-                      printStream, verbose, debug );
-
         }
         catch ( ModelException e )
         {
@@ -362,8 +370,6 @@ public class GenerateJavaBundlesCommand
             this.log( Level.SEVERE, t.getMessage(), t, printStream, verbose, debug );
             status = STATUS_FAILURE;
         }
-
-        this.log( Level.INFO, this.getSeparatorMessage( this.getLocale() ), null, printStream, verbose, debug );
 
         return status;
     }
@@ -654,6 +660,36 @@ public class GenerateJavaBundlesCommand
     }
 
     /**
+     * Gets the value of the {@code failOnWarningsOptionLongName} property.
+     * @return Long name of the 'fail-on-warnings' option.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private java.lang.String getFailOnWarningsOptionLongName() throws org.jomc.ObjectManagementException
+    {
+        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "failOnWarningsOptionLongName" );
+    }
+
+    /**
+     * Gets the value of the {@code failOnWarningsOptionShortName} property.
+     * @return Name of the 'fail-on-warnings' option.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private java.lang.String getFailOnWarningsOptionShortName() throws org.jomc.ObjectManagementException
+    {
+        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "failOnWarningsOptionShortName" );
+    }
+
+    /**
      * Gets the value of the {@code languageOptionLongName} property.
      * @return Long name of the 'language' option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
@@ -898,7 +934,7 @@ public class GenerateJavaBundlesCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-24T14:07:13+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-25T13:03:17+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -1151,6 +1187,27 @@ public class GenerateJavaBundlesCommand
     }
 
     /**
+     * Gets the text of the {@code failOnWarningsOption} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Exit with failure on warnings.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Bei Warnungen Fehler melden.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code failOnWarningsOption} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getFailOnWarningsOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "failOnWarningsOption", locale,  null );
+    }
+
+    /**
      * Gets the text of the {@code languageOption} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Default language (defaults to ''{0}'').</pre></td></tr>
@@ -1303,8 +1360,8 @@ public class GenerateJavaBundlesCommand
     /**
      * Gets the text of the {@code outputEncodingOptionArgName} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>encoding.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>encoding</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code outputEncodingOptionArgName} message.
@@ -1536,8 +1593,8 @@ public class GenerateJavaBundlesCommand
     /**
      * Gets the text of the {@code templateEncodingOptionArgName} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>encoding.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>encoding</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code templateEncodingOptionArgName} message.
@@ -1552,6 +1609,28 @@ public class GenerateJavaBundlesCommand
     private String getTemplateEncodingOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
     {
         return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "templateEncodingOptionArgName", locale,  null );
+    }
+
+    /**
+     * Gets the text of the {@code toolFailure} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>{0} failure.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} fehlgeschlagen.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param toolName Format argument.
+     * @return The text of the {@code toolFailure} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getToolFailureMessage( final java.util.Locale locale, final java.lang.String toolName ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "toolFailure", locale, new Object[] { toolName, null } );
     }
 
     /**

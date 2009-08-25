@@ -71,6 +71,10 @@ import org.jomc.tools.JavaSources;
  * Property of type {@code java.lang.String} with value "documents".</blockquote></li>
  * <li>"{@link #getDocumentsOptionShortName documentsOptionShortName}"<blockquote>
  * Property of type {@code java.lang.String} with value "df".</blockquote></li>
+ * <li>"{@link #getFailOnWarningsOptionLongName failOnWarningsOptionLongName}"<blockquote>
+ * Property of type {@code java.lang.String} with value "fail-on-warnings".</blockquote></li>
+ * <li>"{@link #getFailOnWarningsOptionShortName failOnWarningsOptionShortName}"<blockquote>
+ * Property of type {@code java.lang.String} with value "fw".</blockquote></li>
  * <li>"{@link #getInputEncodingOptionLongName inputEncodingOptionLongName}"<blockquote>
  * Property of type {@code java.lang.String} with value "input-encoding".</blockquote></li>
  * <li>"{@link #getInputEncodingOptionShortName inputEncodingOptionShortName}"<blockquote>
@@ -106,7 +110,7 @@ import org.jomc.tools.JavaSources;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-24T14:07:13+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-25T13:03:17+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -152,13 +156,17 @@ import org.jomc.tools.JavaSources;
  * <tr><td valign="top">English:</td><td valign="top"><pre>files</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dateien</pre></td></tr>
  * </table>
+ * <li>"{@link #getFailOnWarningsOptionMessage failOnWarningsOption}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Exit with failure on warnings.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Bei Warnungen Fehler melden.</pre></td></tr>
+ * </table>
  * <li>"{@link #getInputEncodingOptionMessage inputEncodingOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Input encoding.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Eingabekodierung.</pre></td></tr>
  * </table>
  * <li>"{@link #getInputEncodingOptionArgNameMessage inputEncodingOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>encoding.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>encoding</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung</pre></td></tr>
  * </table>
  * <li>"{@link #getMissingModuleMessage missingModule}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
@@ -181,8 +189,8 @@ import org.jomc.tools.JavaSources;
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ausgabekodierung.</pre></td></tr>
  * </table>
  * <li>"{@link #getOutputEncodingOptionArgNameMessage outputEncodingOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>encoding.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>encoding</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung</pre></td></tr>
  * </table>
  * <li>"{@link #getProfileOptionMessage profileOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Templates profile to use.</pre></td></tr>
@@ -216,8 +224,12 @@ import org.jomc.tools.JavaSources;
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Vorlagenkodierung.</pre></td></tr>
  * </table>
  * <li>"{@link #getTemplateEncodingOptionArgNameMessage templateEncodingOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>encoding.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>encoding</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung</pre></td></tr>
+ * </table>
+ * <li>"{@link #getToolFailureMessage toolFailure}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>{0} failure.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} fehlgeschlagen.</pre></td></tr>
  * </table>
  * <li>"{@link #getToolSuccessMessage toolSuccess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>{0} successful.</pre></td></tr>
@@ -240,7 +252,7 @@ import org.jomc.tools.JavaSources;
     comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
 )
 // SECTION-END
-public class ManageJavaSourcesCommand
+public final class ManageJavaSourcesCommand
     extends AbstractJomcCommand
     implements org.jomc.cli.Command
 {
@@ -265,9 +277,9 @@ public class ManageJavaSourcesCommand
         return this.options;
     }
 
-    public int execute( final PrintStream printStream, final CommandLine commandLine )
+    public int executeCommand( final CommandLine commandLine, final PrintStream printStream )
     {
-        int status = super.execute( commandLine, printStream );
+        int status = STATUS_OK;
 
         final boolean verbose = commandLine.hasOption( this.getVerboseOption().getOpt() );
         final boolean debug = commandLine.hasOption( this.getDebugOption().getOpt() );
@@ -323,10 +335,6 @@ public class ManageJavaSourcesCommand
 
                 tool.manageSources( sourcesDirectory );
             }
-
-            this.log( Level.INFO, this.getToolSuccessMessage( this.getLocale(), this.getCommandName() ), null,
-                      printStream, verbose, debug );
-
         }
         catch ( ModelException e )
         {
@@ -343,8 +351,6 @@ public class ManageJavaSourcesCommand
             this.log( Level.SEVERE, t.getMessage(), t, printStream, verbose, debug );
             status = STATUS_FAILURE;
         }
-
-        this.log( Level.INFO, this.getSeparatorMessage( this.getLocale() ), null, printStream, verbose, debug );
 
         return status;
     }
@@ -618,6 +624,36 @@ public class ManageJavaSourcesCommand
     }
 
     /**
+     * Gets the value of the {@code failOnWarningsOptionLongName} property.
+     * @return Long name of the 'fail-on-warnings' option.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private java.lang.String getFailOnWarningsOptionLongName() throws org.jomc.ObjectManagementException
+    {
+        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "failOnWarningsOptionLongName" );
+    }
+
+    /**
+     * Gets the value of the {@code failOnWarningsOptionShortName} property.
+     * @return Name of the 'fail-on-warnings' option.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private java.lang.String getFailOnWarningsOptionShortName() throws org.jomc.ObjectManagementException
+    {
+        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "failOnWarningsOptionShortName" );
+    }
+
+    /**
      * Gets the value of the {@code inputEncodingOptionLongName} property.
      * @return Long name of the 'input-encoding' option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
@@ -832,7 +868,7 @@ public class ManageJavaSourcesCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-24T14:07:13+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-25T13:03:17+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -1085,6 +1121,27 @@ public class ManageJavaSourcesCommand
     }
 
     /**
+     * Gets the text of the {@code failOnWarningsOption} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Exit with failure on warnings.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Bei Warnungen Fehler melden.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code failOnWarningsOption} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getFailOnWarningsOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "failOnWarningsOption", locale,  null );
+    }
+
+    /**
      * Gets the text of the {@code inputEncodingOption} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Input encoding.</pre></td></tr>
@@ -1108,8 +1165,8 @@ public class ManageJavaSourcesCommand
     /**
      * Gets the text of the {@code inputEncodingOptionArgName} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>encoding.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>encoding</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code inputEncodingOptionArgName} message.
@@ -1235,8 +1292,8 @@ public class ManageJavaSourcesCommand
     /**
      * Gets the text of the {@code outputEncodingOptionArgName} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>encoding.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>encoding</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code outputEncodingOptionArgName} message.
@@ -1426,8 +1483,8 @@ public class ManageJavaSourcesCommand
     /**
      * Gets the text of the {@code templateEncodingOptionArgName} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>encoding.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>encoding</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code templateEncodingOptionArgName} message.
@@ -1442,6 +1499,28 @@ public class ManageJavaSourcesCommand
     private String getTemplateEncodingOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
     {
         return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "templateEncodingOptionArgName", locale,  null );
+    }
+
+    /**
+     * Gets the text of the {@code toolFailure} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>{0} failure.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} fehlgeschlagen.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param toolName Format argument.
+     * @return The text of the {@code toolFailure} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated
+    (
+        value = "org.jomc.tools.JavaSources",
+        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
+    )
+    private String getToolFailureMessage( final java.util.Locale locale, final java.lang.String toolName ) throws org.jomc.ObjectManagementException
+    {
+        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "toolFailure", locale, new Object[] { toolName, null } );
     }
 
     /**
