@@ -54,12 +54,6 @@
     </resources>
   </build>
   <dependencies>
-    <!-- Compile -->
-    <dependency>
-      <groupId>org.jomc</groupId>
-      <artifactId>jomc-util</artifactId>
-      <scope>compile</scope>
-    </dependency>
     <dependency>
       <groupId>org.jomc</groupId>
       <artifactId>jomc-tools</artifactId>
@@ -70,13 +64,6 @@
       <artifactId>jomc-model</artifactId>
       <scope>compile</scope>
     </dependency>
-    <dependency>
-      <groupId>javax.xml.bind</groupId>
-      <artifactId>jaxb-api</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
-    <!-- Provided -->
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
@@ -101,13 +88,6 @@
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-shade-plugin</artifactId>
       <scope>provided</scope>
-    </dependency>
-
-    <!-- Runtime -->
-    <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-impl</artifactId>
-      <scope>runtime</scope>
     </dependency>
   </dependencies>
 </project>
