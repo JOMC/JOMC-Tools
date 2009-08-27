@@ -264,23 +264,6 @@
     </testResources>
     <plugins>
       <plugin>
-        <groupId>org.jboss.maven.plugins</groupId>
-        <artifactId>maven-jboss-license-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>download-licenses</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>download-licenses</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.outputDirectory}/META-INF</outputDirectory>
-              <quiet>false</quiet>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
@@ -423,8 +406,8 @@
             <artifactId>maven-shade-plugin</artifactId>
           </plugin>
           <plugin>
-            <groupId>net.sourceforge.mjarsigner</groupId>
-            <artifactId>jarsigner-maven-plugin</artifactId>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jarsigner-plugin</artifactId>
             <executions>
               <execution>
                 <id>sign</id>
