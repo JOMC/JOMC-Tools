@@ -46,7 +46,7 @@ import org.jomc.tools.JavaClasses;
  *
  * @phase process-classes
  * @goal main-java-classes
- * @requiresDependencyResolution runtime
+ * @requiresDependencyResolution test
  */
 public final class MainJavaClassesMojo extends AbstractJomcMojo
 {

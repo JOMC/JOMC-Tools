@@ -46,7 +46,7 @@ import org.jomc.tools.JavaSources;
  *
  * @phase process-resources
  * @goal main-java-sources
- * @requiresDependencyResolution runtime
+ * @requiresDependencyResolution test
  */
 public final class MainJavaSourcesMojo extends AbstractJomcMojo
 {

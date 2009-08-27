@@ -46,7 +46,7 @@ import org.jomc.tools.JavaClasses;
  *
  * @phase verify
  * @goal verify-main-java-classes
- * @requiresDependencyResolution runtime
+ * @requiresDependencyResolution test
  */
 public class VerifyMainJavaClassesMojo extends AbstractJomcMojo
 {

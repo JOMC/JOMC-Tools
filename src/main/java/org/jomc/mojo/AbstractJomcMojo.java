@@ -359,7 +359,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
 
             final String element = a.getFile().getAbsolutePath();
-            this.log( Level.FINE, this.getRuntimeElementMessage( element ), null );
+            this.log( Level.FINE, this.getTestElementMessage( element ), null );
             elements.add( element );
         }
 
@@ -565,6 +565,15 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private String getRuntimeElementMessage( final String element )
     {
         return this.getMessage( "runtimeElement" ).format( new Object[]
+            {
+                element
+            } );
+
+    }
+
+    private String getTestElementMessage( final String element )
+    {
+        return this.getMessage( "testElement" ).format( new Object[]
             {
                 element
             } );
