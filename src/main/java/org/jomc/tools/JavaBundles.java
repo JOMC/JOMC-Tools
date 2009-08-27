@@ -101,6 +101,7 @@ public class JavaBundles extends JomcTool
     public JavaBundles( final JavaBundles tool )
     {
         super( tool );
+        this.setDefaultLocale( tool.getDefaultLocale() );
     }
 
     /**
