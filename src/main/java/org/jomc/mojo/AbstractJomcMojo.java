@@ -110,6 +110,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private MavenProject mavenProject;
 
     /**
+     * Controls verbosity of the plugin.
+     *
+     * @parameter expression="${jomc.verbose}" default-value="false"
+     */
+    private boolean verbose;
+
+    /**
      * Contols processing of java sources.
      *
      * @parameter expression="${jomc.javaSources.disabled}" default-value="false
@@ -463,8 +470,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 }
                 catch ( IOException e )
                 {
-                    System.err.println( "[" + level.toString() + "] " + message );
-                    e.printStackTrace();
+                    getLog().error( e );
                 }
             }
 
@@ -649,33 +655,35 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     protected void log( final Level level, final String message, final Throwable throwable ) throws IOException
     {
-        String line;
-        final BufferedReader reader = new BufferedReader( new StringReader( message ) );
-
-        while ( ( line = reader.readLine() ) != null )
+        if ( this.verbose || level.intValue() >= Level.WARNING.intValue() )
         {
-            final String mojoMessage = "[JOMC] " + line;
+            String line;
+            final BufferedReader reader = new BufferedReader( new StringReader( message ) );
+            while ( ( line = reader.readLine() ) != null )
+            {
+                final String mojoMessage = "[JOMC] " + line;
 
-            if ( ( level.equals( Level.CONFIG ) || level.equals( Level.FINE ) || level.equals( Level.FINER ) ||
-                   level.equals( Level.FINEST ) ) && this.getLog().isDebugEnabled() )
-            {
-                this.getLog().debug( mojoMessage, throwable );
-            }
-            else if ( level.equals( Level.INFO ) && this.getLog().isInfoEnabled() )
-            {
-                this.getLog().info( mojoMessage, throwable );
-            }
-            else if ( level.equals( Level.SEVERE ) && this.getLog().isErrorEnabled() )
-            {
-                this.getLog().error( mojoMessage, throwable );
-            }
-            else if ( level.equals( Level.WARNING ) && this.getLog().isWarnEnabled() )
-            {
-                this.getLog().warn( mojoMessage, throwable );
-            }
-            else if ( this.getLog().isDebugEnabled() )
-            {
-                this.getLog().debug( mojoMessage, throwable );
+                if ( ( level.equals( Level.CONFIG ) || level.equals( Level.FINE ) || level.equals( Level.FINER ) ||
+                       level.equals( Level.FINEST ) ) && this.getLog().isDebugEnabled() )
+                {
+                    this.getLog().debug( mojoMessage, throwable );
+                }
+                else if ( level.equals( Level.INFO ) && this.getLog().isInfoEnabled() )
+                {
+                    this.getLog().info( mojoMessage, throwable );
+                }
+                else if ( level.equals( Level.SEVERE ) && this.getLog().isErrorEnabled() )
+                {
+                    this.getLog().error( mojoMessage, throwable );
+                }
+                else if ( level.equals( Level.WARNING ) && this.getLog().isWarnEnabled() )
+                {
+                    this.getLog().warn( mojoMessage, throwable );
+                }
+                else if ( this.getLog().isDebugEnabled() )
+                {
+                    this.getLog().debug( mojoMessage, throwable );
+                }
             }
         }
     }
