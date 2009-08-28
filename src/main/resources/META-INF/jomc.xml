@@ -621,8 +621,8 @@
       </messages>
     </implementation>
     <!-- ******************************************************************* -->
-    <implementation identifier="org.jomc.cli.commands.VerifyJavaClassesCommand"
-                    class="org.jomc.cli.commands.VerifyJavaClassesCommand"
+    <implementation identifier="org.jomc.cli.commands.ValidateJavaClassesCommand"
+                    class="org.jomc.cli.commands.ValidateJavaClassesCommand"
                     name="${pom.name}"
                     version="${pom.version}"
                     vendor="${pom.organization.name}"
@@ -630,7 +630,7 @@
                     parent="org.jomc.cli.commands.AbstractJomcCommand">
 
       <documentation defaultLanguage="en">
-        <text language="en">Command line interface for verifying Java classes with the {@code JavaClasses} tool.</text>
+        <text language="en">Command line interface for validating Java classes with the {@code JavaClasses} tool.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0"
@@ -648,7 +648,7 @@
 
       </dependencies>
       <properties>
-        <property name="commandName" value="verify-java-classes">
+        <property name="commandName" value="validate-java-classes">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
@@ -658,18 +658,14 @@
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
-        <reference name="classesDirectoryOptionShortName"/>
-        <reference name="classesDirectoryOptionLongName"/>
       </properties>
       <messages>
         <message name="description">
           <template defaultLanguage="en">
-            <text language="en">Verifies Java class files.</text>
+            <text language="en">Validates Java class files.</text>
             <text language="de">Prüft Java Klassendateien.</text>
           </template>
         </message>
-        <reference name="classesDirectoryOption"/>
-        <reference name="classesDirectoryOptionArgName"/>
       </messages>
     </implementation>
     <!-- ******************************************************************* -->
