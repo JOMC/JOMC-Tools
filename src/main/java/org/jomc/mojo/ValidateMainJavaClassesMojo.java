@@ -39,16 +39,16 @@ import org.jomc.model.Module;
 import org.jomc.tools.JavaClasses;
 
 /**
- * Validates a projects' test java classes.
+ * Validates a projects' main java classes.
  *
  * @author <a href="mailto:cs@jomc.org">Christian Schulte</a>
  * @version $Id$
  *
- * @phase verify
- * @goal verify-test-java-classes
+ * @phase process-classes
+ * @goal validate-main-java-classes
  * @requiresDependencyResolution test
  */
-public class VerifyTestJavaClassesMojo extends AbstractJomcMojo
+public class ValidateMainJavaClassesMojo extends AbstractJomcMojo
 {
 
     @Override
@@ -56,16 +56,16 @@ public class VerifyTestJavaClassesMojo extends AbstractJomcMojo
     {
         if ( !this.isJavaClassProcessingDisabled() )
         {
-            File classesDirectory = new File( this.getMavenProject().getBuild().getTestOutputDirectory() );
+            File classesDirectory = new File( this.getMavenProject().getBuild().getOutputDirectory() );
             if ( !classesDirectory.isAbsolute() )
             {
                 classesDirectory = new File( this.getMavenProject().getBasedir(),
-                                             this.getMavenProject().getBuild().getTestOutputDirectory() );
+                                             this.getMavenProject().getBuild().getOutputDirectory() );
 
             }
 
-            final JavaClasses tool = this.getTestJavaClassesTool();
-            final Module module = tool.getModules().getModule( this.getJomcTestModuleName() );
+            final JavaClasses tool = this.getMainJavaClassesTool();
+            final Module module = tool.getModules().getModule( this.getJomcModuleName() );
 
             if ( module != null )
             {
@@ -75,7 +75,7 @@ public class VerifyTestJavaClassesMojo extends AbstractJomcMojo
             }
             else
             {
-                this.logMissingModule( this.getJomcTestModuleName() );
+                this.logMissingModule( this.getJomcModuleName() );
             }
         }
         else
@@ -91,7 +91,7 @@ public class VerifyTestJavaClassesMojo extends AbstractJomcMojo
 
     private String getMessage( final String key )
     {
-        return ResourceBundle.getBundle( VerifyTestJavaClassesMojo.class.getName().replace( '.', '/' ) ).getString( key );
+        return ResourceBundle.getBundle( ValidateMainJavaClassesMojo.class.getName().replace( '.', '/' ) ).getString( key );
     }
 
 }

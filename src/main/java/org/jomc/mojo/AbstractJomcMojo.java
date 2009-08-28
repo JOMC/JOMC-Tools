@@ -440,17 +440,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         {
             throw new MojoExecutionException( e.getMessage(), e );
         }
-        finally
-        {
-            try
-            {
-                this.logSeparator( Level.INFO );
-            }
-            catch ( IOException e )
-            {
-                this.getLog().error( e );
-            }
-        }
     }
 
     protected abstract void executeTool() throws Exception;
@@ -655,7 +644,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     protected void log( final Level level, final String message, final Throwable throwable ) throws IOException
     {
-        if ( this.verbose || level.intValue() >= Level.WARNING.intValue() )
+        if ( level.intValue() < Level.INFO.intValue() || level.intValue() >= Level.WARNING.intValue() || this.verbose )
         {
             String line;
             final BufferedReader reader = new BufferedReader( new StringReader( message ) );
@@ -718,6 +707,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 }
             }
         }
+
+        this.logSeparator( level );
     }
 
 }
