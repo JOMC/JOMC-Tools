@@ -68,6 +68,9 @@ import org.jomc.model.Property;
 import org.jomc.model.Specification;
 import org.jomc.model.SpecificationReference;
 import org.jomc.model.Specifications;
+import org.jomc.util.ParseException;
+import org.jomc.util.TokenMgrError;
+import org.jomc.util.VersionParser;
 import org.xml.sax.SAXException;
 
 /**
@@ -248,30 +251,18 @@ public class JavaClasses extends JomcTool
                 final Dependencies dependencies = this.getModules().getDependencies( implementation.getIdentifier() );
                 final Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
                 final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
-                final Specifications specifications = new Specifications();
-                final List<SpecificationReference> specificationReferences =
-                    this.getModules().getSpecifications( implementation.getIdentifier() );
+                final Specifications specifications =
+                    new Specifications( this.getModules().getSpecifications( implementation.getIdentifier() ) );
 
-                if ( specificationReferences != null )
+                for ( SpecificationReference r : specifications.getReference() )
                 {
-                    for ( SpecificationReference r : specificationReferences )
+                    if ( specifications.getSpecification( r.getIdentifier() ) == null )
                     {
-                        final Specification s = this.getModules().getSpecification( r.getIdentifier() );
-                        if ( s != null )
-                        {
-                            if ( specifications.getSpecification( s.getIdentifier() ) != null )
+                        this.log( Level.WARNING, this.getMessage( "unresolvedSpecification", new Object[]
                             {
-                                specifications.getSpecification().add( s );
-                            }
-                        }
-                        else
-                        {
-                            this.log( Level.WARNING, this.getMessage( "unresolvedSpecification", new Object[]
-                                {
-                                    r.getIdentifier(), implementation.getIdentifier()
-                                } ), null );
+                                r.getIdentifier(), implementation.getIdentifier()
+                            } ), null );
 
-                        }
                     }
                 }
 
@@ -369,7 +360,7 @@ public class JavaClasses extends JomcTool
 
         if ( !details.isEmpty() )
         {
-            final ModelException modelException = new ModelException();
+            final ModelException modelException = new ModelException( this.getMessage( "validationFailed", null ) );
             modelException.getDetails().addAll( details );
             throw modelException;
         }
@@ -415,7 +406,7 @@ public class JavaClasses extends JomcTool
 
         if ( !details.isEmpty() )
         {
-            final ModelException modelException = new ModelException();
+            final ModelException modelException = new ModelException( this.getMessage( "validationFailed", null ) );
             modelException.getDetails().addAll( details );
             throw modelException;
         }
@@ -495,7 +486,7 @@ public class JavaClasses extends JomcTool
 
         if ( !details.isEmpty() )
         {
-            final ModelException modelException = new ModelException();
+            final ModelException modelException = new ModelException( this.getMessage( "validationFailed", null ) );
             modelException.getDetails().addAll( details );
             throw modelException;
         }
@@ -596,7 +587,7 @@ public class JavaClasses extends JomcTool
 
         if ( !details.isEmpty() )
         {
-            final ModelException modelException = new ModelException();
+            final ModelException modelException = new ModelException( this.getMessage( "validationFailed", null ) );
             modelException.getDetails().addAll( details );
             throw modelException;
         }
@@ -649,7 +640,9 @@ public class JavaClasses extends JomcTool
 
                 if ( !details.isEmpty() )
                 {
-                    final ModelException modelException = new ModelException();
+                    final ModelException modelException =
+                        new ModelException( this.getMessage( "validationFailed", null ) );
+
                     modelException.getDetails().addAll( details );
                     throw modelException;
                 }
@@ -727,6 +720,28 @@ public class JavaClasses extends JomcTool
                             "missingDependency", new Object[]
                             {
                                 implementation.getIdentifier(), decodedDependency.getName()
+                            } ) ) );
+
+                    }
+
+                    final Specification s = this.getModules().getSpecification( decodedDependency.getIdentifier() );
+                    if ( s != null && s.getVersion() != null && decodedDependency.getVersion() != null &&
+                         VersionParser.compare( decodedDependency.getVersion(), s.getVersion() ) > 0 )
+                    {
+                        final Module moduleOfSpecification =
+                            this.getModules().getModuleOfSpecification( s.getIdentifier() );
+
+                        final Module moduleOfImplementation =
+                            this.getModules().getModuleOfImplementation( implementation.getIdentifier() );
+
+                        details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
+                            "incompatibleDependency", new Object[]
+                            {
+                                javaClass.getClassName(), moduleOfImplementation == null
+                                                          ? "<>" : moduleOfImplementation.getName(),
+                                s.getIdentifier(), moduleOfSpecification == null
+                                                   ? "<>" : moduleOfSpecification.getName(),
+                                decodedDependency.getVersion(), s.getVersion()
                             } ) ) );
 
                     }
@@ -815,8 +830,8 @@ public class JavaClasses extends JomcTool
             {
                 for ( Specification decodedSpecification : decodedSpecifications.getSpecification() )
                 {
-                    final Specification specification = this.getModules().getSpecification(
-                        decodedSpecification.getIdentifier() );
+                    final Specification specification =
+                        this.getModules().getSpecification( decodedSpecification.getIdentifier() );
 
                     if ( specification == null )
                     {
@@ -841,6 +856,42 @@ public class JavaClasses extends JomcTool
                         }
                     }
                 }
+
+                for ( SpecificationReference decodedReference : decodedSpecifications.getReference() )
+                {
+                    final Specification specification =
+                        this.getModules().getSpecification( decodedReference.getIdentifier() );
+
+                    if ( specification == null )
+                    {
+                        details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
+                            "missingSpecification", new Object[]
+                            {
+                                implementation.getIdentifier(), decodedReference.getIdentifier()
+                            } ) ) );
+
+                    }
+                    else if ( decodedReference.getVersion() != null && specification.getVersion() != null &&
+                              VersionParser.compare( decodedReference.getVersion(), specification.getVersion() ) != 0 )
+                    {
+                        final Module moduleOfSpecification =
+                            this.getModules().getModuleOfSpecification( decodedReference.getIdentifier() );
+
+                        final Module moduleOfImplementation =
+                            this.getModules().getModuleOfImplementation( implementation.getIdentifier() );
+
+                        details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
+                            "incompatibleImplementation", new Object[]
+                            {
+                                javaClass.getClassName(), moduleOfImplementation == null
+                                                          ? "<>" : moduleOfImplementation.getName(),
+                                specification.getIdentifier(), moduleOfSpecification == null
+                                                               ? "<>" : moduleOfSpecification.getName(),
+                                decodedReference.getVersion(), specification.getVersion()
+                            } ) ) );
+
+                    }
+                }
             }
             else
             {
@@ -853,7 +904,9 @@ public class JavaClasses extends JomcTool
 
             if ( !details.isEmpty() )
             {
-                final ModelException modelException = new ModelException();
+                final ModelException modelException =
+                    new ModelException( this.getMessage( "validationFailed", null ) );
+
                 modelException.getDetails().addAll( details );
                 throw modelException;
             }
@@ -865,6 +918,14 @@ public class JavaClasses extends JomcTool
                     } ), null );
 
             }
+        }
+        catch ( ParseException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+        catch ( TokenMgrError e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
         catch ( SAXException e )
         {

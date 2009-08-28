@@ -38,8 +38,7 @@
 #end
 #if($modules.getSpecifications($implementation.getIdentifier()))
  * <p><b>Specifications</b><ul>
-#foreach($reference in $modules.getSpecifications($implementation.getIdentifier()))
-#set($specification = $modules.getSpecification($reference.getIdentifier()))
+#foreach($reference in $modules.getSpecifications($implementation.getIdentifier()).getReference())
  * <li>{@code $tool.getJavaTypeName($reference,true)}#if($reference.getVersion()) {@code $reference.getVersion()}#end</li>
 #end
  * </ul></p>

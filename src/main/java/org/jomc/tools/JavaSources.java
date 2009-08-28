@@ -36,7 +36,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.commons.io.FileUtils;
@@ -47,7 +46,7 @@ import org.jomc.model.Messages;
 import org.jomc.model.Module;
 import org.jomc.model.Properties;
 import org.jomc.model.Specification;
-import org.jomc.model.SpecificationReference;
+import org.jomc.model.Specifications;
 import org.jomc.util.LineEditor;
 import org.jomc.util.Section;
 import org.jomc.util.SectionEditor;
@@ -366,10 +365,11 @@ public class JavaSources extends JomcTool
 
             if ( !editor.isConstructorsSectionPresent() )
             {
-                final List<SpecificationReference> specifications =
+                final Specifications specifications =
                     this.getModules().getSpecifications( implementation.getIdentifier() );
 
-                if ( specifications != null && !specifications.isEmpty() )
+                if ( specifications != null &&
+                     !( specifications.getSpecification().isEmpty() && specifications.getReference().isEmpty() ) )
                 {
                     throw new IOException( this.getMessage( "missingSection", new Object[]
                         {

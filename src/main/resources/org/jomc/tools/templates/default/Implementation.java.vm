@@ -43,19 +43,19 @@ import java.lang.*;
 // SECTION-START[Annotations]
 // SECTION-END
 public class ${tool.getJavaTypeName($implementation,false)}
-#set($references = ${modules.getSpecifications($implementation.getIdentifier())})
-#if($references)
+#set($specs = ${modules.getSpecifications($implementation.getIdentifier())})
+#if($specs)
     implements
-#set($i = $references.size())
+#set($i = $specs.getReference().size())
+#foreach($reference in $specs.getReference())
 #set($i = $i - 1)
-#foreach($reference in $references)
         $tool.getJavaTypeName($reference,true)#if($i > 0),#end
 
 #end
 #end
 {
-#if($references)
-#foreach($reference in $references)
+#if($specs)
+#foreach($reference in $specs.getReference())
     // SECTION-START[$tool.getJavaTypeName($reference,false)]
     // SECTION-END
 #end
