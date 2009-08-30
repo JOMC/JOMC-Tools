@@ -109,7 +109,7 @@ import org.xml.sax.SAXException;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-29T22:11:32+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-30T21:32:24+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -238,6 +238,19 @@ public abstract class AbstractJomcCommand implements Command
 
     /** Greatest severity logged by the command. */
     private Level severity = Level.ALL;
+
+    /** The {@code ModelManager} of the instance. */
+    private ModelManager modelManager;
+
+    public ModelManager getModelManager()
+    {
+        if ( this.modelManager == null )
+        {
+            this.modelManager = new DefaultModelManager();
+        }
+
+        return this.modelManager;
+    }
 
     public Option getVerboseOption()
     {
@@ -485,7 +498,8 @@ public abstract class AbstractJomcCommand implements Command
     }
 
     protected Modules getModules( final ModelManager modelManager, final CommandLine commandLine,
-                                  final PrintStream printStream, final boolean includeClasspathModule )
+                                  final PrintStream printStream, final boolean includeClasspathModule,
+                                  final boolean strictValidation )
         throws IOException, SAXException, JAXBException, ModelException
     {
         final ClassLoader classLoader = this.getClassLoader( commandLine, printStream );
@@ -577,7 +591,14 @@ public abstract class AbstractJomcCommand implements Command
 
         if ( modulesToValidate != null )
         {
-            modelManager.validateModelObject( modelManager.getObjectFactory().createModules( modulesToValidate ) );
+            if ( strictValidation )
+            {
+                modelManager.validateModules( modulesToValidate );
+            }
+            else
+            {
+                modelManager.validateModelObject( modelManager.getObjectFactory().createModules( modulesToValidate ) );
+            }
         }
 
         this.log( Level.FINE, this.getModulesReportMessage( this.getLocale() ), null, printStream, verbose, debug );
@@ -608,7 +629,9 @@ public abstract class AbstractJomcCommand implements Command
 
         } );
 
-        tool.setModules( this.getModules( tool.getModelManager(), commandLine, printStream, includeClasspathModule ) );
+        tool.setModules( this.getModules(
+            tool.getModelManager(), commandLine, printStream, includeClasspathModule, false ) );
+
     }
 
     protected String getLoglines( final Level level, final String text )
@@ -957,7 +980,7 @@ public abstract class AbstractJomcCommand implements Command
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-29T22:11:32+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-30T21:32:24+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

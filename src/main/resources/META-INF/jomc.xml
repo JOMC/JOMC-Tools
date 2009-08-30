@@ -45,6 +45,7 @@
   </documentation>
 
   <specifications>
+    
     <!-- ******************************************************************* -->
     <specification identifier="org.jomc.cli.Command"
                    vendor="${pom.organization.name}"
@@ -62,6 +63,7 @@
   </specifications>
 
   <implementations>
+    
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.cli.Jomc"
                     class="org.jomc.cli.Jomc"
@@ -134,6 +136,7 @@
         </message>
       </messages>
     </implementation>
+    
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.cli.commands.AbstractJomcCommand"
                     class="org.jomc.cli.commands.AbstractJomcCommand"
@@ -403,6 +406,7 @@
         </message>
       </messages>
     </implementation>
+    
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.cli.commands.GenerateJavaBundlesCommand"
                     class="org.jomc.cli.commands.GenerateJavaBundlesCommand"
@@ -500,6 +504,7 @@
         <reference name="outputEncodingOptionArgName"/>
       </messages>
     </implementation>
+    
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.cli.commands.ManageJavaSourcesCommand"
                     class="org.jomc.cli.commands.ManageJavaSourcesCommand"
@@ -568,6 +573,7 @@
         <reference name="outputEncodingOptionArgName"/>
       </messages>
     </implementation>
+    
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.cli.commands.CommitJavaClassesCommand"
                     class="org.jomc.cli.commands.CommitJavaClassesCommand"
@@ -620,6 +626,7 @@
         <reference name="classesDirectoryOptionArgName"/>
       </messages>
     </implementation>
+    
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.cli.commands.ValidateJavaClassesCommand"
                     class="org.jomc.cli.commands.ValidateJavaClassesCommand"
@@ -668,6 +675,56 @@
         </message>
       </messages>
     </implementation>
+
+    <!-- ******************************************************************* -->
+    <implementation identifier="org.jomc.cli.commands.ValidateModulesCommand"
+                    class="org.jomc.cli.commands.ValidateModulesCommand"
+                    name="${pom.name}"
+                    version="${pom.version}"
+                    vendor="${pom.organization.name}"
+                    final="true"
+                    parent="org.jomc.cli.commands.AbstractJomcCommand">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Command line interface for validating modules.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0"
+                mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="org.jomc.cli.Command" version="1.0"/>
+      </specifications>
+      <dependencies>
+        <dependency name="Locale"
+                    identifier="java.util.Locale"
+                    version="1.1"
+                    implementationName="default"/>
+
+      </dependencies>
+      <properties>
+        <property name="commandName" value="validate-modules">
+          <documentation defaultLanguage="en">
+            <text language="en">Name of the command.</text>
+          </documentation>
+        </property>
+        <property name="abbreviatedCommandName" value="vm">
+          <documentation defaultLanguage="en">
+            <text language="en">Abbreviated name of the command.</text>
+          </documentation>
+        </property>
+      </properties>
+      <messages>
+        <message name="description">
+          <template defaultLanguage="en">
+            <text language="en">Validates modules.</text>
+            <text language="de">Prüft Module.</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.cli.commands.MergeModulesCommand"
                     class="org.jomc.cli.commands.MergeModulesCommand"

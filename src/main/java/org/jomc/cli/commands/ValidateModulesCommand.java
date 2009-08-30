@@ -34,33 +34,30 @@
 // SECTION-END
 package org.jomc.cli.commands;
 
-import java.io.File;
 import java.io.PrintStream;
-import java.util.Locale;
+import java.lang.*;
 import java.util.logging.Level;
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.jomc.model.DefaultModelManager;
 import org.jomc.model.ModelException;
-import org.jomc.model.Module;
-import org.jomc.tools.JavaBundles;
+import org.jomc.model.ModelManager;
 
 // SECTION-START[Documentation]
 /**
- * Command line interface for the {@code JavaBundles} tool.
- *
+ * Command line interface for validating modules.
  * <p><b>Specifications</b><ul>
  * <li>{@code org.jomc.cli.Command} {@code 1.0}</li>
  * </ul></p>
  * <p><b>Properties</b><ul>
  * <li>"{@link #getAbbreviatedCommandName abbreviatedCommandName}"<blockquote>
- * Property of type {@code java.lang.String} with value "gjb".</blockquote></li>
+ * Property of type {@code java.lang.String} with value "vm".</blockquote></li>
  * <li>"{@link #getClasspathOptionLongName classpathOptionLongName}"<blockquote>
  * Property of type {@code java.lang.String} with value "classpath".</blockquote></li>
  * <li>"{@link #getClasspathOptionShortName classpathOptionShortName}"<blockquote>
  * Property of type {@code java.lang.String} with value "cp".</blockquote></li>
  * <li>"{@link #getCommandName commandName}"<blockquote>
- * Property of type {@code java.lang.String} with value "generate-java-bundles".</blockquote></li>
+ * Property of type {@code java.lang.String} with value "validate-modules".</blockquote></li>
  * <li>"{@link #getDebugOptionLongName debugOptionLongName}"<blockquote>
  * Property of type {@code java.lang.String} with value "debug".</blockquote></li>
  * <li>"{@link #getDebugOptionShortName debugOptionShortName}"<blockquote>
@@ -77,34 +74,10 @@ import org.jomc.tools.JavaBundles;
  * Property of type {@code java.lang.String} with value "fail-on-warnings".</blockquote></li>
  * <li>"{@link #getFailOnWarningsOptionShortName failOnWarningsOptionShortName}"<blockquote>
  * Property of type {@code java.lang.String} with value "fw".</blockquote></li>
- * <li>"{@link #getLanguageOptionLongName languageOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "language".</blockquote></li>
- * <li>"{@link #getLanguageOptionShortName languageOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "l".</blockquote></li>
  * <li>"{@link #getModuleNameOptionLongName moduleNameOptionLongName}"<blockquote>
  * Property of type {@code java.lang.String} with value "module".</blockquote></li>
  * <li>"{@link #getModuleNameOptionShortName moduleNameOptionShortName}"<blockquote>
  * Property of type {@code java.lang.String} with value "mn".</blockquote></li>
- * <li>"{@link #getOutputEncodingOptionLongName outputEncodingOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "output-encoding".</blockquote></li>
- * <li>"{@link #getOutputEncodingOptionShortName outputEncodingOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "oe".</blockquote></li>
- * <li>"{@link #getProfileOptionLongName profileOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "profile".</blockquote></li>
- * <li>"{@link #getProfileOptionShortName profileOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "p".</blockquote></li>
- * <li>"{@link #getResourceDirectoryOptionLongName resourceDirectoryOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "resource-dir".</blockquote></li>
- * <li>"{@link #getResourceDirectoryOptionShortName resourceDirectoryOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "rd".</blockquote></li>
- * <li>"{@link #getSourceDirectoryOptionLongName sourceDirectoryOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "source-dir".</blockquote></li>
- * <li>"{@link #getSourceDirectoryOptionShortName sourceDirectoryOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "sd".</blockquote></li>
- * <li>"{@link #getTemplateEncodingOptionLongName templateEncodingOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "template-encoding".</blockquote></li>
- * <li>"{@link #getTemplateEncodingOptionShortName templateEncodingOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "te".</blockquote></li>
  * <li>"{@link #getVerboseOptionLongName verboseOptionLongName}"<blockquote>
  * Property of type {@code java.lang.String} with value "verbose".</blockquote></li>
  * <li>"{@link #getVerboseOptionShortName verboseOptionShortName}"<blockquote>
@@ -139,8 +112,8 @@ import org.jomc.tools.JavaBundles;
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert Diagnose-Ausgaben.</pre></td></tr>
  * </table>
  * <li>"{@link #getDescriptionMessage description}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Generates Java resource bundles.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Generiert Java Ressource-Bündel.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Validates modules.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Prüft Module.</pre></td></tr>
  * </table>
  * <li>"{@link #getDocumentFileMessage documentFile}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Document file: ''{0}''</pre></td></tr>
@@ -166,14 +139,6 @@ import org.jomc.tools.JavaBundles;
  * <tr><td valign="top">English:</td><td valign="top"><pre>Exit with failure on warnings.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Bei Warnungen Fehler melden.</pre></td></tr>
  * </table>
- * <li>"{@link #getLanguageOptionMessage languageOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Default language (defaults to ''{0}'').</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Standard-Sprache (Standard ''{0}'').</pre></td></tr>
- * </table>
- * <li>"{@link #getLanguageOptionArgNameMessage languageOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>language</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Sprache</pre></td></tr>
- * </table>
  * <li>"{@link #getMissingModuleMessage missingModule}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul ''{0}'' nicht gefunden.</pre></td></tr>
@@ -190,40 +155,8 @@ import org.jomc.tools.JavaBundles;
  * <tr><td valign="top">English:</td><td valign="top"><pre>Modules</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Module</pre></td></tr>
  * </table>
- * <li>"{@link #getOutputEncodingOptionMessage outputEncodingOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Output encoding.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ausgabekodierung.</pre></td></tr>
- * </table>
- * <li>"{@link #getOutputEncodingOptionArgNameMessage outputEncodingOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>encoding</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung</pre></td></tr>
- * </table>
- * <li>"{@link #getProfileOptionMessage profileOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Templates profile to use.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Zu verwendendes Vorlagen-Profil.</pre></td></tr>
- * </table>
- * <li>"{@link #getProfileOptionArgNameMessage profileOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>profile</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Profil</pre></td></tr>
- * </table>
- * <li>"{@link #getResourceDirectoryOptionMessage resourceDirectoryOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Directory to write resource files to.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis in das Ressource-Dateien geschrieben werden sollen.</pre></td></tr>
- * </table>
- * <li>"{@link #getResourceDirectoryOptionArgNameMessage resourceDirectoryOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>directory</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis</pre></td></tr>
- * </table>
  * <li>"{@link #getSeparatorMessage separator}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>--------------------------------------------------------------------------------</pre></td></tr>
- * </table>
- * <li>"{@link #getSourceDirectoryOptionMessage sourceDirectoryOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Directory to write source files to.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis in das Quelltext-Dateien geschrieben werden sollen.</pre></td></tr>
- * </table>
- * <li>"{@link #getSourceDirectoryOptionArgNameMessage sourceDirectoryOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>directory</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis</pre></td></tr>
  * </table>
  * <li>"{@link #getStartingModuleProcessingMessage startingModuleProcessing}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} with module ''{1}'' ...</pre></td></tr>
@@ -232,14 +165,6 @@ import org.jomc.tools.JavaBundles;
  * <li>"{@link #getStartingProcessingMessage startingProcessing}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} ...</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Führt Befehl {0} aus ... </pre></td></tr>
- * </table>
- * <li>"{@link #getTemplateEncodingOptionMessage templateEncodingOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Template encoding.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Vorlagenkodierung.</pre></td></tr>
- * </table>
- * <li>"{@link #getTemplateEncodingOptionArgNameMessage templateEncodingOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>encoding</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung</pre></td></tr>
  * </table>
  * <li>"{@link #getToolFailureMessage toolFailure}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>{0} failure.</pre></td></tr>
@@ -266,12 +191,14 @@ import org.jomc.tools.JavaBundles;
     comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
 )
 // SECTION-END
-public final class GenerateJavaBundlesCommand
+public class ValidateModulesCommand
     extends AbstractJomcCommand
-    implements org.jomc.cli.Command
+    implements
+    org.jomc.cli.Command
 {
     // SECTION-START[Command]
 
+    /** Options of the instance. */
     private Options options;
 
     @Override
@@ -280,18 +207,13 @@ public final class GenerateJavaBundlesCommand
         if ( this.options == null )
         {
             this.options = super.getOptions();
-            this.options.addOption( this.getSourceDirectoryOption() );
-            this.options.addOption( this.getResourceDirectoryOption() );
-            this.options.addOption( this.getLanguageOption() );
-            this.options.addOption( this.getProfileOption() );
-            this.options.addOption( this.getTemplateEncodingOption() );
-            this.options.addOption( this.getOutputEncodingOption() );
         }
 
         return this.options;
     }
 
-    public int executeCommand( final CommandLine commandLine, final PrintStream printStream )
+    @Override
+    protected int executeCommand( final CommandLine commandLine, final PrintStream printStream )
     {
         int status = STATUS_OK;
 
@@ -300,60 +222,10 @@ public final class GenerateJavaBundlesCommand
 
         try
         {
-            final JavaBundles tool = new JavaBundles();
-            this.configureTool( tool, commandLine, printStream, true );
+            this.log( Level.INFO, this.getStartingProcessingMessage(
+                this.getLocale(), this.getCommandName() ), null, printStream, verbose, debug );
 
-            if ( commandLine.hasOption( this.getLanguageOption().getOpt() ) )
-            {
-                tool.setDefaultLocale( new Locale( commandLine.getOptionValue( this.getLanguageOption().getOpt() ) ) );
-            }
-            if ( commandLine.hasOption( this.getProfileOption().getOpt() ) )
-            {
-                tool.setProfile( commandLine.getOptionValue( this.getProfileOption().getOpt() ) );
-            }
-            if ( commandLine.hasOption( this.getTemplateEncodingOption().getOpt() ) )
-            {
-                tool.setTemplateEncoding( commandLine.getOptionValue( this.getTemplateEncodingOption().getOpt() ) );
-            }
-            if ( commandLine.hasOption( this.getOutputEncodingOption().getOpt() ) )
-            {
-                tool.setOutputEncoding( commandLine.getOptionValue( this.getOutputEncodingOption().getOpt() ) );
-            }
-
-            final File sourcesDirectory =
-                new File( commandLine.getOptionValue( this.getSourceDirectoryOption().getOpt() ) );
-
-            final File resourcesDirectory =
-                new File( commandLine.getOptionValue( this.getResourceDirectoryOption().getOpt() ) );
-
-            if ( commandLine.hasOption( this.getModuleNameOption().getOpt() ) )
-            {
-                final String moduleName = commandLine.getOptionValue( this.getModuleNameOption().getOpt() );
-                final Module module = tool.getModules().getModule( moduleName );
-
-                if ( module != null )
-                {
-                    this.log( Level.INFO, this.getStartingModuleProcessingMessage(
-                        this.getLocale(), this.getCommandName(), module.getName() ), null, printStream, verbose, debug );
-
-                    tool.writeBundleSources( module, sourcesDirectory );
-                    tool.writeBundleResources( module, resourcesDirectory );
-                }
-                else
-                {
-                    this.log( Level.WARNING, this.getMissingModuleMessage(
-                        this.getLocale(), moduleName ), null, printStream, verbose, debug );
-
-                }
-            }
-            else
-            {
-                this.log( Level.INFO, this.getStartingProcessingMessage(
-                    this.getLocale(), this.getCommandName() ), null, printStream, verbose, debug );
-
-                tool.writeBundleSources( sourcesDirectory );
-                tool.writeBundleResources( resourcesDirectory );
-            }
+            this.getModules( this.getModelManager(), commandLine, printStream, true, true );
         }
         catch ( ModelException e )
         {
@@ -375,114 +247,17 @@ public final class GenerateJavaBundlesCommand
     }
 
     // SECTION-END
-    // SECTION-START[GenerateJavaBundlesCommand]
-    private Option sourceDirectoryOption;
-
-    private Option resourceDirectoryOption;
-
-    private Option languageOption;
-
-    private Option profileOption;
-
-    private Option templateEncodingOption;
-
-    private Option outputEncodingOption;
-
-    public Option getSourceDirectoryOption()
-    {
-        if ( this.sourceDirectoryOption == null )
-        {
-            this.sourceDirectoryOption = new Option( this.getSourceDirectoryOptionShortName(),
-                                                     this.getSourceDirectoryOptionLongName(), true,
-                                                     this.getSourceDirectoryOptionMessage( this.getLocale() ) );
-
-            this.sourceDirectoryOption.setRequired( true );
-            this.sourceDirectoryOption.setArgName( this.getSourceDirectoryOptionArgNameMessage( this.getLocale() ) );
-        }
-
-        return this.sourceDirectoryOption;
-    }
-
-    public Option getResourceDirectoryOption()
-    {
-        if ( this.resourceDirectoryOption == null )
-        {
-            this.resourceDirectoryOption = new Option( this.getResourceDirectoryOptionShortName(),
-                                                       this.getResourceDirectoryOptionLongName(), true,
-                                                       this.getResourceDirectoryOptionMessage( this.getLocale() ) );
-
-            this.resourceDirectoryOption.setRequired( true );
-            this.resourceDirectoryOption.setArgName( this.getResourceDirectoryOptionArgNameMessage( this.getLocale() ) );
-        }
-
-        return this.resourceDirectoryOption;
-    }
-
-    public Option getLanguageOption()
-    {
-        if ( this.languageOption == null )
-        {
-            this.languageOption = new Option( this.getLanguageOptionShortName(), this.getLanguageOptionLongName(),
-                                              true, this.getLanguageOptionMessage( this.getLocale(),
-                                                                                   this.getLocale().getLanguage() ) );
-
-            this.languageOption.setArgName( this.getLanguageOptionArgNameMessage( this.getLocale(), null ) );
-        }
-
-        return this.languageOption;
-    }
-
-    public Option getProfileOption()
-    {
-        if ( this.profileOption == null )
-        {
-            this.profileOption = new Option( this.getProfileOptionShortName(), this.getProfileOptionLongName(),
-                                             true, this.getProfileOptionMessage( this.getLocale() ) );
-
-            this.profileOption.setArgName( this.getProfileOptionArgNameMessage( this.getLocale() ) );
-        }
-
-        return this.profileOption;
-    }
-
-    public Option getTemplateEncodingOption()
-    {
-        if ( this.templateEncodingOption == null )
-        {
-            this.templateEncodingOption = new Option( this.getTemplateEncodingOptionShortName(),
-                                                      this.getTemplateEncodingOptionLongName(), true,
-                                                      this.getTemplateEncodingOptionMessage( this.getLocale() ) );
-
-            this.templateEncodingOption.setArgName( this.getTemplateEncodingOptionArgNameMessage( this.getLocale() ) );
-        }
-
-        return this.templateEncodingOption;
-    }
-
-    public Option getOutputEncodingOption()
-    {
-        if ( this.outputEncodingOption == null )
-        {
-            this.outputEncodingOption = new Option( this.getOutputEncodingOptionShortName(),
-                                                    this.getOutputEncodingOptionLongName(), true,
-                                                    this.getOutputEncodingOptionMessage( this.getLocale() ) );
-
-            this.outputEncodingOption.setArgName( this.getOutputEncodingOptionArgNameMessage( this.getLocale() ) );
-        }
-
-        return this.outputEncodingOption;
-    }
-
+    // SECTION-START[ValidateModulesCommand]
     // SECTION-END
     // SECTION-START[Constructors]
 
-    /** Creates a new {@code GenerateJavaBundlesCommand} instance. */
+    /** Creates a new {@code ValidateModulesCommand} instance. */
     @javax.annotation.Generated
     (
         value = "org.jomc.tools.JavaSources",
         comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
     )
-    public GenerateJavaBundlesCommand()
+    public ValidateModulesCommand()
     {
         // SECTION-START[Default Constructor]
         super();
@@ -690,36 +465,6 @@ public final class GenerateJavaBundlesCommand
     }
 
     /**
-     * Gets the value of the {@code languageOptionLongName} property.
-     * @return Long name of the 'language' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private java.lang.String getLanguageOptionLongName() throws org.jomc.ObjectManagementException
-    {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "languageOptionLongName" );
-    }
-
-    /**
-     * Gets the value of the {@code languageOptionShortName} property.
-     * @return Name of the 'language' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private java.lang.String getLanguageOptionShortName() throws org.jomc.ObjectManagementException
-    {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "languageOptionShortName" );
-    }
-
-    /**
      * Gets the value of the {@code moduleNameOptionLongName} property.
      * @return Long name of the 'module' option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
@@ -747,156 +492,6 @@ public final class GenerateJavaBundlesCommand
     private java.lang.String getModuleNameOptionShortName() throws org.jomc.ObjectManagementException
     {
         return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "moduleNameOptionShortName" );
-    }
-
-    /**
-     * Gets the value of the {@code outputEncodingOptionLongName} property.
-     * @return Long name of the 'output-encoding' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private java.lang.String getOutputEncodingOptionLongName() throws org.jomc.ObjectManagementException
-    {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "outputEncodingOptionLongName" );
-    }
-
-    /**
-     * Gets the value of the {@code outputEncodingOptionShortName} property.
-     * @return Name of the 'output-encoding' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private java.lang.String getOutputEncodingOptionShortName() throws org.jomc.ObjectManagementException
-    {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "outputEncodingOptionShortName" );
-    }
-
-    /**
-     * Gets the value of the {@code profileOptionLongName} property.
-     * @return Long name of the 'profile' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private java.lang.String getProfileOptionLongName() throws org.jomc.ObjectManagementException
-    {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "profileOptionLongName" );
-    }
-
-    /**
-     * Gets the value of the {@code profileOptionShortName} property.
-     * @return Name of the 'profile' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private java.lang.String getProfileOptionShortName() throws org.jomc.ObjectManagementException
-    {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "profileOptionShortName" );
-    }
-
-    /**
-     * Gets the value of the {@code resourceDirectoryOptionLongName} property.
-     * @return Long name of the 'resource-dir' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private java.lang.String getResourceDirectoryOptionLongName() throws org.jomc.ObjectManagementException
-    {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "resourceDirectoryOptionLongName" );
-    }
-
-    /**
-     * Gets the value of the {@code resourceDirectoryOptionShortName} property.
-     * @return Name of the 'resource-dir' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private java.lang.String getResourceDirectoryOptionShortName() throws org.jomc.ObjectManagementException
-    {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "resourceDirectoryOptionShortName" );
-    }
-
-    /**
-     * Gets the value of the {@code sourceDirectoryOptionLongName} property.
-     * @return Long name of the 'source-dir' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private java.lang.String getSourceDirectoryOptionLongName() throws org.jomc.ObjectManagementException
-    {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "sourceDirectoryOptionLongName" );
-    }
-
-    /**
-     * Gets the value of the {@code sourceDirectoryOptionShortName} property.
-     * @return Name of the 'source-dir' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private java.lang.String getSourceDirectoryOptionShortName() throws org.jomc.ObjectManagementException
-    {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "sourceDirectoryOptionShortName" );
-    }
-
-    /**
-     * Gets the value of the {@code templateEncodingOptionLongName} property.
-     * @return Long name of the 'template-encoding' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private java.lang.String getTemplateEncodingOptionLongName() throws org.jomc.ObjectManagementException
-    {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "templateEncodingOptionLongName" );
-    }
-
-    /**
-     * Gets the value of the {@code templateEncodingOptionShortName} property.
-     * @return Name of the 'template-encoding' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private java.lang.String getTemplateEncodingOptionShortName() throws org.jomc.ObjectManagementException
-    {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "templateEncodingOptionShortName" );
     }
 
     /**
@@ -1062,8 +657,8 @@ public final class GenerateJavaBundlesCommand
     /**
      * Gets the text of the {@code description} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Generates Java resource bundles.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Generiert Java Ressource-Bündel.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Validates modules.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Prüft Module.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code description} message.
@@ -1208,50 +803,6 @@ public final class GenerateJavaBundlesCommand
     }
 
     /**
-     * Gets the text of the {@code languageOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Default language (defaults to ''{0}'').</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Standard-Sprache (Standard ''{0}'').</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @param defaultLanguage Format argument.
-     * @return The text of the {@code languageOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private String getLanguageOptionMessage( final java.util.Locale locale, final java.lang.String defaultLanguage ) throws org.jomc.ObjectManagementException
-    {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "languageOption", locale, new Object[] { defaultLanguage, null } );
-    }
-
-    /**
-     * Gets the text of the {@code languageOptionArgName} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>language</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Sprache</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @param defaultLanguage Format argument.
-     * @return The text of the {@code languageOptionArgName} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private String getLanguageOptionArgNameMessage( final java.util.Locale locale, final java.lang.String defaultLanguage ) throws org.jomc.ObjectManagementException
-    {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "languageOptionArgName", locale, new Object[] { defaultLanguage, null } );
-    }
-
-    /**
      * Gets the text of the {@code missingModule} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
@@ -1337,132 +888,6 @@ public final class GenerateJavaBundlesCommand
     }
 
     /**
-     * Gets the text of the {@code outputEncodingOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Output encoding.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ausgabekodierung.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code outputEncodingOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private String getOutputEncodingOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
-    {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "outputEncodingOption", locale,  null );
-    }
-
-    /**
-     * Gets the text of the {@code outputEncodingOptionArgName} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>encoding</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code outputEncodingOptionArgName} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private String getOutputEncodingOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
-    {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "outputEncodingOptionArgName", locale,  null );
-    }
-
-    /**
-     * Gets the text of the {@code profileOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Templates profile to use.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Zu verwendendes Vorlagen-Profil.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code profileOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private String getProfileOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
-    {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "profileOption", locale,  null );
-    }
-
-    /**
-     * Gets the text of the {@code profileOptionArgName} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>profile</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Profil</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code profileOptionArgName} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private String getProfileOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
-    {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "profileOptionArgName", locale,  null );
-    }
-
-    /**
-     * Gets the text of the {@code resourceDirectoryOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Directory to write resource files to.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis in das Ressource-Dateien geschrieben werden sollen.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code resourceDirectoryOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private String getResourceDirectoryOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
-    {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "resourceDirectoryOption", locale,  null );
-    }
-
-    /**
-     * Gets the text of the {@code resourceDirectoryOptionArgName} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>directory</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code resourceDirectoryOptionArgName} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private String getResourceDirectoryOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
-    {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "resourceDirectoryOptionArgName", locale,  null );
-    }
-
-    /**
      * Gets the text of the {@code separator} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>--------------------------------------------------------------------------------</pre></td></tr>
@@ -1480,48 +905,6 @@ public final class GenerateJavaBundlesCommand
     private String getSeparatorMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
     {
         return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "separator", locale,  null );
-    }
-
-    /**
-     * Gets the text of the {@code sourceDirectoryOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Directory to write source files to.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis in das Quelltext-Dateien geschrieben werden sollen.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code sourceDirectoryOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private String getSourceDirectoryOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
-    {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "sourceDirectoryOption", locale,  null );
-    }
-
-    /**
-     * Gets the text of the {@code sourceDirectoryOptionArgName} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>directory</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verzeichnis</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code sourceDirectoryOptionArgName} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private String getSourceDirectoryOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
-    {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "sourceDirectoryOptionArgName", locale,  null );
     }
 
     /**
@@ -1567,48 +950,6 @@ public final class GenerateJavaBundlesCommand
     private String getStartingProcessingMessage( final java.util.Locale locale, final java.lang.String toolName ) throws org.jomc.ObjectManagementException
     {
         return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "startingProcessing", locale, new Object[] { toolName, null } );
-    }
-
-    /**
-     * Gets the text of the {@code templateEncodingOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Template encoding.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Vorlagenkodierung.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code templateEncodingOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private String getTemplateEncodingOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
-    {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "templateEncodingOption", locale,  null );
-    }
-
-    /**
-     * Gets the text of the {@code templateEncodingOptionArgName} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>encoding</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kodierung</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code templateEncodingOptionArgName} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated
-    (
-        value = "org.jomc.tools.JavaSources",
-        comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools"
-    )
-    private String getTemplateEncodingOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
-    {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "templateEncodingOptionArgName", locale,  null );
     }
 
     /**
