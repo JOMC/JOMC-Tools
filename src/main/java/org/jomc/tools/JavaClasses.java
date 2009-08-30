@@ -638,6 +638,20 @@ public class JavaClasses extends JomcTool
 
                 }
 
+                if ( decoded.getScope() == null
+                     ? specification.getScope() != null
+                     : !decoded.getScope().equals( specification.getScope() ) )
+                {
+                    details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
+                        "illegalScope", new Object[]
+                        {
+                            specification.getIdentifier(),
+                            specification.getScope() == null ? "Multiton" : specification.getScope(),
+                            decoded.getScope() == null ? "Multiton" : decoded.getScope()
+                        } ) ) );
+
+                }
+
                 if ( !details.isEmpty() )
                 {
                     final ModelException modelException =
@@ -851,6 +865,22 @@ public class JavaClasses extends JomcTool
                                 {
                                     specification.getIdentifier(), specification.getMultiplicity().value(),
                                     decodedSpecification.getMultiplicity().value()
+                                } ) ) );
+
+                        }
+
+                        if ( decodedSpecification.getScope() == null
+                             ? specification.getScope() != null
+                             : !decodedSpecification.getScope().equals( specification.getScope() ) )
+                        {
+                            details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
+                                "illegalScope", new Object[]
+                                {
+                                    decodedSpecification.getIdentifier(),
+                                    specification.getScope() == null
+                                    ? "Multiton" : specification.getScope(),
+                                    decodedSpecification.getScope() == null
+                                    ? "Multiton" : decodedSpecification.getScope()
                                 } ) ) );
 
                         }

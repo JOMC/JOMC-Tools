@@ -36,10 +36,12 @@
 #if($implementation.getDocumentation())
  * $tool.getJavadocComment($implementation.getDocumentation().getText("en"), " * ")
 #end
-#if($modules.getSpecifications($implementation.getIdentifier()))
+#set($specifications = $modules.getSpecifications($implementation.getIdentifier()))
+#if($specifications)
  * <p><b>Specifications</b><ul>
-#foreach($reference in $modules.getSpecifications($implementation.getIdentifier()).getReference())
- * <li>{@code $tool.getJavaTypeName($reference,true)}#if($reference.getVersion()) {@code $reference.getVersion()}#end</li>
+#foreach($reference in $specifications.getReference())
+#set($specification = $specifiations.getSpecification($reference.getIdentifier()))
+ * <li>{@code $tool.getJavaTypeName($reference,true)}#if($reference.getVersion()) {@code $reference.getVersion()}#end#if($specification && $specification.getScope()) {@code $specification.getScope()}#end</li>
 #end
  * </ul></p>
 #end

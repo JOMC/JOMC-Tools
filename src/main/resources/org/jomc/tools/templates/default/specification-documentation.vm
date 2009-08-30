@@ -53,6 +53,12 @@
 #end
  * </p>
  *
+#if($specification.getScope())
+ * <p>This specification applies to {@code $specification.getScope()} scope. The same {@code $specification.getScope().toLowerCase()} object is returned whenever requested.</p>
+#else
+ * <p>This specification does not apply to any scope. A new object is returned whenever requested.</p>
+#end
+ *
 #if($specification.getAuthors())
 #foreach($author in $specification.getAuthors().getAuthor())
  * @author #if($author.getMail())<a href="mailto:$author.getMail()">#end$author.getName()#if($author.getMail())</a>#end $author.getVersion()
