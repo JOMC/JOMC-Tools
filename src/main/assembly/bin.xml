@@ -41,6 +41,16 @@
     <format>tar.bz2</format>
     <format>zip</format>
   </formats>
+  <files>
+    <file>
+      <destName>relocate-classes.xslt</destName>
+      <fileMode>0444</fileMode>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <outputDirectory>/examples/xslt</outputDirectory>
+      <source>src/main/jomc/relocations.xslt</source>
+    </file>
+  </files>
   <fileSets>
     <fileSet>
       <directory>target/maven-shared-archive-resources/META-INF</directory>
@@ -85,11 +95,11 @@
       </includes>
     </fileSet>
     <fileSet>
-      <directory>src/main/jomc</directory>
-      <outputDirectory>/examples</outputDirectory>
-      <fileMode>0644</fileMode>
+      <directory>src/main/assembly/examples/xslt</directory>
+      <fileMode>0444</fileMode>
+      <outputDirectory>/examples/xslt</outputDirectory>
       <lineEnding>dos</lineEnding>
-      <filtered>false</filtered>
+      <filtered>true</filtered>
       <includes>
         <include>*.xslt</include>
       </includes>
