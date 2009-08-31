@@ -46,7 +46,7 @@ import org.jomc.tools.JavaClasses;
 /**
  * Command line interface for validating Java classes with the {@code JavaClasses} tool.
  * <p><b>Specifications</b><ul>
- * <li>{@code org.jomc.cli.Command} {@code 1.0}</li>
+ * <li>{@code org.jomc.cli.Command} {@code 1.0} {@code Multiton}</li>
  * </ul></p>
  * <p><b>Properties</b><ul>
  * <li>"{@link #getAbbreviatedCommandName abbreviatedCommandName}"<blockquote>
@@ -88,7 +88,7 @@ import org.jomc.tools.JavaClasses;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-31T01:34:39+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-31T05:08:25+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -551,7 +551,7 @@ public final class ValidateJavaClassesCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-31T01:34:39+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-08-31T05:08:25+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
