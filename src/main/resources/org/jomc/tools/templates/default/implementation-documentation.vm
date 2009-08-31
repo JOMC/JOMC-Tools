@@ -40,8 +40,8 @@
 #if($specifications)
  * <p><b>Specifications</b><ul>
 #foreach($reference in $specifications.getReference())
-#set($specification = $specifiations.getSpecification($reference.getIdentifier()))
- * <li>{@code $tool.getJavaTypeName($reference,true)}#if($reference.getVersion()) {@code $reference.getVersion()}#end#if($specification && $specification.getScope()) {@code $specification.getScope()}#end</li>
+#set($specification = $specifications.getSpecification($reference.getIdentifier()))
+ * <li>{@code $tool.getJavaTypeName($reference,true)}#if($reference.getVersion()) {@code $reference.getVersion()}#end#if($specification)#if($specification.getScope()) {@code $specification.getScope()}#else {@code Multiton}#end#end</li>
 #end
  * </ul></p>
 #end
