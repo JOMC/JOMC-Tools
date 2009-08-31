@@ -64,5 +64,6 @@
  * @author #if($author.getMail())<a href="mailto:$author.getMail()">#end$author.getName()#if($author.getMail())</a>#end $author.getVersion()
 #end
 #end
- * @version $Id$
+#set($D = "$")
+ * @version ${D}Id${D}
  */

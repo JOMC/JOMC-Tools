@@ -963,6 +963,7 @@ public abstract class JomcTool
             final java.util.Properties props = new java.util.Properties();
             props.put( "resource.loader", "class" );
             props.put( "class.resource.loader.class", VELOCITY_RESOURCE_LOADER );
+            props.put( "runtime.references.strict", Boolean.TRUE.toString() );
 
             final VelocityEngine engine = new VelocityEngine();
             engine.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, new LogChute()
