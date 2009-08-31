@@ -45,7 +45,7 @@
   </documentation>
 
   <specifications>
-    
+
     <!-- ******************************************************************* -->
     <specification identifier="org.jomc.cli.Command"
                    vendor="${pom.organization.name}"
@@ -63,7 +63,7 @@
   </specifications>
 
   <implementations>
-    
+
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.cli.Jomc"
                     class="org.jomc.cli.Jomc"
@@ -136,7 +136,7 @@
         </message>
       </messages>
     </implementation>
-    
+
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.cli.commands.AbstractJomcCommand"
                     class="org.jomc.cli.commands.AbstractJomcCommand"
@@ -406,7 +406,7 @@
         </message>
       </messages>
     </implementation>
-    
+
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.cli.commands.GenerateJavaBundlesCommand"
                     class="org.jomc.cli.commands.GenerateJavaBundlesCommand"
@@ -504,7 +504,7 @@
         <reference name="outputEncodingOptionArgName"/>
       </messages>
     </implementation>
-    
+
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.cli.commands.ManageJavaSourcesCommand"
                     class="org.jomc.cli.commands.ManageJavaSourcesCommand"
@@ -573,7 +573,7 @@
         <reference name="outputEncodingOptionArgName"/>
       </messages>
     </implementation>
-    
+
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.cli.commands.CommitJavaClassesCommand"
                     class="org.jomc.cli.commands.CommitJavaClassesCommand"
@@ -626,7 +626,7 @@
         <reference name="classesDirectoryOptionArgName"/>
       </messages>
     </implementation>
-    
+
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.cli.commands.ValidateJavaClassesCommand"
                     class="org.jomc.cli.commands.ValidateJavaClassesCommand"
