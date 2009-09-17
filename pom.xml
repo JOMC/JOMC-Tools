@@ -92,7 +92,7 @@
                   </relocation>
                   <relocation>
                     <pattern>org.jomc.spi</pattern>
-                    <shadedPattern>org.jomc.cli.util.spi</shadedPattern>
+                    <shadedPattern>org.jomc.cli.util</shadedPattern>
                   </relocation>
                   <relocation>
                     <pattern>org.jomc.ri</pattern>
@@ -294,7 +294,7 @@
             </goals>
             <configuration>
               <descriptors>
-                <descriptor>src/main/assembly/bin.xml</descriptor>
+                <descriptor>src/main/assembly/bin-snapshot.xml</descriptor>
               </descriptors>
             </configuration>
           </execution>
@@ -372,6 +372,58 @@
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>copy-javadoc</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>copy</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.jomc</groupId>
+                      <artifactId>jomc-api</artifactId>
+                      <version>${pom.version}</version>
+                      <classifier>javadoc</classifier>
+                      <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.jomc</groupId>
+                      <artifactId>jomc-spi</artifactId>
+                      <version>${pom.version}</version>
+                      <classifier>javadoc</classifier>
+                      <outputDirectory>${project.build.directory}/jomc-javadoc/ri</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.jomc</groupId>
+                      <artifactId>jomc-util</artifactId>
+                      <version>${pom.version}</version>
+                      <classifier>javadoc</classifier>
+                      <outputDirectory>${project.build.directory}/jomc-javadoc/ri</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.jomc</groupId>
+                      <artifactId>jomc-model</artifactId>
+                      <version>${pom.version}</version>
+                      <classifier>javadoc</classifier>
+                      <outputDirectory>${project.build.directory}/jomc-javadoc/ri</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.jomc</groupId>
+                      <artifactId>jomc-ri</artifactId>
+                      <version>${pom.version}</version>
+                      <classifier>javadoc</classifier>
+                      <outputDirectory>${project.build.directory}/jomc-javadoc/ri</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-deploy-plugin</artifactId>
             <configuration>
               <updateReleaseInfo>true</updateReleaseInfo>
@@ -426,6 +478,20 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>bin-assembly</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+                <configuration>
+                  <descriptors>
+                    <descriptor>src/main/assembly/bin-release.xml</descriptor>
+                  </descriptors>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>

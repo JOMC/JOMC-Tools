@@ -50,6 +50,10 @@
     <xsl:call-template name="relocate-attribute"/>
   </xsl:template>
 
+  <xsl:template match="jomc:specifications/jomc:specification/@class">
+    <xsl:call-template name="relocate-attribute"/>
+  </xsl:template>
+
   <xsl:template match="jomc:specifications/jomc:reference/@identifier">
     <xsl:call-template name="relocate-attribute"/>
   </xsl:template>
@@ -83,10 +87,10 @@
         <xsl:when test="starts-with($value, 'org.jomc.ObjectManagementException')">
           <xsl:value-of select="'org.jomc.cli.util.ObjectManagementException'"/>
         </xsl:when>
-        <xsl:when test="starts-with($value, 'org.jomc.spi')">
-          <xsl:value-of select="concat('org.jomc.cli.util.spi.', substring-after($value, 'org.jomc.spi.'))"/>
+        <xsl:when test="starts-with($value, 'org.jomc.spi.')">
+          <xsl:value-of select="concat('org.jomc.cli.util.', substring-after($value, 'org.jomc.spi.'))"/>
         </xsl:when>
-        <xsl:when test="starts-with($value, 'org.jomc.ri')">
+        <xsl:when test="starts-with($value, 'org.jomc.ri.')">
           <xsl:value-of select="concat('org.jomc.cli.util.', substring-after($value, 'org.jomc.ri.'))"/>
         </xsl:when>
         <xsl:otherwise>

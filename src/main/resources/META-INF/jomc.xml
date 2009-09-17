@@ -48,6 +48,7 @@
 
     <!-- ******************************************************************* -->
     <specification identifier="org.jomc.cli.Command"
+                   class="org.jomc.cli.Command"
                    vendor="${pom.organization.name}"
                    version="1.0">
 
@@ -410,7 +411,7 @@
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.cli.commands.GenerateJavaBundlesCommand"
                     class="org.jomc.cli.commands.GenerateJavaBundlesCommand"
-                    name="${pom.name}"
+                    name="default-generate-java-bundles"
                     version="${pom.version}"
                     vendor="${pom.organization.name}"
                     final="true"
@@ -508,7 +509,7 @@
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.cli.commands.ManageJavaSourcesCommand"
                     class="org.jomc.cli.commands.ManageJavaSourcesCommand"
-                    name="${pom.name}"
+                    name="default-manage-java-sources"
                     version="${pom.version}"
                     vendor="${pom.organization.name}"
                     final="true"
@@ -577,7 +578,7 @@
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.cli.commands.CommitJavaClassesCommand"
                     class="org.jomc.cli.commands.CommitJavaClassesCommand"
-                    name="${pom.name}"
+                    name="default-commit-java-classes"
                     version="${pom.version}"
                     vendor="${pom.organization.name}"
                     final="true"
@@ -630,7 +631,7 @@
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.cli.commands.ValidateJavaClassesCommand"
                     class="org.jomc.cli.commands.ValidateJavaClassesCommand"
-                    name="${pom.name}"
+                    name="default-validate-java-classes"
                     version="${pom.version}"
                     vendor="${pom.organization.name}"
                     final="true"
@@ -679,7 +680,7 @@
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.cli.commands.ValidateModulesCommand"
                     class="org.jomc.cli.commands.ValidateModulesCommand"
-                    name="${pom.name}"
+                    name="default-validate-modules"
                     version="${pom.version}"
                     vendor="${pom.organization.name}"
                     final="true"
@@ -728,7 +729,7 @@
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.cli.commands.MergeModulesCommand"
                     class="org.jomc.cli.commands.MergeModulesCommand"
-                    name="${pom.name}"
+                    name="default-merge-modules"
                     version="${pom.version}"
                     vendor="${pom.organization.name}"
                     final="true"

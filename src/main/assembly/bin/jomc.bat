@@ -67,7 +67,7 @@ set BASEDIR=%~dp0\..
 
 if "%JAVACMD%"=="" set JAVACMD=java
 
-set JARNAME="%BASEDIR%"\lib\${project.build.finalName}.jar
+set JARNAME="%BASEDIR%"\bin\${project.build.finalName}.jar
 set EXTRA_JVM_ARGUMENTS=
 goto endInit
 
