@@ -54,7 +54,7 @@
  * </p>
  *
 #if($specification.getScope())
- * <p>This specification applies to {@code $specification.getScope()} scope. The same {@code $specification.getScope().toLowerCase()} object is returned whenever requested.</p>
+ * <p>This specification applies to {@code $specification.getScope()} scope. The same $specification.getScope().toLowerCase() object is returned whenever requested.</p>
 #else
  * <p>This specification does not apply to any scope. A new object is returned whenever requested.</p>
 #end

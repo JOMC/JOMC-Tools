@@ -44,6 +44,11 @@
 #else
      * <p>This method returns any available object of the {@code $dependency.getIdentifier()} specification#if($dependency.getVersion()) at specification level $dependency.getVersion()#end.</p>
 #end
+#if($specification.getScope())
+     * <p>That specification applies to {@code $specification.getScope()} scope. The $specification.getScope().toLowerCase() object is returned whenever requested#if($dependency.isBound()) and bound to this instance#end.</p>
+#else
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested#if($dependency.isBound()) and bound to this instance#end.</p>
+#end
 #if($dependency.getProperties())
      * <p><b>Properties</b><dl>
 #foreach($property in $dependency.getProperties().getProperty())
@@ -61,13 +66,13 @@
 #else
      * @return The {@code $dependency.getName()} dependency.
 #end
+#if($dependency.isOptional())
+     * {@code null} if no object is available.
+#end
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @javax.annotation.Generated
-    (
-        value = "$tool.getClass().getName()",
-        comments = "See ${pom.url}"
-    )
+    @javax.annotation.Generated( value = "$tool.getClass().getName()",
+                                 comments = "See ${pom.url}" )
     $tool.getJavaModifierName($implementation,$dependency) $tool.getJavaTypeName($dependency) $tool.getJavaGetterMethodName($dependency)() throws org.jomc.ObjectManagementException
     {
         return ($tool.getJavaTypeName($dependency)) org.jomc.ObjectManagerFactory.getObjectManager().getDependency( this, "$dependency.getName()" );

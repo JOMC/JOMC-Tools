@@ -29,6 +29,7 @@
 ##
 ##   $Id$
 ##
+#set($messages = $modules.getMessages($implementation.getIdentifier()))
 package ${tool.getJavaPackageName($implementation)};
 
 import java.util.Locale;
@@ -57,12 +58,9 @@ class ${tool.getJavaTypeName($implementation,false)}${classSuffix}
 #end
   ${tool.getJavaTypeName($implementation,false)}${classSuffix}()
   {
-#if($implementation.getMessages())
-#foreach($message in $implementation.getMessages().getMessage())
+#if($messages)
+#foreach($message in $messages.getMessage())
     this.getMessage ( "$message.getName()", Locale.getDefault() );
-#end
-#foreach($messageReference in $implementation.getMessages().getReference())
-    this.getMessage ( "$messageReference.getName()", Locale.getDefault() );
 #end
 #end
   }
@@ -79,7 +77,6 @@ class ${tool.getJavaTypeName($implementation,false)}${classSuffix}
     return instance;
   }
 
-#set($messages = $modules.getMessages($implementation.getIdentifier()))
 #if($messages)
 #foreach($message in $messages.getMessage())
 #if($comment)

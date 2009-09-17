@@ -41,7 +41,7 @@
  * <p><b>Specifications</b><ul>
 #foreach($reference in $specifications.getReference())
 #set($specification = $specifications.getSpecification($reference.getIdentifier()))
- * <li>{@code $tool.getJavaTypeName($reference,true)}#if($reference.getVersion()) {@code $reference.getVersion()}#end#if($specification)#if($specification.getScope()) {@code $specification.getScope()}#else {@code Multiton}#end#end</li>
+ * <li>{@code $reference.getIdentifier()}#if($reference.getVersion()) {@code $reference.getVersion()}#end#if($specification)#if($specification.getScope()) {@code $specification.getScope()}#else {@code Multiton}#end#end</li>
 #end
  * </ul></p>
 #end
@@ -80,5 +80,5 @@
 #end
 #end
 #set($D = "$")
- * @version ${D}Id$D
+ * @version ${D}Id${D}
  */

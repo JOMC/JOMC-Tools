@@ -193,7 +193,7 @@ public abstract class JomcTool
             throw new NullPointerException( "specification" );
         }
 
-        return specification.getIdentifier().substring( 0, specification.getIdentifier().lastIndexOf( '.' ) );
+        return specification.getClazz().substring( 0, specification.getClazz().lastIndexOf( '.' ) );
     }
 
     /**
@@ -222,7 +222,7 @@ public abstract class JomcTool
             typeName.append( javaPackageName ).append( '.' );
         }
 
-        typeName.append( specification.getIdentifier().substring( javaPackageName.length() + 1 ) );
+        typeName.append( specification.getClazz().substring( javaPackageName.length() + 1 ) );
         return typeName.toString();
     }
 
@@ -261,7 +261,14 @@ public abstract class JomcTool
             throw new NullPointerException( "reference" );
         }
 
-        return reference.getIdentifier().substring( 0, reference.getIdentifier().lastIndexOf( '.' ) );
+        final Specification s = this.getModules().getSpecification( reference.getIdentifier() );
+
+        if ( s != null )
+        {
+            return this.getJavaPackageName( s );
+        }
+
+        return null;
     }
 
     /**
@@ -282,16 +289,14 @@ public abstract class JomcTool
             throw new NullPointerException( "reference" );
         }
 
-        final StringBuffer typeName = new StringBuffer();
-        final String javaPackageName = this.getJavaPackageName( reference );
+        final Specification s = this.getModules().getSpecification( reference.getIdentifier() );
 
-        if ( qualified )
+        if ( s != null )
         {
-            typeName.append( javaPackageName ).append( '.' );
+            return this.getJavaTypeName( s, qualified );
         }
 
-        typeName.append( reference.getIdentifier().substring( javaPackageName.length() + 1 ) );
-        return typeName.toString();
+        return null;
     }
 
     /**
@@ -757,6 +762,26 @@ public abstract class JomcTool
         }
 
         return buf.toString();
+    }
+
+    /**
+     * Gets a flag indicating if a given specification declares a Java class.
+     *
+     * @param specification The specification to test.
+     *
+     * @return {@code true} if {@code specification} is declaring the Java class with name
+     * {@code specification.getClazz()}; {@code false} if {@code specification} does not declare that class.
+     *
+     * @throws NullPointerException if {@code specification} is {@code null}.
+     */
+    public boolean isJavaClassDeclaration( final Specification specification )
+    {
+        if ( specification == null )
+        {
+            throw new NullPointerException( "specification" );
+        }
+
+        return specification.getClazz() != null && specification.getClazz().equals( specification.getIdentifier() );
     }
 
     /**

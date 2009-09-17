@@ -32,8 +32,5 @@
 ## @param modules The modules declaring specification.
 ## @param specification The specification of the template.
 ## @param tool The builder of the template.
-@javax.annotation.Generated
-(
-    value = "$tool.getClass().getName()",
-    comments = "See ${pom.url}"
-)
+@javax.annotation.Generated( value = "$tool.getClass().getName()",
+                             comments = "See ${pom.url}" )

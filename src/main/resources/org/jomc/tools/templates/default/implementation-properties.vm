@@ -46,11 +46,8 @@
 #end
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @javax.annotation.Generated
-    (
-        value = "$tool.getClass().getName()",
-        comments = "See ${pom.url}"
-    )
+    @javax.annotation.Generated( value = "$tool.getClass().getName()",
+                                 comments = "See ${pom.url}" )
     $tool.getJavaModifierName($implementation,$property) $tool.getJavaTypeName($property,false) $tool.getJavaGetterMethodName($property)() throws org.jomc.ObjectManagementException
     {
 #if($tool.isJavaPrimitiveType($property))

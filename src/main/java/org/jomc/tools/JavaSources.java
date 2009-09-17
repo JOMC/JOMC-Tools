@@ -244,7 +244,7 @@ public class JavaSources extends JomcTool
         {
             this.manageSources( i, sourcesDirectory );
         }
-        else
+        else if ( this.isJavaClassDeclaration( specification ) )
         {
             final File f = new File( sourcesDirectory, specification.getIdentifier().replace( '.', '/' ) + ".java" );
             final String content = f.exists()
