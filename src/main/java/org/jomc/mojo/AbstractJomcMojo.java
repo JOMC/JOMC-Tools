@@ -119,14 +119,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Contols processing of java sources.
      *
-     * @parameter expression="${jomc.javaSources.disabled}" default-value="false
+     * @parameter expression="${jomc.javaSources.disabled}" default-value="false"
      */
     private boolean javaSourceProcessingDisabled;
 
     /**
      * Contols processing of java classes.
      *
-     * @parameter expression="${jomc.javaClasses.disabled}" default-value="false
+     * @parameter expression="${jomc.javaClasses.disabled}" default-value="false"
      */
     private boolean javaClassProcessingDisabled;
 
