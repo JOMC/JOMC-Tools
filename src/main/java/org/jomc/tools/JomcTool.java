@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
@@ -680,78 +681,19 @@ public abstract class JomcTool
         normalized = normalized.replaceAll( "\\/\\*\\*", "/*" );
         normalized = normalized.replaceAll( "\\*/", "/" );
         normalized = normalized.replaceAll( "\n", "\n" + linebreak );
-        return normalized;
+        return StringEscapeUtils.escapeHtml( normalized );
     }
 
     /**
      * Formats a string to a Java string with unicode escapes.
      *
-     * @param string The string to format to a Java string.
+     * @param str The string to format to a Java string or {@code null}.
      *
-     * @return {@code string} formatted as a Java string.
-     *
-     * @throws NullPointerException if {@code string} is {@code null}.
+     * @return {@code str} formatted as a Java string or {@code null}.
      */
-    public String getJavaString( final String string )
+    public String getJavaString( final String str )
     {
-        if ( string == null )
-        {
-            throw new NullPointerException( "string" );
-        }
-
-        final StringBuilder buf = new StringBuilder( string.length() );
-        final int len = string.length();
-
-        for ( int i = 0; i < len; i++ )
-        {
-            final char c = string.charAt( i );
-            if ( ( c > 61 ) && ( c < 127 ) )
-            {
-                if ( c == '\\' )
-                {
-                    buf.append( '\\' ).append( '\\' );
-                }
-
-                buf.append( c );
-                continue;
-            }
-
-            switch ( c )
-            {
-                case '\t':
-                    buf.append( '\\' ).append( 't' );
-                    break;
-                case '\n':
-                    buf.append( '\\' ).append( 'n' );
-                    break;
-                case '\r':
-                    buf.append( '\\' ).append( 'r' );
-                    break;
-                case '\f':
-                    buf.append( '\\' ).append( 'f' );
-                    break;
-                case '"':
-                    buf.append( '\\' ).append( c );
-                    break;
-                default:
-                    if ( c < 0x0020 || c > 0x007e )
-                    {
-                        buf.append( '\\' );
-                        buf.append( 'u' );
-                        buf.append( toHex( ( c >> 12 ) & 0xF ) );
-                        buf.append( toHex( ( c >> 8 ) & 0xF ) );
-                        buf.append( toHex( ( c >> 4 ) & 0xF ) );
-                        buf.append( toHex( c & 0xF ) );
-                    }
-                    else
-                    {
-                        buf.append( c );
-                    }
-
-            }
-        }
-
-        return buf.toString();
+        return StringEscapeUtils.escapeJava( str );
     }
 
     /**

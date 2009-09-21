@@ -39,12 +39,8 @@ import java.text.MessageFormat;
 #if($comment)
 /** Accessor methods for the {@code "$tool.getJavaClasspathLocation($implementation)${classSuffix}"} {@code ResourceBundle}. */
 #end
-@javax.annotation.Generated
-(
-  value = "$tool.getClass().getName()",
-  comments = "See ${pom.url}",
-  date = "$now"
-)
+@javax.annotation.Generated( value = "$tool.getClass().getName()",
+                             comments = "See ${pom.url}" )
 class ${tool.getJavaTypeName($implementation,false)}${classSuffix}
 {
 
