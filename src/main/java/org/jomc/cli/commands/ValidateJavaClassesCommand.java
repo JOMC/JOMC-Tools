@@ -217,7 +217,7 @@ public final class ValidateJavaClassesCommand
         try
         {
             final JavaClasses tool = this.getJavaClasses();
-            this.configureTool( tool, commandLine, printStream, false );
+            this.configureTool( tool, commandLine, printStream, true );
 
             if ( commandLine.hasOption( this.getModuleNameOption().getOpt() ) )
             {
