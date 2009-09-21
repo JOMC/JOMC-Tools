@@ -336,7 +336,7 @@ public class JavaClasses extends JomcTool
             {
                 this.validateClasses( m, classesDirectory );
             }
-            catch ( ModelException e )
+            catch ( final ModelException e )
             {
                 thrown = e;
                 details.addAll( e.getDetails() );
@@ -383,7 +383,7 @@ public class JavaClasses extends JomcTool
             {
                 this.validateClasses( m, classLoader );
             }
-            catch ( ModelException e )
+            catch ( final ModelException e )
             {
                 thrown = e;
                 details.addAll( e.getDetails() );
@@ -442,7 +442,7 @@ public class JavaClasses extends JomcTool
                     {
                         this.validateClasses( s, this.getJavaClass( classFile ) );
                     }
-                    catch ( ModelException e )
+                    catch ( final ModelException e )
                     {
                         thrown = e;
                         details.addAll( e.getDetails() );
@@ -464,7 +464,7 @@ public class JavaClasses extends JomcTool
                     {
                         this.validateClasses( i, javaClass );
                     }
-                    catch ( ModelException e )
+                    catch ( final ModelException e )
                     {
                         thrown = e;
                         details.addAll( e.getDetails() );
@@ -528,7 +528,7 @@ public class JavaClasses extends JomcTool
                         {
                             this.validateClasses( s, javaClass );
                         }
-                        catch ( ModelException e )
+                        catch ( final ModelException e )
                         {
                             thrown = e;
                             details.addAll( e.getDetails() );
@@ -561,7 +561,7 @@ public class JavaClasses extends JomcTool
                         {
                             this.validateClasses( i, javaClass );
                         }
-                        catch ( ModelException e )
+                        catch ( final ModelException e )
                         {
                             thrown = e;
                             details.addAll( e.getDetails() );
@@ -989,11 +989,11 @@ public class JavaClasses extends JomcTool
 
             }
         }
-        catch ( ParseException e )
+        catch ( final ParseException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-        catch ( TokenMgrError e )
+        catch ( final TokenMgrError e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
@@ -1144,11 +1144,11 @@ public class JavaClasses extends JomcTool
 
             }
         }
-        catch ( SAXException e )
+        catch ( final SAXException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-        catch ( JAXBException e )
+        catch ( final JAXBException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
@@ -1247,11 +1247,11 @@ public class JavaClasses extends JomcTool
 
             }
         }
-        catch ( SAXException e )
+        catch ( final SAXException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-        catch ( JAXBException e )
+        catch ( final JAXBException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
@@ -1327,7 +1327,7 @@ public class JavaClasses extends JomcTool
             throw new NullPointerException( "attributeName" );
         }
 
-        Attribute[] attributes = clazz.getAttributes();
+        final Attribute[] attributes = clazz.getAttributes();
 
         for ( int i = attributes.length - 1; i >= 0; i-- )
         {
@@ -1407,7 +1407,6 @@ public class JavaClasses extends JomcTool
             final Attribute[] tmp = new Attribute[ attributes.length + 1 ];
             System.arraycopy( attributes, 0, tmp, 0, attributes.length );
             tmp[attributes.length] = unknown;
-            attributeIndex = attributes.length;
             attributes = tmp;
         }
         else
@@ -1443,11 +1442,11 @@ public class JavaClasses extends JomcTool
             out.close();
             return baos.toByteArray();
         }
-        catch ( SAXException e )
+        catch ( final SAXException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-        catch ( JAXBException e )
+        catch ( final JAXBException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
@@ -1458,6 +1457,7 @@ public class JavaClasses extends JomcTool
      *
      * @param bytes The encoded model object to decode.
      * @param type The type of the encoded model object.
+     * @param <T> The type of the decoded model object.
      *
      * @return Model object decoded from {@code bytes}.
      *
@@ -1485,11 +1485,11 @@ public class JavaClasses extends JomcTool
             in.close();
             return element.getValue();
         }
-        catch ( SAXException e )
+        catch ( final SAXException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-        catch ( JAXBException e )
+        catch ( final JAXBException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }

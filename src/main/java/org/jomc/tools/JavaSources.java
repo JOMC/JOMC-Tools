@@ -286,9 +286,13 @@ public class JavaSources extends JomcTool
 
             if ( !edited.equals( content ) )
             {
-                if ( !f.getParentFile().exists() )
+                if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
                 {
-                    f.getParentFile().mkdirs();
+                    throw new IOException( this.getMessage( "failedCreatingDirectory", new Object[]
+                        {
+                            f.getParentFile().getAbsolutePath()
+                        } ) );
+
                 }
 
                 FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
@@ -472,9 +476,13 @@ public class JavaSources extends JomcTool
 
             if ( !edited.equals( content ) )
             {
-                if ( !f.getParentFile().exists() )
+                if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
                 {
-                    f.getParentFile().mkdirs();
+                    throw new IOException( this.getMessage( "failedCreatingDirectory", new Object[]
+                        {
+                            f.getParentFile().getAbsolutePath()
+                        } ) );
+
                 }
 
                 FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
@@ -544,7 +552,7 @@ public class JavaSources extends JomcTool
             this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
-        catch ( Exception e )
+        catch ( final Exception e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
@@ -569,7 +577,7 @@ public class JavaSources extends JomcTool
             this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
-        catch ( Exception e )
+        catch ( final Exception e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
@@ -594,7 +602,7 @@ public class JavaSources extends JomcTool
             this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
-        catch ( Exception e )
+        catch ( final Exception e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
@@ -619,7 +627,7 @@ public class JavaSources extends JomcTool
             this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
-        catch ( Exception e )
+        catch ( final Exception e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
@@ -644,7 +652,7 @@ public class JavaSources extends JomcTool
             this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
-        catch ( Exception e )
+        catch ( final Exception e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
@@ -669,7 +677,7 @@ public class JavaSources extends JomcTool
             this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
-        catch ( Exception e )
+        catch ( final Exception e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
@@ -694,7 +702,7 @@ public class JavaSources extends JomcTool
             this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
-        catch ( Exception e )
+        catch ( final Exception e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
@@ -719,7 +727,7 @@ public class JavaSources extends JomcTool
             this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
-        catch ( Exception e )
+        catch ( final Exception e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
@@ -744,7 +752,7 @@ public class JavaSources extends JomcTool
             this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
-        catch ( Exception e )
+        catch ( final Exception e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
@@ -769,7 +777,7 @@ public class JavaSources extends JomcTool
             this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
-        catch ( Exception e )
+        catch ( final Exception e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
@@ -794,7 +802,7 @@ public class JavaSources extends JomcTool
             this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
-        catch ( Exception e )
+        catch ( final Exception e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
@@ -819,7 +827,7 @@ public class JavaSources extends JomcTool
             this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
-        catch ( Exception e )
+        catch ( final Exception e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
@@ -844,7 +852,7 @@ public class JavaSources extends JomcTool
             this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
             return writer.toString();
         }
-        catch ( Exception e )
+        catch ( final Exception e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
@@ -917,7 +925,7 @@ public class JavaSources extends JomcTool
 
                 return super.getOutput( root );
             }
-            catch ( Exception e )
+            catch ( final IOException e )
             {
                 throw new RuntimeException( e );
             }
@@ -1162,16 +1170,16 @@ public class JavaSources extends JomcTool
                 if ( ctorSection != null && !this.isDefaultConstructorSectionPresent() )
                 {
                     ctorSection.getHeadContent().append( "        // SECTION-START[" ).
-                        append( DEFAULT_CONSTRUCTOR_SECTION_NAME ).append( "\n" );
+                        append( DEFAULT_CONSTRUCTOR_SECTION_NAME ).append( this.getLineSeparator() );
 
-                    ctorSection.getHeadContent().append( "        super();\n" );
-                    ctorSection.getHeadContent().append( "        // SECTION-END\n" );
+                    ctorSection.getHeadContent().append( "        super();" ).append( this.getLineSeparator() );
+                    ctorSection.getHeadContent().append( "        // SECTION-END" ).append( this.getLineSeparator() );
                     this.defaultConstructorSectionPresent = true;
                 }
 
                 return super.getOutput( root );
             }
-            catch ( Exception e )
+            catch ( final IOException e )
             {
                 throw new RuntimeException( e );
             }
@@ -1251,7 +1259,7 @@ public class JavaSources extends JomcTool
          *
          * @throws IOException if editing {@code s} fails.
          */
-        public void editDefaultConstructorSection( final Section s )
+        public void editDefaultConstructorSection( final Section s ) throws IOException
         {
             if ( s.getHeadContent().toString().trim().length() == 0 )
             {
@@ -1259,7 +1267,7 @@ public class JavaSources extends JomcTool
 
                 if ( this.implementation != null )
                 {
-                    s.getHeadContent().append( "        super();\n" ).toString();
+                    s.getHeadContent().append( "        super();" ).append( this.getLineSeparator() );
                 }
             }
         }

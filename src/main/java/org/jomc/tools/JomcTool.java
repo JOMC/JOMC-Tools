@@ -78,7 +78,7 @@ public abstract class JomcTool
 {
 
     /** Listener interface. */
-    public static abstract class Listener
+    public interface Listener
     {
 
         /**
@@ -88,7 +88,7 @@ public abstract class JomcTool
          * @param message The message of the event or {@code null}.
          * @param throwable The throwable of the event or {@code null}.
          */
-        public abstract void onLog( Level level, String message, Throwable throwable );
+        void onLog( Level level, String message, Throwable throwable );
 
     }
 
@@ -155,7 +155,7 @@ public abstract class JomcTool
                 this.setVelocityEngine( tool.getVelocityEngine() );
                 this.getListeners().addAll( tool.getListeners() );
             }
-            catch ( Exception e )
+            catch ( final Exception e )
             {
                 this.log( Level.SEVERE, e.getMessage(), e );
             }
@@ -214,7 +214,7 @@ public abstract class JomcTool
             throw new NullPointerException( "specification" );
         }
 
-        final StringBuffer typeName = new StringBuffer();
+        final StringBuilder typeName = new StringBuilder();
         final String javaPackageName = this.getJavaPackageName( specification );
 
         if ( qualified )
@@ -229,7 +229,7 @@ public abstract class JomcTool
     /**
      * Gets the Java class path location of a specification.
      *
-     * @return specification The specification to return the Java class path location of.
+     * @param specification The specification to return the Java class path location of.
      *
      * @return the Java class path location of {@code specification}.
      *
@@ -262,13 +262,8 @@ public abstract class JomcTool
         }
 
         final Specification s = this.getModules().getSpecification( reference.getIdentifier() );
-
-        if ( s != null )
-        {
-            return this.getJavaPackageName( s );
-        }
-
-        return null;
+        assert s != null : "Specification '" + reference.getIdentifier() + "' not found.";
+        return this.getJavaPackageName( s );
     }
 
     /**
@@ -290,13 +285,8 @@ public abstract class JomcTool
         }
 
         final Specification s = this.getModules().getSpecification( reference.getIdentifier() );
-
-        if ( s != null )
-        {
-            return this.getJavaTypeName( s, qualified );
-        }
-
-        return null;
+        assert s != null : "Specification '" + reference.getIdentifier() + "' not found.";
+        return this.getJavaTypeName( s, qualified );
     }
 
     /**
@@ -336,7 +326,7 @@ public abstract class JomcTool
             throw new NullPointerException( "implementation" );
         }
 
-        final StringBuffer typeName = new StringBuffer();
+        final StringBuilder typeName = new StringBuilder();
         final String javaPackageName = this.getJavaPackageName( implementation );
         if ( qualified )
         {
@@ -349,7 +339,7 @@ public abstract class JomcTool
     /**
      * Gets the Java class path location of an implementation.
      *
-     * @return implementation The implementation to return the Java class path location of.
+     * @param implementation The implementation to return the Java class path location of.
      *
      * @return the Java class path location of {@code implementation}.
      *
@@ -423,7 +413,7 @@ public abstract class JomcTool
         }
         if ( property.getType() != null )
         {
-            String typeName = property.getType();
+            final String typeName = property.getType();
 
             if ( boxify )
             {
@@ -531,7 +521,7 @@ public abstract class JomcTool
             throw new NullPointerException( "dependency" );
         }
 
-        final StringBuffer typeName = new StringBuffer();
+        final StringBuilder typeName = new StringBuilder();
         typeName.append( this.getJavaTypeName( (SpecificationReference) dependency, true ) );
 
         final Specification s = this.getModules().getSpecification( dependency.getIdentifier() );
@@ -709,7 +699,7 @@ public abstract class JomcTool
             throw new NullPointerException( "string" );
         }
 
-        final StringBuffer buf = new StringBuffer( string.length() );
+        final StringBuilder buf = new StringBuilder( string.length() );
         final int len = string.length();
 
         for ( int i = 0; i < len; i++ )
@@ -822,6 +812,10 @@ public abstract class JomcTool
      * Formats a calendar instance to a string.
      *
      * @param calendar The calendar to format.
+     *
+     * @return Date of {@code calendar} formatted using a short format style pattern.
+     *
+     * @see DateFormat#SHORT
      */
     public String getShortDate( final Calendar calendar )
     {
@@ -832,6 +826,10 @@ public abstract class JomcTool
      * Formats a calendar instance to a string.
      *
      * @param calendar The calendar to format.
+     *
+     * @return Date of {@code calendar} formatted using a long format style pattern.
+     *
+     * @see DateFormat#LONG
      */
     public String getLongDate( final Calendar calendar )
     {
@@ -842,6 +840,10 @@ public abstract class JomcTool
      * Formats a calendar instance to a string.
      *
      * @param calendar The calendar to format.
+     *
+     * @return Time of {@code calendar} formatted using a short format style pattern.
+     *
+     * @see DateFormat#SHORT
      */
     public String getShortTime( final Calendar calendar )
     {
@@ -852,6 +854,10 @@ public abstract class JomcTool
      * Formats a calendar instance to a string.
      *
      * @param calendar The calendar to format.
+     *
+     * @return Time of {@code calendar} formatted using a long format style pattern.
+     *
+     * @see DateFormat#LONG
      */
     public String getLongTime( final Calendar calendar )
     {
@@ -862,6 +868,10 @@ public abstract class JomcTool
      * Formats a calendar instance to a string.
      *
      * @param calendar The calendar to format.
+     *
+     * @return Date and time of {@code calendar} formatted using a short format style pattern.
+     *
+     * @see DateFormat#SHORT
      */
     public String getShortDateTime( final Calendar calendar )
     {
@@ -872,6 +882,10 @@ public abstract class JomcTool
      * Formats a calendar instance to a string.
      *
      * @param calendar The calendar to format.
+     *
+     * @return Date and time of {@code calendar} formatted using a long format style pattern.
+     *
+     * @see DateFormat#LONG
      */
     public String getLongDateTime( final Calendar calendar )
     {
@@ -883,13 +897,15 @@ public abstract class JomcTool
      *
      * @param start The start of the range.
      * @param end The end of the range.
+     *
+     * @return Formatted range of the years of {@code start} and {@code end}.
      */
     public String getYears( final Calendar start, final Calendar end )
     {
         final Format yearFormat = new SimpleDateFormat( "yyyy" );
         final int s = start.get( Calendar.YEAR );
         final int e = end.get( Calendar.YEAR );
-        final StringBuffer years = new StringBuffer();
+        final StringBuilder years = new StringBuilder();
 
         if ( s != e )
         {
@@ -977,72 +993,78 @@ public abstract class JomcTool
      *
      * @return The {@code VelocityEngine} used for generating source code.
      *
-     * @throws Exception if initializing a new velocity engine fails.
+     * @throws IllegalStateException if initializing a new velocity engine fails.
      *
      * @see #setVelocityEngine(org.apache.velocity.app.VelocityEngine)
      */
-    public VelocityEngine getVelocityEngine() throws Exception
+    public VelocityEngine getVelocityEngine()
     {
         if ( this.velocityEngine == null )
         {
-            final java.util.Properties props = new java.util.Properties();
-            props.put( "resource.loader", "class" );
-            props.put( "class.resource.loader.class", VELOCITY_RESOURCE_LOADER );
-            props.put( "runtime.references.strict", Boolean.TRUE.toString() );
-
-            final VelocityEngine engine = new VelocityEngine();
-            engine.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, new LogChute()
+            try
             {
+                final java.util.Properties props = new java.util.Properties();
+                props.put( "resource.loader", "class" );
+                props.put( "class.resource.loader.class", VELOCITY_RESOURCE_LOADER );
+                props.put( "runtime.references.strict", Boolean.TRUE.toString() );
 
-                public void init( final RuntimeServices runtimeServices ) throws Exception
+                final VelocityEngine engine = new VelocityEngine();
+                engine.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, new LogChute()
                 {
-                }
 
-                public void log( final int level, final String message )
-                {
-                    this.log( level, message, null );
-                }
-
-                public void log( final int level, final String message, final Throwable throwable )
-                {
-                    JomcTool.this.log( this.toLevel( level ), message, throwable );
-                }
-
-                public boolean isLevelEnabled( final int level )
-                {
-                    return true;
-                }
-
-                private Level toLevel( final int logChuteLevel )
-                {
-                    switch ( logChuteLevel )
+                    public void init( final RuntimeServices runtimeServices ) throws Exception
                     {
-                        case LogChute.DEBUG_ID:
-                            return Level.FINE;
-
-                        case LogChute.ERROR_ID:
-                            return Level.SEVERE;
-
-                        case LogChute.INFO_ID:
-                            return Level.INFO;
-
-                        case LogChute.TRACE_ID:
-                            return Level.FINER;
-
-                        case LogChute.WARN_ID:
-                            return Level.WARNING;
-
-                        default:
-                            return Level.FINEST;
-
                     }
-                }
 
-            } );
+                    public void log( final int level, final String message )
+                    {
+                        this.log( level, message, null );
+                    }
 
-            engine.init( props );
+                    public void log( final int level, final String message, final Throwable throwable )
+                    {
+                        JomcTool.this.log( this.toLevel( level ), message, throwable );
+                    }
 
-            this.velocityEngine = engine;
+                    public boolean isLevelEnabled( final int level )
+                    {
+                        return true;
+                    }
+
+                    private Level toLevel( final int logChuteLevel )
+                    {
+                        switch ( logChuteLevel )
+                        {
+                            case LogChute.DEBUG_ID:
+                                return Level.FINE;
+
+                            case LogChute.ERROR_ID:
+                                return Level.SEVERE;
+
+                            case LogChute.INFO_ID:
+                                return Level.INFO;
+
+                            case LogChute.TRACE_ID:
+                                return Level.FINER;
+
+                            case LogChute.WARN_ID:
+                                return Level.WARNING;
+
+                            default:
+                                return Level.FINEST;
+
+                        }
+                    }
+
+                } );
+
+                engine.init( props );
+                this.velocityEngine = engine;
+            }
+            catch ( final Exception e )
+            {
+                throw new IllegalStateException( e );
+            }
         }
 
         return this.velocityEngine;
@@ -1055,7 +1077,7 @@ public abstract class JomcTool
      *
      * @see #getVelocityEngine()
      */
-    public void setVelocityEngine( final VelocityEngine value ) throws Exception
+    public void setVelocityEngine( final VelocityEngine value )
     {
         this.velocityEngine = value;
     }
@@ -1250,10 +1272,10 @@ public abstract class JomcTool
      */
     private static char toHex( final int nibble )
     {
-        return hexDigit[( nibble & 0xF )];
+        return hexDigit[nibble & 0xF];
     }
 
-    /** A table of hex digits */
+    /** A list of hex digits. */
     private static final char[] hexDigit =
     {
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'

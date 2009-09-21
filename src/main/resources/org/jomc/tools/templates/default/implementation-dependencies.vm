@@ -73,9 +73,15 @@
      */
     @javax.annotation.Generated( value = "$tool.getClass().getName()",
                                  comments = "See ${pom.url}" )
-    $tool.getJavaModifierName($implementation,$dependency) $tool.getJavaTypeName($dependency) $tool.getJavaGetterMethodName($dependency)() throws org.jomc.ObjectManagementException
+    $tool.getJavaModifierName($implementation,$dependency) $tool.getJavaTypeName($dependency) $tool.getJavaGetterMethodName($dependency)()
     {
+#if($dependency.isOptional())
         return ($tool.getJavaTypeName($dependency)) org.jomc.ObjectManagerFactory.getObjectManager().getDependency( this, "$dependency.getName()" );
+#else
+        final $tool.getJavaTypeName($dependency) _d = ($tool.getJavaTypeName($dependency)) org.jomc.ObjectManagerFactory.getObjectManager().getDependency( this, "$dependency.getName()" );
+        assert _d != null : "'$dependency.getName()' dependency not found.";
+        return _d;
+#end
     }
 #end
 #end

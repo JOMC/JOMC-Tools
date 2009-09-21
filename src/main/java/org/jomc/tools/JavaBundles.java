@@ -224,9 +224,13 @@ public class JavaBundles extends JomcTool
 
             final File bundleFile = new File( sourcesDirectory, bundlePath + ".java" );
 
-            if ( !bundleFile.getParentFile().exists() )
+            if ( !bundleFile.getParentFile().exists() && !bundleFile.getParentFile().mkdirs() )
             {
-                bundleFile.getParentFile().mkdirs();
+                throw new IOException( this.getMessage( "failedCreatingDirectory", new Object[]
+                    {
+                        bundleFile.getParentFile().getAbsolutePath()
+                    } ) );
+
             }
 
             this.log( Level.INFO, this.getMessage( "writing", new Object[]
@@ -333,9 +337,13 @@ public class JavaBundles extends JomcTool
                 final java.util.Properties p = e.getValue();
                 final File file = new File( resourcesDirectory, bundlePath + "_" + language + ".properties" );
 
-                if ( !file.getParentFile().exists() )
+                if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
                 {
-                    file.getParentFile().mkdirs();
+                    throw new IOException( this.getMessage( "failedCreatingDirectory", new Object[]
+                        {
+                            file.getParentFile().getAbsolutePath()
+                        } ) );
+
                 }
 
                 this.log( Level.INFO, this.getMessage( "writing", new Object[]
@@ -343,9 +351,19 @@ public class JavaBundles extends JomcTool
                         file.getCanonicalPath()
                     } ), null );
 
-                OutputStream out = new FileOutputStream( file );
-                p.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
-                out.close();
+                OutputStream out = null;
+                try
+                {
+                    out = new FileOutputStream( file );
+                    p.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
+                }
+                finally
+                {
+                    if ( out != null )
+                    {
+                        out.close();
+                    }
+                }
 
                 if ( this.getDefaultLocale().getLanguage().equalsIgnoreCase( language ) )
                 {
@@ -363,9 +381,13 @@ public class JavaBundles extends JomcTool
             if ( defProperties != null )
             {
                 final File file = new File( resourcesDirectory, bundlePath + ".properties" );
-                if ( !file.getParentFile().exists() )
+                if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
                 {
-                    file.getParentFile().mkdirs();
+                    throw new IOException( this.getMessage( "failedCreatingDirectory", new Object[]
+                        {
+                            file.getParentFile().getAbsolutePath()
+                        } ) );
+
                 }
 
                 this.log( Level.INFO, this.getMessage( "writing", new Object[]
@@ -373,9 +395,19 @@ public class JavaBundles extends JomcTool
                         file.getCanonicalPath()
                     } ), null );
 
-                final OutputStream out = new FileOutputStream( file );
-                defProperties.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
-                out.close();
+                OutputStream out = null;
+                try
+                {
+                    out = new FileOutputStream( file );
+                    defProperties.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
+                }
+                finally
+                {
+                    if ( out != null )
+                    {
+                        out.close();
+                    }
+                }
             }
         }
     }
@@ -409,7 +441,7 @@ public class JavaBundles extends JomcTool
             writer.close();
             return writer.toString();
         }
-        catch ( Exception e )
+        catch ( final Exception e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
