@@ -284,7 +284,7 @@ public final class ManageJavaSourcesCommand
         try
         {
             final JavaSources tool = this.getJavaSources();
-            this.configureTool( tool, commandLine, printStream, false );
+            this.configureTool( tool, commandLine, printStream, true );
 
             if ( commandLine.hasOption( this.getProfileOption().getOpt() ) )
             {
