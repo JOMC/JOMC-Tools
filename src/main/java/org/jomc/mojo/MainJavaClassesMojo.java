@@ -51,6 +51,12 @@ import org.jomc.tools.JavaClasses;
 public final class MainJavaClassesMojo extends AbstractJomcMojo
 {
 
+    /** Creates a new {@code MainJavaClassesMojo} instance. */
+    public MainJavaClassesMojo()
+    {
+        super();
+    }
+
     @Override
     public void executeTool() throws Exception
     {

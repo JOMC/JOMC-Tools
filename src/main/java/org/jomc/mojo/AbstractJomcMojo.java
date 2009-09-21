@@ -239,9 +239,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         if ( this.mainClassLoader == null )
         {
-            final Iterator it;
             final Collection urls = new LinkedList();
-            for ( it = this.getMainClasspathElements().iterator(); it.hasNext(); )
+            for ( final Iterator it = this.getMainClasspathElements().iterator(); it.hasNext(); )
             {
                 final String element = (String) it.next();
                 final URL url = new File( element ).toURI().toURL();
@@ -272,9 +271,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         if ( this.testClassLoader == null )
         {
-            final Iterator it;
             final Collection urls = new LinkedList();
-            for ( it = this.getTestClasspathElements().iterator(); it.hasNext(); )
+            for ( final Iterator it = this.getTestClasspathElements().iterator(); it.hasNext(); )
             {
                 final String element = (String) it.next();
                 final URL url = new File( element ).toURI().toURL();
@@ -304,10 +302,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     public Set getMainClasspathElements() throws DependencyResolutionRequiredException, IOException
     {
         final Set elements = new HashSet();
-
         elements.add( this.getMavenProject().getBuild().getOutputDirectory() );
 
-        for ( Iterator it = this.getMavenProject().getRuntimeArtifacts().iterator(); it.hasNext(); )
+        for ( final Iterator it = this.getMavenProject().getRuntimeArtifacts().iterator(); it.hasNext(); )
         {
             final Artifact a = (Artifact) it.next();
 
@@ -322,7 +319,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             elements.add( element );
         }
 
-        for ( Iterator it = this.getMavenProject().getCompileArtifacts().iterator(); it.hasNext(); )
+        for ( final Iterator it = this.getMavenProject().getCompileArtifacts().iterator(); it.hasNext(); )
         {
             final Artifact a = (Artifact) it.next();
 
@@ -355,7 +352,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         elements.add( this.getMavenProject().getBuild().getOutputDirectory() );
         elements.add( this.getMavenProject().getBuild().getTestOutputDirectory() );
 
-        for ( Iterator it = this.getMavenProject().getTestArtifacts().iterator(); it.hasNext(); )
+        for ( final Iterator it = this.getMavenProject().getTestArtifacts().iterator(); it.hasNext(); )
         {
             final Artifact a = (Artifact) it.next();
 
@@ -422,13 +419,23 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             this.logSeparator( Level.INFO );
             this.executeTool();
         }
-        catch ( ModelException e )
+        catch ( final ModelException e )
         {
             try
             {
                 this.log( Level.SEVERE, e );
             }
-            catch ( Exception e2 )
+            catch ( final IOException e2 )
+            {
+                this.getLog().error( e );
+                throw new MojoExecutionException( e2.getMessage(), e2 );
+            }
+            catch ( final SAXException e2 )
+            {
+                this.getLog().error( e );
+                throw new MojoExecutionException( e2.getMessage(), e2 );
+            }
+            catch ( final JAXBException e2 )
             {
                 this.getLog().error( e );
                 throw new MojoExecutionException( e2.getMessage(), e2 );
@@ -436,7 +443,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             throw new MojoExecutionException( e.getMessage(), e );
         }
-        catch ( Exception e )
+        catch ( final Exception e )
         {
             throw new MojoExecutionException( e.getMessage(), e );
         }
@@ -457,7 +464,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 {
                     log( level, message, t );
                 }
-                catch ( IOException e )
+                catch ( final IOException e )
                 {
                     getLog().error( e );
                 }
@@ -477,14 +484,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             defaultModelManager.getListeners().add( new DefaultModelManager.Listener()
             {
 
-                @Override
                 public void onLog( final Level level, final String message, final Throwable t )
                 {
                     try
                     {
                         log( level, message, t );
                     }
-                    catch ( IOException e )
+                    catch ( final IOException e )
                     {
                         getLog().error( e );
                     }
@@ -504,7 +510,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 classpathModules.getModule().add( classpathModule );
             }
 
-            this.log( Level.FINE, "\n", null );
+            this.log( Level.FINE, System.getProperty( "line.separator" ), null );
             this.log( Level.FINE, this.getMessage( "modulesReport" ).format( null ), null );
 
             if ( classpathModules.getModule().isEmpty() )
@@ -513,9 +519,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
             else
             {
-                for ( Module m : classpathModules.getModule() )
+                for ( final Module m : classpathModules.getModule() )
                 {
-                    final StringBuffer moduleInfo = new StringBuffer().append( '\t' );
+                    final StringBuilder moduleInfo = new StringBuilder().append( '\t' );
                     moduleInfo.append( m.getName() );
 
                     if ( m.getVersion() != null )
@@ -527,7 +533,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 }
             }
 
-            this.log( Level.FINE, "\n", null );
+            this.log( Level.FINE, System.getProperty( "line.separator" ), null );
 
             modulesToValidate = classpathModules;
             tool.setModules( includeClasspathModule ? classpathModules : modulesWithoutClasspath );
@@ -702,7 +708,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     final StringWriter stringWriter = new StringWriter();
                     marshaller.marshal( detail.getElement(), stringWriter );
 
-                    this.log( Level.FINE, "\n", null );
+                    this.log( Level.FINE, System.getProperty( "line.separator" ), null );
                     this.log( Level.FINE, stringWriter.toString(), null );
                 }
             }

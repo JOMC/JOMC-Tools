@@ -51,6 +51,12 @@ import org.jomc.tools.JavaSources;
 public final class TestJavaSourcesMojo extends AbstractJomcMojo
 {
 
+    /** Creates a new {@code TestJavaSourcesMojo} instance. */
+    public TestJavaSourcesMojo()
+    {
+        super();
+    }
+
     @Override
     public void executeTool() throws Exception
     {

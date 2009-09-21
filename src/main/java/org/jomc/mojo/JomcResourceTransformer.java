@@ -83,7 +83,8 @@ public class JomcResourceTransformer implements ResourceTransformer
     {
 
         MODEL_OBJECT_RESOURCE,
-        BOOTSTRAP_OBJECT_RESOURCE
+        BOOTSTRAP_OBJECT_RESOURCE,
+        UNKNOWN_RESOURCE
 
     }
 
@@ -127,10 +128,16 @@ public class JomcResourceTransformer implements ResourceTransformer
     private final Modules modules = new Modules();
 
     /** Type of the currently processed resource. */
-    private ResourceType currentResourceType;
+    private ResourceType currentResourceType = ResourceType.UNKNOWN_RESOURCE;
 
     /** The model manager of the instance. */
     private DefaultModelManager modelManager;
+
+    /** Creates a new {@code JomcResourceTransformer} instance. */
+    public JomcResourceTransformer()
+    {
+        super();
+    }
 
     /**
      * Gets the {@code ModelManager} of the instance.
@@ -175,7 +182,7 @@ public class JomcResourceTransformer implements ResourceTransformer
             }
         }
 
-        this.currentResourceType = null;
+        this.currentResourceType = ResourceType.UNKNOWN_RESOURCE;
         return false;
     }
 
@@ -228,11 +235,11 @@ public class JomcResourceTransformer implements ResourceTransformer
 
             }
         }
-        catch ( SAXException e )
+        catch ( final SAXException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-        catch ( JAXBException e )
+        catch ( final JAXBException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
@@ -290,19 +297,19 @@ public class JomcResourceTransformer implements ResourceTransformer
 
             }
         }
-        catch ( TransformerConfigurationException e )
+        catch ( final TransformerConfigurationException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-        catch ( TransformerException e )
+        catch ( final TransformerException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-        catch ( SAXException e )
+        catch ( final SAXException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-        catch ( JAXBException e )
+        catch ( final JAXBException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }

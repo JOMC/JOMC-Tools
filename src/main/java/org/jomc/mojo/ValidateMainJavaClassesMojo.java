@@ -51,6 +51,12 @@ import org.jomc.tools.JavaClasses;
 public class ValidateMainJavaClassesMojo extends AbstractJomcMojo
 {
 
+    /** Creates a new {@code ValidateMainJavaClassesMojo} instance. */
+    public ValidateMainJavaClassesMojo()
+    {
+        super();
+    }
+
     @Override
     protected void executeTool() throws Exception
     {
@@ -91,7 +97,9 @@ public class ValidateMainJavaClassesMojo extends AbstractJomcMojo
 
     private String getMessage( final String key )
     {
-        return ResourceBundle.getBundle( ValidateMainJavaClassesMojo.class.getName().replace( '.', '/' ) ).getString( key );
+        return ResourceBundle.getBundle( ValidateMainJavaClassesMojo.class.getName().replace( '.', '/' ) ).
+            getString( key );
+
     }
 
 }
