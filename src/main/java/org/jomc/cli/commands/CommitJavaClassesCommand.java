@@ -232,7 +232,7 @@ public final class CommitJavaClassesCommand
         try
         {
             final JavaClasses tool = this.getJavaClasses();
-            this.configureTool( tool, commandLine, printStream, false );
+            this.configureTool( tool, commandLine, printStream, true );
 
             final File classesDirectory = new File( commandLine.getOptionValue(
                 this.getClassesDirectoryOption().getOpt() ) );
