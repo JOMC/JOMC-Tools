@@ -65,12 +65,12 @@ import org.apache.commons.lang.StringUtils;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getIllegalArgumentsMessage illegalArguments}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal arguments. Type »jomc {0} {1}« for further information.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ungültige Argumente. Geben Sie »jomc {0} {1}« für weitere Informationen ein.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal arguments. Type &raquo;jomc {0} {1}&laquo; for further information.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ung&uuml;ltige Argumente. Geben Sie &raquo;jomc {0} {1}&laquo; f&uuml;r weitere Informationen ein.</pre></td></tr>
  * </table>
  * <li>"{@link #getUsageMessage usage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Type »jomc &lt;command&gt; {0}« for further information.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Geben Sie »jomc &lt;Befehl&gt; {0}« für weitere Informationen ein.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Type &raquo;jomc &lt;command&gt; {0}&laquo; for further information.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Geben Sie &raquo;jomc &lt;Befehl&gt; {0}&laquo; f&uuml;r weitere Informationen ein.</pre></td></tr>
  * </table>
  * </ul></p>
  *
@@ -360,8 +360,8 @@ public class Jomc
     /**
      * Gets the text of the {@code illegalArguments} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal arguments. Type »jomc {0} {1}« for further information.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ungültige Argumente. Geben Sie »jomc {0} {1}« für weitere Informationen ein.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal arguments. Type &raquo;jomc {0} {1}&laquo; for further information.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ung&uuml;ltige Argumente. Geben Sie &raquo;jomc {0} {1}&laquo; f&uuml;r weitere Informationen ein.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @param command Format argument.
@@ -382,8 +382,8 @@ public class Jomc
     /**
      * Gets the text of the {@code usage} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Type »jomc &lt;command&gt; {0}« for further information.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Geben Sie »jomc &lt;Befehl&gt; {0}« für weitere Informationen ein.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Type &raquo;jomc &lt;command&gt; {0}&laquo; for further information.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Geben Sie &raquo;jomc &lt;Befehl&gt; {0}&laquo; f&uuml;r weitere Informationen ein.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @param helpCommandName Format argument.

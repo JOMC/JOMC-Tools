@@ -94,7 +94,7 @@ import org.jomc.tools.JavaClasses;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-09-21T16:07:14+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-09-21T17:11:36+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -173,11 +173,11 @@ import org.jomc.tools.JavaClasses;
  * </table>
  * <li>"{@link #getStartingModuleProcessingMessage startingModuleProcessing}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} with module ''{1}'' ...</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Führt Befehl {0} mit Modul ''{1}'' aus ... </pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>F&uuml;hrt Befehl {0} mit Modul ''{1}'' aus ... </pre></td></tr>
  * </table>
  * <li>"{@link #getStartingProcessingMessage startingProcessing}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} ...</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Führt Befehl {0} aus ... </pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>F&uuml;hrt Befehl {0} aus ... </pre></td></tr>
  * </table>
  * <li>"{@link #getToolFailureMessage toolFailure}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>{0} failure.</pre></td></tr>
@@ -189,7 +189,7 @@ import org.jomc.tools.JavaClasses;
  * </table>
  * <li>"{@link #getVerboseOptionMessage verboseOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Enables verbose output.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert ausführliche Ausgaben.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert ausf&uuml;hrliche Ausgaben.</pre></td></tr>
  * </table>
  * </ul></p>
  *
@@ -592,7 +592,7 @@ public final class CommitJavaClassesCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-09-21T16:07:14+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-09-21T17:11:36+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -996,7 +996,7 @@ public final class CommitJavaClassesCommand
      * Gets the text of the {@code startingModuleProcessing} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} with module ''{1}'' ...</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Führt Befehl {0} mit Modul ''{1}'' aus ... </pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>F&uuml;hrt Befehl {0} mit Modul ''{1}'' aus ... </pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
@@ -1018,7 +1018,7 @@ public final class CommitJavaClassesCommand
      * Gets the text of the {@code startingProcessing} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} ...</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Führt Befehl {0} aus ... </pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>F&uuml;hrt Befehl {0} aus ... </pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
@@ -1081,7 +1081,7 @@ public final class CommitJavaClassesCommand
      * Gets the text of the {@code verboseOption} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Enables verbose output.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert ausführliche Ausgaben.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert ausf&uuml;hrliche Ausgaben.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code verboseOption} message.
