@@ -35,7 +35,6 @@
 package org.jomc.cli.commands;
 
 import java.io.PrintStream;
-import java.lang.*;
 import java.util.logging.Level;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
@@ -87,7 +86,7 @@ import org.jomc.model.ModelException;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-09-19T22:11:50+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-09-21T13:48:34+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -222,7 +221,7 @@ public class ValidateModulesCommand
 
             this.getModules( this.getModelManager(), commandLine, printStream, true, true );
         }
-        catch ( ModelException e )
+        catch ( final ModelException e )
         {
             for ( ModelException.Detail d : e.getDetails() )
             {
@@ -232,7 +231,7 @@ public class ValidateModulesCommand
             this.log( Level.SEVERE, e.getMessage(), e, printStream, verbose, debug );
             status = STATUS_FAILURE;
         }
-        catch ( Throwable t )
+        catch ( final Throwable t )
         {
             this.log( Level.SEVERE, t.getMessage(), t, printStream, verbose, debug );
             status = STATUS_FAILURE;
@@ -267,9 +266,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private java.util.Locale getLocale() throws org.jomc.ObjectManagementException
+    private java.util.Locale getLocale()
     {
-        return (java.util.Locale) org.jomc.ObjectManagerFactory.getObjectManager().getDependency( this, "Locale" );
+        final java.util.Locale _d = (java.util.Locale) org.jomc.ObjectManagerFactory.getObjectManager().getDependency( this, "Locale" );
+        assert _d != null : "'Locale' dependency not found.";
+        return _d;
     }
     // SECTION-END
     // SECTION-START[Properties]
@@ -281,9 +282,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private java.lang.String getAbbreviatedCommandName() throws org.jomc.ObjectManagementException
+    private java.lang.String getAbbreviatedCommandName()
     {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "abbreviatedCommandName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "abbreviatedCommandName" );
+        assert _p != null : "'abbreviatedCommandName' property not found.";
+        return _p;
     }
 
     /**
@@ -293,9 +296,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private java.lang.String getClasspathOptionLongName() throws org.jomc.ObjectManagementException
+    private java.lang.String getClasspathOptionLongName()
     {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "classpathOptionLongName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "classpathOptionLongName" );
+        assert _p != null : "'classpathOptionLongName' property not found.";
+        return _p;
     }
 
     /**
@@ -305,9 +310,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private java.lang.String getClasspathOptionShortName() throws org.jomc.ObjectManagementException
+    private java.lang.String getClasspathOptionShortName()
     {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "classpathOptionShortName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "classpathOptionShortName" );
+        assert _p != null : "'classpathOptionShortName' property not found.";
+        return _p;
     }
 
     /**
@@ -317,9 +324,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private java.lang.String getCommandName() throws org.jomc.ObjectManagementException
+    private java.lang.String getCommandName()
     {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "commandName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "commandName" );
+        assert _p != null : "'commandName' property not found.";
+        return _p;
     }
 
     /**
@@ -329,9 +338,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private java.lang.String getDebugOptionLongName() throws org.jomc.ObjectManagementException
+    private java.lang.String getDebugOptionLongName()
     {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "debugOptionLongName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "debugOptionLongName" );
+        assert _p != null : "'debugOptionLongName' property not found.";
+        return _p;
     }
 
     /**
@@ -341,9 +352,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private java.lang.String getDebugOptionShortName() throws org.jomc.ObjectManagementException
+    private java.lang.String getDebugOptionShortName()
     {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "debugOptionShortName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "debugOptionShortName" );
+        assert _p != null : "'debugOptionShortName' property not found.";
+        return _p;
     }
 
     /**
@@ -353,9 +366,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private java.lang.String getDocumentLocationOptionLongName() throws org.jomc.ObjectManagementException
+    private java.lang.String getDocumentLocationOptionLongName()
     {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "documentLocationOptionLongName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "documentLocationOptionLongName" );
+        assert _p != null : "'documentLocationOptionLongName' property not found.";
+        return _p;
     }
 
     /**
@@ -365,9 +380,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private java.lang.String getDocumentLocationOptionShortName() throws org.jomc.ObjectManagementException
+    private java.lang.String getDocumentLocationOptionShortName()
     {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "documentLocationOptionShortName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "documentLocationOptionShortName" );
+        assert _p != null : "'documentLocationOptionShortName' property not found.";
+        return _p;
     }
 
     /**
@@ -377,9 +394,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private java.lang.String getDocumentsOptionLongName() throws org.jomc.ObjectManagementException
+    private java.lang.String getDocumentsOptionLongName()
     {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "documentsOptionLongName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "documentsOptionLongName" );
+        assert _p != null : "'documentsOptionLongName' property not found.";
+        return _p;
     }
 
     /**
@@ -389,9 +408,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private java.lang.String getDocumentsOptionShortName() throws org.jomc.ObjectManagementException
+    private java.lang.String getDocumentsOptionShortName()
     {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "documentsOptionShortName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "documentsOptionShortName" );
+        assert _p != null : "'documentsOptionShortName' property not found.";
+        return _p;
     }
 
     /**
@@ -401,9 +422,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private java.lang.String getFailOnWarningsOptionLongName() throws org.jomc.ObjectManagementException
+    private java.lang.String getFailOnWarningsOptionLongName()
     {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "failOnWarningsOptionLongName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "failOnWarningsOptionLongName" );
+        assert _p != null : "'failOnWarningsOptionLongName' property not found.";
+        return _p;
     }
 
     /**
@@ -413,9 +436,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private java.lang.String getFailOnWarningsOptionShortName() throws org.jomc.ObjectManagementException
+    private java.lang.String getFailOnWarningsOptionShortName()
     {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "failOnWarningsOptionShortName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "failOnWarningsOptionShortName" );
+        assert _p != null : "'failOnWarningsOptionShortName' property not found.";
+        return _p;
     }
 
     /**
@@ -425,9 +450,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private java.lang.String getModuleNameOptionLongName() throws org.jomc.ObjectManagementException
+    private java.lang.String getModuleNameOptionLongName()
     {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "moduleNameOptionLongName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "moduleNameOptionLongName" );
+        assert _p != null : "'moduleNameOptionLongName' property not found.";
+        return _p;
     }
 
     /**
@@ -437,9 +464,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private java.lang.String getModuleNameOptionShortName() throws org.jomc.ObjectManagementException
+    private java.lang.String getModuleNameOptionShortName()
     {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "moduleNameOptionShortName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "moduleNameOptionShortName" );
+        assert _p != null : "'moduleNameOptionShortName' property not found.";
+        return _p;
     }
 
     /**
@@ -449,9 +478,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private java.lang.String getVerboseOptionLongName() throws org.jomc.ObjectManagementException
+    private java.lang.String getVerboseOptionLongName()
     {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "verboseOptionLongName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "verboseOptionLongName" );
+        assert _p != null : "'verboseOptionLongName' property not found.";
+        return _p;
     }
 
     /**
@@ -461,9 +492,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private java.lang.String getVerboseOptionShortName() throws org.jomc.ObjectManagementException
+    private java.lang.String getVerboseOptionShortName()
     {
-        return (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "verboseOptionShortName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "verboseOptionShortName" );
+        assert _p != null : "'verboseOptionShortName' property not found.";
+        return _p;
     }
     // SECTION-END
     // SECTION-START[Messages]
@@ -471,7 +504,7 @@ public class ValidateModulesCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-09-19T22:11:50+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-1-SNAPSHOT Build 2009-09-21T13:48:34+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -480,9 +513,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getApplicationTitleMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    private String getApplicationTitleMessage( final java.util.Locale locale )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "applicationTitle", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "applicationTitle", locale,  null );
+        assert _m != null : "'applicationTitle' message not found.";
+        return _m;
     }
 
     /**
@@ -500,9 +535,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getCannotProcessMessage( final java.util.Locale locale, final java.lang.String itemInfo, final java.lang.String detailMessage ) throws org.jomc.ObjectManagementException
+    private String getCannotProcessMessage( final java.util.Locale locale, final java.lang.String itemInfo, final java.lang.String detailMessage )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "cannotProcess", locale, new Object[] { itemInfo, detailMessage, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "cannotProcess", locale, new Object[] { itemInfo, detailMessage, null } );
+        assert _m != null : "'cannotProcess' message not found.";
+        return _m;
     }
 
     /**
@@ -519,9 +556,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getClasspathElementMessage( final java.util.Locale locale, final java.lang.String classpathElement ) throws org.jomc.ObjectManagementException
+    private String getClasspathElementMessage( final java.util.Locale locale, final java.lang.String classpathElement )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "classpathElement", locale, new Object[] { classpathElement, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "classpathElement", locale, new Object[] { classpathElement, null } );
+        assert _m != null : "'classpathElement' message not found.";
+        return _m;
     }
 
     /**
@@ -537,9 +576,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getClasspathOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    private String getClasspathOptionMessage( final java.util.Locale locale )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "classpathOption", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "classpathOption", locale,  null );
+        assert _m != null : "'classpathOption' message not found.";
+        return _m;
     }
 
     /**
@@ -555,9 +596,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getClasspathOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    private String getClasspathOptionArgNameMessage( final java.util.Locale locale )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "classpathOptionArgName", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "classpathOptionArgName", locale,  null );
+        assert _m != null : "'classpathOptionArgName' message not found.";
+        return _m;
     }
 
     /**
@@ -573,9 +616,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getDebugOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    private String getDebugOptionMessage( final java.util.Locale locale )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "debugOption", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "debugOption", locale,  null );
+        assert _m != null : "'debugOption' message not found.";
+        return _m;
     }
 
     /**
@@ -591,9 +636,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getDescriptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    private String getDescriptionMessage( final java.util.Locale locale )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "description", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "description", locale,  null );
+        assert _m != null : "'description' message not found.";
+        return _m;
     }
 
     /**
@@ -610,9 +657,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getDocumentFileMessage( final java.util.Locale locale, final java.lang.String documentFile ) throws org.jomc.ObjectManagementException
+    private String getDocumentFileMessage( final java.util.Locale locale, final java.lang.String documentFile )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentFile", locale, new Object[] { documentFile, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentFile", locale, new Object[] { documentFile, null } );
+        assert _m != null : "'documentFile' message not found.";
+        return _m;
     }
 
     /**
@@ -628,9 +677,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getDocumentLocationOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    private String getDocumentLocationOptionMessage( final java.util.Locale locale )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentLocationOption", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentLocationOption", locale,  null );
+        assert _m != null : "'documentLocationOption' message not found.";
+        return _m;
     }
 
     /**
@@ -646,9 +697,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getDocumentLocationOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    private String getDocumentLocationOptionArgNameMessage( final java.util.Locale locale )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentLocationOptionArgName", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentLocationOptionArgName", locale,  null );
+        assert _m != null : "'documentLocationOptionArgName' message not found.";
+        return _m;
     }
 
     /**
@@ -664,9 +717,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getDocumentsOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    private String getDocumentsOptionMessage( final java.util.Locale locale )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentsOption", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentsOption", locale,  null );
+        assert _m != null : "'documentsOption' message not found.";
+        return _m;
     }
 
     /**
@@ -682,9 +737,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getDocumentsOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    private String getDocumentsOptionArgNameMessage( final java.util.Locale locale )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentsOptionArgName", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentsOptionArgName", locale,  null );
+        assert _m != null : "'documentsOptionArgName' message not found.";
+        return _m;
     }
 
     /**
@@ -700,9 +757,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getFailOnWarningsOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    private String getFailOnWarningsOptionMessage( final java.util.Locale locale )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "failOnWarningsOption", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "failOnWarningsOption", locale,  null );
+        assert _m != null : "'failOnWarningsOption' message not found.";
+        return _m;
     }
 
     /**
@@ -719,9 +778,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getMissingModuleMessage( final java.util.Locale locale, final java.lang.String moduleName ) throws org.jomc.ObjectManagementException
+    private String getMissingModuleMessage( final java.util.Locale locale, final java.lang.String moduleName )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "missingModule", locale, new Object[] { moduleName, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "missingModule", locale, new Object[] { moduleName, null } );
+        assert _m != null : "'missingModule' message not found.";
+        return _m;
     }
 
     /**
@@ -737,9 +798,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getModuleNameOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    private String getModuleNameOptionMessage( final java.util.Locale locale )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "moduleNameOption", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "moduleNameOption", locale,  null );
+        assert _m != null : "'moduleNameOption' message not found.";
+        return _m;
     }
 
     /**
@@ -755,9 +818,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getModuleNameOptionArgNameMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    private String getModuleNameOptionArgNameMessage( final java.util.Locale locale )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "moduleNameOptionArgName", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "moduleNameOptionArgName", locale,  null );
+        assert _m != null : "'moduleNameOptionArgName' message not found.";
+        return _m;
     }
 
     /**
@@ -773,9 +838,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getModulesReportMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    private String getModulesReportMessage( final java.util.Locale locale )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "modulesReport", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "modulesReport", locale,  null );
+        assert _m != null : "'modulesReport' message not found.";
+        return _m;
     }
 
     /**
@@ -790,9 +857,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getSeparatorMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    private String getSeparatorMessage( final java.util.Locale locale )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "separator", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "separator", locale,  null );
+        assert _m != null : "'separator' message not found.";
+        return _m;
     }
 
     /**
@@ -810,9 +879,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getStartingModuleProcessingMessage( final java.util.Locale locale, final java.lang.String toolName, final java.lang.String moduleName ) throws org.jomc.ObjectManagementException
+    private String getStartingModuleProcessingMessage( final java.util.Locale locale, final java.lang.String toolName, final java.lang.String moduleName )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "startingModuleProcessing", locale, new Object[] { toolName, moduleName, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "startingModuleProcessing", locale, new Object[] { toolName, moduleName, null } );
+        assert _m != null : "'startingModuleProcessing' message not found.";
+        return _m;
     }
 
     /**
@@ -829,9 +900,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getStartingProcessingMessage( final java.util.Locale locale, final java.lang.String toolName ) throws org.jomc.ObjectManagementException
+    private String getStartingProcessingMessage( final java.util.Locale locale, final java.lang.String toolName )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "startingProcessing", locale, new Object[] { toolName, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "startingProcessing", locale, new Object[] { toolName, null } );
+        assert _m != null : "'startingProcessing' message not found.";
+        return _m;
     }
 
     /**
@@ -848,9 +921,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getToolFailureMessage( final java.util.Locale locale, final java.lang.String toolName ) throws org.jomc.ObjectManagementException
+    private String getToolFailureMessage( final java.util.Locale locale, final java.lang.String toolName )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "toolFailure", locale, new Object[] { toolName, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "toolFailure", locale, new Object[] { toolName, null } );
+        assert _m != null : "'toolFailure' message not found.";
+        return _m;
     }
 
     /**
@@ -867,9 +942,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getToolSuccessMessage( final java.util.Locale locale, final java.lang.String toolName ) throws org.jomc.ObjectManagementException
+    private String getToolSuccessMessage( final java.util.Locale locale, final java.lang.String toolName )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "toolSuccess", locale, new Object[] { toolName, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "toolSuccess", locale, new Object[] { toolName, null } );
+        assert _m != null : "'toolSuccess' message not found.";
+        return _m;
     }
 
     /**
@@ -885,9 +962,11 @@ public class ValidateModulesCommand
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-1-SNAPSHOT/jomc-tools" )
-    private String getVerboseOptionMessage( final java.util.Locale locale ) throws org.jomc.ObjectManagementException
+    private String getVerboseOptionMessage( final java.util.Locale locale )
     {
-        return org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "verboseOption", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "verboseOption", locale,  null );
+        assert _m != null : "'verboseOption' message not found.";
+        return _m;
     }
     // SECTION-END
 }

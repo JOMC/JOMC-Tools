@@ -118,8 +118,8 @@
       <messages>
         <message name="usage">
           <template defaultLanguage="en">
-            <text language="en"><![CDATA[Type »jomc <command> {0}« for further information.]]></text>
-            <text language="de"><![CDATA[Geben Sie »jomc <Befehl> {0}« für weitere Informationen ein.]]></text>
+            <text language="en"><![CDATA[Type »jomc &lt;command&gt; {0}« for further information.]]></text>
+            <text language="de"><![CDATA[Geben Sie »jomc &lt;Befehl&gt; {0}« für weitere Informationen ein.]]></text>
           </template>
           <arguments>
             <argument index="0" name="helpCommandName"/>

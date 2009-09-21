@@ -91,8 +91,10 @@ public interface Command
      * @param locale The locale of the description to return.
      *
      * @return The description of the command.
+     *
+     * @throws NullPointerException if {@code locale} is {@code null}.
      */
-    String getDescription( Locale locale );
+    String getDescription( Locale locale ) throws NullPointerException;
 
     /**
      * Gets the options of the command.
@@ -109,10 +111,12 @@ public interface Command
      *
      * @return The status code of the command.
      *
+     * @throws NullPointerException if {@code commandLine} or {@code printStream} is {@code null}.
+     *
      * @see #STATUS_OK
      * @see #STATUS_FAILURE
      */
-    int execute( CommandLine commandLine, PrintStream printStream );
+    int execute( CommandLine commandLine, PrintStream printStream ) throws NullPointerException;
 
     // SECTION-END
 }
