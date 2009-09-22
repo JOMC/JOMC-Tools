@@ -1207,22 +1207,6 @@ public abstract class JomcTool
         }
     }
 
-    /**
-     * Converts a nibble to a hex character.
-     *
-     * @param nibble The nibble to convert.
-     */
-    private static char toHex( final int nibble )
-    {
-        return hexDigit[nibble & 0xF];
-    }
-
-    /** A list of hex digits. */
-    private static final char[] hexDigit =
-    {
-        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
-    };
-
     private String getMessage( final String key, final Object args )
     {
         final ResourceBundle b = ResourceBundle.getBundle( JomcTool.class.getName().replace( '.', '/' ) );
