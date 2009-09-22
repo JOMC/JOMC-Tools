@@ -234,7 +234,7 @@
                     <moduleResources>
                       <moduleResource>META-INF/jomc.xml</moduleResource>
                     </moduleResources>
-                    <bootstrapResource>META-INF/jomc-cli-bootstrap.xml</bootstrapResource>
+                    <bootstrapResource>META-INF/jomc-bootstrap.xml</bootstrapResource>
                     <bootstrapResources>
                       <bootstrapResource>META-INF/jomc-bootstrap.xml</bootstrapResource>
                     </bootstrapResources>

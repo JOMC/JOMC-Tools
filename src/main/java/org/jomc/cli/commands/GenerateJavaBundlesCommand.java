@@ -85,6 +85,10 @@ import org.jomc.tools.JavaBundles;
  * Property of type {@code java.lang.String} with value "module".</blockquote></li>
  * <li>"{@link #getModuleNameOptionShortName moduleNameOptionShortName}"<blockquote>
  * Property of type {@code java.lang.String} with value "mn".</blockquote></li>
+ * <li>"{@link #getNoClasspathResolutionOptionLongName noClasspathResolutionOptionLongName}"<blockquote>
+ * Property of type {@code java.lang.String} with value "disable-classpath-resolution".</blockquote></li>
+ * <li>"{@link #getNoClasspathResolutionOptionShortName noClasspathResolutionOptionShortName}"<blockquote>
+ * Property of type {@code java.lang.String} with value "dcr".</blockquote></li>
  * <li>"{@link #getOutputEncodingOptionLongName outputEncodingOptionLongName}"<blockquote>
  * Property of type {@code java.lang.String} with value "output-encoding".</blockquote></li>
  * <li>"{@link #getOutputEncodingOptionShortName outputEncodingOptionShortName}"<blockquote>
@@ -116,7 +120,7 @@ import org.jomc.tools.JavaBundles;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-2-SNAPSHOT Build 2009-09-22T02:06:17+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-2-SNAPSHOT Build 2009-09-22T15:24:33+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -137,10 +141,6 @@ import org.jomc.tools.JavaBundles;
  * <li>"{@link #getDebugOptionMessage debugOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Enables debug output.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert Diagnose-Ausgaben.</pre></td></tr>
- * </table>
- * <li>"{@link #getDescriptionMessage description}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Generates Java resource bundles.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Generiert Java Ressource-B&uuml;ndel.</pre></td></tr>
  * </table>
  * <li>"{@link #getDocumentFileMessage documentFile}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Document file: ''{0}''</pre></td></tr>
@@ -174,6 +174,14 @@ import org.jomc.tools.JavaBundles;
  * <tr><td valign="top">English:</td><td valign="top"><pre>language</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Sprache</pre></td></tr>
  * </table>
+ * <li>"{@link #getLongDescriptionMessage longDescription}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
+     *   jomc generate-java-bundles -sd /tmp/src  -rd /tmp/rsrc \
+     *                              -df examples/xml/jomc-cli.xml -v</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
+     *   jomc generate-java-bundles -sd /tmp/src -rd /tmp/rsrc \
+     *                              -df examples/xml/jomc-cli.xml -v</pre></td></tr>
+ * </table>
  * <li>"{@link #getMissingModuleMessage missingModule}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul ''{0}'' nicht gefunden.</pre></td></tr>
@@ -189,6 +197,10 @@ import org.jomc.tools.JavaBundles;
  * <li>"{@link #getModulesReportMessage modulesReport}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Modules</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Module</pre></td></tr>
+ * </table>
+ * <li>"{@link #getNoClasspathResolutionOptionMessage noClasspathResolutionOption}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Do not perform classpath resolution.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Keine Klassenpfad-Aufl&ouml;sung durchf&uuml;hren.</pre></td></tr>
  * </table>
  * <li>"{@link #getOutputEncodingOptionMessage outputEncodingOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Output encoding.</pre></td></tr>
@@ -216,6 +228,10 @@ import org.jomc.tools.JavaBundles;
  * </table>
  * <li>"{@link #getSeparatorMessage separator}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>--------------------------------------------------------------------------------</pre></td></tr>
+ * </table>
+ * <li>"{@link #getShortDescriptionMessage shortDescription}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Generates Java resource bundles.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Generiert Java Ressource-B&uuml;ndel.</pre></td></tr>
  * </table>
  * <li>"{@link #getSourceDirectoryOptionMessage sourceDirectoryOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Directory to write source files to.</pre></td></tr>
@@ -728,6 +744,34 @@ public final class GenerateJavaBundlesCommand
     }
 
     /**
+     * Gets the value of the {@code noClasspathResolutionOptionLongName} property.
+     * @return Long name of the 'no-classpath-resolution' option.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-2-SNAPSHOT/jomc-tools" )
+    private java.lang.String getNoClasspathResolutionOptionLongName()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "noClasspathResolutionOptionLongName" );
+        assert _p != null : "'noClasspathResolutionOptionLongName' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code noClasspathResolutionOptionShortName} property.
+     * @return Name of the 'no-classpath-resolution' option.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-2-SNAPSHOT/jomc-tools" )
+    private java.lang.String getNoClasspathResolutionOptionShortName()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "noClasspathResolutionOptionShortName" );
+        assert _p != null : "'noClasspathResolutionOptionShortName' property not found.";
+        return _p;
+    }
+
+    /**
      * Gets the value of the {@code outputEncodingOptionLongName} property.
      * @return Long name of the 'output-encoding' option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
@@ -900,7 +944,7 @@ public final class GenerateJavaBundlesCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-2-SNAPSHOT Build 2009-09-22T02:06:17+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-2-SNAPSHOT Build 2009-09-22T15:24:33+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -1016,26 +1060,6 @@ public final class GenerateJavaBundlesCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "debugOption", locale,  null );
         assert _m != null : "'debugOption' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code description} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Generates Java resource bundles.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Generiert Java Ressource-B&uuml;ndel.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code description} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-2-SNAPSHOT/jomc-tools" )
-    private String getDescriptionMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "description", locale,  null );
-        assert _m != null : "'description' message not found.";
         return _m;
     }
 
@@ -1203,6 +1227,30 @@ public final class GenerateJavaBundlesCommand
     }
 
     /**
+     * Gets the text of the {@code longDescription} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
+     *   jomc generate-java-bundles -sd /tmp/src  -rd /tmp/rsrc \
+     *                              -df examples/xml/jomc-cli.xml -v</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
+     *   jomc generate-java-bundles -sd /tmp/src -rd /tmp/rsrc \
+     *                              -df examples/xml/jomc-cli.xml -v</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code longDescription} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-2-SNAPSHOT/jomc-tools" )
+    private String getLongDescriptionMessage( final java.util.Locale locale )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "longDescription", locale,  null );
+        assert _m != null : "'longDescription' message not found.";
+        return _m;
+    }
+
+    /**
      * Gets the text of the {@code missingModule} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
@@ -1280,6 +1328,26 @@ public final class GenerateJavaBundlesCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "modulesReport", locale,  null );
         assert _m != null : "'modulesReport' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code noClasspathResolutionOption} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Do not perform classpath resolution.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Keine Klassenpfad-Aufl&ouml;sung durchf&uuml;hren.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code noClasspathResolutionOption} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-2-SNAPSHOT/jomc-tools" )
+    private String getNoClasspathResolutionOptionMessage( final java.util.Locale locale )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "noClasspathResolutionOption", locale,  null );
+        assert _m != null : "'noClasspathResolutionOption' message not found.";
         return _m;
     }
 
@@ -1419,6 +1487,26 @@ public final class GenerateJavaBundlesCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "separator", locale,  null );
         assert _m != null : "'separator' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code shortDescription} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Generates Java resource bundles.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Generiert Java Ressource-B&uuml;ndel.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code shortDescription} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-2-SNAPSHOT/jomc-tools" )
+    private String getShortDescriptionMessage( final java.util.Locale locale )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "shortDescription", locale,  null );
+        assert _m != null : "'shortDescription' message not found.";
         return _m;
     }
 

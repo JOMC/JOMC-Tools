@@ -241,12 +241,28 @@
             <text language="en">Long name of the 'fail-on-warnings' option.</text>
           </documentation>
         </property>
+        <property name="noClasspathResolutionOptionShortName" value="dcr">
+          <documentation defaultLanguage="en">
+            <text language="en">Name of the 'no-classpath-resolution' option.</text>
+          </documentation>
+        </property>
+        <property name="noClasspathResolutionOptionLongName" value="disable-classpath-resolution">
+          <documentation defaultLanguage="en">
+            <text language="en">Long name of the 'no-classpath-resolution' option.</text>
+          </documentation>
+        </property>
       </properties>
       <messages>
-        <message name="description">
+        <message name="shortDescription">
           <template defaultLanguage="en">
             <text language="en">Does nothing.</text>
             <text language="de">Führt nichts aus.</text>
+          </template>
+        </message>
+        <message name="longDescription">
+          <template defaultLanguage="en">
+            <text language="en"></text>
+            <text language="de"></text>
           </template>
         </message>
         <message name="verboseOption">
@@ -313,6 +329,12 @@
           <template defaultLanguage="en">
             <text language="en">Exit with failure on warnings.</text>
             <text language="de">Bei Warnungen Fehler melden.</text>
+          </template>
+        </message>
+        <message name="noClasspathResolutionOption">
+          <template defaultLanguage="en">
+            <text language="en">Do not perform classpath resolution.</text>
+            <text language="de">Keine Klassenpfad-Auflösung durchführen.</text>
           </template>
         </message>
         <message name="separator">
@@ -469,10 +491,20 @@
         <reference name="outputEncodingOptionLongName"/>
       </properties>
       <messages>
-        <message name="description">
+        <message name="shortDescription">
           <template defaultLanguage="en">
             <text language="en">Generates Java resource bundles.</text>
             <text language="de">Generiert Java Ressource-Bündel.</text>
+          </template>
+        </message>
+        <message name="longDescription">
+          <template defaultLanguage="en">
+            <text language="en">Example:
+  jomc generate-java-bundles -sd /tmp/src  -rd /tmp/rsrc \
+                             -df examples/xml/jomc-cli.xml -v</text>
+            <text language="de">Beispiel:
+  jomc generate-java-bundles -sd /tmp/src -rd /tmp/rsrc \
+                             -df examples/xml/jomc-cli.xml -v</text>
           </template>
         </message>
         <message name="languageOption">
@@ -556,10 +588,20 @@
         <reference name="outputEncodingOptionLongName"/>
       </properties>
       <messages>
-        <message name="description">
+        <message name="shortDescription">
           <template defaultLanguage="en">
             <text language="en">Manages Java source files.</text>
             <text language="de">Verwaltet Java Quelltext-Dateien.</text>
+          </template>
+        </message>
+        <message name="longDescription">
+          <template defaultLanguage="en">
+            <text language="en">Example:
+  jomc manage-java-sources -sd /tmp/src -df examples/xml/jomc-cli.xml } \
+                           -mn "JOMC CLI" -v</text>
+            <text language="de">Beispiel:
+  jomc manage-java-sources -sd /tmp/src -df examples/xml/jomc-cli.xml \
+                           -mn "JOMC CLI" -v</text>
           </template>
         </message>
         <reference name="sourceDirectoryOption"/>
@@ -617,10 +659,20 @@
         <reference name="classesDirectoryOptionLongName"/>
       </properties>
       <messages>
-        <message name="description">
+        <message name="shortDescription">
           <template defaultLanguage="en">
             <text language="en">Commits Java class files.</text>
             <text language="de">Schreibt Java Klassendateien fest.</text>
+          </template>
+        </message>
+        <message name="longDescription">
+          <template defaultLanguage="en">
+            <text language="en">Example:
+  jomc commit-java-classes -df examples/xml/jomc-cli.xml -cd target/classes \
+                           -mn "JOMC CLI" -v</text>
+            <text language="de">Beispiel:
+  jomc commit-java-classes -df examples/xml/jomc-cli.xml -cd target/classes \
+                           -mn "JOMC CLI" -v</text>
           </template>
         </message>
         <reference name="classesDirectoryOption"/>
@@ -668,10 +720,18 @@
         </property>
       </properties>
       <messages>
-        <message name="description">
+        <message name="shortDescription">
           <template defaultLanguage="en">
             <text language="en">Validates Java class files.</text>
             <text language="de">Prüft Java Klassendateien.</text>
+          </template>
+        </message>
+        <message name="longDescription">
+          <template defaultLanguage="en">
+            <text language="en">Example:
+  jomc validate-java-classes -cp target/classes -df examples/xml/jomc-cli.xml -v</text>
+            <text language="de">Beispiel:
+  jomc validate-java-classes -cp target/classes -df examples/xml/jomc-cli.xml -v</text>
           </template>
         </message>
       </messages>
@@ -717,10 +777,18 @@
         </property>
       </properties>
       <messages>
-        <message name="description">
+        <message name="shortDescription">
           <template defaultLanguage="en">
             <text language="en">Validates modules.</text>
             <text language="de">Prüft Module.</text>
+          </template>
+        </message>
+        <message name="longDescription">
+          <template defaultLanguage="en">
+            <text language="en">Example:
+  jomc validate-modules -df examples/xml/jomc-cli.xml -v</text>
+            <text language="de">Beispiel:
+  jomc validate-modules -df examples/xml/jomc-cli.xml -v</text>
           </template>
         </message>
       </messages>
@@ -806,10 +874,22 @@
         </property>
       </properties>
       <messages>
-        <message name="description">
+        <message name="shortDescription">
           <template defaultLanguage="en">
             <text language="en">Merges modules.</text>
             <text language="de">Fügt Module zusammen.</text>
+          </template>
+        </message>
+        <message name="longDescription">
+          <template defaultLanguage="en">
+            <text language="en">Example:
+  jomc merge-modules -df examples/xml/jomc-cli.xml \
+                     -xs examples/xslt/relocate-classes.xslt \
+                     -mn "Merged Name" -d /tmp/jomc.xml -v</text>
+            <text language="de">Beispiel:
+  jomc merge-modules -df examples/xml/jomc-cli.xml \
+                     -xs examples/xslt/relocate-classes.xslt \
+                     -mn "Merged Name" -d /tmp/jomc.xml -v</text>
           </template>
         </message>
         <message name="documentOption">

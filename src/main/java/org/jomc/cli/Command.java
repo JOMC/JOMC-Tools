@@ -86,15 +86,26 @@ public interface Command
     String getAbbreviatedName();
 
     /**
-     * Gets the description of the command.
+     * Gets the short description of the command.
      *
-     * @param locale The locale of the description to return.
+     * @param locale The locale of the short description to return.
      *
-     * @return The description of the command.
+     * @return The short description of the command.
      *
      * @throws NullPointerException if {@code locale} is {@code null}.
      */
-    String getDescription( Locale locale ) throws NullPointerException;
+    String getShortDescription( Locale locale ) throws NullPointerException;
+
+    /**
+     * Gets the long description of the command.
+     *
+     * @param locale The locale of the long description to return.
+     *
+     * @return The long description of the command.
+     *
+     * @throws NullPointerException if {@code locale} is {@code null}.
+     */
+    String getLongDescription( Locale locale ) throws NullPointerException;
 
     /**
      * Gets the options of the command.

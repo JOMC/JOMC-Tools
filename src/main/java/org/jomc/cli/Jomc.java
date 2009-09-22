@@ -149,7 +149,7 @@ public class Jomc
 
         try
         {
-            System.setProperty( SYS_BOOTSTRAP_DOCUMENT_LOCATION, "META-INF/jomc-cli-bootstrap.xml" );
+            System.setProperty( SYS_BOOTSTRAP_DOCUMENT_LOCATION, "META-INF/jomc-bootstrap.xml" );
             System.setProperty( SYS_DEFAULT_DOCUMENT_LOCATION, "META-INF/jomc-cli.xml" );
             System.setProperty( SYS_DEFAULT_STYLESHEET_LOCATION, "META-INF/jomc-cli.xslt" );
 
@@ -164,7 +164,7 @@ public class Jomc
                 }
 
                 commandInfo.append( StringUtils.rightPad( c.getName(), 25 ) ).append( " : " ).
-                    append( c.getDescription( this.getLocale() ) ).append( " (" ).append( c.getAbbreviatedName() ).
+                    append( c.getShortDescription( this.getLocale() ) ).append( " (" ).append( c.getAbbreviatedName() ).
                     append( ")" ).append( System.getProperty( "line.separator" ) );
 
             }
@@ -194,10 +194,13 @@ public class Jomc
                 formatter.printOptions( pw, this.getWidth(), cmd.getOptions(), this.getLeftPad(), this.getDescPad() );
                 pw.close();
 
-                this.getPrintStream().println( cmd.getDescription( this.getLocale() ) );
+                this.getPrintStream().println( cmd.getShortDescription( this.getLocale() ) );
                 this.getPrintStream().println();
                 this.getPrintStream().println( usage.toString() );
                 this.getPrintStream().println( opts.toString() );
+                this.getPrintStream().println();
+                this.getPrintStream().println( cmd.getLongDescription( this.getLocale() ) );
+                this.getPrintStream().println();
                 return STATUS_SUCCESS;
             }
 
