@@ -57,6 +57,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.jomc.model.DefaultModelManager;
 import org.jomc.model.ModelException;
+import org.jomc.model.ModelManager;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.tools.JavaClasses;
@@ -451,35 +452,16 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     protected abstract void executeTool() throws Exception;
 
-    private void setupTool( final JomcTool tool, final ClassLoader classLoader, final boolean includeClasspathModule )
-        throws ModelException, IOException, SAXException, JAXBException
+    protected Modules getModules( final ModelManager modelManager, final ClassLoader classLoader,
+                                  final boolean includeClasspathModule )
+        throws IOException, SAXException, JAXBException, ModelException
     {
+        Modules modules = null;
         Modules modulesToValidate = null;
-        tool.getListeners().add( new JomcTool.Listener()
+
+        if ( modelManager instanceof DefaultModelManager )
         {
-
-            public void onLog( final Level level, final String message, final Throwable t )
-            {
-                try
-                {
-                    log( level, message, t );
-                }
-                catch ( final IOException e )
-                {
-                    getLog().error( e );
-                }
-            }
-
-        } );
-
-        tool.setTemplateEncoding( this.templateEncoding );
-        tool.setInputEncoding( this.sourceEncoding );
-        tool.setOutputEncoding( this.sourceEncoding );
-        tool.setProfile( this.templateProfile );
-
-        if ( tool.getModelManager() instanceof DefaultModelManager )
-        {
-            final DefaultModelManager defaultModelManager = (DefaultModelManager) tool.getModelManager();
+            final DefaultModelManager defaultModelManager = (DefaultModelManager) modelManager;
             defaultModelManager.setClassLoader( classLoader );
             defaultModelManager.getListeners().add( new DefaultModelManager.Listener()
             {
@@ -536,15 +518,42 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             this.log( Level.FINE, System.getProperty( "line.separator" ), null );
 
             modulesToValidate = classpathModules;
-            tool.setModules( includeClasspathModule ? classpathModules : modulesWithoutClasspath );
+            modules = includeClasspathModule ? classpathModules : modulesWithoutClasspath;
         }
 
         if ( modulesToValidate != null )
         {
-            tool.getModelManager().validateModelObject(
-                tool.getModelManager().getObjectFactory().createModules( modulesToValidate ) );
-
+            modelManager.validateModelObject( modelManager.getObjectFactory().createModules( modulesToValidate ) );
         }
+
+        return modules;
+    }
+
+    private void setupTool( final JomcTool tool, final ClassLoader classLoader, final boolean includeClasspathModule )
+        throws ModelException, IOException, SAXException, JAXBException
+    {
+        tool.getListeners().add( new JomcTool.Listener()
+        {
+
+            public void onLog( final Level level, final String message, final Throwable t )
+            {
+                try
+                {
+                    log( level, message, t );
+                }
+                catch ( final IOException e )
+                {
+                    getLog().error( e );
+                }
+            }
+
+        } );
+
+        tool.setTemplateEncoding( this.templateEncoding );
+        tool.setInputEncoding( this.sourceEncoding );
+        tool.setOutputEncoding( this.sourceEncoding );
+        tool.setProfile( this.templateProfile );
+        tool.setModules( this.getModules( tool.getModelManager(), classLoader, includeClasspathModule ) );
     }
 
     private MessageFormat getMessage( final String key )
