@@ -48,6 +48,12 @@ import org.jomc.model.Modules;
 public class ValidateModulesMojo extends AbstractJomcMojo
 {
 
+    /** Creates a new {@code ValidateModulesMojo} instance. */
+    public ValidateModulesMojo()
+    {
+        super();
+    }
+
     @Override
     protected void executeTool() throws Exception
     {
