@@ -62,7 +62,7 @@
     <xsl:call-template name="relocate-attribute"/>
   </xsl:template>
 
-  <xsl:template match="jomc:implementations/jomc:implementation/@parent">
+  <xsl:template match="jomc:implementations/jomc:reference/@identifier">
     <xsl:call-template name="relocate-attribute"/>
   </xsl:template>
 
