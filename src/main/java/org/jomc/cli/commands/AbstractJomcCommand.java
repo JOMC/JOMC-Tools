@@ -603,7 +603,7 @@ public abstract class AbstractJomcCommand implements Command
         final ClassLoader classLoader = this.getClassLoader( commandLine, printStream );
         final boolean verbose = commandLine.hasOption( getVerboseOption().getOpt() );
         final boolean debug = commandLine.hasOption( getDebugOption().getOpt() );
-        Modules modules = new Modules();
+        final Modules modules = new Modules();
         Modules modulesToValidate = null;
 
         DefaultModelManager defaultModelManager = null;
