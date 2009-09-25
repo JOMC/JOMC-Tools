@@ -78,9 +78,9 @@ import org.jomc.tools.JavaClasses;
  * <li>"{@link #getModuleNameOptionShortName moduleNameOptionShortName}"<blockquote>
  * Property of type {@code java.lang.String} with value "mn".</blockquote></li>
  * <li>"{@link #getNoClasspathResolutionOptionLongName noClasspathResolutionOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "disable-classpath-resolution".</blockquote></li>
+ * Property of type {@code java.lang.String} with value "no-classpath-resolution".</blockquote></li>
  * <li>"{@link #getNoClasspathResolutionOptionShortName noClasspathResolutionOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "dcr".</blockquote></li>
+ * Property of type {@code java.lang.String} with value "ncr".</blockquote></li>
  * <li>"{@link #getVerboseOptionLongName verboseOptionLongName}"<blockquote>
  * Property of type {@code java.lang.String} with value "verbose".</blockquote></li>
  * <li>"{@link #getVerboseOptionShortName verboseOptionShortName}"<blockquote>
@@ -92,7 +92,7 @@ import org.jomc.tools.JavaClasses;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-2-SNAPSHOT Build 2009-09-22T16:05:29+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-2-SNAPSHOT Build 2009-09-25T15:52:46+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -140,9 +140,9 @@ import org.jomc.tools.JavaClasses;
  * </table>
  * <li>"{@link #getLongDescriptionMessage longDescription}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
-     *   jomc validate-java-classes -cp target/classes -df examples/xml/jomc-cli.xml -v</pre></td></tr>
+ *   jomc validate-java-classes -cp target/classes -df examples/xml/jomc-cli.xml -v</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
-     *   jomc validate-java-classes -cp target/classes -df examples/xml/jomc-cli.xml -v</pre></td></tr>
+ *   jomc validate-java-classes -cp target/classes -df examples/xml/jomc-cli.xml -v</pre></td></tr>
  * </table>
  * <li>"{@link #getMissingModuleMessage missingModule}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
@@ -201,9 +201,7 @@ import org.jomc.tools.JavaClasses;
 @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                              comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-2-SNAPSHOT/jomc-tools" )
 // SECTION-END
-public final class ValidateJavaClassesCommand
-    extends AbstractJomcCommand
-    implements org.jomc.cli.Command
+public final class ValidateJavaClassesCommand extends AbstractJomcCommand
 {
     // SECTION-START[Command]
 
@@ -571,7 +569,7 @@ public final class ValidateJavaClassesCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-2-SNAPSHOT Build 2009-09-22T16:05:29+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-2-SNAPSHOT Build 2009-09-25T15:52:46+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

@@ -143,7 +143,8 @@
                     class="org.jomc.cli.commands.AbstractJomcCommand"
                     name="${pom.name}"
                     version="${pom.version}"
-                    vendor="${pom.organization.name}">
+                    vendor="${pom.organization.name}"
+                    abstract="true">
 
       <documentation defaultLanguage="en">
         <text language="en">Base JOMC {@code Command} implementation.</text>
@@ -153,11 +154,16 @@
                 mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="org.jomc.cli.Command" version="1.0"
+                   final="true"/>
+      </specifications>
       <dependencies>
         <dependency name="Locale"
                     identifier="java.util.Locale"
                     version="1.1"
-                    implementationName="default"/>
+                    implementationName="default"
+                    final="true"/>
 
       </dependencies>
       <properties>
@@ -171,82 +177,87 @@
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
-        <property name="verboseOptionShortName" value="v">
+        <property name="verboseOptionShortName" value="v" final="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the 'verbose' option.</text>
           </documentation>
         </property>
-        <property name="verboseOptionLongName" value="verbose">
+        <property name="verboseOptionLongName" value="verbose" final="true">
           <documentation defaultLanguage="en">
             <text language="en">Long name of the 'verbose' option.</text>
           </documentation>
         </property>
-        <property name="debugOptionShortName" value="D">
+        <property name="debugOptionShortName" value="D" final="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the 'debug' option.</text>
           </documentation>
         </property>
-        <property name="debugOptionLongName" value="debug">
+        <property name="debugOptionLongName" value="debug" final="true">
           <documentation defaultLanguage="en">
             <text language="en">Long name of the 'debug' option.</text>
           </documentation>
         </property>
-        <property name="classpathOptionShortName" value="cp">
+        <property name="classpathOptionShortName" value="cp" final="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the 'classpath' option.</text>
           </documentation>
         </property>
-        <property name="classpathOptionLongName" value="classpath">
+        <property name="classpathOptionLongName" value="classpath" final="true">
           <documentation defaultLanguage="en">
             <text language="en">Long name of the 'classpath' option.</text>
           </documentation>
         </property>
-        <property name="documentsOptionShortName" value="df">
+        <property name="documentsOptionShortName" value="df" final="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the 'documents' option.</text>
           </documentation>
         </property>
-        <property name="documentsOptionLongName" value="documents">
+        <property name="documentsOptionLongName" value="documents" final="true">
           <documentation defaultLanguage="en">
             <text language="en">Long name of the 'documents' option.</text>
           </documentation>
         </property>
-        <property name="documentLocationOptionShortName" value="dl">
+        <property name="documentLocationOptionShortName" value="dl"
+                  final="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the 'document-location' option.</text>
           </documentation>
         </property>
-        <property name="documentLocationOptionLongName" value="document-location">
+        <property name="documentLocationOptionLongName" value="document-location"
+                  final="true">
           <documentation defaultLanguage="en">
             <text language="en">Long name of the 'document-location' option.</text>
           </documentation>
         </property>
-        <property name="moduleNameOptionShortName" value="mn">
+        <property name="moduleNameOptionShortName" value="mn" final="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the 'module' option.</text>
           </documentation>
         </property>
-        <property name="moduleNameOptionLongName" value="module">
+        <property name="moduleNameOptionLongName" value="module" final="true">
           <documentation defaultLanguage="en">
             <text language="en">Long name of the 'module' option.</text>
           </documentation>
         </property>
-        <property name="failOnWarningsOptionShortName" value="fw">
+        <property name="failOnWarningsOptionShortName" value="fw" final="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the 'fail-on-warnings' option.</text>
           </documentation>
         </property>
-        <property name="failOnWarningsOptionLongName" value="fail-on-warnings">
+        <property name="failOnWarningsOptionLongName" value="fail-on-warnings"
+                  final="true">
           <documentation defaultLanguage="en">
             <text language="en">Long name of the 'fail-on-warnings' option.</text>
           </documentation>
         </property>
-        <property name="noClasspathResolutionOptionShortName" value="dcr">
+        <property name="noClasspathResolutionOptionShortName" value="ncr"
+                  final="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the 'no-classpath-resolution' option.</text>
           </documentation>
         </property>
-        <property name="noClasspathResolutionOptionLongName" value="disable-classpath-resolution">
+        <property name="noClasspathResolutionOptionLongName"
+                  value="no-classpath-resolution" final="true">
           <documentation defaultLanguage="en">
             <text language="en">Long name of the 'no-classpath-resolution' option.</text>
           </documentation>
@@ -265,89 +276,89 @@
             <text language="de"></text>
           </template>
         </message>
-        <message name="verboseOption">
+        <message name="verboseOption" final="true">
           <template defaultLanguage="en">
             <text language="en">Enables verbose output.</text>
             <text language="de">Aktiviert ausführliche Ausgaben.</text>
           </template>
         </message>
-        <message name="debugOption">
+        <message name="debugOption" final="true">
           <template defaultLanguage="en">
             <text language="en">Enables debug output.</text>
             <text language="de">Aktiviert Diagnose-Ausgaben.</text>
           </template>
         </message>
-        <message name="classpathOption">
+        <message name="classpathOption" final="true">
           <template defaultLanguage="en">
             <text language="en">Classpath elements separated by '':''. If starting with a ''@'' character, a file name of a file holding classpath elements.</text>
             <text language="de">Klassenpfad-Elemente mit '':'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Klassenpfad-Elementen.</text>
           </template>
         </message>
-        <message name="classpathOptionArgName">
+        <message name="classpathOptionArgName" final="true">
           <template defaultLanguage="en">
             <text language="en">elements</text>
             <text language="de">Elemente</text>
           </template>
         </message>
-        <message name="documentsOption">
+        <message name="documentsOption" final="true">
           <template defaultLanguage="en">
             <text language="en">Document filenames separated by '':''. If starting with a ''@'' character, a file name of a file holding document filenames.</text>
             <text language="de">Dokument-Dateinamen mit '':'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Dokument-Dateinamen.</text>
           </template>
         </message>
-        <message name="documentsOptionArgName">
+        <message name="documentsOptionArgName" final="true">
           <template defaultLanguage="en">
             <text language="en">files</text>
             <text language="de">Dateien</text>
           </template>
         </message>
-        <message name="documentLocationOption">
+        <message name="documentLocationOption" final="true">
           <template defaultLanguage="en">
             <text language="en">Location of classpath documents.</text>
             <text language="de">Ort der Klassenpfad-Dokumente.</text>
           </template>
         </message>
-        <message name="documentLocationOptionArgName">
+        <message name="documentLocationOptionArgName" final="true">
           <template defaultLanguage="en">
             <text language="en">location</text>
             <text language="de">Ort</text>
           </template>
         </message>
-        <message name="moduleNameOption">
+        <message name="moduleNameOption" final="true">
           <template defaultLanguage="en">
             <text language="en">Name of the module to process.</text>
             <text language="de">Name des zu verarbeitenden Moduls.</text>
           </template>
         </message>
-        <message name="moduleNameOptionArgName">
+        <message name="moduleNameOptionArgName" final="true">
           <template defaultLanguage="en">
             <text language="en">name</text>
             <text language="de">Name</text>
           </template>
         </message>
-        <message name="failOnWarningsOption">
+        <message name="failOnWarningsOption" final="true">
           <template defaultLanguage="en">
             <text language="en">Exit with failure on warnings.</text>
             <text language="de">Bei Warnungen Fehler melden.</text>
           </template>
         </message>
-        <message name="noClasspathResolutionOption">
+        <message name="noClasspathResolutionOption" final="true">
           <template defaultLanguage="en">
             <text language="en">Do not perform classpath resolution.</text>
             <text language="de">Keine Klassenpfad-Auflösung durchführen.</text>
           </template>
         </message>
-        <message name="separator">
+        <message name="separator" final="true">
           <template defaultLanguage="en">
             <text language="en">--------------------------------------------------------------------------------</text>
           </template>
         </message>
-        <message name="applicationTitle">
+        <message name="applicationTitle" final="true">
           <template defaultLanguage="en">
             <text language="en">JOMC Version ${pom.version} Build ${buildNumber}</text>
           </template>
         </message>
-        <message name="classpathElement">
+        <message name="classpathElement" final="true">
           <template defaultLanguage="en">
             <text language="en">Classpath element: ''{0}''</text>
             <text language="de">Klassenpfad-Element: ''{0}''</text>
@@ -356,7 +367,7 @@
             <argument index="0" name="classpathElement"/>
           </arguments>
         </message>
-        <message name="documentFile">
+        <message name="documentFile" final="true">
           <template defaultLanguage="en">
             <text language="en">Document file: ''{0}''</text>
             <text language="de">Dokument-Datei: ''{0}''</text>
@@ -365,7 +376,7 @@
             <argument index="0" name="documentFile"/>
           </arguments>
         </message>
-        <message name="startingProcessing">
+        <message name="startingProcessing" final="true">
           <template defaultLanguage="en">
             <text language="en">Executing command {0} ...</text>
             <text language="de">Führt Befehl {0} aus ... </text>
@@ -374,7 +385,7 @@
             <argument index="0" name="toolName"/>
           </arguments>
         </message>
-        <message name="startingModuleProcessing">
+        <message name="startingModuleProcessing" final="true">
           <template defaultLanguage="en">
             <text language="en">Executing command {0} with module ''{1}'' ...</text>
             <text language="de">Führt Befehl {0} mit Modul ''{1}'' aus ... </text>
@@ -384,7 +395,7 @@
             <argument index="1" name="moduleName"/>
           </arguments>
         </message>
-        <message name="toolSuccess">
+        <message name="toolSuccess" final="true">
           <template defaultLanguage="en">
             <text language="en">{0} successful.</text>
             <text language="de">{0} erfolgreich.</text>
@@ -393,7 +404,7 @@
             <argument index="0" name="toolName"/>
           </arguments>
         </message>
-        <message name="toolFailure">
+        <message name="toolFailure" final="true">
           <template defaultLanguage="en">
             <text language="en">{0} failure.</text>
             <text language="de">{0} fehlgeschlagen.</text>
@@ -402,7 +413,7 @@
             <argument index="0" name="toolName"/>
           </arguments>
         </message>
-        <message name="missingModule">
+        <message name="missingModule" final="true">
           <template defaultLanguage="en">
             <text language="en">Module ''{0}'' not found.</text>
             <text language="de">Modul ''{0}'' nicht gefunden.</text>
@@ -411,13 +422,13 @@
             <argument index="0" name="moduleName"/>
           </arguments>
         </message>
-        <message name="modulesReport">
+        <message name="modulesReport" final="true">
           <template defaultLanguage="en">
             <text language="en">Modules</text>
             <text language="de">Module</text>
           </template>
         </message>
-        <message name="cannotProcess">
+        <message name="cannotProcess" final="true">
           <template defaultLanguage="en">
             <text language="en">Cannot process ''{0}'': {1}</text>
             <text language="de">Kann ''{0}'' nicht verarbeiten: {1}</text>
@@ -436,9 +447,7 @@
                     name="default-generate-java-bundles"
                     version="${pom.version}"
                     vendor="${pom.organization.name}"
-                    final="true"
-                    parent="org.jomc.cli.commands.AbstractJomcCommand">
-
+                    final="true">
       <documentation defaultLanguage="en">
         <text language="en"><![CDATA[Command line interface for the {@code JavaBundles} tool.]]>
         </text>
@@ -448,23 +457,19 @@
                 mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
-      <specifications>
-        <reference identifier="org.jomc.cli.Command" version="1.0"/>
-      </specifications>
-      <dependencies>
-        <dependency name="Locale"
-                    identifier="java.util.Locale"
-                    version="1.1"
-                    implementationName="default"/>
+      <implementations>
+        <reference identifier="org.jomc.cli.commands.AbstractJomcCommand"
+                   version="${pom.version}"/>
 
-      </dependencies>
+      </implementations>
       <properties>
-        <property name="commandName" value="generate-java-bundles">
+        <property name="commandName" value="generate-java-bundles"
+                  override="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
         </property>
-        <property name="abbreviatedCommandName" value="gjb">
+        <property name="abbreviatedCommandName" value="gjb" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
@@ -491,13 +496,13 @@
         <reference name="outputEncodingOptionLongName"/>
       </properties>
       <messages>
-        <message name="shortDescription">
+        <message name="shortDescription" override="true">
           <template defaultLanguage="en">
             <text language="en">Generates Java resource bundles.</text>
             <text language="de">Generiert Java Ressource-Bündel.</text>
           </template>
         </message>
-        <message name="longDescription">
+        <message name="longDescription" override="true">
           <template defaultLanguage="en">
             <text language="en">Example:
   jomc generate-java-bundles -sd /tmp/src  -rd /tmp/rsrc \
@@ -544,8 +549,7 @@
                     name="default-manage-java-sources"
                     version="${pom.version}"
                     vendor="${pom.organization.name}"
-                    final="true"
-                    parent="org.jomc.cli.commands.AbstractJomcCommand">
+                    final="true">
 
       <documentation defaultLanguage="en">
         <text language="en">Command line interface for the {@code JavaSources} tool.</text>
@@ -555,23 +559,19 @@
                 mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
-      <specifications>
-        <reference identifier="org.jomc.cli.Command" version="1.0"/>
-      </specifications>
-      <dependencies>
-        <dependency name="Locale"
-                    identifier="java.util.Locale"
-                    version="1.1"
-                    implementationName="default"/>
+      <implementations>
+        <reference identifier="org.jomc.cli.commands.AbstractJomcCommand"
+                   version="${pom.version}"/>
 
-      </dependencies>
+      </implementations>
       <properties>
-        <property name="commandName" value="manage-java-sources">
+        <property name="commandName" value="manage-java-sources"
+                  override="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
         </property>
-        <property name="abbreviatedCommandName" value="mjs">
+        <property name="abbreviatedCommandName" value="mjs" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
@@ -588,13 +588,13 @@
         <reference name="outputEncodingOptionLongName"/>
       </properties>
       <messages>
-        <message name="shortDescription">
+        <message name="shortDescription" override="true">
           <template defaultLanguage="en">
             <text language="en">Manages Java source files.</text>
             <text language="de">Verwaltet Java Quelltext-Dateien.</text>
           </template>
         </message>
-        <message name="longDescription">
+        <message name="longDescription" override="true">
           <template defaultLanguage="en">
             <text language="en">Example:
   jomc manage-java-sources -sd /tmp/src -df examples/xml/jomc-cli.xml } \
@@ -623,8 +623,7 @@
                     name="default-commit-java-classes"
                     version="${pom.version}"
                     vendor="${pom.organization.name}"
-                    final="true"
-                    parent="org.jomc.cli.commands.AbstractJomcCommand">
+                    final="true">
 
       <documentation defaultLanguage="en">
         <text language="en">Command line interface for committing Java classes with the {@code JavaClasses} tool.</text>
@@ -634,23 +633,19 @@
                 mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
-      <specifications>
-        <reference identifier="org.jomc.cli.Command" version="1.0"/>
-      </specifications>
-      <dependencies>
-        <dependency name="Locale"
-                    identifier="java.util.Locale"
-                    version="1.1"
-                    implementationName="default"/>
+      <implementations>
+        <reference identifier="org.jomc.cli.commands.AbstractJomcCommand"
+                   version="${pom.version}"/>
 
-      </dependencies>
+      </implementations>
       <properties>
-        <property name="commandName" value="commit-java-classes">
+        <property name="commandName" value="commit-java-classes"
+                  override="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
         </property>
-        <property name="abbreviatedCommandName" value="cjc">
+        <property name="abbreviatedCommandName" value="cjc" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
@@ -659,13 +654,13 @@
         <reference name="classesDirectoryOptionLongName"/>
       </properties>
       <messages>
-        <message name="shortDescription">
+        <message name="shortDescription" override="true">
           <template defaultLanguage="en">
             <text language="en">Commits Java class files.</text>
             <text language="de">Schreibt Java Klassendateien fest.</text>
           </template>
         </message>
-        <message name="longDescription">
+        <message name="longDescription" override="true">
           <template defaultLanguage="en">
             <text language="en">Example:
   jomc commit-java-classes -df examples/xml/jomc-cli.xml -cd target/classes \
@@ -686,8 +681,7 @@
                     name="default-validate-java-classes"
                     version="${pom.version}"
                     vendor="${pom.organization.name}"
-                    final="true"
-                    parent="org.jomc.cli.commands.AbstractJomcCommand">
+                    final="true">
 
       <documentation defaultLanguage="en">
         <text language="en">Command line interface for validating Java classes with the {@code JavaClasses} tool.</text>
@@ -697,36 +691,32 @@
                 mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
-      <specifications>
-        <reference identifier="org.jomc.cli.Command" version="1.0"/>
-      </specifications>
-      <dependencies>
-        <dependency name="Locale"
-                    identifier="java.util.Locale"
-                    version="1.1"
-                    implementationName="default"/>
+      <implementations>
+        <reference identifier="org.jomc.cli.commands.AbstractJomcCommand"
+                   version="${pom.version}"/>
 
-      </dependencies>
+      </implementations>
       <properties>
-        <property name="commandName" value="validate-java-classes">
+        <property name="commandName" value="validate-java-classes"
+                  override="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
         </property>
-        <property name="abbreviatedCommandName" value="vjc">
+        <property name="abbreviatedCommandName" value="vjc" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
       </properties>
       <messages>
-        <message name="shortDescription">
+        <message name="shortDescription" override="true">
           <template defaultLanguage="en">
             <text language="en">Validates Java class files.</text>
             <text language="de">Prüft Java Klassendateien.</text>
           </template>
         </message>
-        <message name="longDescription">
+        <message name="longDescription" override="true">
           <template defaultLanguage="en">
             <text language="en">Example:
   jomc validate-java-classes -cp target/classes -df examples/xml/jomc-cli.xml -v</text>
@@ -743,8 +733,7 @@
                     name="default-validate-modules"
                     version="${pom.version}"
                     vendor="${pom.organization.name}"
-                    final="true"
-                    parent="org.jomc.cli.commands.AbstractJomcCommand">
+                    final="true">
 
       <documentation defaultLanguage="en">
         <text language="en">Command line interface for validating modules.</text>
@@ -754,36 +743,32 @@
                 mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
-      <specifications>
-        <reference identifier="org.jomc.cli.Command" version="1.0"/>
-      </specifications>
-      <dependencies>
-        <dependency name="Locale"
-                    identifier="java.util.Locale"
-                    version="1.1"
-                    implementationName="default"/>
+      <implementations>
+        <reference identifier="org.jomc.cli.commands.AbstractJomcCommand"
+                   version="${pom.version}"/>
 
-      </dependencies>
+      </implementations>
       <properties>
-        <property name="commandName" value="validate-modules">
+        <property name="commandName" value="validate-modules"
+                  override="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
         </property>
-        <property name="abbreviatedCommandName" value="vm">
+        <property name="abbreviatedCommandName" value="vm" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
       </properties>
       <messages>
-        <message name="shortDescription">
+        <message name="shortDescription" override="true">
           <template defaultLanguage="en">
             <text language="en">Validates modules.</text>
             <text language="de">Prüft Module.</text>
           </template>
         </message>
-        <message name="longDescription">
+        <message name="longDescription" override="true">
           <template defaultLanguage="en">
             <text language="en">Example:
   jomc validate-modules -df examples/xml/jomc-cli.xml -v</text>
@@ -800,8 +785,7 @@
                     name="default-merge-modules"
                     version="${pom.version}"
                     vendor="${pom.organization.name}"
-                    final="true"
-                    parent="org.jomc.cli.commands.AbstractJomcCommand">
+                    final="true">
 
       <documentation defaultLanguage="en">
         <text language="en">Command line interface for merging modules.</text>
@@ -811,23 +795,18 @@
                 mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
-      <specifications>
-        <reference identifier="org.jomc.cli.Command" version="1.0"/>
-      </specifications>
-      <dependencies>
-        <dependency name="Locale"
-                    identifier="java.util.Locale"
-                    version="1.1"
-                    implementationName="default"/>
+      <implementations>
+        <reference identifier="org.jomc.cli.commands.AbstractJomcCommand"
+                   version="${pom.version}"/>
 
-      </dependencies>
+      </implementations>
       <properties>
-        <property name="commandName" value="merge-modules">
+        <property name="commandName" value="merge-modules" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
         </property>
-        <property name="abbreviatedCommandName" value="mm">
+        <property name="abbreviatedCommandName" value="mm" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
@@ -874,13 +853,13 @@
         </property>
       </properties>
       <messages>
-        <message name="shortDescription">
+        <message name="shortDescription" override="true">
           <template defaultLanguage="en">
             <text language="en">Merges modules.</text>
             <text language="de">Fügt Module zusammen.</text>
           </template>
         </message>
-        <message name="longDescription">
+        <message name="longDescription" override="true">
           <template defaultLanguage="en">
             <text language="en">Example:
   jomc merge-modules -df examples/xml/jomc-cli.xml \

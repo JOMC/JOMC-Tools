@@ -275,6 +275,14 @@
       <plugin>
         <groupId>org.jomc</groupId>
         <artifactId>maven-jomc-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>validate-runtime-modules</id>
+            <goals>
+              <goal>validate-runtime-modules</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -304,6 +312,11 @@
     <dependency>
       <groupId>org.jomc</groupId>
       <artifactId>jomc-api</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jomc</groupId>
+      <artifactId>jomc-spi</artifactId>
       <scope>compile</scope>
     </dependency>
     <dependency>
