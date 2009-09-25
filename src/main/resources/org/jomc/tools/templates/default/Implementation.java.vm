@@ -42,7 +42,7 @@ import java.lang.*;
 // SECTION-END
 // SECTION-START[Annotations]
 // SECTION-END
-public class ${tool.getJavaTypeName($implementation,false)}
+public #if($implementation.isAbstract())abstract#end class ${tool.getJavaTypeName($implementation,false)}
 #set($specs = ${modules.getSpecifications($implementation.getIdentifier())})
 #if($specs)
     implements

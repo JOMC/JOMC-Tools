@@ -626,8 +626,9 @@ public class JavaClasses extends JomcTool
 
             if ( decoded.getMultiplicity() != specification.getMultiplicity() )
             {
-                details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
-                    "illegalMultiplicity", new Object[]
+                details.add( new ModelException.Detail(
+                    "CLASS_ILLEGAL_SPECIFICATION_MULTIPLICITY", Level.SEVERE,
+                    this.getMessage( "illegalMultiplicity", new Object[]
                     {
                         specification.getIdentifier(), specification.getMultiplicity().value(),
                         decoded.getMultiplicity().value()
@@ -639,8 +640,9 @@ public class JavaClasses extends JomcTool
                  ? specification.getScope() != null
                  : !decoded.getScope().equals( specification.getScope() ) )
             {
-                details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
-                    "illegalScope", new Object[]
+                details.add( new ModelException.Detail(
+                    "CLASS_ILLEGAL_SPECIFICATION_SCOPE", Level.SEVERE,
+                    this.getMessage( "illegalScope", new Object[]
                     {
                         specification.getIdentifier(),
                         specification.getScope() == null ? "Multiton" : specification.getScope(),
@@ -651,8 +653,9 @@ public class JavaClasses extends JomcTool
 
             if ( !decoded.getClazz().equals( specification.getClazz() ) )
             {
-                details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
-                    "illegalSpecificationClass", new Object[]
+                details.add( new ModelException.Detail(
+                    "CLASS_ILLEGAL_SPECIFICATION_CLASS", Level.SEVERE,
+                    this.getMessage( "illegalSpecificationClass", new Object[]
                     {
                         decoded.getIdentifier(), specification.getClazz(), decoded.getClazz()
                     } ) ) );
@@ -760,8 +763,9 @@ public class JavaClasses extends JomcTool
 
                     if ( dependency == null )
                     {
-                        details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
-                            "missingDependency", new Object[]
+                        details.add( new ModelException.Detail(
+                            "CLASS_MISSING_IMPLEMENTATION_DEPENDENCY", Level.SEVERE,
+                            this.getMessage( "missingDependency", new Object[]
                             {
                                 implementation.getIdentifier(), decodedDependency.getName()
                             } ) ) );
@@ -779,8 +783,9 @@ public class JavaClasses extends JomcTool
                         final Module moduleOfImplementation =
                             this.getModules().getModuleOfImplementation( implementation.getIdentifier() );
 
-                        details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
-                            "incompatibleDependency", new Object[]
+                        details.add( new ModelException.Detail(
+                            "CLASS_INCOMPATIBLE_IMPLEMENTATION_DEPENDENCY", Level.SEVERE,
+                            this.getMessage( "incompatibleDependency", new Object[]
                             {
                                 javaClass.getClassName(), moduleOfImplementation == null
                                                           ? "<>" : moduleOfImplementation.getName(),
@@ -809,8 +814,9 @@ public class JavaClasses extends JomcTool
 
                     if ( property == null )
                     {
-                        details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
-                            "missingProperty", new Object[]
+                        details.add( new ModelException.Detail(
+                            "CLASS_MISSING_IMPLEMENTATION_PROPERTY", Level.SEVERE,
+                            this.getMessage( "missingProperty", new Object[]
                             {
                                 implementation.getIdentifier(), decodedProperty.getName()
                             } ) ) );
@@ -822,8 +828,9 @@ public class JavaClasses extends JomcTool
                              ? property.getType() != null
                              : !decodedProperty.getType().equals( property.getType() ) )
                         {
-                            details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
-                                "illegalPropertyType", new Object[]
+                            details.add( new ModelException.Detail(
+                                "CLASS_ILLEGAL_IMPLEMENTATION_PROPERTY", Level.SEVERE,
+                                this.getMessage( "illegalPropertyType", new Object[]
                                 {
                                     implementation.getIdentifier(), decodedProperty.getName(),
                                     property.getType() == null ? "default" : property.getType(),
@@ -851,8 +858,9 @@ public class JavaClasses extends JomcTool
 
                     if ( message == null )
                     {
-                        details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
-                            "missingMessage", new Object[]
+                        details.add( new ModelException.Detail(
+                            "CLASS_MISSING_IMPLEMENTATION_MESSAGE", Level.SEVERE,
+                            this.getMessage( "missingMessage", new Object[]
                             {
                                 implementation.getIdentifier(), decodedMessage.getName()
                             } ) ) );
@@ -878,8 +886,9 @@ public class JavaClasses extends JomcTool
 
                     if ( specification == null )
                     {
-                        details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
-                            "missingSpecification", new Object[]
+                        details.add( new ModelException.Detail(
+                            "CLASS_MISSING_SPECIFICATION", Level.SEVERE,
+                            this.getMessage( "missingSpecification", new Object[]
                             {
                                 implementation.getIdentifier(), decodedSpecification.getIdentifier()
                             } ) ) );
@@ -889,8 +898,9 @@ public class JavaClasses extends JomcTool
                     {
                         if ( decodedSpecification.getMultiplicity() != specification.getMultiplicity() )
                         {
-                            details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
-                                "illegalMultiplicity", new Object[]
+                            details.add( new ModelException.Detail(
+                                "CLASS_ILLEGAL_SPECIFICATION_MULTIPLICITY", Level.SEVERE,
+                                this.getMessage( "illegalMultiplicity", new Object[]
                                 {
                                     specification.getIdentifier(), specification.getMultiplicity().value(),
                                     decodedSpecification.getMultiplicity().value()
@@ -902,8 +912,9 @@ public class JavaClasses extends JomcTool
                              ? specification.getScope() != null
                              : !decodedSpecification.getScope().equals( specification.getScope() ) )
                         {
-                            details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
-                                "illegalScope", new Object[]
+                            details.add( new ModelException.Detail(
+                                "CLASS_ILLEGAL_SPECIFICATION_SCOPE", Level.SEVERE,
+                                this.getMessage( "illegalScope", new Object[]
                                 {
                                     decodedSpecification.getIdentifier(),
                                     specification.getScope() == null
@@ -916,8 +927,9 @@ public class JavaClasses extends JomcTool
 
                         if ( !decodedSpecification.getClazz().equals( specification.getClazz() ) )
                         {
-                            details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
-                                "illegalSpecificationClass", new Object[]
+                            details.add( new ModelException.Detail(
+                                "CLASS_ILLEGAL_SPECIFICATION_CLASS", Level.SEVERE,
+                                this.getMessage( "illegalSpecificationClass", new Object[]
                                 {
                                     decodedSpecification.getIdentifier(), specification.getClazz(),
                                     decodedSpecification.getClazz()
@@ -934,8 +946,9 @@ public class JavaClasses extends JomcTool
 
                     if ( specification == null )
                     {
-                        details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
-                            "missingSpecification", new Object[]
+                        details.add( new ModelException.Detail(
+                            "CLASS_MISSING_SPECIFICATION", Level.SEVERE,
+                            this.getMessage( "missingSpecification", new Object[]
                             {
                                 implementation.getIdentifier(), decodedReference.getIdentifier()
                             } ) ) );
@@ -950,8 +963,9 @@ public class JavaClasses extends JomcTool
                         final Module moduleOfImplementation =
                             this.getModules().getModuleOfImplementation( implementation.getIdentifier() );
 
-                        details.add( new ModelException.Detail( Level.SEVERE, this.getMessage(
-                            "incompatibleImplementation", new Object[]
+                        details.add( new ModelException.Detail(
+                            "CLASS_INCOMPATIBLE_IMPLEMENTATION", Level.SEVERE,
+                            this.getMessage( "incompatibleImplementation", new Object[]
                             {
                                 javaClass.getClassName(), moduleOfImplementation == null
                                                           ? "<>" : moduleOfImplementation.getName(),

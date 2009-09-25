@@ -71,6 +71,9 @@
 #end
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
+#if($dependency.isDeprecated())
+    @Deprecated
+#end
     @javax.annotation.Generated( value = "$tool.getClass().getName()",
                                  comments = "See ${pom.url}" )
     $tool.getJavaModifierName($implementation,$dependency) $tool.getJavaTypeName($dependency) $tool.getJavaGetterMethodName($dependency)()

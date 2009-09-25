@@ -67,7 +67,7 @@
 #foreach($message in $modules.getMessages($implementation.getIdentifier()).getMessage())
  * <li>"{@link #$tool.getJavaGetterMethodName($message) $message.getName()}"<table>
 #foreach($text in $message.getTemplate().getText())
- * <tr><td valign="top">$tool.getDisplayLanguage($text.getLanguage()):</td><td valign="top"><pre>$tool.getJavadocComment($message.getTemplate().getText($text.getLanguage()), "     * ")</pre></td></tr>
+ * <tr><td valign="top">$tool.getDisplayLanguage($text.getLanguage()):</td><td valign="top"><pre>$tool.getJavadocComment($message.getTemplate().getText($text.getLanguage()), " * ")</pre></td></tr>
 #end
  * </table>
 #end

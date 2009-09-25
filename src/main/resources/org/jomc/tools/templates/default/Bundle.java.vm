@@ -39,6 +39,9 @@ import java.text.MessageFormat;
 #if($comment)
 /** Accessor methods for the {@code "$tool.getJavaClasspathLocation($implementation)${classSuffix}"} {@code ResourceBundle}. */
 #end
+#if($implementation.isDeprecated())
+@Deprecated
+#end
 @javax.annotation.Generated( value = "$tool.getClass().getName()",
                              comments = "See ${pom.url}" )
 class ${tool.getJavaTypeName($implementation,false)}${classSuffix}
@@ -52,6 +55,8 @@ class ${tool.getJavaTypeName($implementation,false)}${classSuffix}
 #if($comment)
   /** Creates a new <code>${tool.getJavaTypeName($implementation,false)}${classSuffix}</code> instance. */
 #end
+  @javax.annotation.Generated( value = "$tool.getClass().getName()",
+                               comments = "See ${pom.url}" )
   ${tool.getJavaTypeName($implementation,false)}${classSuffix}()
   {
 #if($messages)
@@ -68,6 +73,8 @@ class ${tool.getJavaTypeName($implementation,false)}${classSuffix}
    * @return The <code>${tool.getJavaTypeName($implementation,false)}${classSuffix}</code> singleton.
    */
 #end
+  @javax.annotation.Generated( value = "$tool.getClass().getName()",
+                               comments = "See ${pom.url}" )
   static ${tool.getJavaTypeName($implementation,false)}${classSuffix} getInstance()
   {
     return instance;
@@ -102,6 +109,11 @@ class ${tool.getJavaTypeName($implementation,false)}${classSuffix}
    * @return The text of the {@code $message.getName()} message.
 #end
    */
+#if($message.isDeprecated())
+@Deprecated
+#end
+  @javax.annotation.Generated( value = "$tool.getClass().getName()",
+                               comments = "See ${pom.url}" )
 #if(!$message.getArguments() || $message.getArguments().getArgument().isEmpty() )
   String $tool.getJavaGetterMethodName($message)( final Locale locale )
   {
@@ -116,7 +128,7 @@ class ${tool.getJavaTypeName($implementation,false)}${classSuffix}
 #foreach($argument in $message.getArguments().getArgument())
 #set($argument = $message.getArguments().getArgument($i))
 #set($i = $i + 1)
-    , final $tool.getJavaTypeName($argument) $argument.getName()
+    , #if($argument.isDeprecated())@Deprecated#end final $tool.getJavaTypeName($argument) $argument.getName()
 #end
   )
   {
@@ -152,6 +164,8 @@ class ${tool.getJavaTypeName($implementation,false)}${classSuffix}
    * @return Message for {@code key} using {@code locale}.
    */
 #end
+  @javax.annotation.Generated( value = "$tool.getClass().getName()",
+                               comments = "See ${pom.url}" )
   private String getMessage( final String key, Locale locale )
   {
     if ( locale == null )
