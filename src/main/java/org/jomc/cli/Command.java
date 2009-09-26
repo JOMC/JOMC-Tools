@@ -66,7 +66,7 @@ public interface Command
     // SECTION-START[Command]
 
     /** Status code when the command completed successfully. */
-    int STATUS_OK = 0;
+    int STATUS_SUCCESS = 0;
 
     /** Status code when the command failed. */
     int STATUS_FAILURE = 1;
@@ -124,7 +124,7 @@ public interface Command
      *
      * @throws NullPointerException if {@code commandLine} or {@code printStream} is {@code null}.
      *
-     * @see #STATUS_OK
+     * @see #STATUS_SUCCESS
      * @see #STATUS_FAILURE
      */
     int execute( CommandLine commandLine, PrintStream printStream ) throws NullPointerException;

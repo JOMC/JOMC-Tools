@@ -119,7 +119,7 @@ import org.xml.sax.SAXException;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-3-SNAPSHOT Build 2009-09-26T00:07:45+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-3-SNAPSHOT Build 2009-09-26T22:38:14+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -463,12 +463,13 @@ public abstract class AbstractJomcCommand implements Command
 
         int status = this.executeCommand( commandLine, printStream );
 
-        if ( status == Command.STATUS_OK && failOnWarnings && this.severity.intValue() >= Level.WARNING.intValue() )
+        if ( status == Command.STATUS_SUCCESS && failOnWarnings &&
+             this.severity.intValue() >= Level.WARNING.intValue() )
         {
             status = Command.STATUS_FAILURE;
         }
 
-        if ( status == Command.STATUS_OK )
+        if ( status == Command.STATUS_SUCCESS )
         {
             this.log( Level.INFO, this.getToolSuccessMessage( this.getLocale(), this.getCommandName() ), null,
                       printStream, verbose, debug );
@@ -1100,7 +1101,7 @@ public abstract class AbstractJomcCommand implements Command
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-3-SNAPSHOT Build 2009-09-26T00:07:45+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-3-SNAPSHOT Build 2009-09-26T22:38:14+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

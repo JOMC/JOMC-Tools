@@ -98,7 +98,7 @@ import org.jomc.tools.JavaClasses;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-3-SNAPSHOT Build 2009-09-26T00:07:45+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-3-SNAPSHOT Build 2009-09-26T22:38:14+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -238,7 +238,7 @@ public final class CommitJavaClassesCommand extends AbstractJomcCommand
 
     public int executeCommand( final CommandLine commandLine, final PrintStream printStream )
     {
-        int status = STATUS_OK;
+        int status = STATUS_SUCCESS;
 
         final boolean verbose = commandLine.hasOption( this.getVerboseOption().getOpt() );
         final boolean debug = commandLine.hasOption( this.getDebugOption().getOpt() );
@@ -634,7 +634,7 @@ public final class CommitJavaClassesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-3-SNAPSHOT Build 2009-09-26T00:07:45+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-3-SNAPSHOT Build 2009-09-26T22:38:14+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

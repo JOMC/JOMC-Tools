@@ -86,12 +86,6 @@ public class Jomc
 {
     // SECTION-START[Jomc]
 
-    /** Constant for a status code indicating success. */
-    private static final int STATUS_SUCCESS = 0;
-
-    /** Constant for a status code indicating failure. */
-    private static final int STATUS_FAILURE = 1;
-
     /** Print stream of the instance. */
     private PrintStream printStream;
 
@@ -138,6 +132,9 @@ public class Jomc
      * @param args Arguments to process.
      *
      * @return Status code.
+     *
+     * @see Command#STATUS_SUCCESS
+     * @see Command#STATUS_FAILURE
      */
     public int jomc( final String[] args )
     {
@@ -174,7 +171,7 @@ public class Jomc
                 this.getPrintStream().println( this.getUsageMessage( this.getLocale(), this.getHelpCommandName() ) );
                 this.getPrintStream().println();
                 this.getPrintStream().println( commandInfo.toString() );
-                return STATUS_FAILURE;
+                return Command.STATUS_FAILURE;
             }
 
             final String[] commandArguments = new String[ args.length - 1 ];
@@ -201,7 +198,7 @@ public class Jomc
                 this.getPrintStream().println();
                 this.getPrintStream().println( cmd.getLongDescription( this.getLocale() ) );
                 this.getPrintStream().println();
-                return STATUS_SUCCESS;
+                return Command.STATUS_SUCCESS;
             }
 
             final CommandLineParser parser = new GnuParser();
@@ -219,12 +216,12 @@ public class Jomc
             this.getPrintStream().println( this.getIllegalArgumentsMessage(
                 this.getLocale(), cmd.getName(), this.getHelpCommandName() ) );
 
-            return STATUS_FAILURE;
+            return Command.STATUS_FAILURE;
         }
         catch ( final Throwable t )
         {
             t.printStackTrace( this.getPrintStream() );
-            return STATUS_FAILURE;
+            return Command.STATUS_FAILURE;
         }
         finally
         {
@@ -246,11 +243,26 @@ public class Jomc
     /**
      * Main entry point.
      *
-     * @param args The command arguments.
+     * @param args The application arguments.
      */
     public static void main( final String[] args )
     {
-        System.exit( new Jomc().jomc( args ) );
+        System.exit( run( args ) );
+    }
+
+    /**
+     * Main entry point without exiting the VM.
+     *
+     * @param args The application arguments.
+     *
+     * @return Status code.
+     *
+     * @see Command#STATUS_SUCCESS
+     * @see Command#STATUS_FAILURE
+     */
+    public static int run( final String[] args )
+    {
+        return new Jomc().jomc( args );
     }
 
     // SECTION-END
