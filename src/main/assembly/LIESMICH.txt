@@ -1,0 +1,23 @@
+
+  ${pom.organization.name} - ${pom.name} - LIESMICH.txt
+  Version ${pom.version} Build ${buildNumber}
+  ${pom.url}
+
+  ${pom.description}
+
+    Bitte verwenden Sie die 'help' Anweisung der 'jomc' Anwendung für weitere
+    Informationen. Zum Starten der Anwendung können die entsprechenden
+    Startdateien aus dem 'bin' Verzeichnis, oder das Java-Archiv mittels des
+    standard Java Startprogramms ausgeführt werden.
+
+    bin/jomc (Unix)
+    bin/jomc.bat (Windows)
+    java -jar bin/${project.build.finalName}.jar
+
+    Die Java-Archive aus dem 'jomc/lib/ext' Verzeichnis werden bei Verwendung
+    eines 1.5 JDK benötigt.
+
+    export JOMC_OPTS="-Djava.ext.dirs='Pfad des jomc/lib/ext Verzeichnisses'".
+    bin/jomc (Unix)
+    bin/jomc.bat (Windows)
+    java -Djava.ext.dirs=jomc/lib/ext -jar bin/${project.build.finalName}.jar

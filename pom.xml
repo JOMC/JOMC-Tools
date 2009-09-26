@@ -299,6 +299,7 @@
               <goal>single</goal>
             </goals>
             <configuration>
+              <finalName>jomc-${pom.version}</finalName>
               <descriptors>
                 <descriptor>src/main/assembly/bin-snapshot.xml</descriptor>
               </descriptors>
@@ -446,28 +447,28 @@
                       <artifactId>jomc-spi</artifactId>
                       <version>${pom.version}</version>
                       <classifier>javadoc</classifier>
-                      <outputDirectory>${project.build.directory}/jomc-javadoc/ri</outputDirectory>
+                      <outputDirectory>${project.build.directory}/jomc-javadoc/runtime</outputDirectory>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.jomc</groupId>
                       <artifactId>jomc-util</artifactId>
                       <version>${pom.version}</version>
                       <classifier>javadoc</classifier>
-                      <outputDirectory>${project.build.directory}/jomc-javadoc/ri</outputDirectory>
+                      <outputDirectory>${project.build.directory}/jomc-javadoc/runtime</outputDirectory>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.jomc</groupId>
                       <artifactId>jomc-model</artifactId>
                       <version>${pom.version}</version>
                       <classifier>javadoc</classifier>
-                      <outputDirectory>${project.build.directory}/jomc-javadoc/ri</outputDirectory>
+                      <outputDirectory>${project.build.directory}/jomc-javadoc/runtime</outputDirectory>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.jomc</groupId>
                       <artifactId>jomc-ri</artifactId>
                       <version>${pom.version}</version>
                       <classifier>javadoc</classifier>
-                      <outputDirectory>${project.build.directory}/jomc-javadoc/ri</outputDirectory>
+                      <outputDirectory>${project.build.directory}/jomc-javadoc/runtime</outputDirectory>
                     </artifactItem>
                   </artifactItems>
                 </configuration>
@@ -538,6 +539,7 @@
                   <goal>single</goal>
                 </goals>
                 <configuration>
+                  <finalName>jomc-${pom.version}</finalName>
                   <descriptors>
                     <descriptor>src/main/assembly/bin-release.xml</descriptor>
                   </descriptors>

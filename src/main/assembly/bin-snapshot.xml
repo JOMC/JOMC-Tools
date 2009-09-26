@@ -47,7 +47,7 @@
       <fileMode>0444</fileMode>
       <filtered>false</filtered>
       <lineEnding>dos</lineEnding>
-      <outputDirectory>/examples/xslt</outputDirectory>
+      <outputDirectory>/jomc/examples/xslt</outputDirectory>
       <source>src/main/jomc/relocations.xslt</source>
     </file>
     <file>
@@ -55,7 +55,7 @@
       <fileMode>0444</fileMode>
       <filtered>false</filtered>
       <lineEnding>dos</lineEnding>
-      <outputDirectory>/examples/xml</outputDirectory>
+      <outputDirectory>/jomc/examples/xml</outputDirectory>
       <source>${project.build.outputDirectory}/META-INF/jomc.xml</source>
     </file>
   </files>
@@ -78,6 +78,7 @@
       <filtered>true</filtered>
       <includes>
         <include>README.txt</include>
+        <include>LIESMICH.txt</include>
       </includes>
     </fileSet>
     <fileSet>
@@ -105,7 +106,7 @@
     <fileSet>
       <directory>src/main/assembly/examples/xslt</directory>
       <fileMode>0444</fileMode>
-      <outputDirectory>/examples/xslt</outputDirectory>
+      <outputDirectory>/jomc/examples/xslt</outputDirectory>
       <lineEnding>dos</lineEnding>
       <filtered>true</filtered>
       <includes>
@@ -130,7 +131,7 @@
       <includes>
         <include>org.jomc:jomc-api</include>
       </includes>
-      <outputDirectory>/lib</outputDirectory>
+      <outputDirectory>/jomc/lib</outputDirectory>
       <useProjectArtifact>false</useProjectArtifact>
       <useProjectAttachments>false</useProjectAttachments>
       <useTransitiveDependencies>true</useTransitiveDependencies>
@@ -145,7 +146,7 @@
         <include>org.jomc:jomc-model</include>
         <include>org.jomc:jomc-ri</include>
       </includes>
-      <outputDirectory>/lib/ri</outputDirectory>
+      <outputDirectory>/jomc/lib/runtime</outputDirectory>
       <useProjectArtifact>false</useProjectArtifact>
       <useProjectAttachments>false</useProjectAttachments>
       <useTransitiveDependencies>true</useTransitiveDependencies>
@@ -157,7 +158,7 @@
       <directoryMode>0755</directoryMode>
       <fileMode>0555</fileMode>
       <scope>provided</scope>
-      <outputDirectory>/lib/ext</outputDirectory>
+      <outputDirectory>/jomc/lib/ext</outputDirectory>
     </dependencySet>
   </dependencySets>
 </assembly>
