@@ -152,7 +152,7 @@
         <include>org.jomc:jomc-model</include>
         <include>org.jomc:jomc-ri</include>
       </includes>
-      <outputDirectory>/jomc/lib/runtime</outputDirectory>
+      <outputDirectory>/jomc/lib/ri</outputDirectory>
       <useProjectArtifact>false</useProjectArtifact>
       <useProjectAttachments>false</useProjectAttachments>
       <useTransitiveDependencies>true</useTransitiveDependencies>

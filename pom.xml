@@ -447,28 +447,28 @@
                       <artifactId>jomc-spi</artifactId>
                       <version>${pom.version}</version>
                       <classifier>javadoc</classifier>
-                      <outputDirectory>${project.build.directory}/jomc-javadoc/runtime</outputDirectory>
+                      <outputDirectory>${project.build.directory}/jomc-javadoc/ri</outputDirectory>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.jomc</groupId>
                       <artifactId>jomc-util</artifactId>
                       <version>${pom.version}</version>
                       <classifier>javadoc</classifier>
-                      <outputDirectory>${project.build.directory}/jomc-javadoc/runtime</outputDirectory>
+                      <outputDirectory>${project.build.directory}/jomc-javadoc/ri</outputDirectory>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.jomc</groupId>
                       <artifactId>jomc-model</artifactId>
                       <version>${pom.version}</version>
                       <classifier>javadoc</classifier>
-                      <outputDirectory>${project.build.directory}/jomc-javadoc/runtime</outputDirectory>
+                      <outputDirectory>${project.build.directory}/jomc-javadoc/ri</outputDirectory>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.jomc</groupId>
                       <artifactId>jomc-ri</artifactId>
                       <version>${pom.version}</version>
                       <classifier>javadoc</classifier>
-                      <outputDirectory>${project.build.directory}/jomc-javadoc/runtime</outputDirectory>
+                      <outputDirectory>${project.build.directory}/jomc-javadoc/ri</outputDirectory>
                     </artifactItem>
                   </artifactItems>
                 </configuration>
