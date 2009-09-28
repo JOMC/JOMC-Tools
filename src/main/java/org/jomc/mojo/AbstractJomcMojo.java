@@ -448,6 +448,17 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         {
             throw new MojoExecutionException( e.getMessage(), e );
         }
+        finally
+        {
+            try
+            {
+                this.logSeparator( Level.INFO );
+            }
+            catch ( IOException e )
+            {
+                this.getLog().error( e );
+            }
+        }
     }
 
     protected abstract void executeTool() throws Exception;
