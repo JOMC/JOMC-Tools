@@ -733,8 +733,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 }
             }
         }
-
-        this.logSeparator( level );
     }
 
 }
