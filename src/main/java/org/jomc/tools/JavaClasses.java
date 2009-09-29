@@ -520,6 +520,16 @@ public class JavaClasses extends JomcTool
                 {
                     final String classLocation = s.getClazz().replace( '.', File.separatorChar ) + ".class";
                     final URL classUrl = classLoader.getResource( classLocation );
+
+                    if ( classUrl == null )
+                    {
+                        throw new IOException( this.getMessage( "resourceNotFound", new Object[]
+                            {
+                                classLocation
+                            } ) );
+
+                    }
+
                     final JavaClass javaClass = this.getJavaClass( classUrl, classLocation );
 
                     if ( classUrl != null )
@@ -553,6 +563,16 @@ public class JavaClasses extends JomcTool
                 {
                     final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
                     final URL classUrl = classLoader.getResource( classLocation );
+
+                    if ( classUrl == null )
+                    {
+                        throw new IOException( this.getMessage( "resourceNotFound", new Object[]
+                            {
+                                classLocation
+                            } ) );
+
+                    }
+
                     final JavaClass javaClass = this.getJavaClass( classUrl, classLocation );
 
                     if ( classUrl != null )
@@ -1175,7 +1195,7 @@ public class JavaClasses extends JomcTool
      * @param javaClass The java class to process.
      * @param transformer The transformer to use for transforming the classes.
      *
-     * @throws NullPointerException if {@code specification}, {@code javaClass} or {@code transformer} is {@code null}.
+     * @throws NullPointerException if {@code implementation}, {@code javaClass} or {@code transformer} is {@code null}.
      * @throws IOException if accessing class files fails.
      * @throws TransformerException if transforming class files fails.
      */
@@ -1278,10 +1298,16 @@ public class JavaClasses extends JomcTool
      *
      * @return The parsed class file.
      *
+     * @throws NullPointerException if {@code classFile} is {@code null}.
      * @throws IOException if parsing {@code classFile} fails.
      */
     public JavaClass getJavaClass( final File classFile ) throws IOException
     {
+        if ( classFile == null )
+        {
+            throw new NullPointerException( "classFile" );
+        }
+
         return this.getJavaClass( classFile.toURI().toURL(), classFile.getName() );
     }
 
@@ -1293,10 +1319,20 @@ public class JavaClasses extends JomcTool
      *
      * @return The parsed class file.
      *
+     * @throws NullPointerException if {@code url} or {@code className} is {@code null}.
      * @throws IOException if parsing fails.
      */
     public JavaClass getJavaClass( final URL url, final String className ) throws IOException
     {
+        if ( url == null )
+        {
+            throw new NullPointerException( "url" );
+        }
+        if ( className == null )
+        {
+            throw new NullPointerException( "className" );
+        }
+
         return this.getJavaClass( url.openStream(), className );
     }
 
@@ -1308,10 +1344,20 @@ public class JavaClasses extends JomcTool
      *
      * @return The parsed class file.
      *
+     * @throws NullPointerException if {@code stream} or {@code className} is {@code null}.
      * @throws IOException if parsing fails.
      */
     public JavaClass getJavaClass( final InputStream stream, final String className ) throws IOException
     {
+        if ( stream == null )
+        {
+            throw new NullPointerException( "stream" );
+        }
+        if ( className == null )
+        {
+            throw new NullPointerException( "className" );
+        }
+
         final ClassParser parser = new ClassParser( stream, className );
         final JavaClass clazz = parser.parse();
         stream.close();
