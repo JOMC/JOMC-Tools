@@ -142,7 +142,7 @@ public abstract class JomcToolTest extends TestCase
         this.getTestTool().getListeners().remove( LISTENER );
     }
 
-    /** 
+    /**
      * Tests that methods declaring to throw a {@code NullPointerException} do not throw an instance with a {@code null}
      * message.
      */

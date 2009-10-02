@@ -813,7 +813,7 @@ public abstract class JomcTool
      * @return Date of {@code calendar} formatted using a short format style pattern.
      *
      * @throws NullPointerException if {@code calendar} is {@code null}.
-     * 
+     *
      * @see DateFormat#SHORT
      */
     public String getShortDate( final Calendar calendar )
@@ -855,7 +855,7 @@ public abstract class JomcTool
      * @return Time of {@code calendar} formatted using a short format style pattern.
      *
      * @throws NullPointerException if {@code calendar} is {@code null}.
-     * 
+     *
      * @see DateFormat#SHORT
      */
     public String getShortTime( final Calendar calendar )
@@ -876,7 +876,7 @@ public abstract class JomcTool
      * @return Time of {@code calendar} formatted using a long format style pattern.
      *
      * @throws NullPointerException if {@code calendar} is {@code null}.
-     * 
+     *
      * @see DateFormat#LONG
      */
     public String getLongTime( final Calendar calendar )
@@ -897,7 +897,7 @@ public abstract class JomcTool
      * @return Date and time of {@code calendar} formatted using a short format style pattern.
      *
      * @throws NullPointerException if {@code calendar} is {@code null}.
-     * 
+     *
      * @see DateFormat#SHORT
      */
     public String getShortDateTime( final Calendar calendar )
@@ -918,7 +918,7 @@ public abstract class JomcTool
      * @return Date and time of {@code calendar} formatted using a long format style pattern.
      *
      * @throws NullPointerException if {@code calendar} is {@code null}.
-     * 
+     *
      * @see DateFormat#LONG
      */
     public String getLongDateTime( final Calendar calendar )
@@ -939,7 +939,7 @@ public abstract class JomcTool
      *
      * @return Formatted range of the years of {@code start} and {@code end}.
      *
-     * @throws NullPointerException if {@code start} or {@cod end} is {@code null}.
+     * @throws NullPointerException if {@code start} or {@code end} is {@code null}.
      */
     public String getYears( final Calendar start, final Calendar end )
     {
