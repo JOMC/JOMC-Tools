@@ -501,9 +501,16 @@ public class JavaSources extends JomcTool
      * @param specification The specification to create a new editor for.
      *
      * @return A new editor for editing the source code of {@code specification}.
+     *
+     * @throws NullPointerException if {@code specification} is {@code null}.
      */
     public JavaSpecificationEditor getSpecificationEditor( final Specification specification )
     {
+        if ( specification == null )
+        {
+            throw new NullPointerException( "specification" );
+        }
+
         return new JavaSpecificationEditor( new TrailingWhitespaceEditor(), specification );
     }
 
@@ -513,9 +520,16 @@ public class JavaSources extends JomcTool
      * @param implementation The implementation to create a new editor for.
      *
      * @return A new editor for editing the source code of {@code implementation}.
+     *
+     * @throws NullPointerException if {@code implementation} is {@code null}.
      */
     public JavaImplementationEditor getImplementationEditor( final Implementation implementation )
     {
+        if ( implementation == null )
+        {
+            throw new NullPointerException( "implementation" );
+        }
+
         return new JavaImplementationEditor( new TrailingWhitespaceEditor(), implementation );
     }
 
@@ -900,34 +914,44 @@ public class JavaSources extends JomcTool
         }
 
         @Override
-        public String getOutput( final Section root )
+        public String getOutput( final Section section ) throws IOException
         {
-            try
+            if ( section == null )
             {
-                for ( Section s : root.getSections() )
-                {
-                    if ( LICENSE_SECTION_NAME.equals( s.getName() ) )
-                    {
-                        this.editLicenseSection( s );
-                        this.licenseSectionPresent = true;
-                    }
-                    if ( ANNOTATIONS_SECTION_NAME.equals( s.getName() ) )
-                    {
-                        this.editAnnotationsSection( s );
-                        this.annotationsSectionPresent = true;
-                    }
-                    if ( DOCUMENTATION_SECTION_NAME.equals( s.getName() ) )
-                    {
-                        this.editDocumentationSection( s );
-                        this.documentationSectionPresent = true;
-                    }
-                }
-
-                return super.getOutput( root );
+                throw new NullPointerException( "section" );
             }
-            catch ( final IOException e )
+
+            this.licenseSectionPresent = false;
+            this.annotationsSectionPresent = false;
+            this.documentationSectionPresent = false;
+            return super.getOutput( section );
+        }
+
+        @Override
+        public void editSection( final Section section ) throws IOException
+        {
+            if ( section == null )
             {
-                throw new RuntimeException( e );
+                throw new NullPointerException( "section" );
+            }
+
+            if ( section.getName() != null )
+            {
+                if ( LICENSE_SECTION_NAME.equals( section.getName() ) )
+                {
+                    this.editLicenseSection( section );
+                    this.licenseSectionPresent = true;
+                }
+                if ( ANNOTATIONS_SECTION_NAME.equals( section.getName() ) )
+                {
+                    this.editAnnotationsSection( section );
+                    this.annotationsSectionPresent = true;
+                }
+                if ( DOCUMENTATION_SECTION_NAME.equals( section.getName() ) )
+                {
+                    this.editDocumentationSection( section );
+                    this.documentationSectionPresent = true;
+                }
             }
         }
 
@@ -1131,57 +1155,53 @@ public class JavaSources extends JomcTool
         }
 
         @Override
-        public String getOutput( final Section root )
+        public String getOutput( final Section root ) throws IOException
         {
-            try
+            this.constructorsSectionPresent = false;
+            this.defaultConstructorSectionPresent = false;
+            this.messagesSectionPresent = false;
+            this.dependenciesSectionPresent = false;
+            this.propertiesSectionPresent = false;
+            return super.getOutput( root );
+        }
+
+        @Override
+        public void editSection( final Section section ) throws IOException
+        {
+            if ( section == null )
             {
-                Section ctorSection = null;
+                throw new NullPointerException( "section" );
+            }
 
-                for ( Section s : root.getSections() )
+            super.editSection( section );
+
+            if ( section.getName() != null )
+            {
+                if ( CONSTRUCTORS_SECTION_NAME.equals( section.getName() ) )
                 {
-                    if ( CONSTRUCTORS_SECTION_NAME.equals( s.getName() ) )
-                    {
-                        ctorSection = s;
-                        this.editConstructorsSection( s );
-                        this.constructorsSectionPresent = true;
-                    }
-                    else if ( DEFAULT_CONSTRUCTOR_SECTION_NAME.equals( s.getName() ) )
-                    {
-                        this.editDefaultConstructorSection( s );
-                        this.defaultConstructorSectionPresent = true;
-                    }
-                    else if ( DEPENDENCIES_SECTION_NAME.equals( s.getName() ) )
-                    {
-                        this.editDependenciesSection( s );
-                        this.dependenciesSectionPresent = true;
-                    }
-                    else if ( MESSAGES_SECTION_NAME.equals( s.getName() ) )
-                    {
-                        this.editMessagesSection( s );
-                        this.messagesSectionPresent = true;
-                    }
-                    else if ( PROPERTIES_SECTION_NAME.equals( s.getName() ) )
-                    {
-                        this.editPropertiesSection( s );
-                        this.propertiesSectionPresent = true;
-                    }
+                    this.editConstructorsSection( section );
+                    this.constructorsSectionPresent = true;
                 }
-
-                if ( ctorSection != null && !this.isDefaultConstructorSectionPresent() )
+                else if ( DEFAULT_CONSTRUCTOR_SECTION_NAME.equals( section.getName() ) )
                 {
-                    ctorSection.getHeadContent().append( "        // SECTION-START[" ).
-                        append( DEFAULT_CONSTRUCTOR_SECTION_NAME ).append( this.getLineSeparator() );
-
-                    ctorSection.getHeadContent().append( "        super();" ).append( this.getLineSeparator() );
-                    ctorSection.getHeadContent().append( "        // SECTION-END" ).append( this.getLineSeparator() );
+                    this.editDefaultConstructorSection( section );
                     this.defaultConstructorSectionPresent = true;
                 }
-
-                return super.getOutput( root );
-            }
-            catch ( final IOException e )
-            {
-                throw new RuntimeException( e );
+                else if ( DEPENDENCIES_SECTION_NAME.equals( section.getName() ) )
+                {
+                    this.editDependenciesSection( section );
+                    this.dependenciesSectionPresent = true;
+                }
+                else if ( MESSAGES_SECTION_NAME.equals( section.getName() ) )
+                {
+                    this.editMessagesSection( section );
+                    this.messagesSectionPresent = true;
+                }
+                else if ( PROPERTIES_SECTION_NAME.equals( section.getName() ) )
+                {
+                    this.editPropertiesSection( section );
+                    this.propertiesSectionPresent = true;
+                }
             }
         }
 
@@ -1249,6 +1269,26 @@ public class JavaSources extends JomcTool
             {
                 s.getHeadContent().append( getConstructorsSectionHeadContent( this.implementation ) );
                 s.getTailContent().append( getConstructorsSectionTailContent( this.implementation ) );
+            }
+
+            for ( Section child : s.getSections() )
+            {
+                if ( child.getName() != null && DEFAULT_CONSTRUCTOR_SECTION_NAME.equals( child.getName() ) )
+                {
+                    this.defaultConstructorSectionPresent = true;
+                    break;
+                }
+            }
+
+            if ( !this.defaultConstructorSectionPresent )
+            {
+                final Section defaultCtor = new Section();
+                defaultCtor.setName( DEFAULT_CONSTRUCTOR_SECTION_NAME );
+                defaultCtor.setStartingLine( "        // SECTION-START[" + DEFAULT_CONSTRUCTOR_SECTION_NAME + "]" );
+                defaultCtor.setEndingLine( "        // SECTION-END" );
+                defaultCtor.getHeadContent().append( "        super();" ).append( this.getLineSeparator() );
+                s.getSections().add( defaultCtor );
+                this.defaultConstructorSectionPresent = true;
             }
         }
 

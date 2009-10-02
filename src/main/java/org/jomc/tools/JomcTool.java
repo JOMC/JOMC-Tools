@@ -194,7 +194,7 @@ public abstract class JomcTool
             throw new NullPointerException( "specification" );
         }
 
-        return specification.getClazz().substring( 0, specification.getClazz().lastIndexOf( '.' ) );
+        return this.getJavaPackageName( specification.getClazz() );
     }
 
     /**
@@ -218,12 +218,15 @@ public abstract class JomcTool
         final StringBuilder typeName = new StringBuilder();
         final String javaPackageName = this.getJavaPackageName( specification );
 
-        if ( qualified )
+        if ( qualified && javaPackageName.length() > 0 )
         {
             typeName.append( javaPackageName ).append( '.' );
         }
 
-        typeName.append( specification.getClazz().substring( javaPackageName.length() + 1 ) );
+        typeName.append( javaPackageName.length() > 0
+                         ? specification.getClazz().substring( javaPackageName.length() + 1 )
+                         : specification.getClazz() );
+
         return typeName.toString();
     }
 
@@ -306,7 +309,7 @@ public abstract class JomcTool
             throw new NullPointerException( "implementation" );
         }
 
-        return implementation.getClazz().substring( 0, implementation.getClazz().lastIndexOf( '.' ) );
+        return this.getJavaPackageName( implementation.getClazz() );
     }
 
     /**
@@ -329,11 +332,16 @@ public abstract class JomcTool
 
         final StringBuilder typeName = new StringBuilder();
         final String javaPackageName = this.getJavaPackageName( implementation );
-        if ( qualified )
+
+        if ( qualified && javaPackageName.length() > 0 )
         {
             typeName.append( javaPackageName ).append( '.' );
         }
-        typeName.append( implementation.getClazz().substring( javaPackageName.length() + 1 ) );
+
+        typeName.append( javaPackageName.length() > 0
+                         ? implementation.getClazz().substring( javaPackageName.length() + 1 )
+                         : implementation.getClazz() );
+
         return typeName.toString();
     }
 
@@ -738,14 +746,61 @@ public abstract class JomcTool
     }
 
     /**
+     * Gets a flag indicating if the class of a given specification is located in the Java default package.
+     *
+     * @param specification The specification to test.
+     *
+     * @return {@code true} if the class of {@code specification} is located in the Java default package; {@code false}
+     * if not.
+     *
+     * @throws NullPointerException if {@code specification} is {@code null}.
+     */
+    public boolean isJavaDefaultPackage( final Specification specification )
+    {
+        if ( specification == null )
+        {
+            throw new NullPointerException( "specification" );
+        }
+
+        return this.getJavaPackageName( specification ).length() == 0;
+    }
+
+    /**
+     * Gets a flag indicating if the class of a given implementation is located in the Java default package.
+     *
+     * @param implementation The implementation to test.
+     *
+     * @return {@code true} if the class of {@code implementation} is located in the Java default package; {@code false}
+     * if not.
+     *
+     * @throws NullPointerException if {@code implementation} is {@code null}.
+     */
+    public boolean isJavaDefaultPackage( final Implementation implementation )
+    {
+        if ( implementation == null )
+        {
+            throw new NullPointerException( "implementation" );
+        }
+
+        return this.getJavaPackageName( implementation ).length() == 0;
+    }
+
+    /**
      * Gets the display language of a given language code.
      *
      * @param language The language code to get the display language of.
      *
      * @return The display language of {@code language}.
+     *
+     * @throws NullPointerException if {@code language} is {@code null}.
      */
     public String getDisplayLanguage( final String language )
     {
+        if ( language == null )
+        {
+            throw new NullPointerException( "language" );
+        }
+
         final Locale locale = new Locale( language );
         return locale.getDisplayLanguage( locale );
     }
@@ -757,10 +812,17 @@ public abstract class JomcTool
      *
      * @return Date of {@code calendar} formatted using a short format style pattern.
      *
+     * @throws NullPointerException if {@code calendar} is {@code null}.
+     * 
      * @see DateFormat#SHORT
      */
     public String getShortDate( final Calendar calendar )
     {
+        if ( calendar == null )
+        {
+            throw new NullPointerException( "calendar" );
+        }
+
         return DateFormat.getDateInstance( DateFormat.SHORT ).format( calendar.getTime() );
     }
 
@@ -771,10 +833,17 @@ public abstract class JomcTool
      *
      * @return Date of {@code calendar} formatted using a long format style pattern.
      *
+     * @throws NullPointerException if {@code calendar} is {@code null}.
+     *
      * @see DateFormat#LONG
      */
     public String getLongDate( final Calendar calendar )
     {
+        if ( calendar == null )
+        {
+            throw new NullPointerException( "calendar" );
+        }
+
         return DateFormat.getDateInstance( DateFormat.LONG ).format( calendar.getTime() );
     }
 
@@ -785,10 +854,17 @@ public abstract class JomcTool
      *
      * @return Time of {@code calendar} formatted using a short format style pattern.
      *
+     * @throws NullPointerException if {@code calendar} is {@code null}.
+     * 
      * @see DateFormat#SHORT
      */
     public String getShortTime( final Calendar calendar )
     {
+        if ( calendar == null )
+        {
+            throw new NullPointerException( "calendar" );
+        }
+
         return DateFormat.getTimeInstance( DateFormat.SHORT ).format( calendar.getTime() );
     }
 
@@ -799,10 +875,17 @@ public abstract class JomcTool
      *
      * @return Time of {@code calendar} formatted using a long format style pattern.
      *
+     * @throws NullPointerException if {@code calendar} is {@code null}.
+     * 
      * @see DateFormat#LONG
      */
     public String getLongTime( final Calendar calendar )
     {
+        if ( calendar == null )
+        {
+            throw new NullPointerException( "calendar" );
+        }
+
         return DateFormat.getTimeInstance( DateFormat.LONG ).format( calendar.getTime() );
     }
 
@@ -813,10 +896,17 @@ public abstract class JomcTool
      *
      * @return Date and time of {@code calendar} formatted using a short format style pattern.
      *
+     * @throws NullPointerException if {@code calendar} is {@code null}.
+     * 
      * @see DateFormat#SHORT
      */
     public String getShortDateTime( final Calendar calendar )
     {
+        if ( calendar == null )
+        {
+            throw new NullPointerException( "calendar" );
+        }
+
         return DateFormat.getDateTimeInstance( DateFormat.SHORT, DateFormat.SHORT ).format( calendar.getTime() );
     }
 
@@ -827,10 +917,17 @@ public abstract class JomcTool
      *
      * @return Date and time of {@code calendar} formatted using a long format style pattern.
      *
+     * @throws NullPointerException if {@code calendar} is {@code null}.
+     * 
      * @see DateFormat#LONG
      */
     public String getLongDateTime( final Calendar calendar )
     {
+        if ( calendar == null )
+        {
+            throw new NullPointerException( "calendar" );
+        }
+
         return DateFormat.getDateTimeInstance( DateFormat.LONG, DateFormat.LONG ).format( calendar.getTime() );
     }
 
@@ -841,9 +938,20 @@ public abstract class JomcTool
      * @param end The end of the range.
      *
      * @return Formatted range of the years of {@code start} and {@code end}.
+     *
+     * @throws NullPointerException if {@code start} or {@cod end} is {@code null}.
      */
     public String getYears( final Calendar start, final Calendar end )
     {
+        if ( start == null )
+        {
+            throw new NullPointerException( "start" );
+        }
+        if ( end == null )
+        {
+            throw new NullPointerException( "end" );
+        }
+
         final Format yearFormat = new SimpleDateFormat( "yyyy" );
         final int s = start.get( Calendar.YEAR );
         final int e = end.get( Calendar.YEAR );
@@ -1184,9 +1292,16 @@ public abstract class JomcTool
      * @param template The template to get the location of.
      *
      * @return The location of the template.
+     *
+     * @throws NullPointerException if {@code template} is {@code null}.
      */
     public String getTemplateLocation( final String template )
     {
+        if ( template == null )
+        {
+            throw new NullPointerException( "template" );
+        }
+
         return TEMPLATE_PREFIX + this.getProfile() + "/" + template;
     }
 
@@ -1207,8 +1322,24 @@ public abstract class JomcTool
         }
     }
 
+    private String getJavaPackageName( final String identifier )
+    {
+        if ( identifier == null )
+        {
+            throw new NullPointerException( "identifier" );
+        }
+
+        final int idx = identifier.lastIndexOf( '.' );
+        return idx != -1 ? identifier.substring( 0, idx ) : "";
+    }
+
     private String getMessage( final String key, final Object args )
     {
+        if ( key == null )
+        {
+            throw new NullPointerException( "key" );
+        }
+
         final ResourceBundle b = ResourceBundle.getBundle( JomcTool.class.getName().replace( '.', '/' ) );
         return args == null ? b.getString( key ) : new MessageFormat( b.getString( key ) ).format( args );
     }

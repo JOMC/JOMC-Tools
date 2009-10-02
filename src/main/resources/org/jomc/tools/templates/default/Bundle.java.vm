@@ -30,7 +30,9 @@
 ##   $Id$
 ##
 #set($messages = $modules.getMessages($implementation.getIdentifier()))
+#if(!$tool.isJavaDefaultPackage($implementation))
 package ${tool.getJavaPackageName($implementation)};
+#end
 
 import java.util.Locale;
 import java.util.ResourceBundle;
