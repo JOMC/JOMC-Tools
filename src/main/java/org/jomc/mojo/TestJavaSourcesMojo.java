@@ -60,7 +60,7 @@ public final class TestJavaSourcesMojo extends AbstractJomcMojo
     @Override
     public void executeTool() throws Exception
     {
-        if ( !this.isJavaSourceProcessingDisabled() )
+        if ( this.isJavaSourceProcessingEnabled() )
         {
             File testSourceDirectory = new File( this.getMavenProject().getBuild().getTestSourceDirectory() );
 

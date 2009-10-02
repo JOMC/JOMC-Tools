@@ -60,7 +60,7 @@ public final class MainJavaSourcesMojo extends AbstractJomcMojo
     @Override
     public void executeTool() throws Exception
     {
-        if ( !this.isJavaSourceProcessingDisabled() )
+        if ( this.isJavaSourceProcessingEnabled() )
         {
             File sourceDirectory = new File( this.getMavenProject().getBuild().getSourceDirectory() );
 

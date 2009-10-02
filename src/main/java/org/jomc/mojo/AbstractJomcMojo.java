@@ -120,16 +120,16 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Contols processing of java sources.
      *
-     * @parameter expression="${jomc.javaSources.disabled}" default-value="false"
+     * @parameter expression="${jomc.javaSources.enabled}" default-value="true"
      */
-    private boolean javaSourceProcessingDisabled;
+    private boolean javaSourceProcessingEnabled;
 
     /**
      * Contols processing of java classes.
      *
-     * @parameter expression="${jomc.javaClasses.disabled}" default-value="false"
+     * @parameter expression="${jomc.javaClasses.enabled}" default-value="true"
      */
-    private boolean javaClassProcessingDisabled;
+    private boolean javaClassProcessingEnabled;
 
     /** The tool for managing sources. */
     private JavaSources mainJavaSourcesTool;
@@ -372,23 +372,23 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
-     * Gets a flag indicating the processing of Java sources is disabled.
+     * Gets a flag indicating the processing of Java sources is enabled.
      *
-     * @return {@code true} if processing of Java sources is disabled; {@code false} else.
+     * @return {@code true} if processing of Java sources is enabled; {@code false} else.
      */
-    public boolean isJavaSourceProcessingDisabled()
+    public boolean isJavaSourceProcessingEnabled()
     {
-        return this.javaSourceProcessingDisabled;
+        return this.javaSourceProcessingEnabled;
     }
 
     /**
-     * Gets a flag indicating the processing of Java classes is disabled.
+     * Gets a flag indicating the processing of Java classes is enabled.
      *
-     * @return {@code true} if processing of Java classes is disabled; {@code false} else.
+     * @return {@code true} if processing of Java classes is enabled; {@code false} else.
      */
-    public boolean isJavaClassProcessingDisabled()
+    public boolean isJavaClassProcessingEnabled()
     {
-        return this.javaClassProcessingDisabled;
+        return this.javaClassProcessingEnabled;
     }
 
     /**
@@ -454,7 +454,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 this.logSeparator( Level.INFO );
             }
-            catch ( IOException e )
+            catch ( final IOException e )
             {
                 this.getLog().error( e );
             }

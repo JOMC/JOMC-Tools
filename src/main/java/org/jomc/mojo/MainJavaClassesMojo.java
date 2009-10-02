@@ -60,7 +60,7 @@ public final class MainJavaClassesMojo extends AbstractJomcMojo
     @Override
     public void executeTool() throws Exception
     {
-        if ( !this.isJavaClassProcessingDisabled() )
+        if ( this.isJavaClassProcessingEnabled() )
         {
             File classesDirectory = new File( this.getMavenProject().getBuild().getOutputDirectory() );
             if ( !classesDirectory.isAbsolute() )
