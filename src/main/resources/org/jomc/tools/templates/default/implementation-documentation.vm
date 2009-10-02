@@ -48,8 +48,12 @@
 #if($modules.getProperties($implementation.getIdentifier()))
  * <p><b>Properties</b><ul>
 #foreach($property in $modules.getProperties($implementation.getIdentifier()).getProperty())
- * <li>"{@link #$tool.getJavaGetterMethodName($property) $property.getName()}"<blockquote>
- * Property of type {@code $tool.getJavaTypeName($property,false)}#if($property.getValue()) with value "$property.getValue()"#end.</blockquote></li>
+ * <li>"{@link #$tool.getJavaGetterMethodName($property) $property.getName()}"
+ * <blockquote>Property of type {@code $tool.getJavaTypeName($property,false)}.
+#if($property.getDocumentation())
+ * <p>$tool.getJavadocComment($property.getDocumentation().getText("en"), " * ")</p>
+#end
+ * </blockquote></li>
 #end
  * </ul></p>
 #end

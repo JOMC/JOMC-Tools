@@ -53,7 +53,7 @@
      * <p><b>Properties</b><dl>
 #foreach($property in $dependency.getProperties().getProperty())
      * <dt>"{@code $property.getName()}"</dt>
-     * <dd>Property of type {@code $tool.getJavaTypeName($property,false)}#if($property.getValue()) with value "$property.getValue()"#end.
+     * <dd>Property of type {@code $tool.getJavaTypeName($property,false)}.
 #if($property.getDocumentation())
      * <blockquote>$tool.getJavadocComment($property.getDocumentation().getText("en"), "     * ")</blockquote>
 #end
