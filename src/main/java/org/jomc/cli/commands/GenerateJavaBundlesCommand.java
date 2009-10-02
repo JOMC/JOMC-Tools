@@ -53,66 +53,126 @@ import org.jomc.tools.JavaBundles;
  * <li>{@code org.jomc.cli.Command} {@code 1.0} {@code Multiton}</li>
  * </ul></p>
  * <p><b>Properties</b><ul>
- * <li>"{@link #getAbbreviatedCommandName abbreviatedCommandName}"<blockquote>
- * Property of type {@code java.lang.String} with value "gjb".</blockquote></li>
- * <li>"{@link #getClasspathOptionLongName classpathOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "classpath".</blockquote></li>
- * <li>"{@link #getClasspathOptionShortName classpathOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "cp".</blockquote></li>
- * <li>"{@link #getCommandName commandName}"<blockquote>
- * Property of type {@code java.lang.String} with value "generate-java-bundles".</blockquote></li>
- * <li>"{@link #getDebugOptionLongName debugOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "debug".</blockquote></li>
- * <li>"{@link #getDebugOptionShortName debugOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "D".</blockquote></li>
- * <li>"{@link #getDocumentLocationOptionLongName documentLocationOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "document-location".</blockquote></li>
- * <li>"{@link #getDocumentLocationOptionShortName documentLocationOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "dl".</blockquote></li>
- * <li>"{@link #getDocumentsOptionLongName documentsOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "documents".</blockquote></li>
- * <li>"{@link #getDocumentsOptionShortName documentsOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "df".</blockquote></li>
- * <li>"{@link #getFailOnWarningsOptionLongName failOnWarningsOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "fail-on-warnings".</blockquote></li>
- * <li>"{@link #getFailOnWarningsOptionShortName failOnWarningsOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "fw".</blockquote></li>
- * <li>"{@link #getLanguageOptionLongName languageOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "language".</blockquote></li>
- * <li>"{@link #getLanguageOptionShortName languageOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "l".</blockquote></li>
- * <li>"{@link #getModuleNameOptionLongName moduleNameOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "module".</blockquote></li>
- * <li>"{@link #getModuleNameOptionShortName moduleNameOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "mn".</blockquote></li>
- * <li>"{@link #getNoClasspathResolutionOptionLongName noClasspathResolutionOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "no-classpath-resolution".</blockquote></li>
- * <li>"{@link #getNoClasspathResolutionOptionShortName noClasspathResolutionOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "ncr".</blockquote></li>
- * <li>"{@link #getOutputEncodingOptionLongName outputEncodingOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "output-encoding".</blockquote></li>
- * <li>"{@link #getOutputEncodingOptionShortName outputEncodingOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "oe".</blockquote></li>
- * <li>"{@link #getProfileOptionLongName profileOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "profile".</blockquote></li>
- * <li>"{@link #getProfileOptionShortName profileOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "p".</blockquote></li>
- * <li>"{@link #getResourceDirectoryOptionLongName resourceDirectoryOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "resource-dir".</blockquote></li>
- * <li>"{@link #getResourceDirectoryOptionShortName resourceDirectoryOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "rd".</blockquote></li>
- * <li>"{@link #getSourceDirectoryOptionLongName sourceDirectoryOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "source-dir".</blockquote></li>
- * <li>"{@link #getSourceDirectoryOptionShortName sourceDirectoryOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "sd".</blockquote></li>
- * <li>"{@link #getTemplateEncodingOptionLongName templateEncodingOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "template-encoding".</blockquote></li>
- * <li>"{@link #getTemplateEncodingOptionShortName templateEncodingOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "te".</blockquote></li>
- * <li>"{@link #getVerboseOptionLongName verboseOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "verbose".</blockquote></li>
- * <li>"{@link #getVerboseOptionShortName verboseOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "v".</blockquote></li>
+ * <li>"{@link #getAbbreviatedCommandName abbreviatedCommandName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Abbreviated name of the command.</p>
+ * </blockquote></li>
+ * <li>"{@link #getClasspathOptionLongName classpathOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'classpath' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getClasspathOptionShortName classpathOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'classpath' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getCommandName commandName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the command.</p>
+ * </blockquote></li>
+ * <li>"{@link #getDebugOptionLongName debugOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'debug' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getDebugOptionShortName debugOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'debug' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getDocumentLocationOptionLongName documentLocationOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'document-location' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getDocumentLocationOptionShortName documentLocationOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'document-location' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getDocumentsOptionLongName documentsOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'documents' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getDocumentsOptionShortName documentsOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'documents' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getFailOnWarningsOptionLongName failOnWarningsOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'fail-on-warnings' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getFailOnWarningsOptionShortName failOnWarningsOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'fail-on-warnings' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getLanguageOptionLongName languageOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'language' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getLanguageOptionShortName languageOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'language' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getModuleNameOptionLongName moduleNameOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'module' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getModuleNameOptionShortName moduleNameOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'module' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getNoClasspathResolutionOptionLongName noClasspathResolutionOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'no-classpath-resolution' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getNoClasspathResolutionOptionShortName noClasspathResolutionOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'no-classpath-resolution' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getOutputEncodingOptionLongName outputEncodingOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'output-encoding' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getOutputEncodingOptionShortName outputEncodingOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'output-encoding' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getProfileOptionLongName profileOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'profile' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getProfileOptionShortName profileOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'profile' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getResourceDirectoryOptionLongName resourceDirectoryOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'resource-dir' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getResourceDirectoryOptionShortName resourceDirectoryOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'resource-dir' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getSourceDirectoryOptionLongName sourceDirectoryOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'source-dir' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getSourceDirectoryOptionShortName sourceDirectoryOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'source-dir' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getTemplateEncodingOptionLongName templateEncodingOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'template-encoding' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getTemplateEncodingOptionShortName templateEncodingOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'template-encoding' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getVerboseOptionLongName verboseOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'verbose' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getVerboseOptionShortName verboseOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'verbose' option.</p>
+ * </blockquote></li>
  * </ul></p>
  * <p><b>Dependencies</b><ul>
  * <li>"{@link #getLocale Locale}"<blockquote>
@@ -120,7 +180,7 @@ import org.jomc.tools.JavaBundles;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-3-SNAPSHOT Build 2009-10-02T14:08:44+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-3-SNAPSHOT Build 2009-10-02T14:25:48+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -942,7 +1002,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-3-SNAPSHOT Build 2009-10-02T14:08:44+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-3-SNAPSHOT Build 2009-10-02T14:25:48+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

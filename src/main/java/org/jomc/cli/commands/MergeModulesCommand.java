@@ -55,58 +55,110 @@ import org.jomc.model.Modules;
  * <li>{@code org.jomc.cli.Command} {@code 1.0} {@code Multiton}</li>
  * </ul></p>
  * <p><b>Properties</b><ul>
- * <li>"{@link #getAbbreviatedCommandName abbreviatedCommandName}"<blockquote>
- * Property of type {@code java.lang.String} with value "mm".</blockquote></li>
- * <li>"{@link #getClasspathOptionLongName classpathOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "classpath".</blockquote></li>
- * <li>"{@link #getClasspathOptionShortName classpathOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "cp".</blockquote></li>
- * <li>"{@link #getCommandName commandName}"<blockquote>
- * Property of type {@code java.lang.String} with value "merge-modules".</blockquote></li>
- * <li>"{@link #getDebugOptionLongName debugOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "debug".</blockquote></li>
- * <li>"{@link #getDebugOptionShortName debugOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "D".</blockquote></li>
- * <li>"{@link #getDocumentLocationOptionLongName documentLocationOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "document-location".</blockquote></li>
- * <li>"{@link #getDocumentLocationOptionShortName documentLocationOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "dl".</blockquote></li>
- * <li>"{@link #getDocumentOptionLongName documentOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "document".</blockquote></li>
- * <li>"{@link #getDocumentOptionShortName documentOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "d".</blockquote></li>
- * <li>"{@link #getDocumentsOptionLongName documentsOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "documents".</blockquote></li>
- * <li>"{@link #getDocumentsOptionShortName documentsOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "df".</blockquote></li>
- * <li>"{@link #getFailOnWarningsOptionLongName failOnWarningsOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "fail-on-warnings".</blockquote></li>
- * <li>"{@link #getFailOnWarningsOptionShortName failOnWarningsOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "fw".</blockquote></li>
- * <li>"{@link #getModuleNameOptionLongName moduleNameOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "module".</blockquote></li>
- * <li>"{@link #getModuleNameOptionShortName moduleNameOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "mn".</blockquote></li>
- * <li>"{@link #getModuleVendorOptionLongName moduleVendorOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "module-vendor".</blockquote></li>
- * <li>"{@link #getModuleVendorOptionShortName moduleVendorOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "mve".</blockquote></li>
- * <li>"{@link #getModuleVersionOptionLongName moduleVersionOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "module-version".</blockquote></li>
- * <li>"{@link #getModuleVersionOptionShortName moduleVersionOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "mv".</blockquote></li>
- * <li>"{@link #getNoClasspathResolutionOptionLongName noClasspathResolutionOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "no-classpath-resolution".</blockquote></li>
- * <li>"{@link #getNoClasspathResolutionOptionShortName noClasspathResolutionOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "ncr".</blockquote></li>
- * <li>"{@link #getStylesheetOptionLongName stylesheetOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "stylesheet".</blockquote></li>
- * <li>"{@link #getStylesheetOptionShortName stylesheetOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "xs".</blockquote></li>
- * <li>"{@link #getVerboseOptionLongName verboseOptionLongName}"<blockquote>
- * Property of type {@code java.lang.String} with value "verbose".</blockquote></li>
- * <li>"{@link #getVerboseOptionShortName verboseOptionShortName}"<blockquote>
- * Property of type {@code java.lang.String} with value "v".</blockquote></li>
+ * <li>"{@link #getAbbreviatedCommandName abbreviatedCommandName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Abbreviated name of the command.</p>
+ * </blockquote></li>
+ * <li>"{@link #getClasspathOptionLongName classpathOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'classpath' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getClasspathOptionShortName classpathOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'classpath' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getCommandName commandName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the command.</p>
+ * </blockquote></li>
+ * <li>"{@link #getDebugOptionLongName debugOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'debug' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getDebugOptionShortName debugOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'debug' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getDocumentLocationOptionLongName documentLocationOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'document-location' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getDocumentLocationOptionShortName documentLocationOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'document-location' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getDocumentOptionLongName documentOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'document' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getDocumentOptionShortName documentOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'document' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getDocumentsOptionLongName documentsOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'documents' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getDocumentsOptionShortName documentsOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'documents' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getFailOnWarningsOptionLongName failOnWarningsOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'fail-on-warnings' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getFailOnWarningsOptionShortName failOnWarningsOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'fail-on-warnings' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getModuleNameOptionLongName moduleNameOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'module' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getModuleNameOptionShortName moduleNameOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'module' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getModuleVendorOptionLongName moduleVendorOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'module-vendor' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getModuleVendorOptionShortName moduleVendorOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'module-vendor' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getModuleVersionOptionLongName moduleVersionOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'module-version' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getModuleVersionOptionShortName moduleVersionOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'module-version' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getNoClasspathResolutionOptionLongName noClasspathResolutionOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'no-classpath-resolution' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getNoClasspathResolutionOptionShortName noClasspathResolutionOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'no-classpath-resolution' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getStylesheetOptionLongName stylesheetOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'xslt' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getStylesheetOptionShortName stylesheetOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'xslt' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getVerboseOptionLongName verboseOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'verbose' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getVerboseOptionShortName verboseOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'verbose' option.</p>
+ * </blockquote></li>
  * </ul></p>
  * <p><b>Dependencies</b><ul>
  * <li>"{@link #getLocale Locale}"<blockquote>
@@ -114,7 +166,7 @@ import org.jomc.model.Modules;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-3-SNAPSHOT Build 2009-10-02T14:08:44+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-3-SNAPSHOT Build 2009-10-02T14:25:48+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -832,7 +884,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-3-SNAPSHOT Build 2009-10-02T14:08:44+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-3-SNAPSHOT Build 2009-10-02T14:25:48+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

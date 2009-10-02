@@ -48,14 +48,22 @@ import org.apache.commons.lang.StringUtils;
 /**
  * JOMC command line interface.
  * <p><b>Properties</b><ul>
- * <li>"{@link #getDescPad descPad}"<blockquote>
- * Property of type {@code int} with value "2".</blockquote></li>
- * <li>"{@link #getHelpCommandName helpCommandName}"<blockquote>
- * Property of type {@code java.lang.String} with value "help".</blockquote></li>
- * <li>"{@link #getLeftPad leftPad}"<blockquote>
- * Property of type {@code int} with value "2".</blockquote></li>
- * <li>"{@link #getWidth width}"<blockquote>
- * Property of type {@code int} with value "80".</blockquote></li>
+ * <li>"{@link #getDescPad descPad}"
+ * <blockquote>Property of type {@code int}.
+ * <p>The number of characters of padding to be prefixed to each description line.</p>
+ * </blockquote></li>
+ * <li>"{@link #getHelpCommandName helpCommandName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>The name of the command used to request help.</p>
+ * </blockquote></li>
+ * <li>"{@link #getLeftPad leftPad}"
+ * <blockquote>Property of type {@code int}.
+ * <p>The number of characters of padding to be prefixed to each line.</p>
+ * </blockquote></li>
+ * <li>"{@link #getWidth width}"
+ * <blockquote>Property of type {@code int}.
+ * <p>The number of characters per line for the usage statement.</p>
+ * </blockquote></li>
  * </ul></p>
  * <p><b>Dependencies</b><ul>
  * <li>"{@link #getCommands Commands}"<blockquote>
