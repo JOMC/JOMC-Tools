@@ -44,22 +44,30 @@ import org.jomc.cli.Jomc;
 /**
  * Tests the {@code Jomc} CLI class.
  * <p><b>Properties</b><ul>
- * <li>"{@link #getClassesDirectory classesDirectory}"<blockquote>
- * Property of type {@code java.lang.String} with value "/var/spool/continuum/working-directory/49/target/classes".</blockquote></li>
- * <li>"{@link #getTestClassesDirectory testClassesDirectory}"<blockquote>
- * Property of type {@code java.lang.String} with value "/var/spool/continuum/working-directory/49/target/jomc-test/classes".</blockquote></li>
- * <li>"{@link #getTestDocument testDocument}"<blockquote>
- * Property of type {@code java.lang.String} with value "/var/spool/continuum/working-directory/49/target/classes/META-INF/jomc.xml".</blockquote></li>
- * <li>"{@link #getTestModuleName testModuleName}"<blockquote>
- * Property of type {@code java.lang.String} with value "JOMC CLI".</blockquote></li>
- * <li>"{@link #getTestOutputDocument testOutputDocument}"<blockquote>
- * Property of type {@code java.lang.String} with value "/var/spool/continuum/working-directory/49/target/jomc-test/transformed.xml".</blockquote></li>
- * <li>"{@link #getTestResourcesDirectory testResourcesDirectory}"<blockquote>
- * Property of type {@code java.lang.String} with value "/var/spool/continuum/working-directory/49/target/jomc-test/rsrc".</blockquote></li>
- * <li>"{@link #getTestSourcesDirectory testSourcesDirectory}"<blockquote>
- * Property of type {@code java.lang.String} with value "/var/spool/continuum/working-directory/49/target/jomc-test/src".</blockquote></li>
- * <li>"{@link #getTestStylesheet testStylesheet}"<blockquote>
- * Property of type {@code java.lang.String} with value "/var/spool/continuum/working-directory/49/src/main/jomc/relocations.xslt".</blockquote></li>
+ * <li>"{@link #getClassesDirectory classesDirectory}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
+ * <li>"{@link #getTestClassesDirectory testClassesDirectory}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
+ * <li>"{@link #getTestDocument testDocument}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
+ * <li>"{@link #getTestModuleName testModuleName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
+ * <li>"{@link #getTestOutputDocument testOutputDocument}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
+ * <li>"{@link #getTestResourcesDirectory testResourcesDirectory}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
+ * <li>"{@link #getTestSourcesDirectory testSourcesDirectory}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
+ * <li>"{@link #getTestStylesheet testStylesheet}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
  * </ul></p>
  *
  * @author <a href="mailto:cs@jomc.org">Christian Schulte</a> 1.0
