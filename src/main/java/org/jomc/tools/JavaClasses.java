@@ -532,25 +532,14 @@ public class JavaClasses extends JomcTool
 
                     final JavaClass javaClass = this.getJavaClass( classUrl, classLocation );
 
-                    if ( classUrl != null )
+                    try
                     {
-                        try
-                        {
-                            this.validateClasses( s, javaClass );
-                        }
-                        catch ( final ModelException e )
-                        {
-                            thrown = e;
-                            details.addAll( e.getDetails() );
-                        }
+                        this.validateClasses( s, javaClass );
                     }
-                    else
+                    catch ( final ModelException e )
                     {
-                        this.log( Level.WARNING, this.getMessage( "missingClassfile", new Object[]
-                            {
-                                s.getIdentifier()
-                            } ), null );
-
+                        thrown = e;
+                        details.addAll( e.getDetails() );
                     }
                 }
             }
@@ -575,25 +564,14 @@ public class JavaClasses extends JomcTool
 
                     final JavaClass javaClass = this.getJavaClass( classUrl, classLocation );
 
-                    if ( classUrl != null )
+                    try
                     {
-                        try
-                        {
-                            this.validateClasses( i, javaClass );
-                        }
-                        catch ( final ModelException e )
-                        {
-                            thrown = e;
-                            details.addAll( e.getDetails() );
-                        }
+                        this.validateClasses( i, javaClass );
                     }
-                    else
+                    catch ( final ModelException e )
                     {
-                        this.log( Level.WARNING, this.getMessage( "missingClassfile", new Object[]
-                            {
-                                i.getClazz()
-                            } ), null );
-
+                        thrown = e;
+                        details.addAll( e.getDetails() );
                     }
                 }
             }
