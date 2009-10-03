@@ -14,10 +14,10 @@
     bin/jomc.bat (Windows)
     java -jar bin/${project.build.finalName}.jar
 
-    Die Java-Archive aus dem 'jomc/lib/ext' Verzeichnis werden bei Verwendung
+    Die Java-Archive aus dem 'lib/ext' Verzeichnis werden bei Verwendung
     eines 1.5 JDK benötigt.
 
-    export JOMC_OPTS="-Djava.ext.dirs='Pfad des jomc/lib/ext Verzeichnisses'".
+    export JOMC_OPTS="-Djava.ext.dirs='Pfad des lib/ext Verzeichnisses'".
     bin/jomc (Unix)
     bin/jomc.bat (Windows)
-    java -Djava.ext.dirs=jomc/lib/ext -jar bin/${project.build.finalName}.jar
+    java -Djava.ext.dirs=lib/ext -jar bin/${project.build.finalName}.jar
