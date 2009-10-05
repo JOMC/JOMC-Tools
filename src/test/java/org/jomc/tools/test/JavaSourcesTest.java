@@ -33,10 +33,12 @@
 package org.jomc.tools.test;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.xml.bind.JAXBException;
 import junit.framework.Assert;
+import org.apache.commons.io.IOUtils;
 import org.jomc.model.Implementation;
 import org.jomc.model.Module;
 import org.jomc.model.Specification;
@@ -208,15 +210,49 @@ public class JavaSourcesTest extends JomcToolTest
     public void testManageSources() throws Exception
     {
         this.getTestTool().manageSources( this.getTestSourcesDirectory() );
-        this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
-                                          this.getTestSourcesDirectory() );
-
         this.getTestTool().manageSources( this.getTestTool().getModules().getModule( "Module" ),
                                           this.getTestSourcesDirectory() );
 
-        this.getTestTool().manageSources( this.getTestTool().getModules().getSpecification( "Specification" ),
-                                          this.getTestSourcesDirectory() );
+        final File implementationDirectory = this.getTestSourcesDirectory();
+        this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
+                                          implementationDirectory );
 
+        final File specificationDirectory = this.getTestSourcesDirectory();
+        this.getTestTool().manageSources( this.getTestTool().getModules().getSpecification( "Specification" ),
+                                          specificationDirectory );
+
+
+        IOUtils.copy( this.getClass().getResourceAsStream( "IllegalImplementationSource.java.txt" ),
+                      new FileOutputStream( new File( implementationDirectory, "Implementation.java" ) ) );
+
+        IOUtils.copy( this.getClass().getResourceAsStream( "IllegalSpecificationSource.java.txt" ),
+                      new FileOutputStream( new File( specificationDirectory, "Specification.java" ) ) );
+
+        try
+        {
+            this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
+                                              implementationDirectory );
+
+            Assert.fail( "Expected IOException not thrown." );
+        }
+        catch ( IOException e )
+        {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
+        }
+
+        try
+        {
+            this.getTestTool().manageSources( this.getTestTool().getModules().getSpecification( "Specification" ),
+                                              specificationDirectory );
+
+            Assert.fail( "Expected IOException not thrown." );
+        }
+        catch ( IOException e )
+        {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
+        }
     }
 
 }

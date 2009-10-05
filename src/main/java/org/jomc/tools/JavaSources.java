@@ -252,7 +252,19 @@ public class JavaSources extends JomcTool
                                    : this.getSpecificationTemplate( specification );
 
             final JavaSpecificationEditor editor = this.getSpecificationEditor( specification );
-            final String edited = editor.edit( content );
+            final String edited;
+            try
+            {
+                edited = editor.edit( content );
+            }
+            catch ( final IOException e )
+            {
+                throw (IOException) new IOException( this.getMessage( "failedEditing", new Object[]
+                    {
+                        f.getCanonicalPath(), e.getMessage()
+                    } ) ).initCause( e );
+
+            }
 
             if ( !editor.isLicenseSectionPresent() )
             {
@@ -335,7 +347,19 @@ public class JavaSources extends JomcTool
                                    : this.getImplementationTemplate( implementation );
 
             final JavaImplementationEditor editor = this.getImplementationEditor( implementation );
-            final String edited = editor.edit( content );
+            final String edited;
+            try
+            {
+                edited = editor.edit( content );
+            }
+            catch ( final IOException e )
+            {
+                throw (IOException) new IOException( this.getMessage( "failedEditing", new Object[]
+                    {
+                        f.getCanonicalPath(), e.getMessage()
+                    } ) ).initCause( e );
+
+            }
 
             if ( !editor.isLicenseSectionPresent() )
             {
