@@ -45,6 +45,7 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.commons.io.FileUtils;
+import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.jomc.model.Implementation;
 import org.jomc.model.Message;
@@ -433,11 +434,10 @@ public class JavaBundles extends JomcTool
         {
             final StringWriter writer = new StringWriter();
             final VelocityContext ctx = this.getVelocityContext();
+            final Template template = this.getVelocityTemplate( BUNDLE_TEMPLATE );
             ctx.put( "implementation", implementation );
-
-            this.getVelocityEngine().mergeTemplate(
-                this.getTemplateLocation( BUNDLE_TEMPLATE ), this.getTemplateEncoding(), ctx, writer );
-
+            ctx.put( "template", template );
+            template.merge( ctx, writer );
             writer.close();
             return writer.toString();
         }
@@ -504,7 +504,6 @@ public class JavaBundles extends JomcTool
         final VelocityContext ctx = super.getVelocityContext();
         ctx.put( "classSuffix", BUNDLE_SUFFIX );
         ctx.put( "comment", Boolean.TRUE );
-        ctx.put( "templateLocation", this.getTemplateLocation( BUNDLE_TEMPLATE ) );
         return ctx;
     }
 

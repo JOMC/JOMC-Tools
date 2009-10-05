@@ -255,6 +255,15 @@ public class JavaBundlesTest extends JomcToolTest
         this.getTestTool().writeBundleSources( this.getTestTool().getModules().getModule( "Module" ),
                                                this.getTestSourcesDirectory() );
 
+        this.getTestTool().setProfile( "DOES_NOT_EXIST" );
+
+        this.getTestTool().writeBundleSources( this.getTestSourcesDirectory() );
+        this.getTestTool().writeBundleSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
+                                               this.getTestSourcesDirectory() );
+
+        this.getTestTool().writeBundleSources( this.getTestTool().getModules().getModule( "Module" ),
+                                               this.getTestSourcesDirectory() );
+
     }
 
     public void testWriteBundleResources() throws Exception

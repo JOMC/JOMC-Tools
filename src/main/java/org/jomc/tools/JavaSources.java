@@ -39,6 +39,7 @@ import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.commons.io.FileUtils;
+import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.jomc.model.Dependencies;
 import org.jomc.model.Implementation;
@@ -580,20 +581,14 @@ public class JavaSources extends JomcTool
      */
     private String getSpecificationTemplate( final Specification specification ) throws IOException
     {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( SPECIFICATION_TEMPLATE );
-            ctx.put( "specification", specification );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( final Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
+        final StringWriter writer = new StringWriter();
+        final VelocityContext ctx = this.getVelocityContext();
+        final Template template = this.getVelocityTemplate( SPECIFICATION_TEMPLATE );
+        ctx.put( "specification", specification );
+        ctx.put( "template", template );
+        template.merge( ctx, writer );
+        writer.close();
+        return writer.toString();
     }
 
     /**
@@ -605,20 +600,14 @@ public class JavaSources extends JomcTool
      */
     private String getImplementationTemplate( final Implementation implementation ) throws IOException
     {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( IMPLEMENTATION_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( final Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
+        final StringWriter writer = new StringWriter();
+        final VelocityContext ctx = this.getVelocityContext();
+        final Template template = this.getVelocityTemplate( IMPLEMENTATION_TEMPLATE );
+        ctx.put( "implementation", implementation );
+        ctx.put( "template", template );
+        template.merge( ctx, writer );
+        writer.close();
+        return writer.toString();
     }
 
     /**
@@ -630,20 +619,14 @@ public class JavaSources extends JomcTool
      */
     private String getLicenseSection( final Specification specification ) throws IOException
     {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( SPECIFICATION_LICENSE_TEMPLATE );
-            ctx.put( "specification", specification );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( final Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
+        final StringWriter writer = new StringWriter();
+        final VelocityContext ctx = this.getVelocityContext();
+        final Template template = this.getVelocityTemplate( SPECIFICATION_LICENSE_TEMPLATE );
+        ctx.put( "specification", specification );
+        ctx.put( "template", template );
+        template.merge( ctx, writer );
+        writer.close();
+        return writer.toString();
     }
 
     /**
@@ -655,20 +638,14 @@ public class JavaSources extends JomcTool
      */
     private String getLicenseSection( final Implementation implementation ) throws IOException
     {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( IMPLEMENTATION_LICENSE_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( final Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
+        final StringWriter writer = new StringWriter();
+        final VelocityContext ctx = this.getVelocityContext();
+        final Template template = this.getVelocityTemplate( IMPLEMENTATION_LICENSE_TEMPLATE );
+        ctx.put( "implementation", implementation );
+        ctx.put( "template", template );
+        template.merge( ctx, writer );
+        writer.close();
+        return writer.toString();
     }
 
     /**
@@ -680,20 +657,14 @@ public class JavaSources extends JomcTool
      */
     private String getAnnotationsSection( final Specification specification ) throws IOException
     {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( SPECIFICATION_ANNOTATIONS_TEMPLATE );
-            ctx.put( "specification", specification );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( final Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
+        final StringWriter writer = new StringWriter();
+        final VelocityContext ctx = this.getVelocityContext();
+        final Template template = this.getVelocityTemplate( SPECIFICATION_ANNOTATIONS_TEMPLATE );
+        ctx.put( "specification", specification );
+        ctx.put( "template", template );
+        template.merge( ctx, writer );
+        writer.close();
+        return writer.toString();
     }
 
     /**
@@ -705,20 +676,14 @@ public class JavaSources extends JomcTool
      */
     private String getAnnotationsSection( final Implementation implementation ) throws IOException
     {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( IMPLEMENTATION_ANNOTATIONS_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( final Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
+        final StringWriter writer = new StringWriter();
+        final VelocityContext ctx = this.getVelocityContext();
+        final Template template = this.getVelocityTemplate( IMPLEMENTATION_ANNOTATIONS_TEMPLATE );
+        ctx.put( "implementation", implementation );
+        ctx.put( "template", template );
+        template.merge( ctx, writer );
+        writer.close();
+        return writer.toString();
     }
 
     /**
@@ -730,20 +695,14 @@ public class JavaSources extends JomcTool
      */
     private String getDocumentationSection( final Specification specification ) throws IOException
     {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( SPECIFICATION_DOCUMENTATION_TEMPLATE );
-            ctx.put( "specification", specification );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( final Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
+        final StringWriter writer = new StringWriter();
+        final VelocityContext ctx = this.getVelocityContext();
+        final Template template = this.getVelocityTemplate( SPECIFICATION_DOCUMENTATION_TEMPLATE );
+        ctx.put( "specification", specification );
+        ctx.put( "template", template );
+        template.merge( ctx, writer );
+        writer.close();
+        return writer.toString();
     }
 
     /**
@@ -755,20 +714,14 @@ public class JavaSources extends JomcTool
      */
     private String getDocumentationSection( final Implementation implementation ) throws IOException
     {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( IMPLEMENTATION_DOCUMENTATION_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( final Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
+        final StringWriter writer = new StringWriter();
+        final VelocityContext ctx = this.getVelocityContext();
+        final Template template = this.getVelocityTemplate( IMPLEMENTATION_DOCUMENTATION_TEMPLATE );
+        ctx.put( "implementation", implementation );
+        ctx.put( "template", template );
+        template.merge( ctx, writer );
+        writer.close();
+        return writer.toString();
     }
 
     /**
@@ -780,20 +733,14 @@ public class JavaSources extends JomcTool
      */
     private String getConstructorsSectionHeadContent( final Implementation implementation ) throws IOException
     {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( CONSTRUCTORS_HEAD_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( final Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
+        final StringWriter writer = new StringWriter();
+        final VelocityContext ctx = this.getVelocityContext();
+        final Template template = this.getVelocityTemplate( CONSTRUCTORS_HEAD_TEMPLATE );
+        ctx.put( "implementation", implementation );
+        ctx.put( "template", template );
+        template.merge( ctx, writer );
+        writer.close();
+        return writer.toString();
     }
 
     /**
@@ -805,20 +752,14 @@ public class JavaSources extends JomcTool
      */
     private String getConstructorsSectionTailContent( final Implementation implementation ) throws IOException
     {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( CONSTRUCTORS_TAIL_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( final Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
+        final StringWriter writer = new StringWriter();
+        final VelocityContext ctx = this.getVelocityContext();
+        final Template template = this.getVelocityTemplate( CONSTRUCTORS_TAIL_TEMPLATE );
+        ctx.put( "implementation", implementation );
+        ctx.put( "template", template );
+        template.merge( ctx, writer );
+        writer.close();
+        return writer.toString();
     }
 
     /**
@@ -830,20 +771,14 @@ public class JavaSources extends JomcTool
      */
     private String getDependenciesSection( final Implementation implementation ) throws IOException
     {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( DEPENDENCIES_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( final Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
+        final StringWriter writer = new StringWriter();
+        final VelocityContext ctx = this.getVelocityContext();
+        final Template template = this.getVelocityTemplate( DEPENDENCIES_TEMPLATE );
+        ctx.put( "implementation", implementation );
+        ctx.put( "template", template );
+        template.merge( ctx, writer );
+        writer.close();
+        return writer.toString();
     }
 
     /**
@@ -855,20 +790,14 @@ public class JavaSources extends JomcTool
      */
     private String getPropertiesSection( final Implementation implementation ) throws IOException
     {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( PROPERTIES_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( final Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
+        final StringWriter writer = new StringWriter();
+        final VelocityContext ctx = this.getVelocityContext();
+        final Template template = this.getVelocityTemplate( PROPERTIES_TEMPLATE );
+        ctx.put( "implementation", implementation );
+        ctx.put( "template", template );
+        template.merge( ctx, writer );
+        writer.close();
+        return writer.toString();
     }
 
     /**
@@ -880,20 +809,14 @@ public class JavaSources extends JomcTool
      */
     private String getMessagesSection( final Implementation implementation ) throws IOException
     {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final String template = this.getTemplateLocation( MESSAGES_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "templateLocation", template );
-            this.getVelocityEngine().mergeTemplate( template, this.getTemplateEncoding(), ctx, writer );
-            return writer.toString();
-        }
-        catch ( final Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
+        final StringWriter writer = new StringWriter();
+        final VelocityContext ctx = this.getVelocityContext();
+        final Template template = this.getVelocityTemplate( MESSAGES_TEMPLATE );
+        ctx.put( "implementation", implementation );
+        ctx.put( "template", template );
+        template.merge( ctx, writer );
+        writer.close();
+        return writer.toString();
     }
 
     private String getMessage( final String key, final Object args )

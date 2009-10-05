@@ -253,6 +253,19 @@ public class JavaSourcesTest extends JomcToolTest
             Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
+
+        this.getTestTool().setProfile( "DOES_NOT_EXIST" );
+
+        this.getTestTool().manageSources( this.getTestSourcesDirectory() );
+        this.getTestTool().manageSources( this.getTestTool().getModules().getModule( "Module" ),
+                                          this.getTestSourcesDirectory() );
+
+        this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
+                                          this.getTestSourcesDirectory() );
+
+        this.getTestTool().manageSources( this.getTestTool().getModules().getSpecification( "Specification" ),
+                                          this.getTestSourcesDirectory() );
+
     }
 
 }

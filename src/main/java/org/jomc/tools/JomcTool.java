@@ -34,6 +34,7 @@ package org.jomc.tools;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.DateFormat;
@@ -48,8 +49,10 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.log.LogChute;
@@ -1287,22 +1290,56 @@ public abstract class JomcTool
     }
 
     /**
-     * Gets the location of the given template.
+     * Gets a velocity template for a given name.
+     * <p>This method returns the template corresponding to the profile of the instance. If that template is not found,
+     * the template corresponding to the default profile is returned so that only templates differing from the default
+     * templates need to be provided when exchanging templates.</p>
      *
-     * @param template The template to get the location of.
+     * @param templateName The name of the template to get.
      *
-     * @return The location of the template.
+     * @return The template matching {@code templateName}.
      *
-     * @throws NullPointerException if {@code template} is {@code null}.
+     * @throws NullPointerException if {@code templateName} is {@code null}.
+     * @throws IOException if getting the template fails.
+     *
+     * @see #getProfile()
+     * @see #getTemplateEncoding()
      */
-    public String getTemplateLocation( final String template )
+    public Template getVelocityTemplate( final String templateName ) throws IOException
     {
-        if ( template == null )
+        if ( templateName == null )
         {
-            throw new NullPointerException( "template" );
+            throw new NullPointerException( "templateName" );
         }
 
-        return TEMPLATE_PREFIX + this.getProfile() + "/" + template;
+        try
+        {
+            return this.getVelocityEngine().getTemplate( TEMPLATE_PREFIX + this.getProfile() + "/" + templateName,
+                                                         this.getTemplateEncoding() );
+
+        }
+        catch ( final ResourceNotFoundException e )
+        {
+            this.log( Level.CONFIG, this.getMessage( "templateNotFound", new Object[]
+                {
+                    templateName, TEMPLATE_PREFIX + this.getProfile() + "/" + templateName
+                } ), e );
+
+            try
+            {
+                return this.getVelocityEngine().getTemplate( TEMPLATE_PREFIX + "default/" + templateName,
+                                                             this.getTemplateEncoding() );
+
+            }
+            catch ( final Exception e2 )
+            {
+                throw (IOException) new IOException( e2.getMessage() ).initCause( e2 );
+            }
+        }
+        catch ( final Exception e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
     }
 
     /**

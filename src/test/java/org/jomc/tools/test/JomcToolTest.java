@@ -412,7 +412,7 @@ public abstract class JomcToolTest extends TestCase
 
         try
         {
-            this.getTestTool().getTemplateLocation( null );
+            this.getTestTool().getVelocityTemplate( null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
