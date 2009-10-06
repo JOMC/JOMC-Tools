@@ -45,20 +45,21 @@ import java.lang.*;
 // SECTION-START[Annotations]
 // SECTION-END
 public #if($implementation.isAbstract())abstract#end class ${tool.getJavaTypeName($implementation,false)}
-#set($specs = ${modules.getSpecifications($implementation.getIdentifier())})
-#if($specs)
+#set($interfaces = $tool.getJavaInterfaces($implementation,true))
+#if(!$interfaces.isEmpty())
     implements
-#set($i = $specs.getReference().size())
-#foreach($reference in $specs.getReference())
+#set($i = $interfaces.size())
+#foreach($interface in $interfaces)
 #set($i = $i - 1)
-        $tool.getJavaTypeName($reference,true)#if($i > 0),#end
+        $interface#if($i > 0),#end
 
 #end
 #end
 {
-#if($specs)
-#foreach($reference in $specs.getReference())
-    // SECTION-START[$tool.getJavaTypeName($reference,false)]
+#set($interfaces = $tool.getJavaInterfaces($implementation,false))
+#if(!$interfaces.isEmpty())
+#foreach($interface in $interfaces)
+    // SECTION-START[$interface]
     // SECTION-END
 #end
 #end

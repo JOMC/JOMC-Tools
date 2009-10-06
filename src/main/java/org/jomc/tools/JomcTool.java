@@ -41,6 +41,7 @@ import java.text.DateFormat;
 import java.text.Format;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -70,6 +71,7 @@ import org.jomc.model.Properties;
 import org.jomc.model.Property;
 import org.jomc.model.Specification;
 import org.jomc.model.SpecificationReference;
+import org.jomc.model.Specifications;
 import org.jomc.model.Text;
 
 /**
@@ -353,7 +355,7 @@ public abstract class JomcTool
      *
      * @param implementation The implementation to return the Java class path location of.
      *
-     * @return the Java class path location of {@code implementation}.
+     * @return The Java class path location of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      */
@@ -365,6 +367,42 @@ public abstract class JomcTool
         }
 
         return ( this.getJavaTypeName( implementation, true ) ).replace( '.', '/' );
+    }
+
+    /**
+     * Gets all Java interfaces an implementation implements.
+     *
+     * @param implementation The implementation to get all implemented Java interfaces of.
+     * @param qualified {@code true} to return the fully qualified type names (with package name prepended);
+     * {@code false} to return the short type names (without package name prepended).
+     *
+     * @return All interfaces implemented by {@code implementation}.
+     *
+     * @throws NullPointerException if {@code implementation} is {@code null}.
+     */
+    public List<String> getJavaInterfaces( final Implementation implementation, final boolean qualified )
+    {
+        if ( implementation == null )
+        {
+            throw new NullPointerException( "implementation" );
+        }
+
+        final Specifications specs = this.getModules().getSpecifications( implementation.getIdentifier() );
+        final List<String> col = new ArrayList<String>( specs == null ? 0 : specs.getSpecification().size() );
+
+        if ( specs != null )
+        {
+            for ( Specification s : specs.getSpecification() )
+            {
+                final String typeName = this.getJavaTypeName( s, qualified );
+                if ( !col.contains( typeName ) )
+                {
+                    col.add( typeName );
+                }
+            }
+        }
+
+        return col;
     }
 
     /**
