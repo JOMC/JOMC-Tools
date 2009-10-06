@@ -413,6 +413,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     public void execute() throws MojoExecutionException, MojoFailureException
     {
+        Level finallyLevel = Level.INFO;
+
         try
         {
             this.logSeparator( Level.INFO );
@@ -422,6 +424,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         catch ( final ModelException e )
         {
+            finallyLevel = Level.SEVERE;
+
             try
             {
                 this.log( Level.SEVERE, e );
@@ -452,7 +456,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         {
             try
             {
-                this.logSeparator( Level.INFO );
+                this.logSeparator( finallyLevel );
             }
             catch ( final IOException e )
             {
@@ -713,6 +717,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
         if ( !e.getDetails().isEmpty() )
         {
+            this.log( level, System.getProperty( "line.separator" ), null );
+
             Marshaller marshaller = null;
             for ( ModelException.Detail detail : e.getDetails() )
             {
