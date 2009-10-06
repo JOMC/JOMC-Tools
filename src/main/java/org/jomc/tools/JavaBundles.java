@@ -430,21 +430,14 @@ public class JavaBundles extends JomcTool
             throw new NullPointerException( "implementation" );
         }
 
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final Template template = this.getVelocityTemplate( BUNDLE_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "template", template );
-            template.merge( ctx, writer );
-            writer.close();
-            return writer.toString();
-        }
-        catch ( final Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
+        final StringWriter writer = new StringWriter();
+        final VelocityContext ctx = this.getVelocityContext();
+        final Template template = this.getVelocityTemplate( BUNDLE_TEMPLATE );
+        ctx.put( "implementation", implementation );
+        ctx.put( "template", template );
+        template.merge( ctx, writer );
+        writer.close();
+        return writer.toString();
     }
 
     /**

@@ -114,6 +114,11 @@ public class JavaClassesTest extends JomcToolTest
         final File testClassesDirectory = new File( this.getTestProperty( "testClassesDirectory" ),
                                                     Integer.toString( this.testClassesId++ ) );
 
+        if ( testClassesDirectory.exists() )
+        {
+            FileUtils.cleanDirectory( testClassesDirectory );
+        }
+
         final File outputDirectory = new File( this.getTestProperty( "projectBuildOutputDirectory" ) );
         FileUtils.copyDirectory( outputDirectory, testClassesDirectory );
         return testClassesDirectory;

@@ -272,7 +272,7 @@ public class JavaSources extends JomcTool
                 this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                     {
                         LICENSE_SECTION_NAME,
-                        specification.getIdentifier()
+                        f.getCanonicalPath()
                     } ), null );
 
             }
@@ -282,7 +282,7 @@ public class JavaSources extends JomcTool
                 throw new IOException( this.getMessage( "missingSection", new Object[]
                     {
                         ANNOTATIONS_SECTION_NAME,
-                        specification.getIdentifier()
+                        f.getCanonicalPath()
                     } ) );
 
             }
@@ -292,7 +292,7 @@ public class JavaSources extends JomcTool
                 this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                     {
                         DOCUMENTATION_SECTION_NAME,
-                        specification.getIdentifier()
+                        f.getCanonicalPath()
                     } ), null );
 
             }
@@ -367,7 +367,7 @@ public class JavaSources extends JomcTool
                 this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                     {
                         LICENSE_SECTION_NAME,
-                        implementation.getIdentifier()
+                        f.getCanonicalPath()
                     } ), null );
 
             }
@@ -377,7 +377,7 @@ public class JavaSources extends JomcTool
                 throw new IOException( this.getMessage( "missingSection", new Object[]
                     {
                         ANNOTATIONS_SECTION_NAME,
-                        implementation.getIdentifier()
+                        f.getCanonicalPath()
                     } ) );
 
             }
@@ -387,7 +387,7 @@ public class JavaSources extends JomcTool
                 this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                     {
                         DOCUMENTATION_SECTION_NAME,
-                        implementation.getIdentifier()
+                        f.getCanonicalPath()
                     } ), null );
 
             }
@@ -403,7 +403,7 @@ public class JavaSources extends JomcTool
                     throw new IOException( this.getMessage( "missingSection", new Object[]
                         {
                             CONSTRUCTORS_SECTION_NAME,
-                            implementation.getIdentifier()
+                            f.getCanonicalPath()
                         } ) );
 
                 }
@@ -412,7 +412,7 @@ public class JavaSources extends JomcTool
                     this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                         {
                             CONSTRUCTORS_SECTION_NAME,
-                            implementation.getIdentifier()
+                            f.getCanonicalPath()
                         } ), null );
 
                 }
@@ -422,7 +422,7 @@ public class JavaSources extends JomcTool
                 throw new IOException( this.getMessage( "missingSection", new Object[]
                     {
                         DEFAULT_CONSTRUCTOR_SECTION_NAME,
-                        implementation.getIdentifier()
+                        f.getCanonicalPath()
                     } ) );
 
             }
@@ -436,7 +436,7 @@ public class JavaSources extends JomcTool
                     throw new IOException( this.getMessage( "missingSection", new Object[]
                         {
                             PROPERTIES_SECTION_NAME,
-                            implementation.getIdentifier()
+                            f.getCanonicalPath()
                         } ) );
 
                 }
@@ -445,7 +445,7 @@ public class JavaSources extends JomcTool
                     this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                         {
                             PROPERTIES_SECTION_NAME,
-                            implementation.getIdentifier()
+                            f.getCanonicalPath()
                         } ), null );
 
                 }
@@ -460,7 +460,7 @@ public class JavaSources extends JomcTool
                     throw new IOException( this.getMessage( "missingSection", new Object[]
                         {
                             DEPENDENCIES_SECTION_NAME,
-                            implementation.getIdentifier()
+                            f.getCanonicalPath()
                         } ) );
 
                 }
@@ -469,7 +469,7 @@ public class JavaSources extends JomcTool
                     this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                         {
                             DEPENDENCIES_SECTION_NAME,
-                            implementation.getIdentifier()
+                            f.getCanonicalPath()
                         } ), null );
 
                 }
@@ -484,7 +484,7 @@ public class JavaSources extends JomcTool
                     throw new IOException( this.getMessage( "missingSection", new Object[]
                         {
                             MESSAGES_SECTION_NAME,
-                            implementation.getIdentifier()
+                            f.getCanonicalPath()
                         } ) );
 
                 }
@@ -493,7 +493,7 @@ public class JavaSources extends JomcTool
                     this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                         {
                             MESSAGES_SECTION_NAME,
-                            implementation.getIdentifier()
+                            f.getCanonicalPath()
                         } ), null );
 
                 }
@@ -907,6 +907,7 @@ public class JavaSources extends JomcTool
          *
          * @param s The section to edit.
          *
+         * @throws NullPointerException if {@code s} is {@code null}.
          * @throws IOException if editing {@code s} fails.
          */
         public abstract void editLicenseSection( final Section s ) throws IOException;
@@ -916,6 +917,7 @@ public class JavaSources extends JomcTool
          *
          * @param s The section to edit.
          *
+         * @throws NullPointerException if {@code s} is {@code null}.
          * @throws IOException if editing {@code s} fails.
          */
         public abstract void editAnnotationsSection( final Section s ) throws IOException;
@@ -925,6 +927,7 @@ public class JavaSources extends JomcTool
          *
          * @param s The section to edit.
          *
+         * @throws NullPointerException if {@code s} is {@code null}.
          * @throws IOException if editing {@code s} fails.
          */
         public abstract void editDocumentationSection( final Section s ) throws IOException;
@@ -1005,10 +1008,16 @@ public class JavaSources extends JomcTool
          *
          * @param s The section to edit.
          *
+         * @throws NullPointerException if {@code s} is {@code null}.
          * @throws IOException if editing {@code s} fails.
          */
         public void editLicenseSection( final Section s ) throws IOException
         {
+            if ( s == null )
+            {
+                throw new NullPointerException( "s" );
+            }
+
             s.getHeadContent().setLength( 0 );
             if ( this.specification != null )
             {
@@ -1021,10 +1030,16 @@ public class JavaSources extends JomcTool
          *
          * @param s The section to edit.
          *
+         * @throws NullPointerException if {@code s} is {@code null}.
          * @throws IOException if editing {@code s} fails.
          */
         public void editAnnotationsSection( final Section s ) throws IOException
         {
+            if ( s == null )
+            {
+                throw new NullPointerException( "s" );
+            }
+
             s.getHeadContent().setLength( 0 );
             if ( this.specification != null )
             {
@@ -1037,10 +1052,16 @@ public class JavaSources extends JomcTool
          *
          * @param s The section to edit.
          *
+         * @throws NullPointerException if {@code s} is {@code null}.
          * @throws IOException if editing {@code s} fails.
          */
         public void editDocumentationSection( final Section s ) throws IOException
         {
+            if ( s == null )
+            {
+                throw new NullPointerException( "s" );
+            }
+
             s.getHeadContent().setLength( 0 );
             if ( this.specification != null )
             {
@@ -1102,14 +1123,19 @@ public class JavaSources extends JomcTool
         }
 
         @Override
-        public String getOutput( final Section root ) throws IOException
+        public String getOutput( final Section section ) throws IOException
         {
+            if ( section == null )
+            {
+                throw new NullPointerException( "section" );
+            }
+
             this.constructorsSectionPresent = false;
             this.defaultConstructorSectionPresent = false;
             this.messagesSectionPresent = false;
             this.dependenciesSectionPresent = false;
             this.propertiesSectionPresent = false;
-            return super.getOutput( root );
+            return super.getOutput( section );
         }
 
         @Override
@@ -1161,6 +1187,11 @@ public class JavaSources extends JomcTool
          */
         public void editLicenseSection( final Section s ) throws IOException
         {
+            if ( s == null )
+            {
+                throw new NullPointerException( "s" );
+            }
+
             s.getHeadContent().setLength( 0 );
             if ( this.implementation != null )
             {
@@ -1173,10 +1204,16 @@ public class JavaSources extends JomcTool
          *
          * @param s The section to edit.
          *
+         * @throws NullPointerException if {@code s} is {@code null}.
          * @throws IOException if editing {@code s} fails.
          */
         public void editAnnotationsSection( final Section s ) throws IOException
         {
+            if ( s == null )
+            {
+                throw new NullPointerException( "s" );
+            }
+
             s.getHeadContent().setLength( 0 );
             if ( this.implementation != null )
             {
@@ -1189,10 +1226,16 @@ public class JavaSources extends JomcTool
          *
          * @param s The section to edit.
          *
+         * @throws NullPointerException if {@code s} is {@code null}.
          * @throws IOException if editing {@code s} fails.
          */
         public void editDocumentationSection( final Section s ) throws IOException
         {
+            if ( s == null )
+            {
+                throw new NullPointerException( "s" );
+            }
+
             s.getHeadContent().setLength( 0 );
             if ( this.implementation != null )
             {
@@ -1205,10 +1248,16 @@ public class JavaSources extends JomcTool
          *
          * @param s The section to edit.
          *
+         * @throws NullPointerException if {@code s} is {@code null}.
          * @throws IOException if editing {@code s} fails.
          */
         public void editConstructorsSection( final Section s ) throws IOException
         {
+            if ( s == null )
+            {
+                throw new NullPointerException( "s" );
+            }
+
             s.getHeadContent().setLength( 0 );
             s.getTailContent().setLength( 0 );
 
@@ -1244,10 +1293,16 @@ public class JavaSources extends JomcTool
          *
          * @param s The section to edit.
          *
+         * @throws NullPointerException if {@code s} is {@code null}.
          * @throws IOException if editing {@code s} fails.
          */
         public void editDefaultConstructorSection( final Section s ) throws IOException
         {
+            if ( s == null )
+            {
+                throw new NullPointerException( "s" );
+            }
+
             if ( s.getHeadContent().toString().trim().length() == 0 )
             {
                 s.getHeadContent().setLength( 0 );
@@ -1264,10 +1319,16 @@ public class JavaSources extends JomcTool
          *
          * @param s The section to edit.
          *
+         * @throws NullPointerException if {@code s} is {@code null}.
          * @throws IOException if editing {@code s} fails.
          */
         public void editDependenciesSection( final Section s ) throws IOException
         {
+            if ( s == null )
+            {
+                throw new NullPointerException( "s" );
+            }
+
             s.getHeadContent().setLength( 0 );
             if ( this.implementation != null )
             {
@@ -1280,10 +1341,16 @@ public class JavaSources extends JomcTool
          *
          * @param s The section to edit.
          *
+         * @throws NullPointerException if {@code s} is {@code null}.
          * @throws IOException if editing {@code s} fails.
          */
         public void editMessagesSection( final Section s ) throws IOException
         {
+            if ( s == null )
+            {
+                throw new NullPointerException( "s" );
+            }
+
             s.getHeadContent().setLength( 0 );
             if ( this.implementation != null )
             {
@@ -1296,10 +1363,16 @@ public class JavaSources extends JomcTool
          *
          * @param s The section to edit.
          *
+         * @throws NullPointerException if {@code s} is {@code null}.
          * @throws IOException if editing {@code s} fails.
          */
         public void editPropertiesSection( final Section s ) throws IOException
         {
+            if ( s == null )
+            {
+                throw new NullPointerException( "s" );
+            }
+
             s.getHeadContent().setLength( 0 );
             if ( this.implementation != null )
             {

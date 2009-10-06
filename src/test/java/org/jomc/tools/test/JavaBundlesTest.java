@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import javax.xml.bind.JAXBException;
 import junit.framework.Assert;
+import org.apache.commons.io.FileUtils;
 import org.jomc.model.Implementation;
 import org.jomc.model.Module;
 import org.jomc.tools.JavaBundles;
@@ -81,7 +82,15 @@ public class JavaBundlesTest extends JomcToolTest
      */
     public File getTestSourcesDirectory() throws IOException
     {
-        return new File( this.getTestProperty( "testSourcesDirectory" ), Integer.toString( this.testSourcesId++ ) );
+        final File testSourcesDirectory =
+            new File( this.getTestProperty( "testSourcesDirectory" ), Integer.toString( this.testSourcesId++ ) );
+
+        if ( testSourcesDirectory.exists() )
+        {
+            FileUtils.cleanDirectory( testSourcesDirectory );
+        }
+
+        return testSourcesDirectory;
     }
 
     /**
@@ -93,7 +102,15 @@ public class JavaBundlesTest extends JomcToolTest
      */
     public File getTestResourcesDirectory() throws IOException
     {
-        return new File( this.getTestProperty( "testResourcesDirectory" ), Integer.toString( this.testResourcesId++ ) );
+        final File testResourcesDirectory =
+            new File( this.getTestProperty( "testResourcesDirectory" ), Integer.toString( this.testResourcesId++ ) );
+
+        if ( testResourcesDirectory.exists() )
+        {
+            FileUtils.cleanDirectory( testResourcesDirectory );
+        }
+
+        return testResourcesDirectory;
     }
 
     private String getTestProperty( final String key ) throws IOException

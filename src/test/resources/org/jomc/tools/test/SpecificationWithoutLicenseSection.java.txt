@@ -1,0 +1,31 @@
+package org.jomc.tools.test;
+
+import java.lang.*;
+
+// SECTION-START[Documentation]
+/**
+ * Test specification.
+ * <p>This specification declares a multiplicity of {@code Many}.
+ * An application assembler may provide multiple implementations of this specification (including none).
+ * Use of class {@link org.jomc.ObjectManager ObjectManager} is supported for getting these implementations or for
+ * selecting a single implementation.<pre>
+ * Specification[] objects = (Specification[]) ObjectManagerFactory.getObjectManager().getObject( Specification.class );
+ * Specification object = ObjectManagerFactory.getObjectManager().getObject( Specification.class, "<i>implementation name</i>" );
+ * </pre>
+ * </p>
+ *
+ * <p>This specification does not apply to any scope. A new object is returned whenever requested.</p>
+ *
+ * @author <a href="mailto:cs@jomc.org">Christian Schulte</a> 1.0
+ * @version $Id$
+ */
+// SECTION-END
+// SECTION-START[Annotations]
+@javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                             comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-5-SNAPSHOT/jomc-tools" )
+// SECTION-END
+public interface Specification
+{
+    // SECTION-START[Specification]
+    // SECTION-END
+}

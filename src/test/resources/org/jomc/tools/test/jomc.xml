@@ -50,7 +50,7 @@
     <specification identifier="Specification"
                    class="Specification"
                    vendor="${pom.organization.name}"
-                   version="1.0">
+                   version="${pom.version}">
 
       <documentation defaultLanguage="en">
         <text language="en">Test specification.</text>
@@ -81,6 +81,52 @@
                 mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <dependencies>
+        <dependency name="Locale"
+                    identifier="java.util.Locale"
+                    version="1.1"
+                    bound="false"/>
+
+      </dependencies>
+      <properties>
+        <property name="property" value="TEST">
+          <documentation defaultLanguage="en">
+            <text language="en">Test property.</text>
+          </documentation>
+        </property>
+      </properties>
+      <messages>
+        <message name="message">
+          <template defaultLanguage="en">
+            <text language="en"><![CDATA[TEST ''{0}''.]]>
+            </text>
+          </template>
+          <arguments>
+            <argument index="0" name="test"/>
+          </arguments>
+        </message>
+      </messages>
+    </implementation>
+
+    <!-- ******************************************************************* -->
+    <implementation identifier="ImplementationOfSpecification"
+                    class="ImplementationOfSpecification"
+                    name="${pom.name}"
+                    version="${pom.version}"
+                    vendor="${pom.organization.name}"
+                    final="true">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Test implementation of test specification.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0"
+                mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="Specification" version="${pom.version}"/>
+      </specifications>
       <dependencies>
         <dependency name="Locale"
                     identifier="java.util.Locale"
