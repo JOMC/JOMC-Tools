@@ -286,6 +286,7 @@ public class Jomc
 
     // SECTION-END
     // SECTION-START[Constructors]
+
     /** Creates a new {@code Jomc} instance. */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-6-SNAPSHOT/jomc-tools" )
@@ -309,8 +310,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-6-SNAPSHOT/jomc-tools" )
     private org.jomc.cli.Command[] getCommands()
     {
-        final org.jomc.cli.Command[] _d = (org.jomc.cli.Command[]) org.jomc.ObjectManagerFactory.getObjectManager().
-            getDependency( this, "Commands" );
+        final org.jomc.cli.Command[] _d = (org.jomc.cli.Command[]) org.jomc.ObjectManagerFactory.getObjectManager().getDependency( this, "Commands" );
         assert _d != null : "'Commands' dependency not found.";
         return _d;
     }
@@ -326,8 +326,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-6-SNAPSHOT/jomc-tools" )
     private java.util.Locale getLocale()
     {
-        final java.util.Locale _d = (java.util.Locale) org.jomc.ObjectManagerFactory.getObjectManager().getDependency(
-            this, "Locale" );
+        final java.util.Locale _d = (java.util.Locale) org.jomc.ObjectManagerFactory.getObjectManager().getDependency( this, "Locale" );
         assert _d != null : "'Locale' dependency not found.";
         return _d;
     }
@@ -343,8 +342,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-6-SNAPSHOT/jomc-tools" )
     private int getDescPad()
     {
-        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager().getProperty(
-            this, "descPad" );
+        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "descPad" );
         assert _p != null : "'descPad' property not found.";
         return _p.intValue();
     }
@@ -358,8 +356,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-6-SNAPSHOT/jomc-tools" )
     private java.lang.String getHelpCommandName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty(
-            this, "helpCommandName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "helpCommandName" );
         assert _p != null : "'helpCommandName' property not found.";
         return _p;
     }
@@ -373,8 +370,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-6-SNAPSHOT/jomc-tools" )
     private int getLeftPad()
     {
-        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager().getProperty(
-            this, "leftPad" );
+        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "leftPad" );
         assert _p != null : "'leftPad' property not found.";
         return _p.intValue();
     }
@@ -388,8 +384,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-6-SNAPSHOT/jomc-tools" )
     private int getWidth()
     {
-        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager().getProperty(
-            this, "width" );
+        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "width" );
         assert _p != null : "'width' property not found.";
         return _p.intValue();
     }
@@ -411,13 +406,9 @@ public class Jomc
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-6-SNAPSHOT/jomc-tools" )
-    private String getIllegalArgumentsMessage( final java.util.Locale locale, final java.lang.String command,
-                                               final java.lang.String helpCommandName )
+    private String getIllegalArgumentsMessage( final java.util.Locale locale, final java.lang.String command, final java.lang.String helpCommandName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "illegalArguments", locale, new Object[]
-            {
-                command, helpCommandName, null
-            } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "illegalArguments", locale, new Object[] { command, helpCommandName, null } );
         assert _m != null : "'illegalArguments' message not found.";
         return _m;
     }
@@ -438,10 +429,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-6-SNAPSHOT/jomc-tools" )
     private String getUsageMessage( final java.util.Locale locale, final java.lang.String helpCommandName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "usage", locale, new Object[]
-            {
-                helpCommandName, null
-            } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "usage", locale, new Object[] { helpCommandName, null } );
         assert _m != null : "'usage' message not found.";
         return _m;
     }
