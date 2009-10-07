@@ -34,7 +34,7 @@
 // SECTION-END
 package org.jomc.cli;
 
-import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.Locale;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
@@ -118,7 +118,7 @@ public interface Command
      * Executes the command.
      *
      * @param commandLine Command line to execute.
-     * @param printStream Stream to print any output to.
+     * @param printWriter Writer to print any output to.
      *
      * @return The status code of the command.
      *
@@ -127,7 +127,7 @@ public interface Command
      * @see #STATUS_SUCCESS
      * @see #STATUS_FAILURE
      */
-    int execute( CommandLine commandLine, PrintStream printStream ) throws NullPointerException;
+    int execute( CommandLine commandLine, PrintWriter printWriter ) throws NullPointerException;
 
     // SECTION-END
 }

@@ -34,7 +34,6 @@
 // SECTION-END
 package org.jomc.cli;
 
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import org.apache.commons.cli.CommandLine;
@@ -94,8 +93,8 @@ public class Jomc
 {
     // SECTION-START[Jomc]
 
-    /** Print stream of the instance. */
-    private PrintStream printStream;
+    /** Print writer of the instance. */
+    private PrintWriter printWriter;
 
     /** Constant for the name of the system property controlling the bootstrap document location. */
     private static final String SYS_BOOTSTRAP_DOCUMENT_LOCATION =
@@ -110,28 +109,28 @@ public class Jomc
         "org.jomc.model.DefaultModelManager.defaultStyelsheetLocation";
 
     /**
-     * Gets the print stream of the instance.
+     * Gets the print writer of the instance.
      *
-     * @return The print stream of the instance.
+     * @return The print writer of the instance.
      */
-    public PrintStream getPrintStream()
+    public PrintWriter getPrintWriter()
     {
-        if ( this.printStream == null )
+        if ( this.printWriter == null )
         {
-            this.printStream = System.out;
+            this.printWriter = new PrintWriter( System.out, true );
         }
 
-        return this.printStream;
+        return this.printWriter;
     }
 
     /**
-     * Sets the print stream of the instance.
+     * Sets the print writer of the instance.
      *
-     * @param value The new print stream of the instance or {@code null}.
+     * @param value The new print writer of the instance or {@code null}.
      */
-    public void setPrintStream( final PrintStream value )
+    public void setPrintWriter( final PrintWriter value )
     {
-        this.printStream = value;
+        this.printWriter = value;
     }
 
     /**
@@ -176,9 +175,9 @@ public class Jomc
 
             if ( cmd == null )
             {
-                this.getPrintStream().println( this.getUsageMessage( this.getLocale(), this.getHelpCommandName() ) );
-                this.getPrintStream().println();
-                this.getPrintStream().println( commandInfo.toString() );
+                this.getPrintWriter().println( this.getUsageMessage( this.getLocale(), this.getHelpCommandName() ) );
+                this.getPrintWriter().println();
+                this.getPrintWriter().println( commandInfo.toString() );
                 return Command.STATUS_FAILURE;
             }
 
@@ -199,13 +198,13 @@ public class Jomc
                 formatter.printOptions( pw, this.getWidth(), cmd.getOptions(), this.getLeftPad(), this.getDescPad() );
                 pw.close();
 
-                this.getPrintStream().println( cmd.getShortDescription( this.getLocale() ) );
-                this.getPrintStream().println();
-                this.getPrintStream().println( usage.toString() );
-                this.getPrintStream().println( opts.toString() );
-                this.getPrintStream().println();
-                this.getPrintStream().println( cmd.getLongDescription( this.getLocale() ) );
-                this.getPrintStream().println();
+                this.getPrintWriter().println( cmd.getShortDescription( this.getLocale() ) );
+                this.getPrintWriter().println();
+                this.getPrintWriter().println( usage.toString() );
+                this.getPrintWriter().println( opts.toString() );
+                this.getPrintWriter().println();
+                this.getPrintWriter().println( cmd.getLongDescription( this.getLocale() ) );
+                this.getPrintWriter().println();
                 return Command.STATUS_SUCCESS;
             }
 
@@ -216,19 +215,19 @@ public class Jomc
             System.clearProperty( SYS_DEFAULT_DOCUMENT_LOCATION );
             System.clearProperty( SYS_DEFAULT_STYLESHEET_LOCATION );
 
-            return cmd.execute( commandLine, this.getPrintStream() );
+            return cmd.execute( commandLine, this.getPrintWriter() );
         }
         catch ( final ParseException e )
         {
-            this.getPrintStream().println( e.getMessage() );
-            this.getPrintStream().println( this.getIllegalArgumentsMessage(
+            this.getPrintWriter().println( e.getMessage() );
+            this.getPrintWriter().println( this.getIllegalArgumentsMessage(
                 this.getLocale(), cmd.getName(), this.getHelpCommandName() ) );
 
             return Command.STATUS_FAILURE;
         }
         catch ( final Throwable t )
         {
-            t.printStackTrace( this.getPrintStream() );
+            t.printStackTrace( this.getPrintWriter() );
             return Command.STATUS_FAILURE;
         }
         finally
@@ -245,6 +244,8 @@ public class Jomc
             {
                 System.setProperty( SYS_DEFAULT_STYLESHEET_LOCATION, currentDefaultStylesheetLocation );
             }
+
+            this.getPrintWriter().flush();
         }
     }
 

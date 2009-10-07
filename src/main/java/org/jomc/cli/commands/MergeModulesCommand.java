@@ -35,7 +35,7 @@
 package org.jomc.cli.commands;
 
 import java.io.File;
-import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.logging.Level;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -339,7 +339,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
         return this.options;
     }
 
-    public int executeCommand( final CommandLine commandLine, final PrintStream printStream )
+    public int executeCommand( final CommandLine commandLine, final PrintWriter printWriter )
     {
         int status = STATUS_SUCCESS;
 
@@ -349,10 +349,10 @@ public final class MergeModulesCommand extends AbstractJomcCommand
         try
         {
             this.log( Level.INFO, this.getStartingProcessingMessage( this.getLocale(), this.getCommandName() ), null,
-                      printStream, verbose, debug );
+                      printWriter, verbose, debug );
 
             final ModelManager modelManager = this.getModelManager();
-            final Modules modules = this.getModules( modelManager, commandLine, printStream, false, true );
+            final Modules modules = this.getModules( modelManager, commandLine, printWriter, false, true );
 
             File stylesheetFile = null;
             if ( commandLine.hasOption( this.getStylesheetOption().getOpt() ) )
@@ -393,22 +393,22 @@ public final class MergeModulesCommand extends AbstractJomcCommand
                 modelManager.getObjectFactory().createModule( mergedModule ), moduleFile );
 
             this.log( Level.INFO, this.getWritingMessage( this.getLocale(), moduleFile.getAbsolutePath() ), null,
-                      printStream, verbose, debug );
+                      printWriter, verbose, debug );
 
         }
         catch ( final ModelException e )
         {
             for ( ModelException.Detail d : e.getDetails() )
             {
-                this.log( d.getLevel(), d.getMessage(), null, printStream, verbose, debug );
+                this.log( d.getLevel(), d.getMessage(), null, printWriter, verbose, debug );
             }
 
-            this.log( Level.SEVERE, e.getMessage(), e, printStream, verbose, debug );
+            this.log( Level.SEVERE, e.getMessage(), e, printWriter, verbose, debug );
             status = STATUS_FAILURE;
         }
         catch ( final Throwable t )
         {
-            this.log( Level.SEVERE, t.getMessage(), t, printStream, verbose, debug );
+            this.log( Level.SEVERE, t.getMessage(), t, printWriter, verbose, debug );
             status = STATUS_FAILURE;
         }
 

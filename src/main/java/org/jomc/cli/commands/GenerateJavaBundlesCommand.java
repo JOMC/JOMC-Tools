@@ -35,7 +35,7 @@
 package org.jomc.cli.commands;
 
 import java.io.File;
-import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.Locale;
 import java.util.logging.Level;
 import org.apache.commons.cli.CommandLine;
@@ -362,7 +362,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
         return this.options;
     }
 
-    public int executeCommand( final CommandLine commandLine, final PrintStream printStream )
+    public int executeCommand( final CommandLine commandLine, final PrintWriter printWriter )
     {
         int status = STATUS_SUCCESS;
 
@@ -372,7 +372,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
         try
         {
             final JavaBundles tool = this.getJavaBundles();
-            this.configureTool( tool, commandLine, printStream, false );
+            this.configureTool( tool, commandLine, printWriter, false );
 
             if ( commandLine.hasOption( this.getLanguageOption().getOpt() ) )
             {
@@ -405,7 +405,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                 if ( module != null )
                 {
                     this.log( Level.INFO, this.getStartingModuleProcessingMessage(
-                        this.getLocale(), this.getCommandName(), module.getName() ), null, printStream, verbose, debug );
+                        this.getLocale(), this.getCommandName(), module.getName() ), null, printWriter, verbose, debug );
 
                     tool.writeBundleSources( module, sourcesDirectory );
                     tool.writeBundleResources( module, resourcesDirectory );
@@ -413,14 +413,14 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                 else
                 {
                     this.log( Level.WARNING, this.getMissingModuleMessage(
-                        this.getLocale(), moduleName ), null, printStream, verbose, debug );
+                        this.getLocale(), moduleName ), null, printWriter, verbose, debug );
 
                 }
             }
             else
             {
                 this.log( Level.INFO, this.getStartingProcessingMessage(
-                    this.getLocale(), this.getCommandName() ), null, printStream, verbose, debug );
+                    this.getLocale(), this.getCommandName() ), null, printWriter, verbose, debug );
 
                 tool.writeBundleSources( sourcesDirectory );
                 tool.writeBundleResources( resourcesDirectory );
@@ -430,15 +430,15 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
         {
             for ( ModelException.Detail d : e.getDetails() )
             {
-                this.log( d.getLevel(), d.getMessage(), null, printStream, verbose, debug );
+                this.log( d.getLevel(), d.getMessage(), null, printWriter, verbose, debug );
             }
 
-            this.log( Level.SEVERE, e.getMessage(), e, printStream, verbose, debug );
+            this.log( Level.SEVERE, e.getMessage(), e, printWriter, verbose, debug );
             status = STATUS_FAILURE;
         }
         catch ( final Throwable t )
         {
-            this.log( Level.SEVERE, t.getMessage(), t, printStream, verbose, debug );
+            this.log( Level.SEVERE, t.getMessage(), t, printWriter, verbose, debug );
             status = STATUS_FAILURE;
         }
 

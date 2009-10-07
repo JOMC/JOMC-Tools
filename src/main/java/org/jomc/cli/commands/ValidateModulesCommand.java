@@ -34,7 +34,7 @@
 // SECTION-END
 package org.jomc.cli.commands;
 
-import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.logging.Level;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
@@ -254,7 +254,7 @@ public class ValidateModulesCommand extends AbstractJomcCommand
     }
 
     @Override
-    protected int executeCommand( final CommandLine commandLine, final PrintStream printStream )
+    protected int executeCommand( final CommandLine commandLine, final PrintWriter printWriter )
     {
         int status = STATUS_SUCCESS;
 
@@ -264,23 +264,23 @@ public class ValidateModulesCommand extends AbstractJomcCommand
         try
         {
             this.log( Level.INFO, this.getStartingProcessingMessage(
-                this.getLocale(), this.getCommandName() ), null, printStream, verbose, debug );
+                this.getLocale(), this.getCommandName() ), null, printWriter, verbose, debug );
 
-            this.getModules( this.getModelManager(), commandLine, printStream, true, true );
+            this.getModules( this.getModelManager(), commandLine, printWriter, true, true );
         }
         catch ( final ModelException e )
         {
             for ( ModelException.Detail d : e.getDetails() )
             {
-                this.log( d.getLevel(), d.getMessage(), null, printStream, verbose, debug );
+                this.log( d.getLevel(), d.getMessage(), null, printWriter, verbose, debug );
             }
 
-            this.log( Level.SEVERE, e.getMessage(), e, printStream, verbose, debug );
+            this.log( Level.SEVERE, e.getMessage(), e, printWriter, verbose, debug );
             status = STATUS_FAILURE;
         }
         catch ( final Throwable t )
         {
-            this.log( Level.SEVERE, t.getMessage(), t, printStream, verbose, debug );
+            this.log( Level.SEVERE, t.getMessage(), t, printWriter, verbose, debug );
             status = STATUS_FAILURE;
         }
 

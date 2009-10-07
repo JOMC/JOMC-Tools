@@ -35,7 +35,7 @@
 package org.jomc.cli.commands;
 
 import java.io.File;
-import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.logging.Level;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -276,7 +276,7 @@ public final class CommitJavaClassesCommand extends AbstractJomcCommand
         return this.options;
     }
 
-    public int executeCommand( final CommandLine commandLine, final PrintStream printStream )
+    public int executeCommand( final CommandLine commandLine, final PrintWriter printWriter )
     {
         int status = STATUS_SUCCESS;
 
@@ -286,7 +286,7 @@ public final class CommitJavaClassesCommand extends AbstractJomcCommand
         try
         {
             final JavaClasses tool = this.getJavaClasses();
-            this.configureTool( tool, commandLine, printStream, true );
+            this.configureTool( tool, commandLine, printWriter, true );
 
             final File classesDirectory = new File( commandLine.getOptionValue(
                 this.getClassesDirectoryOption().getOpt() ) );
@@ -299,21 +299,21 @@ public final class CommitJavaClassesCommand extends AbstractJomcCommand
                 if ( module != null )
                 {
                     this.log( Level.INFO, this.getStartingModuleProcessingMessage(
-                        this.getLocale(), this.getCommandName(), module.getName() ), null, printStream, verbose, debug );
+                        this.getLocale(), this.getCommandName(), module.getName() ), null, printWriter, verbose, debug );
 
                     tool.commitClasses( module, classesDirectory );
                 }
                 else
                 {
                     this.log( Level.WARNING, this.getMissingModuleMessage(
-                        this.getLocale(), moduleName ), null, printStream, verbose, debug );
+                        this.getLocale(), moduleName ), null, printWriter, verbose, debug );
 
                 }
             }
             else
             {
                 this.log( Level.INFO, this.getStartingProcessingMessage(
-                    this.getLocale(), this.getCommandName() ), null, printStream, verbose, debug );
+                    this.getLocale(), this.getCommandName() ), null, printWriter, verbose, debug );
 
                 tool.commitClasses( classesDirectory );
             }
@@ -322,15 +322,15 @@ public final class CommitJavaClassesCommand extends AbstractJomcCommand
         {
             for ( ModelException.Detail d : e.getDetails() )
             {
-                this.log( d.getLevel(), d.getMessage(), null, printStream, verbose, debug );
+                this.log( d.getLevel(), d.getMessage(), null, printWriter, verbose, debug );
             }
 
-            this.log( Level.SEVERE, e.getMessage(), e, printStream, verbose, debug );
+            this.log( Level.SEVERE, e.getMessage(), e, printWriter, verbose, debug );
             status = STATUS_FAILURE;
         }
         catch ( final Throwable t )
         {
-            this.log( Level.SEVERE, t.getMessage(), t, printStream, verbose, debug );
+            this.log( Level.SEVERE, t.getMessage(), t, printWriter, verbose, debug );
             status = STATUS_FAILURE;
         }
 

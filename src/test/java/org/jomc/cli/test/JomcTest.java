@@ -84,49 +84,86 @@ public class JomcTest
 
     public void testGenerateJavaBundles() throws Exception
     {
+        final String[] help = new String[]
+        {
+            "generate-java-bundles", "help"
+        };
+
         final String[] args = new String[]
         {
             "generate-java-bundles", "-sd", this.getTestSourcesDirectory(), "-rd", this.getTestResourcesDirectory(),
             "-df", this.getTestDocument(), "-v"
         };
+
+        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
     }
 
     public void testManageJavaSources() throws Exception
     {
+        final String[] help = new String[]
+        {
+            "manage-java-sources", "help"
+        };
+
         final String[] args = new String[]
         {
             "manage-java-sources", "-sd", this.getTestSourcesDirectory(), "-df", this.getTestDocument(), "-mn",
             this.getTestModuleName(), "-v"
         };
+
+        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
     }
 
     public void testCommitValidateJavaClasses() throws Exception
     {
+        final String[] commitHelp = new String[]
+        {
+            "commit-java-classes", "help"
+        };
+
+        final String[] validateHelp = new String[]
+        {
+            "validate-java-classes", "help"
+        };
+
         final String[] commitArgs = new String[]
         {
             "commit-java-classes", "-df", this.getTestDocument(), "-cd", this.getTestClassesDirectory(), "-mn",
             this.getTestModuleName(), "-v"
         };
+
         final String[] validateArgs = new String[]
         {
             "validate-java-classes", "-df", this.getTestDocument(), "-cp", this.getTestClassesDirectory(), "-v"
         };
+
         FileUtils.copyDirectory( new File( this.getClassesDirectory() ), new File( this.getTestClassesDirectory() ) );
+
+        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( commitHelp ) );
+        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( validateHelp ) );
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( commitArgs ) );
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( validateArgs ) );
     }
 
     public void testMergeModules() throws Exception
     {
+        final String[] help = new String[]
+        {
+            "merge-modules", "help"
+        };
+
         final String[] args = new String[]
         {
             "merge-modules", "-df", this.getTestDocument(), "-xs", this.getTestStylesheet(), "-mn",
             this.getTestModuleName(), "-d", this.getTestOutputDocument(), "-v"
         };
+
+        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
     }
+
     // SECTION-END
     // SECTION-START[Constructors]
 

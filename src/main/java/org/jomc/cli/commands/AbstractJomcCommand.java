@@ -40,7 +40,6 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -487,17 +486,17 @@ public abstract class AbstractJomcCommand implements Command
         return options;
     }
 
-    public final int execute( final CommandLine commandLine, final PrintStream printStream )
+    public final int execute( final CommandLine commandLine, final PrintWriter printWriter )
     {
         final boolean debug = commandLine.hasOption( this.getDebugOption().getOpt() );
         final boolean verbose = commandLine.hasOption( this.getVerboseOption().getOpt() );
         final boolean failOnWarnings = commandLine.hasOption( this.getFailOnWarningsOption().getOpt() );
 
-        this.log( Level.INFO, this.getSeparatorMessage( this.getLocale() ), null, printStream, verbose, debug );
-        this.log( Level.INFO, this.getApplicationTitleMessage( this.getLocale() ), null, printStream, verbose, debug );
-        this.log( Level.INFO, this.getSeparatorMessage( this.getLocale() ), null, printStream, verbose, debug );
+        this.log( Level.INFO, this.getSeparatorMessage( this.getLocale() ), null, printWriter, verbose, debug );
+        this.log( Level.INFO, this.getApplicationTitleMessage( this.getLocale() ), null, printWriter, verbose, debug );
+        this.log( Level.INFO, this.getSeparatorMessage( this.getLocale() ), null, printWriter, verbose, debug );
 
-        int status = this.executeCommand( commandLine, printStream );
+        int status = this.executeCommand( commandLine, printWriter );
 
         if ( status == Command.STATUS_SUCCESS && failOnWarnings &&
              this.severity.intValue() >= Level.WARNING.intValue() )
@@ -508,24 +507,24 @@ public abstract class AbstractJomcCommand implements Command
         if ( status == Command.STATUS_SUCCESS )
         {
             this.log( Level.INFO, this.getToolSuccessMessage( this.getLocale(), this.getCommandName() ), null,
-                      printStream, verbose, debug );
+                      printWriter, verbose, debug );
 
         }
         else
         {
             this.log( Level.INFO, this.getToolFailureMessage( this.getLocale(), this.getCommandName() ), null,
-                      printStream, verbose, debug );
+                      printWriter, verbose, debug );
 
         }
 
-        this.log( Level.INFO, this.getSeparatorMessage( this.getLocale() ), null, printStream, verbose, debug );
+        this.log( Level.INFO, this.getSeparatorMessage( this.getLocale() ), null, printWriter, verbose, debug );
 
         return status;
     }
 
-    protected abstract int executeCommand( final CommandLine commandLine, final PrintStream printStream );
+    protected abstract int executeCommand( final CommandLine commandLine, final PrintWriter printWriter );
 
-    protected ClassLoader getClassLoader( final CommandLine commandLine, final PrintStream printStream )
+    protected ClassLoader getClassLoader( final CommandLine commandLine, final PrintWriter printWriter )
         throws IOException
     {
         final boolean debug = commandLine.hasOption( this.getDebugOption().getOpt() );
@@ -539,7 +538,7 @@ public abstract class AbstractJomcCommand implements Command
             {
                 for ( String e : elements )
                 {
-                    this.log( Level.FINE, this.getClasspathElementMessage( this.getLocale(), e ), null, printStream,
+                    this.log( Level.FINE, this.getClasspathElementMessage( this.getLocale(), e ), null, printWriter,
                               verbose, debug );
 
                     if ( e.startsWith( "@" ) )
@@ -579,7 +578,7 @@ public abstract class AbstractJomcCommand implements Command
         return new URLClassLoader( urls.toArray( new URL[ urls.size() ] ) );
     }
 
-    protected Set<File> getDocumentFiles( final CommandLine commandLine, final PrintStream printStream )
+    protected Set<File> getDocumentFiles( final CommandLine commandLine, final PrintWriter printWriter )
         throws IOException
     {
         final boolean debug = commandLine.hasOption( this.getDebugOption().getOpt() );
@@ -593,7 +592,7 @@ public abstract class AbstractJomcCommand implements Command
             {
                 for ( String e : elements )
                 {
-                    this.log( Level.FINE, this.getDocumentFileMessage( this.getLocale(), e ), null, printStream,
+                    this.log( Level.FINE, this.getDocumentFileMessage( this.getLocale(), e ), null, printWriter,
                               verbose, debug );
 
                     if ( e.startsWith( "@" ) )
@@ -633,11 +632,11 @@ public abstract class AbstractJomcCommand implements Command
     }
 
     protected Modules getModules( final ModelManager manager, final CommandLine commandLine,
-                                  final PrintStream printStream, final boolean includeClasspathModule,
+                                  final PrintWriter printWriter, final boolean includeClasspathModule,
                                   final boolean strictValidation )
         throws IOException, SAXException, JAXBException, ModelException
     {
-        final ClassLoader classLoader = this.getClassLoader( commandLine, printStream );
+        final ClassLoader classLoader = this.getClassLoader( commandLine, printWriter );
         final boolean verbose = commandLine.hasOption( getVerboseOption().getOpt() );
         final boolean debug = commandLine.hasOption( getDebugOption().getOpt() );
         final Modules modules = new Modules();
@@ -652,7 +651,7 @@ public abstract class AbstractJomcCommand implements Command
 
                 public void onLog( final Level level, final String message, final Throwable t )
                 {
-                    log( level, message, t, printStream, verbose, debug );
+                    log( level, message, t, printWriter, verbose, debug );
                 }
 
             } );
@@ -663,7 +662,7 @@ public abstract class AbstractJomcCommand implements Command
         if ( commandLine.hasOption( this.getDocumentsOption().getOpt() ) )
         {
             final Unmarshaller u = manager.getUnmarshaller( false );
-            for ( File f : this.getDocumentFiles( commandLine, printStream ) )
+            for ( File f : this.getDocumentFiles( commandLine, printWriter ) )
             {
                 final InputStream in = new FileInputStream( f );
                 Object o = u.unmarshal( new StreamSource( in ) );
@@ -685,7 +684,7 @@ public abstract class AbstractJomcCommand implements Command
                 else
                 {
                     this.log( Level.WARNING, this.getCannotProcessMessage(
-                        this.getLocale(), f.getAbsolutePath(), o.toString() ), null, printStream, verbose, debug );
+                        this.getLocale(), f.getAbsolutePath(), o.toString() ), null, printWriter, verbose, debug );
 
                 }
             }
@@ -750,17 +749,17 @@ public abstract class AbstractJomcCommand implements Command
             }
         }
 
-        this.log( Level.FINE, this.getModulesReportMessage( this.getLocale() ), null, printStream, verbose, debug );
+        this.log( Level.FINE, this.getModulesReportMessage( this.getLocale() ), null, printWriter, verbose, debug );
 
         for ( Module m : modules.getModule() )
         {
-            this.log( Level.FINE, "\t" + m.getName(), null, printStream, verbose, debug );
+            this.log( Level.FINE, "\t" + m.getName(), null, printWriter, verbose, debug );
         }
 
         return modules;
     }
 
-    protected void configureTool( final JomcTool tool, final CommandLine commandLine, final PrintStream printStream,
+    protected void configureTool( final JomcTool tool, final CommandLine commandLine, final PrintWriter printWriter,
                                   final boolean includeClasspathModule )
         throws IOException, SAXException, JAXBException, ModelException
     {
@@ -772,13 +771,13 @@ public abstract class AbstractJomcCommand implements Command
 
             public void onLog( final Level level, final String message, final Throwable throwable )
             {
-                log( level, message, throwable, printStream, verbose, debug );
+                log( level, message, throwable, printWriter, verbose, debug );
             }
 
         } );
 
         tool.setModules( this.getModules(
-            tool.getModelManager(), commandLine, printStream, includeClasspathModule, false ) );
+            tool.getModelManager(), commandLine, printWriter, includeClasspathModule, false ) );
 
     }
 
@@ -812,7 +811,7 @@ public abstract class AbstractJomcCommand implements Command
     }
 
     protected void log( final Level level, final String message, final Throwable throwable,
-                        final PrintStream printStream, final boolean verbose, final boolean debug )
+                        final PrintWriter printWriter, final boolean verbose, final boolean debug )
     {
         Level logLevel = Level.WARNING;
         if ( verbose )
@@ -828,7 +827,7 @@ public abstract class AbstractJomcCommand implements Command
         {
             if ( message != null )
             {
-                printStream.print( this.getLoglines( level, message ) );
+                printWriter.print( this.getLoglines( level, message ) );
             }
 
             if ( throwable != null && debug )
@@ -837,7 +836,7 @@ public abstract class AbstractJomcCommand implements Command
                 final PrintWriter pw = new PrintWriter( stackTrace );
                 throwable.printStackTrace( pw );
                 pw.flush();
-                printStream.print( this.getLoglines( level, stackTrace.toString() ) );
+                printWriter.print( this.getLoglines( level, stackTrace.toString() ) );
             }
         }
 
@@ -845,6 +844,8 @@ public abstract class AbstractJomcCommand implements Command
         {
             this.severity = level;
         }
+
+        printWriter.flush();
     }
 
     // SECTION-END
