@@ -21,3 +21,7 @@
     bin/jomc (Unix)
     bin/jomc.bat (Windows)
     java -Djava.ext.dirs=lib/ext -jar bin/${project.build.finalName}.jar
+
+    Die Java-Archive aus dem 'lib/tools' Verzeichnis dienen der Integration
+    der JOMC Werkzeuge. Das jomc-tools-${pom.version}.jar Archiv beinhaltet
+    die entsprechenden Werkzeug-Klassen.

@@ -43,6 +43,30 @@
   </formats>
   <files>
     <file>
+      <destName>The Apache Software License, Version 2.0.txt</destName>
+      <fileMode>0444</fileMode>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <outputDirectory>/</outputDirectory>
+      <source>src/main/assembly/APACHE_LICENSE-2.0.txt</source>
+    </file>
+    <file>
+      <destName>NOTICE.txt</destName>
+      <fileMode>0444</fileMode>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <outputDirectory>/</outputDirectory>
+      <source>src/main/assembly/APACHE_NOTICE.txt</source>
+    </file>
+    <file>
+      <destName>The JOMC Project Copyright.txt</destName>
+      <fileMode>0444</fileMode>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <outputDirectory>/</outputDirectory>
+      <source>src/main/assembly/JOMC_LICENSE.txt</source>
+    </file>
+    <file>
       <destName>relocate-classes.xslt</destName>
       <fileMode>0444</fileMode>
       <filtered>false</filtered>
@@ -67,7 +91,8 @@
       <lineEnding>dos</lineEnding>
       <filtered>false</filtered>
       <includes>
-        <include>*.txt</include>
+        <include>PROJECT.txt</include>
+        <include>PROJEKT.txt</include>
       </includes>
     </fileSet>
     <fileSet>
@@ -113,6 +138,17 @@
         <include>*.xslt</include>
       </includes>
     </fileSet>
+    <fileSet>
+      <directory>${project.build.directory}/jomc-tools/META-INF</directory>
+      <fileMode>0444</fileMode>
+      <outputDirectory>/lib/tools</outputDirectory>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <includes>
+        <include>PROJECT.txt</include>
+        <include>PROJEKT.txt</include>
+      </includes>
+    </fileSet>
   </fileSets>
   <dependencySets>
     <dependencySet>
@@ -127,26 +163,15 @@
     <dependencySet>
       <directoryMode>0755</directoryMode>
       <fileMode>0555</fileMode>
-      <scope>compile</scope>
-      <includes>
-        <include>org.jomc:jomc-api</include>
-      </includes>
-      <outputDirectory>/lib</outputDirectory>
-      <useProjectArtifact>false</useProjectArtifact>
-      <useProjectAttachments>false</useProjectAttachments>
-      <useTransitiveDependencies>true</useTransitiveDependencies>
-    </dependencySet>
-    <dependencySet>
-      <directoryMode>0755</directoryMode>
-      <fileMode>0555</fileMode>
       <scope>runtime</scope>
       <includes>
+        <include>org.jomc:jomc-api</include>
         <include>org.jomc:jomc-spi</include>
         <include>org.jomc:jomc-util</include>
         <include>org.jomc:jomc-model</include>
         <include>org.jomc:jomc-ri</include>
       </includes>
-      <outputDirectory>/lib/ri</outputDirectory>
+      <outputDirectory>/lib/jomc</outputDirectory>
       <useProjectArtifact>false</useProjectArtifact>
       <useProjectAttachments>false</useProjectAttachments>
       <useTransitiveDependencies>true</useTransitiveDependencies>
@@ -159,6 +184,23 @@
       <fileMode>0555</fileMode>
       <scope>provided</scope>
       <outputDirectory>/lib/ext</outputDirectory>
+    </dependencySet>
+    <dependencySet>
+      <directoryMode>0755</directoryMode>
+      <fileMode>0555</fileMode>
+      <scope>compile</scope>
+      <outputDirectory>/lib/tools</outputDirectory>
+      <excludes>
+        <exclude>javax.activation:activation</exclude>
+        <exclude>javax.xml.bind:jaxb-api</exclude>
+        <exclude>com.sun.xml.bind:jaxb-impl</exclude>
+        <exclude>org.jomc:jomc-api</exclude>
+        <exclude>org.jomc:jomc-cli</exclude>
+        <exclude>org.jomc:jomc-spi</exclude>
+        <exclude>javax.annotation:jsr250-api</exclude>
+        <exclude>javax.xml.stream:stax-api</exclude>
+        <exclude>commons-cli:commons-cli</exclude>
+      </excludes>
     </dependencySet>
   </dependencySets>
 </assembly>
