@@ -37,6 +37,7 @@ package org.jomc.cli.test;
 import java.io.File;
 import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
+import org.jomc.ObjectManagerFactory;
 import org.jomc.cli.Command;
 import org.jomc.cli.Jomc;
 
@@ -81,6 +82,13 @@ import org.jomc.cli.Jomc;
 public class JomcTest
 {
     // SECTION-START[JomcTest]
+
+    public void testNoArguments() throws Exception
+    {
+        // Ensures the singleton is initialized prior to Jomc switching system properties.
+        ObjectManagerFactory.getObjectManager();
+        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( new String[ 0 ] ) );
+    }
 
     public void testGenerateJavaBundles() throws Exception
     {
