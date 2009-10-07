@@ -95,8 +95,21 @@ public class JomcTest
             "-df", this.getTestDocument(), "-v"
         };
 
+        final String[] unsupportedOption = new String[]
+        {
+            "generate-java-bundles", "--unsupported-option"
+        };
+
+        final String[] failOnWarnings = new String[]
+        {
+            "generate-java-bundles", "-sd", this.getTestSourcesDirectory(), "-rd", this.getTestResourcesDirectory(),
+            "-df", this.getTestDocument(), "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-v"
+        };
+
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
+        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
+        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( failOnWarnings ) );
     }
 
     public void testManageJavaSources() throws Exception
@@ -112,8 +125,21 @@ public class JomcTest
             this.getTestModuleName(), "-v"
         };
 
+        final String[] unsupportedOption = new String[]
+        {
+            "manage-java-sources", "--unsupported-option"
+        };
+
+        final String[] failOnWarnings = new String[]
+        {
+            "manage-java-sources", "-sd", this.getTestSourcesDirectory(), "-df", this.getTestDocument(), "-mn",
+            "DOES_NOT_EXIST", "--fail-on-warnings", "-v"
+        };
+
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
+        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
+        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( failOnWarnings ) );
     }
 
     public void testCommitValidateJavaClasses() throws Exception
@@ -139,12 +165,38 @@ public class JomcTest
             "validate-java-classes", "-df", this.getTestDocument(), "-cp", this.getTestClassesDirectory(), "-v"
         };
 
+        final String[] commitUnsupportedOption = new String[]
+        {
+            "commit-java-classes", "--unsupported-option"
+        };
+
+        final String[] validateUnsupportedOption = new String[]
+        {
+            "validate-java-classes", "--unsupported-option"
+        };
+
+        final String[] commitFailOnWarnings = new String[]
+        {
+            "commit-java-classes", "-df", this.getTestDocument(), "-cd", this.getTestClassesDirectory(), "-mn",
+            "DOES_NOT_EXIST", "--fail-on-warnings", "-v"
+        };
+
+        final String[] validateFailOnWarnings = new String[]
+        {
+            "validate-java-classes", "-df", this.getTestDocument(), "-cp", this.getTestClassesDirectory(),
+            "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-v"
+        };
+
         FileUtils.copyDirectory( new File( this.getClassesDirectory() ), new File( this.getTestClassesDirectory() ) );
 
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( commitHelp ) );
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( validateHelp ) );
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( commitArgs ) );
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( validateArgs ) );
+        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( commitUnsupportedOption ) );
+        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( validateUnsupportedOption ) );
+        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( commitFailOnWarnings ) );
+        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( validateFailOnWarnings ) );
     }
 
     public void testMergeModules() throws Exception
@@ -160,8 +212,14 @@ public class JomcTest
             this.getTestModuleName(), "-d", this.getTestOutputDocument(), "-v"
         };
 
+        final String[] unsupportedOption = new String[]
+        {
+            "merge-modules", "--unsupported-option"
+        };
+
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
+        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
     }
 
     // SECTION-END
