@@ -66,7 +66,7 @@ import org.apache.commons.lang.StringUtils;
  * </ul></p>
  * <p><b>Dependencies</b><ul>
  * <li>"{@link #getCommands Commands}"<blockquote>
- * Dependency on {@code org.jomc.cli.Command} at specification level 1.0-alpha-6-SNAPSHOT.</blockquote></li>
+ * Dependency on {@code org.jomc.cli.Command} at specification level 1.0-alpha-7-SNAPSHOT.</blockquote></li>
  * <li>"{@link #getLocale Locale}"<blockquote>
  * Dependency on {@code java.util.Locale} at specification level 1.1 bound to an instance.</blockquote></li>
  * </ul></p>
@@ -87,7 +87,7 @@ import org.apache.commons.lang.StringUtils;
 // SECTION-END
 // SECTION-START[Annotations]
 @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                             comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-6-SNAPSHOT/jomc-tools" )
+                             comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-7-SNAPSHOT/jomc-tools" )
 // SECTION-END
 public class Jomc
 {
@@ -289,7 +289,7 @@ public class Jomc
 
     /** Creates a new {@code Jomc} instance. */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-6-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-7-SNAPSHOT/jomc-tools" )
     public Jomc()
     {
         // SECTION-START[Default Constructor]
@@ -301,13 +301,13 @@ public class Jomc
 
     /**
      * Gets the {@code Commands} dependency.
-     * <p>This method returns any available object of the {@code org.jomc.cli.Command} specification at specification level 1.0-alpha-6-SNAPSHOT.</p>
+     * <p>This method returns any available object of the {@code org.jomc.cli.Command} specification at specification level 1.0-alpha-7-SNAPSHOT.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested.</p>
      * @return The {@code Commands} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-6-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-7-SNAPSHOT/jomc-tools" )
     private org.jomc.cli.Command[] getCommands()
     {
         final org.jomc.cli.Command[] _d = (org.jomc.cli.Command[]) org.jomc.ObjectManagerFactory.getObjectManager().getDependency( this, "Commands" );
@@ -323,7 +323,7 @@ public class Jomc
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-6-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-7-SNAPSHOT/jomc-tools" )
     private java.util.Locale getLocale()
     {
         final java.util.Locale _d = (java.util.Locale) org.jomc.ObjectManagerFactory.getObjectManager().getDependency( this, "Locale" );
@@ -339,7 +339,7 @@ public class Jomc
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-6-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-7-SNAPSHOT/jomc-tools" )
     private int getDescPad()
     {
         final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "descPad" );
@@ -353,7 +353,7 @@ public class Jomc
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-6-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-7-SNAPSHOT/jomc-tools" )
     private java.lang.String getHelpCommandName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "helpCommandName" );
@@ -367,7 +367,7 @@ public class Jomc
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-6-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-7-SNAPSHOT/jomc-tools" )
     private int getLeftPad()
     {
         final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "leftPad" );
@@ -381,7 +381,7 @@ public class Jomc
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-6-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-7-SNAPSHOT/jomc-tools" )
     private int getWidth()
     {
         final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "width" );
@@ -405,7 +405,7 @@ public class Jomc
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-6-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-7-SNAPSHOT/jomc-tools" )
     private String getIllegalArgumentsMessage( final java.util.Locale locale, final java.lang.String command, final java.lang.String helpCommandName )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "illegalArguments", locale, new Object[] { command, helpCommandName, null } );
@@ -426,7 +426,7 @@ public class Jomc
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-6-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-7-SNAPSHOT/jomc-tools" )
     private String getUsageMessage( final java.util.Locale locale, final java.lang.String helpCommandName )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "usage", locale, new Object[] { helpCommandName, null } );
