@@ -212,7 +212,7 @@ public abstract class JomcToolTest extends TestCase
 
         try
         {
-            this.getTestTool().getJavaInterfaces( null, false );
+            this.getTestTool().getJavaInterfaceNames( null, false );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )

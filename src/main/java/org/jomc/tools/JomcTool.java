@@ -380,7 +380,7 @@ public abstract class JomcTool
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      */
-    public List<String> getJavaInterfaces( final Implementation implementation, final boolean qualified )
+    public List<String> getJavaInterfaceNames( final Implementation implementation, final boolean qualified )
     {
         if ( implementation == null )
         {
