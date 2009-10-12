@@ -67,6 +67,9 @@
         <property name="testDocument"
                   value="${project.build.outputDirectory}/META-INF/jomc.xml"/>
 
+        <property name="testDocumentIllegal"
+                  value="${project.build.testOutputDirectory}/org/jomc/cli/test/illegal-module.xml"/>
+
         <property name="testModuleName" value="${project.name}"/>
 
         <property name="testStylesheet"

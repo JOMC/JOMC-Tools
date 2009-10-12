@@ -51,6 +51,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.cli.CommandLine;
@@ -154,7 +155,7 @@ import org.xml.sax.SAXException;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-7-SNAPSHOT Build 2009-10-12T08:09:27+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-7-SNAPSHOT Build 2009-10-12T09:03:23+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -848,6 +849,53 @@ public abstract class AbstractJomcCommand implements Command
         printWriter.flush();
     }
 
+    protected void log( final Level level, final ModelException e, final PrintWriter printWriter, final boolean verbose,
+                        final boolean debug )
+    {
+        try
+        {
+            this.log( level, "", null, printWriter, verbose, debug );
+            if ( e.getMessage() != null )
+            {
+                this.log( level, e.getMessage(), null, printWriter, verbose, debug );
+                this.log( level, "", null, printWriter, verbose, debug );
+            }
+
+            Marshaller marshaller = null;
+            for ( ModelException.Detail d : e.getDetails() )
+            {
+                this.log( d.getLevel(), d.getMessage(), null, printWriter, verbose, debug );
+
+                if ( d.getElement() != null )
+                {
+                    if ( marshaller == null )
+                    {
+                        marshaller = new DefaultModelManager().getMarshaller( false, true );
+                    }
+
+                    final StringWriter stringWriter = new StringWriter();
+                    marshaller.marshal( d.getElement(), stringWriter );
+
+                    this.log( Level.FINE, "", null, printWriter, verbose, debug );
+                    this.log( Level.FINE, stringWriter.toString(), null, printWriter, verbose, debug );
+                }
+            }
+            this.log( level, "", null, printWriter, verbose, debug );
+        }
+        catch ( final IOException e2 )
+        {
+            throw new RuntimeException( e2 );
+        }
+        catch ( final SAXException e2 )
+        {
+            throw new RuntimeException( e2 );
+        }
+        catch ( final JAXBException e2 )
+        {
+            throw new RuntimeException( e2 );
+        }
+    }
+
     // SECTION-END
     // SECTION-START[Constructors]
 
@@ -1138,7 +1186,7 @@ public abstract class AbstractJomcCommand implements Command
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-7-SNAPSHOT Build 2009-10-12T08:09:27+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-7-SNAPSHOT Build 2009-10-12T09:03:23+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

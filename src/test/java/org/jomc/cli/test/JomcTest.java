@@ -54,6 +54,9 @@ import org.jomc.cli.Jomc;
  * <li>"{@link #getTestDocument testDocument}"
  * <blockquote>Property of type {@code java.lang.String}.
  * </blockquote></li>
+ * <li>"{@link #getTestDocumentIllegal testDocumentIllegal}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
  * <li>"{@link #getTestModuleName testModuleName}"
  * <blockquote>Property of type {@code java.lang.String}.
  * </blockquote></li>
@@ -225,9 +228,16 @@ public class JomcTest
             "merge-modules", "--unsupported-option"
         };
 
+        final String[] illegalDoc = new String[]
+        {
+            "merge-modules", "-df", this.getTestDocumentIllegal(), "-xs", this.getTestStylesheet(), "-mn",
+            this.getTestModuleName(), "-d", this.getTestOutputDocument(), "-D"
+        };
+
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
         Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
+        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( illegalDoc ) );
     }
 
     // SECTION-END
@@ -286,6 +296,20 @@ public class JomcTest
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "testDocument" );
         assert _p != null : "'testDocument' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code testDocumentIllegal} property.
+     * @return The value of the {@code testDocumentIllegal} property.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-7-SNAPSHOT/jomc-tools" )
+    private java.lang.String getTestDocumentIllegal()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "testDocumentIllegal" );
+        assert _p != null : "'testDocumentIllegal' property not found.";
         return _p;
     }
 
