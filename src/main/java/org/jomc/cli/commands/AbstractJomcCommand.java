@@ -777,6 +777,17 @@ public abstract class AbstractJomcCommand implements Command
 
         } );
 
+        if ( verbose || debug )
+        {
+            final Level logLevel = debug ? Level.ALL : Level.INFO;
+
+            tool.setLogLevel( logLevel );
+            if ( tool.getModelManager() instanceof DefaultModelManager )
+            {
+                ( (DefaultModelManager) tool.getModelManager() ).setLogLevel( logLevel );
+            }
+        }
+
         tool.setModules( this.getModules(
             tool.getModelManager(), commandLine, printWriter, includeClasspathModule, false ) );
 
