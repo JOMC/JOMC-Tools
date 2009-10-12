@@ -618,6 +618,18 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         tool.setInputEncoding( this.sourceEncoding );
         tool.setOutputEncoding( this.sourceEncoding );
         tool.setProfile( this.templateProfile );
+
+        if ( this.verbose || getLog().isDebugEnabled() )
+        {
+            final Level logLevel = getLog().isDebugEnabled() ? Level.ALL : Level.INFO;
+
+            tool.setLogLevel( logLevel );
+            if ( tool.getModelManager() instanceof DefaultModelManager )
+            {
+                ( (DefaultModelManager) tool.getModelManager() ).setLogLevel( logLevel );
+            }
+        }
+
         tool.setModules( this.getModules( tool.getModelManager(), classLoader, includeClasspathModule ) );
     }
 
