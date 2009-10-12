@@ -1424,13 +1424,20 @@ public abstract class JomcTool
      * Notifies registered listeners.
      *
      * @param level The level of the event.
-     * @param message The message of the event.
-     * @param throwable The throwable of the event.
+     * @param message The message of the event or {@code null}.
+     * @param throwable The throwable of the event or {@code null}.
+     *
+     * @throws NullPointerException if {@code level} is {@code null}.
      *
      * @see #getListeners()
      */
     protected void log( final Level level, final String message, final Throwable throwable )
     {
+        if ( level == null )
+        {
+            throw new NullPointerException( "level" );
+        }
+
         for ( Listener l : this.getListeners() )
         {
             l.onLog( level, message, throwable );

@@ -40,6 +40,9 @@ import java.net.URL;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamSource;
 import junit.framework.Assert;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.commons.io.FileUtils;
@@ -573,32 +576,42 @@ public class JavaClassesTest extends JomcToolTest
         }
     }
 
-    public void testCommitValidateClasses() throws Exception
+    public void testCommitTransformValidateClasses() throws Exception
     {
         final File allClasses = this.getTestClassesDirectory();
         final File moduleClasses = this.getTestClassesDirectory();
         final File implementationClasses = this.getTestClassesDirectory();
         final File specificationClasses = this.getTestClassesDirectory();
+        final File uncommittedClasses = this.getTestClassesDirectory();
         final Implementation i = this.getTestTool().getModules().getImplementation( "org.jomc.tools.JavaClasses" );
         final Module m = this.getTestTool().getModules().getModule( this.getTestProperty( "projectName" ) );
         final Specification s = this.getTestTool().getModules().getSpecification( "org.jomc.tools.JavaClasses" );
+        final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        final Transformer transformer = transformerFactory.newTransformer(
+            new StreamSource( this.getClass().getResourceAsStream( "no-op.xslt" ) ) );
 
         this.getTestTool().commitClasses( allClasses );
-        this.getTestTool().commitClasses( i, implementationClasses );
         this.getTestTool().commitClasses( m, moduleClasses );
         this.getTestTool().commitClasses( s, specificationClasses );
+        this.getTestTool().commitClasses( i, implementationClasses );
+
+        final JavaClass implementationClass = this.getTestTool().getJavaClass(
+            new File( implementationClasses, i.getClazz().replace( '.', File.separatorChar ) + ".class" ) );
+
+        final JavaClass specificationClass = this.getTestTool().getJavaClass(
+            new File( specificationClasses, s.getClazz().replace( '.', File.separatorChar ) + ".class" ) );
+
+        this.getTestTool().transformClasses( allClasses, transformer );
+        this.getTestTool().transformClasses( m, moduleClasses, transformer );
+        this.getTestTool().transformClasses( s, specificationClass, transformer );
+        this.getTestTool().transformClasses( i, implementationClass, transformer );
 
         this.getTestTool().validateClasses( allClasses );
         this.getTestTool().validateClasses( m, moduleClasses );
-
-        final JavaClass implementationClass = this.getTestTool().getJavaClass(
-            new File( implementationClasses, this.getTestTool().getJavaClasspathLocation( i ) + ".class" ) );
-
-        final JavaClass specificationClass = this.getTestTool().getJavaClass(
-            new File( specificationClasses, this.getTestTool().getJavaClasspathLocation( s ) + ".class" ) );
-
-        this.getTestTool().validateClasses( i, implementationClass );
         this.getTestTool().validateClasses( s, specificationClass );
+        this.getTestTool().validateClasses( i, implementationClass );
+
+        this.getTestTool().validateClasses( uncommittedClasses );
     }
 
 }

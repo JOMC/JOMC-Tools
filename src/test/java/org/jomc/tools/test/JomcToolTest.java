@@ -69,12 +69,11 @@ public abstract class JomcToolTest extends TestCase
 
         public void onLog( final Level level, final String message, final Throwable throwable )
         {
-            final StringBuilder b = new StringBuilder();
+            Assert.assertNotNull( level );
 
-            if ( level != null )
-            {
-                b.append( '[' ).append( level.getLocalizedName() ).append( "] " );
-            }
+            final StringBuilder b = new StringBuilder();
+            b.append( '[' ).append( level.getLocalizedName() ).append( "] " );
+
             if ( message != null )
             {
                 b.append( message );

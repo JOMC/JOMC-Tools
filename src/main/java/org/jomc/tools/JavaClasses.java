@@ -204,16 +204,16 @@ public class JavaClasses extends JomcTool
         {
             final String classLocation = specification.getClazz().replace( '.', File.separatorChar ) + ".class";
             final File classFile = new File( classesDirectory, classLocation );
+            this.log( Level.INFO, this.getMessage( "committing", new Object[]
+                {
+                    classFile.getAbsolutePath()
+                } ), null );
+
             final JavaClass javaClass = this.getJavaClass( classFile );
             this.setClassfileAttribute( javaClass, Specification.class.getName(), this.encodeModelObject(
                 this.getModelManager().getObjectFactory().createSpecification( specification ) ) );
 
             javaClass.dump( classFile );
-            this.log( Level.INFO, this.getMessage( "writing", new Object[]
-                {
-                    classFile.getAbsolutePath()
-                } ), null );
-
         }
     }
 
@@ -286,6 +286,11 @@ public class JavaClasses extends JomcTool
 
             final String classLocation = implementation.getClazz().replace( '.', File.separatorChar ) + ".class";
             final File classFile = new File( classesDirectory, classLocation );
+            this.log( Level.INFO, this.getMessage( "committing", new Object[]
+                {
+                    classFile.getAbsolutePath()
+                } ), null );
+
             final JavaClass javaClass = this.getJavaClass( classFile );
 
             this.setClassfileAttribute( javaClass, Dependencies.class.getName(), this.encodeModelObject(
@@ -301,11 +306,6 @@ public class JavaClasses extends JomcTool
                 this.getModelManager().getObjectFactory().createSpecifications( specifications ) ) );
 
             javaClass.dump( classFile );
-            this.log( Level.INFO, this.getMessage( "writing", new Object[]
-                {
-                    classFile.getAbsolutePath()
-                } ), null );
-
         }
     }
 
@@ -611,6 +611,11 @@ public class JavaClasses extends JomcTool
             throw new NullPointerException( "javaClass" );
         }
 
+        this.log( Level.INFO, this.getMessage( "validatingSpecification", new Object[]
+            {
+                specification.getIdentifier()
+            } ), null );
+
         Specification decoded = null;
         final byte[] bytes = this.getClassfileAttribute( javaClass, Specification.class.getName() );
         if ( bytes != null )
@@ -668,18 +673,10 @@ public class JavaClasses extends JomcTool
                 modelException.getDetails().addAll( details );
                 throw modelException;
             }
-            else
-            {
-                this.log( Level.INFO, this.getMessage( "validatedClass", new Object[]
-                    {
-                        specification.getIdentifier()
-                    } ), null );
-
-            }
         }
         else
         {
-            this.log( Level.WARNING, this.getMessage( "cannotValidate", new Object[]
+            this.log( Level.WARNING, this.getMessage( "cannotValidateSpecification", new Object[]
                 {
                     specification.getIdentifier(), Specification.class.getName()
                 } ), null );
@@ -708,6 +705,11 @@ public class JavaClasses extends JomcTool
         {
             throw new NullPointerException( "javaClass" );
         }
+
+        this.log( Level.INFO, this.getMessage( "validatingImplementation", new Object[]
+            {
+                implementation.getIdentifier()
+            } ), null );
 
         try
         {
@@ -797,9 +799,9 @@ public class JavaClasses extends JomcTool
             }
             else
             {
-                this.log( Level.WARNING, this.getMessage( "cannotValidate", new Object[]
+                this.log( Level.WARNING, this.getMessage( "cannotValidateImplementation", new Object[]
                     {
-                        implementation.getClazz(), Dependencies.class.getName()
+                        implementation.getIdentifier(), Dependencies.class.getName()
                     } ), null );
 
             }
@@ -841,9 +843,9 @@ public class JavaClasses extends JomcTool
             }
             else
             {
-                this.log( Level.WARNING, this.getMessage( "cannotValidate", new Object[]
+                this.log( Level.WARNING, this.getMessage( "cannotValidateImplementation", new Object[]
                     {
-                        implementation.getClazz(), Properties.class.getName()
+                        implementation.getIdentifier(), Properties.class.getName()
                     } ), null );
 
             }
@@ -868,9 +870,9 @@ public class JavaClasses extends JomcTool
             }
             else
             {
-                this.log( Level.WARNING, this.getMessage( "cannotValidate", new Object[]
+                this.log( Level.WARNING, this.getMessage( "cannotValidateImplementation", new Object[]
                     {
-                        implementation.getClazz(), Messages.class.getName()
+                        implementation.getIdentifier(), Messages.class.getName()
                     } ), null );
 
             }
@@ -977,9 +979,9 @@ public class JavaClasses extends JomcTool
             }
             else
             {
-                this.log( Level.WARNING, this.getMessage( "cannotValidate", new Object[]
+                this.log( Level.WARNING, this.getMessage( "cannotValidateImplementation", new Object[]
                     {
-                        implementation.getClazz(), Specifications.class.getName()
+                        implementation.getIdentifier(), Specifications.class.getName()
                     } ), null );
 
             }
@@ -991,14 +993,6 @@ public class JavaClasses extends JomcTool
 
                 modelException.getDetails().addAll( details );
                 throw modelException;
-            }
-            else
-            {
-                this.log( Level.INFO, this.getMessage( "validatedClass", new Object[]
-                    {
-                        implementation.getClazz()
-                    } ), null );
-
             }
         }
         catch ( final ParseException e )
@@ -1079,17 +1073,18 @@ public class JavaClasses extends JomcTool
                 {
                     final String classLocation = s.getIdentifier().replace( '.', File.separatorChar ) + ".class";
                     final File classFile = new File( classesDirectory, classLocation );
-                    final JavaClass javaClass = this.getJavaClass( classFile );
-                    this.transformClasses( s, javaClass, transformer );
-                    javaClass.dump( classFile );
-                    this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                    this.log( Level.INFO, this.getMessage( "transforming", new Object[]
                         {
                             classFile.getAbsolutePath()
                         } ), null );
 
+                    final JavaClass javaClass = this.getJavaClass( classFile );
+                    this.transformClasses( s, javaClass, transformer );
+                    javaClass.dump( classFile );
                 }
             }
         }
+
         if ( module.getImplementations() != null )
         {
             for ( Implementation i : module.getImplementations().getImplementation() )
@@ -1098,14 +1093,14 @@ public class JavaClasses extends JomcTool
                 {
                     final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
                     final File classFile = new File( classesDirectory, classLocation );
-                    final JavaClass javaClass = this.getJavaClass( classFile );
-                    this.transformClasses( i, javaClass, transformer );
-                    javaClass.dump( classFile );
-                    this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                    this.log( Level.INFO, this.getMessage( "transforming", new Object[]
                         {
                             classFile.getAbsolutePath()
                         } ), null );
 
+                    final JavaClass javaClass = this.getJavaClass( classFile );
+                    this.transformClasses( i, javaClass, transformer );
+                    javaClass.dump( classFile );
                 }
             }
         }
