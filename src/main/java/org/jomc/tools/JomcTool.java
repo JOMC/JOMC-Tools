@@ -44,9 +44,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -110,6 +112,9 @@ public abstract class JomcTool
     /** Name of the velocity classpath resource loader implementation. */
     private static final String VELOCITY_RESOURCE_LOADER = ClasspathResourceLoader.class.getName();
 
+    /** Constant for the default profile. */
+    private static final String DEFAULT_PROFILE = "default";
+
     /** The modules of the instance. */
     private Modules modules;
 
@@ -133,6 +138,9 @@ public abstract class JomcTool
 
     /** The listeners of the instance. */
     private List<Listener> listeners;
+
+    /** Cached templates. */
+    private final Map<String, Template> templateCache = new HashMap<String, Template>();
 
     /** Creates a new {@code JomcTool} instance. */
     public JomcTool()
@@ -1223,6 +1231,7 @@ public abstract class JomcTool
     public void setTemplateEncoding( final String value )
     {
         this.templateEncoding = value;
+        this.templateCache.clear();
     }
 
     /**
@@ -1304,7 +1313,7 @@ public abstract class JomcTool
     {
         if ( this.profile == null )
         {
-            this.profile = "default";
+            this.profile = DEFAULT_PROFILE;
             this.log( Level.FINE, this.getMessage( "defaultProfile", new Object[]
                 {
                     this.profile
@@ -1325,6 +1334,7 @@ public abstract class JomcTool
     public void setProfile( final String value )
     {
         this.profile = value;
+        this.templateCache.clear();
     }
 
     /**
@@ -1350,34 +1360,64 @@ public abstract class JomcTool
             throw new NullPointerException( "templateName" );
         }
 
-        try
-        {
-            return this.getVelocityEngine().getTemplate( TEMPLATE_PREFIX + this.getProfile() + "/" + templateName,
-                                                         this.getTemplateEncoding() );
+        Template template = this.templateCache.get( templateName );
 
-        }
-        catch ( final ResourceNotFoundException e )
+        if ( template == null )
         {
-            this.log( Level.CONFIG, this.getMessage( "templateNotFound", new Object[]
-                {
-                    templateName, TEMPLATE_PREFIX + this.getProfile() + "/" + templateName
-                } ), e );
-
             try
             {
-                return this.getVelocityEngine().getTemplate( TEMPLATE_PREFIX + "default/" + templateName,
-                                                             this.getTemplateEncoding() );
+                template = this.getVelocityEngine().getTemplate(
+                    TEMPLATE_PREFIX + this.getProfile() + "/" + templateName, this.getTemplateEncoding() );
+
+                this.templateCache.put( templateName, template );
+            }
+            catch ( final ResourceNotFoundException e )
+            {
+                this.log( Level.CONFIG, this.getMessage( "templateNotFound", new Object[]
+                    {
+                        templateName, this.getProfile()
+                    } ), e );
+
+                try
+                {
+                    template = this.getVelocityEngine().getTemplate(
+                        TEMPLATE_PREFIX + DEFAULT_PROFILE + "/" + templateName, this.getTemplateEncoding() );
+
+                    this.log( Level.CONFIG, this.getMessage( "defaultTemplate", new Object[]
+                        {
+                            templateName, DEFAULT_PROFILE
+                        } ), e );
+
+                    this.templateCache.put( templateName, template );
+                }
+                catch ( final ResourceNotFoundException e2 )
+                {
+                    throw (IOException) new IOException( this.getMessage( "templateNotFound", new Object[]
+                        {
+                            templateName, DEFAULT_PROFILE
+                        } ) ).initCause( e2 );
+
+                }
+                catch ( final Exception e2 )
+                {
+                    throw (IOException) new IOException( this.getMessage( "failedGettingTemplate", new Object[]
+                        {
+                            templateName
+                        } ) ).initCause( e2 );
+
+                }
+            }
+            catch ( final Exception e )
+            {
+                throw (IOException) new IOException( this.getMessage( "failedGettingTemplate", new Object[]
+                    {
+                        templateName
+                    } ) ).initCause( e );
 
             }
-            catch ( final Exception e2 )
-            {
-                throw (IOException) new IOException( e2.getMessage() ).initCause( e2 );
-            }
         }
-        catch ( final Exception e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
+
+        return template;
     }
 
     /**

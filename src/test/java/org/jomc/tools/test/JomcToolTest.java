@@ -515,6 +515,38 @@ public abstract class JomcToolTest extends TestCase
         Assert.assertNotNull( this.getTestTool().getVelocityEngine() );
     }
 
+    /** Tests the {@code getVelocityTemplate} method. */
+    public void testVelocityTemplate() throws Exception
+    {
+        Assert.assertNotNull( this.getTestTool().getVelocityTemplate( "Bundle.java.vm" ) );
+        this.getTestTool().setProfile( "DOES_NOT_EXIST" );
+        Assert.assertNotNull( this.getTestTool().getVelocityTemplate( "Bundle.java.vm" ) );
+        this.getTestTool().setProfile( null );
+
+        try
+        {
+            this.getTestTool().getVelocityTemplate( "DOES_NOT_EXIST" );
+            Assert.fail( "Expected IOException not thrown." );
+        }
+        catch ( IOException e )
+        {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
+        }
+
+        try
+        {
+            this.getTestTool().setProfile( "DOES_NOT_EXIST" );
+            this.getTestTool().getVelocityTemplate( "DOES_NOT_EXIST" );
+            Assert.fail( "Expected IOException not thrown." );
+        }
+        catch ( IOException e )
+        {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
+        }
+    }
+
     public static void assertNullPointerException( final NullPointerException e )
     {
         Assert.assertNotNull( e );
