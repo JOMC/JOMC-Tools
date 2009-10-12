@@ -1147,7 +1147,7 @@ public class JavaClasses extends JomcTool
                 this.setClassfileAttribute( javaClass, Specification.class.getName(), this.encodeModelObject(
                     this.getModelManager().getObjectFactory().createSpecification(
                     this.getModelManager().transformModelObject( this.getModelManager().getObjectFactory().
-                    createSpecification( specification ), transformer ) ) ) );
+                    createSpecification( decodedSpecification ), transformer ) ) ) );
 
             }
         }
