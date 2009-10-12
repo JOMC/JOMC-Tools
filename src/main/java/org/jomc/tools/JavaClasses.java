@@ -204,10 +204,14 @@ public class JavaClasses extends JomcTool
         {
             final String classLocation = specification.getClazz().replace( '.', File.separatorChar ) + ".class";
             final File classFile = new File( classesDirectory, classLocation );
-            this.log( Level.INFO, this.getMessage( "committing", new Object[]
-                {
-                    classFile.getAbsolutePath()
-                } ), null );
+            if ( this.isLoggable( Level.INFO ) )
+            {
+                this.log( Level.INFO, this.getMessage( "committing", new Object[]
+                    {
+                        classFile.getAbsolutePath()
+                    } ), null );
+
+            }
 
             final JavaClass javaClass = this.getJavaClass( classFile );
             this.setClassfileAttribute( javaClass, Specification.class.getName(), this.encodeModelObject(
@@ -253,7 +257,7 @@ public class JavaClasses extends JomcTool
 
             for ( SpecificationReference r : specifications.getReference() )
             {
-                if ( specifications.getSpecification( r.getIdentifier() ) == null )
+                if ( specifications.getSpecification( r.getIdentifier() ) == null && this.isLoggable( Level.WARNING ) )
                 {
                     this.log( Level.WARNING, this.getMessage( "unresolvedSpecification", new Object[]
                         {
@@ -274,7 +278,7 @@ public class JavaClasses extends JomcTool
                         specifications.getSpecification().add( s );
                     }
                 }
-                else
+                else if ( this.isLoggable( Level.WARNING ) )
                 {
                     this.log( Level.WARNING, this.getMessage( "unresolvedDependencySpecification", new Object[]
                         {
@@ -286,10 +290,15 @@ public class JavaClasses extends JomcTool
 
             final String classLocation = implementation.getClazz().replace( '.', File.separatorChar ) + ".class";
             final File classFile = new File( classesDirectory, classLocation );
-            this.log( Level.INFO, this.getMessage( "committing", new Object[]
-                {
-                    classFile.getAbsolutePath()
-                } ), null );
+
+            if ( this.isLoggable( Level.INFO ) )
+            {
+                this.log( Level.INFO, this.getMessage( "committing", new Object[]
+                    {
+                        classFile.getAbsolutePath()
+                    } ), null );
+
+            }
 
             final JavaClass javaClass = this.getJavaClass( classFile );
 
@@ -611,10 +620,14 @@ public class JavaClasses extends JomcTool
             throw new NullPointerException( "javaClass" );
         }
 
-        this.log( Level.INFO, this.getMessage( "validatingSpecification", new Object[]
-            {
-                specification.getIdentifier()
-            } ), null );
+        if ( this.isLoggable( Level.INFO ) )
+        {
+            this.log( Level.INFO, this.getMessage( "validatingSpecification", new Object[]
+                {
+                    specification.getIdentifier()
+                } ), null );
+
+        }
 
         Specification decoded = null;
         final byte[] bytes = this.getClassfileAttribute( javaClass, Specification.class.getName() );
@@ -674,7 +687,7 @@ public class JavaClasses extends JomcTool
                 throw modelException;
             }
         }
-        else
+        else if ( this.isLoggable( Level.WARNING ) )
         {
             this.log( Level.WARNING, this.getMessage( "cannotValidateSpecification", new Object[]
                 {
@@ -706,10 +719,14 @@ public class JavaClasses extends JomcTool
             throw new NullPointerException( "javaClass" );
         }
 
-        this.log( Level.INFO, this.getMessage( "validatingImplementation", new Object[]
-            {
-                implementation.getIdentifier()
-            } ), null );
+        if ( this.isLoggable( Level.INFO ) )
+        {
+            this.log( Level.INFO, this.getMessage( "validatingImplementation", new Object[]
+                {
+                    implementation.getIdentifier()
+                } ), null );
+
+        }
 
         try
         {
@@ -797,7 +814,7 @@ public class JavaClasses extends JomcTool
                     }
                 }
             }
-            else
+            else if ( this.isLoggable( Level.WARNING ) )
             {
                 this.log( Level.WARNING, this.getMessage( "cannotValidateImplementation", new Object[]
                     {
@@ -841,7 +858,7 @@ public class JavaClasses extends JomcTool
                     }
                 }
             }
-            else
+            else if ( this.isLoggable( Level.WARNING ) )
             {
                 this.log( Level.WARNING, this.getMessage( "cannotValidateImplementation", new Object[]
                     {
@@ -868,7 +885,7 @@ public class JavaClasses extends JomcTool
                     }
                 }
             }
-            else
+            else if ( this.isLoggable( Level.WARNING ) )
             {
                 this.log( Level.WARNING, this.getMessage( "cannotValidateImplementation", new Object[]
                     {
@@ -977,7 +994,7 @@ public class JavaClasses extends JomcTool
                     }
                 }
             }
-            else
+            else if ( this.isLoggable( Level.WARNING ) )
             {
                 this.log( Level.WARNING, this.getMessage( "cannotValidateImplementation", new Object[]
                     {
@@ -1073,10 +1090,15 @@ public class JavaClasses extends JomcTool
                 {
                     final String classLocation = s.getIdentifier().replace( '.', File.separatorChar ) + ".class";
                     final File classFile = new File( classesDirectory, classLocation );
-                    this.log( Level.INFO, this.getMessage( "transforming", new Object[]
-                        {
-                            classFile.getAbsolutePath()
-                        } ), null );
+
+                    if ( this.isLoggable( Level.INFO ) )
+                    {
+                        this.log( Level.INFO, this.getMessage( "transforming", new Object[]
+                            {
+                                classFile.getAbsolutePath()
+                            } ), null );
+
+                    }
 
                     final JavaClass javaClass = this.getJavaClass( classFile );
                     this.transformClasses( s, javaClass, transformer );
@@ -1093,10 +1115,15 @@ public class JavaClasses extends JomcTool
                 {
                     final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
                     final File classFile = new File( classesDirectory, classLocation );
-                    this.log( Level.INFO, this.getMessage( "transforming", new Object[]
-                        {
-                            classFile.getAbsolutePath()
-                        } ), null );
+
+                    if ( this.isLoggable( Level.INFO ) )
+                    {
+                        this.log( Level.INFO, this.getMessage( "transforming", new Object[]
+                            {
+                                classFile.getAbsolutePath()
+                            } ), null );
+
+                    }
 
                     final JavaClass javaClass = this.getJavaClass( classFile );
                     this.transformClasses( i, javaClass, transformer );

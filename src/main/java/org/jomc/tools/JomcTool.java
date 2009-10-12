@@ -95,6 +95,8 @@ public abstract class JomcTool
          * @param level The level of the event.
          * @param message The message of the event or {@code null}.
          * @param throwable The throwable of the event or {@code null}.
+         *
+         * @throws NullPointerException if {@code level} is {@code null}.
          */
         void onLog( Level level, String message, Throwable throwable );
 
@@ -139,6 +141,9 @@ public abstract class JomcTool
     /** The listeners of the instance. */
     private List<Listener> listeners;
 
+    /** Log level of the instance. */
+    private Level logLevel;
+
     /** Cached templates. */
     private final Map<String, Template> templateCache = new HashMap<String, Template>();
 
@@ -171,7 +176,10 @@ public abstract class JomcTool
             }
             catch ( final Exception e )
             {
-                this.log( Level.SEVERE, e.getMessage(), e );
+                if ( this.isLoggable( Level.SEVERE ) )
+                {
+                    this.log( Level.SEVERE, e.getMessage(), e );
+                }
             }
         }
     }
@@ -180,6 +188,8 @@ public abstract class JomcTool
      * Gets the list of registered listeners.
      *
      * @return The list of registered listeners.
+     *
+     * @see #log(java.util.logging.Level, java.lang.String, java.lang.Throwable)
      */
     public List<Listener> getListeners()
     {
@@ -189,6 +199,67 @@ public abstract class JomcTool
         }
 
         return this.listeners;
+    }
+
+    /**
+     * Gets the log level of the instance.
+     * <p>The default log level of the instance is controlled by system property
+     * {@code org.jomc.tools.JomcTool.logLevel} holding the default log level of the instance.
+     * If that system property is not set, a {@code WARNING} log level is returned.</p>
+     *
+     * @return The log level of the instance.
+     *
+     * @see #setLogLevel(java.util.logging.Level)
+     * @see #isLoggable(java.util.logging.Level)
+     * @see Level#parse(java.lang.String)
+     */
+    public Level getLogLevel()
+    {
+        if ( this.logLevel == null )
+        {
+            this.logLevel = Level.parse( System.getProperty( "org.jomc.tools.JomcTool.logLevel",
+                                                             Level.WARNING.getName() ) );
+
+        }
+
+        return this.logLevel;
+    }
+
+    /**
+     * Sets the log level of the instance.
+     *
+     * @param value The new log level of the instance or {@code null}.
+     *
+     * @see #getLogLevel()
+     * @see #isLoggable(java.util.logging.Level)
+     */
+    public void setLogLevel( final Level value )
+    {
+        this.logLevel = value;
+    }
+
+    /**
+     * Checks if a message at a given level is provided to the listeners of the instance.
+     *
+     * @param level The level to test.
+     *
+     * @return {@code true} if messages at {@code level} are provided to the listeners of the instance;
+     * {@code false} if messages at {@code level} are not provided to the listeners of the instance.
+     *
+     * @throws NullPointerException if {@code level} is {@code null}.
+     *
+     * @see #getLogLevel()
+     * @see #setLogLevel(java.util.logging.Level)
+     * @see #log(java.util.logging.Level, java.lang.String, java.lang.Throwable)
+     */
+    public boolean isLoggable( final Level level )
+    {
+        if ( level == null )
+        {
+            throw new NullPointerException( "level" );
+        }
+
+        return level.intValue() >= this.getLogLevel().intValue();
     }
 
     /**
@@ -1122,15 +1193,15 @@ public abstract class JomcTool
 
                     public void log( final int level, final String message, final Throwable throwable )
                     {
-                        JomcTool.this.log( this.toLevel( level ), message, throwable );
+                        JomcTool.this.log( this.toToolLevel( level ), message, throwable );
                     }
 
                     public boolean isLevelEnabled( final int level )
                     {
-                        return true;
+                        return isLoggable( this.toToolLevel( level ) );
                     }
 
-                    private Level toLevel( final int logChuteLevel )
+                    private Level toToolLevel( final int logChuteLevel )
                     {
                         switch ( logChuteLevel )
                         {
@@ -1246,11 +1317,14 @@ public abstract class JomcTool
         if ( this.inputEncoding == null )
         {
             this.inputEncoding = new InputStreamReader( new ByteArrayInputStream( NO_BYTES ) ).getEncoding();
-            this.log( Level.FINE, this.getMessage( "defaultInputEncoding", new Object[]
-                {
-                    this.inputEncoding
-                } ), null );
+            if ( this.isLoggable( Level.FINE ) )
+            {
+                this.log( Level.FINE, this.getMessage( "defaultInputEncoding", new Object[]
+                    {
+                        this.inputEncoding
+                    } ), null );
 
+            }
         }
 
         return this.inputEncoding;
@@ -1280,11 +1354,14 @@ public abstract class JomcTool
         if ( this.outputEncoding == null )
         {
             this.outputEncoding = new OutputStreamWriter( new ByteArrayOutputStream() ).getEncoding();
-            this.log( Level.FINE, this.getMessage( "defaultOutputEncoding", new Object[]
-                {
-                    this.outputEncoding
-                } ), null );
+            if ( this.isLoggable( Level.FINE ) )
+            {
+                this.log( Level.FINE, this.getMessage( "defaultOutputEncoding", new Object[]
+                    {
+                        this.outputEncoding
+                    } ), null );
 
+            }
         }
 
         return this.outputEncoding;
@@ -1314,11 +1391,14 @@ public abstract class JomcTool
         if ( this.profile == null )
         {
             this.profile = DEFAULT_PROFILE;
-            this.log( Level.FINE, this.getMessage( "defaultProfile", new Object[]
-                {
-                    this.profile
-                } ), null );
+            if ( this.isLoggable( Level.FINE ) )
+            {
+                this.log( Level.FINE, this.getMessage( "defaultProfile", new Object[]
+                    {
+                        this.profile
+                    } ), null );
 
+            }
         }
 
         return this.profile;
@@ -1373,20 +1453,28 @@ public abstract class JomcTool
             }
             catch ( final ResourceNotFoundException e )
             {
-                this.log( Level.CONFIG, this.getMessage( "templateNotFound", new Object[]
-                    {
-                        templateName, this.getProfile()
-                    } ), e );
+                if ( this.isLoggable( Level.CONFIG ) )
+                {
+                    this.log( Level.CONFIG, this.getMessage( "templateNotFound", new Object[]
+                        {
+                            templateName, this.getProfile()
+                        } ), e );
+
+                }
 
                 try
                 {
                     template = this.getVelocityEngine().getTemplate(
                         TEMPLATE_PREFIX + DEFAULT_PROFILE + "/" + templateName, this.getTemplateEncoding() );
 
-                    this.log( Level.CONFIG, this.getMessage( "defaultTemplate", new Object[]
-                        {
-                            templateName, DEFAULT_PROFILE
-                        } ), e );
+                    if ( this.isLoggable( Level.CONFIG ) )
+                    {
+                        this.log( Level.CONFIG, this.getMessage( "defaultTemplate", new Object[]
+                            {
+                                templateName, DEFAULT_PROFILE
+                            } ), e );
+
+                    }
 
                     this.templateCache.put( templateName, template );
                 }
@@ -1438,9 +1526,12 @@ public abstract class JomcTool
             throw new NullPointerException( "level" );
         }
 
-        for ( Listener l : this.getListeners() )
+        if ( this.isLoggable( level ) )
         {
-            l.onLog( level, message, throwable );
+            for ( Listener l : this.getListeners() )
+            {
+                l.onLog( level, message, throwable );
+            }
         }
     }
 

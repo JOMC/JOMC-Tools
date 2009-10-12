@@ -117,11 +117,14 @@ public class JavaBundles extends JomcTool
         if ( this.defaultLocale == null )
         {
             this.defaultLocale = Locale.getDefault();
-            this.log( Level.FINE, this.getMessage( "defaultLocale", new Object[]
-                {
-                    this.defaultLocale.toString()
-                } ), null );
+            if ( this.isLoggable( Level.FINE ) )
+            {
+                this.log( Level.FINE, this.getMessage( "defaultLocale", new Object[]
+                    {
+                        this.defaultLocale.toString()
+                    } ), null );
 
+            }
         }
 
         return this.defaultLocale;
@@ -234,10 +237,14 @@ public class JavaBundles extends JomcTool
 
             }
 
-            this.log( Level.INFO, this.getMessage( "writing", new Object[]
-                {
-                    bundleFile.getCanonicalPath()
-                } ), null );
+            if ( this.isLoggable( Level.INFO ) )
+            {
+                this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                    {
+                        bundleFile.getCanonicalPath()
+                    } ), null );
+
+            }
 
             FileUtils.writeStringToFile( bundleFile, this.getResourceBundleSources( implementation ),
                                          this.getOutputEncoding() );
@@ -347,10 +354,14 @@ public class JavaBundles extends JomcTool
 
                 }
 
-                this.log( Level.INFO, this.getMessage( "writing", new Object[]
-                    {
-                        file.getCanonicalPath()
-                    } ), null );
+                if ( this.isLoggable( Level.INFO ) )
+                {
+                    this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                        {
+                            file.getCanonicalPath()
+                        } ), null );
+
+                }
 
                 OutputStream out = null;
                 try
@@ -391,10 +402,14 @@ public class JavaBundles extends JomcTool
 
                 }
 
-                this.log( Level.INFO, this.getMessage( "writing", new Object[]
-                    {
-                        file.getCanonicalPath()
-                    } ), null );
+                if ( this.isLoggable( Level.INFO ) )
+                {
+                    this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                        {
+                            file.getCanonicalPath()
+                        } ), null );
+
+                }
 
                 OutputStream out = null;
                 try

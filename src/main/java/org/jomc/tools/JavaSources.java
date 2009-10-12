@@ -267,7 +267,7 @@ public class JavaSources extends JomcTool
 
             }
 
-            if ( !editor.isLicenseSectionPresent() )
+            if ( !editor.isLicenseSectionPresent() && this.isLoggable( Level.INFO ) )
             {
                 this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                     {
@@ -287,7 +287,7 @@ public class JavaSources extends JomcTool
 
             }
 
-            if ( !editor.isDocumentationSectionPresent() )
+            if ( !editor.isDocumentationSectionPresent() && this.isLoggable( Level.INFO ) )
             {
                 this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                     {
@@ -308,12 +308,16 @@ public class JavaSources extends JomcTool
 
                 }
 
-                FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
-                this.log( Level.INFO, this.getMessage( "editing", new Object[]
-                    {
-                        f.getCanonicalPath()
-                    } ), null );
+                if ( this.isLoggable( Level.INFO ) )
+                {
+                    this.log( Level.INFO, this.getMessage( "editing", new Object[]
+                        {
+                            f.getCanonicalPath()
+                        } ), null );
 
+                }
+
+                FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
             }
         }
     }
@@ -362,7 +366,7 @@ public class JavaSources extends JomcTool
 
             }
 
-            if ( !editor.isLicenseSectionPresent() )
+            if ( !editor.isLicenseSectionPresent() && this.isLoggable( Level.INFO ) )
             {
                 this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                     {
@@ -382,7 +386,7 @@ public class JavaSources extends JomcTool
 
             }
 
-            if ( !editor.isDocumentationSectionPresent() )
+            if ( !editor.isDocumentationSectionPresent() && this.isLoggable( Level.INFO ) )
             {
                 this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                     {
@@ -407,7 +411,7 @@ public class JavaSources extends JomcTool
                         } ) );
 
                 }
-                else
+                else if ( this.isLoggable( Level.INFO ) )
                 {
                     this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                         {
@@ -440,7 +444,7 @@ public class JavaSources extends JomcTool
                         } ) );
 
                 }
-                else
+                else if ( this.isLoggable( Level.INFO ) )
                 {
                     this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                         {
@@ -464,7 +468,7 @@ public class JavaSources extends JomcTool
                         } ) );
 
                 }
-                else
+                else if ( this.isLoggable( Level.INFO ) )
                 {
                     this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                         {
@@ -488,7 +492,7 @@ public class JavaSources extends JomcTool
                         } ) );
 
                 }
-                else
+                else if ( this.isLoggable( Level.INFO ) )
                 {
                     this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                         {
@@ -510,12 +514,16 @@ public class JavaSources extends JomcTool
 
                 }
 
-                FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
-                this.log( Level.INFO, this.getMessage( "editing", new Object[]
-                    {
-                        f.getCanonicalPath()
-                    } ), null );
+                if ( this.isLoggable( Level.INFO ) )
+                {
+                    this.log( Level.INFO, this.getMessage( "editing", new Object[]
+                        {
+                            f.getCanonicalPath()
+                        } ), null );
 
+                }
+
+                FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
             }
         }
     }
