@@ -51,6 +51,13 @@ import org.jomc.tools.JavaClasses;
 public class TestJavaClassesMojo extends AbstractJomcMojo
 {
 
+    /**
+     * Style sheet to use for transforming model objects.
+     *
+     * @parameter
+     */
+    private File modelObjectStylesheet;
+
     /** Creates a new {@code TestJavaClassesMojo} instance. */
     public TestJavaClassesMojo()
     {
@@ -77,6 +84,14 @@ public class TestJavaClassesMojo extends AbstractJomcMojo
             {
                 this.logProcessingModule( module );
                 tool.commitClasses( module, classesDirectory );
+
+                if ( this.modelObjectStylesheet != null )
+                {
+                    tool.transformClasses(
+                        module, classesDirectory, this.getTransformer( this.modelObjectStylesheet ) );
+
+                }
+
                 this.logToolSuccess();
             }
             else

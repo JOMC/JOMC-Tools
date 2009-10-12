@@ -63,6 +63,8 @@ public class ValidateModulesMojo extends AbstractJomcMojo
         {
             defaultModelManager.validateModules( modules );
         }
+
+        this.logToolSuccess();
     }
 
     @Override
