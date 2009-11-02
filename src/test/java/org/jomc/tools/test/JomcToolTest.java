@@ -45,6 +45,7 @@ import org.jomc.model.DefaultModelManager;
 import org.jomc.model.Dependency;
 import org.jomc.model.Implementation;
 import org.jomc.model.Message;
+import org.jomc.model.ModelManager;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.Property;
@@ -112,14 +113,16 @@ public abstract class JomcToolTest extends TestCase
         if ( this.testModules == null )
         {
             this.testModules = new Modules();
-            final DefaultModelManager defaultModelManager = new DefaultModelManager();
-            final Unmarshaller u = defaultModelManager.getUnmarshaller( false );
+            final ModelManager modelManager = new DefaultModelManager();
+            final Unmarshaller u = modelManager.getUnmarshaller( this.getClass().getClassLoader() );
             final JAXBElement<Module> m =
                 (JAXBElement<Module>) u.unmarshal( this.getClass().getResource( "jomc.xml" ) );
 
             this.testModules.getModule().add( m.getValue() );
 
-            final Module cp = defaultModelManager.getClasspathModule( this.testModules );
+            final Module cp = this.testModules.getClasspathModule(
+                Modules.getDefaultClasspathModuleName(), this.getClass().getClassLoader() );
+
             if ( cp != null )
             {
                 this.testModules.getModule().add( cp );
@@ -505,7 +508,6 @@ public abstract class JomcToolTest extends TestCase
     {
         Assert.assertNotNull( this.getTestTool().getListeners() );
         Assert.assertNotNull( this.getTestTool().getInputEncoding() );
-        Assert.assertNotNull( this.getTestTool().getModelManager() );
         Assert.assertNotNull( this.getTestTool().getModules() );
         Assert.assertNotNull( this.getTestTool().getOutputEncoding() );
         Assert.assertNotNull( this.getTestTool().getProfile() );

@@ -37,8 +37,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -48,7 +52,7 @@ import org.apache.bcel.classfile.JavaClass;
 import org.apache.commons.io.FileUtils;
 import org.jomc.model.DefaultModelManager;
 import org.jomc.model.Implementation;
-import org.jomc.model.ModelObject;
+import org.jomc.model.ModelManager;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.Specification;
@@ -88,14 +92,16 @@ public class JavaClassesTest extends JomcToolTest
         if ( this.testModules == null )
         {
             this.testModules = new Modules();
-            final DefaultModelManager defaultModelManager = new DefaultModelManager();
-            final Unmarshaller u = defaultModelManager.getUnmarshaller( false );
+            final ModelManager modelManager = new DefaultModelManager();
+            final Unmarshaller u = modelManager.getUnmarshaller( this.getClass().getClassLoader() );
             final JAXBElement<Module> m =
                 (JAXBElement<Module>) u.unmarshal( this.getClass().getResource( "jomc-tools.xml" ) );
 
             this.testModules.getModule().add( m.getValue() );
 
-            final Module cp = defaultModelManager.getClasspathModule( this.testModules );
+            final Module cp = this.testModules.getClasspathModule(
+                Modules.getDefaultClasspathModuleName(), this.getClass().getClassLoader() );
+
             if ( cp != null )
             {
                 this.testModules.getModule().add( cp );
@@ -154,9 +160,23 @@ public class JavaClassesTest extends JomcToolTest
     {
         super.testNullPointerException();
 
+        final ModelManager modelManager = new DefaultModelManager();
+        final JAXBContext context = modelManager.getContext( this.getClass().getClassLoader() );
+        final Marshaller marshaller = context.createMarshaller();
+        final Unmarshaller unmarshaller = context.createUnmarshaller();
+
         try
         {
-            this.getTestTool().commitClasses( null );
+            this.getTestTool().commitClasses( null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().commitClasses( marshaller, null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
@@ -166,7 +186,25 @@ public class JavaClassesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().commitClasses( (Implementation) null, new File( "/" ) );
+            this.getTestTool().commitClasses( (Implementation) null, null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().commitClasses( new Implementation(), null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().commitClasses( new Implementation(), marshaller, null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
@@ -176,7 +214,25 @@ public class JavaClassesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().commitClasses( new Implementation(), null );
+            this.getTestTool().commitClasses( (Module) null, null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().commitClasses( new Module(), null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().commitClasses( new Module(), marshaller, null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
@@ -186,7 +242,25 @@ public class JavaClassesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().commitClasses( (Module) null, new File( "/" ) );
+            this.getTestTool().commitClasses( (Specification) null, null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().commitClasses( new Specification(), null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().commitClasses( new Specification(), marshaller, null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
@@ -196,7 +270,25 @@ public class JavaClassesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().commitClasses( new Module(), null );
+            this.getTestTool().decodeModelObject( null, null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().decodeModelObject( unmarshaller, null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().decodeModelObject( unmarshaller, new byte[ 0 ], null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
@@ -206,7 +298,16 @@ public class JavaClassesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().commitClasses( (Specification) null, new File( "/" ) );
+            this.getTestTool().encodeModelObject( null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().encodeModelObject( marshaller, null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
@@ -216,47 +317,18 @@ public class JavaClassesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().commitClasses( new Specification(), null );
+            this.getTestTool().getClassfileAttribute( null, null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
         {
             assertNullPointerException( e );
         }
-
         try
         {
-            this.getTestTool().decodeModelObject( null, ModelObject.class );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
+            this.getTestTool().getClassfileAttribute( this.getTestTool().getJavaClass(
+                this.getClass().getResource( "java/lang/Object.class" ), "java.lang.Object" ), null );
 
-        try
-        {
-            this.getTestTool().decodeModelObject( new byte[ 0 ], null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            this.getTestTool().encodeModelObject( null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            this.getTestTool().getClassfileAttribute( null, "" );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
@@ -276,14 +348,13 @@ public class JavaClassesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().getJavaClass( (InputStream) null, "" );
+            this.getTestTool().getJavaClass( (InputStream) null, null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
         {
             assertNullPointerException( e );
         }
-
         try
         {
             this.getTestTool().getJavaClass( new ByteArrayInputStream( new byte[ 0 ] ), null );
@@ -296,14 +367,13 @@ public class JavaClassesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().getJavaClass( (URL) null, "" );
+            this.getTestTool().getJavaClass( (URL) null, null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
         {
             assertNullPointerException( e );
         }
-
         try
         {
             this.getTestTool().getJavaClass( new File( "/" ).toURI().toURL(), null );
@@ -327,7 +397,20 @@ public class JavaClassesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().setClassfileAttribute( null, "", null );
+            this.getTestTool().setClassfileAttribute( this.getTestTool().getJavaClass(
+                this.getClass().getResource( "java/lang/Object.class" ), "java.lang.Object" ), null, null );
+
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().setClassfileAttribute( this.getTestTool().getJavaClass(
+                this.getClass().getResource( "java/lang/Object.class" ), "java.lang.Object" ), "TEST", null );
+
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
@@ -337,7 +420,34 @@ public class JavaClassesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().setClassfileAttribute( null, "", new byte[ 0 ] );
+            this.getTestTool().transformClasses( null, null, null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().transformClasses( marshaller, null, null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().transformClasses( marshaller, unmarshaller, null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().transformClasses( marshaller, unmarshaller, new File( "/" ), null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
@@ -347,7 +457,43 @@ public class JavaClassesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().transformClasses( null, null );
+            this.getTestTool().transformClasses( (Module) null, null, null, null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().transformClasses( new Module(), null, null, null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().transformClasses( new Module(), marshaller, null, null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().transformClasses( new Module(), marshaller, unmarshaller, null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().transformClasses( new Module(), marshaller, unmarshaller, new File( "/" ), null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
@@ -357,7 +503,47 @@ public class JavaClassesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().transformClasses( new File( "/" ), null );
+            this.getTestTool().transformClasses( (Specification) null, null, null, null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().transformClasses( new Specification(), null, null, null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().transformClasses( new Specification(), marshaller, null, null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().transformClasses( new Specification(), marshaller, unmarshaller, null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().transformClasses(
+                new Specification(), marshaller, unmarshaller,
+                this.getTestTool().getJavaClass( this.getClass().getResource( "java/lang/Oject.class" ),
+                                                 "java.lang.Object" ), null );
+
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
@@ -367,7 +553,46 @@ public class JavaClassesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().validateClasses( (ClassLoader) null );
+            this.getTestTool().transformClasses( (Implementation) null, null, null, null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().transformClasses( new Implementation(), null, null, null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().transformClasses( new Implementation(), marshaller, null, null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().transformClasses( new Implementation(), marshaller, unmarshaller, null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().transformClasses(
+                new Implementation(), marshaller, unmarshaller, this.getTestTool().getJavaClass(
+                this.getClass().getResource( "java/lang/Oject.class" ), "java.lang.Object" ), null );
+
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
@@ -377,7 +602,16 @@ public class JavaClassesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().validateClasses( (File) null );
+            this.getTestTool().validateClasses( null, (ClassLoader) null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().validateClasses( unmarshaller, (ClassLoader) null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
@@ -387,7 +621,16 @@ public class JavaClassesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().validateClasses( (Implementation) null, null );
+            this.getTestTool().validateClasses( null, (File) null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().validateClasses( unmarshaller, (File) null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
@@ -397,7 +640,25 @@ public class JavaClassesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().validateClasses( new Implementation(), null );
+            this.getTestTool().validateClasses( (Module) null, null, (ClassLoader) null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().validateClasses( new Module(), null, (ClassLoader) null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().validateClasses( new Module(), unmarshaller, (ClassLoader) null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
@@ -407,7 +668,25 @@ public class JavaClassesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().validateClasses( (Specification) null, null );
+            this.getTestTool().validateClasses( (Module) null, null, (File) null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().validateClasses( new Module(), null, (File) null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().validateClasses( new Module(), unmarshaller, (File) null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
@@ -417,7 +696,25 @@ public class JavaClassesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().validateClasses( new Specification(), null );
+            this.getTestTool().validateClasses( (Specification) null, null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().validateClasses( new Specification(), null, null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().validateClasses( new Specification(), unmarshaller, null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
@@ -427,147 +724,25 @@ public class JavaClassesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().validateClasses( (Module) null, (ClassLoader) null );
+            this.getTestTool().validateClasses( (Implementation) null, null, null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
         {
             assertNullPointerException( e );
         }
-
         try
         {
-            this.getTestTool().validateClasses( new Module(), (ClassLoader) null );
+            this.getTestTool().validateClasses( new Implementation(), null, null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
         {
             assertNullPointerException( e );
         }
-
         try
         {
-            this.getTestTool().validateClasses( (Module) null, (File) null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            this.getTestTool().validateClasses( new Module(), (File) null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            this.getTestTool().validateClasses( (Specification) null, null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            this.getTestTool().validateClasses( new Specification(), null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            this.getTestTool().transformClasses( null, null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            this.getTestTool().transformClasses( new File( "/" ), null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            this.getTestTool().transformClasses( (Implementation) null, null, null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            this.getTestTool().transformClasses( new Implementation(), null, null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            this.getTestTool().transformClasses( (Module) null, (File) null, null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            this.getTestTool().transformClasses( new Module(), (File) null, null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            this.getTestTool().transformClasses( new Module(), new File( "/" ), null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            this.getTestTool().transformClasses( (Specification) null, null, null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            this.getTestTool().transformClasses( new Specification(), null, null );
+            this.getTestTool().validateClasses( new Implementation(), unmarshaller, null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
@@ -578,6 +753,9 @@ public class JavaClassesTest extends JomcToolTest
 
     public void testCommitTransformValidateClasses() throws Exception
     {
+        final ModelManager modelManager = new DefaultModelManager();
+        final Marshaller marshaller = modelManager.getMarshaller( this.getClass().getClassLoader() );
+        final Unmarshaller unmarshaller = modelManager.getUnmarshaller( this.getClass().getClassLoader() );
         final File allClasses = this.getTestClassesDirectory();
         final File moduleClasses = this.getTestClassesDirectory();
         final File implementationClasses = this.getTestClassesDirectory();
@@ -587,13 +765,16 @@ public class JavaClassesTest extends JomcToolTest
         final Module m = this.getTestTool().getModules().getModule( this.getTestProperty( "projectName" ) );
         final Specification s = this.getTestTool().getModules().getSpecification( "org.jomc.tools.JavaClasses" );
         final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        final Transformer transformer = transformerFactory.newTransformer(
-            new StreamSource( this.getClass().getResourceAsStream( "no-op.xslt" ) ) );
+        final List<Transformer> transformers = Arrays.asList( new Transformer[]
+            {
+                transformerFactory.newTransformer( new StreamSource(
+                this.getClass().getResourceAsStream( "no-op.xslt" ) ) )
+            } );
 
-        this.getTestTool().commitClasses( allClasses );
-        this.getTestTool().commitClasses( m, moduleClasses );
-        this.getTestTool().commitClasses( s, specificationClasses );
-        this.getTestTool().commitClasses( i, implementationClasses );
+        this.getTestTool().commitClasses( marshaller, allClasses );
+        this.getTestTool().commitClasses( m, marshaller, moduleClasses );
+        this.getTestTool().commitClasses( s, marshaller, specificationClasses );
+        this.getTestTool().commitClasses( i, marshaller, implementationClasses );
 
         final JavaClass implementationClass = this.getTestTool().getJavaClass(
             new File( implementationClasses, i.getClazz().replace( '.', File.separatorChar ) + ".class" ) );
@@ -601,17 +782,17 @@ public class JavaClassesTest extends JomcToolTest
         final JavaClass specificationClass = this.getTestTool().getJavaClass(
             new File( specificationClasses, s.getClazz().replace( '.', File.separatorChar ) + ".class" ) );
 
-        this.getTestTool().transformClasses( allClasses, transformer );
-        this.getTestTool().transformClasses( m, moduleClasses, transformer );
-        this.getTestTool().transformClasses( s, specificationClass, transformer );
-        this.getTestTool().transformClasses( i, implementationClass, transformer );
+        this.getTestTool().transformClasses( marshaller, unmarshaller, allClasses, transformers );
+        this.getTestTool().transformClasses( m, marshaller, unmarshaller, moduleClasses, transformers );
+        this.getTestTool().transformClasses( s, marshaller, unmarshaller, specificationClass, transformers );
+        this.getTestTool().transformClasses( i, marshaller, unmarshaller, implementationClass, transformers );
 
-        this.getTestTool().validateClasses( allClasses );
-        this.getTestTool().validateClasses( m, moduleClasses );
-        this.getTestTool().validateClasses( s, specificationClass );
-        this.getTestTool().validateClasses( i, implementationClass );
+        this.getTestTool().validateClasses( unmarshaller, allClasses );
+        this.getTestTool().validateClasses( m, unmarshaller, moduleClasses );
+        this.getTestTool().validateClasses( s, unmarshaller, specificationClass );
+        this.getTestTool().validateClasses( i, unmarshaller, implementationClass );
 
-        this.getTestTool().validateClasses( uncommittedClasses );
+        this.getTestTool().validateClasses( unmarshaller, uncommittedClasses );
     }
 
 }

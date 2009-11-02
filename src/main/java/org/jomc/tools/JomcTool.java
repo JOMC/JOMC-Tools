@@ -62,11 +62,9 @@ import org.apache.velocity.runtime.log.LogChute;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.jomc.model.Argument;
 import org.jomc.model.ArgumentType;
-import org.jomc.model.DefaultModelManager;
 import org.jomc.model.Dependency;
 import org.jomc.model.Implementation;
 import org.jomc.model.Message;
-import org.jomc.model.ModelManager;
 import org.jomc.model.Modules;
 import org.jomc.model.Multiplicity;
 import org.jomc.model.Properties;
@@ -117,11 +115,17 @@ public abstract class JomcTool
     /** Constant for the default profile. */
     private static final String DEFAULT_PROFILE = "default";
 
+    /**
+     * Log level events are logged at by default.
+     * @see #getDefaultLogLevel()
+     */
+    private static final Level DEFAULT_LOG_LEVEL = Level.WARNING;
+
+    /** Default log level. */
+    private static volatile Level defaultLogLevel;
+
     /** The modules of the instance. */
     private Modules modules;
-
-    /** The model manager of the instance. */
-    private ModelManager modelManager;
 
     /** {@code VelocityEngine} of the generator. */
     private VelocityEngine velocityEngine;
@@ -168,10 +172,10 @@ public abstract class JomcTool
                 this.setTemplateEncoding( tool.getTemplateEncoding() );
                 this.setInputEncoding( tool.getInputEncoding() );
                 this.setOutputEncoding( tool.getOutputEncoding() );
-                this.setModelManager( tool.getModelManager() );
                 this.setModules( tool.getModules() );
                 this.setProfile( tool.getProfile() );
                 this.setVelocityEngine( tool.getVelocityEngine() );
+                this.setLogLevel( tool.getLogLevel() );
                 this.getListeners().addAll( tool.getListeners() );
             }
             catch ( final Exception e )
@@ -186,6 +190,9 @@ public abstract class JomcTool
 
     /**
      * Gets the list of registered listeners.
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * to the returned list will be present inside the object. This is why there is no {@code set} method for the
+     * listeners property.</p>
      *
      * @return The list of registered listeners.
      *
@@ -202,23 +209,58 @@ public abstract class JomcTool
     }
 
     /**
+     * Gets the default log level events are logged at.
+     * <p>The default log level is controlled by system property {@code org.jomc.tools.JomcTool.defaultLogLevel} holding
+     * the log level to log events at by default. If that property is not set, the {@code WARNING} default is
+     * returned.</p>
+     *
+     * @return The log level events are logged at by default.
+     *
+     * @see #getLogLevel()
+     * @see Level#parse(java.lang.String)
+     */
+    public static Level getDefaultLogLevel()
+    {
+        if ( defaultLogLevel == null )
+        {
+            defaultLogLevel = Level.parse( System.getProperty( "org.jomc.tools.JomcTool.defaultLogLevel",
+                                                               DEFAULT_LOG_LEVEL.getName() ) );
+
+        }
+
+        return defaultLogLevel;
+    }
+
+    /**
+     * Sets the default log level events are logged at.
+     *
+     * @param value The new default level events are logged at or {@code null}.
+     *
+     * @see #getDefaultLogLevel()
+     */
+    public static void setDefaultLogLevel( final Level value )
+    {
+        defaultLogLevel = value;
+    }
+
+    /**
      * Gets the log level of the instance.
-     * <p>The default log level of the instance is controlled by system property
-     * {@code org.jomc.tools.JomcTool.logLevel} holding the default log level of the instance.
-     * If that system property is not set, a {@code WARNING} log level is returned.</p>
      *
      * @return The log level of the instance.
      *
+     * @see #getDefaultLogLevel()
      * @see #setLogLevel(java.util.logging.Level)
      * @see #isLoggable(java.util.logging.Level)
-     * @see Level#parse(java.lang.String)
      */
     public Level getLogLevel()
     {
         if ( this.logLevel == null )
         {
-            this.logLevel = Level.parse( System.getProperty( "org.jomc.tools.JomcTool.logLevel",
-                                                             Level.WARNING.getName() ) );
+            this.logLevel = getDefaultLogLevel();
+            this.log( Level.CONFIG, this.getMessage( "defaultLogLevelInfo", new Object[]
+                {
+                    this.getClass().getCanonicalName(), this.logLevel.getLocalizedName()
+                } ), null );
 
         }
 
@@ -1130,35 +1172,6 @@ public abstract class JomcTool
     }
 
     /**
-     * Gets the model manager of the instance.
-     *
-     * @return The model manager of the instance.
-     *
-     * @see #setModelManager(org.jomc.model.ModelManager)
-     */
-    public ModelManager getModelManager()
-    {
-        if ( this.modelManager == null )
-        {
-            this.modelManager = new DefaultModelManager();
-        }
-
-        return this.modelManager;
-    }
-
-    /**
-     * Sets the model manager of the instance.
-     *
-     * @param value The new model manager of the instance.
-     *
-     * @see #getModelManager()
-     */
-    public void setModelManager( final ModelManager value )
-    {
-        this.modelManager = value;
-    }
-
-    /**
      * Gets the {@code VelocityEngine} used for generating source code.
      *
      * @return The {@code VelocityEngine} used for generating source code.
@@ -1420,8 +1433,8 @@ public abstract class JomcTool
     /**
      * Gets a velocity template for a given name.
      * <p>This method returns the template corresponding to the profile of the instance. If that template is not found,
-     * the template corresponding to the default profile is returned so that only templates differing from the default
-     * templates need to be provided when exchanging templates.</p>
+     * the template of the default profile is returned so that only templates differing from the default templates need
+     * to be provided when exchanging templates.</p>
      *
      * @param templateName The name of the template to get.
      *
