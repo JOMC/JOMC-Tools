@@ -35,6 +35,8 @@ package org.jomc.mojo;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Iterator;
+import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 import javax.xml.bind.JAXBContext;
@@ -68,6 +70,12 @@ import org.xml.sax.SAXException;
  *   &lt;moduleResources&gt;
  *     &lt;moduleResource&gt;META-INF/jomc.xml&lt;/moduleResource&gt;
  *   &lt;/moduleResources&gt;
+ *   &lt;moduleIncludes&gt;
+ *     &lt;moduleInclude&gt;module name&lt;/moduleInclude&gt;
+ *   &lt;/moduleIncludes&gt;
+ *   &lt;moduleExcludes&gt;
+ *     &lt;moduleExclude&gt;module name&lt;/moduleExclude&gt;
+ *   &lt;/moduleExcludes&gt;
  *   &lt;bootstrapResource&gt;META-INF/jomc-something-else-bootstrap.xml&lt;/bootstrapResource&gt;
  *   &lt;bootstrapResources&gt;
  *     &lt;bootstrapResource&gt;META-INF/jomc-bootstrap.xml&lt;/bootstrapResource&gt;
@@ -125,6 +133,12 @@ public class JomcResourceTransformer implements ResourceTransformer
 
     /** Bootstrap object style sheet to apply. */
     private File bootstrapObjectStylesheet;
+
+    /** Included modules. */
+    private List<String> moduleIncludes;
+
+    /** Excluded modules. */
+    private List<String> moduleExcludes;
 
     /** Bootstrap resources. */
     private final Schemas schemas = new Schemas();
@@ -419,6 +433,29 @@ public class JomcResourceTransformer implements ResourceTransformer
         {
             if ( !this.modules.getModule().isEmpty() )
             {
+                if ( this.moduleIncludes != null )
+                {
+                    for ( Iterator<Module> it = this.modules.getModule().iterator(); it.hasNext(); )
+                    {
+                        if ( !this.moduleIncludes.contains( it.next().getName() ) )
+                        {
+                            it.remove();
+                        }
+                    }
+                }
+
+                if ( this.moduleExcludes != null )
+                {
+                    for ( String exclude : this.moduleExcludes )
+                    {
+                        final Module excluded = this.modules.getModule( exclude );
+                        if ( excluded != null )
+                        {
+                            this.modules.getModule().remove( excluded );
+                        }
+                    }
+                }
+
                 Module mergedModule = this.modules.getMergedModule();
                 mergedModule.setName( this.moduleName );
                 mergedModule.setVersion( this.moduleVersion );
