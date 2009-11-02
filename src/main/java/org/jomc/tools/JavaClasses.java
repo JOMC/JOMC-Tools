@@ -547,7 +547,7 @@ public class JavaClasses extends JomcTool
             {
                 if ( this.isJavaClassDeclaration( s ) )
                 {
-                    final String classLocation = s.getClazz().replace( '.', File.separatorChar ) + ".class";
+                    final String classLocation = s.getClazz().replace( '.', '/' ) + ".class";
                     final URL classUrl = classLoader.getResource( classLocation );
 
                     if ( classUrl == null )
@@ -574,7 +574,7 @@ public class JavaClasses extends JomcTool
             {
                 if ( this.isJavaClassDeclaration( i ) )
                 {
-                    final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
+                    final String classLocation = i.getClazz().replace( '.', '/' ) + ".class";
                     final URL classUrl = classLoader.getResource( classLocation );
 
                     if ( classUrl == null )
