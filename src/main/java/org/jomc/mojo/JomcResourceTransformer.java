@@ -37,8 +37,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.util.JAXBResult;
+import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -130,8 +135,29 @@ public class JomcResourceTransformer implements ResourceTransformer
     /** Type of the currently processed resource. */
     private ResourceType currentResourceType = ResourceType.UNKNOWN_RESOURCE;
 
-    /** The model manager of the instance. */
-    private DefaultModelManager modelManager;
+    /** The JOMC JAXB context of the instance. */
+    private JAXBContext jomcContext;
+
+    /** The JOMC JAXB marshaller of the instance. */
+    private Marshaller jomcMarshaller;
+
+    /** The JOMC JAXB unmarshaller of the instance. */
+    private Unmarshaller jomcUnmarshaller;
+
+    /** The JOMC JAXP schema of the instance. */
+    private javax.xml.validation.Schema jomcSchema;
+
+    /** The bootstrap JAXB context of the instance. */
+    private JAXBContext bootstrapContext;
+
+    /** The bootstrap JAXB marshaller of the instance. */
+    private Marshaller bootstrapMarshaller;
+
+    /** The bootstrap JAXB unmarshaller of the instance. */
+    private Unmarshaller bootstrapUnmarshaller;
+
+    /** The bootstrap JAXP schema of the instance. */
+    private javax.xml.validation.Schema bootstrapSchema;
 
     /** Creates a new {@code JomcResourceTransformer} instance. */
     public JomcResourceTransformer()
@@ -140,18 +166,147 @@ public class JomcResourceTransformer implements ResourceTransformer
     }
 
     /**
-     * Gets the {@code ModelManager} of the instance.
+     * Gets the JOMC JAXB context of the instance.
      *
-     * @return The {@code ModelManager} of the instance.
+     * @return The JOMC JAXB context of the instance.
+     *
+     * @throws IOException if reading schema resources fails.
+     * @throws SAXException if parsing schema resources fails.
+     * @throws JAXBException if unmarshalling schema resources or creating a context fails.
      */
-    public DefaultModelManager getModelManager()
+    protected JAXBContext getJomcContext() throws IOException, SAXException, JAXBException
     {
-        if ( this.modelManager == null )
+        if ( this.jomcContext == null )
         {
-            this.modelManager = new DefaultModelManager();
+            this.jomcContext = new DefaultModelManager().getContext( this.getClass().getClassLoader() );
         }
 
-        return this.modelManager;
+        return this.jomcContext;
+    }
+
+    /**
+     * Gets the JOMC JAXB marshaller of the instance.
+     *
+     * @return The JOMC JAXB marshaller of the instance.
+     *
+     * @throws IOException if reading schema resources fails.
+     * @throws SAXException if parsing schema resources fails.
+     * @throws JAXBException if unmarshalling schema resources or creating a marshaller fails.
+     */
+    protected Marshaller getJomcMarshaller() throws IOException, SAXException, JAXBException
+    {
+        if ( this.jomcMarshaller == null )
+        {
+            this.jomcMarshaller = new DefaultModelManager().getMarshaller( this.getClass().getClassLoader() );
+        }
+
+        return this.jomcMarshaller;
+    }
+
+    /**
+     * Gets the JOMC JAXB unmarshaller of the instance.
+     *
+     * @return The JOMC JAXB unmarshaller of the instance.
+     *
+     * @throws IOException if reading schema resources fails.
+     * @throws SAXException if parsing schema resources fails.
+     * @throws JAXBException if unmarshalling schema resources or creating an unmarshaller fails.
+     */
+    protected Unmarshaller getJomcUnmarshaller() throws IOException, SAXException, JAXBException
+    {
+        if ( this.jomcUnmarshaller == null )
+        {
+            this.jomcUnmarshaller = new DefaultModelManager().getUnmarshaller( this.getClass().getClassLoader() );
+        }
+
+        return this.jomcUnmarshaller;
+    }
+
+    /**
+     * Gets the JOMC JAXP schema of the instance.
+     *
+     * @return The JOMC JAXP schema of the instance.
+     *
+     * @throws IOException if reading schema resources fails.
+     * @throws SAXException if parsing schema resources fails.
+     * @throws JAXBException if unmarshalling schema resources or creating a context fails.
+     */
+    protected javax.xml.validation.Schema getJomcSchema() throws IOException, SAXException, JAXBException
+    {
+        if ( this.jomcSchema == null )
+        {
+            this.jomcSchema = new DefaultModelManager().getSchema( this.getClass().getClassLoader() );
+        }
+
+        return this.jomcSchema;
+    }
+
+    /**
+     * Gets the bootstrap JAXB context of the instance.
+     *
+     * @return The bootstrap JAXB context of the instance.
+     *
+     * @throws JAXBException if creating a context fails.
+     */
+    protected JAXBContext getBootstrapContext() throws JAXBException
+    {
+        if ( this.bootstrapContext == null )
+        {
+            this.bootstrapContext = new DefaultModelManager().getBootstrapContext();
+        }
+
+        return this.bootstrapContext;
+    }
+
+    /**
+     * Gets the bootstrap JAXB marshaller of the instance.
+     *
+     * @return The bootstrap JAXB marshaller of the instance.
+     *
+     * @throws JAXBException if creating a marshaller fails.
+     */
+    protected Marshaller getBootstrapMarshaller() throws JAXBException
+    {
+        if ( this.bootstrapMarshaller == null )
+        {
+            this.bootstrapMarshaller = new DefaultModelManager().getBootstrapMarshaller();
+        }
+
+        return this.bootstrapMarshaller;
+    }
+
+    /**
+     * Gets the bootstrap JAXB unmarshaller of the instance.
+     *
+     * @return The bootstrap JAXB unmarshaller of the instance.
+     *
+     * @throws JAXBException if creating an unmarshaller fails.
+     */
+    protected Unmarshaller getBootstrapUnmarshaller() throws JAXBException
+    {
+        if ( this.bootstrapUnmarshaller == null )
+        {
+            this.bootstrapUnmarshaller = new DefaultModelManager().getBootstrapUnmarshaller();
+        }
+
+        return this.bootstrapUnmarshaller;
+    }
+
+    /**
+     * Gets the bootstrap JAXP schema of the instance.
+     *
+     * @return The bootstrap JAXP schema of the instance.
+     *
+     * @throws SAXException if parsing schema resources fails.
+     */
+    protected javax.xml.validation.Schema getBootstrapSchema() throws SAXException
+    {
+        if ( this.bootstrapSchema == null )
+        {
+            this.bootstrapSchema = new DefaultModelManager().getBootstrapSchema();
+        }
+
+        return this.bootstrapSchema;
     }
 
     public boolean canTransformResource( final String arg )
@@ -193,7 +348,11 @@ public class JomcResourceTransformer implements ResourceTransformer
             switch ( this.currentResourceType )
             {
                 case MODEL_OBJECT_RESOURCE:
-                    Object modelObject = this.getModelManager().getUnmarshaller( true ).unmarshal( in );
+                    final Unmarshaller unmarshaller = this.getJomcUnmarshaller();
+                    unmarshaller.setSchema( this.getJomcSchema() );
+
+                    Object modelObject = unmarshaller.unmarshal( in );
+
                     if ( modelObject instanceof JAXBElement )
                     {
                         modelObject = ( (JAXBElement) modelObject ).getValue();
@@ -212,7 +371,11 @@ public class JomcResourceTransformer implements ResourceTransformer
                     break;
 
                 case BOOTSTRAP_OBJECT_RESOURCE:
-                    Object bootstrapObject = this.getModelManager().getBootstrapUnmarshaller( true ).unmarshal( in );
+                    final Unmarshaller u = this.getBootstrapUnmarshaller();
+                    u.setSchema( this.getBootstrapSchema() );
+
+                    Object bootstrapObject = u.unmarshal( in );
+
                     if ( bootstrapObject instanceof JAXBElement )
                     {
                         bootstrapObject = ( (JAXBElement) bootstrapObject ).getValue();
@@ -261,24 +424,34 @@ public class JomcResourceTransformer implements ResourceTransformer
                 mergedModule.setVersion( this.moduleVersion );
                 mergedModule.setVendor( this.moduleVendor );
 
+                final org.jomc.model.ObjectFactory modelObjectFactory = new org.jomc.model.ObjectFactory();
+
                 if ( this.modelObjectStylesheet != null )
                 {
                     final Transformer transformer = TransformerFactory.newInstance().newTransformer(
                         new StreamSource( this.modelObjectStylesheet ) );
 
-                    mergedModule = this.getModelManager().transformModelObject(
-                        this.getModelManager().getObjectFactory().createModule( mergedModule ), transformer );
+                    final JAXBSource source =
+                        new JAXBSource( this.getJomcMarshaller(), modelObjectFactory.createModule( mergedModule ) );
 
+                    final JAXBResult result = new JAXBResult( this.getJomcUnmarshaller() );
+                    transformer.transform( source, result );
+                    mergedModule = ( (JAXBElement<Module>) result.getResult() ).getValue();
                 }
 
                 out.putNextEntry( new JarEntry( this.moduleResource ) );
-                this.getModelManager().getMarshaller( true, true ).marshal(
-                    this.getModelManager().getObjectFactory().createModule( mergedModule ), out );
 
+                final Marshaller marshaller = this.getJomcMarshaller();
+                marshaller.setSchema( this.getJomcSchema() );
+                marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
+                marshaller.marshal( modelObjectFactory.createModule( mergedModule ), out );
             }
 
             if ( !this.schemas.getSchema().isEmpty() )
             {
+                final org.jomc.model.bootstrap.ObjectFactory bootstrapObjectFactory =
+                    new org.jomc.model.bootstrap.ObjectFactory();
+
                 Schemas copy = new Schemas( this.schemas );
 
                 if ( this.bootstrapObjectStylesheet != null )
@@ -286,15 +459,20 @@ public class JomcResourceTransformer implements ResourceTransformer
                     final Transformer transformer = TransformerFactory.newInstance().newTransformer(
                         new StreamSource( this.bootstrapObjectStylesheet ) );
 
-                    copy = this.getModelManager().transformBootstrapObject(
-                        this.getModelManager().getBootstrapObjectFactory().createSchemas( copy ), transformer );
+                    final JAXBSource source =
+                        new JAXBSource( this.getBootstrapMarshaller(), bootstrapObjectFactory.createSchemas( copy ) );
 
+                    final JAXBResult result = new JAXBResult( this.getBootstrapUnmarshaller() );
+                    transformer.transform( source, result );
+                    copy = ( (JAXBElement<Schemas>) result.getResult() ).getValue();
                 }
 
                 out.putNextEntry( new JarEntry( this.bootstrapResource ) );
-                this.getModelManager().getBootstrapMarshaller( true, true ).marshal(
-                    this.getModelManager().getBootstrapObjectFactory().createSchemas( copy ), out );
 
+                final Marshaller m = this.getBootstrapMarshaller();
+                m.setSchema( this.getBootstrapSchema() );
+                m.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
+                m.marshal( bootstrapObjectFactory.createSchemas( copy ), out );
             }
         }
         catch ( final TransformerConfigurationException e )

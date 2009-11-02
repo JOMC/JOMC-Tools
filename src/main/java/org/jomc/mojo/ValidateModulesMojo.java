@@ -32,8 +32,13 @@
  */
 package org.jomc.mojo;
 
-import org.jomc.model.DefaultModelManager;
-import org.jomc.model.Modules;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import javax.xml.bind.JAXBContext;
+import javax.xml.validation.Schema;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.jomc.model.ModelObjectValidationReport;
+import org.jomc.model.ObjectFactory;
 
 /**
  * Validates a projects' runtime modules.
@@ -41,7 +46,7 @@ import org.jomc.model.Modules;
  * @author <a href="mailto:cs@jomc.org">Christian Schulte</a>
  * @version $Id$
  *
- * @phase verify
+ * @phase process-classes
  * @goal validate-runtime-modules
  * @requiresDependencyResolution test
  */
@@ -55,22 +60,35 @@ public class ValidateModulesMojo extends AbstractJomcMojo
     }
 
     @Override
-    protected void executeTool() throws Exception
-    {
-        final DefaultModelManager defaultModelManager = new DefaultModelManager();
-        final Modules modules = this.getModules( defaultModelManager, this.getMainClassLoader(), true );
-        if ( modules != null )
-        {
-            defaultModelManager.validateModules( modules );
-        }
-
-        this.logToolSuccess();
-    }
-
-    @Override
     protected String getToolName()
     {
         return "ValidateModulesMojo";
+    }
+
+    @Override
+    protected ClassLoader getToolClassLoader() throws MojoExecutionException
+    {
+        return this.getMainClassLoader();
+    }
+
+    @Override
+    protected void executeTool() throws Exception
+    {
+        final JAXBContext context = this.getModelManager().getContext( this.getToolClassLoader() );
+        final Schema schema = this.getModelManager().getSchema( this.getToolClassLoader() );
+        final ModelObjectValidationReport validationReport = this.getModelObjectValidator().validateModules(
+            new ObjectFactory().createModules( this.getJavaClassesTool().getModules() ), context, schema );
+
+        this.log( validationReport.isModelObjectValid() ? Level.INFO : Level.SEVERE, validationReport );
+        if ( !validationReport.isModelObjectValid() )
+        {
+            throw new MojoExecutionException( this.getMessage( "failed" ) );
+        }
+    }
+
+    private String getMessage( final String key )
+    {
+        return ResourceBundle.getBundle( ValidateModulesMojo.class.getName().replace( '.', '/' ) ).getString( key );
     }
 
 }

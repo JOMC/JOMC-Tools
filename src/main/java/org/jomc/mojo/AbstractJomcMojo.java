@@ -56,14 +56,15 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.jomc.model.DefaultModelManager;
-import org.jomc.model.ModelException;
+import org.jomc.model.DefaultModelObjectValidator;
 import org.jomc.model.ModelManager;
+import org.jomc.model.ModelObjectValidationReport;
+import org.jomc.model.ModelObjectValidator;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.tools.JavaClasses;
@@ -102,11 +103,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private String templateProfile;
 
     /**
-     * The location to search for documents.
+     * The location to search for modules.
      *
      * @parameter
      */
-    private String documentLocation;
+    private String moduleLocation;
 
     /**
      * The Maven project of the instance.
@@ -138,16 +139,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private boolean javaClassProcessingEnabled;
 
     /** The tool for managing sources. */
-    private JavaSources mainJavaSourcesTool;
-
-    /** The tool for managing sources. */
-    private JavaSources testJavaSourcesTool;
+    private JavaSources javaSourcesTool;
 
     /** The tool for managing classes. */
-    private JavaClasses mainJavaClassesTool;
-
-    /** The tool for managing classes. */
-    private JavaClasses testJavaClassesTool;
+    private JavaClasses javaClassesTool;
 
     /** The class loader of the project's runtime classpath including any provided dependencies. */
     private ClassLoader mainClassLoader;
@@ -155,158 +150,219 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /** The class loader of the project's test classpath including any provided dependencies. */
     private ClassLoader testClassLoader;
 
+    /** Model manager of the instance. */
+    private ModelManager modelManager;
+
+    /** Model object validator of the instance. */
+    private ModelObjectValidator modelObjectValidator;
+
+    public void execute() throws MojoExecutionException, MojoFailureException
+    {
+        try
+        {
+            this.logSeparator( Level.INFO );
+            this.log( Level.INFO, this.getMessage( "title" ).format( null ), null );
+            this.logSeparator( Level.INFO );
+            this.executeTool();
+        }
+        catch ( final Exception e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
+    }
+
+    /**
+     * Gets the name of this tool.
+     *
+     * @return The name of this tool.
+     * @throws MojoExecutionException if getting the name of this tool fails.
+     */
+    protected abstract String getToolName() throws MojoExecutionException;
+
+    /**
+     * Gets the class loader of this tool.
+     *
+     * @return The class loader of this tool.
+     *
+     * @throws MojoExecutionException if getting the class loader fails.
+     */
+    protected abstract ClassLoader getToolClassLoader() throws MojoExecutionException;
+
+    /**
+     * Executes this tool.
+     *
+     * @throws Exception if execution of this tool fais.
+     */
+    protected abstract void executeTool() throws Exception;
+
+    /**
+     * Gets the model manager of the instance.
+     *
+     * @return The model manager of the instance.
+     *
+     * @throws MojoExecutionException if getting the model manager of the instance fails.
+     */
+    protected ModelManager getModelManager() throws MojoExecutionException
+    {
+        if ( this.modelManager == null )
+        {
+            final DefaultModelManager defaultModelManager = new DefaultModelManager();
+            this.setupDefaultModelManager( defaultModelManager );
+            this.modelManager = defaultModelManager;
+        }
+
+        return this.modelManager;
+    }
+
+    /**
+     * Gets the model object validator of the instance.
+     *
+     * @return The model object validator of the instance.
+     *
+     * @throws MojoExecutionException if getting the model object validator of the instance fails.
+     */
+    protected ModelObjectValidator getModelObjectValidator() throws MojoExecutionException
+    {
+        if ( this.modelObjectValidator == null )
+        {
+            this.modelObjectValidator = new DefaultModelObjectValidator();
+        }
+
+        return this.modelObjectValidator;
+    }
+
     /**
      * Gets the Maven project of the instance.
      *
      * @return The Maven project of the instance.
+     *
+     * @throws MojoExecutionException if getting the maven project of the instance fails.
      */
-    public MavenProject getMavenProject()
+    protected MavenProject getMavenProject() throws MojoExecutionException
     {
         return this.mavenProject;
     }
 
     /**
-     * Gets the tool for managing sources.
+     * Gets the tool for managing sources of the instance.
      *
-     * @return The tool for managing sources.
+     * @return The tool for managing sources of the instance.
+     *
+     * @throws MojoExecutionException if getting the tool of the instance fails.
      */
-    public JavaSources getMainJavaSourcesTool()
-        throws DependencyResolutionRequiredException, ModelException, IOException, SAXException, JAXBException
+    protected JavaSources getJavaSourcesTool() throws MojoExecutionException
     {
-        if ( this.mainJavaSourcesTool == null )
+        if ( this.javaSourcesTool == null )
         {
-            this.mainJavaSourcesTool = new JavaSources();
-            this.setupTool( this.mainJavaSourcesTool, this.getMainClassLoader(), true );
+            this.javaSourcesTool = new JavaSources();
+            this.setupJomcTool( this.javaSourcesTool );
         }
 
-        return this.mainJavaSourcesTool;
+        return this.javaSourcesTool;
     }
 
     /**
-     * Gets the tool for managing sources.
+     * Gets the tool for managing classes of the instance.
      *
-     * @return The tool for managing sources.
+     * @return The tool for managing classes of the instance.
+     *
+     * @throws MojoExecutionException if getting the tool of the instance fails.
      */
-    public JavaSources getTestJavaSourcesTool()
-        throws DependencyResolutionRequiredException, ModelException, IOException, SAXException, JAXBException
+    protected JavaClasses getJavaClassesTool() throws MojoExecutionException
     {
-        if ( this.testJavaSourcesTool == null )
+        if ( this.javaClassesTool == null )
         {
-            this.testJavaSourcesTool = new JavaSources();
-            this.setupTool( this.testJavaSourcesTool, this.getTestClassLoader(), true );
+            this.javaClassesTool = new JavaClasses();
+            this.setupJomcTool( this.javaClassesTool );
         }
 
-        return this.testJavaSourcesTool;
+        return this.javaClassesTool;
     }
 
     /**
-     * Gets the tool for managing classes.
+     * Gets the project's runtime class loader of the instance.
      *
-     * @return The tool for managing classes.
+     * @return The project's runtime class loader of the instance.
+     *
+     * @throws MojoExecutionException if getting the class loader fails.
      */
-    public JavaClasses getMainJavaClassesTool()
-        throws DependencyResolutionRequiredException, ModelException, IOException, SAXException, JAXBException
+    protected ClassLoader getMainClassLoader() throws MojoExecutionException
     {
-        if ( this.mainJavaClassesTool == null )
+        try
         {
-            this.mainJavaClassesTool = new JavaClasses();
-            this.setupTool( this.mainJavaClassesTool, this.getMainClassLoader(), true );
-        }
-
-        return this.mainJavaClassesTool;
-    }
-
-    /**
-     * Gets the tool for managing classes.
-     *
-     * @return The tool for managing classes.
-     */
-    public JavaClasses getTestJavaClassesTool()
-        throws DependencyResolutionRequiredException, ModelException, IOException, SAXException, JAXBException
-    {
-        if ( this.testJavaClassesTool == null )
-        {
-            this.testJavaClassesTool = new JavaClasses();
-            this.setupTool( this.testJavaClassesTool, this.getTestClassLoader(), true );
-        }
-
-        return this.testJavaClassesTool;
-    }
-
-    /**
-     * Gets a class loader of the project's runtime classpath including any provided dependencies.
-     *
-     * @return A {@code ClassLoader} initialized with the project's runtime classpath including any provided
-     * dependencies.
-     *
-     * @throws DependencyResolutionRequiredException for any unresolved dependency scopes.
-     * @throws IOException if building the classpath of the class loader fails.
-     */
-    public ClassLoader getMainClassLoader() throws DependencyResolutionRequiredException, IOException
-    {
-        if ( this.mainClassLoader == null )
-        {
-            final Collection urls = new LinkedList();
-            for ( final Iterator it = this.getMainClasspathElements().iterator(); it.hasNext(); )
+            if ( this.mainClassLoader == null )
             {
-                final String element = (String) it.next();
-                final URL url = new File( element ).toURI().toURL();
-                if ( !urls.contains( url ) )
+                final Collection urls = new LinkedList();
+                for ( final Iterator it = this.getMainClasspathElements().iterator(); it.hasNext(); )
                 {
-                    urls.add( url );
-                    this.log( Level.FINE, this.getClasspathElementMessage( url.toExternalForm() ), null );
+                    final String element = (String) it.next();
+                    final URL url = new File( element ).toURI().toURL();
+                    if ( !urls.contains( url ) )
+                    {
+                        urls.add( url );
+                        this.log( Level.FINE, this.getClasspathElementMessage( url.toExternalForm() ), null );
+                    }
                 }
+
+                this.mainClassLoader = new URLClassLoader( (URL[]) urls.toArray( new URL[ urls.size() ] ),
+                                                           Thread.currentThread().getContextClassLoader() );
+
             }
 
-            this.mainClassLoader = new URLClassLoader( (URL[]) urls.toArray( new URL[ urls.size() ] ),
-                                                       Thread.currentThread().getContextClassLoader() );
-
+            return this.mainClassLoader;
         }
-
-        return this.mainClassLoader;
+        catch ( final IOException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
     }
 
     /**
-     * Gets a class loader of the project's test classpath including any provided dependencies.
+     * Gets the project's test class loader of the instance.
      *
-     * @return A {@code ClassLoader} initialized with the project's test classpath including any provided dependencies.
+     * @return The project's test class loader of the instance.
      *
-     * @throws DependencyResolutionRequiredException for any unresolved dependency scopes.
-     * @throws IOException if building the classpath of the class loader fails.
+     * @throws MojoExecutionException if getting the class loader fails.
      */
-    public ClassLoader getTestClassLoader() throws DependencyResolutionRequiredException, IOException
+    protected ClassLoader getTestClassLoader() throws MojoExecutionException
     {
-        if ( this.testClassLoader == null )
+        try
         {
-            final Collection urls = new LinkedList();
-            for ( final Iterator it = this.getTestClasspathElements().iterator(); it.hasNext(); )
+            if ( this.testClassLoader == null )
             {
-                final String element = (String) it.next();
-                final URL url = new File( element ).toURI().toURL();
-                if ( !urls.contains( url ) )
+                final Collection urls = new LinkedList();
+                for ( final Iterator it = this.getTestClasspathElements().iterator(); it.hasNext(); )
                 {
-                    urls.add( url );
-                    this.log( Level.FINE, this.getClasspathElementMessage( url.toExternalForm() ), null );
+                    final String element = (String) it.next();
+                    final URL url = new File( element ).toURI().toURL();
+                    if ( !urls.contains( url ) )
+                    {
+                        urls.add( url );
+                        this.log( Level.FINE, this.getClasspathElementMessage( url.toExternalForm() ), null );
+                    }
                 }
+
+                this.testClassLoader = new URLClassLoader( (URL[]) urls.toArray( new URL[ urls.size() ] ),
+                                                           Thread.currentThread().getContextClassLoader() );
+
             }
 
-            this.testClassLoader = new URLClassLoader( (URL[]) urls.toArray( new URL[ urls.size() ] ),
-                                                       Thread.currentThread().getContextClassLoader() );
-
+            return this.testClassLoader;
         }
-
-        return this.testClassLoader;
+        catch ( final IOException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
     }
 
     /**
-     * Accessor to the project's runtime classpath elements including any provided dependencies.
+     * Gets the project's runtime classpath elements.
      *
      * @return A set of classpath element strings.
      *
-     * @throws DependencyResolutionRequiredException for any unresolved dependency scopes.
-     * @throws IOException if getting main classpath elements fails.
+     * @throws MojoExecutionException if getting the classpath elements fails.
      */
-    public Set getMainClasspathElements() throws DependencyResolutionRequiredException, IOException
+    protected Set getMainClasspathElements() throws MojoExecutionException
     {
         final Set elements = new HashSet();
         elements.add( this.getMavenProject().getBuild().getOutputDirectory() );
@@ -345,14 +401,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
-     * Accessor to the project's runtime classpath elements including any provided dependencies.
+     * Gets the project's test classpath elements.
      *
      * @return A set of classpath element strings.
      *
-     * @throws DependencyResolutionRequiredException for any unresolved dependency scopes.
-     * @throws IOException if getting test classpath elements fails.
+     * @throws MojoExecutionException if getting the classpath elements fails.
      */
-    public Set getTestClasspathElements() throws DependencyResolutionRequiredException, IOException
+    protected Set getTestClasspathElements() throws MojoExecutionException
     {
         final Set elements = new HashSet();
 
@@ -382,7 +437,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *
      * @return {@code true} if processing of Java sources is enabled; {@code false} else.
      */
-    public boolean isJavaSourceProcessingEnabled()
+    protected boolean isJavaSourceProcessingEnabled()
     {
         return this.javaSourceProcessingEnabled;
     }
@@ -392,7 +447,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *
      * @return {@code true} if processing of Java classes is enabled; {@code false} else.
      */
-    public boolean isJavaClassProcessingEnabled()
+    protected boolean isJavaClassProcessingEnabled()
     {
         return this.javaClassProcessingEnabled;
     }
@@ -401,8 +456,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * Gets the name of the JOMC module to process.
      *
      * @return The name of the JOMC module to process.
+     *
+     * @throws MojoExecutionException if getting the name of the JOMC module fails.
      */
-    public String getJomcModuleName()
+    protected String getJomcModuleName() throws MojoExecutionException
     {
         return this.getMavenProject().getName();
     }
@@ -411,8 +468,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * Gets the name of the JOMC test module to process.
      *
      * @return The name of the JOMC test module to process.
+     *
+     * @throws MojoExecutionException if getting the name of the JOMC test module fails.
      */
-    public String getJomcTestModuleName()
+    protected String getJomcTestModuleName() throws MojoExecutionException
     {
         return this.getMavenProject().getName() + " Tests";
     }
@@ -425,191 +484,211 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @return A {@code Transformer} backed by {@code file}.
      *
      * @throws NullPointerException if {@code file} is {@code null}.
-     * @throws TransformerConfigurationException if there are errors when parsing {@code file} or creating a
+     * @throws MojoExecutionException if there are errors when parsing {@code file} or creating a
      * {@code Transformer} fails.
      */
-    public Transformer getTransformer( final File file ) throws TransformerConfigurationException
+    protected Transformer getTransformer( final File file ) throws MojoExecutionException
     {
         if ( file == null )
         {
             throw new NullPointerException( "file" );
         }
 
-        final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        transformerFactory.setErrorListener( new ErrorListener()
-        {
-
-            public void warning( final TransformerException exception ) throws TransformerException
-            {
-                getLog().warn( exception );
-            }
-
-            public void error( final TransformerException exception ) throws TransformerException
-            {
-                getLog().error( exception );
-                throw exception;
-            }
-
-            public void fatalError( final TransformerException exception ) throws TransformerException
-            {
-                getLog().error( exception );
-                throw exception;
-            }
-
-        } );
-
-        return transformerFactory.newTransformer( new StreamSource( file ) );
-    }
-
-    public void execute() throws MojoExecutionException, MojoFailureException
-    {
-        Level finallyLevel = Level.INFO;
-
         try
         {
-            this.logSeparator( Level.INFO );
-            this.log( Level.INFO, this.getMessage( "title" ).format( null ), null );
-            this.logSeparator( Level.INFO );
-            this.executeTool();
-        }
-        catch ( final ModelException e )
-        {
-            finallyLevel = Level.SEVERE;
-
-            try
-            {
-                this.log( Level.SEVERE, e );
-            }
-            catch ( final IOException e2 )
-            {
-                this.getLog().error( e );
-                throw new MojoExecutionException( e2.getMessage(), e2 );
-            }
-            catch ( final SAXException e2 )
-            {
-                this.getLog().error( e );
-                throw new MojoExecutionException( e2.getMessage(), e2 );
-            }
-            catch ( final JAXBException e2 )
-            {
-                this.getLog().error( e );
-                throw new MojoExecutionException( e2.getMessage(), e2 );
-            }
-
-            throw new MojoExecutionException( e.getMessage(), e );
-        }
-        catch ( final Exception e )
-        {
-            throw new MojoExecutionException( e.getMessage(), e );
-        }
-        finally
-        {
-            try
-            {
-                this.logSeparator( finallyLevel );
-            }
-            catch ( final IOException e )
-            {
-                this.getLog().error( e );
-            }
-        }
-    }
-
-    protected abstract void executeTool() throws Exception;
-
-    protected Modules getModules( final ModelManager modelManager, final ClassLoader classLoader,
-                                  final boolean includeClasspathModule )
-        throws IOException, SAXException, JAXBException, ModelException
-    {
-        Modules modules = null;
-        Modules modulesToValidate = null;
-
-        if ( modelManager instanceof DefaultModelManager )
-        {
-            final DefaultModelManager defaultModelManager = (DefaultModelManager) modelManager;
-            defaultModelManager.setClassLoader( classLoader );
-            defaultModelManager.getListeners().add( new DefaultModelManager.Listener()
+            final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            transformerFactory.setErrorListener( new ErrorListener()
             {
 
-                public void onLog( final Level level, final String message, final Throwable t )
+                public void warning( final TransformerException exception ) throws TransformerException
                 {
-                    try
-                    {
-                        log( level, message, t );
-                    }
-                    catch ( final IOException e )
-                    {
-                        getLog().error( e );
-                    }
+                    getLog().warn( exception );
+                }
+
+                public void error( final TransformerException exception ) throws TransformerException
+                {
+                    getLog().error( exception );
+                    throw exception;
+                }
+
+                public void fatalError( final TransformerException exception ) throws TransformerException
+                {
+                    getLog().error( exception );
+                    throw exception;
                 }
 
             } );
 
-            final Modules classpathModules = defaultModelManager.getClasspathModules(
-                this.documentLocation == null
-                ? defaultModelManager.getDefaultDocumentLocation() : this.documentLocation );
+            return transformerFactory.newTransformer( new StreamSource( file ) );
+        }
+        catch ( final TransformerConfigurationException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
+    }
 
-            final Modules modulesWithoutClasspath = new Modules( classpathModules );
-            final Module classpathModule = defaultModelManager.getClasspathModule( classpathModules );
+    protected Modules getToolModules() throws MojoExecutionException
+    {
+        try
+        {
+            final DefaultModelManager defaultModelManager = new DefaultModelManager();
+            this.setupDefaultModelManager( defaultModelManager );
+
+            final Modules modules = defaultModelManager.getClasspathModules(
+                this.getToolClassLoader(), this.moduleLocation != null ? this.moduleLocation
+                                           : DefaultModelManager.getDefaultModuleLocation() );
+
+            final Module classpathModule = modules.getClasspathModule(
+                Modules.getDefaultClasspathModuleName(), this.getToolClassLoader() );
 
             if ( classpathModule != null )
             {
-                classpathModules.getModule().add( classpathModule );
+                modules.getModule().add( classpathModule );
             }
 
-            this.log( Level.FINE, System.getProperty( "line.separator" ), null );
-            this.log( Level.FINE, this.getMessage( "modulesReport" ).format( null ), null );
+            return modules;
+        }
+        catch ( final IOException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
+        catch ( final SAXException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
+        catch ( final JAXBException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
+    }
 
-            if ( classpathModules.getModule().isEmpty() )
+    protected void logSeparator( final Level level ) throws MojoExecutionException
+    {
+        this.log( level, this.getMessage( "separator" ).format( null ), null );
+    }
+
+    protected void logProcessingModule( final Module module ) throws MojoExecutionException
+    {
+        this.log( Level.INFO, this.getProcessingModuleMesage( module ), null );
+    }
+
+    protected void logMissingModule( final String moduleName ) throws MojoExecutionException
+    {
+        this.log( Level.WARNING, this.getMissingModuleMesage( moduleName ), null );
+    }
+
+    protected void logToolSuccess() throws MojoExecutionException
+    {
+        this.log( Level.INFO, this.getToolSuccessMessage(), null );
+    }
+
+    protected void log( final Level level, final ModelObjectValidationReport report ) throws MojoExecutionException
+    {
+        try
+        {
+            if ( !report.isModelObjectValid() || !report.getDetails().isEmpty() )
             {
-                this.log( Level.FINE, "\t" + this.getMessage( "missingModules" ).format( null ), null );
+                this.logSeparator( level );
             }
-            else
+
+            if ( !report.isModelObjectValid() )
             {
-                for ( final Module m : classpathModules.getModule() )
+                this.log( level, this.getMessage( "invalidModel" ).format( null ), null );
+            }
+
+            if ( !report.getDetails().isEmpty() )
+            {
+                final Marshaller marshaller = this.getModelManager().getMarshaller( this.getToolClassLoader() );
+                for ( ModelObjectValidationReport.Detail detail : report.getDetails() )
                 {
-                    final StringBuilder moduleInfo = new StringBuilder().append( '\t' );
-                    moduleInfo.append( m.getName() );
+                    this.log( detail.getLevel(), System.getProperty( "line.separator" ), null );
+                    this.log( detail.getLevel(), detail.getMessage(), null );
 
-                    if ( m.getVersion() != null )
+                    if ( detail.getElement() != null )
                     {
-                        moduleInfo.append( " - " ).append( m.getVersion() );
+                        final StringWriter stringWriter = new StringWriter();
+                        marshaller.marshal( detail.getElement(), stringWriter );
+                        this.log( Level.FINE, stringWriter.toString(), null );
                     }
-
-                    this.log( Level.FINE, moduleInfo.toString(), null );
                 }
             }
 
-            this.log( Level.FINE, System.getProperty( "line.separator" ), null );
-
-            modulesToValidate = classpathModules;
-            modules = includeClasspathModule ? classpathModules : modulesWithoutClasspath;
+            if ( !report.isModelObjectValid() || !report.getDetails().isEmpty() )
+            {
+                this.logSeparator( level );
+            }
         }
-
-        if ( modulesToValidate != null )
+        catch ( final IOException e )
         {
-            modelManager.validateModelObject( modelManager.getObjectFactory().createModules( modulesToValidate ) );
+            throw new MojoExecutionException( e.getMessage(), e );
         }
-
-        return modules;
+        catch ( final SAXException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
+        catch ( final JAXBException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
     }
 
-    private void setupTool( final JomcTool tool, final ClassLoader classLoader, final boolean includeClasspathModule )
-        throws ModelException, IOException, SAXException, JAXBException
+    protected void log( final Level level, final String message, final Throwable throwable )
     {
+        try
+        {
+            if ( level.intValue() < Level.INFO.intValue() || level.intValue() >= Level.WARNING.intValue() ||
+                 this.verbose )
+            {
+                String line;
+                final BufferedReader reader = new BufferedReader( new StringReader( message ) );
+                while ( ( line = reader.readLine() ) != null )
+                {
+                    final String mojoMessage = "[JOMC] " + line;
+
+                    if ( ( level.equals( Level.CONFIG ) || level.equals( Level.FINE ) || level.equals( Level.FINER ) ||
+                           level.equals( Level.FINEST ) ) && this.getLog().isDebugEnabled() )
+                    {
+                        this.getLog().debug( mojoMessage, throwable );
+                    }
+                    else if ( level.equals( Level.INFO ) && this.getLog().isInfoEnabled() )
+                    {
+                        this.getLog().info( mojoMessage, throwable );
+                    }
+                    else if ( level.equals( Level.SEVERE ) && this.getLog().isErrorEnabled() )
+                    {
+                        this.getLog().error( mojoMessage, throwable );
+                    }
+                    else if ( level.equals( Level.WARNING ) && this.getLog().isWarnEnabled() )
+                    {
+                        this.getLog().warn( mojoMessage, throwable );
+                    }
+                    else if ( this.getLog().isDebugEnabled() )
+                    {
+                        this.getLog().debug( mojoMessage, throwable );
+                    }
+                }
+            }
+        }
+        catch ( final IOException e )
+        {
+            this.getLog().error( e );
+            throw new AssertionError( e );
+        }
+    }
+
+    private void setupJomcTool( final JomcTool tool ) throws MojoExecutionException
+    {
+        if ( this.verbose || this.getLog().isDebugEnabled() )
+        {
+            tool.setLogLevel( this.getLog().isDebugEnabled() ? Level.ALL : Level.INFO );
+        }
+
         tool.getListeners().add( new JomcTool.Listener()
         {
 
             public void onLog( final Level level, final String message, final Throwable t )
             {
-                try
-                {
-                    log( level, message, t );
-                }
-                catch ( final IOException e )
-                {
-                    getLog().error( e );
-                }
+                log( level, message, t );
             }
 
         } );
@@ -618,19 +697,25 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         tool.setInputEncoding( this.sourceEncoding );
         tool.setOutputEncoding( this.sourceEncoding );
         tool.setProfile( this.templateProfile );
+        tool.setModules( this.getToolModules() );
+    }
 
-        if ( this.verbose || getLog().isDebugEnabled() )
+    private void setupDefaultModelManager( final DefaultModelManager defaultModelManager )
+    {
+        if ( this.verbose || this.getLog().isDebugEnabled() )
         {
-            final Level logLevel = getLog().isDebugEnabled() ? Level.ALL : Level.INFO;
-
-            tool.setLogLevel( logLevel );
-            if ( tool.getModelManager() instanceof DefaultModelManager )
-            {
-                ( (DefaultModelManager) tool.getModelManager() ).setLogLevel( logLevel );
-            }
+            defaultModelManager.setLogLevel( this.getLog().isDebugEnabled() ? Level.ALL : Level.INFO );
         }
 
-        tool.setModules( this.getModules( tool.getModelManager(), classLoader, includeClasspathModule ) );
+        defaultModelManager.getListeners().add( new DefaultModelManager.Listener()
+        {
+
+            public void onLog( final Level level, final String message, final Throwable t )
+            {
+                log( level, message, t );
+            }
+
+        } );
     }
 
     private MessageFormat getMessage( final String key )
@@ -685,7 +770,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     }
 
-    private String getProcessingModuleMesage( final Module module )
+    private String getProcessingModuleMesage( final Module module ) throws MojoExecutionException
     {
         return this.getMessage( "processingModule" ).format( new Object[]
             {
@@ -694,7 +779,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     }
 
-    private String getToolSuccessMessage()
+    private String getToolSuccessMessage() throws MojoExecutionException
     {
         return this.getMessage( "toolSuccess" ).format( new Object[]
             {
@@ -710,97 +795,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 moduleName
             } );
 
-    }
-
-    protected abstract String getToolName();
-
-    protected void logSeparator( final Level level ) throws IOException
-    {
-        this.log( level, this.getMessage( "separator" ).format( null ), null );
-    }
-
-    protected void logProcessingModule( final Module module ) throws IOException
-    {
-        this.log( Level.INFO, this.getProcessingModuleMesage( module ), null );
-    }
-
-    protected void logMissingModule( final String moduleName ) throws IOException
-    {
-        this.log( Level.WARNING, this.getMissingModuleMesage( moduleName ), null );
-    }
-
-    protected void logToolSuccess() throws IOException
-    {
-        this.log( Level.INFO, this.getToolSuccessMessage(), null );
-    }
-
-    protected void log( final Level level, final String message, final Throwable throwable ) throws IOException
-    {
-        if ( level.intValue() < Level.INFO.intValue() || level.intValue() >= Level.WARNING.intValue() || this.verbose )
-        {
-            String line;
-            final BufferedReader reader = new BufferedReader( new StringReader( message ) );
-            while ( ( line = reader.readLine() ) != null )
-            {
-                final String mojoMessage = "[JOMC] " + line;
-
-                if ( ( level.equals( Level.CONFIG ) || level.equals( Level.FINE ) || level.equals( Level.FINER ) ||
-                       level.equals( Level.FINEST ) ) && this.getLog().isDebugEnabled() )
-                {
-                    this.getLog().debug( mojoMessage, throwable );
-                }
-                else if ( level.equals( Level.INFO ) && this.getLog().isInfoEnabled() )
-                {
-                    this.getLog().info( mojoMessage, throwable );
-                }
-                else if ( level.equals( Level.SEVERE ) && this.getLog().isErrorEnabled() )
-                {
-                    this.getLog().error( mojoMessage, throwable );
-                }
-                else if ( level.equals( Level.WARNING ) && this.getLog().isWarnEnabled() )
-                {
-                    this.getLog().warn( mojoMessage, throwable );
-                }
-                else if ( this.getLog().isDebugEnabled() )
-                {
-                    this.getLog().debug( mojoMessage, throwable );
-                }
-            }
-        }
-    }
-
-    protected void log( final Level level, final ModelException e ) throws IOException, SAXException, JAXBException
-    {
-        this.logSeparator( level );
-        if ( e.getMessage() != null )
-        {
-            this.log( level, e.getMessage(), null );
-        }
-
-        if ( !e.getDetails().isEmpty() )
-        {
-            this.log( level, System.getProperty( "line.separator" ), null );
-
-            Marshaller marshaller = null;
-            for ( ModelException.Detail detail : e.getDetails() )
-            {
-                this.log( detail.getLevel(), detail.getMessage(), null );
-
-                if ( detail.getElement() != null )
-                {
-                    if ( marshaller == null )
-                    {
-                        marshaller = new DefaultModelManager().getMarshaller( false, true );
-                    }
-
-                    final StringWriter stringWriter = new StringWriter();
-                    marshaller.marshal( detail.getElement(), stringWriter );
-
-                    this.log( Level.FINE, System.getProperty( "line.separator" ), null );
-                    this.log( Level.FINE, stringWriter.toString(), null );
-                }
-            }
-        }
     }
 
 }

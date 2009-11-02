@@ -35,7 +35,13 @@ package org.jomc.mojo;
 import java.io.File;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.validation.Schema;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.jomc.model.ModelObjectValidationReport;
 import org.jomc.model.Module;
+import org.jomc.model.ObjectFactory;
 import org.jomc.tools.JavaClasses;
 
 /**
@@ -58,6 +64,18 @@ public class ValidateMainJavaClassesMojo extends AbstractJomcMojo
     }
 
     @Override
+    protected String getToolName()
+    {
+        return "JavaClasses";
+    }
+
+    @Override
+    protected ClassLoader getToolClassLoader() throws MojoExecutionException
+    {
+        return this.getMainClassLoader();
+    }
+
+    @Override
     protected void executeTool() throws Exception
     {
         if ( this.isJavaClassProcessingEnabled() )
@@ -70,29 +88,45 @@ public class ValidateMainJavaClassesMojo extends AbstractJomcMojo
 
             }
 
-            final JavaClasses tool = this.getMainJavaClassesTool();
-            final Module module = tool.getModules().getModule( this.getJomcModuleName() );
+            final JavaClasses tool = this.getJavaClassesTool();
+            final JAXBContext context = this.getModelManager().getContext( this.getToolClassLoader() );
+            final Unmarshaller unmarshaller = this.getModelManager().getUnmarshaller( this.getToolClassLoader() );
+            final Schema schema = this.getModelManager().getSchema( this.getToolClassLoader() );
 
-            if ( module != null )
+            unmarshaller.setSchema( schema );
+
+            final ModelObjectValidationReport validationReport = this.getModelObjectValidator().validateModelObject(
+                new ObjectFactory().createModules( tool.getModules() ), context, schema );
+
+            this.log( validationReport.isModelObjectValid() ? Level.INFO : Level.SEVERE, validationReport );
+
+            if ( validationReport.isModelObjectValid() )
             {
-                this.logProcessingModule( module );
-                tool.validateClasses( module, classesDirectory );
-                this.logToolSuccess();
+                this.logSeparator( Level.INFO );
+                final Module module = tool.getModules().getModule( this.getJomcModuleName() );
+                if ( module != null )
+                {
+                    this.logProcessingModule( module );
+                    tool.validateClasses( module, unmarshaller, classesDirectory );
+                    this.logToolSuccess();
+                }
+                else
+                {
+                    this.logMissingModule( this.getJomcModuleName() );
+                }
+                this.logSeparator( Level.INFO );
             }
             else
             {
-                this.logMissingModule( this.getJomcModuleName() );
+                throw new MojoExecutionException( this.getMessage( "failed" ) );
             }
         }
         else
         {
+            this.logSeparator( Level.INFO );
             this.log( Level.INFO, this.getMessage( "disabled" ), null );
+            this.logSeparator( Level.INFO );
         }
-    }
-
-    protected String getToolName()
-    {
-        return "JavaClasses";
     }
 
     private String getMessage( final String key )

@@ -33,9 +33,18 @@
 package org.jomc.mojo;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.Transformer;
+import javax.xml.validation.Schema;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.jomc.model.ModelObjectValidationReport;
 import org.jomc.model.Module;
+import org.jomc.model.ObjectFactory;
 import org.jomc.tools.JavaClasses;
 
 /**
@@ -65,7 +74,19 @@ public final class MainJavaClassesMojo extends AbstractJomcMojo
     }
 
     @Override
-    public void executeTool() throws Exception
+    protected String getToolName()
+    {
+        return "JavaClasses";
+    }
+
+    @Override
+    protected ClassLoader getToolClassLoader() throws MojoExecutionException
+    {
+        return this.getMainClassLoader();
+    }
+
+    @Override
+    protected void executeTool() throws Exception
     {
         if ( this.isJavaClassProcessingEnabled() )
         {
@@ -77,37 +98,59 @@ public final class MainJavaClassesMojo extends AbstractJomcMojo
 
             }
 
-            final JavaClasses tool = this.getMainJavaClassesTool();
-            final Module module = tool.getModules().getModule( this.getJomcModuleName() );
+            final JavaClasses tool = this.getJavaClassesTool();
+            final JAXBContext context = this.getModelManager().getContext( this.getToolClassLoader() );
+            final Marshaller marshaller = this.getModelManager().getMarshaller( this.getToolClassLoader() );
+            final Unmarshaller unmarshaller = this.getModelManager().getUnmarshaller( this.getToolClassLoader() );
+            final Schema schema = this.getModelManager().getSchema( this.getToolClassLoader() );
 
-            if ( module != null )
+            marshaller.setSchema( schema );
+            unmarshaller.setSchema( schema );
+
+            final ModelObjectValidationReport validationReport = this.getModelObjectValidator().validateModelObject(
+                new ObjectFactory().createModules( tool.getModules() ), context, schema );
+
+            this.log( validationReport.isModelObjectValid() ? Level.INFO : Level.SEVERE, validationReport );
+
+            if ( validationReport.isModelObjectValid() )
             {
-                this.logProcessingModule( module );
-                tool.commitClasses( module, classesDirectory );
-
-                if ( this.modelObjectStylesheet != null )
+                this.logSeparator( Level.INFO );
+                final Module module = tool.getModules().getModule( this.getJomcModuleName() );
+                if ( module != null )
                 {
-                    tool.transformClasses(
-                        module, classesDirectory, this.getTransformer( this.modelObjectStylesheet ) );
+                    this.logProcessingModule( module );
+                    tool.commitClasses( module, marshaller, classesDirectory );
 
+                    if ( this.modelObjectStylesheet != null )
+                    {
+                        tool.transformClasses(
+                            module, marshaller, unmarshaller, classesDirectory,
+                            Arrays.asList( new Transformer[]
+                            {
+                                this.getTransformer( this.modelObjectStylesheet )
+                            } ) );
+
+                    }
+
+                    this.logToolSuccess();
                 }
-
-                this.logToolSuccess();
+                else
+                {
+                    this.logMissingModule( this.getJomcModuleName() );
+                }
+                this.logSeparator( Level.INFO );
             }
             else
             {
-                this.logMissingModule( this.getJomcModuleName() );
+                throw new MojoExecutionException( this.getMessage( "failed" ) );
             }
         }
         else
         {
+            this.logSeparator( Level.INFO );
             this.log( Level.INFO, this.getMessage( "disabled" ), null );
+            this.logSeparator( Level.INFO );
         }
-    }
-
-    protected String getToolName()
-    {
-        return "JavaClasses";
     }
 
     private String getMessage( final String key )

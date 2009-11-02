@@ -35,7 +35,12 @@ package org.jomc.mojo;
 import java.io.File;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+import javax.xml.bind.JAXBContext;
+import javax.xml.validation.Schema;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.jomc.model.ModelObjectValidationReport;
 import org.jomc.model.Module;
+import org.jomc.model.ObjectFactory;
 import org.jomc.tools.JavaSources;
 
 /**
@@ -58,7 +63,19 @@ public final class TestJavaSourcesMojo extends AbstractJomcMojo
     }
 
     @Override
-    public void executeTool() throws Exception
+    protected String getToolName()
+    {
+        return "JavaSources";
+    }
+
+    @Override
+    protected ClassLoader getToolClassLoader() throws MojoExecutionException
+    {
+        return this.getTestClassLoader();
+    }
+
+    @Override
+    protected void executeTool() throws Exception
     {
         if ( this.isJavaSourceProcessingEnabled() )
         {
@@ -71,29 +88,41 @@ public final class TestJavaSourcesMojo extends AbstractJomcMojo
 
             }
 
-            final JavaSources tool = this.getTestJavaSourcesTool();
-            final Module module = tool.getModules().getModule( this.getJomcTestModuleName() );
+            final JavaSources tool = this.getJavaSourcesTool();
+            final JAXBContext context = this.getModelManager().getContext( this.getToolClassLoader() );
+            final Schema schema = this.getModelManager().getSchema( this.getToolClassLoader() );
+            final ModelObjectValidationReport validationReport = this.getModelObjectValidator().validateModelObject(
+                new ObjectFactory().createModules( tool.getModules() ), context, schema );
 
-            if ( module != null )
+            this.log( validationReport.isModelObjectValid() ? Level.INFO : Level.SEVERE, validationReport );
+
+            if ( validationReport.isModelObjectValid() )
             {
-                this.logProcessingModule( module );
-                tool.manageSources( module, testSourceDirectory );
-                this.logToolSuccess();
+                this.logSeparator( Level.INFO );
+                final Module module = tool.getModules().getModule( this.getJomcTestModuleName() );
+                if ( module != null )
+                {
+                    this.logProcessingModule( module );
+                    tool.manageSources( module, testSourceDirectory );
+                    this.logToolSuccess();
+                }
+                else
+                {
+                    this.logMissingModule( this.getJomcTestModuleName() );
+                }
+                this.logSeparator( Level.INFO );
             }
             else
             {
-                this.logMissingModule( this.getJomcTestModuleName() );
+                throw new MojoExecutionException( this.getMessage( "failed" ) );
             }
         }
         else
         {
+            this.logSeparator( Level.INFO );
             this.log( Level.INFO, this.getMessage( "disabled" ), null );
+            this.logSeparator( Level.INFO );
         }
-    }
-
-    protected String getToolName()
-    {
-        return "JavaSources";
     }
 
     private String getMessage( final String key )
