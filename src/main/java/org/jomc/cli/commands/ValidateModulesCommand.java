@@ -34,11 +34,14 @@
 // SECTION-END
 package org.jomc.cli.commands;
 
-import java.io.PrintWriter;
 import java.util.logging.Level;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.validation.Schema;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
-import org.jomc.model.ModelException;
+import org.jomc.model.ModelObjectValidationReport;
+import org.jomc.model.ObjectFactory;
 
 // SECTION-START[Documentation]
 /**
@@ -63,22 +66,6 @@ import org.jomc.model.ModelException;
  * <blockquote>Property of type {@code java.lang.String}.
  * <p>Name of the command.</p>
  * </blockquote></li>
- * <li>"{@link #getDebugOptionLongName debugOptionLongName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'debug' option.</p>
- * </blockquote></li>
- * <li>"{@link #getDebugOptionShortName debugOptionShortName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'debug' option.</p>
- * </blockquote></li>
- * <li>"{@link #getDocumentLocationOptionLongName documentLocationOptionLongName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'document-location' option.</p>
- * </blockquote></li>
- * <li>"{@link #getDocumentLocationOptionShortName documentLocationOptionShortName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'document-location' option.</p>
- * </blockquote></li>
  * <li>"{@link #getDocumentsOptionLongName documentsOptionLongName}"
  * <blockquote>Property of type {@code java.lang.String}.
  * <p>Long name of the 'documents' option.</p>
@@ -87,13 +74,13 @@ import org.jomc.model.ModelException;
  * <blockquote>Property of type {@code java.lang.String}.
  * <p>Name of the 'documents' option.</p>
  * </blockquote></li>
- * <li>"{@link #getFailOnWarningsOptionLongName failOnWarningsOptionLongName}"
+ * <li>"{@link #getModuleLocationOptionLongName moduleLocationOptionLongName}"
  * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'fail-on-warnings' option.</p>
+ * <p>Long name of the 'module-location' option.</p>
  * </blockquote></li>
- * <li>"{@link #getFailOnWarningsOptionShortName failOnWarningsOptionShortName}"
+ * <li>"{@link #getModuleLocationOptionShortName moduleLocationOptionShortName}"
  * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'fail-on-warnings' option.</p>
+ * <p>Name of the 'module-location' option.</p>
  * </blockquote></li>
  * <li>"{@link #getModuleNameOptionLongName moduleNameOptionLongName}"
  * <blockquote>Property of type {@code java.lang.String}.
@@ -110,14 +97,6 @@ import org.jomc.model.ModelException;
  * <li>"{@link #getNoClasspathResolutionOptionShortName noClasspathResolutionOptionShortName}"
  * <blockquote>Property of type {@code java.lang.String}.
  * <p>Name of the 'no-classpath-resolution' option.</p>
- * </blockquote></li>
- * <li>"{@link #getVerboseOptionLongName verboseOptionLongName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'verbose' option.</p>
- * </blockquote></li>
- * <li>"{@link #getVerboseOptionShortName verboseOptionShortName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'verbose' option.</p>
  * </blockquote></li>
  * </ul></p>
  * <p><b>Dependencies</b><ul>
@@ -144,21 +123,13 @@ import org.jomc.model.ModelException;
  * <tr><td valign="top">English:</td><td valign="top"><pre>elements</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Elemente</pre></td></tr>
  * </table>
- * <li>"{@link #getDebugOptionMessage debugOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Enables debug output.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert Diagnose-Ausgaben.</pre></td></tr>
+ * <li>"{@link #getDefaultLogLevelInfoMessage defaultLogLevelInfo}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Default log level: ''{0}''</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Standard-Protokollierungsstufe: ''{0}''</pre></td></tr>
  * </table>
  * <li>"{@link #getDocumentFileMessage documentFile}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Document file: ''{0}''</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Datei: ''{0}''</pre></td></tr>
- * </table>
- * <li>"{@link #getDocumentLocationOptionMessage documentLocationOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Location of classpath documents.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort der Klassenpfad-Dokumente.</pre></td></tr>
- * </table>
- * <li>"{@link #getDocumentLocationOptionArgNameMessage documentLocationOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>location</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort</pre></td></tr>
  * </table>
  * <li>"{@link #getDocumentsOptionMessage documentsOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Document filenames separated by '':''. If starting with a ''@'' character, a file name of a file holding document filenames.</pre></td></tr>
@@ -168,9 +139,9 @@ import org.jomc.model.ModelException;
  * <tr><td valign="top">English:</td><td valign="top"><pre>files</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dateien</pre></td></tr>
  * </table>
- * <li>"{@link #getFailOnWarningsOptionMessage failOnWarningsOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Exit with failure on warnings.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Bei Warnungen Fehler melden.</pre></td></tr>
+ * <li>"{@link #getInvalidModelMessage invalidModel}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Invalid model.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ung&uuml;ltiges Modell.</pre></td></tr>
  * </table>
  * <li>"{@link #getLongDescriptionMessage longDescription}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
@@ -181,6 +152,14 @@ import org.jomc.model.ModelException;
  * <li>"{@link #getMissingModuleMessage missingModule}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul ''{0}'' nicht gefunden.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getModuleLocationOptionMessage moduleLocationOption}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Location of classpath modules.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort der Klassenpfad-Module.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getModuleLocationOptionArgNameMessage moduleLocationOptionArgName}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>location</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort</pre></td></tr>
  * </table>
  * <li>"{@link #getModuleNameOptionMessage moduleNameOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Name of the module to process.</pre></td></tr>
@@ -221,10 +200,6 @@ import org.jomc.model.ModelException;
  * <tr><td valign="top">English:</td><td valign="top"><pre>{0} successful.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} erfolgreich.</pre></td></tr>
  * </table>
- * <li>"{@link #getVerboseOptionMessage verboseOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Enables verbose output.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert ausf&uuml;hrliche Ausgaben.</pre></td></tr>
- * </table>
  * </ul></p>
  *
  * @author <a href="mailto:cs@jomc.org">Christian Schulte</a> 1.0
@@ -254,32 +229,23 @@ public class ValidateModulesCommand extends AbstractJomcCommand
     }
 
     @Override
-    protected int executeCommand( final CommandLine commandLine, final PrintWriter printWriter )
+    public int executeCommand( final CommandLine commandLine ) throws Exception
     {
-        int status = STATUS_SUCCESS;
-
-        final boolean verbose = commandLine.hasOption( this.getVerboseOption().getOpt() );
-        final boolean debug = commandLine.hasOption( this.getDebugOption().getOpt() );
-
-        try
+        if ( this.isLoggable( Level.INFO ) )
         {
-            this.log( Level.INFO, this.getStartingProcessingMessage(
-                this.getLocale(), this.getCommandName() ), null, printWriter, verbose, debug );
-
-            this.getModules( this.getModelManager(), commandLine, printWriter, true, true );
-        }
-        catch ( final ModelException e )
-        {
-            this.log( Level.SEVERE, e, printWriter, verbose, debug );
-            status = STATUS_FAILURE;
-        }
-        catch ( final Throwable t )
-        {
-            this.log( Level.SEVERE, t.getMessage(), t, printWriter, verbose, debug );
-            status = STATUS_FAILURE;
+            this.log( Level.INFO, this.getStartingProcessingMessage( this.getLocale(), this.getCommandName() ), null );
         }
 
-        return status;
+        final ClassLoader classLoader = this.getClassLoader( commandLine );
+        final JAXBContext context = this.getModelManager().getContext( classLoader );
+        final Marshaller marshaller = this.getModelManager().getMarshaller( classLoader );
+        final Schema schema = this.getModelManager().getSchema( classLoader );
+        final ModelObjectValidationReport validationReport = this.getModelObjectValidator().validateModules(
+            new ObjectFactory().createModules( this.getModules( commandLine ) ), context, schema );
+
+        this.log( validationReport, marshaller );
+
+        return validationReport.isModelObjectValid() ? STATUS_SUCCESS : STATUS_FAILURE;
     }
 
     // SECTION-END
@@ -374,62 +340,6 @@ public class ValidateModulesCommand extends AbstractJomcCommand
     }
 
     /**
-     * Gets the value of the {@code debugOptionLongName} property.
-     * @return Long name of the 'debug' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private java.lang.String getDebugOptionLongName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "debugOptionLongName" );
-        assert _p != null : "'debugOptionLongName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code debugOptionShortName} property.
-     * @return Name of the 'debug' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private java.lang.String getDebugOptionShortName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "debugOptionShortName" );
-        assert _p != null : "'debugOptionShortName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code documentLocationOptionLongName} property.
-     * @return Long name of the 'document-location' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private java.lang.String getDocumentLocationOptionLongName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "documentLocationOptionLongName" );
-        assert _p != null : "'documentLocationOptionLongName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code documentLocationOptionShortName} property.
-     * @return Name of the 'document-location' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private java.lang.String getDocumentLocationOptionShortName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "documentLocationOptionShortName" );
-        assert _p != null : "'documentLocationOptionShortName' property not found.";
-        return _p;
-    }
-
-    /**
      * Gets the value of the {@code documentsOptionLongName} property.
      * @return Long name of the 'documents' option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
@@ -458,30 +368,30 @@ public class ValidateModulesCommand extends AbstractJomcCommand
     }
 
     /**
-     * Gets the value of the {@code failOnWarningsOptionLongName} property.
-     * @return Long name of the 'fail-on-warnings' option.
+     * Gets the value of the {@code moduleLocationOptionLongName} property.
+     * @return Long name of the 'module-location' option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private java.lang.String getFailOnWarningsOptionLongName()
+    private java.lang.String getModuleLocationOptionLongName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "failOnWarningsOptionLongName" );
-        assert _p != null : "'failOnWarningsOptionLongName' property not found.";
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "moduleLocationOptionLongName" );
+        assert _p != null : "'moduleLocationOptionLongName' property not found.";
         return _p;
     }
 
     /**
-     * Gets the value of the {@code failOnWarningsOptionShortName} property.
-     * @return Name of the 'fail-on-warnings' option.
+     * Gets the value of the {@code moduleLocationOptionShortName} property.
+     * @return Name of the 'module-location' option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private java.lang.String getFailOnWarningsOptionShortName()
+    private java.lang.String getModuleLocationOptionShortName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "failOnWarningsOptionShortName" );
-        assert _p != null : "'failOnWarningsOptionShortName' property not found.";
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "moduleLocationOptionShortName" );
+        assert _p != null : "'moduleLocationOptionShortName' property not found.";
         return _p;
     }
 
@@ -538,34 +448,6 @@ public class ValidateModulesCommand extends AbstractJomcCommand
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "noClasspathResolutionOptionShortName" );
         assert _p != null : "'noClasspathResolutionOptionShortName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code verboseOptionLongName} property.
-     * @return Long name of the 'verbose' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private java.lang.String getVerboseOptionLongName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "verboseOptionLongName" );
-        assert _p != null : "'verboseOptionLongName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code verboseOptionShortName} property.
-     * @return Name of the 'verbose' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private java.lang.String getVerboseOptionShortName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "verboseOptionShortName" );
-        assert _p != null : "'verboseOptionShortName' property not found.";
         return _p;
     }
     // SECTION-END
@@ -674,22 +556,23 @@ public class ValidateModulesCommand extends AbstractJomcCommand
     }
 
     /**
-     * Gets the text of the {@code debugOption} message.
+     * Gets the text of the {@code defaultLogLevelInfo} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Enables debug output.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert Diagnose-Ausgaben.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Default log level: ''{0}''</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Standard-Protokollierungsstufe: ''{0}''</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
-     * @return The text of the {@code debugOption} message.
+     * @param defaultLogLevel Format argument.
+     * @return The text of the {@code defaultLogLevelInfo} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private String getDebugOptionMessage( final java.util.Locale locale )
+    private String getDefaultLogLevelInfoMessage( final java.util.Locale locale, final java.lang.String defaultLogLevel )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "debugOption", locale,  null );
-        assert _m != null : "'debugOption' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "defaultLogLevelInfo", locale, new Object[] { defaultLogLevel, null } );
+        assert _m != null : "'defaultLogLevelInfo' message not found.";
         return _m;
     }
 
@@ -711,46 +594,6 @@ public class ValidateModulesCommand extends AbstractJomcCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentFile", locale, new Object[] { documentFile, null } );
         assert _m != null : "'documentFile' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code documentLocationOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Location of classpath documents.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort der Klassenpfad-Dokumente.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code documentLocationOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private String getDocumentLocationOptionMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentLocationOption", locale,  null );
-        assert _m != null : "'documentLocationOption' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code documentLocationOptionArgName} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>location</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code documentLocationOptionArgName} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private String getDocumentLocationOptionArgNameMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentLocationOptionArgName", locale,  null );
-        assert _m != null : "'documentLocationOptionArgName' message not found.";
         return _m;
     }
 
@@ -795,22 +638,22 @@ public class ValidateModulesCommand extends AbstractJomcCommand
     }
 
     /**
-     * Gets the text of the {@code failOnWarningsOption} message.
+     * Gets the text of the {@code invalidModel} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Exit with failure on warnings.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Bei Warnungen Fehler melden.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Invalid model.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ung&uuml;ltiges Modell.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
-     * @return The text of the {@code failOnWarningsOption} message.
+     * @return The text of the {@code invalidModel} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private String getFailOnWarningsOptionMessage( final java.util.Locale locale )
+    private String getInvalidModelMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "failOnWarningsOption", locale,  null );
-        assert _m != null : "'failOnWarningsOption' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "invalidModel", locale,  null );
+        assert _m != null : "'invalidModel' message not found.";
         return _m;
     }
 
@@ -854,6 +697,46 @@ public class ValidateModulesCommand extends AbstractJomcCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "missingModule", locale, new Object[] { moduleName, null } );
         assert _m != null : "'missingModule' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code moduleLocationOption} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Location of classpath modules.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort der Klassenpfad-Module.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code moduleLocationOption} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
+    private String getModuleLocationOptionMessage( final java.util.Locale locale )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "moduleLocationOption", locale,  null );
+        assert _m != null : "'moduleLocationOption' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code moduleLocationOptionArgName} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>location</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code moduleLocationOptionArgName} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
+    private String getModuleLocationOptionArgNameMessage( final java.util.Locale locale )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "moduleLocationOptionArgName", locale,  null );
+        assert _m != null : "'moduleLocationOptionArgName' message not found.";
         return _m;
     }
 
@@ -1058,26 +941,6 @@ public class ValidateModulesCommand extends AbstractJomcCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "toolSuccess", locale, new Object[] { toolName, null } );
         assert _m != null : "'toolSuccess' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code verboseOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Enables verbose output.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert ausf&uuml;hrliche Ausgaben.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code verboseOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private String getVerboseOptionMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "verboseOption", locale,  null );
-        assert _m != null : "'verboseOption' message not found.";
         return _m;
     }
     // SECTION-END

@@ -114,6 +114,37 @@
             <text language="en">The name of the command used to request help.</text>
           </documentation>
         </property>
+        <property name="verboseOptionShortName" value="v" final="true">
+          <documentation defaultLanguage="en">
+            <text language="en">Name of the 'verbose' option.</text>
+          </documentation>
+        </property>
+        <property name="verboseOptionLongName" value="verbose" final="true">
+          <documentation defaultLanguage="en">
+            <text language="en">Long name of the 'verbose' option.</text>
+          </documentation>
+        </property>
+        <property name="debugOptionShortName" value="D" final="true">
+          <documentation defaultLanguage="en">
+            <text language="en">Name of the 'debug' option.</text>
+          </documentation>
+        </property>
+        <property name="debugOptionLongName" value="debug" final="true">
+          <documentation defaultLanguage="en">
+            <text language="en">Long name of the 'debug' option.</text>
+          </documentation>
+        </property>
+        <property name="failOnWarningsOptionShortName" value="fw" final="true">
+          <documentation defaultLanguage="en">
+            <text language="en">Name of the 'fail-on-warnings' option.</text>
+          </documentation>
+        </property>
+        <property name="failOnWarningsOptionLongName" value="fail-on-warnings"
+                  final="true">
+          <documentation defaultLanguage="en">
+            <text language="en">Long name of the 'fail-on-warnings' option.</text>
+          </documentation>
+        </property>
       </properties>
       <messages>
         <message name="usage">
@@ -134,6 +165,24 @@
             <argument index="0" name="command"/>
             <argument index="1" name="helpCommandName"/>
           </arguments>
+        </message>
+        <message name="verboseOption" final="true">
+          <template defaultLanguage="en">
+            <text language="en">Enables verbose output.</text>
+            <text language="de">Aktiviert ausführliche Ausgaben.</text>
+          </template>
+        </message>
+        <message name="debugOption" final="true">
+          <template defaultLanguage="en">
+            <text language="en">Enables debug output.</text>
+            <text language="de">Aktiviert Diagnose-Ausgaben.</text>
+          </template>
+        </message>
+        <message name="failOnWarningsOption" final="true">
+          <template defaultLanguage="en">
+            <text language="en">Exit with failure on warnings.</text>
+            <text language="de">Bei Warnungen Fehler melden.</text>
+          </template>
         </message>
       </messages>
     </implementation>
@@ -177,26 +226,6 @@
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
-        <property name="verboseOptionShortName" value="v" final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Name of the 'verbose' option.</text>
-          </documentation>
-        </property>
-        <property name="verboseOptionLongName" value="verbose" final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Long name of the 'verbose' option.</text>
-          </documentation>
-        </property>
-        <property name="debugOptionShortName" value="D" final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Name of the 'debug' option.</text>
-          </documentation>
-        </property>
-        <property name="debugOptionLongName" value="debug" final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Long name of the 'debug' option.</text>
-          </documentation>
-        </property>
         <property name="classpathOptionShortName" value="cp" final="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the 'classpath' option.</text>
@@ -217,16 +246,16 @@
             <text language="en">Long name of the 'documents' option.</text>
           </documentation>
         </property>
-        <property name="documentLocationOptionShortName" value="dl"
+        <property name="moduleLocationOptionShortName" value="ml"
                   final="true">
           <documentation defaultLanguage="en">
-            <text language="en">Name of the 'document-location' option.</text>
+            <text language="en">Name of the 'module-location' option.</text>
           </documentation>
         </property>
-        <property name="documentLocationOptionLongName" value="document-location"
+        <property name="moduleLocationOptionLongName" value="module-location"
                   final="true">
           <documentation defaultLanguage="en">
-            <text language="en">Long name of the 'document-location' option.</text>
+            <text language="en">Long name of the 'module-location' option.</text>
           </documentation>
         </property>
         <property name="moduleNameOptionShortName" value="mn" final="true">
@@ -237,17 +266,6 @@
         <property name="moduleNameOptionLongName" value="module" final="true">
           <documentation defaultLanguage="en">
             <text language="en">Long name of the 'module' option.</text>
-          </documentation>
-        </property>
-        <property name="failOnWarningsOptionShortName" value="fw" final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Name of the 'fail-on-warnings' option.</text>
-          </documentation>
-        </property>
-        <property name="failOnWarningsOptionLongName" value="fail-on-warnings"
-                  final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Long name of the 'fail-on-warnings' option.</text>
           </documentation>
         </property>
         <property name="noClasspathResolutionOptionShortName" value="ncr"
@@ -276,18 +294,6 @@
             <text language="de"></text>
           </template>
         </message>
-        <message name="verboseOption" final="true">
-          <template defaultLanguage="en">
-            <text language="en">Enables verbose output.</text>
-            <text language="de">Aktiviert ausführliche Ausgaben.</text>
-          </template>
-        </message>
-        <message name="debugOption" final="true">
-          <template defaultLanguage="en">
-            <text language="en">Enables debug output.</text>
-            <text language="de">Aktiviert Diagnose-Ausgaben.</text>
-          </template>
-        </message>
         <message name="classpathOption" final="true">
           <template defaultLanguage="en">
             <text language="en">Classpath elements separated by '':''. If starting with a ''@'' character, a file name of a file holding classpath elements.</text>
@@ -312,13 +318,13 @@
             <text language="de">Dateien</text>
           </template>
         </message>
-        <message name="documentLocationOption" final="true">
+        <message name="moduleLocationOption" final="true">
           <template defaultLanguage="en">
-            <text language="en">Location of classpath documents.</text>
-            <text language="de">Ort der Klassenpfad-Dokumente.</text>
+            <text language="en">Location of classpath modules.</text>
+            <text language="de">Ort der Klassenpfad-Module.</text>
           </template>
         </message>
-        <message name="documentLocationOptionArgName" final="true">
+        <message name="moduleLocationOptionArgName" final="true">
           <template defaultLanguage="en">
             <text language="en">location</text>
             <text language="de">Ort</text>
@@ -334,12 +340,6 @@
           <template defaultLanguage="en">
             <text language="en">name</text>
             <text language="de">Name</text>
-          </template>
-        </message>
-        <message name="failOnWarningsOption" final="true">
-          <template defaultLanguage="en">
-            <text language="en">Exit with failure on warnings.</text>
-            <text language="de">Bei Warnungen Fehler melden.</text>
           </template>
         </message>
         <message name="noClasspathResolutionOption" final="true">
@@ -438,6 +438,13 @@
             <argument index="1" name="detailMessage"/>
           </arguments>
         </message>
+        <message name="invalidModel" final="true">
+          <template defaultLanguage="en">
+            <text language="en">Invalid model.</text>
+            <text language="de">Ungültiges Modell.</text>
+          </template>
+        </message>
+        <reference name="defaultLogLevelInfo" final="true"/>
       </messages>
     </implementation>
 
@@ -506,10 +513,12 @@
           <template defaultLanguage="en">
             <text language="en">Example:
   jomc generate-java-bundles -sd /tmp/src  -rd /tmp/rsrc \
-                             -df examples/xml/jomc-cli.xml -v</text>
+                             -df examples/xml/jomc-cli.xml \
+                             -mn "JOMC CLI" -v</text>
             <text language="de">Beispiel:
   jomc generate-java-bundles -sd /tmp/src -rd /tmp/rsrc \
-                             -df examples/xml/jomc-cli.xml -v</text>
+                             -df examples/xml/jomc-cli.xml \
+                             -mn "JOMC CLI" -v</text>
           </template>
         </message>
         <message name="languageOption">
@@ -1116,6 +1125,16 @@
       </template>
       <arguments>
         <argument index="0" name="fileName"/>
+      </arguments>
+    </message>
+    <!-- ******************************************************************* -->
+    <message name="defaultLogLevelInfo">
+      <template defaultLanguage="en">
+        <text language="en">Default log level: ''{0}''</text>
+        <text language="de">Standard-Protokollierungsstufe: ''{0}''</text>
+      </template>
+      <arguments>
+        <argument index="0" name="defaultLogLevel"/>
       </arguments>
     </message>
   </messages>

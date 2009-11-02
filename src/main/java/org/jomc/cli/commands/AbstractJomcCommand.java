@@ -40,12 +40,12 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Level;
@@ -59,11 +59,13 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.jomc.cli.Command;
 import org.jomc.model.DefaultModelManager;
-import org.jomc.model.ModelException;
+import org.jomc.model.DefaultModelObjectValidator;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.tools.JomcTool;
 import org.jomc.model.ModelManager;
+import org.jomc.model.ModelObjectValidationReport;
+import org.jomc.model.ModelObjectValidator;
 import org.jomc.tools.JavaBundles;
 import org.jomc.tools.JavaClasses;
 import org.jomc.tools.JavaSources;
@@ -92,22 +94,6 @@ import org.xml.sax.SAXException;
  * <blockquote>Property of type {@code java.lang.String}.
  * <p>Name of the command.</p>
  * </blockquote></li>
- * <li>"{@link #getDebugOptionLongName debugOptionLongName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'debug' option.</p>
- * </blockquote></li>
- * <li>"{@link #getDebugOptionShortName debugOptionShortName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'debug' option.</p>
- * </blockquote></li>
- * <li>"{@link #getDocumentLocationOptionLongName documentLocationOptionLongName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'document-location' option.</p>
- * </blockquote></li>
- * <li>"{@link #getDocumentLocationOptionShortName documentLocationOptionShortName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'document-location' option.</p>
- * </blockquote></li>
  * <li>"{@link #getDocumentsOptionLongName documentsOptionLongName}"
  * <blockquote>Property of type {@code java.lang.String}.
  * <p>Long name of the 'documents' option.</p>
@@ -116,13 +102,13 @@ import org.xml.sax.SAXException;
  * <blockquote>Property of type {@code java.lang.String}.
  * <p>Name of the 'documents' option.</p>
  * </blockquote></li>
- * <li>"{@link #getFailOnWarningsOptionLongName failOnWarningsOptionLongName}"
+ * <li>"{@link #getModuleLocationOptionLongName moduleLocationOptionLongName}"
  * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'fail-on-warnings' option.</p>
+ * <p>Long name of the 'module-location' option.</p>
  * </blockquote></li>
- * <li>"{@link #getFailOnWarningsOptionShortName failOnWarningsOptionShortName}"
+ * <li>"{@link #getModuleLocationOptionShortName moduleLocationOptionShortName}"
  * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'fail-on-warnings' option.</p>
+ * <p>Name of the 'module-location' option.</p>
  * </blockquote></li>
  * <li>"{@link #getModuleNameOptionLongName moduleNameOptionLongName}"
  * <blockquote>Property of type {@code java.lang.String}.
@@ -139,14 +125,6 @@ import org.xml.sax.SAXException;
  * <li>"{@link #getNoClasspathResolutionOptionShortName noClasspathResolutionOptionShortName}"
  * <blockquote>Property of type {@code java.lang.String}.
  * <p>Name of the 'no-classpath-resolution' option.</p>
- * </blockquote></li>
- * <li>"{@link #getVerboseOptionLongName verboseOptionLongName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'verbose' option.</p>
- * </blockquote></li>
- * <li>"{@link #getVerboseOptionShortName verboseOptionShortName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'verbose' option.</p>
  * </blockquote></li>
  * </ul></p>
  * <p><b>Dependencies</b><ul>
@@ -173,21 +151,13 @@ import org.xml.sax.SAXException;
  * <tr><td valign="top">English:</td><td valign="top"><pre>elements</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Elemente</pre></td></tr>
  * </table>
- * <li>"{@link #getDebugOptionMessage debugOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Enables debug output.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert Diagnose-Ausgaben.</pre></td></tr>
+ * <li>"{@link #getDefaultLogLevelInfoMessage defaultLogLevelInfo}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Default log level: ''{0}''</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Standard-Protokollierungsstufe: ''{0}''</pre></td></tr>
  * </table>
  * <li>"{@link #getDocumentFileMessage documentFile}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Document file: ''{0}''</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Datei: ''{0}''</pre></td></tr>
- * </table>
- * <li>"{@link #getDocumentLocationOptionMessage documentLocationOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Location of classpath documents.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort der Klassenpfad-Dokumente.</pre></td></tr>
- * </table>
- * <li>"{@link #getDocumentLocationOptionArgNameMessage documentLocationOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>location</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort</pre></td></tr>
  * </table>
  * <li>"{@link #getDocumentsOptionMessage documentsOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Document filenames separated by '':''. If starting with a ''@'' character, a file name of a file holding document filenames.</pre></td></tr>
@@ -197,9 +167,9 @@ import org.xml.sax.SAXException;
  * <tr><td valign="top">English:</td><td valign="top"><pre>files</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dateien</pre></td></tr>
  * </table>
- * <li>"{@link #getFailOnWarningsOptionMessage failOnWarningsOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Exit with failure on warnings.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Bei Warnungen Fehler melden.</pre></td></tr>
+ * <li>"{@link #getInvalidModelMessage invalidModel}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Invalid model.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ung&uuml;ltiges Modell.</pre></td></tr>
  * </table>
  * <li>"{@link #getLongDescriptionMessage longDescription}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre></pre></td></tr>
@@ -208,6 +178,14 @@ import org.xml.sax.SAXException;
  * <li>"{@link #getMissingModuleMessage missingModule}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul ''{0}'' nicht gefunden.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getModuleLocationOptionMessage moduleLocationOption}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Location of classpath modules.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort der Klassenpfad-Module.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getModuleLocationOptionArgNameMessage moduleLocationOptionArgName}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>location</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort</pre></td></tr>
  * </table>
  * <li>"{@link #getModuleNameOptionMessage moduleNameOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Name of the module to process.</pre></td></tr>
@@ -248,10 +226,6 @@ import org.xml.sax.SAXException;
  * <tr><td valign="top">English:</td><td valign="top"><pre>{0} successful.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} erfolgreich.</pre></td></tr>
  * </table>
- * <li>"{@link #getVerboseOptionMessage verboseOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Enables verbose output.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert ausf&uuml;hrliche Ausgaben.</pre></td></tr>
- * </table>
  * </ul></p>
  *
  * @author <a href="mailto:cs@jomc.org">Christian Schulte</a> 1.0
@@ -266,11 +240,14 @@ public abstract class AbstractJomcCommand implements Command
 {
     // SECTION-START[AbstractJomcCommand]
 
-    /** 'verbose' option of the instance. */
-    private Option verboseOption;
+    /**
+     * Log level events are logged at by default.
+     * @see #getDefaultLogLevel()
+     */
+    private static final Level DEFAULT_LOG_LEVEL = Level.WARNING;
 
-    /** 'debug' option of the instance. */
-    private Option debugOption;
+    /** Default log level. */
+    private static volatile Level defaultLogLevel;
 
     /** 'classpath' option of the instance. */
     private Option classpathOption;
@@ -278,23 +255,20 @@ public abstract class AbstractJomcCommand implements Command
     /** 'documents' option of the instance. */
     private Option documentsOption;
 
-    /** 'document-location' option of the instance. */
-    private Option documentLocationOption;
+    /** 'module-location' option of the instance. */
+    private Option moduleLocationOption;
 
     /** 'module-name' option of the instance. */
     private Option moduleNameOption;
 
-    /** 'fail-on-warnings' option of the instance. */
-    private Option failOnWarningsOption;
-
     /** 'no-classpath-resolution' option of the instance. */
     private Option noClasspathResolutionOption;
 
-    /** Greatest severity logged by the command. */
-    private Level severity = Level.ALL;
-
     /** The {@code ModelManager} of the instance. */
     private ModelManager modelManager;
+
+    /** The {@code ModelObjectValidator} of the instance. */
+    private ModelObjectValidator modelObjectValidator;
 
     /** The {@code JavaBundles} tool of the instance. */
     private JavaBundles javaBundles;
@@ -305,152 +279,100 @@ public abstract class AbstractJomcCommand implements Command
     /** The {@code JavaSources} tool of the instance. */
     private JavaSources javaSources;
 
-    public ModelManager getModelManager()
+    /** The listeners of the instance. */
+    private List<Listener> listeners;
+
+    /** Log level of the instance. */
+    private Level logLevel;
+
+    /**
+     * Gets the list of registered listeners.
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * to the returned list will be present inside the object. This is why there is no {@code set} method for the
+     * listeners property.</p>
+     *
+     * @return The list of registered listeners.
+     *
+     * @see #log(java.util.logging.Level, java.lang.String, java.lang.Throwable)
+     */
+    public List<Listener> getListeners()
     {
-        if ( this.modelManager == null )
+        if ( this.listeners == null )
         {
-            this.modelManager = new DefaultModelManager();
+            this.listeners = new LinkedList<Listener>();
         }
 
-        return this.modelManager;
+        return this.listeners;
     }
 
-    public JavaBundles getJavaBundles()
+    /**
+     * Gets the default log level events are logged at.
+     * <p>The default log level is controlled by system property
+     * {@code org.jomc.cli.command.AbstractJomcCommand.defaultLogLevel} holding the log level to log events at by
+     * default. If that property is not set, the {@code WARNING} default is returned.</p>
+     *
+     * @return The log level events are logged at by default.
+     *
+     * @see #getLogLevel()
+     * @see Level#parse(java.lang.String)
+     */
+    public static Level getDefaultLogLevel()
     {
-        if ( this.javaBundles == null )
+        if ( defaultLogLevel == null )
         {
-            return new JavaBundles();
+            defaultLogLevel = Level.parse( System.getProperty(
+                "org.jomc.cli.command.AbstractJomcCommand.defaultLogLevel", DEFAULT_LOG_LEVEL.getName() ) );
+
         }
 
-        return this.javaBundles;
+        return defaultLogLevel;
     }
 
-    public JavaClasses getJavaClasses()
+    /**
+     * Sets the default log level events are logged at.
+     *
+     * @param value The new default level events are logged at or {@code null}.
+     *
+     * @see #getDefaultLogLevel()
+     */
+    public static void setDefaultLogLevel( final Level value )
     {
-        if ( this.javaClasses == null )
-        {
-            return new JavaClasses();
-        }
-
-        return this.javaClasses;
+        defaultLogLevel = value;
     }
 
-    public JavaSources getJavaSources()
+    /**
+     * Gets the log level of the instance.
+     *
+     * @return The log level of the instance.
+     *
+     * @see #getDefaultLogLevel()
+     * @see #setLogLevel(java.util.logging.Level)
+     * @see #isLoggable(java.util.logging.Level)
+     */
+    public Level getLogLevel()
     {
-        if ( this.javaSources == null )
+        if ( this.logLevel == null )
         {
-            return new JavaSources();
+            this.logLevel = getDefaultLogLevel();
+            this.log( Level.CONFIG, this.getDefaultLogLevelInfoMessage(
+                this.getLocale(), this.logLevel.getLocalizedName() ), null );
+
         }
 
-        return this.javaSources;
+        return this.logLevel;
     }
 
-    public Option getVerboseOption()
+    /**
+     * Sets the log level of the instance.
+     *
+     * @param value The new log level of the instance or {@code null}.
+     *
+     * @see #getLogLevel()
+     * @see #isLoggable(java.util.logging.Level)
+     */
+    public void setLogLevel( final Level value )
     {
-        if ( this.verboseOption == null )
-        {
-            this.verboseOption = new Option( this.getVerboseOptionShortName(), this.getVerboseOptionLongName(),
-                                             false, this.getVerboseOptionMessage( this.getLocale() ) );
-
-        }
-
-        return this.verboseOption;
-    }
-
-    public Option getDebugOption()
-    {
-        if ( this.debugOption == null )
-        {
-            this.debugOption = new Option( this.getDebugOptionShortName(), this.getDebugOptionLongName(),
-                                           false, this.getDebugOptionMessage( this.getLocale() ) );
-
-        }
-
-        return this.debugOption;
-    }
-
-    public Option getClasspathOption()
-    {
-        if ( this.classpathOption == null )
-        {
-            this.classpathOption = new Option( this.getClasspathOptionShortName(), this.getClasspathOptionLongName(),
-                                               true, this.getClasspathOptionMessage( this.getLocale() ) );
-
-            this.classpathOption.setArgs( Option.UNLIMITED_VALUES );
-            this.classpathOption.setValueSeparator( ':' );
-            this.classpathOption.setArgName( this.getClasspathOptionArgNameMessage( this.getLocale() ) );
-        }
-
-        return this.classpathOption;
-    }
-
-    public Option getDocumentsOption()
-    {
-        if ( this.documentsOption == null )
-        {
-            this.documentsOption = new Option( this.getDocumentsOptionShortName(), this.getDocumentsOptionLongName(),
-                                               true, this.getDocumentsOptionMessage( this.getLocale() ) );
-
-            this.documentsOption.setArgs( Option.UNLIMITED_VALUES );
-            this.documentsOption.setValueSeparator( ':' );
-            this.documentsOption.setArgName( this.getDocumentsOptionArgNameMessage( this.getLocale() ) );
-        }
-
-        return this.documentsOption;
-    }
-
-    public Option getDocumentLocationOption()
-    {
-        if ( this.documentLocationOption == null )
-        {
-            this.documentLocationOption = new Option( this.getDocumentLocationOptionShortName(),
-                                                      this.getDocumentLocationOptionLongName(), true,
-                                                      this.getDocumentLocationOptionMessage( this.getLocale() ) );
-
-            this.documentLocationOption.setArgName( this.getDocumentLocationOptionArgNameMessage( this.getLocale() ) );
-        }
-
-        return this.documentLocationOption;
-    }
-
-    public Option getModuleNameOption()
-    {
-        if ( this.moduleNameOption == null )
-        {
-            this.moduleNameOption = new Option( this.getModuleNameOptionShortName(),
-                                                this.getModuleNameOptionLongName(),
-                                                true, this.getModuleNameOptionMessage( this.getLocale() ) );
-
-            this.moduleNameOption.setArgName( this.getModuleNameOptionArgNameMessage( this.getLocale() ) );
-        }
-
-        return this.moduleNameOption;
-    }
-
-    public Option getFailOnWarningsOption()
-    {
-        if ( this.failOnWarningsOption == null )
-        {
-            this.failOnWarningsOption = new Option( this.getFailOnWarningsOptionShortName(),
-                                                    this.getFailOnWarningsOptionLongName(),
-                                                    false, this.getFailOnWarningsOptionMessage( this.getLocale() ) );
-
-        }
-
-        return this.failOnWarningsOption;
-    }
-
-    public Option getNoClasspathResolutionOption()
-    {
-        if ( this.noClasspathResolutionOption == null )
-        {
-            this.noClasspathResolutionOption = new Option(
-                this.getNoClasspathResolutionOptionShortName(), this.getNoClasspathResolutionOptionLongName(),
-                false, this.getNoClasspathResolutionOptionMessage( this.getLocale() ) );
-
-        }
-
-        return this.noClasspathResolutionOption;
+        this.logLevel = value;
     }
 
     public String getName()
@@ -476,60 +398,301 @@ public abstract class AbstractJomcCommand implements Command
     public Options getOptions()
     {
         final Options options = new Options();
-        options.addOption( this.getDebugOption() );
-        options.addOption( this.getVerboseOption() );
         options.addOption( this.getClasspathOption() );
         options.addOption( this.getDocumentsOption() );
-        options.addOption( this.getDocumentLocationOption() );
+        options.addOption( this.getModuleLocationOption() );
         options.addOption( this.getModuleNameOption() );
-        options.addOption( this.getFailOnWarningsOption() );
         options.addOption( this.getNoClasspathResolutionOption() );
         return options;
     }
 
-    public final int execute( final CommandLine commandLine, final PrintWriter printWriter )
+    public final int execute( final CommandLine commandLine )
     {
-        final boolean debug = commandLine.hasOption( this.getDebugOption().getOpt() );
-        final boolean verbose = commandLine.hasOption( this.getVerboseOption().getOpt() );
-        final boolean failOnWarnings = commandLine.hasOption( this.getFailOnWarningsOption().getOpt() );
-
-        this.log( Level.INFO, this.getSeparatorMessage( this.getLocale() ), null, printWriter, verbose, debug );
-        this.log( Level.INFO, this.getApplicationTitleMessage( this.getLocale() ), null, printWriter, verbose, debug );
-        this.log( Level.INFO, this.getSeparatorMessage( this.getLocale() ), null, printWriter, verbose, debug );
-
-        int status = this.executeCommand( commandLine, printWriter );
-
-        if ( status == Command.STATUS_SUCCESS && failOnWarnings &&
-             this.severity.intValue() >= Level.WARNING.intValue() )
+        try
         {
-            status = Command.STATUS_FAILURE;
-        }
+            if ( this.isLoggable( Level.INFO ) )
+            {
+                this.log( Level.INFO, this.getSeparatorMessage( this.getLocale() ), null );
+                this.log( Level.INFO, this.getApplicationTitleMessage( this.getLocale() ), null );
+                this.log( Level.INFO, this.getSeparatorMessage( this.getLocale() ), null );
+            }
 
-        if ( status == Command.STATUS_SUCCESS )
+            final int status = this.executeCommand( commandLine );
+
+            if ( this.isLoggable( Level.INFO ) )
+            {
+                if ( status == Command.STATUS_SUCCESS )
+                {
+                    this.log( Level.INFO, this.getToolSuccessMessage( this.getLocale(), this.getCommandName() ), null );
+                }
+                else
+                {
+                    this.log( Level.INFO, this.getToolFailureMessage( this.getLocale(), this.getCommandName() ), null );
+
+                }
+
+                this.log( Level.INFO, this.getSeparatorMessage( this.getLocale() ), null );
+            }
+
+            return status;
+        }
+        catch ( final Throwable t )
         {
-            this.log( Level.INFO, this.getToolSuccessMessage( this.getLocale(), this.getCommandName() ), null,
-                      printWriter, verbose, debug );
-
+            this.log( Level.SEVERE, t.getMessage(), t );
+            return Command.STATUS_FAILURE;
         }
-        else
-        {
-            this.log( Level.INFO, this.getToolFailureMessage( this.getLocale(), this.getCommandName() ), null,
-                      printWriter, verbose, debug );
-
-        }
-
-        this.log( Level.INFO, this.getSeparatorMessage( this.getLocale() ), null, printWriter, verbose, debug );
-
-        return status;
     }
 
-    protected abstract int executeCommand( final CommandLine commandLine, final PrintWriter printWriter );
+    protected abstract int executeCommand( final CommandLine commandLine ) throws Exception;
 
-    protected ClassLoader getClassLoader( final CommandLine commandLine, final PrintWriter printWriter )
-        throws IOException
+    /**
+     * Checks if a message at a given level is provided to the listeners of the instance.
+     *
+     * @param level The level to test.
+     *
+     * @return {@code true} if messages at {@code level} are provided to the listeners of the instance;
+     * {@code false} if messages at {@code level} are not provided to the listeners of the instance.
+     *
+     * @throws NullPointerException if {@code level} is {@code null}.
+     *
+     * @see #getLogLevel()
+     * @see #setLogLevel(java.util.logging.Level)
+     */
+    protected boolean isLoggable( final Level level )
     {
-        final boolean debug = commandLine.hasOption( this.getDebugOption().getOpt() );
-        final boolean verbose = commandLine.hasOption( this.getVerboseOption().getOpt() );
+        if ( level == null )
+        {
+            throw new NullPointerException( "level" );
+        }
+
+        return level.intValue() >= this.getLogLevel().intValue();
+    }
+
+    /**
+     * Notifies registered listeners.
+     *
+     * @param level The level of the event.
+     * @param message The message of the event or {@code null}.
+     * @param throwable The throwable of the event {@code null}.
+     *
+     * @throws NullPointerException if {@code level} is {@code null}.
+     *
+     * @see #getListeners()
+     * @see #isLoggable(java.util.logging.Level)
+     */
+    protected void log( final Level level, final String message, final Throwable throwable )
+    {
+        if ( level == null )
+        {
+            throw new NullPointerException( "level" );
+        }
+
+        if ( this.isLoggable( level ) )
+        {
+            for ( Listener l : this.getListeners() )
+            {
+                l.onLog( level, message, throwable );
+            }
+        }
+    }
+
+    protected void log( final ModelObjectValidationReport validationReport, final Marshaller marshaller )
+        throws JAXBException
+    {
+        if ( !validationReport.isModelObjectValid() && this.isLoggable( Level.SEVERE ) )
+        {
+            this.log( Level.SEVERE, this.getInvalidModelMessage( this.getLocale() ), null );
+        }
+
+        marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
+        for ( ModelObjectValidationReport.Detail d : validationReport.getDetails() )
+        {
+            if ( this.isLoggable( d.getLevel() ) )
+            {
+                this.log( d.getLevel(), d.getMessage(), null );
+
+                if ( d.getElement() != null && this.getLogLevel().intValue() < Level.INFO.intValue() )
+                {
+                    final StringWriter stringWriter = new StringWriter();
+                    marshaller.marshal( d.getElement(), stringWriter );
+                    this.log( d.getLevel(), stringWriter.toString(), null );
+                }
+            }
+        }
+    }
+
+    protected ModelManager getModelManager()
+    {
+        if ( this.modelManager == null )
+        {
+            final DefaultModelManager defaultModelManager = new DefaultModelManager();
+            defaultModelManager.setLogLevel( this.getLogLevel() );
+            defaultModelManager.getListeners().add( new DefaultModelManager.Listener()
+            {
+
+                public void onLog( final Level level, final String message, final Throwable t )
+                {
+                    log( level, message, t );
+                }
+
+            } );
+
+            this.modelManager = defaultModelManager;
+        }
+
+        return this.modelManager;
+    }
+
+    protected ModelObjectValidator getModelObjectValidator()
+    {
+        if ( this.modelObjectValidator == null )
+        {
+            this.modelObjectValidator = new DefaultModelObjectValidator();
+        }
+
+        return this.modelObjectValidator;
+    }
+
+    protected JavaBundles getJavaBundles()
+    {
+        if ( this.javaBundles == null )
+        {
+            final JavaBundles tool = new JavaBundles();
+            tool.setLogLevel( this.getLogLevel() );
+            tool.getListeners().add( new JomcTool.Listener()
+            {
+
+                public void onLog( final Level level, final String message, final Throwable throwable )
+                {
+                    log( level, message, throwable );
+                }
+
+            } );
+
+            return tool;
+        }
+
+        return this.javaBundles;
+    }
+
+    protected JavaClasses getJavaClasses()
+    {
+        if ( this.javaClasses == null )
+        {
+            final JavaClasses tool = new JavaClasses();
+            tool.setLogLevel( this.getLogLevel() );
+            tool.getListeners().add( new JomcTool.Listener()
+            {
+
+                public void onLog( final Level level, final String message, final Throwable throwable )
+                {
+                    log( level, message, throwable );
+                }
+
+            } );
+
+            return tool;
+        }
+
+        return this.javaClasses;
+    }
+
+    protected JavaSources getJavaSources()
+    {
+        if ( this.javaSources == null )
+        {
+            final JavaSources tool = new JavaSources();
+            tool.setLogLevel( this.getLogLevel() );
+            tool.getListeners().add( new JomcTool.Listener()
+            {
+
+                public void onLog( final Level level, final String message, final Throwable throwable )
+                {
+                    log( level, message, throwable );
+                }
+
+            } );
+
+            return tool;
+        }
+
+        return this.javaSources;
+    }
+
+    protected Option getClasspathOption()
+    {
+        if ( this.classpathOption == null )
+        {
+            this.classpathOption = new Option( this.getClasspathOptionShortName(), this.getClasspathOptionLongName(),
+                                               true, this.getClasspathOptionMessage( this.getLocale() ) );
+
+            this.classpathOption.setArgs( Option.UNLIMITED_VALUES );
+            this.classpathOption.setValueSeparator( ':' );
+            this.classpathOption.setArgName( this.getClasspathOptionArgNameMessage( this.getLocale() ) );
+        }
+
+        return this.classpathOption;
+    }
+
+    protected Option getDocumentsOption()
+    {
+        if ( this.documentsOption == null )
+        {
+            this.documentsOption = new Option( this.getDocumentsOptionShortName(), this.getDocumentsOptionLongName(),
+                                               true, this.getDocumentsOptionMessage( this.getLocale() ) );
+
+            this.documentsOption.setArgs( Option.UNLIMITED_VALUES );
+            this.documentsOption.setValueSeparator( ':' );
+            this.documentsOption.setArgName( this.getDocumentsOptionArgNameMessage( this.getLocale() ) );
+        }
+
+        return this.documentsOption;
+    }
+
+    protected Option getModuleLocationOption()
+    {
+        if ( this.moduleLocationOption == null )
+        {
+            this.moduleLocationOption = new Option( this.getModuleLocationOptionShortName(),
+                                                    this.getModuleLocationOptionLongName(), true,
+                                                    this.getModuleLocationOptionMessage( this.getLocale() ) );
+
+            this.moduleLocationOption.setArgName( this.getModuleLocationOptionArgNameMessage( this.getLocale() ) );
+        }
+
+        return this.moduleLocationOption;
+    }
+
+    protected Option getModuleNameOption()
+    {
+        if ( this.moduleNameOption == null )
+        {
+            this.moduleNameOption = new Option( this.getModuleNameOptionShortName(),
+                                                this.getModuleNameOptionLongName(),
+                                                true, this.getModuleNameOptionMessage( this.getLocale() ) );
+
+            this.moduleNameOption.setArgName( this.getModuleNameOptionArgNameMessage( this.getLocale() ) );
+        }
+
+        return this.moduleNameOption;
+    }
+
+    protected Option getNoClasspathResolutionOption()
+    {
+        if ( this.noClasspathResolutionOption == null )
+        {
+            this.noClasspathResolutionOption =
+                new Option( this.getNoClasspathResolutionOptionShortName(),
+                            this.getNoClasspathResolutionOptionLongName(), false,
+                            this.getNoClasspathResolutionOptionMessage( this.getLocale() ) );
+
+        }
+
+        return this.noClasspathResolutionOption;
+    }
+
+    protected ClassLoader getClassLoader( final CommandLine commandLine ) throws IOException
+    {
         final Set<URL> urls = new HashSet<URL>();
 
         if ( commandLine.hasOption( this.getClasspathOption().getOpt() ) )
@@ -539,8 +702,10 @@ public abstract class AbstractJomcCommand implements Command
             {
                 for ( String e : elements )
                 {
-                    this.log( Level.FINE, this.getClasspathElementMessage( this.getLocale(), e ), null, printWriter,
-                              verbose, debug );
+                    if ( this.isLoggable( Level.FINE ) )
+                    {
+                        this.log( Level.FINE, this.getClasspathElementMessage( this.getLocale(), e ), null );
+                    }
 
                     if ( e.startsWith( "@" ) )
                     {
@@ -579,11 +744,8 @@ public abstract class AbstractJomcCommand implements Command
         return new URLClassLoader( urls.toArray( new URL[ urls.size() ] ) );
     }
 
-    protected Set<File> getDocumentFiles( final CommandLine commandLine, final PrintWriter printWriter )
-        throws IOException
+    protected Set<File> getDocumentFiles( final CommandLine commandLine ) throws IOException
     {
-        final boolean debug = commandLine.hasOption( this.getDebugOption().getOpt() );
-        final boolean verbose = commandLine.hasOption( this.getVerboseOption().getOpt() );
         final Set<File> files = new HashSet<File>();
 
         if ( commandLine.hasOption( this.getDocumentsOption().getOpt() ) )
@@ -593,8 +755,10 @@ public abstract class AbstractJomcCommand implements Command
             {
                 for ( String e : elements )
                 {
-                    this.log( Level.FINE, this.getDocumentFileMessage( this.getLocale(), e ), null, printWriter,
-                              verbose, debug );
+                    if ( this.isLoggable( Level.FINE ) )
+                    {
+                        this.log( Level.FINE, this.getDocumentFileMessage( this.getLocale(), e ), null );
+                    }
 
                     if ( e.startsWith( "@" ) )
                     {
@@ -632,38 +796,15 @@ public abstract class AbstractJomcCommand implements Command
         return files;
     }
 
-    protected Modules getModules( final ModelManager manager, final CommandLine commandLine,
-                                  final PrintWriter printWriter, final boolean includeClasspathModule,
-                                  final boolean strictValidation )
-        throws IOException, SAXException, JAXBException, ModelException
+    protected Modules getModules( final CommandLine commandLine ) throws IOException, SAXException, JAXBException
     {
-        final ClassLoader classLoader = this.getClassLoader( commandLine, printWriter );
-        final boolean verbose = commandLine.hasOption( getVerboseOption().getOpt() );
-        final boolean debug = commandLine.hasOption( getDebugOption().getOpt() );
+        final ClassLoader classLoader = this.getClassLoader( commandLine );
         final Modules modules = new Modules();
-        Modules modulesToValidate = null;
-
-        DefaultModelManager defaultModelManager = null;
-        if ( manager instanceof DefaultModelManager )
-        {
-            defaultModelManager = (DefaultModelManager) manager;
-            defaultModelManager.getListeners().add( new DefaultModelManager.Listener()
-            {
-
-                public void onLog( final Level level, final String message, final Throwable t )
-                {
-                    log( level, message, t, printWriter, verbose, debug );
-                }
-
-            } );
-
-            defaultModelManager.setClassLoader( classLoader );
-        }
 
         if ( commandLine.hasOption( this.getDocumentsOption().getOpt() ) )
         {
-            final Unmarshaller u = manager.getUnmarshaller( false );
-            for ( File f : this.getDocumentFiles( commandLine, printWriter ) )
+            final Unmarshaller u = this.getModelManager().getUnmarshaller( classLoader );
+            for ( File f : this.getDocumentFiles( commandLine ) )
             {
                 final InputStream in = new FileInputStream( f );
                 Object o = u.unmarshal( new StreamSource( in ) );
@@ -682,229 +823,64 @@ public abstract class AbstractJomcCommand implements Command
                 {
                     modules.getModule().addAll( ( (Modules) o ).getModule() );
                 }
-                else
+                else if ( this.isLoggable( Level.WARNING ) )
                 {
                     this.log( Level.WARNING, this.getCannotProcessMessage(
-                        this.getLocale(), f.getAbsolutePath(), o.toString() ), null, printWriter, verbose, debug );
+                        this.getLocale(), f.getAbsolutePath(), o.toString() ), null );
 
-                }
-            }
-
-            modulesToValidate = modules;
-        }
-
-        if ( defaultModelManager != null )
-        {
-            if ( commandLine.hasOption( this.getClasspathOption().getOpt() ) )
-            {
-                final Modules classpathModules;
-                if ( commandLine.hasOption( this.getDocumentLocationOption().getOpt() ) )
-                {
-                    classpathModules = defaultModelManager.getClasspathModules(
-                        commandLine.getOptionValue( this.getDocumentLocationOption().getOpt() ) );
-
-                }
-                else
-                {
-                    classpathModules = defaultModelManager.getClasspathModules(
-                        defaultModelManager.getDefaultDocumentLocation() );
-
-                }
-
-                for ( Module m : classpathModules.getModule() )
-                {
-                    if ( modules.getModule( m.getName() ) == null )
-                    {
-                        modules.getModule().add( m );
-                    }
-                }
-            }
-
-            if ( !commandLine.hasOption( this.getNoClasspathResolutionOption().getOpt() ) )
-            {
-                final Module classpathModule = defaultModelManager.getClasspathModule( modules );
-                if ( classpathModule != null )
-                {
-                    if ( includeClasspathModule )
-                    {
-                        modules.getModule().add( classpathModule );
-                    }
-                    else
-                    {
-                        modulesToValidate = new Modules( modules );
-                        modulesToValidate.getModule().add( classpathModule );
-                    }
                 }
             }
         }
 
-        if ( modulesToValidate != null )
+        if ( commandLine.hasOption( this.getClasspathOption().getOpt() ) )
         {
-            if ( strictValidation )
+            final DefaultModelManager defaultModelManager = new DefaultModelManager();
+            defaultModelManager.setLogLevel( this.getLogLevel() );
+            defaultModelManager.getListeners().add( new DefaultModelManager.Listener()
             {
-                manager.validateModules( modulesToValidate );
-            }
-            else
+
+                public void onLog( final Level level, final String message, final Throwable t )
+                {
+                    log( level, message, t );
+                }
+
+            } );
+
+            final Modules classpathModules = defaultModelManager.getClasspathModules(
+                classLoader, commandLine.hasOption( this.getModuleLocationOption().getOpt() )
+                             ? commandLine.getOptionValue( this.getModuleLocationOption().getOpt() )
+                             : DefaultModelManager.getDefaultModuleLocation() );
+
+            for ( Module m : classpathModules.getModule() )
             {
-                manager.validateModelObject( manager.getObjectFactory().createModules( modulesToValidate ) );
+                if ( modules.getModule( m.getName() ) == null )
+                {
+                    modules.getModule().add( m );
+                }
             }
         }
 
-        this.log( Level.FINE, this.getModulesReportMessage( this.getLocale() ), null, printWriter, verbose, debug );
-
-        for ( Module m : modules.getModule() )
+        if ( !commandLine.hasOption( this.getNoClasspathResolutionOption().getOpt() ) )
         {
-            this.log( Level.FINE, "\t" + m.getName(), null, printWriter, verbose, debug );
+            final Module classpathModule = modules.getClasspathModule(
+                Modules.getDefaultClasspathModuleName(), classLoader );
+
+            if ( classpathModule != null )
+            {
+                modules.getModule().add( classpathModule );
+            }
+        }
+
+        if ( this.isLoggable( Level.FINE ) )
+        {
+            this.log( Level.FINE, this.getModulesReportMessage( this.getLocale() ), null );
+            for ( Module m : modules.getModule() )
+            {
+                this.log( Level.FINE, "\t" + m.getName(), null );
+            }
         }
 
         return modules;
-    }
-
-    protected void configureTool( final JomcTool tool, final CommandLine commandLine, final PrintWriter printWriter,
-                                  final boolean includeClasspathModule )
-        throws IOException, SAXException, JAXBException, ModelException
-    {
-        final boolean verbose = commandLine.hasOption( getVerboseOption().getOpt() );
-        final boolean debug = commandLine.hasOption( getDebugOption().getOpt() );
-
-        tool.getListeners().add( new JomcTool.Listener()
-        {
-
-            public void onLog( final Level level, final String message, final Throwable throwable )
-            {
-                log( level, message, throwable, printWriter, verbose, debug );
-            }
-
-        } );
-
-        if ( verbose || debug )
-        {
-            final Level logLevel = debug ? Level.ALL : Level.INFO;
-
-            tool.setLogLevel( logLevel );
-            if ( tool.getModelManager() instanceof DefaultModelManager )
-            {
-                ( (DefaultModelManager) tool.getModelManager() ).setLogLevel( logLevel );
-            }
-        }
-
-        tool.setModules( this.getModules(
-            tool.getModelManager(), commandLine, printWriter, includeClasspathModule, false ) );
-
-    }
-
-    protected String getLoglines( final Level level, final String text )
-    {
-        try
-        {
-            String logLines = null;
-
-            if ( text != null )
-            {
-                final StringBuilder lines = new StringBuilder();
-                final BufferedReader reader = new BufferedReader( new StringReader( text ) );
-
-                String line;
-                while ( ( line = reader.readLine() ) != null )
-                {
-                    lines.append( "[" ).append( level.getLocalizedName() ).append( "] " );
-                    lines.append( line ).append( System.getProperty( "line.separator" ) );
-                }
-
-                logLines = lines.toString();
-            }
-
-            return logLines;
-        }
-        catch ( final IOException e )
-        {
-            throw new AssertionError( e );
-        }
-    }
-
-    protected void log( final Level level, final String message, final Throwable throwable,
-                        final PrintWriter printWriter, final boolean verbose, final boolean debug )
-    {
-        Level logLevel = Level.WARNING;
-        if ( verbose )
-        {
-            logLevel = Level.INFO;
-        }
-        if ( debug )
-        {
-            logLevel = Level.FINEST;
-        }
-
-        if ( level.intValue() >= logLevel.intValue() )
-        {
-            if ( message != null )
-            {
-                printWriter.print( this.getLoglines( level, message ) );
-            }
-
-            if ( throwable != null && debug )
-            {
-                final StringWriter stackTrace = new StringWriter();
-                final PrintWriter pw = new PrintWriter( stackTrace );
-                throwable.printStackTrace( pw );
-                pw.flush();
-                printWriter.print( this.getLoglines( level, stackTrace.toString() ) );
-            }
-        }
-
-        if ( level.intValue() > this.severity.intValue() )
-        {
-            this.severity = level;
-        }
-
-        printWriter.flush();
-    }
-
-    protected void log( final Level level, final ModelException e, final PrintWriter printWriter, final boolean verbose,
-                        final boolean debug )
-    {
-        try
-        {
-            this.log( level, "", null, printWriter, verbose, debug );
-            if ( e.getMessage() != null )
-            {
-                this.log( level, e.getMessage(), null, printWriter, verbose, debug );
-                this.log( level, "", null, printWriter, verbose, debug );
-            }
-
-            Marshaller marshaller = null;
-            for ( ModelException.Detail d : e.getDetails() )
-            {
-                this.log( d.getLevel(), d.getMessage(), null, printWriter, verbose, debug );
-
-                if ( d.getElement() != null )
-                {
-                    if ( marshaller == null )
-                    {
-                        marshaller = new DefaultModelManager().getMarshaller( false, true );
-                    }
-
-                    final StringWriter stringWriter = new StringWriter();
-                    marshaller.marshal( d.getElement(), stringWriter );
-
-                    this.log( Level.FINE, "", null, printWriter, verbose, debug );
-                    this.log( Level.FINE, stringWriter.toString(), null, printWriter, verbose, debug );
-                }
-            }
-            this.log( level, "", null, printWriter, verbose, debug );
-        }
-        catch ( final IOException e2 )
-        {
-            throw new RuntimeException( e2 );
-        }
-        catch ( final SAXException e2 )
-        {
-            throw new RuntimeException( e2 );
-        }
-        catch ( final JAXBException e2 )
-        {
-            throw new RuntimeException( e2 );
-        }
     }
 
     // SECTION-END
@@ -997,62 +973,6 @@ public abstract class AbstractJomcCommand implements Command
     }
 
     /**
-     * Gets the value of the {@code debugOptionLongName} property.
-     * @return Long name of the 'debug' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private java.lang.String getDebugOptionLongName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "debugOptionLongName" );
-        assert _p != null : "'debugOptionLongName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code debugOptionShortName} property.
-     * @return Name of the 'debug' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private java.lang.String getDebugOptionShortName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "debugOptionShortName" );
-        assert _p != null : "'debugOptionShortName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code documentLocationOptionLongName} property.
-     * @return Long name of the 'document-location' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private java.lang.String getDocumentLocationOptionLongName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "documentLocationOptionLongName" );
-        assert _p != null : "'documentLocationOptionLongName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code documentLocationOptionShortName} property.
-     * @return Name of the 'document-location' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private java.lang.String getDocumentLocationOptionShortName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "documentLocationOptionShortName" );
-        assert _p != null : "'documentLocationOptionShortName' property not found.";
-        return _p;
-    }
-
-    /**
      * Gets the value of the {@code documentsOptionLongName} property.
      * @return Long name of the 'documents' option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
@@ -1081,30 +1001,30 @@ public abstract class AbstractJomcCommand implements Command
     }
 
     /**
-     * Gets the value of the {@code failOnWarningsOptionLongName} property.
-     * @return Long name of the 'fail-on-warnings' option.
+     * Gets the value of the {@code moduleLocationOptionLongName} property.
+     * @return Long name of the 'module-location' option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private java.lang.String getFailOnWarningsOptionLongName()
+    private java.lang.String getModuleLocationOptionLongName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "failOnWarningsOptionLongName" );
-        assert _p != null : "'failOnWarningsOptionLongName' property not found.";
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "moduleLocationOptionLongName" );
+        assert _p != null : "'moduleLocationOptionLongName' property not found.";
         return _p;
     }
 
     /**
-     * Gets the value of the {@code failOnWarningsOptionShortName} property.
-     * @return Name of the 'fail-on-warnings' option.
+     * Gets the value of the {@code moduleLocationOptionShortName} property.
+     * @return Name of the 'module-location' option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private java.lang.String getFailOnWarningsOptionShortName()
+    private java.lang.String getModuleLocationOptionShortName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "failOnWarningsOptionShortName" );
-        assert _p != null : "'failOnWarningsOptionShortName' property not found.";
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "moduleLocationOptionShortName" );
+        assert _p != null : "'moduleLocationOptionShortName' property not found.";
         return _p;
     }
 
@@ -1161,34 +1081,6 @@ public abstract class AbstractJomcCommand implements Command
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "noClasspathResolutionOptionShortName" );
         assert _p != null : "'noClasspathResolutionOptionShortName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code verboseOptionLongName} property.
-     * @return Long name of the 'verbose' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private java.lang.String getVerboseOptionLongName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "verboseOptionLongName" );
-        assert _p != null : "'verboseOptionLongName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code verboseOptionShortName} property.
-     * @return Name of the 'verbose' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private java.lang.String getVerboseOptionShortName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "verboseOptionShortName" );
-        assert _p != null : "'verboseOptionShortName' property not found.";
         return _p;
     }
     // SECTION-END
@@ -1297,22 +1189,23 @@ public abstract class AbstractJomcCommand implements Command
     }
 
     /**
-     * Gets the text of the {@code debugOption} message.
+     * Gets the text of the {@code defaultLogLevelInfo} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Enables debug output.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert Diagnose-Ausgaben.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Default log level: ''{0}''</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Standard-Protokollierungsstufe: ''{0}''</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
-     * @return The text of the {@code debugOption} message.
+     * @param defaultLogLevel Format argument.
+     * @return The text of the {@code defaultLogLevelInfo} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private String getDebugOptionMessage( final java.util.Locale locale )
+    private String getDefaultLogLevelInfoMessage( final java.util.Locale locale, final java.lang.String defaultLogLevel )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "debugOption", locale,  null );
-        assert _m != null : "'debugOption' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "defaultLogLevelInfo", locale, new Object[] { defaultLogLevel, null } );
+        assert _m != null : "'defaultLogLevelInfo' message not found.";
         return _m;
     }
 
@@ -1334,46 +1227,6 @@ public abstract class AbstractJomcCommand implements Command
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentFile", locale, new Object[] { documentFile, null } );
         assert _m != null : "'documentFile' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code documentLocationOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Location of classpath documents.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort der Klassenpfad-Dokumente.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code documentLocationOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private String getDocumentLocationOptionMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentLocationOption", locale,  null );
-        assert _m != null : "'documentLocationOption' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code documentLocationOptionArgName} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>location</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code documentLocationOptionArgName} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private String getDocumentLocationOptionArgNameMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentLocationOptionArgName", locale,  null );
-        assert _m != null : "'documentLocationOptionArgName' message not found.";
         return _m;
     }
 
@@ -1418,22 +1271,22 @@ public abstract class AbstractJomcCommand implements Command
     }
 
     /**
-     * Gets the text of the {@code failOnWarningsOption} message.
+     * Gets the text of the {@code invalidModel} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Exit with failure on warnings.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Bei Warnungen Fehler melden.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Invalid model.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ung&uuml;ltiges Modell.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
-     * @return The text of the {@code failOnWarningsOption} message.
+     * @return The text of the {@code invalidModel} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private String getFailOnWarningsOptionMessage( final java.util.Locale locale )
+    private String getInvalidModelMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "failOnWarningsOption", locale,  null );
-        assert _m != null : "'failOnWarningsOption' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "invalidModel", locale,  null );
+        assert _m != null : "'invalidModel' message not found.";
         return _m;
     }
 
@@ -1475,6 +1328,46 @@ public abstract class AbstractJomcCommand implements Command
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "missingModule", locale, new Object[] { moduleName, null } );
         assert _m != null : "'missingModule' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code moduleLocationOption} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Location of classpath modules.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort der Klassenpfad-Module.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code moduleLocationOption} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
+    private String getModuleLocationOptionMessage( final java.util.Locale locale )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "moduleLocationOption", locale,  null );
+        assert _m != null : "'moduleLocationOption' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code moduleLocationOptionArgName} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>location</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code moduleLocationOptionArgName} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
+    private String getModuleLocationOptionArgNameMessage( final java.util.Locale locale )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "moduleLocationOptionArgName", locale,  null );
+        assert _m != null : "'moduleLocationOptionArgName' message not found.";
         return _m;
     }
 
@@ -1679,26 +1572,6 @@ public abstract class AbstractJomcCommand implements Command
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "toolSuccess", locale, new Object[] { toolName, null } );
         assert _m != null : "'toolSuccess' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code verboseOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Enables verbose output.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert ausf&uuml;hrliche Ausgaben.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code verboseOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private String getVerboseOptionMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "verboseOption", locale,  null );
-        assert _m != null : "'verboseOption' message not found.";
         return _m;
     }
     // SECTION-END

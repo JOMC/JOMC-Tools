@@ -34,8 +34,9 @@
 // SECTION-END
 package org.jomc.cli;
 
-import java.io.PrintWriter;
+import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 
@@ -65,11 +66,53 @@ public interface Command
 {
     // SECTION-START[Command]
 
+    /** Listener interface. */
+    public interface Listener
+    {
+
+        /**
+         * Get called on logging.
+         *
+         * @param level The level of the event.
+         * @param message The message of the event or {@code null}.
+         * @param t The throwable of the event or {@code null}.
+         *
+         * @throws NullPointerException if {@code level} is {@code null}.
+         */
+        void onLog( Level level, String message, Throwable t );
+
+    }
+
     /** Status code when the command completed successfully. */
     int STATUS_SUCCESS = 0;
 
     /** Status code when the command failed. */
     int STATUS_FAILURE = 1;
+
+    /**
+     * Gets the list of registered listeners.
+     *
+     * @return The list of registered listeners.
+     */
+    List<Listener> getListeners();
+
+    /**
+     * Gets the log level of the instance.
+     *
+     * @return The log level of the instance.
+     *
+     * @see #setLogLevel(java.util.logging.Level)
+     */
+    Level getLogLevel();
+
+    /**
+     * Sets the log level of the instance.
+     *
+     * @param value The new log level of the instance or {@code null}.
+     *
+     * @see #getLogLevel()
+     */
+    void setLogLevel( Level value );
 
     /**
      * Gets the name of the command.
@@ -118,16 +161,15 @@ public interface Command
      * Executes the command.
      *
      * @param commandLine Command line to execute.
-     * @param printWriter Writer to print any output to.
      *
      * @return The status code of the command.
      *
-     * @throws NullPointerException if {@code commandLine} or {@code printStream} is {@code null}.
+     * @throws NullPointerException if {@code commandLine} is {@code null}.
      *
      * @see #STATUS_SUCCESS
      * @see #STATUS_FAILURE
      */
-    int execute( CommandLine commandLine, PrintWriter printWriter ) throws NullPointerException;
+    int execute( CommandLine commandLine ) throws NullPointerException;
 
     // SECTION-END
 }
