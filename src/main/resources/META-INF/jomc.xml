@@ -307,9 +307,12 @@
         </message>
         <message name="classpathOption" final="true">
           <template defaultLanguage="en">
-            <text language="en">Classpath elements separated by '':''. If starting with a ''@'' character, a file name of a file holding classpath elements.</text>
-            <text language="de">Klassenpfad-Elemente mit '':'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Klassenpfad-Elementen.</text>
+            <text language="en">Classpath elements separated by ''{0}''. If starting with a ''@'' character, a file name of a file holding classpath elements.</text>
+            <text language="de">Klassenpfad-Elemente mit ''{0}'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Klassenpfad-Elementen.</text>
           </template>
+          <arguments>
+            <argument index="0" name="pathSeparator"/>
+          </arguments>
         </message>
         <message name="classpathOptionArgName" final="true">
           <template defaultLanguage="en">
@@ -319,9 +322,12 @@
         </message>
         <message name="documentsOption" final="true">
           <template defaultLanguage="en">
-            <text language="en">Document filenames separated by '':''. If starting with a ''@'' character, a file name of a file holding document filenames.</text>
-            <text language="de">Dokument-Dateinamen mit '':'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Dokument-Dateinamen.</text>
+            <text language="en">Document filenames separated by ''{0}''. If starting with a ''@'' character, a file name of a file holding document filenames.</text>
+            <text language="de">Dokument-Dateinamen mit ''{0}'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Dokument-Dateinamen.</text>
           </template>
+          <arguments>
+            <argument index="0" name="pathSeparator"/>
+          </arguments>
         </message>
         <message name="documentsOptionArgName" final="true">
           <template defaultLanguage="en">
@@ -1117,7 +1123,7 @@
     <!-- ******************************************************************* -->
     <message name="classesDirectoryOption">
       <template defaultLanguage="en">
-        <text language="en">Directory holding the class files to process..</text>
+        <text language="en">Directory holding the class files to process.</text>
         <text language="de">Verzeichnis mit den zu verarbeitenden Klassendateien.</text>
       </template>
     </message>

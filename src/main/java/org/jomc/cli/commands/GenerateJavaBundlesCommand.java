@@ -171,8 +171,8 @@ import org.jomc.tools.JavaBundles;
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Klassenpfad-Element: ''{0}''</pre></td></tr>
  * </table>
  * <li>"{@link #getClasspathOptionMessage classpathOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath elements separated by '':''. If starting with a ''@'' character, a file name of a file holding classpath elements.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Klassenpfad-Elemente mit '':'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Klassenpfad-Elementen.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath elements separated by ''{0}''. If starting with a ''@'' character, a file name of a file holding classpath elements.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Klassenpfad-Elemente mit ''{0}'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Klassenpfad-Elementen.</pre></td></tr>
  * </table>
  * <li>"{@link #getClasspathOptionArgNameMessage classpathOptionArgName}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>elements</pre></td></tr>
@@ -187,8 +187,8 @@ import org.jomc.tools.JavaBundles;
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Datei: ''{0}''</pre></td></tr>
  * </table>
  * <li>"{@link #getDocumentsOptionMessage documentsOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Document filenames separated by '':''. If starting with a ''@'' character, a file name of a file holding document filenames.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Dateinamen mit '':'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Dokument-Dateinamen.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Document filenames separated by ''{0}''. If starting with a ''@'' character, a file name of a file holding document filenames.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Dateinamen mit ''{0}'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Dokument-Dateinamen.</pre></td></tr>
  * </table>
  * <li>"{@link #getDocumentsOptionArgNameMessage documentsOptionArgName}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>files</pre></td></tr>
@@ -956,19 +956,20 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code classpathOption} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath elements separated by '':''. If starting with a ''@'' character, a file name of a file holding classpath elements.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Klassenpfad-Elemente mit '':'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Klassenpfad-Elementen.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath elements separated by ''{0}''. If starting with a ''@'' character, a file name of a file holding classpath elements.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Klassenpfad-Elemente mit ''{0}'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Klassenpfad-Elementen.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
+     * @param pathSeparator Format argument.
      * @return The text of the {@code classpathOption} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private String getClasspathOptionMessage( final java.util.Locale locale )
+    private String getClasspathOptionMessage( final java.util.Locale locale, final java.lang.String pathSeparator )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "classpathOption", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "classpathOption", locale, new Object[] { pathSeparator, null } );
         assert _m != null : "'classpathOption' message not found.";
         return _m;
     }
@@ -1038,19 +1039,20 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code documentsOption} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Document filenames separated by '':''. If starting with a ''@'' character, a file name of a file holding document filenames.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Dateinamen mit '':'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Dokument-Dateinamen.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Document filenames separated by ''{0}''. If starting with a ''@'' character, a file name of a file holding document filenames.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Dateinamen mit ''{0}'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Dokument-Dateinamen.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
+     * @param pathSeparator Format argument.
      * @return The text of the {@code documentsOption} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
-    private String getDocumentsOptionMessage( final java.util.Locale locale )
+    private String getDocumentsOptionMessage( final java.util.Locale locale, final java.lang.String pathSeparator )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentsOption", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentsOption", locale, new Object[] { pathSeparator, null } );
         assert _m != null : "'documentsOption' message not found.";
         return _m;
     }
