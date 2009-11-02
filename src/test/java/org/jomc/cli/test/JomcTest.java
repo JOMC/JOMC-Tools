@@ -101,8 +101,8 @@ public class JomcTest extends TestCase
 
         final String[] args = new String[]
         {
-            "generate-java-bundles", "-sd", this.getTestSourcesDirectory(), "-rd", this.getTestResourcesDirectory(),
-            "-df", this.getTestDocument(), "-D"
+            "generate-java-bundles", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-rd",
+            '"' + this.getTestResourcesDirectory() + '"', "-df", '"' + this.getTestDocument() + '"', "-D"
         };
 
         final String[] unsupportedOption = new String[]
@@ -112,8 +112,9 @@ public class JomcTest extends TestCase
 
         final String[] failOnWarnings = new String[]
         {
-            "generate-java-bundles", "-sd", this.getTestSourcesDirectory(), "-rd", this.getTestResourcesDirectory(),
-            "-df", this.getTestDocument(), "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
+            "generate-java-bundles", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-rd",
+            '"' + this.getTestResourcesDirectory() + '"', "-df", '"' + this.getTestDocument() + '"', "-mn",
+            "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
         };
 
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
@@ -131,8 +132,8 @@ public class JomcTest extends TestCase
 
         final String[] args = new String[]
         {
-            "manage-java-sources", "-sd", this.getTestSourcesDirectory(), "-df", this.getTestDocument(), "-mn",
-            this.getTestModuleName(), "-D"
+            "manage-java-sources", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-df",
+            '"' + this.getTestDocument() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-D"
         };
 
         final String[] unsupportedOption = new String[]
@@ -142,8 +143,8 @@ public class JomcTest extends TestCase
 
         final String[] failOnWarnings = new String[]
         {
-            "manage-java-sources", "-sd", this.getTestSourcesDirectory(), "-df", this.getTestDocument(), "-mn",
-            "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
+            "manage-java-sources", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-df",
+            '"' + this.getTestDocument() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
         };
 
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
@@ -166,13 +167,14 @@ public class JomcTest extends TestCase
 
         final String[] commitArgs = new String[]
         {
-            "commit-java-classes", "-df", this.getTestDocument(), "-cd", this.getTestClassesDirectory(), "-mn",
-            this.getTestModuleName(), "-D"
+            "commit-java-classes", "-df", '"' + this.getTestDocument() + '"', "-cd",
+            '"' + this.getTestClassesDirectory() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-D"
         };
 
         final String[] validateArgs = new String[]
         {
-            "validate-java-classes", "-df", this.getTestDocument(), "-cp", this.getTestClassesDirectory(), "-D"
+            "validate-java-classes", "-df", '"' + this.getTestDocument() + '"', "-cp",
+            '"' + this.getTestClassesDirectory() + '"', "-D"
         };
 
         final String[] commitUnsupportedOption = new String[]
@@ -187,14 +189,14 @@ public class JomcTest extends TestCase
 
         final String[] commitFailOnWarnings = new String[]
         {
-            "commit-java-classes", "-df", this.getTestDocument(), "-cd", this.getTestClassesDirectory(), "-mn",
-            "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
+            "commit-java-classes", "-df", '"' + this.getTestDocument() + '"', "-cd",
+            '"' + this.getTestClassesDirectory() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
         };
 
         final String[] validateFailOnWarnings = new String[]
         {
-            "validate-java-classes", "-df", this.getTestDocument(), "-cp", this.getTestClassesDirectory(),
-            "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
+            "validate-java-classes", "-df", '"' + this.getTestDocument() + '"', "-cp",
+            '"' + this.getTestClassesDirectory() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
         };
 
         FileUtils.copyDirectory( new File( this.getClassesDirectory() ), new File( this.getTestClassesDirectory() ) );
@@ -218,8 +220,8 @@ public class JomcTest extends TestCase
 
         final String[] args = new String[]
         {
-            "merge-modules", "-df", this.getTestDocument(), "-xs", this.getTestStylesheet(), "-mn",
-            this.getTestModuleName(), "-d", this.getTestOutputDocument(), "-D"
+            "merge-modules", "-df", '"' + this.getTestDocument() + '"', "-xs", '"' + this.getTestStylesheet() + '"',
+            "-mn", '"' + this.getTestModuleName() + '"', "-d", '"' + this.getTestOutputDocument() + '"', "-D"
         };
 
         final String[] unsupportedOption = new String[]
@@ -229,8 +231,9 @@ public class JomcTest extends TestCase
 
         final String[] illegalDoc = new String[]
         {
-            "merge-modules", "-df", this.getTestDocumentIllegal(), "-xs", this.getTestStylesheet(), "-mn",
-            this.getTestModuleName(), "-d", this.getTestOutputDocument(), "-D"
+            "merge-modules", "-df", '"' + this.getTestDocumentIllegal() + '"', "-xs",
+            '"' + this.getTestStylesheet() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-d",
+            '"' + this.getTestOutputDocument() + '"', "-D"
         };
 
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
@@ -248,7 +251,7 @@ public class JomcTest extends TestCase
 
         final String[] args = new String[]
         {
-            "validate-modules", "-df", this.getTestDocument(), "-D"
+            "validate-modules", "-df", '"' + this.getTestDocument() + '"', "-D"
         };
 
         final String[] unsupportedOption = new String[]
@@ -258,7 +261,7 @@ public class JomcTest extends TestCase
 
         final String[] illegalDoc = new String[]
         {
-            "validate-modules", "-df", this.getTestDocumentIllegal(), "-D"
+            "validate-modules", "-df", '"' + this.getTestDocumentIllegal() + '"', "-D"
         };
 
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );

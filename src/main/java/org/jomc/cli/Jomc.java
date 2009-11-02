@@ -101,6 +101,12 @@ import org.jomc.model.DefaultModelManager;
  * Dependency on {@code java.util.Locale} at specification level 1.1 bound to an instance.</blockquote></li>
  * </ul></p>
  * <p><b>Messages</b><ul>
+ * <li>"{@link #getCommandLineInfoMessage commandLineInfo}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Command line:
+ * {0}</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kommandozeile:
+ * {0}</pre></td></tr>
+ * </table>
  * <li>"{@link #getDebugOptionMessage debugOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Enables debug output.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert Diagnose-Ausgaben.</pre></td></tr>
@@ -414,6 +420,22 @@ public class Jomc
             }
 
             cmd.setLogLevel( this.getLogLevel() );
+
+            if ( this.isLoggable( Level.FINE ) )
+            {
+                final StringBuilder argumentInfo = new StringBuilder();
+
+                for ( int i = 0; i < args.length; i++ )
+                {
+                    argumentInfo.append( "\t[" ).append( i ).append( "]='" ).append( args[i] ).append( "'" ).
+                        append( System.getProperty( "line.separator" ) );
+
+                }
+
+                this.log( Level.FINE, this.getCommandLineInfoMessage(
+                    this.getLocale(), argumentInfo.toString() ), null );
+
+            }
 
             final boolean failOnWarnings = commandLine.hasOption( this.getFailOnWarningsOption().getOpt() );
 
@@ -735,6 +757,29 @@ public class Jomc
     }
     // SECTION-END
     // SECTION-START[Messages]
+
+    /**
+     * Gets the text of the {@code commandLineInfo} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Command line:
+     * {0}</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kommandozeile:
+     * {0}</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param commandLine Format argument.
+     * @return The text of the {@code commandLineInfo} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
+    private String getCommandLineInfoMessage( final java.util.Locale locale, final java.lang.String commandLine )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "commandLineInfo", locale, new Object[] { commandLine, null } );
+        assert _m != null : "'commandLineInfo' message not found.";
+        return _m;
+    }
 
     /**
      * Gets the text of the {@code debugOption} message.

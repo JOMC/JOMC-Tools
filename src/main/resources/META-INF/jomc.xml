@@ -184,6 +184,17 @@
             <text language="de">Bei Warnungen Fehler melden.</text>
           </template>
         </message>
+        <message name="commandLineInfo" final="true">
+          <template defaultLanguage="en">
+            <text language="en">Command line:
+{0}</text>
+            <text language="de">Kommandozeile:
+{0}</text>
+          </template>
+          <arguments>
+            <argument index="0" name="commandLine"/>
+          </arguments>
+        </message>
       </messages>
     </implementation>
 
