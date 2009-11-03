@@ -525,10 +525,16 @@ public class Jomc
 
             if ( throwable != null )
             {
-                if ( throwable.getMessage() != null )
+                this.getPrintWriter().print( this.formatLogLines( level, "" ) );
+                final String m = this.getMessage( throwable );
+
+                if ( m != null )
                 {
-                    this.getPrintWriter().print( this.formatLogLines( level, "" ) );
-                    this.getPrintWriter().print( this.formatLogLines( level, throwable.getMessage() ) );
+                    this.getPrintWriter().print( this.formatLogLines( level, m ) );
+                }
+                else
+                {
+                    this.getPrintWriter().print( this.formatLogLines( level, throwable.toString() ) );
                 }
 
                 if ( this.getLogLevel().intValue() < Level.INFO.intValue() )
@@ -565,6 +571,21 @@ public class Jomc
         {
             throw new AssertionError( e );
         }
+    }
+
+    private String getMessage( final Throwable throwable )
+    {
+        if ( throwable != null )
+        {
+            if ( throwable.getMessage() != null )
+            {
+                return throwable.getMessage();
+            }
+
+            return this.getMessage( throwable.getCause() );
+        }
+
+        return null;
     }
 
     // SECTION-END

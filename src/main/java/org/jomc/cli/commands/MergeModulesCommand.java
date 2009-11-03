@@ -35,6 +35,9 @@
 package org.jomc.cli.commands;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -92,6 +95,22 @@ import org.jomc.model.ObjectFactory;
  * <blockquote>Property of type {@code java.lang.String}.
  * <p>Name of the 'documents' option.</p>
  * </blockquote></li>
+ * <li>"{@link #getModuleExcludesOptionLongName moduleExcludesOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'module-excludes' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getModuleExcludesOptionShortName moduleExcludesOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'module-excludes' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getModuleIncludesOptionLongName moduleIncludesOptionLongName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Long name of the 'module-includes' option.</p>
+ * </blockquote></li>
+ * <li>"{@link #getModuleIncludesOptionShortName moduleIncludesOptionShortName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'module-includes' option.</p>
+ * </blockquote></li>
  * <li>"{@link #getModuleLocationOptionLongName moduleLocationOptionLongName}"
  * <blockquote>Property of type {@code java.lang.String}.
  * <p>Long name of the 'module-location' option.</p>
@@ -147,7 +166,7 @@ import org.jomc.model.ObjectFactory;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-8-SNAPSHOT Build 2009-11-02T14:11:12+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-8-SNAPSHOT Build 2009-11-03T05:55:38+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -189,6 +208,14 @@ import org.jomc.model.ObjectFactory;
  * <tr><td valign="top">English:</td><td valign="top"><pre>files</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dateien</pre></td></tr>
  * </table>
+ * <li>"{@link #getExcludingModuleMessage excludingModule}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Excluding module ''{0}''.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Schlie&szlig;t Modul ''{0}'' aus.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getIncludingModuleMessage includingModule}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Including module ''{0}''.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Schlie&szlig;t Modul ''{0}'' ein.</pre></td></tr>
+ * </table>
  * <li>"{@link #getInvalidModelMessage invalidModel}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Invalid model.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ung&uuml;ltiges Modell.</pre></td></tr>
@@ -206,6 +233,22 @@ import org.jomc.model.ObjectFactory;
  * <li>"{@link #getMissingModuleMessage missingModule}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul ''{0}'' nicht gefunden.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getModuleExcludesOptionMessage moduleExcludesOption}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Module names separated by '':'' of modules to exclude.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul-Namen auszuschlie&szlig;ender Module mit '':'' getrennt.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getModuleExcludesOptionArgNameMessage moduleExcludesOptionArgName}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>names</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Namen</pre></td></tr>
+ * </table>
+ * <li>"{@link #getModuleIncludesOptionMessage moduleIncludesOption}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Module names separated by '':'' of modules to include.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul-Namen einzuschlie&szlig;ender Module mit '':'' getrennt.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getModuleIncludesOptionArgNameMessage moduleIncludesOptionArgName}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>names</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Namen</pre></td></tr>
  * </table>
  * <li>"{@link #getModuleLocationOptionMessage moduleLocationOption}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Location of classpath modules.</pre></td></tr>
@@ -311,6 +354,8 @@ public final class MergeModulesCommand extends AbstractJomcCommand
             this.options.addOption( this.getStylesheetOption() );
             this.options.addOption( this.getModuleVendorOption() );
             this.options.addOption( this.getModuleVersionOption() );
+            this.options.addOption( this.getModuleIncludesOption() );
+            this.options.addOption( this.getModuleExcludesOption() );
         }
 
         return this.options;
@@ -353,6 +398,55 @@ public final class MergeModulesCommand extends AbstractJomcCommand
             if ( commandLine.hasOption( this.getModuleVendorOption().getOpt() ) )
             {
                 moduleVendor = commandLine.getOptionValue( this.getModuleVendorOption().getOpt() );
+            }
+
+            if ( commandLine.hasOption( this.getModuleIncludesOption().getOpt() ) )
+            {
+                final String[] values = commandLine.getOptionValues( this.getModuleIncludesOption().getOpt() );
+
+                if ( values != null )
+                {
+                    final List<String> includes = Arrays.asList( values );
+
+                    for ( final Iterator<Module> it = modules.getModule().iterator(); it.hasNext(); )
+                    {
+                        final Module m = it.next();
+                        if ( !includes.contains( m.getName() ) )
+                        {
+                            this.log( Level.INFO, this.getExcludingModuleMessage(
+                                this.getLocale(), m.getName() ), null );
+
+                            it.remove();
+                        }
+                        else
+                        {
+                            this.log( Level.INFO, this.getIncludingModuleMessage(
+                                this.getLocale(), m.getName() ), null );
+
+                        }
+                    }
+                }
+            }
+
+            if ( commandLine.hasOption( this.getModuleExcludesOption().getOpt() ) )
+            {
+                final String[] values = commandLine.getOptionValues( this.getModuleExcludesOption().getOpt() );
+
+                if ( values != null )
+                {
+                    for ( String exclude : values )
+                    {
+                        final Module m = modules.getModule( exclude );
+
+                        if ( m != null )
+                        {
+                            this.log( Level.INFO, this.getExcludingModuleMessage(
+                                this.getLocale(), m.getName() ), null );
+
+                            modules.getModule().remove( m );
+                        }
+                    }
+                }
             }
 
             Module mergedModule = modules.getMergedModule();
@@ -399,6 +493,10 @@ public final class MergeModulesCommand extends AbstractJomcCommand
     private Option moduleVersionOption;
 
     private Option moduleVendorOption;
+
+    private Option moduleIncludesOption;
+
+    private Option moduleExcludesOption;
 
     protected Option getStylesheetOption()
     {
@@ -455,6 +553,38 @@ public final class MergeModulesCommand extends AbstractJomcCommand
         }
 
         return this.moduleVendorOption;
+    }
+
+    protected Option getModuleIncludesOption()
+    {
+        if ( this.moduleIncludesOption == null )
+        {
+            this.moduleIncludesOption = new Option( this.getModuleIncludesOptionShortName(),
+                                                    this.getModuleIncludesOptionLongName(), false,
+                                                    this.getModuleIncludesOptionMessage( this.getLocale() ) );
+
+            this.moduleIncludesOption.setArgName( this.getModuleIncludesOptionArgNameMessage( this.getLocale() ) );
+            this.moduleIncludesOption.setValueSeparator( ':' );
+            this.moduleIncludesOption.setArgs( Option.UNLIMITED_VALUES );
+        }
+
+        return this.moduleIncludesOption;
+    }
+
+    protected Option getModuleExcludesOption()
+    {
+        if ( this.moduleExcludesOption == null )
+        {
+            this.moduleExcludesOption = new Option( this.getModuleExcludesOptionShortName(),
+                                                    this.getModuleExcludesOptionLongName(), false,
+                                                    this.getModuleExcludesOptionMessage( this.getLocale() ) );
+
+            this.moduleExcludesOption.setArgName( this.getModuleExcludesOptionArgNameMessage( this.getLocale() ) );
+            this.moduleExcludesOption.setValueSeparator( ':' );
+            this.moduleExcludesOption.setArgs( Option.UNLIMITED_VALUES );
+        }
+
+        return this.moduleExcludesOption;
     }
 
     // SECTION-END
@@ -599,6 +729,62 @@ public final class MergeModulesCommand extends AbstractJomcCommand
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "documentsOptionShortName" );
         assert _p != null : "'documentsOptionShortName' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code moduleExcludesOptionLongName} property.
+     * @return Long name of the 'module-excludes' option.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
+    private java.lang.String getModuleExcludesOptionLongName()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "moduleExcludesOptionLongName" );
+        assert _p != null : "'moduleExcludesOptionLongName' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code moduleExcludesOptionShortName} property.
+     * @return Name of the 'module-excludes' option.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
+    private java.lang.String getModuleExcludesOptionShortName()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "moduleExcludesOptionShortName" );
+        assert _p != null : "'moduleExcludesOptionShortName' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code moduleIncludesOptionLongName} property.
+     * @return Long name of the 'module-includes' option.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
+    private java.lang.String getModuleIncludesOptionLongName()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "moduleIncludesOptionLongName" );
+        assert _p != null : "'moduleIncludesOptionLongName' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code moduleIncludesOptionShortName} property.
+     * @return Name of the 'module-includes' option.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
+    private java.lang.String getModuleIncludesOptionShortName()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "moduleIncludesOptionShortName" );
+        assert _p != null : "'moduleIncludesOptionShortName' property not found.";
         return _p;
     }
 
@@ -775,7 +961,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-8-SNAPSHOT Build 2009-11-02T14:11:12+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-8-SNAPSHOT Build 2009-11-03T05:55:38+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -999,6 +1185,48 @@ public final class MergeModulesCommand extends AbstractJomcCommand
     }
 
     /**
+     * Gets the text of the {@code excludingModule} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Excluding module ''{0}''.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Schlie&szlig;t Modul ''{0}'' aus.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param moduleName Format argument.
+     * @return The text of the {@code excludingModule} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
+    private String getExcludingModuleMessage( final java.util.Locale locale, final java.lang.String moduleName )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "excludingModule", locale, new Object[] { moduleName, null } );
+        assert _m != null : "'excludingModule' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code includingModule} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Including module ''{0}''.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Schlie&szlig;t Modul ''{0}'' ein.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param moduleName Format argument.
+     * @return The text of the {@code includingModule} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
+    private String getIncludingModuleMessage( final java.util.Locale locale, final java.lang.String moduleName )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "includingModule", locale, new Object[] { moduleName, null } );
+        assert _m != null : "'includingModule' message not found.";
+        return _m;
+    }
+
+    /**
      * Gets the text of the {@code invalidModel} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Invalid model.</pre></td></tr>
@@ -1062,6 +1290,86 @@ public final class MergeModulesCommand extends AbstractJomcCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "missingModule", locale, new Object[] { moduleName, null } );
         assert _m != null : "'missingModule' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code moduleExcludesOption} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Module names separated by '':'' of modules to exclude.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul-Namen auszuschlie&szlig;ender Module mit '':'' getrennt.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code moduleExcludesOption} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
+    private String getModuleExcludesOptionMessage( final java.util.Locale locale )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "moduleExcludesOption", locale,  null );
+        assert _m != null : "'moduleExcludesOption' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code moduleExcludesOptionArgName} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>names</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Namen</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code moduleExcludesOptionArgName} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
+    private String getModuleExcludesOptionArgNameMessage( final java.util.Locale locale )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "moduleExcludesOptionArgName", locale,  null );
+        assert _m != null : "'moduleExcludesOptionArgName' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code moduleIncludesOption} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Module names separated by '':'' of modules to include.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul-Namen einzuschlie&szlig;ender Module mit '':'' getrennt.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code moduleIncludesOption} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
+    private String getModuleIncludesOptionMessage( final java.util.Locale locale )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "moduleIncludesOption", locale,  null );
+        assert _m != null : "'moduleIncludesOption' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code moduleIncludesOptionArgName} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>names</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Namen</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code moduleIncludesOptionArgName} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
+    private String getModuleIncludesOptionArgNameMessage( final java.util.Locale locale )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "moduleIncludesOptionArgName", locale,  null );
+        assert _m != null : "'moduleIncludesOptionArgName' message not found.";
         return _m;
     }
 

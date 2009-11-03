@@ -35,12 +35,18 @@
 package org.jomc.cli.test;
 
 import java.io.File;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.apache.commons.io.FileUtils;
 import org.jomc.ObjectManagerFactory;
 import org.jomc.cli.Command;
 import org.jomc.cli.Jomc;
+import org.jomc.model.DefaultModelManager;
+import org.jomc.model.Module;
 
 // SECTION-START[Documentation]
 /**
@@ -213,6 +219,10 @@ public class JomcTest extends TestCase
 
     public void testMergeModules() throws Exception
     {
+        final Unmarshaller unmarshaller = new DefaultModelManager().getUnmarshaller( this.getClass().getClassLoader() );
+        final Schema schema = new DefaultModelManager().getSchema( this.getClass().getClassLoader() );
+        unmarshaller.setSchema( schema );
+
         final String[] help = new String[]
         {
             "merge-modules", "help"
@@ -222,6 +232,20 @@ public class JomcTest extends TestCase
         {
             "merge-modules", "-df", '"' + this.getTestDocument() + '"', "-xs", '"' + this.getTestStylesheet() + '"',
             "-mn", '"' + this.getTestModuleName() + '"', "-d", '"' + this.getTestOutputDocument() + '"', "-D"
+        };
+
+        final String[] includesArg = new String[]
+        {
+            "merge-modules", "-df", '"' + this.getTestDocument() + '"', "-xs", '"' + this.getTestStylesheet() + '"',
+            "-mn", '"' + this.getTestModuleName() + '"', "-d", '"' + this.getTestOutputDocument() + '"',
+            "-minc", "\"JOMC CLI\"", "-D"
+        };
+
+        final String[] excludesArg = new String[]
+        {
+            "merge-modules", "-df", '"' + this.getTestDocument() + '"', "-xs", '"' + this.getTestStylesheet() + '"',
+            "-mn", '"' + this.getTestModuleName() + '"', "-d", '"' + this.getTestOutputDocument() + '"',
+            "-mexc", "\"JOMC CLI\"", "-D"
         };
 
         final String[] unsupportedOption = new String[]
@@ -238,6 +262,28 @@ public class JomcTest extends TestCase
 
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
+
+        unmarshaller.unmarshal( new StreamSource( new File( this.getTestOutputDocument() ) ), Module.class );
+
+        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( includesArg ) );
+
+        final JAXBElement<Module> includedModule =
+            unmarshaller.unmarshal( new StreamSource( new File( this.getTestOutputDocument() ) ), Module.class );
+
+        Assert.assertNotNull( "Merged module does not contain any included specifications.",
+                              includedModule.getValue().getSpecifications() );
+
+        Assert.assertNotNull( "Merged module does not contain included 'org.jomc.cli.Command' specification.",
+                              includedModule.getValue().getSpecifications().getSpecification( Command.class ) );
+
+        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( excludesArg ) );
+
+        final JAXBElement<Module> excludedModule =
+            unmarshaller.unmarshal( new StreamSource( new File( this.getTestOutputDocument() ) ), Module.class );
+
+        Assert.assertNull( "Merged module contains excluded specifications.",
+                           excludedModule.getValue().getSpecifications() );
+
         Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
         Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( illegalDoc ) );
     }

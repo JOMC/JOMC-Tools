@@ -877,6 +877,26 @@
             <text language="en">Long name of the 'module-vendor' option.</text>
           </documentation>
         </property>
+        <property name="moduleIncludesOptionShortName" value="minc">
+          <documentation defaultLanguage="en">
+            <text language="en">Name of the 'module-includes' option.</text>
+          </documentation>
+        </property>
+        <property name="moduleIncludesOptionLongName" value="module-includes">
+          <documentation defaultLanguage="en">
+            <text language="en">Long name of the 'module-includes' option.</text>
+          </documentation>
+        </property>
+        <property name="moduleExcludesOptionShortName" value="mexc">
+          <documentation defaultLanguage="en">
+            <text language="en">Name of the 'module-excludes' option.</text>
+          </documentation>
+        </property>
+        <property name="moduleExcludesOptionLongName" value="module-excludes">
+          <documentation defaultLanguage="en">
+            <text language="en">Long name of the 'module-excludes' option.</text>
+          </documentation>
+        </property>
       </properties>
       <messages>
         <message name="shortDescription" override="true">
@@ -944,6 +964,48 @@
             <text language="en">vendor</text>
             <text language="de">Hersteller</text>
           </template>
+        </message>
+        <message name="moduleIncludesOption">
+          <template defaultLanguage="en">
+            <text language="en">Module names separated by '':'' of modules to include.</text>
+            <text language="de">Modul-Namen einzuschließender Module mit '':'' getrennt.</text>
+          </template>
+        </message>
+        <message name="moduleIncludesOptionArgName">
+          <template defaultLanguage="en">
+            <text language="en">names</text>
+            <text language="de">Namen</text>
+          </template>
+        </message>
+        <message name="moduleExcludesOption">
+          <template defaultLanguage="en">
+            <text language="en">Module names separated by '':'' of modules to exclude.</text>
+            <text language="de">Modul-Namen auszuschließender Module mit '':'' getrennt.</text>
+          </template>
+        </message>
+        <message name="moduleExcludesOptionArgName">
+          <template defaultLanguage="en">
+            <text language="en">names</text>
+            <text language="de">Namen</text>
+          </template>
+        </message>
+        <message name="includingModule">
+          <template defaultLanguage="en">
+            <text language="en">Including module ''{0}''.</text>
+            <text language="de">Schließt Modul ''{0}'' ein.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="moduleName"/>
+          </arguments>
+        </message>
+        <message name="excludingModule">
+          <template defaultLanguage="en">
+            <text language="en">Excluding module ''{0}''.</text>
+            <text language="de">Schließt Modul ''{0}'' aus.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="moduleName"/>
+          </arguments>
         </message>
         <reference name="writing"/>
       </messages>
