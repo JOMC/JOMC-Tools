@@ -35,13 +35,13 @@
 <module xmlns="http://jomc.org/model"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://jomc.org/model http://jomc.org/model/jomc-1.0.xsd"
-        name="${pom.name}"
-        version="${pom.version}"
-        vendor="${pom.organization.name}"
+        name="${project.name}"
+        version="${project.version}"
+        vendor="${project.organization.name}"
         modelVersion="1.0">
 
   <documentation defaultLanguage="en">
-    <text language="en">${pom.description}</text>
+    <text language="en">${project.description}</text>
   </documentation>
 
   <specifications>
@@ -49,7 +49,7 @@
     <!-- ******************************************************************* -->
     <specification identifier="org.jomc.tools.JavaBundles"
                    class="org.jomc.tools.JavaBundles"
-                   vendor="${pom.organization.name}"
+                   vendor="${project.organization.name}"
                    version="1.0">
 
       <documentation defaultLanguage="en">
@@ -65,7 +65,7 @@
     <!-- ******************************************************************* -->
     <specification identifier="org.jomc.tools.JavaSources"
                    class="org.jomc.tools.JavaSources"
-                   vendor="${pom.organization.name}"
+                   vendor="${project.organization.name}"
                    version="1.0">
 
       <documentation defaultLanguage="en">
@@ -81,7 +81,7 @@
     <!-- ******************************************************************* -->
     <specification identifier="org.jomc.tools.JavaClasses"
                    class="org.jomc.tools.JavaClasses"
-                   vendor="${pom.organization.name}"
+                   vendor="${project.organization.name}"
                    version="1.0">
 
       <documentation defaultLanguage="en">
@@ -100,9 +100,9 @@
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.tools.JavaBundles"
                     class="org.jomc.tools.JavaBundles"
-                    name="${pom.name}"
-                    version="${pom.version}"
-                    vendor="${pom.organization.name}"
+                    name="${project.name}"
+                    version="${project.version}"
+                    vendor="${project.organization.name}"
                     final="true">
 
       <documentation defaultLanguage="en">
@@ -118,9 +118,9 @@
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.tools.JavaSources"
                     class="org.jomc.tools.JavaSources"
-                    name="${pom.name}"
-                    version="${pom.version}"
-                    vendor="${pom.organization.name}"
+                    name="${project.name}"
+                    version="${project.version}"
+                    vendor="${project.organization.name}"
                     final="true">
 
       <documentation defaultLanguage="en">
@@ -136,9 +136,9 @@
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.tools.JavaClasses"
                     class="org.jomc.tools.JavaClasses"
-                    name="${pom.name}"
-                    version="${pom.version}"
-                    vendor="${pom.organization.name}"
+                    name="${project.name}"
+                    version="${project.version}"
+                    vendor="${project.organization.name}"
                     final="true">
 
       <documentation defaultLanguage="en">

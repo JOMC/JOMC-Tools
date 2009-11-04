@@ -50,7 +50,7 @@
     @Deprecated
 #end
     @javax.annotation.Generated( value = "$tool.getClass().getName()",
-                                 comments = "See ${pom.url}" )
+                                 comments = "See ${project.url}" )
     $tool.getJavaModifierName($implementation,$property) $tool.getJavaTypeName($property,false) $tool.getJavaGetterMethodName($property)()
     {
         final $tool.getJavaTypeName($property,true) _p = ($tool.getJavaTypeName($property,true)) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "$property.getName()" );

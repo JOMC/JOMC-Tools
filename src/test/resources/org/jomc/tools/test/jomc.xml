@@ -36,12 +36,12 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://jomc.org/model http://jomc.org/model/jomc-1.0.xsd"
         name="Module"
-        version="${pom.version}"
-        vendor="${pom.organization.name}"
+        version="${project.version}"
+        vendor="${project.organization.name}"
         modelVersion="1.0">
 
   <documentation defaultLanguage="en">
-    <text language="en">${pom.description}</text>
+    <text language="en">${project.description}</text>
   </documentation>
 
   <specifications>
@@ -49,8 +49,8 @@
     <!-- ******************************************************************* -->
     <specification identifier="Specification"
                    class="Specification"
-                   vendor="${pom.organization.name}"
-                   version="${pom.version}">
+                   vendor="${project.organization.name}"
+                   version="${project.version}">
 
       <documentation defaultLanguage="en">
         <text language="en">Test specification.</text>
@@ -68,9 +68,9 @@
     <!-- ******************************************************************* -->
     <implementation identifier="Implementation"
                     class="Implementation"
-                    name="${pom.name}"
-                    version="${pom.version}"
-                    vendor="${pom.organization.name}"
+                    name="${project.name}"
+                    version="${project.version}"
+                    vendor="${project.organization.name}"
                     final="true">
 
       <documentation defaultLanguage="en">
@@ -111,9 +111,9 @@
     <!-- ******************************************************************* -->
     <implementation identifier="ImplementationOfSpecification"
                     class="ImplementationOfSpecification"
-                    name="${pom.name}"
-                    version="${pom.version}"
-                    vendor="${pom.organization.name}"
+                    name="${project.name}"
+                    version="${project.version}"
+                    vendor="${project.organization.name}"
                     final="true">
 
       <documentation defaultLanguage="en">
@@ -125,7 +125,7 @@
 
       </authors>
       <specifications>
-        <reference identifier="Specification" version="${pom.version}"/>
+        <reference identifier="Specification" version="${project.version}"/>
       </specifications>
       <dependencies>
         <dependency name="Locale"

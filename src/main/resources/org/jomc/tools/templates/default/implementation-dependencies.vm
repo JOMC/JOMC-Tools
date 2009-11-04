@@ -75,7 +75,7 @@
     @Deprecated
 #end
     @javax.annotation.Generated( value = "$tool.getClass().getName()",
-                                 comments = "See ${pom.url}" )
+                                 comments = "See ${project.url}" )
     $tool.getJavaModifierName($implementation,$dependency) $tool.getJavaTypeName($dependency) $tool.getJavaGetterMethodName($dependency)()
     {
 #if($dependency.isOptional())

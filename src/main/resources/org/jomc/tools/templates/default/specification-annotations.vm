@@ -36,4 +36,4 @@
 @Deprecated
 #end
 @javax.annotation.Generated( value = "$tool.getClass().getName()",
-                             comments = "See ${pom.url}" )
+                             comments = "See ${project.url}" )

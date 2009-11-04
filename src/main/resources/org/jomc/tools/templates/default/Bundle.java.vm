@@ -45,7 +45,7 @@ import java.text.MessageFormat;
 @Deprecated
 #end
 @javax.annotation.Generated( value = "$tool.getClass().getName()",
-                             comments = "See ${pom.url}" )
+                             comments = "See ${project.url}" )
 class ${tool.getJavaTypeName($implementation,false)}${classSuffix}
 {
 
@@ -58,7 +58,7 @@ class ${tool.getJavaTypeName($implementation,false)}${classSuffix}
   /** Creates a new <code>${tool.getJavaTypeName($implementation,false)}${classSuffix}</code> instance. */
 #end
   @javax.annotation.Generated( value = "$tool.getClass().getName()",
-                               comments = "See ${pom.url}" )
+                               comments = "See ${project.url}" )
   ${tool.getJavaTypeName($implementation,false)}${classSuffix}()
   {
 #if($messages)
@@ -76,7 +76,7 @@ class ${tool.getJavaTypeName($implementation,false)}${classSuffix}
    */
 #end
   @javax.annotation.Generated( value = "$tool.getClass().getName()",
-                               comments = "See ${pom.url}" )
+                               comments = "See ${project.url}" )
   static ${tool.getJavaTypeName($implementation,false)}${classSuffix} getInstance()
   {
     return instance;
@@ -115,7 +115,7 @@ class ${tool.getJavaTypeName($implementation,false)}${classSuffix}
 @Deprecated
 #end
   @javax.annotation.Generated( value = "$tool.getClass().getName()",
-                               comments = "See ${pom.url}" )
+                               comments = "See ${project.url}" )
 #if(!$message.getArguments() || $message.getArguments().getArgument().isEmpty() )
   String $tool.getJavaGetterMethodName($message)( final Locale locale )
   {
@@ -167,7 +167,7 @@ class ${tool.getJavaTypeName($implementation,false)}${classSuffix}
    */
 #end
   @javax.annotation.Generated( value = "$tool.getClass().getName()",
-                               comments = "See ${pom.url}" )
+                               comments = "See ${project.url}" )
   private String getMessage( final String key, Locale locale )
   {
     if ( locale == null )
