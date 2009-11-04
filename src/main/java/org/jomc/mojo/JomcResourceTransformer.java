@@ -63,9 +63,9 @@ import org.xml.sax.SAXException;
  * Maven Shade Plugin {@code ResourceTransformer} implementation for assembling JOMC resources.
  * <p><b>Usage</b><pre>
  * &lt;transformer implementation="org.jomc.mojo.JomcResourceTransformer"&gt;
- *   &lt;moduleName&gt;${pom.name}&lt;/moduleName&gt;
- *   &lt;moduleVersion&gt;${pom.version}&lt;/moduleVersion&gt;
- *   &lt;moduleVendor&gt;${pom.organization.name}&lt;/moduleVendor&gt;
+ *   &lt;moduleName&gt;${project.name}&lt;/moduleName&gt;
+ *   &lt;moduleVersion&gt;${project.version}&lt;/moduleVersion&gt;
+ *   &lt;moduleVendor&gt;${project.organization.name}&lt;/moduleVendor&gt;
  *   &lt;moduleResource&gt;META-INF/jomc-something-else.xml&lt;/moduleResource&gt;
  *   &lt;moduleResources&gt;
  *     &lt;moduleResource&gt;META-INF/jomc.xml&lt;/moduleResource&gt;
