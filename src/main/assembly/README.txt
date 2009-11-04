@@ -1,9 +1,9 @@
 
-  ${pom.organization.name} - ${pom.name} - README.txt
-  Version ${pom.version} Build ${buildNumber}
-  ${pom.url}
+  ${project.organization.name} - ${project.name} - README.txt
+  Version ${project.version} Build ${buildNumber}
+  ${project.url}
 
-  ${pom.description}
+  ${project.description}
 
     See the output of the 'jomc' application for further information. For
     launching that application use of the scripts found in the 'bin' directory
@@ -22,5 +22,5 @@
     java -Djava.ext.dirs=lib/ext -jar bin/${project.build.finalName}.jar
 
     The 'lib/tools' directory contains Java archives for embedding the JOMC
-    tools. The jomc-tools-${pom.version}.jar archive contains the
+    tools. The jomc-tools-${project.version}.jar archive contains the
     corresponding tool classes.

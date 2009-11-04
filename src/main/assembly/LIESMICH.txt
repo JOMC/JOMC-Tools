@@ -1,9 +1,9 @@
 
-  ${pom.organization.name} - ${pom.name} - LIESMICH.txt
-  Version ${pom.version} Build ${buildNumber}
-  ${pom.url}
+  ${project.organization.name} - ${project.name} - LIESMICH.txt
+  Version ${project.version} Build ${buildNumber}
+  ${project.url}
 
-  ${pom.description}
+  ${project.description}
 
     Bitte verwenden Sie die 'help' Anweisung der 'jomc' Anwendung für weitere
     Informationen. Zum Starten der Anwendung können die entsprechenden
@@ -23,5 +23,5 @@
     java -Djava.ext.dirs=lib/ext -jar bin/${project.build.finalName}.jar
 
     Die Java-Archive aus dem 'lib/tools' Verzeichnis dienen der Integration
-    der JOMC Werkzeuge. Das jomc-tools-${pom.version}.jar Archiv beinhaltet
+    der JOMC Werkzeuge. Das jomc-tools-${project.version}.jar Archiv beinhaltet
     die entsprechenden Werkzeug-Klassen.

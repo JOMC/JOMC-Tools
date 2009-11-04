@@ -227,9 +227,9 @@
                 </filters>
                 <transformers>
                   <transformer implementation="org.jomc.mojo.JomcResourceTransformer">
-                    <moduleName>${pom.name}</moduleName>
-                    <moduleVersion>${pom.version}</moduleVersion>
-                    <moduleVendor>${pom.organization.name}</moduleVendor>
+                    <moduleName>${project.name}</moduleName>
+                    <moduleVersion>${project.version}</moduleVersion>
+                    <moduleVendor>${project.organization.name}</moduleVendor>
                     <moduleResource>META-INF/jomc-cli.xml</moduleResource>
                     <moduleResources>
                       <moduleResource>META-INF/jomc.xml</moduleResource>
@@ -276,7 +276,7 @@
                 <artifactItem>
                   <groupId>org.jomc</groupId>
                   <artifactId>jomc-tools</artifactId>
-                  <version>${pom.version}</version>
+                  <version>${project.version}</version>
                   <outputDirectory>${project.build.directory}/jomc-tools</outputDirectory>
                 </artifactItem>
               </artifactItems>
@@ -332,7 +332,7 @@
               <goal>single</goal>
             </goals>
             <configuration>
-              <finalName>jomc-${pom.version}</finalName>
+              <finalName>jomc-${project.version}</finalName>
               <descriptors>
                 <descriptor>src/main/assembly/bin-snapshot.xml</descriptor>
               </descriptors>
@@ -476,42 +476,42 @@
                     <artifactItem>
                       <groupId>org.jomc</groupId>
                       <artifactId>jomc-api</artifactId>
-                      <version>${pom.version}</version>
+                      <version>${project.version}</version>
                       <classifier>javadoc</classifier>
                       <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.jomc</groupId>
                       <artifactId>jomc-spi</artifactId>
-                      <version>${pom.version}</version>
+                      <version>${project.version}</version>
                       <classifier>javadoc</classifier>
                       <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.jomc</groupId>
                       <artifactId>jomc-util</artifactId>
-                      <version>${pom.version}</version>
+                      <version>${project.version}</version>
                       <classifier>javadoc</classifier>
                       <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.jomc</groupId>
                       <artifactId>jomc-model</artifactId>
-                      <version>${pom.version}</version>
+                      <version>${project.version}</version>
                       <classifier>javadoc</classifier>
                       <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.jomc</groupId>
                       <artifactId>jomc-ri</artifactId>
-                      <version>${pom.version}</version>
+                      <version>${project.version}</version>
                       <classifier>javadoc</classifier>
                       <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                     </artifactItem>
                     <artifactItem>
                       <groupId>org.jomc</groupId>
                       <artifactId>jomc-tools</artifactId>
-                      <version>${pom.version}</version>
+                      <version>${project.version}</version>
                       <classifier>javadoc</classifier>
                       <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                     </artifactItem>
@@ -584,7 +584,7 @@
                   <goal>single</goal>
                 </goals>
                 <configuration>
-                  <finalName>jomc-${pom.version}</finalName>
+                  <finalName>jomc-${project.version}</finalName>
                   <descriptors>
                     <descriptor>src/main/assembly/bin-release.xml</descriptor>
                   </descriptors>

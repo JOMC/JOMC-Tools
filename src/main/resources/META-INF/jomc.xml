@@ -35,13 +35,13 @@
 <module xmlns="http://jomc.org/model"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://jomc.org/model http://jomc.org/model/jomc-1.0.xsd"
-        name="${pom.name}"
-        version="${pom.version}"
-        vendor="${pom.organization.name}"
+        name="${project.name}"
+        version="${project.version}"
+        vendor="${project.organization.name}"
         modelVersion="1.0">
 
   <documentation defaultLanguage="en">
-    <text language="en">${pom.description}</text>
+    <text language="en">${project.description}</text>
   </documentation>
 
   <specifications>
@@ -49,7 +49,7 @@
     <!-- ******************************************************************* -->
     <specification identifier="org.jomc.cli.Command"
                    class="org.jomc.cli.Command"
-                   vendor="${pom.organization.name}"
+                   vendor="${project.organization.name}"
                    version="1.0">
 
       <documentation defaultLanguage="en">
@@ -68,9 +68,9 @@
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.cli.Jomc"
                     class="org.jomc.cli.Jomc"
-                    name="${pom.name}"
-                    version="${pom.version}"
-                    vendor="${pom.organization.name}"
+                    name="${project.name}"
+                    version="${project.version}"
+                    vendor="${project.organization.name}"
                     final="true">
 
       <documentation defaultLanguage="en">
@@ -84,7 +84,7 @@
       <dependencies>
         <dependency name="Commands"
                     identifier="org.jomc.cli.Command"
-                    version="${pom.version}"
+                    version="${project.version}"
                     bound="false"/>
 
         <dependency name="Locale"
@@ -201,9 +201,9 @@
     <!-- ******************************************************************* -->
     <implementation identifier="org.jomc.cli.commands.AbstractJomcCommand"
                     class="org.jomc.cli.commands.AbstractJomcCommand"
-                    name="${pom.name}"
-                    version="${pom.version}"
-                    vendor="${pom.organization.name}"
+                    name="${project.name}"
+                    version="${project.version}"
+                    vendor="${project.organization.name}"
                     abstract="true">
 
       <documentation defaultLanguage="en">
@@ -372,7 +372,7 @@
         </message>
         <message name="applicationTitle" final="true">
           <template defaultLanguage="en">
-            <text language="en">JOMC Version ${pom.version} Build ${buildNumber}</text>
+            <text language="en">JOMC Version ${project.version} Build ${buildNumber}</text>
           </template>
         </message>
         <message name="classpathElement" final="true">
@@ -469,8 +469,8 @@
     <implementation identifier="org.jomc.cli.commands.GenerateJavaBundlesCommand"
                     class="org.jomc.cli.commands.GenerateJavaBundlesCommand"
                     name="default-generate-java-bundles"
-                    version="${pom.version}"
-                    vendor="${pom.organization.name}"
+                    version="${project.version}"
+                    vendor="${project.organization.name}"
                     final="true">
       <documentation defaultLanguage="en">
         <text language="en"><![CDATA[Command line interface for the {@code JavaBundles} tool.]]>
@@ -483,7 +483,7 @@
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.commands.AbstractJomcCommand"
-                   version="${pom.version}"/>
+                   version="${project.version}"/>
 
       </implementations>
       <properties>
@@ -573,8 +573,8 @@
     <implementation identifier="org.jomc.cli.commands.ManageJavaSourcesCommand"
                     class="org.jomc.cli.commands.ManageJavaSourcesCommand"
                     name="default-manage-java-sources"
-                    version="${pom.version}"
-                    vendor="${pom.organization.name}"
+                    version="${project.version}"
+                    vendor="${project.organization.name}"
                     final="true">
 
       <documentation defaultLanguage="en">
@@ -587,7 +587,7 @@
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.commands.AbstractJomcCommand"
-                   version="${pom.version}"/>
+                   version="${project.version}"/>
 
       </implementations>
       <properties>
@@ -647,8 +647,8 @@
     <implementation identifier="org.jomc.cli.commands.CommitJavaClassesCommand"
                     class="org.jomc.cli.commands.CommitJavaClassesCommand"
                     name="default-commit-java-classes"
-                    version="${pom.version}"
-                    vendor="${pom.organization.name}"
+                    version="${project.version}"
+                    vendor="${project.organization.name}"
                     final="true">
 
       <documentation defaultLanguage="en">
@@ -661,7 +661,7 @@
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.commands.AbstractJomcCommand"
-                   version="${pom.version}"/>
+                   version="${project.version}"/>
 
       </implementations>
       <properties>
@@ -705,8 +705,8 @@
     <implementation identifier="org.jomc.cli.commands.ValidateJavaClassesCommand"
                     class="org.jomc.cli.commands.ValidateJavaClassesCommand"
                     name="default-validate-java-classes"
-                    version="${pom.version}"
-                    vendor="${pom.organization.name}"
+                    version="${project.version}"
+                    vendor="${project.organization.name}"
                     final="true">
 
       <documentation defaultLanguage="en">
@@ -719,7 +719,7 @@
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.commands.AbstractJomcCommand"
-                   version="${pom.version}"/>
+                   version="${project.version}"/>
 
       </implementations>
       <properties>
@@ -757,8 +757,8 @@
     <implementation identifier="org.jomc.cli.commands.ValidateModulesCommand"
                     class="org.jomc.cli.commands.ValidateModulesCommand"
                     name="default-validate-modules"
-                    version="${pom.version}"
-                    vendor="${pom.organization.name}"
+                    version="${project.version}"
+                    vendor="${project.organization.name}"
                     final="true">
 
       <documentation defaultLanguage="en">
@@ -771,7 +771,7 @@
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.commands.AbstractJomcCommand"
-                   version="${pom.version}"/>
+                   version="${project.version}"/>
 
       </implementations>
       <properties>
@@ -809,8 +809,8 @@
     <implementation identifier="org.jomc.cli.commands.MergeModulesCommand"
                     class="org.jomc.cli.commands.MergeModulesCommand"
                     name="default-merge-modules"
-                    version="${pom.version}"
-                    vendor="${pom.organization.name}"
+                    version="${project.version}"
+                    vendor="${project.organization.name}"
                     final="true">
 
       <documentation defaultLanguage="en">
@@ -823,7 +823,7 @@
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.commands.AbstractJomcCommand"
-                   version="${pom.version}"/>
+                   version="${project.version}"/>
 
       </implementations>
       <properties>
