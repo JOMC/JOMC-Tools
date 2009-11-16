@@ -34,6 +34,7 @@
 ## @param tool The builder of the template.
 #set($properties = $modules.getProperties($implementation.getIdentifier()))
 #if($properties)
+    // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
 #foreach($property in $properties.getProperty())
 
     /**
@@ -62,4 +63,5 @@
 #end
     }
 #end
+    // </editor-fold>
 #end

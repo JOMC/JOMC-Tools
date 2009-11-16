@@ -32,6 +32,7 @@
 ## @param modules The modules declaring specification.
 ## @param specification The specification of the template.
 ## @param tool The builder of the template.
+// <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 /**
 #if($specification.getDocumentation())
  * $tool.getJavadocComment($specification.getDocumentation().getText("en"), " * ")
@@ -67,3 +68,4 @@
 #set($D = "$")
  * @version ${D}Id${D}
  */
+// </editor-fold>

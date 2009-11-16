@@ -32,6 +32,7 @@
 ## @param modules The modules declaring implementation.
 ## @param implementation The implementation of the template.
 ## @param tool The builder of the template.
+    // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
 
     /** Creates a new {@code $tool.getJavaTypeName($implementation,false)} instance. */
     @javax.annotation.Generated( value = "$tool.getClass().getName()",

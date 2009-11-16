@@ -32,6 +32,7 @@
 ## @param modules The modules declaring module.
 ## @param implementation The implementation of the template.
 ## @param tool The builder of the template.
+// <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
 #if($implementation.getVendor())
 #if($implementation.getCreateDate())
@@ -85,3 +86,4 @@
  *   ${D}Id${D}
  *
  */
+// </editor-fold>
