@@ -80,9 +80,9 @@
     $tool.getJavaModifierName($implementation,$dependency) $tool.getJavaTypeName($dependency) $tool.getJavaGetterMethodName($dependency)()
     {
 #if($dependency.isOptional())
-        return ($tool.getJavaTypeName($dependency)) org.jomc.ObjectManagerFactory.getObjectManager().getDependency( this, "$dependency.getName()" );
+        return ($tool.getJavaTypeName($dependency)) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "$dependency.getName()" );
 #else
-        final $tool.getJavaTypeName($dependency) _d = ($tool.getJavaTypeName($dependency)) org.jomc.ObjectManagerFactory.getObjectManager().getDependency( this, "$dependency.getName()" );
+        final $tool.getJavaTypeName($dependency) _d = ($tool.getJavaTypeName($dependency)) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "$dependency.getName()" );
         assert _d != null : "'$dependency.getName()' dependency not found.";
         return _d;
 #end
