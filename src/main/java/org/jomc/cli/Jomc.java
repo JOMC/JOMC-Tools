@@ -1,4 +1,5 @@
 // SECTION-START[License Header]
+// <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
  *   Copyright (c) 2009 The JOMC Project
  *   Copyright (c) 2005 Christian Schulte <cs@jomc.org>
@@ -31,6 +32,7 @@
  *   $Id$
  *
  */
+// </editor-fold>
 // SECTION-END
 package org.jomc.cli;
 
@@ -50,6 +52,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jomc.model.DefaultModelManager;
 
 // SECTION-START[Documentation]
+// <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 /**
  * JOMC command line interface.
  * <p><b>Properties</b><ul>
@@ -132,10 +135,13 @@ import org.jomc.model.DefaultModelManager;
  * @author <a href="mailto:cs@jomc.org">Christian Schulte</a> 1.0
  * @version $Id$
  */
+// </editor-fold>
 // SECTION-END
 // SECTION-START[Annotations]
+// <editor-fold defaultstate="collapsed" desc=" Generated Annotations ">
 @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                              comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
+// </editor-fold>
 // SECTION-END
 public class Jomc
 {
@@ -590,6 +596,7 @@ public class Jomc
 
     // SECTION-END
     // SECTION-START[Constructors]
+    // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
 
     /** Creates a new {@code Jomc} instance. */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
@@ -600,8 +607,10 @@ public class Jomc
         super();
         // SECTION-END
     }
+    // </editor-fold>
     // SECTION-END
     // SECTION-START[Dependencies]
+    // <editor-fold defaultstate="collapsed" desc=" Generated Dependencies ">
 
     /**
      * Gets the {@code Commands} dependency.
@@ -614,7 +623,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private org.jomc.cli.Command[] getCommands()
     {
-        final org.jomc.cli.Command[] _d = (org.jomc.cli.Command[]) org.jomc.ObjectManagerFactory.getObjectManager().getDependency( this, "Commands" );
+        final org.jomc.cli.Command[] _d = (org.jomc.cli.Command[]) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "Commands" );
         assert _d != null : "'Commands' dependency not found.";
         return _d;
     }
@@ -630,12 +639,14 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.util.Locale getLocale()
     {
-        final java.util.Locale _d = (java.util.Locale) org.jomc.ObjectManagerFactory.getObjectManager().getDependency( this, "Locale" );
+        final java.util.Locale _d = (java.util.Locale) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "Locale" );
         assert _d != null : "'Locale' dependency not found.";
         return _d;
     }
+    // </editor-fold>
     // SECTION-END
     // SECTION-START[Properties]
+    // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
 
     /**
      * Gets the value of the {@code debugOptionLongName} property.
@@ -646,7 +657,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getDebugOptionLongName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "debugOptionLongName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "debugOptionLongName" );
         assert _p != null : "'debugOptionLongName' property not found.";
         return _p;
     }
@@ -660,7 +671,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getDebugOptionShortName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "debugOptionShortName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "debugOptionShortName" );
         assert _p != null : "'debugOptionShortName' property not found.";
         return _p;
     }
@@ -674,7 +685,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private int getDescPad()
     {
-        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "descPad" );
+        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "descPad" );
         assert _p != null : "'descPad' property not found.";
         return _p.intValue();
     }
@@ -688,7 +699,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getFailOnWarningsOptionLongName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "failOnWarningsOptionLongName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "failOnWarningsOptionLongName" );
         assert _p != null : "'failOnWarningsOptionLongName' property not found.";
         return _p;
     }
@@ -702,7 +713,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getFailOnWarningsOptionShortName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "failOnWarningsOptionShortName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "failOnWarningsOptionShortName" );
         assert _p != null : "'failOnWarningsOptionShortName' property not found.";
         return _p;
     }
@@ -716,7 +727,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getHelpCommandName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "helpCommandName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "helpCommandName" );
         assert _p != null : "'helpCommandName' property not found.";
         return _p;
     }
@@ -730,7 +741,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private int getLeftPad()
     {
-        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "leftPad" );
+        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "leftPad" );
         assert _p != null : "'leftPad' property not found.";
         return _p.intValue();
     }
@@ -744,7 +755,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getVerboseOptionLongName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "verboseOptionLongName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "verboseOptionLongName" );
         assert _p != null : "'verboseOptionLongName' property not found.";
         return _p;
     }
@@ -758,7 +769,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getVerboseOptionShortName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "verboseOptionShortName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "verboseOptionShortName" );
         assert _p != null : "'verboseOptionShortName' property not found.";
         return _p;
     }
@@ -772,12 +783,14 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private int getWidth()
     {
-        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "width" );
+        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "width" );
         assert _p != null : "'width' property not found.";
         return _p.intValue();
     }
+    // </editor-fold>
     // SECTION-END
     // SECTION-START[Messages]
+    // <editor-fold defaultstate="collapsed" desc=" Generated Messages ">
 
     /**
      * Gets the text of the {@code commandLineInfo} message.
@@ -797,7 +810,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getCommandLineInfoMessage( final java.util.Locale locale, final java.lang.String commandLine )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "commandLineInfo", locale, new Object[] { commandLine, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "commandLineInfo", locale, new Object[] { commandLine, null } );
         assert _m != null : "'commandLineInfo' message not found.";
         return _m;
     }
@@ -817,7 +830,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getDebugOptionMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "debugOption", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "debugOption", locale,  null );
         assert _m != null : "'debugOption' message not found.";
         return _m;
     }
@@ -837,7 +850,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getFailOnWarningsOptionMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "failOnWarningsOption", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "failOnWarningsOption", locale,  null );
         assert _m != null : "'failOnWarningsOption' message not found.";
         return _m;
     }
@@ -859,7 +872,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getIllegalArgumentsMessage( final java.util.Locale locale, final java.lang.String command, final java.lang.String helpCommandName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "illegalArguments", locale, new Object[] { command, helpCommandName, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "illegalArguments", locale, new Object[] { command, helpCommandName, null } );
         assert _m != null : "'illegalArguments' message not found.";
         return _m;
     }
@@ -880,7 +893,7 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getUsageMessage( final java.util.Locale locale, final java.lang.String helpCommandName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "usage", locale, new Object[] { helpCommandName, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "usage", locale, new Object[] { helpCommandName, null } );
         assert _m != null : "'usage' message not found.";
         return _m;
     }
@@ -900,9 +913,10 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getVerboseOptionMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "verboseOption", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "verboseOption", locale,  null );
         assert _m != null : "'verboseOption' message not found.";
         return _m;
     }
+    // </editor-fold>
     // SECTION-END
 }

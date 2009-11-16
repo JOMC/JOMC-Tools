@@ -1,4 +1,5 @@
 // SECTION-START[License Header]
+// <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
  *   Copyright (c) 2009 The JOMC Project
  *   Copyright (c) 2005 Christian Schulte <cs@jomc.org>
@@ -31,6 +32,7 @@
  *   $Id$
  *
  */
+// </editor-fold>
 // SECTION-END
 package org.jomc.cli.commands;
 
@@ -50,6 +52,7 @@ import org.jomc.model.ObjectFactory;
 import org.jomc.tools.JavaBundles;
 
 // SECTION-START[Documentation]
+// <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 /**
  * Command line interface for the {@code JavaBundles} tool.
  *
@@ -160,7 +163,7 @@ import org.jomc.tools.JavaBundles;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-8-SNAPSHOT Build 2009-11-15T23:11:58+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-8-SNAPSHOT Build 2009-11-16T00:47:48+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -312,10 +315,13 @@ import org.jomc.tools.JavaBundles;
  * @author <a href="mailto:cs@jomc.org">Christian Schulte</a> 1.0
  * @version $Id$
  */
+// </editor-fold>
 // SECTION-END
 // SECTION-START[Annotations]
+// <editor-fold defaultstate="collapsed" desc=" Generated Annotations ">
 @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                              comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
+// </editor-fold>
 // SECTION-END
 public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
 {
@@ -522,6 +528,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
 
     // SECTION-END
     // SECTION-START[Constructors]
+    // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
 
     /** Creates a new {@code GenerateJavaBundlesCommand} instance. */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
@@ -532,8 +539,10 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
         super();
         // SECTION-END
     }
+    // </editor-fold>
     // SECTION-END
     // SECTION-START[Dependencies]
+    // <editor-fold defaultstate="collapsed" desc=" Generated Dependencies ">
 
     /**
      * Gets the {@code Locale} dependency.
@@ -546,12 +555,14 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.util.Locale getLocale()
     {
-        final java.util.Locale _d = (java.util.Locale) org.jomc.ObjectManagerFactory.getObjectManager().getDependency( this, "Locale" );
+        final java.util.Locale _d = (java.util.Locale) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "Locale" );
         assert _d != null : "'Locale' dependency not found.";
         return _d;
     }
+    // </editor-fold>
     // SECTION-END
     // SECTION-START[Properties]
+    // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
 
     /**
      * Gets the value of the {@code abbreviatedCommandName} property.
@@ -562,7 +573,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getAbbreviatedCommandName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "abbreviatedCommandName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "abbreviatedCommandName" );
         assert _p != null : "'abbreviatedCommandName' property not found.";
         return _p;
     }
@@ -576,7 +587,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getClasspathOptionLongName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "classpathOptionLongName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "classpathOptionLongName" );
         assert _p != null : "'classpathOptionLongName' property not found.";
         return _p;
     }
@@ -590,7 +601,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getClasspathOptionShortName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "classpathOptionShortName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "classpathOptionShortName" );
         assert _p != null : "'classpathOptionShortName' property not found.";
         return _p;
     }
@@ -604,7 +615,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getCommandName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "commandName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "commandName" );
         assert _p != null : "'commandName' property not found.";
         return _p;
     }
@@ -618,7 +629,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getDocumentsOptionLongName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "documentsOptionLongName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "documentsOptionLongName" );
         assert _p != null : "'documentsOptionLongName' property not found.";
         return _p;
     }
@@ -632,7 +643,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getDocumentsOptionShortName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "documentsOptionShortName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "documentsOptionShortName" );
         assert _p != null : "'documentsOptionShortName' property not found.";
         return _p;
     }
@@ -646,7 +657,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getLanguageOptionLongName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "languageOptionLongName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "languageOptionLongName" );
         assert _p != null : "'languageOptionLongName' property not found.";
         return _p;
     }
@@ -660,7 +671,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getLanguageOptionShortName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "languageOptionShortName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "languageOptionShortName" );
         assert _p != null : "'languageOptionShortName' property not found.";
         return _p;
     }
@@ -674,7 +685,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getModuleLocationOptionLongName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "moduleLocationOptionLongName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleLocationOptionLongName" );
         assert _p != null : "'moduleLocationOptionLongName' property not found.";
         return _p;
     }
@@ -688,7 +699,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getModuleLocationOptionShortName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "moduleLocationOptionShortName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleLocationOptionShortName" );
         assert _p != null : "'moduleLocationOptionShortName' property not found.";
         return _p;
     }
@@ -702,7 +713,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getModuleNameOptionLongName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "moduleNameOptionLongName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleNameOptionLongName" );
         assert _p != null : "'moduleNameOptionLongName' property not found.";
         return _p;
     }
@@ -716,7 +727,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getModuleNameOptionShortName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "moduleNameOptionShortName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleNameOptionShortName" );
         assert _p != null : "'moduleNameOptionShortName' property not found.";
         return _p;
     }
@@ -730,7 +741,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getNoClasspathResolutionOptionLongName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "noClasspathResolutionOptionLongName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "noClasspathResolutionOptionLongName" );
         assert _p != null : "'noClasspathResolutionOptionLongName' property not found.";
         return _p;
     }
@@ -744,7 +755,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getNoClasspathResolutionOptionShortName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "noClasspathResolutionOptionShortName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "noClasspathResolutionOptionShortName" );
         assert _p != null : "'noClasspathResolutionOptionShortName' property not found.";
         return _p;
     }
@@ -758,7 +769,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getOutputEncodingOptionLongName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "outputEncodingOptionLongName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "outputEncodingOptionLongName" );
         assert _p != null : "'outputEncodingOptionLongName' property not found.";
         return _p;
     }
@@ -772,7 +783,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getOutputEncodingOptionShortName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "outputEncodingOptionShortName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "outputEncodingOptionShortName" );
         assert _p != null : "'outputEncodingOptionShortName' property not found.";
         return _p;
     }
@@ -786,7 +797,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getProfileOptionLongName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "profileOptionLongName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "profileOptionLongName" );
         assert _p != null : "'profileOptionLongName' property not found.";
         return _p;
     }
@@ -800,7 +811,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getProfileOptionShortName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "profileOptionShortName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "profileOptionShortName" );
         assert _p != null : "'profileOptionShortName' property not found.";
         return _p;
     }
@@ -814,7 +825,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getResourceDirectoryOptionLongName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "resourceDirectoryOptionLongName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "resourceDirectoryOptionLongName" );
         assert _p != null : "'resourceDirectoryOptionLongName' property not found.";
         return _p;
     }
@@ -828,7 +839,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getResourceDirectoryOptionShortName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "resourceDirectoryOptionShortName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "resourceDirectoryOptionShortName" );
         assert _p != null : "'resourceDirectoryOptionShortName' property not found.";
         return _p;
     }
@@ -842,7 +853,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getSourceDirectoryOptionLongName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "sourceDirectoryOptionLongName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "sourceDirectoryOptionLongName" );
         assert _p != null : "'sourceDirectoryOptionLongName' property not found.";
         return _p;
     }
@@ -856,7 +867,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getSourceDirectoryOptionShortName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "sourceDirectoryOptionShortName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "sourceDirectoryOptionShortName" );
         assert _p != null : "'sourceDirectoryOptionShortName' property not found.";
         return _p;
     }
@@ -870,7 +881,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getTemplateEncodingOptionLongName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "templateEncodingOptionLongName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "templateEncodingOptionLongName" );
         assert _p != null : "'templateEncodingOptionLongName' property not found.";
         return _p;
     }
@@ -884,17 +895,19 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private java.lang.String getTemplateEncodingOptionShortName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "templateEncodingOptionShortName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "templateEncodingOptionShortName" );
         assert _p != null : "'templateEncodingOptionShortName' property not found.";
         return _p;
     }
+    // </editor-fold>
     // SECTION-END
     // SECTION-START[Messages]
+    // <editor-fold defaultstate="collapsed" desc=" Generated Messages ">
 
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-8-SNAPSHOT Build 2009-11-15T23:11:58+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-8-SNAPSHOT Build 2009-11-16T00:47:48+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -905,7 +918,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getApplicationTitleMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "applicationTitle", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "applicationTitle", locale,  null );
         assert _m != null : "'applicationTitle' message not found.";
         return _m;
     }
@@ -927,7 +940,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getCannotProcessMessage( final java.util.Locale locale, final java.lang.String itemInfo, final java.lang.String detailMessage )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "cannotProcess", locale, new Object[] { itemInfo, detailMessage, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "cannotProcess", locale, new Object[] { itemInfo, detailMessage, null } );
         assert _m != null : "'cannotProcess' message not found.";
         return _m;
     }
@@ -948,7 +961,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getClasspathElementMessage( final java.util.Locale locale, final java.lang.String classpathElement )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "classpathElement", locale, new Object[] { classpathElement, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "classpathElement", locale, new Object[] { classpathElement, null } );
         assert _m != null : "'classpathElement' message not found.";
         return _m;
     }
@@ -969,7 +982,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getClasspathOptionMessage( final java.util.Locale locale, final java.lang.String pathSeparator )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "classpathOption", locale, new Object[] { pathSeparator, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "classpathOption", locale, new Object[] { pathSeparator, null } );
         assert _m != null : "'classpathOption' message not found.";
         return _m;
     }
@@ -989,7 +1002,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getClasspathOptionArgNameMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "classpathOptionArgName", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "classpathOptionArgName", locale,  null );
         assert _m != null : "'classpathOptionArgName' message not found.";
         return _m;
     }
@@ -1010,7 +1023,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getDefaultLogLevelInfoMessage( final java.util.Locale locale, final java.lang.String defaultLogLevel )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "defaultLogLevelInfo", locale, new Object[] { defaultLogLevel, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "defaultLogLevelInfo", locale, new Object[] { defaultLogLevel, null } );
         assert _m != null : "'defaultLogLevelInfo' message not found.";
         return _m;
     }
@@ -1031,7 +1044,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getDocumentFileMessage( final java.util.Locale locale, final java.lang.String documentFile )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentFile", locale, new Object[] { documentFile, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentFile", locale, new Object[] { documentFile, null } );
         assert _m != null : "'documentFile' message not found.";
         return _m;
     }
@@ -1052,7 +1065,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getDocumentsOptionMessage( final java.util.Locale locale, final java.lang.String pathSeparator )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentsOption", locale, new Object[] { pathSeparator, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentsOption", locale, new Object[] { pathSeparator, null } );
         assert _m != null : "'documentsOption' message not found.";
         return _m;
     }
@@ -1072,7 +1085,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getDocumentsOptionArgNameMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "documentsOptionArgName", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentsOptionArgName", locale,  null );
         assert _m != null : "'documentsOptionArgName' message not found.";
         return _m;
     }
@@ -1092,7 +1105,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getInvalidModelMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "invalidModel", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "invalidModel", locale,  null );
         assert _m != null : "'invalidModel' message not found.";
         return _m;
     }
@@ -1113,7 +1126,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getLanguageOptionMessage( final java.util.Locale locale, final java.lang.String defaultLanguage )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "languageOption", locale, new Object[] { defaultLanguage, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "languageOption", locale, new Object[] { defaultLanguage, null } );
         assert _m != null : "'languageOption' message not found.";
         return _m;
     }
@@ -1134,7 +1147,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getLanguageOptionArgNameMessage( final java.util.Locale locale, final java.lang.String defaultLanguage )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "languageOptionArgName", locale, new Object[] { defaultLanguage, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "languageOptionArgName", locale, new Object[] { defaultLanguage, null } );
         assert _m != null : "'languageOptionArgName' message not found.";
         return _m;
     }
@@ -1160,7 +1173,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getLongDescriptionMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "longDescription", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "longDescription", locale,  null );
         assert _m != null : "'longDescription' message not found.";
         return _m;
     }
@@ -1181,7 +1194,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getMissingModuleMessage( final java.util.Locale locale, final java.lang.String moduleName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "missingModule", locale, new Object[] { moduleName, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "missingModule", locale, new Object[] { moduleName, null } );
         assert _m != null : "'missingModule' message not found.";
         return _m;
     }
@@ -1201,7 +1214,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getModuleLocationOptionMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "moduleLocationOption", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleLocationOption", locale,  null );
         assert _m != null : "'moduleLocationOption' message not found.";
         return _m;
     }
@@ -1221,7 +1234,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getModuleLocationOptionArgNameMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "moduleLocationOptionArgName", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleLocationOptionArgName", locale,  null );
         assert _m != null : "'moduleLocationOptionArgName' message not found.";
         return _m;
     }
@@ -1241,7 +1254,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getModuleNameOptionMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "moduleNameOption", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleNameOption", locale,  null );
         assert _m != null : "'moduleNameOption' message not found.";
         return _m;
     }
@@ -1261,7 +1274,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getModuleNameOptionArgNameMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "moduleNameOptionArgName", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleNameOptionArgName", locale,  null );
         assert _m != null : "'moduleNameOptionArgName' message not found.";
         return _m;
     }
@@ -1281,7 +1294,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getModulesReportMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "modulesReport", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "modulesReport", locale,  null );
         assert _m != null : "'modulesReport' message not found.";
         return _m;
     }
@@ -1301,7 +1314,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getNoClasspathResolutionOptionMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "noClasspathResolutionOption", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "noClasspathResolutionOption", locale,  null );
         assert _m != null : "'noClasspathResolutionOption' message not found.";
         return _m;
     }
@@ -1321,7 +1334,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getOutputEncodingOptionMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "outputEncodingOption", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "outputEncodingOption", locale,  null );
         assert _m != null : "'outputEncodingOption' message not found.";
         return _m;
     }
@@ -1341,7 +1354,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getOutputEncodingOptionArgNameMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "outputEncodingOptionArgName", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "outputEncodingOptionArgName", locale,  null );
         assert _m != null : "'outputEncodingOptionArgName' message not found.";
         return _m;
     }
@@ -1361,7 +1374,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getProfileOptionMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "profileOption", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "profileOption", locale,  null );
         assert _m != null : "'profileOption' message not found.";
         return _m;
     }
@@ -1381,7 +1394,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getProfileOptionArgNameMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "profileOptionArgName", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "profileOptionArgName", locale,  null );
         assert _m != null : "'profileOptionArgName' message not found.";
         return _m;
     }
@@ -1401,7 +1414,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getResourceDirectoryOptionMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "resourceDirectoryOption", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "resourceDirectoryOption", locale,  null );
         assert _m != null : "'resourceDirectoryOption' message not found.";
         return _m;
     }
@@ -1421,7 +1434,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getResourceDirectoryOptionArgNameMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "resourceDirectoryOptionArgName", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "resourceDirectoryOptionArgName", locale,  null );
         assert _m != null : "'resourceDirectoryOptionArgName' message not found.";
         return _m;
     }
@@ -1440,7 +1453,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getSeparatorMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "separator", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "separator", locale,  null );
         assert _m != null : "'separator' message not found.";
         return _m;
     }
@@ -1460,7 +1473,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getShortDescriptionMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "shortDescription", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "shortDescription", locale,  null );
         assert _m != null : "'shortDescription' message not found.";
         return _m;
     }
@@ -1480,7 +1493,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getSourceDirectoryOptionMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "sourceDirectoryOption", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "sourceDirectoryOption", locale,  null );
         assert _m != null : "'sourceDirectoryOption' message not found.";
         return _m;
     }
@@ -1500,7 +1513,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getSourceDirectoryOptionArgNameMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "sourceDirectoryOptionArgName", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "sourceDirectoryOptionArgName", locale,  null );
         assert _m != null : "'sourceDirectoryOptionArgName' message not found.";
         return _m;
     }
@@ -1522,7 +1535,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getStartingModuleProcessingMessage( final java.util.Locale locale, final java.lang.String toolName, final java.lang.String moduleName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "startingModuleProcessing", locale, new Object[] { toolName, moduleName, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "startingModuleProcessing", locale, new Object[] { toolName, moduleName, null } );
         assert _m != null : "'startingModuleProcessing' message not found.";
         return _m;
     }
@@ -1543,7 +1556,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getStartingProcessingMessage( final java.util.Locale locale, final java.lang.String toolName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "startingProcessing", locale, new Object[] { toolName, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "startingProcessing", locale, new Object[] { toolName, null } );
         assert _m != null : "'startingProcessing' message not found.";
         return _m;
     }
@@ -1563,7 +1576,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getTemplateEncodingOptionMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "templateEncodingOption", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "templateEncodingOption", locale,  null );
         assert _m != null : "'templateEncodingOption' message not found.";
         return _m;
     }
@@ -1583,7 +1596,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getTemplateEncodingOptionArgNameMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "templateEncodingOptionArgName", locale,  null );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "templateEncodingOptionArgName", locale,  null );
         assert _m != null : "'templateEncodingOptionArgName' message not found.";
         return _m;
     }
@@ -1604,7 +1617,7 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getToolFailureMessage( final java.util.Locale locale, final java.lang.String toolName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "toolFailure", locale, new Object[] { toolName, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "toolFailure", locale, new Object[] { toolName, null } );
         assert _m != null : "'toolFailure' message not found.";
         return _m;
     }
@@ -1625,9 +1638,10 @@ public final class GenerateJavaBundlesCommand extends AbstractJomcCommand
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-8-SNAPSHOT/jomc-tools" )
     private String getToolSuccessMessage( final java.util.Locale locale, final java.lang.String toolName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "toolSuccess", locale, new Object[] { toolName, null } );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "toolSuccess", locale, new Object[] { toolName, null } );
         assert _m != null : "'toolSuccess' message not found.";
         return _m;
     }
+    // </editor-fold>
     // SECTION-END
 }
