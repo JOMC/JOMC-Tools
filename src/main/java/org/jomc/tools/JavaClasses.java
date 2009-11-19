@@ -675,7 +675,9 @@ public class JavaClasses extends JomcTool
 
             }
 
-            if ( !decoded.getClazz().equals( specification.getClazz() ) )
+            if ( decoded.getClazz() == null
+                 ? specification.getClazz() != null
+                 : !decoded.getClazz().equals( specification.getClazz() ) )
             {
                 report.getDetails().add( new ModelObjectValidationReport.Detail(
                     "CLASS_ILLEGAL_SPECIFICATION_CLASS", Level.SEVERE,
@@ -964,7 +966,9 @@ public class JavaClasses extends JomcTool
 
                         }
 
-                        if ( !decodedSpecification.getClazz().equals( specification.getClazz() ) )
+                        if ( decodedSpecification.getClazz() == null
+                             ? specification.getClazz() != null
+                             : !decodedSpecification.getClazz().equals( specification.getClazz() ) )
                         {
                             report.getDetails().add( new ModelObjectValidationReport.Detail(
                                 "CLASS_ILLEGAL_SPECIFICATION_CLASS", Level.SEVERE,
