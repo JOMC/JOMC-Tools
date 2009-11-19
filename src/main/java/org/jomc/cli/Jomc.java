@@ -378,13 +378,17 @@ public class Jomc
                 final StringWriter usage = new StringWriter();
                 final StringWriter opts = new StringWriter();
                 final HelpFormatter formatter = new HelpFormatter();
+                final Options options = cmd.getOptions();
+                options.addOption( this.getDebugOption() );
+                options.addOption( this.getVerboseOption() );
+                options.addOption( this.getFailOnWarningsOption() );
 
                 PrintWriter pw = new PrintWriter( usage );
-                formatter.printUsage( pw, this.getWidth(), cmd.getName(), cmd.getOptions() );
+                formatter.printUsage( pw, this.getWidth(), cmd.getName(), options );
                 pw.close();
 
                 pw = new PrintWriter( opts );
-                formatter.printOptions( pw, this.getWidth(), cmd.getOptions(), this.getLeftPad(), this.getDescPad() );
+                formatter.printOptions( pw, this.getWidth(), options, this.getLeftPad(), this.getDescPad() );
                 pw.close();
 
                 this.getPrintWriter().println( cmd.getShortDescription( this.getLocale() ) );
