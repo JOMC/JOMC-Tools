@@ -44,7 +44,7 @@ import java.lang.*;
 // SECTION-END
 // SECTION-START[Annotations]
 // SECTION-END
-public #if($implementation.isAbstract())abstract#end class ${tool.getJavaTypeName($implementation,false)}
+public#if($implementation.isAbstract())abstract#end class ${tool.getJavaTypeName($implementation,false)}
 #set($interfaces = $tool.getJavaInterfaceNames($implementation,true))
 #if(!$interfaces.isEmpty())
     implements
