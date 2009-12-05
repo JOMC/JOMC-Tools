@@ -578,10 +578,6 @@ public abstract class JomcTool
             throw new NullPointerException( "property" );
         }
 
-        if ( property.getAny() != null )
-        {
-            return Object.class.getName();
-        }
         if ( property.getType() != null )
         {
             final String typeName = property.getType();
@@ -625,7 +621,7 @@ public abstract class JomcTool
             return typeName;
         }
 
-        return String.class.getName();
+        return property.getAny() != null ? Object.class.getName() : String.class.getName();
     }
 
     /**
