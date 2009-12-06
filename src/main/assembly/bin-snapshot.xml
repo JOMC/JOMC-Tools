@@ -149,6 +149,16 @@
         <include>PROJEKT.txt</include>
       </includes>
     </fileSet>
+    <fileSet>
+      <directory>${project.build.directory}/jomc-schemas</directory>
+      <fileMode>0444</fileMode>
+      <outputDirectory>/xsd</outputDirectory>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <includes>
+        <include>**/*.xsd</include>
+      </includes>
+    </fileSet>
   </fileSets>
   <dependencySets>
     <dependencySet>

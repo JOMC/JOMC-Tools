@@ -266,7 +266,7 @@
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
-            <id>unpack-tools</id>
+            <id>unpack</id>
             <phase>package</phase>
             <goals>
               <goal>unpack</goal>
@@ -278,6 +278,13 @@
                   <artifactId>jomc-tools</artifactId>
                   <version>${project.version}</version>
                   <outputDirectory>${project.build.directory}/jomc-tools</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.jomc</groupId>
+                  <artifactId>jomc-model</artifactId>
+                  <classifier>schemas</classifier>
+                  <version>${project.version}</version>
+                  <outputDirectory>${project.build.directory}/jomc-schemas</outputDirectory>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -466,7 +473,7 @@
             <artifactId>maven-dependency-plugin</artifactId>
             <executions>
               <execution>
-                <id>copy-javadoc</id>
+                <id>copy</id>
                 <phase>package</phase>
                 <goals>
                   <goal>copy</goal>
