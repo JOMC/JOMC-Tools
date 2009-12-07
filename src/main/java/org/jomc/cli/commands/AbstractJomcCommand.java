@@ -43,6 +43,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashSet;
@@ -701,7 +702,7 @@ public abstract class AbstractJomcCommand implements Command
 
     protected ClassLoader getClassLoader( final CommandLine commandLine ) throws IOException
     {
-        final Set<URL> urls = new HashSet<URL>();
+        final Set<URI> uris = new HashSet<URI>();
 
         if ( commandLine.hasOption( this.getClasspathOption().getOpt() ) )
         {
@@ -728,8 +729,7 @@ public abstract class AbstractJomcCommand implements Command
                             {
                                 if ( !line.startsWith( "#" ) )
                                 {
-                                    final URL url = new File( line ).toURI().toURL();
-                                    urls.add( url );
+                                    uris.add( new File( line ).toURI() );
                                 }
                             }
                         }
@@ -743,13 +743,20 @@ public abstract class AbstractJomcCommand implements Command
                     }
                     else
                     {
-                        urls.add( new File( e ).toURI().toURL() );
+                        uris.add( new File( e ).toURI() );
                     }
                 }
             }
         }
 
-        return new URLClassLoader( urls.toArray( new URL[ urls.size() ] ) );
+        int i = 0;
+        final URL[] urls = new URL[ uris.size() ];
+        for ( URI uri : uris )
+        {
+            urls[i++] = uri.toURL();
+        }
+
+        return new URLClassLoader( urls );
     }
 
     protected Set<File> getDocumentFiles( final CommandLine commandLine ) throws IOException
