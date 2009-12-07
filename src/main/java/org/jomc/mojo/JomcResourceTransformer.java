@@ -435,7 +435,7 @@ public class JomcResourceTransformer implements ResourceTransformer
             {
                 if ( this.moduleIncludes != null )
                 {
-                    for ( Iterator<Module> it = this.modules.getModule().iterator(); it.hasNext(); )
+                    for ( final Iterator<Module> it = this.modules.getModule().iterator(); it.hasNext(); )
                     {
                         if ( !this.moduleIncludes.contains( it.next().getName() ) )
                         {
