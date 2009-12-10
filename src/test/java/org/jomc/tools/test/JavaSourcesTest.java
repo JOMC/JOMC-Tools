@@ -343,6 +343,8 @@ public class JavaSourcesTest extends JomcToolTest
     @Override
     public void testNotNull() throws Exception
     {
+        super.testNotNull();
+
         final Implementation i = new Implementation();
         i.setIdentifier( "TEST" );
         i.setClazz( "TEST" );
