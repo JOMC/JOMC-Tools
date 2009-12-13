@@ -43,6 +43,7 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -309,7 +310,7 @@ public abstract class JomcTool
      *
      * @param specification The specification to get the Java package name of.
      *
-     * @return The Java package name of {@code specification}.
+     * @return The Java package name of {@code specification} or {@code null}.
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
      */
@@ -320,7 +321,7 @@ public abstract class JomcTool
             throw new NullPointerException( "specification" );
         }
 
-        return this.getJavaPackageName( specification.getClazz() );
+        return specification.getClazz() != null ? this.getJavaPackageName( specification.getClazz() ) : null;
     }
 
     /**
@@ -330,7 +331,7 @@ public abstract class JomcTool
      * @param qualified {@code true} to return the fully qualified type name (with package name prepended);
      * {@code false} to return the short type name (without package name prepended).
      *
-     * @return The Java type name of {@code specification}.
+     * @return The Java type name of {@code specification} or {@code null}.
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
      */
@@ -341,19 +342,24 @@ public abstract class JomcTool
             throw new NullPointerException( "specification" );
         }
 
-        final StringBuilder typeName = new StringBuilder();
-        final String javaPackageName = this.getJavaPackageName( specification );
-
-        if ( qualified && javaPackageName.length() > 0 )
+        if ( specification.getClazz() != null )
         {
-            typeName.append( javaPackageName ).append( '.' );
+            final StringBuilder typeName = new StringBuilder();
+            final String javaPackageName = this.getJavaPackageName( specification );
+
+            if ( qualified && javaPackageName.length() > 0 )
+            {
+                typeName.append( javaPackageName ).append( '.' );
+            }
+
+            typeName.append( javaPackageName.length() > 0
+                             ? specification.getClazz().substring( javaPackageName.length() + 1 )
+                             : specification.getClazz() );
+
+            return typeName.toString();
         }
 
-        typeName.append( javaPackageName.length() > 0
-                         ? specification.getClazz().substring( javaPackageName.length() + 1 )
-                         : specification.getClazz() );
-
-        return typeName.toString();
+        return null;
     }
 
     /**
@@ -361,7 +367,7 @@ public abstract class JomcTool
      *
      * @param specification The specification to return the Java class path location of.
      *
-     * @return the Java class path location of {@code specification}.
+     * @return The Java class path location of {@code specification} or {@code null}.
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
      */
@@ -372,7 +378,10 @@ public abstract class JomcTool
             throw new NullPointerException( "specification" );
         }
 
-        return ( this.getJavaTypeName( specification, true ) ).replace( '.', '/' );
+        return specification.getClazz() != null
+               ? ( this.getJavaTypeName( specification, true ) ).replace( '.', '/' )
+               : null;
+
     }
 
     /**
@@ -380,7 +389,7 @@ public abstract class JomcTool
      *
      * @param reference The specification reference to get the Java package name of.
      *
-     * @return The Java package name of {@code reference}.
+     * @return The Java package name of {@code reference} or {@code null}.
      *
      * @throws NullPointerException if {@code reference} is {@code null}.
      */
@@ -393,7 +402,7 @@ public abstract class JomcTool
 
         final Specification s = this.getModules().getSpecification( reference.getIdentifier() );
         assert s != null : "Specification '" + reference.getIdentifier() + "' not found.";
-        return this.getJavaPackageName( s );
+        return s.getClazz() != null ? this.getJavaPackageName( s ) : null;
     }
 
     /**
@@ -403,7 +412,7 @@ public abstract class JomcTool
      * @param qualified {@code true} to return the fully qualified type name (with package name prepended);
      * {@code false} to return the short type name (without package name prepended).
      *
-     * @return The Java type name of {@code reference}.
+     * @return The Java type name of {@code reference} or {@code null}.
      *
      * @throws NullPointerException if {@code reference} is {@code null}.
      */
@@ -416,7 +425,7 @@ public abstract class JomcTool
 
         final Specification s = this.getModules().getSpecification( reference.getIdentifier() );
         assert s != null : "Specification '" + reference.getIdentifier() + "' not found.";
-        return this.getJavaTypeName( s, qualified );
+        return s.getClazz() != null ? this.getJavaTypeName( s, qualified ) : null;
     }
 
     /**
@@ -424,7 +433,7 @@ public abstract class JomcTool
      *
      * @param implementation The implementation to get the Java package name of.
      *
-     * @return The Java package name of {@code implementation}.
+     * @return The Java package name of {@code implementation} or {@code null}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      */
@@ -435,7 +444,7 @@ public abstract class JomcTool
             throw new NullPointerException( "implementation" );
         }
 
-        return this.getJavaPackageName( implementation.getClazz() );
+        return implementation.getClazz() != null ? this.getJavaPackageName( implementation.getClazz() ) : null;
     }
 
     /**
@@ -445,7 +454,7 @@ public abstract class JomcTool
      * @param qualified {@code true} to return the fully qualified type name (with package name prepended);
      * {@code false} to return the short type name (without package name prepended).
      *
-     * @return The Java type name of {@code implementation}.
+     * @return The Java type name of {@code implementation} or {@code null}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      */
@@ -456,19 +465,24 @@ public abstract class JomcTool
             throw new NullPointerException( "implementation" );
         }
 
-        final StringBuilder typeName = new StringBuilder();
-        final String javaPackageName = this.getJavaPackageName( implementation );
-
-        if ( qualified && javaPackageName.length() > 0 )
+        if ( implementation.getClazz() != null )
         {
-            typeName.append( javaPackageName ).append( '.' );
+            final StringBuilder typeName = new StringBuilder();
+            final String javaPackageName = this.getJavaPackageName( implementation );
+
+            if ( qualified && javaPackageName.length() > 0 )
+            {
+                typeName.append( javaPackageName ).append( '.' );
+            }
+
+            typeName.append( javaPackageName.length() > 0
+                             ? implementation.getClazz().substring( javaPackageName.length() + 1 )
+                             : implementation.getClazz() );
+
+            return typeName.toString();
         }
 
-        typeName.append( javaPackageName.length() > 0
-                         ? implementation.getClazz().substring( javaPackageName.length() + 1 )
-                         : implementation.getClazz() );
-
-        return typeName.toString();
+        return null;
     }
 
     /**
@@ -476,7 +490,7 @@ public abstract class JomcTool
      *
      * @param implementation The implementation to return the Java class path location of.
      *
-     * @return The Java class path location of {@code implementation}.
+     * @return The Java class path location of {@code implementation} or {@code null}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      */
@@ -487,7 +501,10 @@ public abstract class JomcTool
             throw new NullPointerException( "implementation" );
         }
 
-        return ( this.getJavaTypeName( implementation, true ) ).replace( '.', '/' );
+        return implementation.getClazz() != null
+               ? ( this.getJavaTypeName( implementation, true ) ).replace( '.', '/' )
+               : null;
+
     }
 
     /**
@@ -497,7 +514,7 @@ public abstract class JomcTool
      * @param qualified {@code true} to return the fully qualified type names (with package name prepended);
      * {@code false} to return the short type names (without package name prepended).
      *
-     * @return All interfaces implemented by {@code implementation}.
+     * @return Unmodifiable list contaning all Java interfaces implemented by {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      */
@@ -515,15 +532,18 @@ public abstract class JomcTool
         {
             for ( Specification s : specs.getSpecification() )
             {
-                final String typeName = this.getJavaTypeName( s, qualified );
-                if ( !col.contains( typeName ) )
+                if ( s.getClazz() != null )
                 {
-                    col.add( typeName );
+                    final String typeName = this.getJavaTypeName( s, qualified );
+                    if ( !col.contains( typeName ) )
+                    {
+                        col.add( typeName );
+                    }
                 }
             }
         }
 
-        return col;
+        return Collections.unmodifiableList( col );
     }
 
     /**
@@ -677,7 +697,7 @@ public abstract class JomcTool
      *
      * @param dependency The dependency to get a dependency Java type name of.
      *
-     * @return The Java type name of {@code dependency}.
+     * @return The Java type name of {@code dependency} or {@code null}.
      *
      * @throws NullPointerException if {@code dependency} is {@code null}.
      */
@@ -688,16 +708,21 @@ public abstract class JomcTool
             throw new NullPointerException( "dependency" );
         }
 
-        final StringBuilder typeName = new StringBuilder();
-        typeName.append( this.getJavaTypeName( (SpecificationReference) dependency, true ) );
-
         final Specification s = this.getModules().getSpecification( dependency.getIdentifier() );
-        if ( s != null && s.getMultiplicity() == Multiplicity.MANY && dependency.getImplementationName() == null )
+
+        if ( s != null && s.getClazz() != null )
         {
-            typeName.append( "[]" );
+            final StringBuilder typeName = new StringBuilder();
+            typeName.append( this.getJavaTypeName( s, true ) );
+            if ( s.getMultiplicity() == Multiplicity.MANY && dependency.getImplementationName() == null )
+            {
+                typeName.append( "[]" );
+            }
+
+            return typeName.toString();
         }
 
-        return typeName.toString();
+        return null;
     }
 
     /**
@@ -920,7 +945,7 @@ public abstract class JomcTool
             throw new NullPointerException( "specification" );
         }
 
-        return this.getJavaPackageName( specification ).length() == 0;
+        return specification.getClazz() != null && this.getJavaPackageName( specification ).length() == 0;
     }
 
     /**
@@ -940,7 +965,7 @@ public abstract class JomcTool
             throw new NullPointerException( "implementation" );
         }
 
-        return this.getJavaPackageName( implementation ).length() == 0;
+        return implementation.getClazz() != null && this.getJavaPackageName( implementation ).length() == 0;
     }
 
     /**
