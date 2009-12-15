@@ -35,58 +35,33 @@
 <module xmlns="http://jomc.org/model"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://jomc.org/model http://jomc.org/model/jomc-1.0.xsd"
-        name="${project.name} Tests"
-        version="${project.version}"
-        vendor="${project.organization.name}"
-        modelVersion="1.0">
+        name="${project.name} Tests" version="${project.version}" vendor="${project.organization.name}" modelVersion="1.0">
 
   <documentation defaultLanguage="en">
-    <text language="en"><![CDATA[${project.description}]]>
-    </text>
+    <text language="en"><![CDATA[${project.description}]]></text>
   </documentation>
 
   <implementations>
-    <implementation identifier="org.jomc.cli.test.JomcTest"
-                    name="${project.name} Tests"
-                    class="org.jomc.cli.test.JomcTest"
-                    vendor="${project.organization.name}"
+    <!-- **********************************************************************************************************  -->
+    <implementation identifier="org.jomc.cli.test.JomcTest" name="${project.name} Tests"
+                    class="org.jomc.cli.test.JomcTest" classDeclaration="true" vendor="${project.organization.name}"
                     version="${project.version}">
-
       <documentation defaultLanguage="en">
         <text language="en">Tests the {@code Jomc} CLI class.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0"
-                mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
       </authors>
       <properties>
-        <property name="classesDirectory"
-                  value="${project.build.outputDirectory}"/>
-
-        <property name="testDocument"
-                  value="${project.build.outputDirectory}/META-INF/jomc.xml"/>
-
-        <property name="testDocumentIllegal"
-                  value="${project.build.testOutputDirectory}/org/jomc/cli/test/illegal-module.xml"/>
-
+        <property name="classesDirectory" value="${project.build.outputDirectory}"/>
+        <property name="testDocument" value="${project.build.outputDirectory}/META-INF/jomc.xml"/>
+        <property name="testDocumentIllegal" value="${project.build.testOutputDirectory}/org/jomc/cli/test/illegal-module.xml"/>
         <property name="testModuleName" value="${project.name}"/>
-
-        <property name="testStylesheet"
-                  value="${basedir}/src/main/jomc/relocations.xslt"/>
-
-        <property name="testOutputDocument"
-                  value="${project.build.directory}/jomc-test/transformed.xml"/>
-
-        <property name="testSourcesDirectory"
-                  value="${project.build.directory}/jomc-test/src"/>
-
-        <property name="testResourcesDirectory"
-                  value="${project.build.directory}/jomc-test/rsrc"/>
-
-        <property name="testClassesDirectory"
-                  value="${project.build.directory}/jomc-test/classes"/>
-
+        <property name="testStylesheet" value="${basedir}/src/main/jomc/relocations.xslt"/>
+        <property name="testOutputDocument" value="${project.build.directory}/jomc-test/transformed.xml"/>
+        <property name="testSourcesDirectory" value="${project.build.directory}/jomc-test/src"/>
+        <property name="testResourcesDirectory" value="${project.build.directory}/jomc-test/rsrc"/>
+        <property name="testClassesDirectory" value="${project.build.directory}/jomc-test/classes"/>
       </properties>
     </implementation>
   </implementations>
