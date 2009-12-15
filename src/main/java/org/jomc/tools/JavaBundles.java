@@ -219,7 +219,7 @@ public class JavaBundles extends JomcTool
             throw new NullPointerException( "sourcesDirectory" );
         }
 
-        if ( this.isJavaClassDeclaration( implementation ) )
+        if ( implementation.isClassDeclaration() )
         {
             this.assertValidTemplates( implementation );
 
@@ -329,7 +329,7 @@ public class JavaBundles extends JomcTool
             throw new NullPointerException( "resourcesDirectory" );
         }
 
-        if ( this.isJavaClassDeclaration( implementation ) )
+        if ( implementation.isClassDeclaration() )
         {
             this.assertValidTemplates( implementation );
 
@@ -541,8 +541,7 @@ public class JavaBundles extends JomcTool
     private String getMessage( final String key, final Object args )
     {
         final ResourceBundle b = ResourceBundle.getBundle( JavaBundles.class.getName().replace( '.', '/' ) );
-        final MessageFormat f = new MessageFormat( b.getString( key ) );
-        return f.format( args );
+        return MessageFormat.format( b.getString( key ), args );
     }
 
 }

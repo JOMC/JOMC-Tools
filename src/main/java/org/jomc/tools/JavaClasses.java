@@ -225,7 +225,7 @@ public class JavaClasses extends JomcTool
             throw new NullPointerException( "classesDirectory" );
         }
 
-        if ( this.isJavaClassDeclaration( specification ) )
+        if ( specification.isClassDeclaration() )
         {
             final String classLocation = specification.getClazz().replace( '.', File.separatorChar ) + ".class";
             final File classFile = new File( classesDirectory, classLocation );
@@ -273,7 +273,7 @@ public class JavaClasses extends JomcTool
             throw new NullPointerException( "classesDirectory" );
         }
 
-        if ( this.isJavaClassDeclaration( implementation ) )
+        if ( implementation.isClassDeclaration() )
         {
             Dependencies dependencies = this.getModules().getDependencies( implementation.getIdentifier() );
             if ( dependencies == null )
@@ -475,7 +475,7 @@ public class JavaClasses extends JomcTool
         {
             for ( Specification s : module.getSpecifications().getSpecification() )
             {
-                if ( this.isJavaClassDeclaration( s ) )
+                if ( s.isClassDeclaration() )
                 {
                     final String classLocation = s.getClazz().replace( '.', File.separatorChar ) + ".class";
                     final File classFile = new File( classesDirectory, classLocation );
@@ -491,7 +491,7 @@ public class JavaClasses extends JomcTool
         {
             for ( Implementation i : module.getImplementations().getImplementation() )
             {
-                if ( this.isJavaClassDeclaration( i ) )
+                if ( i.isClassDeclaration() )
                 {
                     final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
                     final File classFile = new File( classesDirectory, classLocation );
@@ -545,7 +545,7 @@ public class JavaClasses extends JomcTool
         {
             for ( Specification s : module.getSpecifications().getSpecification() )
             {
-                if ( this.isJavaClassDeclaration( s ) )
+                if ( s.isClassDeclaration() )
                 {
                     final String classLocation = s.getClazz().replace( '.', '/' ) + ".class";
                     final URL classUrl = classLoader.getResource( classLocation );
@@ -572,7 +572,7 @@ public class JavaClasses extends JomcTool
         {
             for ( Implementation i : module.getImplementations().getImplementation() )
             {
-                if ( this.isJavaClassDeclaration( i ) )
+                if ( i.isClassDeclaration() )
                 {
                     final String classLocation = i.getClazz().replace( '.', '/' ) + ".class";
                     final URL classUrl = classLoader.getResource( classLocation );
@@ -1129,7 +1129,7 @@ public class JavaClasses extends JomcTool
         {
             for ( Specification s : module.getSpecifications().getSpecification() )
             {
-                if ( this.isJavaClassDeclaration( s ) )
+                if ( s.isClassDeclaration() )
                 {
                     final String classLocation = s.getIdentifier().replace( '.', File.separatorChar ) + ".class";
                     final File classFile = new File( classesDirectory, classLocation );
@@ -1154,7 +1154,7 @@ public class JavaClasses extends JomcTool
         {
             for ( Implementation i : module.getImplementations().getImplementation() )
             {
-                if ( this.isJavaClassDeclaration( i ) )
+                if ( i.isClassDeclaration() )
                 {
                     final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
                     final File classFile = new File( classesDirectory, classLocation );

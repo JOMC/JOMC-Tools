@@ -49,6 +49,7 @@
     <!-- ******************************************************************* -->
     <specification identifier="Specification"
                    class="Specification"
+                   classDeclaration="true"
                    vendor="${project.organization.name}"
                    version="${project.version}">
 
@@ -68,6 +69,7 @@
     <!-- ******************************************************************* -->
     <implementation identifier="Implementation"
                     class="Implementation"
+                    classDeclaration="true"
                     name="${project.name}"
                     version="${project.version}"
                     vendor="${project.organization.name}"
@@ -111,6 +113,7 @@
     <!-- ******************************************************************* -->
     <implementation identifier="ImplementationOfSpecification"
                     class="ImplementationOfSpecification"
+                    classDeclaration="true"
                     name="${project.name}"
                     version="${project.version}"
                     vendor="${project.organization.name}"

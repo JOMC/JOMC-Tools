@@ -888,47 +888,6 @@ public abstract class JomcTool
     }
 
     /**
-     * Gets a flag indicating if a given specification declares a Java class.
-     *
-     * @param specification The specification to test.
-     *
-     * @return {@code true} if {@code specification} is declaring the Java class with name
-     * {@code specification.getClazz()}; {@code false} if {@code specification} does not declare that class.
-     *
-     * @throws NullPointerException if {@code specification} is {@code null}.
-     */
-    public boolean isJavaClassDeclaration( final Specification specification )
-    {
-        if ( specification == null )
-        {
-            throw new NullPointerException( "specification" );
-        }
-
-        return specification.getClazz() != null && specification.getClazz().equals( specification.getIdentifier() );
-    }
-
-    /**
-     * Gets a flag indicating if a given implementation declares a Java class.
-     *
-     * @param implementation The implementation to test.
-     *
-     * @return {@code true} if {@code implementation} is declaring the Java class with name
-     * {@code implementation.getClazz()}; {@code false} if {@code implementation.getClazz()} is {@code null} or
-     * {@code implementation} does not declare that class.
-     *
-     * @throws NullPointerException if {@code implementation} is {@code null}.
-     */
-    public boolean isJavaClassDeclaration( final Implementation implementation )
-    {
-        if ( implementation == null )
-        {
-            throw new NullPointerException( "implementation" );
-        }
-
-        return implementation.getClazz() != null && implementation.getClazz().equals( implementation.getIdentifier() );
-    }
-
-    /**
      * Gets a flag indicating if the class of a given specification is located in the Java default package.
      *
      * @param specification The specification to test.

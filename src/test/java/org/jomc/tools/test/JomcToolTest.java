@@ -454,26 +454,6 @@ public abstract class JomcToolTest extends TestCase
 
         try
         {
-            this.getTestTool().isJavaClassDeclaration( (Implementation) null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            this.getTestTool().isJavaClassDeclaration( (Specification) null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
             this.getTestTool().isJavaDefaultPackage( (Implementation) null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }

@@ -241,11 +241,11 @@ public class JavaSources extends JomcTool
         }
 
         final Implementation i = this.getModules().getImplementation( specification.getIdentifier() );
-        if ( i != null && this.isJavaClassDeclaration( i ) )
+        if ( i != null && i.isClassDeclaration() )
         {
             this.manageSources( i, sourcesDirectory );
         }
-        else if ( this.isJavaClassDeclaration( specification ) )
+        else if ( specification.isClassDeclaration() )
         {
             final File f = new File( sourcesDirectory, specification.getIdentifier().replace( '.', '/' ) + ".java" );
             final String content = f.exists()
@@ -344,7 +344,7 @@ public class JavaSources extends JomcTool
             throw new NullPointerException( "sourcesDirectory" );
         }
 
-        if ( this.isJavaClassDeclaration( implementation ) )
+        if ( implementation.isClassDeclaration() )
         {
             final File f = new File( sourcesDirectory, implementation.getClazz().replace( '.', '/' ) + ".java" );
             final String content = f.exists()
