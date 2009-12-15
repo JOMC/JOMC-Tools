@@ -541,7 +541,7 @@ public class JavaBundles extends JomcTool
     private String getMessage( final String key, final Object args )
     {
         final ResourceBundle b = ResourceBundle.getBundle( JavaBundles.class.getName().replace( '.', '/' ) );
-        return MessageFormat.format( b.getString( key ), args );
+        return new MessageFormat( b.getString( key ) ).format( args );
     }
 
 }
