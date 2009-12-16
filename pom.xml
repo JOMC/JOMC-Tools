@@ -55,6 +55,12 @@
         <directory>src/test/resources</directory>
       </testResource>
     </testResources>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
   </build>
   <dependencies>
     <!-- Compile -->
