@@ -46,6 +46,28 @@
     <pluginManagement>
       <plugins>
         <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>attach</id>
+              <phase>process-resources</phase>
+              <goals>
+                <goal>attach-artifact</goal>
+              </goals>
+              <configuration>
+                <artifacts>
+                  <artifact>
+                    <file>${project.build.outputDirectory}/META-INF/jomc.xml</file>
+                    <type>xml</type>
+                    <classifier>jomc</classifier>
+                  </artifact>
+                </artifacts>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
           <executions>
@@ -277,6 +299,7 @@
                   <groupId>org.jomc</groupId>
                   <artifactId>jomc-tools</artifactId>
                   <version>${project.version}</version>
+                  <type>jar</type>
                   <outputDirectory>${project.build.directory}/jomc-tools</outputDirectory>
                 </artifactItem>
                 <artifactItem>
@@ -284,7 +307,37 @@
                   <artifactId>jomc-model</artifactId>
                   <classifier>schemas</classifier>
                   <version>${project.version}</version>
+                  <type>jar</type>
                   <outputDirectory>${project.build.directory}/jomc-schemas</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>jomc-parent</artifactId>
+                  <version>${project.version}</version>
+                  <type>txt</type>
+                  <classifier>license</classifier>
+                  <outputDirectory>${project.build.directory}</outputDirectory>
+                  <destFileName>JOMC_LICENSE.txt</destFileName>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>jomc-parent</artifactId>
+                  <version>${project.version}</version>
+                  <type>xhtml</type>
+                  <classifier>changes</classifier>
+                  <outputDirectory>${project.build.directory}</outputDirectory>
+                  <destFileName>changes.xhtml</destFileName>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -473,7 +526,7 @@
             <artifactId>maven-dependency-plugin</artifactId>
             <executions>
               <execution>
-                <id>copy</id>
+                <id>copy-javadoc</id>
                 <phase>package</phase>
                 <goals>
                   <goal>copy</goal>
@@ -484,6 +537,7 @@
                       <groupId>org.jomc</groupId>
                       <artifactId>jomc-api</artifactId>
                       <version>${project.version}</version>
+                      <type>jar</type>
                       <classifier>javadoc</classifier>
                       <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                     </artifactItem>
@@ -491,6 +545,7 @@
                       <groupId>org.jomc</groupId>
                       <artifactId>jomc-spi</artifactId>
                       <version>${project.version}</version>
+                      <type>jar</type>
                       <classifier>javadoc</classifier>
                       <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                     </artifactItem>
@@ -498,6 +553,7 @@
                       <groupId>org.jomc</groupId>
                       <artifactId>jomc-util</artifactId>
                       <version>${project.version}</version>
+                      <type>jar</type>
                       <classifier>javadoc</classifier>
                       <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                     </artifactItem>
@@ -505,6 +561,7 @@
                       <groupId>org.jomc</groupId>
                       <artifactId>jomc-model</artifactId>
                       <version>${project.version}</version>
+                      <type>jar</type>
                       <classifier>javadoc</classifier>
                       <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                     </artifactItem>
@@ -512,6 +569,7 @@
                       <groupId>org.jomc</groupId>
                       <artifactId>jomc-ri</artifactId>
                       <version>${project.version}</version>
+                      <type>jar</type>
                       <classifier>javadoc</classifier>
                       <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                     </artifactItem>
@@ -519,6 +577,7 @@
                       <groupId>org.jomc</groupId>
                       <artifactId>jomc-tools</artifactId>
                       <version>${project.version}</version>
+                      <type>jar</type>
                       <classifier>javadoc</classifier>
                       <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                     </artifactItem>

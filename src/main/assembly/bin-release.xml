@@ -64,7 +64,7 @@
       <filtered>false</filtered>
       <lineEnding>dos</lineEnding>
       <outputDirectory>/</outputDirectory>
-      <source>src/main/assembly/JOMC_LICENSE.txt</source>
+      <source>${project.build.directory}/JOMC_LICENSE.txt</source>
     </file>
     <file>
       <destName>relocate-classes.xslt</destName>
@@ -81,6 +81,14 @@
       <lineEnding>dos</lineEnding>
       <outputDirectory>/examples/xml</outputDirectory>
       <source>${project.build.outputDirectory}/META-INF/jomc.xml</source>
+    </file>
+    <file>
+      <destName>Changelog.xhtml</destName>
+      <fileMode>0444</fileMode>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <outputDirectory>/</outputDirectory>
+      <source>${project.build.directory}/changes.xhtml</source>
     </file>
   </files>
   <fileSets>
@@ -158,7 +166,7 @@
     <fileSet>
       <directory>${project.build.directory}/jomc-schemas</directory>
       <fileMode>0444</fileMode>
-      <outputDirectory>/xsd</outputDirectory>
+      <outputDirectory>/schemas</outputDirectory>
       <filtered>false</filtered>
       <lineEnding>dos</lineEnding>
       <includes>
