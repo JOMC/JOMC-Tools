@@ -656,7 +656,7 @@ public class JavaClasses extends JomcTool
                     {
                         specification.getIdentifier(), specification.getMultiplicity().value(),
                         decoded.getMultiplicity().value()
-                    } ) ) );
+                    } ), report.getModelObject() ) );
 
             }
 
@@ -671,7 +671,7 @@ public class JavaClasses extends JomcTool
                         specification.getIdentifier(),
                         specification.getScope() == null ? "Multiton" : specification.getScope(),
                         decoded.getScope() == null ? "Multiton" : decoded.getScope()
-                    } ) ) );
+                    } ), report.getModelObject() ) );
 
             }
 
@@ -684,7 +684,7 @@ public class JavaClasses extends JomcTool
                     this.getMessage( "illegalSpecificationClass", new Object[]
                     {
                         decoded.getIdentifier(), specification.getClazz(), decoded.getClazz()
-                    } ) ) );
+                    } ), report.getModelObject() ) );
 
             }
         }
@@ -809,7 +809,7 @@ public class JavaClasses extends JomcTool
                             this.getMessage( "missingDependency", new Object[]
                             {
                                 implementation.getIdentifier(), decodedDependency.getName()
-                            } ) ) );
+                            } ), report.getModelObject() ) );
 
                     }
 
@@ -833,7 +833,7 @@ public class JavaClasses extends JomcTool
                                 s.getIdentifier(), moduleOfSpecification == null
                                                    ? "<>" : moduleOfSpecification.getName(),
                                 decodedDependency.getVersion(), s.getVersion()
-                            } ) ) );
+                            } ), report.getModelObject() ) );
 
                     }
                 }
@@ -860,7 +860,7 @@ public class JavaClasses extends JomcTool
                             this.getMessage( "missingProperty", new Object[]
                             {
                                 implementation.getIdentifier(), decodedProperty.getName()
-                            } ) ) );
+                            } ), report.getModelObject() ) );
 
                     }
                     else
@@ -876,7 +876,7 @@ public class JavaClasses extends JomcTool
                                     implementation.getIdentifier(), decodedProperty.getName(),
                                     property.getType() == null ? "default" : property.getType(),
                                     decodedProperty.getType() == null ? "default" : decodedProperty.getType()
-                                } ) ) );
+                                } ), report.getModelObject() ) );
 
                         }
                     }
@@ -904,7 +904,7 @@ public class JavaClasses extends JomcTool
                             this.getMessage( "missingMessage", new Object[]
                             {
                                 implementation.getIdentifier(), decodedMessage.getName()
-                            } ) ) );
+                            } ), report.getModelObject() ) );
 
                     }
                 }
@@ -932,7 +932,7 @@ public class JavaClasses extends JomcTool
                             this.getMessage( "missingSpecification", new Object[]
                             {
                                 implementation.getIdentifier(), decodedSpecification.getIdentifier()
-                            } ) ) );
+                            } ), report.getModelObject() ) );
 
                     }
                     else
@@ -945,7 +945,7 @@ public class JavaClasses extends JomcTool
                                 {
                                     specification.getIdentifier(), specification.getMultiplicity().value(),
                                     decodedSpecification.getMultiplicity().value()
-                                } ) ) );
+                                } ), report.getModelObject() ) );
 
                         }
 
@@ -962,7 +962,7 @@ public class JavaClasses extends JomcTool
                                     ? "Multiton" : specification.getScope(),
                                     decodedSpecification.getScope() == null
                                     ? "Multiton" : decodedSpecification.getScope()
-                                } ) ) );
+                                } ), report.getModelObject() ) );
 
                         }
 
@@ -976,7 +976,7 @@ public class JavaClasses extends JomcTool
                                 {
                                     decodedSpecification.getIdentifier(), specification.getClazz(),
                                     decodedSpecification.getClazz()
-                                } ) ) );
+                                } ), report.getModelObject() ) );
 
                         }
                     }
@@ -994,7 +994,7 @@ public class JavaClasses extends JomcTool
                             this.getMessage( "missingSpecification", new Object[]
                             {
                                 implementation.getIdentifier(), decodedReference.getIdentifier()
-                            } ) ) );
+                            } ), report.getModelObject() ) );
 
                     }
                     else if ( decodedReference.getVersion() != null && specification.getVersion() != null &&
@@ -1015,7 +1015,7 @@ public class JavaClasses extends JomcTool
                                 specification.getIdentifier(), moduleOfSpecification == null
                                                                ? "<>" : moduleOfSpecification.getName(),
                                 decodedReference.getVersion(), specification.getVersion()
-                            } ) ) );
+                            } ), report.getModelObject() ) );
 
                     }
                 }
