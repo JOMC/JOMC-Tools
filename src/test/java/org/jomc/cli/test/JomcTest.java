@@ -47,7 +47,7 @@ import org.apache.commons.io.FileUtils;
 import org.jomc.ObjectManagerFactory;
 import org.jomc.cli.Command;
 import org.jomc.cli.Jomc;
-import org.jomc.model.DefaultModelManager;
+import org.jomc.model.ModelContext;
 import org.jomc.model.Module;
 
 // SECTION-START[Documentation]
@@ -225,8 +225,9 @@ public class JomcTest extends TestCase
 
     public void testMergeModules() throws Exception
     {
-        final Unmarshaller unmarshaller = new DefaultModelManager().getUnmarshaller( this.getClass().getClassLoader() );
-        final Schema schema = new DefaultModelManager().getSchema( this.getClass().getClassLoader() );
+        final ModelContext context = ModelContext.createModelContext( this.getClass().getClassLoader() );
+        final Unmarshaller unmarshaller = context.createUnmarshaller();
+        final Schema schema = context.createSchema();
         unmarshaller.setSchema( schema );
 
         final String[] help = new String[]

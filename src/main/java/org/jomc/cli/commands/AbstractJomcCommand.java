@@ -61,14 +61,13 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.jomc.cli.Command;
-import org.jomc.model.DefaultModelManager;
-import org.jomc.model.DefaultModelObjectValidator;
+import org.jomc.model.DefaultModelProvider;
+import org.jomc.model.ModelContext;
+import org.jomc.model.ModelException;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.tools.JomcTool;
-import org.jomc.model.ModelManager;
-import org.jomc.model.ModelObjectValidationReport;
-import org.jomc.model.ModelObjectValidator;
+import org.jomc.model.ModelValidationReport;
 import org.jomc.tools.JavaBundles;
 import org.jomc.tools.JavaClasses;
 import org.jomc.tools.JavaSources;
@@ -137,7 +136,7 @@ import org.xml.sax.SAXException;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-13-SNAPSHOT Build 2010-01-03T10:21:16+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-13-SNAPSHOT Build 2010-01-09T20:16:08+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -270,12 +269,6 @@ public abstract class AbstractJomcCommand implements Command
 
     /** 'no-classpath-resolution' option of the instance. */
     private Option noClasspathResolutionOption;
-
-    /** The {@code ModelManager} of the instance. */
-    private ModelManager modelManager;
-
-    /** The {@code ModelObjectValidator} of the instance. */
-    private ModelObjectValidator modelObjectValidator;
 
     /** The {@code JavaBundles} tool of the instance. */
     private JavaBundles javaBundles;
@@ -503,16 +496,16 @@ public abstract class AbstractJomcCommand implements Command
         }
     }
 
-    protected void log( final ModelObjectValidationReport validationReport, final Marshaller marshaller )
+    protected void log( final ModelValidationReport validationReport, final Marshaller marshaller )
         throws JAXBException
     {
-        if ( !validationReport.isModelObjectValid() && this.isLoggable( Level.SEVERE ) )
+        if ( !validationReport.isModelValid() && this.isLoggable( Level.SEVERE ) )
         {
             this.log( Level.SEVERE, this.getInvalidModelMessage( this.getLocale() ), null );
         }
 
         marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
-        for ( ModelObjectValidationReport.Detail d : validationReport.getDetails() )
+        for ( ModelValidationReport.Detail d : validationReport.getDetails() )
         {
             if ( this.isLoggable( d.getLevel() ) )
             {
@@ -528,36 +521,21 @@ public abstract class AbstractJomcCommand implements Command
         }
     }
 
-    protected ModelManager getModelManager()
+    protected ModelContext getModelContext( final ClassLoader classLoader ) throws ModelException
     {
-        if ( this.modelManager == null )
+        final ModelContext modelContext = ModelContext.createModelContext( classLoader );
+        modelContext.setLogLevel( this.getLogLevel() );
+        modelContext.getListeners().add( new ModelContext.Listener()
         {
-            final DefaultModelManager defaultModelManager = new DefaultModelManager();
-            defaultModelManager.setLogLevel( this.getLogLevel() );
-            defaultModelManager.getListeners().add( new DefaultModelManager.Listener()
+
+            public void onLog( final Level level, final String message, final Throwable t )
             {
+                log( level, message, t );
+            }
 
-                public void onLog( final Level level, final String message, final Throwable t )
-                {
-                    log( level, message, t );
-                }
+        } );
 
-            } );
-
-            this.modelManager = defaultModelManager;
-        }
-
-        return this.modelManager;
-    }
-
-    protected ModelObjectValidator getModelObjectValidator()
-    {
-        if ( this.modelObjectValidator == null )
-        {
-            this.modelObjectValidator = new DefaultModelObjectValidator();
-        }
-
-        return this.modelObjectValidator;
+        return modelContext;
     }
 
     protected JavaBundles getJavaBundles()
@@ -811,14 +789,16 @@ public abstract class AbstractJomcCommand implements Command
         return files;
     }
 
-    protected Modules getModules( final CommandLine commandLine ) throws IOException, SAXException, JAXBException
+    protected Modules getModules( final CommandLine commandLine )
+        throws IOException, SAXException, JAXBException, ModelException
     {
         final ClassLoader classLoader = this.getClassLoader( commandLine );
+        final ModelContext context = this.getModelContext( classLoader );
         final Modules modules = new Modules();
 
         if ( commandLine.hasOption( this.getDocumentsOption().getOpt() ) )
         {
-            final Unmarshaller u = this.getModelManager().getUnmarshaller( classLoader );
+            final Unmarshaller u = context.createUnmarshaller();
             for ( File f : this.getDocumentFiles( commandLine ) )
             {
                 final InputStream in = new FileInputStream( f );
@@ -849,23 +829,18 @@ public abstract class AbstractJomcCommand implements Command
 
         if ( commandLine.hasOption( this.getClasspathOption().getOpt() ) )
         {
-            final DefaultModelManager defaultModelManager = new DefaultModelManager();
-            defaultModelManager.setLogLevel( this.getLogLevel() );
-            defaultModelManager.getListeners().add( new DefaultModelManager.Listener()
+            if ( commandLine.hasOption( this.getModuleLocationOption().getOpt() ) )
             {
+                DefaultModelProvider.setDefaultModuleLocation(
+                    commandLine.getOptionValue( this.getModuleLocationOption().getOpt() ) );
 
-                public void onLog( final Level level, final String message, final Throwable t )
-                {
-                    log( level, message, t );
-                }
+            }
+            else
+            {
+                DefaultModelProvider.setDefaultModuleLocation( null );
+            }
 
-            } );
-
-            final Modules classpathModules = defaultModelManager.getClasspathModules(
-                classLoader, commandLine.hasOption( this.getModuleLocationOption().getOpt() )
-                             ? commandLine.getOptionValue( this.getModuleLocationOption().getOpt() )
-                             : DefaultModelManager.getDefaultModuleLocation() );
-
+            final Modules classpathModules = context.findModules();
             for ( Module m : classpathModules.getModule() )
             {
                 if ( modules.getModule( m.getName() ) == null )
@@ -1111,7 +1086,7 @@ public abstract class AbstractJomcCommand implements Command
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-13-SNAPSHOT Build 2010-01-03T10:21:16+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-13-SNAPSHOT Build 2010-01-09T20:16:08+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

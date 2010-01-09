@@ -37,16 +37,14 @@
 package org.jomc.cli.commands;
 
 import java.util.logging.Level;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.validation.Schema;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
-import org.jomc.model.ModelObjectValidationReport;
+import org.jomc.model.ModelContext;
+import org.jomc.model.ModelValidationReport;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
-import org.jomc.model.ObjectFactory;
 import org.jomc.tools.JavaClasses;
 
 // SECTION-START[Documentation]
@@ -112,7 +110,7 @@ import org.jomc.tools.JavaClasses;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-13-SNAPSHOT Build 2010-01-03T10:21:16+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-13-SNAPSHOT Build 2010-01-09T20:16:08+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -242,16 +240,13 @@ public final class ValidateJavaClassesCommand extends AbstractJomcCommand
     {
         final Modules modules = this.getModules( commandLine );
         final ClassLoader classLoader = this.getClassLoader( commandLine );
-        final JAXBContext context = this.getModelManager().getContext( classLoader );
-        final Marshaller marshaller = this.getModelManager().getMarshaller( classLoader );
-        final Unmarshaller unmarshaller = this.getModelManager().getUnmarshaller( classLoader );
-        final Schema schema = this.getModelManager().getSchema( classLoader );
-        final ModelObjectValidationReport validationReport = this.getModelObjectValidator().validateModelObject(
-            new ObjectFactory().createModules( modules ), context, schema );
-
+        final ModelContext context = this.getModelContext( classLoader );
+        final Marshaller marshaller = context.createMarshaller();
+        final Unmarshaller unmarshaller = context.createUnmarshaller();
+        final ModelValidationReport validationReport = context.validateModelObject( modules );
         this.log( validationReport, marshaller );
 
-        if ( validationReport.isModelObjectValid() )
+        if ( validationReport.isModelValid() )
         {
             final JavaClasses tool = this.getJavaClasses();
             tool.setModules( modules );
@@ -510,7 +505,7 @@ public final class ValidateJavaClassesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-13-SNAPSHOT Build 2010-01-03T10:21:16+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-13-SNAPSHOT Build 2010-01-09T20:16:08+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

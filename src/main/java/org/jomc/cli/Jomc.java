@@ -49,7 +49,9 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang.StringUtils;
-import org.jomc.model.DefaultModelManager;
+import org.jomc.model.DefaultModelProcessor;
+import org.jomc.model.DefaultModelProvider;
+import org.jomc.model.bootstrap.DefaultSchemaProvider;
 
 // SECTION-START[Documentation]
 // <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
@@ -342,9 +344,9 @@ public class Jomc
 
         try
         {
-            DefaultModelManager.setDefaultModuleLocation( "META-INF/jomc-cli.xml" );
-            DefaultModelManager.setDefaultSchemaLocation( "META-INF/jomc-bootstrap.xml" );
-            DefaultModelManager.setDefaultTransformerLocation( "META-INF/jomc-cli.xslt" );
+            DefaultModelProvider.setDefaultModuleLocation( "META-INF/jomc-cli.xml" );
+            DefaultModelProcessor.setDefaultTransformerLocation( "META-INF/jomc-cli.xslt" );
+            DefaultSchemaProvider.setDefaultSchemaLocation( "META-INF/jomc-bootstrap.xml" );
 
             final StringBuilder commandInfo = new StringBuilder();
 
@@ -411,9 +413,9 @@ public class Jomc
 
             } );
 
-            DefaultModelManager.setDefaultModuleLocation( null );
-            DefaultModelManager.setDefaultSchemaLocation( null );
-            DefaultModelManager.setDefaultTransformerLocation( null );
+            DefaultModelProvider.setDefaultModuleLocation( null );
+            DefaultModelProcessor.setDefaultTransformerLocation( null );
+            DefaultSchemaProvider.setDefaultSchemaLocation( null );
 
             final Options options = cmd.getOptions();
             options.addOption( this.getDebugOption() );
@@ -472,9 +474,9 @@ public class Jomc
         }
         finally
         {
-            DefaultModelManager.setDefaultModuleLocation( null );
-            DefaultModelManager.setDefaultSchemaLocation( null );
-            DefaultModelManager.setDefaultTransformerLocation( null );
+            DefaultModelProvider.setDefaultModuleLocation( null );
+            DefaultModelProcessor.setDefaultTransformerLocation( null );
+            DefaultSchemaProvider.setDefaultSchemaLocation( null );
             this.getPrintWriter().flush();
         }
     }

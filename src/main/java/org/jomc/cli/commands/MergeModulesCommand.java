@@ -41,19 +41,19 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.util.JAXBResult;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.jomc.model.ModelObjectValidationReport;
+import org.jomc.model.ModelContext;
+import org.jomc.model.ModelValidationReport;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.ObjectFactory;
@@ -169,7 +169,7 @@ import org.jomc.model.ObjectFactory;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-13-SNAPSHOT Build 2010-01-03T10:21:16+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-13-SNAPSHOT Build 2010-01-09T20:16:08+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -376,15 +376,13 @@ public final class MergeModulesCommand extends AbstractJomcCommand
 
         final Modules modules = this.getModules( commandLine );
         final ClassLoader classLoader = this.getClassLoader( commandLine );
-        final JAXBContext context = this.getModelManager().getContext( classLoader );
-        final Marshaller marshaller = this.getModelManager().getMarshaller( classLoader );
-        final Schema schema = this.getModelManager().getSchema( classLoader );
-        final ModelObjectValidationReport validationReport = this.getModelObjectValidator().validateModules(
-            new ObjectFactory().createModules( modules ), context, schema );
-
+        final ModelContext context = this.getModelContext( classLoader );
+        final Marshaller marshaller = context.createMarshaller();
+        final Unmarshaller unmarshaller = context.createUnmarshaller();
+        final ModelValidationReport validationReport = context.validateModules( modules );
         this.log( validationReport, marshaller );
 
-        if ( validationReport.isModelObjectValid() )
+        if ( validationReport.isModelValid() )
         {
             modules.getModule().remove( modules.getModule( Modules.getDefaultClasspathModuleName() ) );
 
@@ -468,15 +466,14 @@ public final class MergeModulesCommand extends AbstractJomcCommand
                     TransformerFactory.newInstance().newTransformer( new StreamSource( stylesheetFile ) );
 
                 final JAXBSource source =
-                    new JAXBSource( this.getModelManager().getMarshaller( classLoader ),
-                                    new ObjectFactory().createModule( mergedModule ) );
+                    new JAXBSource( marshaller, new ObjectFactory().createModule( mergedModule ) );
 
-                final JAXBResult result = new JAXBResult( this.getModelManager().getUnmarshaller( classLoader ) );
+                final JAXBResult result = new JAXBResult( unmarshaller );
                 transformer.transform( source, result );
                 mergedModule = ( (JAXBElement<Module>) result.getResult() ).getValue();
             }
 
-            marshaller.setSchema( schema );
+            marshaller.setSchema( context.createSchema() );
             marshaller.marshal( new ObjectFactory().createModule( mergedModule ), moduleFile );
 
             if ( this.isLoggable( Level.INFO ) )
@@ -974,7 +971,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-13-SNAPSHOT Build 2010-01-03T10:21:16+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-13-SNAPSHOT Build 2010-01-09T20:16:08+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
