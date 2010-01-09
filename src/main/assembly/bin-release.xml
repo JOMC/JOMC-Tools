@@ -95,6 +95,7 @@
     <fileSet>
       <directory>${project.build.directory}/maven-shared-archive-resources/META-INF</directory>
       <fileMode>0444</fileMode>
+      <directoryMode>0755</directoryMode>
       <outputDirectory>/</outputDirectory>
       <lineEnding>dos</lineEnding>
       <filtered>false</filtered>
@@ -106,6 +107,7 @@
     <fileSet>
       <directory>src/main/assembly</directory>
       <fileMode>0444</fileMode>
+      <directoryMode>0755</directoryMode>
       <outputDirectory>/</outputDirectory>
       <lineEnding>dos</lineEnding>
       <filtered>true</filtered>
@@ -116,10 +118,10 @@
     </fileSet>
     <fileSet>
       <directory>src/main/assembly/bin</directory>
+      <fileMode>0555</fileMode>
+      <directoryMode>0755</directoryMode>
       <outputDirectory>/bin</outputDirectory>
       <lineEnding>dos</lineEnding>
-      <directoryMode>0755</directoryMode>
-      <fileMode>0555</fileMode>
       <filtered>true</filtered>
       <includes>
         <include>jomc.bat</include>
@@ -127,10 +129,10 @@
     </fileSet>
     <fileSet>
       <directory>src/main/assembly/bin</directory>
+      <fileMode>0555</fileMode>
+      <directoryMode>0755</directoryMode>
       <outputDirectory>/bin</outputDirectory>
       <lineEnding>unix</lineEnding>
-      <directoryMode>0755</directoryMode>
-      <fileMode>0555</fileMode>
       <filtered>true</filtered>
       <includes>
         <include>jomc</include>
@@ -139,6 +141,7 @@
     <fileSet>
       <directory>src/main/assembly/examples/xslt</directory>
       <fileMode>0444</fileMode>
+      <directoryMode>0755</directoryMode>
       <outputDirectory>/examples/xslt</outputDirectory>
       <lineEnding>dos</lineEnding>
       <filtered>true</filtered>
@@ -149,12 +152,14 @@
     <fileSet>
       <directory>${project.build.directory}/jomc-javadoc</directory>
       <fileMode>0444</fileMode>
+      <directoryMode>0755</directoryMode>
       <outputDirectory>/doc</outputDirectory>
       <filtered>false</filtered>
     </fileSet>
     <fileSet>
       <directory>${project.build.directory}/jomc-tools/META-INF</directory>
       <fileMode>0444</fileMode>
+      <directoryMode>0755</directoryMode>
       <outputDirectory>/lib/tools</outputDirectory>
       <filtered>false</filtered>
       <lineEnding>dos</lineEnding>
@@ -166,6 +171,7 @@
     <fileSet>
       <directory>${project.build.directory}/jomc-schemas</directory>
       <fileMode>0444</fileMode>
+      <directoryMode>0755</directoryMode>
       <outputDirectory>/schemas</outputDirectory>
       <filtered>false</filtered>
       <lineEnding>dos</lineEnding>
