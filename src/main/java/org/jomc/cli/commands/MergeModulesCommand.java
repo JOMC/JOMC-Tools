@@ -169,7 +169,7 @@ import org.jomc.model.ObjectFactory;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-13-SNAPSHOT Build 2010-01-09T21:19:49+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-14-SNAPSHOT Build 2010-01-09T22:27:57+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -338,7 +338,7 @@ import org.jomc.model.ObjectFactory;
 // SECTION-START[Annotations]
 // <editor-fold defaultstate="collapsed" desc=" Generated Annotations ">
 @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                             comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                             comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
 // </editor-fold>
 // SECTION-END
 public final class MergeModulesCommand extends AbstractJomcCommand
@@ -596,7 +596,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
 
     /** Creates a new {@code MergeModulesCommand} instance. */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     public MergeModulesCommand()
     {
         // SECTION-START[Default Constructor]
@@ -616,7 +616,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.util.Locale getLocale()
     {
         final java.util.Locale _d = (java.util.Locale) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "Locale" );
@@ -634,7 +634,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getAbbreviatedCommandName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "abbreviatedCommandName" );
@@ -648,7 +648,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getClasspathOptionLongName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "classpathOptionLongName" );
@@ -662,7 +662,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getClasspathOptionShortName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "classpathOptionShortName" );
@@ -676,7 +676,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getCommandName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "commandName" );
@@ -690,7 +690,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getDocumentOptionLongName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "documentOptionLongName" );
@@ -704,7 +704,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getDocumentOptionShortName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "documentOptionShortName" );
@@ -718,7 +718,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getDocumentsOptionLongName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "documentsOptionLongName" );
@@ -732,7 +732,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getDocumentsOptionShortName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "documentsOptionShortName" );
@@ -746,7 +746,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getModuleExcludesOptionLongName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleExcludesOptionLongName" );
@@ -760,7 +760,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getModuleExcludesOptionShortName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleExcludesOptionShortName" );
@@ -774,7 +774,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getModuleIncludesOptionLongName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleIncludesOptionLongName" );
@@ -788,7 +788,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getModuleIncludesOptionShortName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleIncludesOptionShortName" );
@@ -802,7 +802,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getModuleLocationOptionLongName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleLocationOptionLongName" );
@@ -816,7 +816,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getModuleLocationOptionShortName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleLocationOptionShortName" );
@@ -830,7 +830,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getModuleNameOptionLongName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleNameOptionLongName" );
@@ -844,7 +844,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getModuleNameOptionShortName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleNameOptionShortName" );
@@ -858,7 +858,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getModuleVendorOptionLongName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleVendorOptionLongName" );
@@ -872,7 +872,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getModuleVendorOptionShortName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleVendorOptionShortName" );
@@ -886,7 +886,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getModuleVersionOptionLongName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleVersionOptionLongName" );
@@ -900,7 +900,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getModuleVersionOptionShortName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleVersionOptionShortName" );
@@ -914,7 +914,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getNoClasspathResolutionOptionLongName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "noClasspathResolutionOptionLongName" );
@@ -928,7 +928,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getNoClasspathResolutionOptionShortName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "noClasspathResolutionOptionShortName" );
@@ -942,7 +942,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getStylesheetOptionLongName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "stylesheetOptionLongName" );
@@ -956,7 +956,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private java.lang.String getStylesheetOptionShortName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "stylesheetOptionShortName" );
@@ -971,7 +971,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-13-SNAPSHOT Build 2010-01-09T21:19:49+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-14-SNAPSHOT Build 2010-01-09T22:27:57+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -979,7 +979,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getApplicationTitleMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "applicationTitle", locale,  null );
@@ -1001,7 +1001,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getCannotProcessMessage( final java.util.Locale locale, final java.lang.String itemInfo, final java.lang.String detailMessage )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "cannotProcess", locale, new Object[] { itemInfo, detailMessage, null } );
@@ -1022,7 +1022,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getClasspathElementMessage( final java.util.Locale locale, final java.lang.String classpathElement )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "classpathElement", locale, new Object[] { classpathElement, null } );
@@ -1043,7 +1043,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getClasspathOptionMessage( final java.util.Locale locale, final java.lang.String pathSeparator )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "classpathOption", locale, new Object[] { pathSeparator, null } );
@@ -1063,7 +1063,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getClasspathOptionArgNameMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "classpathOptionArgName", locale,  null );
@@ -1084,7 +1084,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getDefaultLogLevelInfoMessage( final java.util.Locale locale, final java.lang.String defaultLogLevel )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "defaultLogLevelInfo", locale, new Object[] { defaultLogLevel, null } );
@@ -1105,7 +1105,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getDocumentFileMessage( final java.util.Locale locale, final java.lang.String documentFile )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentFile", locale, new Object[] { documentFile, null } );
@@ -1125,7 +1125,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getDocumentOptionMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentOption", locale,  null );
@@ -1145,7 +1145,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getDocumentOptionArgNameMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentOptionArgName", locale,  null );
@@ -1166,7 +1166,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getDocumentsOptionMessage( final java.util.Locale locale, final java.lang.String pathSeparator )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentsOption", locale, new Object[] { pathSeparator, null } );
@@ -1186,7 +1186,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getDocumentsOptionArgNameMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentsOptionArgName", locale,  null );
@@ -1207,7 +1207,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getExcludingModuleMessage( final java.util.Locale locale, final java.lang.String moduleName )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "excludingModule", locale, new Object[] { moduleName, null } );
@@ -1228,7 +1228,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getIncludingModuleMessage( final java.util.Locale locale, final java.lang.String moduleName )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "includingModule", locale, new Object[] { moduleName, null } );
@@ -1248,7 +1248,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getInvalidModelMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "invalidModel", locale,  null );
@@ -1274,7 +1274,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getLongDescriptionMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "longDescription", locale,  null );
@@ -1295,7 +1295,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getMissingModuleMessage( final java.util.Locale locale, final java.lang.String moduleName )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "missingModule", locale, new Object[] { moduleName, null } );
@@ -1315,7 +1315,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getModuleExcludesOptionMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleExcludesOption", locale,  null );
@@ -1335,7 +1335,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getModuleExcludesOptionArgNameMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleExcludesOptionArgName", locale,  null );
@@ -1355,7 +1355,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getModuleIncludesOptionMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleIncludesOption", locale,  null );
@@ -1375,7 +1375,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getModuleIncludesOptionArgNameMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleIncludesOptionArgName", locale,  null );
@@ -1395,7 +1395,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getModuleLocationOptionMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleLocationOption", locale,  null );
@@ -1415,7 +1415,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getModuleLocationOptionArgNameMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleLocationOptionArgName", locale,  null );
@@ -1435,7 +1435,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getModuleNameOptionMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleNameOption", locale,  null );
@@ -1455,7 +1455,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getModuleNameOptionArgNameMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleNameOptionArgName", locale,  null );
@@ -1475,7 +1475,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getModuleVendorOptionMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleVendorOption", locale,  null );
@@ -1495,7 +1495,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getModuleVendorOptionArgNameMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleVendorOptionArgName", locale,  null );
@@ -1515,7 +1515,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getModuleVersionOptionMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleVersionOption", locale,  null );
@@ -1535,7 +1535,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getModuleVersionOptionArgNameMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleVersionOptionArgName", locale,  null );
@@ -1555,7 +1555,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getModulesReportMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "modulesReport", locale,  null );
@@ -1575,7 +1575,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getNoClasspathResolutionOptionMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "noClasspathResolutionOption", locale,  null );
@@ -1594,7 +1594,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getSeparatorMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "separator", locale,  null );
@@ -1614,7 +1614,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getShortDescriptionMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "shortDescription", locale,  null );
@@ -1636,7 +1636,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getStartingModuleProcessingMessage( final java.util.Locale locale, final java.lang.String toolName, final java.lang.String moduleName )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "startingModuleProcessing", locale, new Object[] { toolName, moduleName, null } );
@@ -1657,7 +1657,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getStartingProcessingMessage( final java.util.Locale locale, final java.lang.String toolName )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "startingProcessing", locale, new Object[] { toolName, null } );
@@ -1677,7 +1677,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getStylesheetOptionMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "stylesheetOption", locale,  null );
@@ -1697,7 +1697,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getStylesheetOptionArgNameMessage( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "stylesheetOptionArgName", locale,  null );
@@ -1718,7 +1718,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getToolFailureMessage( final java.util.Locale locale, final java.lang.String toolName )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "toolFailure", locale, new Object[] { toolName, null } );
@@ -1739,7 +1739,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getToolSuccessMessage( final java.util.Locale locale, final java.lang.String toolName )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "toolSuccess", locale, new Object[] { toolName, null } );
@@ -1760,7 +1760,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-13-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-14-SNAPSHOT/jomc-tools" )
     private String getWritingMessage( final java.util.Locale locale, final java.lang.String fileName )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "writing", locale, new Object[] { fileName, null } );
