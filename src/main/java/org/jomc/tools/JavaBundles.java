@@ -148,11 +148,11 @@ public class JavaBundles extends JomcTool
      * @param sourcesDirectory The directory to write sources to.
      *
      * @throws NullPointerException if {@code sourcesDirectory} is {@code null}.
-     * @throws IOException if writing fails.
+     * @throws ToolException if writing fails.
      *
      * @see #writeBundleSources(org.jomc.model.Module, java.io.File)
      */
-    public void writeBundleSources( final File sourcesDirectory ) throws IOException
+    public void writeBundleSources( final File sourcesDirectory ) throws ToolException
     {
         if ( sourcesDirectory == null )
         {
@@ -172,11 +172,11 @@ public class JavaBundles extends JomcTool
      * @param sourcesDirectory The directory to write sources to.
      *
      * @throws NullPointerException if {@code module} or {@code sourcesDirectory} is {@code null}.
-     * @throws IOException if writing fails.
+     * @throws ToolException if writing fails.
      *
      * @see #writeBundleSources(org.jomc.model.Implementation, java.io.File)
      */
-    public void writeBundleSources( final Module module, final File sourcesDirectory ) throws IOException
+    public void writeBundleSources( final Module module, final File sourcesDirectory ) throws ToolException
     {
         if ( module == null )
         {
@@ -203,12 +203,12 @@ public class JavaBundles extends JomcTool
      * @param sourcesDirectory The directory to write sources to.
      *
      * @throws NullPointerException if {@code implementation} or {@code sourcesDirectory} is {@code null}.
-     * @throws IOException if writing fails.
+     * @throws ToolException if writing fails.
      *
      * @see #getResourceBundleSources(org.jomc.model.Implementation)
      */
     public void writeBundleSources( final Implementation implementation, final File sourcesDirectory )
-        throws IOException
+        throws ToolException
     {
         if ( implementation == null )
         {
@@ -219,36 +219,43 @@ public class JavaBundles extends JomcTool
             throw new NullPointerException( "sourcesDirectory" );
         }
 
-        if ( implementation.isClassDeclaration() )
+        try
         {
-            this.assertValidTemplates( implementation );
-
-            final String bundlePath =
-                ( this.getJavaTypeName( implementation, true ) + BUNDLE_SUFFIX ).replace( '.', File.separatorChar );
-
-            final File bundleFile = new File( sourcesDirectory, bundlePath + ".java" );
-
-            if ( !bundleFile.getParentFile().exists() && !bundleFile.getParentFile().mkdirs() )
+            if ( implementation.isClassDeclaration() )
             {
-                throw new IOException( this.getMessage( "failedCreatingDirectory", new Object[]
-                    {
-                        bundleFile.getParentFile().getAbsolutePath()
-                    } ) );
+                this.assertValidTemplates( implementation );
+
+                final String bundlePath =
+                    ( this.getJavaTypeName( implementation, true ) + BUNDLE_SUFFIX ).replace( '.', File.separatorChar );
+
+                final File bundleFile = new File( sourcesDirectory, bundlePath + ".java" );
+
+                if ( !bundleFile.getParentFile().exists() && !bundleFile.getParentFile().mkdirs() )
+                {
+                    throw new ToolException( this.getMessage( "failedCreatingDirectory", new Object[]
+                        {
+                            bundleFile.getParentFile().getAbsolutePath()
+                        } ) );
+
+                }
+
+                if ( this.isLoggable( Level.INFO ) )
+                {
+                    this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                        {
+                            bundleFile.getCanonicalPath()
+                        } ), null );
+
+                }
+
+                FileUtils.writeStringToFile( bundleFile, this.getResourceBundleSources( implementation ),
+                                             this.getOutputEncoding() );
 
             }
-
-            if ( this.isLoggable( Level.INFO ) )
-            {
-                this.log( Level.INFO, this.getMessage( "writing", new Object[]
-                    {
-                        bundleFile.getCanonicalPath()
-                    } ), null );
-
-            }
-
-            FileUtils.writeStringToFile( bundleFile, this.getResourceBundleSources( implementation ),
-                                         this.getOutputEncoding() );
-
+        }
+        catch ( final IOException e )
+        {
+            throw new ToolException( e );
         }
     }
 
@@ -258,11 +265,11 @@ public class JavaBundles extends JomcTool
      * @param resourcesDirectory The directory to write resources to.
      *
      * @throws NullPointerException if {@code resourcesDirectory} is {@code null}.
-     * @throws IOException if writing fails.
+     * @throws ToolException if writing fails.
      *
      * @see #writeBundleResources(org.jomc.model.Module, java.io.File)
      */
-    public void writeBundleResources( final File resourcesDirectory ) throws IOException
+    public void writeBundleResources( final File resourcesDirectory ) throws ToolException
     {
         if ( resourcesDirectory == null )
         {
@@ -282,11 +289,11 @@ public class JavaBundles extends JomcTool
      * @param resourcesDirectory The directory to write resources to.
      *
      * @throws NullPointerException if {@code module} or {@code resourcesDirectory} is {@code null}.
-     * @throws IOException if writing fails.
+     * @throws ToolException if writing fails.
      *
      * @see #writeBundleResources(org.jomc.model.Implementation, java.io.File)
      */
-    public void writeBundleResources( final Module module, final File resourcesDirectory ) throws IOException
+    public void writeBundleResources( final Module module, final File resourcesDirectory ) throws ToolException
     {
         if ( module == null )
         {
@@ -313,12 +320,12 @@ public class JavaBundles extends JomcTool
      * @param resourcesDirectory The directory to write resources to.
      *
      * @throws NullPointerException if {@code implementation} or {@code resourcesDirectory} is {@code null}.
-     * @throws IOException if writing fails.
+     * @throws ToolException if writing fails.
      *
      * @see #getResourceBundleResources(org.jomc.model.Implementation)
      */
     public void writeBundleResources( final Implementation implementation, final File resourcesDirectory )
-        throws IOException
+        throws ToolException
     {
         if ( implementation == null )
         {
@@ -329,102 +336,109 @@ public class JavaBundles extends JomcTool
             throw new NullPointerException( "resourcesDirectory" );
         }
 
-        if ( implementation.isClassDeclaration() )
+        try
         {
-            this.assertValidTemplates( implementation );
-
-            final String bundlePath =
-                ( this.getJavaTypeName( implementation, true ) + BUNDLE_SUFFIX ).replace( '.', File.separatorChar );
-
-            Properties defProperties = null;
-            Properties fallbackProperties = null;
-
-            for ( Map.Entry<Locale, Properties> e : this.getResourceBundleResources( implementation ).entrySet() )
+            if ( implementation.isClassDeclaration() )
             {
-                final String language = e.getKey().getLanguage().toLowerCase();
-                final java.util.Properties p = e.getValue();
-                final File file = new File( resourcesDirectory, bundlePath + "_" + language + ".properties" );
+                this.assertValidTemplates( implementation );
 
-                if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
+                final String bundlePath =
+                    ( this.getJavaTypeName( implementation, true ) + BUNDLE_SUFFIX ).replace( '.', File.separatorChar );
+
+                Properties defProperties = null;
+                Properties fallbackProperties = null;
+
+                for ( Map.Entry<Locale, Properties> e : this.getResourceBundleResources( implementation ).entrySet() )
                 {
-                    throw new IOException( this.getMessage( "failedCreatingDirectory", new Object[]
-                        {
-                            file.getParentFile().getAbsolutePath()
-                        } ) );
+                    final String language = e.getKey().getLanguage().toLowerCase();
+                    final java.util.Properties p = e.getValue();
+                    final File file = new File( resourcesDirectory, bundlePath + "_" + language + ".properties" );
 
-                }
-
-                if ( this.isLoggable( Level.INFO ) )
-                {
-                    this.log( Level.INFO, this.getMessage( "writing", new Object[]
-                        {
-                            file.getCanonicalPath()
-                        } ), null );
-
-                }
-
-                OutputStream out = null;
-                try
-                {
-                    out = new FileOutputStream( file );
-                    p.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
-                }
-                finally
-                {
-                    if ( out != null )
+                    if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
                     {
-                        out.close();
+                        throw new ToolException( this.getMessage( "failedCreatingDirectory", new Object[]
+                            {
+                                file.getParentFile().getAbsolutePath()
+                            } ) );
+
+                    }
+
+                    if ( this.isLoggable( Level.INFO ) )
+                    {
+                        this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                            {
+                                file.getCanonicalPath()
+                            } ), null );
+
+                    }
+
+                    OutputStream out = null;
+                    try
+                    {
+                        out = new FileOutputStream( file );
+                        p.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
+                    }
+                    finally
+                    {
+                        if ( out != null )
+                        {
+                            out.close();
+                        }
+                    }
+
+                    if ( this.getDefaultLocale().getLanguage().equalsIgnoreCase( language ) )
+                    {
+                        defProperties = p;
+                    }
+
+                    fallbackProperties = p;
+                }
+
+                if ( defProperties == null )
+                {
+                    defProperties = fallbackProperties;
+                }
+
+                if ( defProperties != null )
+                {
+                    final File file = new File( resourcesDirectory, bundlePath + ".properties" );
+                    if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
+                    {
+                        throw new ToolException( this.getMessage( "failedCreatingDirectory", new Object[]
+                            {
+                                file.getParentFile().getAbsolutePath()
+                            } ) );
+
+                    }
+
+                    if ( this.isLoggable( Level.INFO ) )
+                    {
+                        this.log( Level.INFO, this.getMessage( "writing", new Object[]
+                            {
+                                file.getCanonicalPath()
+                            } ), null );
+
+                    }
+
+                    OutputStream out = null;
+                    try
+                    {
+                        out = new FileOutputStream( file );
+                        defProperties.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
+                    }
+                    finally
+                    {
+                        if ( out != null )
+                        {
+                            out.close();
+                        }
                     }
                 }
-
-                if ( this.getDefaultLocale().getLanguage().equalsIgnoreCase( language ) )
-                {
-                    defProperties = p;
-                }
-
-                fallbackProperties = p;
             }
-
-            if ( defProperties == null )
-            {
-                defProperties = fallbackProperties;
-            }
-
-            if ( defProperties != null )
-            {
-                final File file = new File( resourcesDirectory, bundlePath + ".properties" );
-                if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
-                {
-                    throw new IOException( this.getMessage( "failedCreatingDirectory", new Object[]
-                        {
-                            file.getParentFile().getAbsolutePath()
-                        } ) );
-
-                }
-
-                if ( this.isLoggable( Level.INFO ) )
-                {
-                    this.log( Level.INFO, this.getMessage( "writing", new Object[]
-                        {
-                            file.getCanonicalPath()
-                        } ), null );
-
-                }
-
-                OutputStream out = null;
-                try
-                {
-                    out = new FileOutputStream( file );
-                    defProperties.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
-                }
-                finally
-                {
-                    if ( out != null )
-                    {
-                        out.close();
-                    }
-                }
-            }
+        }
+        catch ( final IOException e )
+        {
+            throw new ToolException( e );
         }
     }
 
@@ -436,23 +450,30 @@ public class JavaBundles extends JomcTool
      * @return The source code of the Java class for accessing the resource bundle of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
-     * @throws IOException if getting the source code fails.
+     * @throws ToolException if getting the source code fails.
      */
-    public String getResourceBundleSources( final Implementation implementation ) throws IOException
+    public String getResourceBundleSources( final Implementation implementation ) throws ToolException
     {
         if ( implementation == null )
         {
             throw new NullPointerException( "implementation" );
         }
 
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final Template template = this.getVelocityTemplate( BUNDLE_TEMPLATE );
-        ctx.put( "implementation", implementation );
-        ctx.put( "template", template );
-        template.merge( ctx, writer );
-        writer.close();
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final Template template = this.getVelocityTemplate( BUNDLE_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "template", template );
+            template.merge( ctx, writer );
+            writer.close();
+            return writer.toString();
+        }
+        catch ( final IOException e )
+        {
+            throw new ToolException( e );
+        }
     }
 
     /**
@@ -463,9 +484,10 @@ public class JavaBundles extends JomcTool
      * @return Resource bundle properties of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
-     * @throws IOException if getting the resources fails.
+     * @throws ToolException if getting the resources fails.
      */
-    public Map<Locale, Properties> getResourceBundleResources( final Implementation implementation ) throws IOException
+    public Map<Locale, Properties> getResourceBundleResources( final Implementation implementation )
+        throws ToolException
     {
         if ( implementation == null )
         {

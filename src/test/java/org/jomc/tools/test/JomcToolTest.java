@@ -32,7 +32,6 @@
  */
 package org.jomc.tools.test;
 
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
@@ -41,11 +40,11 @@ import javax.xml.bind.Unmarshaller;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.jomc.model.Argument;
-import org.jomc.model.DefaultModelManager;
 import org.jomc.model.Dependency;
 import org.jomc.model.Implementation;
 import org.jomc.model.Message;
-import org.jomc.model.ModelManager;
+import org.jomc.model.ModelContext;
+import org.jomc.model.ModelException;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.Property;
@@ -53,7 +52,7 @@ import org.jomc.model.Specification;
 import org.jomc.model.SpecificationReference;
 import org.jomc.model.Text;
 import org.jomc.tools.JomcTool;
-import org.xml.sax.SAXException;
+import org.jomc.tools.ToolException;
 
 /**
  * Base tool test class.
@@ -93,43 +92,52 @@ public abstract class JomcToolTest extends TestCase
      *
      * @return The tool tests are performed with.
      *
-     * @throws IOException if reading schema resources fails.
-     * @throws SAXException if parsing schema resources fails.
-     * @throws JAXBException if unmarshalling schema resources fails.
+     * @throws ToolException if getting the tool fails.
      */
-    public abstract JomcTool getTestTool() throws IOException, SAXException, JAXBException;
+    public abstract JomcTool getTestTool() throws ToolException;
 
     /**
      * Gets the {@code Modules} tests are performed with.
      *
      * @return The {@code Modules} tests are performed with.
      *
-     * @throws IOException if reading schema resources fails.
-     * @throws SAXException if parsing schema resources fails.
-     * @throws JAXBException if unmarshalling schema resources fails.
+     * @throws ToolException if getting the modules fails.
      */
-    public Modules getTestModules() throws IOException, SAXException, JAXBException
+    public Modules getTestModules() throws ToolException
     {
-        if ( this.testModules == null )
+        try
         {
-            this.testModules = new Modules();
-            final ModelManager modelManager = new DefaultModelManager();
-            final Unmarshaller u = modelManager.getUnmarshaller( this.getClass().getClassLoader() );
-            final JAXBElement<Module> m =
-                (JAXBElement<Module>) u.unmarshal( this.getClass().getResource( "jomc.xml" ) );
-
-            this.testModules.getModule().add( m.getValue() );
-
-            final Module cp = this.testModules.getClasspathModule(
-                Modules.getDefaultClasspathModuleName(), this.getClass().getClassLoader() );
-
-            if ( cp != null )
+            if ( this.testModules == null )
             {
-                this.testModules.getModule().add( cp );
-            }
-        }
+                final ModelContext context = ModelContext.createModelContext( this.getClass().getClassLoader() );
+                final Unmarshaller u = context.createUnmarshaller();
+                u.setSchema( context.createSchema() );
 
-        return this.testModules;
+                final JAXBElement<Module> m =
+                    (JAXBElement<Module>) u.unmarshal( this.getClass().getResource( "jomc.xml" ) );
+
+                this.testModules = new Modules();
+                this.testModules.getModule().add( m.getValue() );
+
+                final Module cp = this.testModules.getClasspathModule(
+                    Modules.getDefaultClasspathModuleName(), this.getClass().getClassLoader() );
+
+                if ( cp != null )
+                {
+                    this.testModules.getModule().add( cp );
+                }
+            }
+
+            return this.testModules;
+        }
+        catch ( final JAXBException e )
+        {
+            throw new ToolException( e );
+        }
+        catch ( final ModelException e )
+        {
+            throw new ToolException( e );
+        }
     }
 
     @Override
@@ -509,7 +517,7 @@ public abstract class JomcToolTest extends TestCase
             this.getTestTool().getVelocityTemplate( "DOES_NOT_EXIST" );
             Assert.fail( "Expected IOException not thrown." );
         }
-        catch ( IOException e )
+        catch ( final ToolException e )
         {
             Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
@@ -521,7 +529,7 @@ public abstract class JomcToolTest extends TestCase
             this.getTestTool().getVelocityTemplate( "DOES_NOT_EXIST" );
             Assert.fail( "Expected IOException not thrown." );
         }
-        catch ( IOException e )
+        catch ( final ToolException e )
         {
             Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );

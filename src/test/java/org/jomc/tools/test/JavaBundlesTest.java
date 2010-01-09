@@ -35,13 +35,12 @@ package org.jomc.tools.test;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import javax.xml.bind.JAXBException;
 import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
 import org.jomc.model.Implementation;
 import org.jomc.model.Module;
 import org.jomc.tools.JavaBundles;
-import org.xml.sax.SAXException;
+import org.jomc.tools.ToolException;
 
 /**
  * Tests {@code JavaBundles} implementations.
@@ -62,7 +61,7 @@ public class JavaBundlesTest extends JomcToolTest
     private JavaBundles testTool;
 
     @Override
-    public JavaBundles getTestTool() throws IOException, SAXException, JAXBException
+    public JavaBundles getTestTool() throws ToolException
     {
         if ( this.testTool == null )
         {

@@ -34,9 +34,10 @@ package org.jomc.tools;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.MessageFormat;
@@ -85,7 +86,7 @@ public abstract class JomcTool
 {
 
     /** Listener interface. */
-    public interface Listener
+    public abstract static class Listener
     {
 
         /**
@@ -97,7 +98,7 @@ public abstract class JomcTool
          *
          * @throws NullPointerException if {@code level} is {@code null}.
          */
-        void onLog( Level level, String message, Throwable throwable );
+        public abstract void onLog( Level level, String message, Throwable throwable );
 
     }
 
@@ -150,7 +151,8 @@ public abstract class JomcTool
     private Level logLevel;
 
     /** Cached templates. */
-    private final Map<String, Template> templateCache = new HashMap<String, Template>();
+    private Reference<Map<String, Template>> templateCache =
+        new WeakReference<Map<String, Template>>( new HashMap<String, Template>() );
 
     /** Creates a new {@code JomcTool} instance. */
     public JomcTool()
@@ -562,22 +564,18 @@ public abstract class JomcTool
             throw new NullPointerException( "argument" );
         }
 
+        String javaTypeName = "java.lang.String";
+
         if ( argument.getType() == ArgumentType.DATE || argument.getType() == ArgumentType.TIME )
         {
-            return "java.util.Date";
+            javaTypeName = "java.util.Date";
         }
         else if ( argument.getType() == ArgumentType.NUMBER )
         {
-            return "java.lang.Number";
+            javaTypeName = "java.lang.Number";
         }
-        else if ( argument.getType() == ArgumentType.TEXT )
-        {
-            return "java.lang.String";
-        }
-        else
-        {
-            throw new IllegalArgumentException( argument.getType().value() );
-        }
+
+        return javaTypeName;
     }
 
     /**
@@ -1156,11 +1154,11 @@ public abstract class JomcTool
      *
      * @return The {@code VelocityEngine} used for generating source code.
      *
-     * @throws IllegalStateException if initializing a new velocity engine fails.
+     * @throws ToolException if initializing a new velocity engine fails.
      *
      * @see #setVelocityEngine(org.apache.velocity.app.VelocityEngine)
      */
-    public VelocityEngine getVelocityEngine()
+    public VelocityEngine getVelocityEngine() throws ToolException
     {
         if ( this.velocityEngine == null )
         {
@@ -1223,10 +1221,11 @@ public abstract class JomcTool
 
                 engine.init( props );
                 this.velocityEngine = engine;
+                this.templateCache.clear();
             }
             catch ( final Exception e )
             {
-                throw new IllegalStateException( e );
+                throw new ToolException( e );
             }
         }
 
@@ -1280,6 +1279,15 @@ public abstract class JomcTool
         if ( this.templateEncoding == null )
         {
             this.templateEncoding = this.getMessage( "buildSourceEncoding", null );
+            this.templateCache.clear();
+            if ( this.isLoggable( Level.FINE ) )
+            {
+                this.log( Level.FINE, this.getMessage( "defaultTemplateEncoding", new Object[]
+                    {
+                        this.templateEncoding
+                    } ), null );
+
+            }
         }
 
         return this.templateEncoding;
@@ -1421,19 +1429,26 @@ public abstract class JomcTool
      * @return The template matching {@code templateName}.
      *
      * @throws NullPointerException if {@code templateName} is {@code null}.
-     * @throws IOException if getting the template fails.
+     * @throws ToolException if getting the template fails.
      *
      * @see #getProfile()
      * @see #getTemplateEncoding()
      */
-    public Template getVelocityTemplate( final String templateName ) throws IOException
+    public Template getVelocityTemplate( final String templateName ) throws ToolException
     {
         if ( templateName == null )
         {
             throw new NullPointerException( "templateName" );
         }
 
-        Template template = this.templateCache.get( templateName );
+        Map<String, Template> templates = this.templateCache.get();
+        if ( templates == null )
+        {
+            templates = new HashMap<String, Template>();
+            this.templateCache = new WeakReference<Map<String, Template>>( templates );
+        }
+
+        Template template = templates.get( templateName );
 
         if ( template == null )
         {
@@ -1442,7 +1457,7 @@ public abstract class JomcTool
                 template = this.getVelocityEngine().getTemplate(
                     TEMPLATE_PREFIX + this.getProfile() + "/" + templateName, this.getTemplateEncoding() );
 
-                this.templateCache.put( templateName, template );
+                templates.put( templateName, template );
             }
             catch ( final ResourceNotFoundException e )
             {
@@ -1469,31 +1484,31 @@ public abstract class JomcTool
 
                     }
 
-                    this.templateCache.put( templateName, template );
+                    templates.put( templateName, template );
                 }
                 catch ( final ResourceNotFoundException e2 )
                 {
-                    throw (IOException) new IOException( this.getMessage( "templateNotFound", new Object[]
+                    throw new ToolException( this.getMessage( "templateNotFound", new Object[]
                         {
                             templateName, DEFAULT_PROFILE
-                        } ) ).initCause( e2 );
+                        } ), e2 );
 
                 }
                 catch ( final Exception e2 )
                 {
-                    throw (IOException) new IOException( this.getMessage( "failedGettingTemplate", new Object[]
+                    throw new ToolException( this.getMessage( "failedGettingTemplate", new Object[]
                         {
                             templateName
-                        } ) ).initCause( e2 );
+                        } ), e2 );
 
                 }
             }
             catch ( final Exception e )
             {
-                throw (IOException) new IOException( this.getMessage( "failedGettingTemplate", new Object[]
+                throw new ToolException( this.getMessage( "failedGettingTemplate", new Object[]
                     {
                         templateName
-                    } ) ).initCause( e );
+                    } ), e );
 
             }
         }

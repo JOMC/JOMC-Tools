@@ -162,11 +162,11 @@ public class JavaSources extends JomcTool
      * @param sourcesDirectory The directory holding the sources to manage.
      *
      * @throws NullPointerException if {@code sourcesDirectory} is {@code null}.
-     * @throws IOException if managing sources fails.
+     * @throws ToolException if managing sources fails.
      *
      * @see #manageSources(org.jomc.model.Module, java.io.File)
      */
-    public void manageSources( final File sourcesDirectory ) throws IOException
+    public void manageSources( final File sourcesDirectory ) throws ToolException
     {
         if ( sourcesDirectory == null )
         {
@@ -186,12 +186,12 @@ public class JavaSources extends JomcTool
      * @param sourcesDirectory The directory holding the sources to manage.
      *
      * @throws NullPointerException if {@code module} or {@code sourcesDirectory} is {@code null}.
-     * @throws IOException if managing sources fails.
+     * @throws ToolException if managing sources fails.
      *
      * @see #manageSources(org.jomc.model.Specification, java.io.File)
      * @see #manageSources(org.jomc.model.Implementation, java.io.File)
      */
-    public void manageSources( final Module module, final File sourcesDirectory ) throws IOException
+    public void manageSources( final Module module, final File sourcesDirectory ) throws ToolException
     {
         if ( module == null )
         {
@@ -225,11 +225,11 @@ public class JavaSources extends JomcTool
      * @param sourcesDirectory The directory holding the sources to manage.
      *
      * @throws NullPointerException if {@code specification} or {@code sourcesDirectory} is {@code null}.
-     * @throws IOException if managing sources fails.
+     * @throws ToolException if managing sources fails.
      *
      * @see #getSpecificationEditor(org.jomc.model.Specification)
      */
-    public void manageSources( final Specification specification, final File sourcesDirectory ) throws IOException
+    public void manageSources( final Specification specification, final File sourcesDirectory ) throws ToolException
     {
         if ( specification == null )
         {
@@ -240,85 +240,95 @@ public class JavaSources extends JomcTool
             throw new NullPointerException( "sourcesDirectory" );
         }
 
-        final Implementation i = this.getModules().getImplementation( specification.getIdentifier() );
-        if ( i != null && i.isClassDeclaration() )
+        try
         {
-            this.manageSources( i, sourcesDirectory );
-        }
-        else if ( specification.isClassDeclaration() )
-        {
-            final File f = new File( sourcesDirectory, specification.getIdentifier().replace( '.', '/' ) + ".java" );
-            final String content = f.exists()
-                                   ? FileUtils.readFileToString( f, this.getInputEncoding() )
-                                   : this.getSpecificationTemplate( specification );
+            final Implementation i = this.getModules().getImplementation( specification.getIdentifier() );
 
-            final JavaSpecificationEditor editor = this.getSpecificationEditor( specification );
-            final String edited;
-            try
+            if ( i != null && i.isClassDeclaration() )
             {
-                edited = editor.edit( content );
+                this.manageSources( i, sourcesDirectory );
             }
-            catch ( final IOException e )
+            else if ( specification.isClassDeclaration() )
             {
-                throw (IOException) new IOException( this.getMessage( "failedEditing", new Object[]
-                    {
-                        f.getCanonicalPath(), e.getMessage()
-                    } ) ).initCause( e );
+                final File f =
+                    new File( sourcesDirectory, specification.getIdentifier().replace( '.', '/' ) + ".java" );
 
-            }
+                final String content = f.exists()
+                                       ? FileUtils.readFileToString( f, this.getInputEncoding() )
+                                       : this.getSpecificationTemplate( specification );
 
-            if ( !editor.isLicenseSectionPresent() && this.isLoggable( Level.INFO ) )
-            {
-                this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
-                    {
-                        LICENSE_SECTION_NAME,
-                        f.getCanonicalPath()
-                    } ), null );
-
-            }
-
-            if ( !editor.isAnnotationsSectionPresent() )
-            {
-                throw new IOException( this.getMessage( "missingSection", new Object[]
-                    {
-                        ANNOTATIONS_SECTION_NAME,
-                        f.getCanonicalPath()
-                    } ) );
-
-            }
-
-            if ( !editor.isDocumentationSectionPresent() && this.isLoggable( Level.INFO ) )
-            {
-                this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
-                    {
-                        DOCUMENTATION_SECTION_NAME,
-                        f.getCanonicalPath()
-                    } ), null );
-
-            }
-
-            if ( !edited.equals( content ) )
-            {
-                if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
+                final JavaSpecificationEditor editor = this.getSpecificationEditor( specification );
+                final String edited;
+                try
                 {
-                    throw new IOException( this.getMessage( "failedCreatingDirectory", new Object[]
+                    edited = editor.edit( content );
+                }
+                catch ( final IOException e )
+                {
+                    throw new ToolException( this.getMessage( "failedEditing", new Object[]
                         {
-                            f.getParentFile().getAbsolutePath()
-                        } ) );
+                            f.getCanonicalPath(), e.getMessage()
+                        } ), e );
 
                 }
 
-                if ( this.isLoggable( Level.INFO ) )
+                if ( !editor.isLicenseSectionPresent() && this.isLoggable( Level.INFO ) )
                 {
-                    this.log( Level.INFO, this.getMessage( "editing", new Object[]
+                    this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                         {
+                            LICENSE_SECTION_NAME,
                             f.getCanonicalPath()
                         } ), null );
 
                 }
 
-                FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
+                if ( !editor.isAnnotationsSectionPresent() )
+                {
+                    throw new IOException( this.getMessage( "missingSection", new Object[]
+                        {
+                            ANNOTATIONS_SECTION_NAME,
+                            f.getCanonicalPath()
+                        } ) );
+
+                }
+
+                if ( !editor.isDocumentationSectionPresent() && this.isLoggable( Level.INFO ) )
+                {
+                    this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
+                        {
+                            DOCUMENTATION_SECTION_NAME,
+                            f.getCanonicalPath()
+                        } ), null );
+
+                }
+
+                if ( !edited.equals( content ) )
+                {
+                    if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
+                    {
+                        throw new ToolException( this.getMessage( "failedCreatingDirectory", new Object[]
+                            {
+                                f.getParentFile().getAbsolutePath()
+                            } ) );
+
+                    }
+
+                    if ( this.isLoggable( Level.INFO ) )
+                    {
+                        this.log( Level.INFO, this.getMessage( "editing", new Object[]
+                            {
+                                f.getCanonicalPath()
+                            } ), null );
+
+                    }
+
+                    FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
+                }
             }
+        }
+        catch ( final IOException e )
+        {
+            throw new ToolException( e );
         }
     }
 
@@ -329,11 +339,11 @@ public class JavaSources extends JomcTool
      * @param sourcesDirectory The directory holding the sources to manage.
      *
      * @throws NullPointerException if {@code implementation} or {@code sourcesDirectory} is {@code null}.
-     * @throws IOException if managing sources fails.
+     * @throws ToolException if managing sources fails.
      *
      * @see #getImplementationEditor(org.jomc.model.Implementation)
      */
-    public void manageSources( final Implementation implementation, final File sourcesDirectory ) throws IOException
+    public void manageSources( final Implementation implementation, final File sourcesDirectory ) throws ToolException
     {
         if ( implementation == null )
         {
@@ -344,187 +354,195 @@ public class JavaSources extends JomcTool
             throw new NullPointerException( "sourcesDirectory" );
         }
 
-        if ( implementation.isClassDeclaration() )
+        try
         {
-            final File f = new File( sourcesDirectory, implementation.getClazz().replace( '.', '/' ) + ".java" );
-            final String content = f.exists()
-                                   ? FileUtils.readFileToString( f, this.getInputEncoding() )
-                                   : this.getImplementationTemplate( implementation );
-
-            final JavaImplementationEditor editor = this.getImplementationEditor( implementation );
-            final String edited;
-            try
+            if ( implementation.isClassDeclaration() )
             {
-                edited = editor.edit( content );
-            }
-            catch ( final IOException e )
-            {
-                throw (IOException) new IOException( this.getMessage( "failedEditing", new Object[]
-                    {
-                        f.getCanonicalPath(), e.getMessage()
-                    } ) ).initCause( e );
+                final File f = new File( sourcesDirectory, implementation.getClazz().replace( '.', '/' ) + ".java" );
+                final String content = f.exists()
+                                       ? FileUtils.readFileToString( f, this.getInputEncoding() )
+                                       : this.getImplementationTemplate( implementation );
 
-            }
-
-            if ( !editor.isLicenseSectionPresent() && this.isLoggable( Level.INFO ) )
-            {
-                this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
-                    {
-                        LICENSE_SECTION_NAME,
-                        f.getCanonicalPath()
-                    } ), null );
-
-            }
-
-            if ( !editor.isAnnotationsSectionPresent() )
-            {
-                throw new IOException( this.getMessage( "missingSection", new Object[]
-                    {
-                        ANNOTATIONS_SECTION_NAME,
-                        f.getCanonicalPath()
-                    } ) );
-
-            }
-
-            if ( !editor.isDocumentationSectionPresent() && this.isLoggable( Level.INFO ) )
-            {
-                this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
-                    {
-                        DOCUMENTATION_SECTION_NAME,
-                        f.getCanonicalPath()
-                    } ), null );
-
-            }
-
-            if ( !editor.isConstructorsSectionPresent() )
-            {
-                final Specifications specifications =
-                    this.getModules().getSpecifications( implementation.getIdentifier() );
-
-                if ( specifications != null &&
-                     !( specifications.getSpecification().isEmpty() && specifications.getReference().isEmpty() ) )
+                final JavaImplementationEditor editor = this.getImplementationEditor( implementation );
+                final String edited;
+                try
                 {
-                    throw new IOException( this.getMessage( "missingSection", new Object[]
+                    edited = editor.edit( content );
+                }
+                catch ( final IOException e )
+                {
+                    throw new ToolException( this.getMessage( "failedEditing", new Object[]
                         {
-                            CONSTRUCTORS_SECTION_NAME,
-                            f.getCanonicalPath()
-                        } ) );
+                            f.getCanonicalPath(), e.getMessage()
+                        } ), e );
 
                 }
-                else if ( this.isLoggable( Level.INFO ) )
+
+                if ( !editor.isLicenseSectionPresent() && this.isLoggable( Level.INFO ) )
                 {
                     this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
                         {
-                            CONSTRUCTORS_SECTION_NAME,
+                            LICENSE_SECTION_NAME,
                             f.getCanonicalPath()
                         } ), null );
 
                 }
-            }
-            else if ( !editor.isDefaultConstructorSectionPresent() )
-            {
-                throw new IOException( this.getMessage( "missingSection", new Object[]
+
+                if ( !editor.isAnnotationsSectionPresent() )
+                {
+                    throw new ToolException( this.getMessage( "missingSection", new Object[]
+                        {
+                            ANNOTATIONS_SECTION_NAME,
+                            f.getCanonicalPath()
+                        } ) );
+
+                }
+
+                if ( !editor.isDocumentationSectionPresent() && this.isLoggable( Level.INFO ) )
+                {
+                    this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
+                        {
+                            DOCUMENTATION_SECTION_NAME,
+                            f.getCanonicalPath()
+                        } ), null );
+
+                }
+
+                if ( !editor.isConstructorsSectionPresent() )
+                {
+                    final Specifications specifications =
+                        this.getModules().getSpecifications( implementation.getIdentifier() );
+
+                    if ( specifications != null &&
+                         !( specifications.getSpecification().isEmpty() && specifications.getReference().isEmpty() ) )
                     {
-                        DEFAULT_CONSTRUCTOR_SECTION_NAME,
-                        f.getCanonicalPath()
-                    } ) );
+                        throw new ToolException( this.getMessage( "missingSection", new Object[]
+                            {
+                                CONSTRUCTORS_SECTION_NAME,
+                                f.getCanonicalPath()
+                            } ) );
 
-            }
+                    }
+                    else if ( this.isLoggable( Level.INFO ) )
+                    {
+                        this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
+                            {
+                                CONSTRUCTORS_SECTION_NAME,
+                                f.getCanonicalPath()
+                            } ), null );
 
-            if ( !editor.isPropertiesSectionPresent() )
-            {
-                final Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
-
-                if ( properties != null && !properties.getProperty().isEmpty() )
+                    }
+                }
+                else if ( !editor.isDefaultConstructorSectionPresent() )
                 {
-                    throw new IOException( this.getMessage( "missingSection", new Object[]
+                    throw new ToolException( this.getMessage( "missingSection", new Object[]
                         {
-                            PROPERTIES_SECTION_NAME,
+                            DEFAULT_CONSTRUCTOR_SECTION_NAME,
                             f.getCanonicalPath()
                         } ) );
 
                 }
-                else if ( this.isLoggable( Level.INFO ) )
-                {
-                    this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
-                        {
-                            PROPERTIES_SECTION_NAME,
-                            f.getCanonicalPath()
-                        } ), null );
 
+                if ( !editor.isPropertiesSectionPresent() )
+                {
+                    final Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
+
+                    if ( properties != null && !properties.getProperty().isEmpty() )
+                    {
+                        throw new ToolException( this.getMessage( "missingSection", new Object[]
+                            {
+                                PROPERTIES_SECTION_NAME,
+                                f.getCanonicalPath()
+                            } ) );
+
+                    }
+                    else if ( this.isLoggable( Level.INFO ) )
+                    {
+                        this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
+                            {
+                                PROPERTIES_SECTION_NAME,
+                                f.getCanonicalPath()
+                            } ), null );
+
+                    }
+                }
+
+                if ( !editor.isDependenciesSectionPresent() )
+                {
+                    final Dependencies dependencies =
+                        this.getModules().getDependencies( implementation.getIdentifier() );
+
+                    if ( dependencies != null && !dependencies.getDependency().isEmpty() )
+                    {
+                        throw new ToolException( this.getMessage( "missingSection", new Object[]
+                            {
+                                DEPENDENCIES_SECTION_NAME,
+                                f.getCanonicalPath()
+                            } ) );
+
+                    }
+                    else if ( this.isLoggable( Level.INFO ) )
+                    {
+                        this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
+                            {
+                                DEPENDENCIES_SECTION_NAME,
+                                f.getCanonicalPath()
+                            } ), null );
+
+                    }
+                }
+
+                if ( !editor.isMessagesSectionPresent() )
+                {
+                    final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
+
+                    if ( messages != null && !messages.getMessage().isEmpty() )
+                    {
+                        throw new ToolException( this.getMessage( "missingSection", new Object[]
+                            {
+                                MESSAGES_SECTION_NAME,
+                                f.getCanonicalPath()
+                            } ) );
+
+                    }
+                    else if ( this.isLoggable( Level.INFO ) )
+                    {
+                        this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
+                            {
+                                MESSAGES_SECTION_NAME,
+                                f.getCanonicalPath()
+                            } ), null );
+
+                    }
+                }
+
+                if ( !edited.equals( content ) )
+                {
+                    if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
+                    {
+                        throw new ToolException( this.getMessage( "failedCreatingDirectory", new Object[]
+                            {
+                                f.getParentFile().getAbsolutePath()
+                            } ) );
+
+                    }
+
+                    if ( this.isLoggable( Level.INFO ) )
+                    {
+                        this.log( Level.INFO, this.getMessage( "editing", new Object[]
+                            {
+                                f.getCanonicalPath()
+                            } ), null );
+
+                    }
+
+                    FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
                 }
             }
-
-            if ( !editor.isDependenciesSectionPresent() )
-            {
-                final Dependencies dependencies = this.getModules().getDependencies( implementation.getIdentifier() );
-
-                if ( dependencies != null && !dependencies.getDependency().isEmpty() )
-                {
-                    throw new IOException( this.getMessage( "missingSection", new Object[]
-                        {
-                            DEPENDENCIES_SECTION_NAME,
-                            f.getCanonicalPath()
-                        } ) );
-
-                }
-                else if ( this.isLoggable( Level.INFO ) )
-                {
-                    this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
-                        {
-                            DEPENDENCIES_SECTION_NAME,
-                            f.getCanonicalPath()
-                        } ), null );
-
-                }
-            }
-
-            if ( !editor.isMessagesSectionPresent() )
-            {
-                final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
-
-                if ( messages != null && !messages.getMessage().isEmpty() )
-                {
-                    throw new IOException( this.getMessage( "missingSection", new Object[]
-                        {
-                            MESSAGES_SECTION_NAME,
-                            f.getCanonicalPath()
-                        } ) );
-
-                }
-                else if ( this.isLoggable( Level.INFO ) )
-                {
-                    this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
-                        {
-                            MESSAGES_SECTION_NAME,
-                            f.getCanonicalPath()
-                        } ), null );
-
-                }
-            }
-
-            if ( !edited.equals( content ) )
-            {
-                if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
-                {
-                    throw new IOException( this.getMessage( "failedCreatingDirectory", new Object[]
-                        {
-                            f.getParentFile().getAbsolutePath()
-                        } ) );
-
-                }
-
-                if ( this.isLoggable( Level.INFO ) )
-                {
-                    this.log( Level.INFO, this.getMessage( "editing", new Object[]
-                        {
-                            f.getCanonicalPath()
-                        } ), null );
-
-                }
-
-                FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
-            }
+        }
+        catch ( final IOException e )
+        {
+            throw new ToolException( e );
         }
     }
 
@@ -585,18 +603,25 @@ public class JavaSources extends JomcTool
      *
      * @param specification The specification to get the source code template of.
      *
-     * @throws IOException if getting the source code section fails.
+     * @throws ToolException if getting the source code section fails.
      */
-    private String getSpecificationTemplate( final Specification specification ) throws IOException
+    private String getSpecificationTemplate( final Specification specification ) throws ToolException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final Template template = this.getVelocityTemplate( SPECIFICATION_TEMPLATE );
-        ctx.put( "specification", specification );
-        ctx.put( "template", template );
-        template.merge( ctx, writer );
-        writer.close();
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final Template template = this.getVelocityTemplate( SPECIFICATION_TEMPLATE );
+            ctx.put( "specification", specification );
+            ctx.put( "template", template );
+            template.merge( ctx, writer );
+            writer.close();
+            return writer.toString();
+        }
+        catch ( final IOException e )
+        {
+            throw new ToolException( e );
+        }
     }
 
     /**
@@ -604,18 +629,25 @@ public class JavaSources extends JomcTool
      *
      * @param implementation The implementation to get the source code template of.
      *
-     * @throws IOException if getting the source code section fails.
+     * @throws ToolException if getting the source code section fails.
      */
-    private String getImplementationTemplate( final Implementation implementation ) throws IOException
+    private String getImplementationTemplate( final Implementation implementation ) throws ToolException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final Template template = this.getVelocityTemplate( IMPLEMENTATION_TEMPLATE );
-        ctx.put( "implementation", implementation );
-        ctx.put( "template", template );
-        template.merge( ctx, writer );
-        writer.close();
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final Template template = this.getVelocityTemplate( IMPLEMENTATION_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "template", template );
+            template.merge( ctx, writer );
+            writer.close();
+            return writer.toString();
+        }
+        catch ( final IOException e )
+        {
+            throw new ToolException( e );
+        }
     }
 
     /**
@@ -623,18 +655,25 @@ public class JavaSources extends JomcTool
      *
      * @param specification The specification to get the source code of the license section of.
      *
-     * @throws IOException if getting the source code section fails.
+     * @throws ToolException if getting the source code section fails.
      */
-    private String getLicenseSection( final Specification specification ) throws IOException
+    private String getLicenseSection( final Specification specification ) throws ToolException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final Template template = this.getVelocityTemplate( SPECIFICATION_LICENSE_TEMPLATE );
-        ctx.put( "specification", specification );
-        ctx.put( "template", template );
-        template.merge( ctx, writer );
-        writer.close();
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final Template template = this.getVelocityTemplate( SPECIFICATION_LICENSE_TEMPLATE );
+            ctx.put( "specification", specification );
+            ctx.put( "template", template );
+            template.merge( ctx, writer );
+            writer.close();
+            return writer.toString();
+        }
+        catch ( final IOException e )
+        {
+            throw new ToolException( e );
+        }
     }
 
     /**
@@ -642,18 +681,25 @@ public class JavaSources extends JomcTool
      *
      * @param implementation The implementation to get the source code of the license section of.
      *
-     * @throws IOException if getting the source code section fails.
+     * @throws ToolException if getting the source code section fails.
      */
-    private String getLicenseSection( final Implementation implementation ) throws IOException
+    private String getLicenseSection( final Implementation implementation ) throws ToolException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final Template template = this.getVelocityTemplate( IMPLEMENTATION_LICENSE_TEMPLATE );
-        ctx.put( "implementation", implementation );
-        ctx.put( "template", template );
-        template.merge( ctx, writer );
-        writer.close();
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final Template template = this.getVelocityTemplate( IMPLEMENTATION_LICENSE_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "template", template );
+            template.merge( ctx, writer );
+            writer.close();
+            return writer.toString();
+        }
+        catch ( final IOException e )
+        {
+            throw new ToolException( e );
+        }
     }
 
     /**
@@ -661,18 +707,25 @@ public class JavaSources extends JomcTool
      *
      * @param specification The specification to get the source code of the annotations section of.
      *
-     * @throws IOException if getting the source code section fails.
+     * @throws ToolException if getting the source code section fails.
      */
-    private String getAnnotationsSection( final Specification specification ) throws IOException
+    private String getAnnotationsSection( final Specification specification ) throws ToolException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final Template template = this.getVelocityTemplate( SPECIFICATION_ANNOTATIONS_TEMPLATE );
-        ctx.put( "specification", specification );
-        ctx.put( "template", template );
-        template.merge( ctx, writer );
-        writer.close();
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final Template template = this.getVelocityTemplate( SPECIFICATION_ANNOTATIONS_TEMPLATE );
+            ctx.put( "specification", specification );
+            ctx.put( "template", template );
+            template.merge( ctx, writer );
+            writer.close();
+            return writer.toString();
+        }
+        catch ( final IOException e )
+        {
+            throw new ToolException( e );
+        }
     }
 
     /**
@@ -680,18 +733,25 @@ public class JavaSources extends JomcTool
      *
      * @param implementation The implementation to get the source code of the annotations section of.
      *
-     * @throws IOException if getting the source code section fails.
+     * @throws ToolException if getting the source code section fails.
      */
-    private String getAnnotationsSection( final Implementation implementation ) throws IOException
+    private String getAnnotationsSection( final Implementation implementation ) throws ToolException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final Template template = this.getVelocityTemplate( IMPLEMENTATION_ANNOTATIONS_TEMPLATE );
-        ctx.put( "implementation", implementation );
-        ctx.put( "template", template );
-        template.merge( ctx, writer );
-        writer.close();
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final Template template = this.getVelocityTemplate( IMPLEMENTATION_ANNOTATIONS_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "template", template );
+            template.merge( ctx, writer );
+            writer.close();
+            return writer.toString();
+        }
+        catch ( final IOException e )
+        {
+            throw new ToolException( e );
+        }
     }
 
     /**
@@ -699,18 +759,25 @@ public class JavaSources extends JomcTool
      *
      * @param specification The specification to get the source code section of.
      *
-     * @throws IOException if getting the source code section fails.
+     * @throws ToolException if getting the source code section fails.
      */
-    private String getDocumentationSection( final Specification specification ) throws IOException
+    private String getDocumentationSection( final Specification specification ) throws ToolException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final Template template = this.getVelocityTemplate( SPECIFICATION_DOCUMENTATION_TEMPLATE );
-        ctx.put( "specification", specification );
-        ctx.put( "template", template );
-        template.merge( ctx, writer );
-        writer.close();
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final Template template = this.getVelocityTemplate( SPECIFICATION_DOCUMENTATION_TEMPLATE );
+            ctx.put( "specification", specification );
+            ctx.put( "template", template );
+            template.merge( ctx, writer );
+            writer.close();
+            return writer.toString();
+        }
+        catch ( final IOException e )
+        {
+            throw new ToolException( e );
+        }
     }
 
     /**
@@ -718,18 +785,25 @@ public class JavaSources extends JomcTool
      *
      * @param implementation The implementation to get the source code section of.
      *
-     * @throws IOException if getting the source code section fails.
+     * @throws ToolException if getting the source code section fails.
      */
-    private String getDocumentationSection( final Implementation implementation ) throws IOException
+    private String getDocumentationSection( final Implementation implementation ) throws ToolException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final Template template = this.getVelocityTemplate( IMPLEMENTATION_DOCUMENTATION_TEMPLATE );
-        ctx.put( "implementation", implementation );
-        ctx.put( "template", template );
-        template.merge( ctx, writer );
-        writer.close();
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final Template template = this.getVelocityTemplate( IMPLEMENTATION_DOCUMENTATION_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "template", template );
+            template.merge( ctx, writer );
+            writer.close();
+            return writer.toString();
+        }
+        catch ( final IOException e )
+        {
+            throw new ToolException( e );
+        }
     }
 
     /**
@@ -737,18 +811,25 @@ public class JavaSources extends JomcTool
      *
      * @param implementation The implementation to get the constructors section head content of.
      *
-     * @throws IOException if getting the source code section fails.
+     * @throws ToolException if getting the source code section fails.
      */
-    private String getConstructorsSectionHeadContent( final Implementation implementation ) throws IOException
+    private String getConstructorsSectionHeadContent( final Implementation implementation ) throws ToolException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final Template template = this.getVelocityTemplate( CONSTRUCTORS_HEAD_TEMPLATE );
-        ctx.put( "implementation", implementation );
-        ctx.put( "template", template );
-        template.merge( ctx, writer );
-        writer.close();
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final Template template = this.getVelocityTemplate( CONSTRUCTORS_HEAD_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "template", template );
+            template.merge( ctx, writer );
+            writer.close();
+            return writer.toString();
+        }
+        catch ( final IOException e )
+        {
+            throw new ToolException( e );
+        }
     }
 
     /**
@@ -756,18 +837,25 @@ public class JavaSources extends JomcTool
      *
      * @param implementation The implementation to get the constructors section tail content of.
      *
-     * @throws IOException if getting the source code section fails.
+     * @throws ToolException if getting the source code section fails.
      */
-    private String getConstructorsSectionTailContent( final Implementation implementation ) throws IOException
+    private String getConstructorsSectionTailContent( final Implementation implementation ) throws ToolException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final Template template = this.getVelocityTemplate( CONSTRUCTORS_TAIL_TEMPLATE );
-        ctx.put( "implementation", implementation );
-        ctx.put( "template", template );
-        template.merge( ctx, writer );
-        writer.close();
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final Template template = this.getVelocityTemplate( CONSTRUCTORS_TAIL_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "template", template );
+            template.merge( ctx, writer );
+            writer.close();
+            return writer.toString();
+        }
+        catch ( final IOException e )
+        {
+            throw new ToolException( e );
+        }
     }
 
     /**
@@ -775,18 +863,25 @@ public class JavaSources extends JomcTool
      *
      * @param implementation The implementation to get the source code of the dependencies section of.
      *
-     * @throws IOException if getting the source code section fails.
+     * @throws ToolException if getting the source code section fails.
      */
-    private String getDependenciesSection( final Implementation implementation ) throws IOException
+    private String getDependenciesSection( final Implementation implementation ) throws ToolException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final Template template = this.getVelocityTemplate( DEPENDENCIES_TEMPLATE );
-        ctx.put( "implementation", implementation );
-        ctx.put( "template", template );
-        template.merge( ctx, writer );
-        writer.close();
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final Template template = this.getVelocityTemplate( DEPENDENCIES_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "template", template );
+            template.merge( ctx, writer );
+            writer.close();
+            return writer.toString();
+        }
+        catch ( final IOException e )
+        {
+            throw new ToolException( e );
+        }
     }
 
     /**
@@ -794,18 +889,25 @@ public class JavaSources extends JomcTool
      *
      * @param implementation The implementation to get the source code of the properties section of.
      *
-     * @throws IOException if getting the source code section fails.
+     * @throws ToolException if getting the source code section fails.
      */
-    private String getPropertiesSection( final Implementation implementation ) throws IOException
+    private String getPropertiesSection( final Implementation implementation ) throws ToolException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final Template template = this.getVelocityTemplate( PROPERTIES_TEMPLATE );
-        ctx.put( "implementation", implementation );
-        ctx.put( "template", template );
-        template.merge( ctx, writer );
-        writer.close();
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final Template template = this.getVelocityTemplate( PROPERTIES_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "template", template );
+            template.merge( ctx, writer );
+            writer.close();
+            return writer.toString();
+        }
+        catch ( final IOException e )
+        {
+            throw new ToolException( e );
+        }
     }
 
     /**
@@ -813,18 +915,25 @@ public class JavaSources extends JomcTool
      *
      * @param implementation The implementation to get the source code of the messages section of.
      *
-     * @throws IOException if getting the source code section fails.
+     * @throws ToolException if getting the source code section fails.
      */
-    private String getMessagesSection( final Implementation implementation ) throws IOException
+    private String getMessagesSection( final Implementation implementation ) throws ToolException
     {
-        final StringWriter writer = new StringWriter();
-        final VelocityContext ctx = this.getVelocityContext();
-        final Template template = this.getVelocityTemplate( MESSAGES_TEMPLATE );
-        ctx.put( "implementation", implementation );
-        ctx.put( "template", template );
-        template.merge( ctx, writer );
-        writer.close();
-        return writer.toString();
+        try
+        {
+            final StringWriter writer = new StringWriter();
+            final VelocityContext ctx = this.getVelocityContext();
+            final Template template = this.getVelocityTemplate( MESSAGES_TEMPLATE );
+            ctx.put( "implementation", implementation );
+            ctx.put( "template", template );
+            template.merge( ctx, writer );
+            writer.close();
+            return writer.toString();
+        }
+        catch ( final IOException e )
+        {
+            throw new ToolException( e );
+        }
     }
 
     private String getMessage( final String key, final Object args )
@@ -1026,10 +1135,17 @@ public class JavaSources extends JomcTool
                 throw new NullPointerException( "s" );
             }
 
-            s.getHeadContent().setLength( 0 );
-            if ( this.specification != null )
+            try
             {
-                s.getHeadContent().append( getLicenseSection( this.specification ) );
+                s.getHeadContent().setLength( 0 );
+                if ( this.specification != null )
+                {
+                    s.getHeadContent().append( getLicenseSection( this.specification ) );
+                }
+            }
+            catch ( final ToolException e )
+            {
+                throw (IOException) new IOException( e.getMessage() ).initCause( e );
             }
         }
 
@@ -1048,10 +1164,17 @@ public class JavaSources extends JomcTool
                 throw new NullPointerException( "s" );
             }
 
-            s.getHeadContent().setLength( 0 );
-            if ( this.specification != null )
+            try
             {
-                s.getHeadContent().append( getAnnotationsSection( this.specification ) );
+                s.getHeadContent().setLength( 0 );
+                if ( this.specification != null )
+                {
+                    s.getHeadContent().append( getAnnotationsSection( this.specification ) );
+                }
+            }
+            catch ( final ToolException e )
+            {
+                throw (IOException) new IOException( e.getMessage() ).initCause( e );
             }
         }
 
@@ -1070,10 +1193,17 @@ public class JavaSources extends JomcTool
                 throw new NullPointerException( "s" );
             }
 
-            s.getHeadContent().setLength( 0 );
-            if ( this.specification != null )
+            try
             {
-                s.getHeadContent().append( getDocumentationSection( this.specification ) );
+                s.getHeadContent().setLength( 0 );
+                if ( this.specification != null )
+                {
+                    s.getHeadContent().append( getDocumentationSection( this.specification ) );
+                }
+            }
+            catch ( final ToolException e )
+            {
+                throw (IOException) new IOException( e.getMessage() ).initCause( e );
             }
         }
 
@@ -1200,10 +1330,17 @@ public class JavaSources extends JomcTool
                 throw new NullPointerException( "s" );
             }
 
-            s.getHeadContent().setLength( 0 );
-            if ( this.implementation != null )
+            try
             {
-                s.getHeadContent().append( getLicenseSection( this.implementation ) );
+                s.getHeadContent().setLength( 0 );
+                if ( this.implementation != null )
+                {
+                    s.getHeadContent().append( getLicenseSection( this.implementation ) );
+                }
+            }
+            catch ( final ToolException e )
+            {
+                throw (IOException) new IOException( e.getMessage() ).initCause( e );
             }
         }
 
@@ -1222,10 +1359,17 @@ public class JavaSources extends JomcTool
                 throw new NullPointerException( "s" );
             }
 
-            s.getHeadContent().setLength( 0 );
-            if ( this.implementation != null )
+            try
             {
-                s.getHeadContent().append( getAnnotationsSection( this.implementation ) );
+                s.getHeadContent().setLength( 0 );
+                if ( this.implementation != null )
+                {
+                    s.getHeadContent().append( getAnnotationsSection( this.implementation ) );
+                }
+            }
+            catch ( final ToolException e )
+            {
+                throw (IOException) new IOException( e.getMessage() ).initCause( e );
             }
         }
 
@@ -1244,10 +1388,17 @@ public class JavaSources extends JomcTool
                 throw new NullPointerException( "s" );
             }
 
-            s.getHeadContent().setLength( 0 );
-            if ( this.implementation != null )
+            try
             {
-                s.getHeadContent().append( getDocumentationSection( this.implementation ) );
+                s.getHeadContent().setLength( 0 );
+                if ( this.implementation != null )
+                {
+                    s.getHeadContent().append( getDocumentationSection( this.implementation ) );
+                }
+            }
+            catch ( final ToolException e )
+            {
+                throw (IOException) new IOException( e.getMessage() ).initCause( e );
             }
         }
 
@@ -1266,33 +1417,40 @@ public class JavaSources extends JomcTool
                 throw new NullPointerException( "s" );
             }
 
-            s.getHeadContent().setLength( 0 );
-            s.getTailContent().setLength( 0 );
-
-            if ( this.implementation != null )
+            try
             {
-                s.getHeadContent().append( getConstructorsSectionHeadContent( this.implementation ) );
-                s.getTailContent().append( getConstructorsSectionTailContent( this.implementation ) );
-            }
+                s.getHeadContent().setLength( 0 );
+                s.getTailContent().setLength( 0 );
 
-            for ( Section child : s.getSections() )
-            {
-                if ( child.getName() != null && DEFAULT_CONSTRUCTOR_SECTION_NAME.equals( child.getName() ) )
+                if ( this.implementation != null )
                 {
+                    s.getHeadContent().append( getConstructorsSectionHeadContent( this.implementation ) );
+                    s.getTailContent().append( getConstructorsSectionTailContent( this.implementation ) );
+                }
+
+                for ( Section child : s.getSections() )
+                {
+                    if ( child.getName() != null && DEFAULT_CONSTRUCTOR_SECTION_NAME.equals( child.getName() ) )
+                    {
+                        this.defaultConstructorSectionPresent = true;
+                        break;
+                    }
+                }
+
+                if ( !this.defaultConstructorSectionPresent )
+                {
+                    final Section defaultCtor = new Section();
+                    defaultCtor.setName( DEFAULT_CONSTRUCTOR_SECTION_NAME );
+                    defaultCtor.setStartingLine( "        // SECTION-START[" + DEFAULT_CONSTRUCTOR_SECTION_NAME + "]" );
+                    defaultCtor.setEndingLine( "        // SECTION-END" );
+                    defaultCtor.getHeadContent().append( "        super();" ).append( this.getLineSeparator() );
+                    s.getSections().add( defaultCtor );
                     this.defaultConstructorSectionPresent = true;
-                    break;
                 }
             }
-
-            if ( !this.defaultConstructorSectionPresent )
+            catch ( final ToolException e )
             {
-                final Section defaultCtor = new Section();
-                defaultCtor.setName( DEFAULT_CONSTRUCTOR_SECTION_NAME );
-                defaultCtor.setStartingLine( "        // SECTION-START[" + DEFAULT_CONSTRUCTOR_SECTION_NAME + "]" );
-                defaultCtor.setEndingLine( "        // SECTION-END" );
-                defaultCtor.getHeadContent().append( "        super();" ).append( this.getLineSeparator() );
-                s.getSections().add( defaultCtor );
-                this.defaultConstructorSectionPresent = true;
+                throw (IOException) new IOException( e.getMessage() ).initCause( e );
             }
         }
 
@@ -1337,10 +1495,17 @@ public class JavaSources extends JomcTool
                 throw new NullPointerException( "s" );
             }
 
-            s.getHeadContent().setLength( 0 );
-            if ( this.implementation != null )
+            try
             {
-                s.getHeadContent().append( getDependenciesSection( this.implementation ) );
+                s.getHeadContent().setLength( 0 );
+                if ( this.implementation != null )
+                {
+                    s.getHeadContent().append( getDependenciesSection( this.implementation ) );
+                }
+            }
+            catch ( final ToolException e )
+            {
+                throw (IOException) new IOException( e.getMessage() ).initCause( e );
             }
         }
 
@@ -1359,10 +1524,17 @@ public class JavaSources extends JomcTool
                 throw new NullPointerException( "s" );
             }
 
-            s.getHeadContent().setLength( 0 );
-            if ( this.implementation != null )
+            try
             {
-                s.getHeadContent().append( getMessagesSection( this.implementation ) );
+                s.getHeadContent().setLength( 0 );
+                if ( this.implementation != null )
+                {
+                    s.getHeadContent().append( getMessagesSection( this.implementation ) );
+                }
+            }
+            catch ( final ToolException e )
+            {
+                throw (IOException) new IOException( e.getMessage() ).initCause( e );
             }
         }
 
@@ -1381,10 +1553,17 @@ public class JavaSources extends JomcTool
                 throw new NullPointerException( "s" );
             }
 
-            s.getHeadContent().setLength( 0 );
-            if ( this.implementation != null )
+            try
             {
-                s.getHeadContent().append( getPropertiesSection( this.implementation ) );
+                s.getHeadContent().setLength( 0 );
+                if ( this.implementation != null )
+                {
+                    s.getHeadContent().append( getPropertiesSection( this.implementation ) );
+                }
+            }
+            catch ( final ToolException e )
+            {
+                throw (IOException) new IOException( e.getMessage() ).initCause( e );
             }
         }
 

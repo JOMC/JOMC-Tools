@@ -36,7 +36,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import javax.xml.bind.JAXBException;
 import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -44,7 +43,7 @@ import org.jomc.model.Implementation;
 import org.jomc.model.Module;
 import org.jomc.model.Specification;
 import org.jomc.tools.JavaSources;
-import org.xml.sax.SAXException;
+import org.jomc.tools.ToolException;
 
 /**
  * Tests {@code JavaSources} implementations.
@@ -62,7 +61,7 @@ public class JavaSourcesTest extends JomcToolTest
     private JavaSources testTool;
 
     @Override
-    public JavaSources getTestTool() throws IOException, SAXException, JAXBException
+    public JavaSources getTestTool() throws ToolException
     {
         if ( this.testTool == null )
         {
@@ -388,9 +387,9 @@ public class JavaSourcesTest extends JomcToolTest
             this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
-            Assert.fail( "Expected IOException not thrown." );
+            Assert.fail( "Expected ToolException not thrown." );
         }
-        catch ( IOException e )
+        catch ( ToolException e )
         {
             Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
@@ -401,9 +400,9 @@ public class JavaSourcesTest extends JomcToolTest
             this.getTestTool().manageSources( this.getTestTool().getModules().getSpecification( "Specification" ),
                                               specificationDirectory );
 
-            Assert.fail( "Expected IOException not thrown." );
+            Assert.fail( "Expected ToolException not thrown." );
         }
-        catch ( IOException e )
+        catch ( ToolException e )
         {
             Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
@@ -436,9 +435,9 @@ public class JavaSourcesTest extends JomcToolTest
             this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
-            Assert.fail( "Expected IOException not thrown." );
+            Assert.fail( "Expected ToolException not thrown." );
         }
-        catch ( IOException e )
+        catch ( ToolException e )
         {
             Assert.assertNotNull( e.getMessage() );
             System.out.println( e );
@@ -452,9 +451,9 @@ public class JavaSourcesTest extends JomcToolTest
             this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
-            Assert.fail( "Expected IOException not thrown." );
+            Assert.fail( "Expected ToolException not thrown." );
         }
-        catch ( IOException e )
+        catch ( ToolException e )
         {
             Assert.assertNotNull( e.getMessage() );
             System.out.println( e );
@@ -468,9 +467,9 @@ public class JavaSourcesTest extends JomcToolTest
             this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
-            Assert.fail( "Expected IOException not thrown." );
+            Assert.fail( "Expected ToolException not thrown." );
         }
-        catch ( IOException e )
+        catch ( ToolException e )
         {
             Assert.assertNotNull( e.getMessage() );
             System.out.println( e );
@@ -484,9 +483,9 @@ public class JavaSourcesTest extends JomcToolTest
             this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
-            Assert.fail( "Expected IOException not thrown." );
+            Assert.fail( "Expected ToolException not thrown." );
         }
-        catch ( IOException e )
+        catch ( ToolException e )
         {
             Assert.assertNotNull( e.getMessage() );
             System.out.println( e );
@@ -502,9 +501,9 @@ public class JavaSourcesTest extends JomcToolTest
                 this.getTestTool().getModules().getImplementation( "ImplementationOfSpecification" ),
                 implementationDirectory );
 
-            Assert.fail( "Expected IOException not thrown." );
+            Assert.fail( "Expected ToolException not thrown." );
         }
-        catch ( IOException e )
+        catch ( ToolException e )
         {
             Assert.assertNotNull( e.getMessage() );
             System.out.println( e );
@@ -518,9 +517,9 @@ public class JavaSourcesTest extends JomcToolTest
             this.getTestTool().manageSources( this.getTestTool().getModules().getSpecification( "Specification" ),
                                               specificationDirectory );
 
-            Assert.fail( "Expected IOException not thrown." );
+            Assert.fail( "Expected ToolException not thrown." );
         }
-        catch ( IOException e )
+        catch ( ToolException e )
         {
             Assert.assertNotNull( e.getMessage() );
             System.out.println( e );

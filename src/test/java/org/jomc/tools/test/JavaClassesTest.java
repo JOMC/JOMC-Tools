@@ -39,7 +39,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -50,14 +49,14 @@ import javax.xml.transform.stream.StreamSource;
 import junit.framework.Assert;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.commons.io.FileUtils;
-import org.jomc.model.DefaultModelManager;
 import org.jomc.model.Implementation;
-import org.jomc.model.ModelManager;
+import org.jomc.model.ModelContext;
+import org.jomc.model.ModelException;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.Specification;
 import org.jomc.tools.JavaClasses;
-import org.xml.sax.SAXException;
+import org.jomc.tools.ToolException;
 
 /**
  * Tests {@code JavaClasses} implementations.
@@ -82,33 +81,44 @@ public class JavaClassesTest extends JomcToolTest
      *
      * @return The {@code Modules} tests are performed with.
      *
-     * @throws IOException if reading schema resources fails.
-     * @throws SAXException if parsing schema resources fails.
-     * @throws JAXBException if unmarshalling schema resources fails.
+     * @throws ToolException if getting the modules fails.
      */
     @Override
-    public Modules getTestModules() throws IOException, SAXException, JAXBException
+    public Modules getTestModules() throws ToolException
     {
-        if ( this.testModules == null )
+        try
         {
-            this.testModules = new Modules();
-            final ModelManager modelManager = new DefaultModelManager();
-            final Unmarshaller u = modelManager.getUnmarshaller( this.getClass().getClassLoader() );
-            final JAXBElement<Module> m =
-                (JAXBElement<Module>) u.unmarshal( this.getClass().getResource( "jomc-tools.xml" ) );
-
-            this.testModules.getModule().add( m.getValue() );
-
-            final Module cp = this.testModules.getClasspathModule(
-                Modules.getDefaultClasspathModuleName(), this.getClass().getClassLoader() );
-
-            if ( cp != null )
+            if ( this.testModules == null )
             {
-                this.testModules.getModule().add( cp );
-            }
-        }
+                final ModelContext context = ModelContext.createModelContext( this.getClass().getClassLoader() );
+                final Unmarshaller u = context.createUnmarshaller();
+                u.setSchema( context.createSchema() );
 
-        return this.testModules;
+                final JAXBElement<Module> m =
+                    (JAXBElement<Module>) u.unmarshal( this.getClass().getResource( "jomc-tools.xml" ) );
+
+                this.testModules = new Modules();
+                this.testModules.getModule().add( m.getValue() );
+
+                final Module cp = this.testModules.getClasspathModule(
+                    Modules.getDefaultClasspathModuleName(), this.getClass().getClassLoader() );
+
+                if ( cp != null )
+                {
+                    this.testModules.getModule().add( cp );
+                }
+            }
+
+            return this.testModules;
+        }
+        catch ( final JAXBException e )
+        {
+            throw new ToolException( e );
+        }
+        catch ( final ModelException e )
+        {
+            throw new ToolException( e );
+        }
     }
 
     /**
@@ -144,7 +154,7 @@ public class JavaClassesTest extends JomcToolTest
     }
 
     @Override
-    public JavaClasses getTestTool() throws IOException, SAXException, JAXBException
+    public JavaClasses getTestTool() throws ToolException
     {
         if ( this.testTool == null )
         {
@@ -160,8 +170,7 @@ public class JavaClassesTest extends JomcToolTest
     {
         super.testNullPointerException();
 
-        final ModelManager modelManager = new DefaultModelManager();
-        final JAXBContext context = modelManager.getContext( this.getClass().getClassLoader() );
+        final ModelContext context = ModelContext.createModelContext( this.getClass().getClassLoader() );
         final Marshaller marshaller = context.createMarshaller();
         final Unmarshaller unmarshaller = context.createUnmarshaller();
 
@@ -753,9 +762,9 @@ public class JavaClassesTest extends JomcToolTest
 
     public void testCommitTransformValidateClasses() throws Exception
     {
-        final ModelManager modelManager = new DefaultModelManager();
-        final Marshaller marshaller = modelManager.getMarshaller( this.getClass().getClassLoader() );
-        final Unmarshaller unmarshaller = modelManager.getUnmarshaller( this.getClass().getClassLoader() );
+        final ModelContext context = ModelContext.createModelContext( this.getClass().getClassLoader() );
+        final Marshaller marshaller = context.createMarshaller();
+        final Unmarshaller unmarshaller = context.createUnmarshaller();
         final File allClasses = this.getTestClassesDirectory();
         final File moduleClasses = this.getTestClassesDirectory();
         final File implementationClasses = this.getTestClassesDirectory();
