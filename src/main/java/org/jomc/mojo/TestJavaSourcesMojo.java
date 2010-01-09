@@ -35,12 +35,9 @@ package org.jomc.mojo;
 import java.io.File;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
-import javax.xml.bind.JAXBContext;
-import javax.xml.validation.Schema;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.jomc.model.ModelObjectValidationReport;
+import org.jomc.model.ModelValidationReport;
 import org.jomc.model.Module;
-import org.jomc.model.ObjectFactory;
 import org.jomc.tools.JavaSources;
 
 /**
@@ -89,14 +86,12 @@ public final class TestJavaSourcesMojo extends AbstractJomcMojo
             }
 
             final JavaSources tool = this.getJavaSourcesTool();
-            final JAXBContext context = this.getModelManager().getContext( this.getToolClassLoader() );
-            final Schema schema = this.getModelManager().getSchema( this.getToolClassLoader() );
-            final ModelObjectValidationReport validationReport = this.getModelObjectValidator().validateModelObject(
-                new ObjectFactory().createModules( tool.getModules() ), context, schema );
+            final ModelValidationReport validationReport =
+                this.getModelContext().validateModelObject( tool.getModules() );
 
-            this.log( validationReport.isModelObjectValid() ? Level.INFO : Level.SEVERE, validationReport );
+            this.log( validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 
-            if ( validationReport.isModelObjectValid() )
+            if ( validationReport.isModelValid() )
             {
                 this.logSeparator( Level.INFO );
                 final Module module = tool.getModules().getModule( this.getJomcTestModuleName() );

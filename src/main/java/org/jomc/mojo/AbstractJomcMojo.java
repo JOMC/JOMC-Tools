@@ -60,17 +60,15 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
-import org.jomc.model.DefaultModelManager;
-import org.jomc.model.DefaultModelObjectValidator;
-import org.jomc.model.ModelManager;
-import org.jomc.model.ModelObjectValidationReport;
-import org.jomc.model.ModelObjectValidator;
+import org.jomc.model.DefaultModelProvider;
+import org.jomc.model.ModelContext;
+import org.jomc.model.ModelException;
+import org.jomc.model.ModelValidationReport;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.tools.JavaClasses;
 import org.jomc.tools.JavaSources;
 import org.jomc.tools.JomcTool;
-import org.xml.sax.SAXException;
 
 /**
  * Base mojo class for executing {@code JomcTool}s.
@@ -150,12 +148,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /** The class loader of the project's test classpath including any provided dependencies. */
     private ClassLoader testClassLoader;
 
-    /** Model manager of the instance. */
-    private ModelManager modelManager;
-
-    /** Model object validator of the instance. */
-    private ModelObjectValidator modelObjectValidator;
-
     public void execute() throws MojoExecutionException, MojoFailureException
     {
         try
@@ -196,39 +188,24 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     protected abstract void executeTool() throws Exception;
 
     /**
-     * Gets the model manager of the instance.
+     * Gets the model context of the instance.
      *
-     * @return The model manager of the instance.
+     * @return The model context of the instance.
      *
-     * @throws MojoExecutionException if getting the model manager of the instance fails.
+     * @throws MojoExecutionException if getting the model context of the instance fails.
      */
-    protected ModelManager getModelManager() throws MojoExecutionException
+    protected ModelContext getModelContext() throws MojoExecutionException
     {
-        if ( this.modelManager == null )
+        try
         {
-            final DefaultModelManager defaultModelManager = new DefaultModelManager();
-            this.setupDefaultModelManager( defaultModelManager );
-            this.modelManager = defaultModelManager;
+            final ModelContext context = ModelContext.createModelContext( this.getToolClassLoader() );
+            this.setupModelContext( context );
+            return context;
         }
-
-        return this.modelManager;
-    }
-
-    /**
-     * Gets the model object validator of the instance.
-     *
-     * @return The model object validator of the instance.
-     *
-     * @throws MojoExecutionException if getting the model object validator of the instance fails.
-     */
-    protected ModelObjectValidator getModelObjectValidator() throws MojoExecutionException
-    {
-        if ( this.modelObjectValidator == null )
+        catch ( final ModelException e )
         {
-            this.modelObjectValidator = new DefaultModelObjectValidator();
+            throw new MojoExecutionException( e.getMessage(), e );
         }
-
-        return this.modelObjectValidator;
     }
 
     /**
@@ -377,6 +354,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 continue;
             }
 
+            if ( a.getGroupId().equals( "org.jomc" ) &&
+                 ( a.getArtifactId().equals( "jomc-util" ) || a.getArtifactId().equals( "jomc-model" ) ||
+                   a.getArtifactId().equals( "jomc-tools" ) ) )
+            {
+                continue;
+            }
+
             final String element = a.getFile().getAbsolutePath();
             this.log( Level.FINE, this.getRuntimeElementMessage( element ), null );
             elements.add( element );
@@ -389,6 +373,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             if ( a.getFile() == null )
             {
                 this.log( Level.WARNING, this.getIgnoredMessage( a.toString() ), null );
+                continue;
+            }
+
+            if ( a.getGroupId().equals( "org.jomc" ) &&
+                 ( a.getArtifactId().equals( "jomc-util" ) || a.getArtifactId().equals( "jomc-model" ) ||
+                   a.getArtifactId().equals( "jomc-tools" ) ) )
+            {
                 continue;
             }
 
@@ -421,6 +412,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             if ( a.getFile() == null )
             {
                 this.log( Level.WARNING, this.getIgnoredMessage( a.toString() ), null );
+                continue;
+            }
+
+            if ( a.getGroupId().equals( "org.jomc" ) &&
+                 ( a.getArtifactId().equals( "jomc-util" ) || a.getArtifactId().equals( "jomc-model" ) ||
+                   a.getArtifactId().equals( "jomc-tools" ) ) )
+            {
                 continue;
             }
 
@@ -531,13 +529,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         try
         {
-            final DefaultModelManager defaultModelManager = new DefaultModelManager();
-            this.setupDefaultModelManager( defaultModelManager );
-
-            final Modules modules = defaultModelManager.getClasspathModules(
-                this.getToolClassLoader(), this.moduleLocation != null ? this.moduleLocation
-                                           : DefaultModelManager.getDefaultModuleLocation() );
-
+            DefaultModelProvider.setDefaultModuleLocation( this.moduleLocation );
+            final Modules modules = this.getModelContext().findModules();
             final Module classpathModule = modules.getClasspathModule(
                 Modules.getDefaultClasspathModuleName(), this.getToolClassLoader() );
 
@@ -548,15 +541,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             return modules;
         }
-        catch ( final IOException e )
-        {
-            throw new MojoExecutionException( e.getMessage(), e );
-        }
-        catch ( final SAXException e )
-        {
-            throw new MojoExecutionException( e.getMessage(), e );
-        }
-        catch ( final JAXBException e )
+        catch ( final ModelException e )
         {
             throw new MojoExecutionException( e.getMessage(), e );
         }
@@ -582,24 +567,25 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         this.log( Level.INFO, this.getToolSuccessMessage(), null );
     }
 
-    protected void log( final Level level, final ModelObjectValidationReport report ) throws MojoExecutionException
+    protected void log( final Level level, final ModelValidationReport report ) throws MojoExecutionException
     {
         try
         {
-            if ( !report.isModelObjectValid() || !report.getDetails().isEmpty() )
+            if ( !report.isModelValid() || !report.getDetails().isEmpty() )
             {
                 this.logSeparator( level );
             }
 
-            if ( !report.isModelObjectValid() )
+            if ( !report.isModelValid() )
             {
                 this.log( level, this.getMessage( "invalidModel" ).format( null ), null );
             }
 
             if ( !report.getDetails().isEmpty() )
             {
-                final Marshaller marshaller = this.getModelManager().getMarshaller( this.getToolClassLoader() );
-                for ( ModelObjectValidationReport.Detail detail : report.getDetails() )
+                final Marshaller marshaller = this.getModelContext().createMarshaller();
+
+                for ( ModelValidationReport.Detail detail : report.getDetails() )
                 {
                     this.log( detail.getLevel(), System.getProperty( "line.separator" ), null );
                     this.log( detail.getLevel(), detail.getMessage(), null );
@@ -613,16 +599,12 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 }
             }
 
-            if ( !report.isModelObjectValid() || !report.getDetails().isEmpty() )
+            if ( !report.isModelValid() || !report.getDetails().isEmpty() )
             {
                 this.logSeparator( level );
             }
         }
-        catch ( final IOException e )
-        {
-            throw new MojoExecutionException( e.getMessage(), e );
-        }
-        catch ( final SAXException e )
+        catch ( final ModelException e )
         {
             throw new MojoExecutionException( e.getMessage(), e );
         }
@@ -700,14 +682,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         tool.setModules( this.getToolModules() );
     }
 
-    private void setupDefaultModelManager( final DefaultModelManager defaultModelManager )
+    private void setupModelContext( final ModelContext modelContext )
     {
         if ( this.verbose || this.getLog().isDebugEnabled() )
         {
-            defaultModelManager.setLogLevel( this.getLog().isDebugEnabled() ? Level.ALL : Level.INFO );
+            modelContext.setLogLevel( this.getLog().isDebugEnabled() ? Level.ALL : Level.INFO );
         }
 
-        defaultModelManager.getListeners().add( new DefaultModelManager.Listener()
+        modelContext.getListeners().add( new ModelContext.Listener()
         {
 
             public void onLog( final Level level, final String message, final Throwable t )

@@ -52,12 +52,14 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.maven.plugins.shade.resource.ResourceTransformer;
-import org.jomc.model.DefaultModelManager;
+import org.jomc.model.ModelContext;
+import org.jomc.model.ModelException;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
+import org.jomc.model.bootstrap.BootstrapContext;
+import org.jomc.model.bootstrap.BootstrapException;
 import org.jomc.model.bootstrap.Schema;
 import org.jomc.model.bootstrap.Schemas;
-import org.xml.sax.SAXException;
 
 /**
  * Maven Shade Plugin {@code ResourceTransformer} implementation for assembling JOMC resources.
@@ -184,15 +186,13 @@ public class JomcResourceTransformer implements ResourceTransformer
      *
      * @return The JOMC JAXB context of the instance.
      *
-     * @throws IOException if reading schema resources fails.
-     * @throws SAXException if parsing schema resources fails.
-     * @throws JAXBException if unmarshalling schema resources or creating a context fails.
+     * @throws ModelException if getting the context fails.
      */
-    protected JAXBContext getJomcContext() throws IOException, SAXException, JAXBException
+    protected JAXBContext getJomcContext() throws ModelException
     {
         if ( this.jomcContext == null )
         {
-            this.jomcContext = new DefaultModelManager().getContext( this.getClass().getClassLoader() );
+            this.jomcContext = ModelContext.createModelContext( this.getClass().getClassLoader() ).createContext();
         }
 
         return this.jomcContext;
@@ -203,15 +203,15 @@ public class JomcResourceTransformer implements ResourceTransformer
      *
      * @return The JOMC JAXB marshaller of the instance.
      *
-     * @throws IOException if reading schema resources fails.
-     * @throws SAXException if parsing schema resources fails.
-     * @throws JAXBException if unmarshalling schema resources or creating a marshaller fails.
+     * @throws ModelException if getting the context fails.
      */
-    protected Marshaller getJomcMarshaller() throws IOException, SAXException, JAXBException
+    protected Marshaller getJomcMarshaller() throws ModelException
     {
         if ( this.jomcMarshaller == null )
         {
-            this.jomcMarshaller = new DefaultModelManager().getMarshaller( this.getClass().getClassLoader() );
+            this.jomcMarshaller =
+                ModelContext.createModelContext( this.getClass().getClassLoader() ).createMarshaller();
+
         }
 
         return this.jomcMarshaller;
@@ -222,15 +222,15 @@ public class JomcResourceTransformer implements ResourceTransformer
      *
      * @return The JOMC JAXB unmarshaller of the instance.
      *
-     * @throws IOException if reading schema resources fails.
-     * @throws SAXException if parsing schema resources fails.
-     * @throws JAXBException if unmarshalling schema resources or creating an unmarshaller fails.
+     * @throws ModelException if getting the unmarshaller fails.
      */
-    protected Unmarshaller getJomcUnmarshaller() throws IOException, SAXException, JAXBException
+    protected Unmarshaller getJomcUnmarshaller() throws ModelException
     {
         if ( this.jomcUnmarshaller == null )
         {
-            this.jomcUnmarshaller = new DefaultModelManager().getUnmarshaller( this.getClass().getClassLoader() );
+            this.jomcUnmarshaller =
+                ModelContext.createModelContext( this.getClass().getClassLoader() ).createUnmarshaller();
+
         }
 
         return this.jomcUnmarshaller;
@@ -241,15 +241,13 @@ public class JomcResourceTransformer implements ResourceTransformer
      *
      * @return The JOMC JAXP schema of the instance.
      *
-     * @throws IOException if reading schema resources fails.
-     * @throws SAXException if parsing schema resources fails.
-     * @throws JAXBException if unmarshalling schema resources or creating a context fails.
+     * @throws ModelException if getting the schema fails.
      */
-    protected javax.xml.validation.Schema getJomcSchema() throws IOException, SAXException, JAXBException
+    protected javax.xml.validation.Schema getJomcSchema() throws ModelException
     {
         if ( this.jomcSchema == null )
         {
-            this.jomcSchema = new DefaultModelManager().getSchema( this.getClass().getClassLoader() );
+            this.jomcSchema = ModelContext.createModelContext( this.getClass().getClassLoader() ).createSchema();
         }
 
         return this.jomcSchema;
@@ -260,13 +258,15 @@ public class JomcResourceTransformer implements ResourceTransformer
      *
      * @return The bootstrap JAXB context of the instance.
      *
-     * @throws JAXBException if creating a context fails.
+     * @throws BootstrapException if creating a context fails.
      */
-    protected JAXBContext getBootstrapContext() throws JAXBException
+    protected JAXBContext getBootstrapContext() throws BootstrapException
     {
         if ( this.bootstrapContext == null )
         {
-            this.bootstrapContext = new DefaultModelManager().getBootstrapContext();
+            this.bootstrapContext =
+                BootstrapContext.createBootstrapContext( this.getClass().getClassLoader() ).createContext();
+
         }
 
         return this.bootstrapContext;
@@ -277,13 +277,15 @@ public class JomcResourceTransformer implements ResourceTransformer
      *
      * @return The bootstrap JAXB marshaller of the instance.
      *
-     * @throws JAXBException if creating a marshaller fails.
+     * @throws BootstrapException if creating a marshaller fails.
      */
-    protected Marshaller getBootstrapMarshaller() throws JAXBException
+    protected Marshaller getBootstrapMarshaller() throws BootstrapException
     {
         if ( this.bootstrapMarshaller == null )
         {
-            this.bootstrapMarshaller = new DefaultModelManager().getBootstrapMarshaller();
+            this.bootstrapMarshaller =
+                BootstrapContext.createBootstrapContext( this.getClass().getClassLoader() ).createMarshaller();
+
         }
 
         return this.bootstrapMarshaller;
@@ -294,13 +296,15 @@ public class JomcResourceTransformer implements ResourceTransformer
      *
      * @return The bootstrap JAXB unmarshaller of the instance.
      *
-     * @throws JAXBException if creating an unmarshaller fails.
+     * @throws BootstrapException if creating an unmarshaller fails.
      */
-    protected Unmarshaller getBootstrapUnmarshaller() throws JAXBException
+    protected Unmarshaller getBootstrapUnmarshaller() throws BootstrapException
     {
         if ( this.bootstrapUnmarshaller == null )
         {
-            this.bootstrapUnmarshaller = new DefaultModelManager().getBootstrapUnmarshaller();
+            this.bootstrapUnmarshaller =
+                BootstrapContext.createBootstrapContext( this.getClass().getClassLoader() ).createUnmarshaller();
+
         }
 
         return this.bootstrapUnmarshaller;
@@ -311,13 +315,15 @@ public class JomcResourceTransformer implements ResourceTransformer
      *
      * @return The bootstrap JAXP schema of the instance.
      *
-     * @throws SAXException if parsing schema resources fails.
+     * @throws BootstrapException if parsing schema resources fails.
      */
-    protected javax.xml.validation.Schema getBootstrapSchema() throws SAXException
+    protected javax.xml.validation.Schema getBootstrapSchema() throws BootstrapException
     {
         if ( this.bootstrapSchema == null )
         {
-            this.bootstrapSchema = new DefaultModelManager().getBootstrapSchema();
+            this.bootstrapSchema =
+                BootstrapContext.createBootstrapContext( this.getClass().getClassLoader() ).createSchema();
+
         }
 
         return this.bootstrapSchema;
@@ -325,9 +331,6 @@ public class JomcResourceTransformer implements ResourceTransformer
 
     public boolean canTransformResource( final String arg )
     {
-        // Relocating model data of committed class files is not supported since class files are not provided to
-        // resource transformers and the shade plugin does not expose its remappers.
-
         if ( this.moduleResources != null )
         {
             for ( String r : this.moduleResources )
@@ -412,14 +415,23 @@ public class JomcResourceTransformer implements ResourceTransformer
 
             }
         }
-        catch ( final SAXException e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
         catch ( final JAXBException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
+        catch ( final BootstrapException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+        catch ( final ModelException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+    }
+
+    public void processResource( final String name, final InputStream in, final List relocators ) throws IOException
+    {
+        this.processResource( in );
     }
 
     public boolean hasTransformedResource()
@@ -520,11 +532,15 @@ public class JomcResourceTransformer implements ResourceTransformer
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-        catch ( final SAXException e )
+        catch ( final JAXBException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-        catch ( final JAXBException e )
+        catch ( final BootstrapException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+        catch ( final ModelException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }

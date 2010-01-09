@@ -34,11 +34,8 @@ package org.jomc.mojo;
 
 import java.util.ResourceBundle;
 import java.util.logging.Level;
-import javax.xml.bind.JAXBContext;
-import javax.xml.validation.Schema;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.jomc.model.ModelObjectValidationReport;
-import org.jomc.model.ObjectFactory;
+import org.jomc.model.ModelValidationReport;
 
 /**
  * Validates a projects' runtime modules.
@@ -74,13 +71,11 @@ public class ValidateModulesMojo extends AbstractJomcMojo
     @Override
     protected void executeTool() throws Exception
     {
-        final JAXBContext context = this.getModelManager().getContext( this.getToolClassLoader() );
-        final Schema schema = this.getModelManager().getSchema( this.getToolClassLoader() );
-        final ModelObjectValidationReport validationReport = this.getModelObjectValidator().validateModules(
-            new ObjectFactory().createModules( this.getJavaClassesTool().getModules() ), context, schema );
+        final ModelValidationReport validationReport =
+            this.getModelContext().validateModules( this.getJavaClassesTool().getModules() );
 
-        this.log( validationReport.isModelObjectValid() ? Level.INFO : Level.SEVERE, validationReport );
-        if ( !validationReport.isModelObjectValid() )
+        this.log( validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
+        if ( !validationReport.isModelValid() )
         {
             throw new MojoExecutionException( this.getMessage( "failed" ) );
         }
