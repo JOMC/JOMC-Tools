@@ -36,14 +36,17 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.Transformer;
 import javax.xml.validation.Schema;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.jomc.model.ModelContext;
 import org.jomc.model.ModelValidationReport;
 import org.jomc.model.Module;
+import org.jomc.model.ObjectFactory;
 import org.jomc.tools.JavaClasses;
 
 /**
@@ -99,6 +102,7 @@ public final class MainJavaClassesMojo extends AbstractJomcMojo
 
             final JavaClasses tool = this.getJavaClassesTool();
             final ModelContext context = this.getModelContext();
+            final JAXBContext jaxbContext = context.createContext();
             final Marshaller marshaller = context.createMarshaller();
             final Unmarshaller unmarshaller = context.createUnmarshaller();
             final Schema schema = context.createSchema();
@@ -106,7 +110,9 @@ public final class MainJavaClassesMojo extends AbstractJomcMojo
             marshaller.setSchema( schema );
             unmarshaller.setSchema( schema );
 
-            final ModelValidationReport validationReport = context.validateModelObject( tool.getModules() );
+            final ModelValidationReport validationReport = context.validateModel(
+                new JAXBSource( jaxbContext, new ObjectFactory().createModules( tool.getModules() ) ) );
+
             this.log( validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 
             if ( validationReport.isModelValid() )

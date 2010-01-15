@@ -35,9 +35,13 @@ package org.jomc.mojo;
 import java.io.File;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.util.JAXBSource;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.jomc.model.ModelContext;
 import org.jomc.model.ModelValidationReport;
 import org.jomc.model.Module;
+import org.jomc.model.ObjectFactory;
 import org.jomc.tools.JavaSources;
 
 /**
@@ -86,8 +90,11 @@ public final class TestJavaSourcesMojo extends AbstractJomcMojo
             }
 
             final JavaSources tool = this.getJavaSourcesTool();
-            final ModelValidationReport validationReport =
-                this.getModelContext().validateModelObject( tool.getModules() );
+            final ModelContext context = this.getModelContext();
+            final JAXBContext jaxbContext = context.createContext();
+
+            final ModelValidationReport validationReport = context.validateModel( new JAXBSource(
+                jaxbContext, new ObjectFactory().createModules( tool.getModules() ) ) );
 
             this.log( validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 

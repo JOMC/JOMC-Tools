@@ -72,7 +72,7 @@ public class ValidateModulesMojo extends AbstractJomcMojo
     protected void executeTool() throws Exception
     {
         final ModelValidationReport validationReport =
-            this.getModelContext().validateModules( this.getJavaClassesTool().getModules() );
+            this.getModelContext().validateModel( this.getJavaClassesTool().getModules() );
 
         this.log( validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
         if ( !validationReport.isModelValid() )
