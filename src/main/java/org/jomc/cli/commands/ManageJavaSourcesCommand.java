@@ -38,7 +38,9 @@ package org.jomc.cli.commands;
 
 import java.io.File;
 import java.util.logging.Level;
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.util.JAXBSource;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
@@ -46,6 +48,7 @@ import org.jomc.model.ModelContext;
 import org.jomc.model.ModelValidationReport;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
+import org.jomc.model.ObjectFactory;
 import org.jomc.tools.JavaSources;
 
 // SECTION-START[Documentation]
@@ -151,7 +154,7 @@ import org.jomc.tools.JavaSources;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-14-SNAPSHOT Build 2010-01-12T01:18:03+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-14-SNAPSHOT Build 2010-01-15T07:40:22+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -329,8 +332,11 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
         final Modules modules = this.getModules( commandLine );
         final ClassLoader classLoader = this.getClassLoader( commandLine );
         final ModelContext context = this.getModelContext( classLoader );
+        final JAXBContext jaxbContext = context.createContext();
         final Marshaller marshaller = context.createMarshaller();
-        final ModelValidationReport validationReport = context.validateModelObject( modules );
+        final ModelValidationReport validationReport =
+            context.validateModel( new JAXBSource( jaxbContext, new ObjectFactory().createModules( modules ) ) );
+
         this.log( validationReport, marshaller );
 
         if ( validationReport.isModelValid() )
@@ -832,7 +838,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-14-SNAPSHOT Build 2010-01-12T01:18:03+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-14-SNAPSHOT Build 2010-01-15T07:40:22+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
