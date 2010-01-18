@@ -824,11 +824,11 @@
           <template defaultLanguage="en">
             <text language="en">Example:
   jomc merge-modules -df examples/xml/jomc-cli.xml \
-                     -xs examples/xslt/relocate-classes.xslt \
+                     -xs examples/xslt/relocate-classes.xsl \
                      -mn "Merged Name" -d /tmp/jomc.xml -v</text>
             <text language="de">Beispiel:
   jomc merge-modules -df examples/xml/jomc-cli.xml \
-                     -xs examples/xslt/relocate-classes.xslt \
+                     -xs examples/xslt/relocate-classes.xsl \
                      -mn "Merged Name" -d /tmp/jomc.xml -v</text>
           </template>
         </message>
