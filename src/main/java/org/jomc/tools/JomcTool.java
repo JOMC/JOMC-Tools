@@ -1280,9 +1280,9 @@ public abstract class JomcTool
         {
             this.templateEncoding = this.getMessage( "buildSourceEncoding", null );
             this.templateCache.clear();
-            if ( this.isLoggable( Level.FINE ) )
+            if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.FINE, this.getMessage( "defaultTemplateEncoding", new Object[]
+                this.log( Level.CONFIG, this.getMessage( "defaultTemplateEncoding", new Object[]
                     {
                         this.templateEncoding
                     } ), null );
@@ -1318,9 +1318,9 @@ public abstract class JomcTool
         if ( this.inputEncoding == null )
         {
             this.inputEncoding = new InputStreamReader( new ByteArrayInputStream( NO_BYTES ) ).getEncoding();
-            if ( this.isLoggable( Level.FINE ) )
+            if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.FINE, this.getMessage( "defaultInputEncoding", new Object[]
+                this.log( Level.CONFIG, this.getMessage( "defaultInputEncoding", new Object[]
                     {
                         this.inputEncoding
                     } ), null );
@@ -1355,9 +1355,9 @@ public abstract class JomcTool
         if ( this.outputEncoding == null )
         {
             this.outputEncoding = new OutputStreamWriter( new ByteArrayOutputStream() ).getEncoding();
-            if ( this.isLoggable( Level.FINE ) )
+            if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.FINE, this.getMessage( "defaultOutputEncoding", new Object[]
+                this.log( Level.CONFIG, this.getMessage( "defaultOutputEncoding", new Object[]
                     {
                         this.outputEncoding
                     } ), null );
@@ -1392,9 +1392,9 @@ public abstract class JomcTool
         if ( this.profile == null )
         {
             this.profile = DEFAULT_PROFILE;
-            if ( this.isLoggable( Level.FINE ) )
+            if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.FINE, this.getMessage( "defaultProfile", new Object[]
+                this.log( Level.CONFIG, this.getMessage( "defaultProfile", new Object[]
                     {
                         this.profile
                     } ), null );

@@ -117,9 +117,9 @@ public class JavaBundles extends JomcTool
         if ( this.defaultLocale == null )
         {
             this.defaultLocale = Locale.getDefault();
-            if ( this.isLoggable( Level.FINE ) )
+            if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.FINE, this.getMessage( "defaultLocale", new Object[]
+                this.log( Level.CONFIG, this.getMessage( "defaultLocale", new Object[]
                     {
                         this.defaultLocale.toString()
                     } ), null );
