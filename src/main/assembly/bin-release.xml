@@ -67,7 +67,7 @@
       <source>${project.build.directory}/JOMC_LICENSE.txt</source>
     </file>
     <file>
-      <destName>relocate-classes.xslt</destName>
+      <destName>relocate-classes.xsl</destName>
       <fileMode>0444</fileMode>
       <filtered>false</filtered>
       <lineEnding>dos</lineEnding>
@@ -83,7 +83,7 @@
       <source>${project.build.outputDirectory}/META-INF/jomc.xml</source>
     </file>
     <file>
-      <destName>Changelog.xhtml</destName>
+      <destName>Changelog.html</destName>
       <fileMode>0444</fileMode>
       <filtered>false</filtered>
       <lineEnding>dos</lineEnding>
@@ -146,7 +146,7 @@
       <lineEnding>dos</lineEnding>
       <filtered>true</filtered>
       <includes>
-        <include>*.xslt</include>
+        <include>*.xsl</include>
       </includes>
     </fileSet>
     <fileSet>
@@ -178,6 +178,12 @@
       <includes>
         <include>**/*.xsd</include>
       </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${project.build.directory}/jomc-endorsed</directory>
+      <fileMode>0555</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/lib/endorsed</outputDirectory>
     </fileSet>
   </fileSets>
   <dependencySets>

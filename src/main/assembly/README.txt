@@ -6,7 +6,7 @@
   ${project.description}
 
     See the output of the 'jomc' application for further information. For
-    launching that application use of the scripts found in the 'bin' directory
+    launching the application use of the scripts found in the 'bin' directory
     is recommended. As a fallback, the Java archive found in the 'bin' directory
     can be executed using the standard Java application launcher.
 
@@ -14,13 +14,32 @@
     bin/jomc.bat (Windows)
     java -jar bin/${project.build.finalName}.jar
 
-    The 'lib/ext' directory contains Java archives needed with JDK 1.5.
+  Integration of the JOMC Tools
 
-    export JOMC_OPTS="-Djava.ext.dirs='path to lib/ext directory'".
+    The 'lib/tools' directory contains Java archives needed when integrating the
+    JOMC tools. See the jomc-tools-${project.version}.jar archive.
+
+  Maven 2 Plugin
+
+    See http://jomc.sourceforge.net/jomc/${project.version}/maven-jomc-plugin/plugin-info.html
+
+  JDK 1.5
+
+    The 'lib/ext' directory contains JDK extensions to setup using the
+    'java.ext.dirs' system property or another mechanism compatible to the JDK
+    in use.
+
+    The 'lib/endorsed' directory contains updates to libraries part of the JDK
+    to setup via the 'java.endorsed.dirs' system property or another mechanism
+    compatible to the JDK in use. Use of these libraries may become necessary
+    when encountering problems with the XML parsers of the JDK.
+
+    export JOMC_OPTS="-Djava.ext.dirs='path to lib/ext directory' \
+                      -Djava.endorsed.dirs='path to lib/endorsed directory'"
+
     bin/jomc (Unix)
     bin/jomc.bat (Windows)
-    java -Djava.ext.dirs=lib/ext -jar bin/${project.build.finalName}.jar
 
-    The 'lib/tools' directory contains Java archives for embedding the JOMC
-    tools. The jomc-tools-${project.version}.jar archive contains the
-    corresponding tool classes.
+    java -Djava.ext.dirs=lib/ext \
+         -Djava.endorsed.dirs=lib/endorsed \
+         -jar bin/${project.build.finalName}.jar

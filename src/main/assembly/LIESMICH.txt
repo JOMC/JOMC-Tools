@@ -14,14 +14,34 @@
     bin/jomc.bat (Windows)
     java -jar bin/${project.build.finalName}.jar
 
-    Die Java-Archive aus dem 'lib/ext' Verzeichnis werden bei Verwendung
-    eines 1.5 JDK benötigt.
+  Integration der JOMC Werkzeuge
 
-    export JOMC_OPTS="-Djava.ext.dirs='Pfad des lib/ext Verzeichnisses'".
+    Die Java-Archive aus dem 'lib/tools' Verzeichnis enthalten die zur
+    Integration der JOMC Werkzeuge benötigten Klassen.
+    Siehe das jomc-tools-${project.version}.jar Archiv.
+
+  Maven 2 Plugin
+
+    Siehe http://jomc.sourceforge.net/jomc/${project.version}/maven-jomc-plugin/plugin-info.html
+
+  JDK 1.5
+
+    Das 'lib/ext' Verzeichnis enthält JDK-Erweiterungen zur Einbindung
+    über die 'java.ext.dirs' System-Eigenschaft oder einem entsprechenden
+    Mechanismus.
+
+    Das 'lib/endorsed' Verzeichnis enthält Aktualisierungen von im JDK
+    enthaltenen Bibliotheken zur Einbindung über die 'java.endorsed.dirs'
+    System-Eigenschaft oder einem entsprechenden Mechanismus. Die Verwendung
+    dieser Aktualisierungen kann erforderlich werden, sollte es zu Problemen mit
+    den im JDK enthaltenen XML-Parsern kommen.
+
+    export JOMC_OPTS="-Djava.ext.dirs='Pfad des lib/ext Verzeichnisses' \
+                      -Djava.endorsed.dirs='Pfad des lib/endorsed Verzeichnisses'"
+
     bin/jomc (Unix)
     bin/jomc.bat (Windows)
-    java -Djava.ext.dirs=lib/ext -jar bin/${project.build.finalName}.jar
 
-    Die Java-Archive aus dem 'lib/tools' Verzeichnis dienen der Integration
-    der JOMC Werkzeuge. Das jomc-tools-${project.version}.jar Archiv beinhaltet
-    die entsprechenden Werkzeug-Klassen.
+    java -Djava.ext.dirs=lib/ext \
+         -Djava.endorsed.dirs=lib/endorsed \
+         -jar bin/${project.build.finalName}.jar
