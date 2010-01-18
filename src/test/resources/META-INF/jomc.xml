@@ -57,7 +57,7 @@
         <property name="testDocument" value="${project.build.outputDirectory}/META-INF/jomc.xml"/>
         <property name="testDocumentIllegal" value="${project.build.testOutputDirectory}/org/jomc/cli/test/illegal-module.xml"/>
         <property name="testModuleName" value="${project.name}"/>
-        <property name="testStylesheet" value="${basedir}/src/main/jomc/relocations.xslt"/>
+        <property name="testStylesheet" value="${basedir}/src/main/jomc/relocations.xsl"/>
         <property name="testOutputDocument" value="${project.build.directory}/jomc-test/transformed.xml"/>
         <property name="testSourcesDirectory" value="${project.build.directory}/jomc-test/src"/>
         <property name="testResourcesDirectory" value="${project.build.directory}/jomc-test/rsrc"/>

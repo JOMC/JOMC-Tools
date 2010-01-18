@@ -72,7 +72,7 @@
       <filtered>false</filtered>
       <lineEnding>dos</lineEnding>
       <outputDirectory>/examples/xslt</outputDirectory>
-      <source>src/main/jomc/relocations.xslt</source>
+      <source>src/main/jomc/relocations.xsl</source>
     </file>
     <file>
       <destName>jomc-cli.xml</destName>
