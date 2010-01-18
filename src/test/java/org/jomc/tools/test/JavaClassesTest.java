@@ -777,7 +777,7 @@ public class JavaClassesTest extends JomcToolTest
         final List<Transformer> transformers = Arrays.asList( new Transformer[]
             {
                 transformerFactory.newTransformer( new StreamSource(
-                this.getClass().getResourceAsStream( "no-op.xslt" ) ) )
+                this.getClass().getResourceAsStream( "no-op.xsl" ) ) )
             } );
 
         this.getTestTool().commitClasses( marshaller, allClasses );
