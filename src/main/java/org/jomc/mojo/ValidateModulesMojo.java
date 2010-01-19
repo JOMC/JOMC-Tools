@@ -79,6 +79,10 @@ public class ValidateModulesMojo extends AbstractJomcMojo
         {
             throw new MojoExecutionException( this.getMessage( "failed" ) );
         }
+
+        this.logSeparator( Level.INFO );
+        this.logToolSuccess();
+        this.logSeparator( Level.INFO );
     }
 
     private String getMessage( final String key )
