@@ -123,18 +123,25 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private boolean verbose;
 
     /**
-     * Contols processing of java sources.
+     * Contols processing of sources.
      *
-     * @parameter expression="${jomc.javaSources.enabled}" default-value="true"
+     * @parameter expression="${jomc.sourceProcessing}" default-value="true"
      */
-    private boolean javaSourceProcessingEnabled;
+    private boolean sourceProcessingEnabled;
 
     /**
-     * Contols processing of java classes.
+     * Contols processing of classes.
      *
-     * @parameter expression="${jomc.javaClasses.enabled}" default-value="true"
+     * @parameter expression="${jomc.classProcessing}" default-value="true"
      */
-    private boolean javaClassProcessingEnabled;
+    private boolean classProcessingEnabled;
+
+    /**
+     * Controls processing of models.
+     *
+     * @parameter expression="${jomc.modelProcessing}" default-value="true"
+     */
+    private boolean modelProcessingEnabled;
 
     /** The tool for managing sources. */
     private JavaSources javaSourcesTool;
@@ -142,10 +149,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /** The tool for managing classes. */
     private JavaClasses javaClassesTool;
 
-    /** The class loader of the project's runtime classpath including any provided dependencies. */
+    /** The class loader of the project's runtime classpath including provided dependencies. */
     private ClassLoader mainClassLoader;
 
-    /** The class loader of the project's test classpath including any provided dependencies. */
+    /** The class loader of the project's test classpath including provided dependencies. */
     private ClassLoader testClassLoader;
 
     public void execute() throws MojoExecutionException, MojoFailureException
@@ -431,23 +438,33 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
-     * Gets a flag indicating the processing of Java sources is enabled.
+     * Gets a flag indicating the processing of sources is enabled.
      *
-     * @return {@code true} if processing of Java sources is enabled; {@code false} else.
+     * @return {@code true} if processing of sources is enabled; {@code false} else.
      */
-    protected boolean isJavaSourceProcessingEnabled()
+    protected boolean isSourceProcessingEnabled()
     {
-        return this.javaSourceProcessingEnabled;
+        return this.sourceProcessingEnabled;
     }
 
     /**
-     * Gets a flag indicating the processing of Java classes is enabled.
+     * Gets a flag indicating the processing of classes is enabled.
      *
-     * @return {@code true} if processing of Java classes is enabled; {@code false} else.
+     * @return {@code true} if processing of classes is enabled; {@code false} else.
      */
-    protected boolean isJavaClassProcessingEnabled()
+    protected boolean isClassProcessingEnabled()
     {
-        return this.javaClassProcessingEnabled;
+        return this.classProcessingEnabled;
+    }
+
+    /**
+     * Gets a flag indicating the processing of models is enabled.
+     *
+     * @return {@code true} if processing of models is enabled; {@code false} else.
+     */
+    protected boolean isModelProcessingEnabled()
+    {
+        return this.modelProcessingEnabled;
     }
 
     /**
@@ -530,13 +547,19 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         try
         {
             DefaultModelProvider.setDefaultModuleLocation( this.moduleLocation );
-            final Modules modules = this.getModelContext().findModules();
+            final ModelContext context = this.getModelContext();
+            Modules modules = context.findModules();
             final Module classpathModule = modules.getClasspathModule(
                 Modules.getDefaultClasspathModuleName(), this.getToolClassLoader() );
 
             if ( classpathModule != null )
             {
                 modules.getModule().add( classpathModule );
+            }
+
+            if ( this.isModelProcessingEnabled() )
+            {
+                modules = context.processModules( modules );
             }
 
             return modules;
@@ -584,6 +607,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             if ( !report.getDetails().isEmpty() )
             {
                 final Marshaller marshaller = this.getModelContext().createMarshaller();
+                marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
 
                 for ( ModelValidationReport.Detail detail : report.getDetails() )
                 {

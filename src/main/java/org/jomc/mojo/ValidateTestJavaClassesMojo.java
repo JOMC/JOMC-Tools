@@ -80,7 +80,7 @@ public class ValidateTestJavaClassesMojo extends AbstractJomcMojo
     @Override
     protected void executeTool() throws Exception
     {
-        if ( this.isJavaClassProcessingEnabled() )
+        if ( this.isClassProcessingEnabled() )
         {
             File classesDirectory = new File( this.getMavenProject().getBuild().getTestOutputDirectory() );
             if ( !classesDirectory.isAbsolute() )

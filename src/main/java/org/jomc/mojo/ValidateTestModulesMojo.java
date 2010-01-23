@@ -38,20 +38,20 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.jomc.model.ModelValidationReport;
 
 /**
- * Validates a projects' runtime modules.
+ * Validates a projects' main modules.
  *
  * @author <a href="mailto:cs@jomc.org">Christian Schulte</a>
  * @version $Id$
  *
- * @phase process-classes
- * @goal validate-runtime-modules
+ * @phase process-test-classes
+ * @goal validate-test-modules
  * @requiresDependencyResolution test
  */
-public class ValidateModulesMojo extends AbstractJomcMojo
+public class ValidateTestModulesMojo extends AbstractJomcMojo
 {
 
-    /** Creates a new {@code ValidateModulesMojo} instance. */
-    public ValidateModulesMojo()
+    /** Creates a new {@code ValidateTestModulesMojo} instance. */
+    public ValidateTestModulesMojo()
     {
         super();
     }
@@ -59,22 +59,22 @@ public class ValidateModulesMojo extends AbstractJomcMojo
     @Override
     protected String getToolName()
     {
-        return "ValidateModulesMojo";
+        return "ValidateTestModulesMojo";
     }
 
     @Override
     protected ClassLoader getToolClassLoader() throws MojoExecutionException
     {
-        return this.getMainClassLoader();
+        return this.getTestClassLoader();
     }
 
     @Override
     protected void executeTool() throws Exception
     {
-        final ModelValidationReport validationReport =
-            this.getModelContext().validateModel( this.getJavaClassesTool().getModules() );
+        final ModelValidationReport validationReport = this.getModelContext().validateModel( this.getToolModules() );
 
         this.log( validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
+
         if ( !validationReport.isModelValid() )
         {
             throw new MojoExecutionException( this.getMessage( "failed" ) );
@@ -87,7 +87,7 @@ public class ValidateModulesMojo extends AbstractJomcMojo
 
     private String getMessage( final String key )
     {
-        return ResourceBundle.getBundle( ValidateModulesMojo.class.getName().replace( '.', '/' ) ).getString( key );
+        return ResourceBundle.getBundle( ValidateTestModulesMojo.class.getName().replace( '.', '/' ) ).getString( key );
     }
 
 }
