@@ -50,7 +50,6 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.jomc.model.ModelContext;
 import org.jomc.model.ModelValidationReport;
@@ -70,106 +69,42 @@ import org.jomc.model.ObjectFactory;
  * <blockquote>Property of type {@code java.lang.String}.
  * <p>Abbreviated name of the command.</p>
  * </blockquote></li>
- * <li>"{@link #getClasspathOptionLongName classpathOptionLongName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'classpath' option.</p>
- * </blockquote></li>
- * <li>"{@link #getClasspathOptionShortName classpathOptionShortName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'classpath' option.</p>
- * </blockquote></li>
  * <li>"{@link #getCommandName commandName}"
  * <blockquote>Property of type {@code java.lang.String}.
  * <p>Name of the command.</p>
  * </blockquote></li>
- * <li>"{@link #getDocumentOptionLongName documentOptionLongName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'document' option.</p>
- * </blockquote></li>
- * <li>"{@link #getDocumentOptionShortName documentOptionShortName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'document' option.</p>
- * </blockquote></li>
- * <li>"{@link #getDocumentsOptionLongName documentsOptionLongName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'documents' option.</p>
- * </blockquote></li>
- * <li>"{@link #getDocumentsOptionShortName documentsOptionShortName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'documents' option.</p>
- * </blockquote></li>
- * <li>"{@link #getModuleExcludesOptionLongName moduleExcludesOptionLongName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'module-excludes' option.</p>
- * </blockquote></li>
- * <li>"{@link #getModuleExcludesOptionShortName moduleExcludesOptionShortName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'module-excludes' option.</p>
- * </blockquote></li>
- * <li>"{@link #getModuleIncludesOptionLongName moduleIncludesOptionLongName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'module-includes' option.</p>
- * </blockquote></li>
- * <li>"{@link #getModuleIncludesOptionShortName moduleIncludesOptionShortName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'module-includes' option.</p>
- * </blockquote></li>
- * <li>"{@link #getModuleLocationOptionLongName moduleLocationOptionLongName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'module-location' option.</p>
- * </blockquote></li>
- * <li>"{@link #getModuleLocationOptionShortName moduleLocationOptionShortName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'module-location' option.</p>
- * </blockquote></li>
- * <li>"{@link #getModuleNameOptionLongName moduleNameOptionLongName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'module' option.</p>
- * </blockquote></li>
- * <li>"{@link #getModuleNameOptionShortName moduleNameOptionShortName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'module' option.</p>
- * </blockquote></li>
- * <li>"{@link #getModuleVendorOptionLongName moduleVendorOptionLongName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'module-vendor' option.</p>
- * </blockquote></li>
- * <li>"{@link #getModuleVendorOptionShortName moduleVendorOptionShortName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'module-vendor' option.</p>
- * </blockquote></li>
- * <li>"{@link #getModuleVersionOptionLongName moduleVersionOptionLongName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'module-version' option.</p>
- * </blockquote></li>
- * <li>"{@link #getModuleVersionOptionShortName moduleVersionOptionShortName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'module-version' option.</p>
- * </blockquote></li>
- * <li>"{@link #getNoClasspathResolutionOptionLongName noClasspathResolutionOptionLongName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'no-classpath-resolution' option.</p>
- * </blockquote></li>
- * <li>"{@link #getNoClasspathResolutionOptionShortName noClasspathResolutionOptionShortName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'no-classpath-resolution' option.</p>
- * </blockquote></li>
- * <li>"{@link #getStylesheetOptionLongName stylesheetOptionLongName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'xslt' option.</p>
- * </blockquote></li>
- * <li>"{@link #getStylesheetOptionShortName stylesheetOptionShortName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'xslt' option.</p>
- * </blockquote></li>
  * </ul></p>
  * <p><b>Dependencies</b><ul>
+ * <li>"{@link #getClasspathOption ClasspathOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getDocumentOption DocumentOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getDocumentsOption DocumentsOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getLocale Locale}"<blockquote>
  * Dependency on {@code java.util.Locale} at specification level 1.1 bound to an instance.</blockquote></li>
+ * <li>"{@link #getModuleExcludesOption ModuleExcludesOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getModuleIncludesOption ModuleIncludesOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getModuleLocationOption ModuleLocationOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getModuleNameOption ModuleNameOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getModuleVendorOption ModuleVendorOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getModuleVersionOption ModuleVersionOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getNoClasspathResolutionOption NoClasspathResolutionOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getNoModelProcessingOption NoModelProcessingOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getStylesheetOption StylesheetOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-16-SNAPSHOT Build 2010-01-22T18:09:52+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-16-SNAPSHOT Build 2010-01-23T17:34:04+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -179,14 +114,6 @@ import org.jomc.model.ObjectFactory;
  * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath element: ''{0}''</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Klassenpfad-Element: ''{0}''</pre></td></tr>
  * </table>
- * <li>"{@link #getClasspathOptionMessage classpathOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath elements separated by ''{0}''. If starting with a ''@'' character, a file name of a file holding classpath elements.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Klassenpfad-Elemente mit ''{0}'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Klassenpfad-Elementen.</pre></td></tr>
- * </table>
- * <li>"{@link #getClasspathOptionArgNameMessage classpathOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>elements</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Elemente</pre></td></tr>
- * </table>
  * <li>"{@link #getDefaultLogLevelInfoMessage defaultLogLevelInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Default log level: ''{0}''</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Standard-Protokollierungsstufe: ''{0}''</pre></td></tr>
@@ -194,22 +121,6 @@ import org.jomc.model.ObjectFactory;
  * <li>"{@link #getDocumentFileMessage documentFile}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Document file: ''{0}''</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Datei: ''{0}''</pre></td></tr>
- * </table>
- * <li>"{@link #getDocumentOptionMessage documentOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Name of the file to write the merged module to.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Name der Datei in die das zusammengef&uuml;gte Modul geschrieben werden soll.</pre></td></tr>
- * </table>
- * <li>"{@link #getDocumentOptionArgNameMessage documentOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>file</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Datei</pre></td></tr>
- * </table>
- * <li>"{@link #getDocumentsOptionMessage documentsOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Document filenames separated by ''{0}''. If starting with a ''@'' character, a file name of a file holding document filenames.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Dateinamen mit ''{0}'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Dokument-Dateinamen.</pre></td></tr>
- * </table>
- * <li>"{@link #getDocumentsOptionArgNameMessage documentsOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>files</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dateien</pre></td></tr>
  * </table>
  * <li>"{@link #getExcludingModuleMessage excludingModule}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Excluding module ''{0}''.</pre></td></tr>
@@ -225,73 +136,27 @@ import org.jomc.model.ObjectFactory;
  * </table>
  * <li>"{@link #getLongDescriptionMessage longDescription}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
- *   jomc merge-modules -df examples/xml/jomc-cli.xml \
+ *   jomc merge-modules -cp &lt;classpath&gt; \
+ *                      -df examples/xml/jomc-cli.xml \
  *                      -xs examples/xslt/relocate-classes.xsl \
- *                      -mn &quot;Merged Name&quot; -d /tmp/jomc.xml -v</pre></td></tr>
+ *                      -mn &quot;Merged Name&quot; \
+ *                      -d /tmp/jomc.xml \
+ *                      -v</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
- *   jomc merge-modules -df examples/xml/jomc-cli.xml \
+ *   jomc merge-modules -cp &lt;classpath&gt; \
+ *                      -df examples/xml/jomc-cli.xml \
  *                      -xs examples/xslt/relocate-classes.xsl \
- *                      -mn &quot;Merged Name&quot; -d /tmp/jomc.xml -v</pre></td></tr>
+ *                      -mn &quot;Merged Name&quot; \
+ *                      -d /tmp/jomc.xml \
+ *                      -v</pre></td></tr>
  * </table>
  * <li>"{@link #getMissingModuleMessage missingModule}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul ''{0}'' nicht gefunden.</pre></td></tr>
  * </table>
- * <li>"{@link #getModuleExcludesOptionMessage moduleExcludesOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Module names separated by '':'' of modules to exclude.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul-Namen auszuschlie&szlig;ender Module mit '':'' getrennt.</pre></td></tr>
- * </table>
- * <li>"{@link #getModuleExcludesOptionArgNameMessage moduleExcludesOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>names</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Namen</pre></td></tr>
- * </table>
- * <li>"{@link #getModuleIncludesOptionMessage moduleIncludesOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Module names separated by '':'' of modules to include.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul-Namen einzuschlie&szlig;ender Module mit '':'' getrennt.</pre></td></tr>
- * </table>
- * <li>"{@link #getModuleIncludesOptionArgNameMessage moduleIncludesOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>names</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Namen</pre></td></tr>
- * </table>
- * <li>"{@link #getModuleLocationOptionMessage moduleLocationOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Location of classpath modules.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort der Klassenpfad-Module.</pre></td></tr>
- * </table>
- * <li>"{@link #getModuleLocationOptionArgNameMessage moduleLocationOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>location</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort</pre></td></tr>
- * </table>
- * <li>"{@link #getModuleNameOptionMessage moduleNameOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Name of the module to process.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Name des zu verarbeitenden Moduls.</pre></td></tr>
- * </table>
- * <li>"{@link #getModuleNameOptionArgNameMessage moduleNameOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>name</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Name</pre></td></tr>
- * </table>
- * <li>"{@link #getModuleVendorOptionMessage moduleVendorOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Vendor of the merged module.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Hersteller des Ergebnis-Moduls.</pre></td></tr>
- * </table>
- * <li>"{@link #getModuleVendorOptionArgNameMessage moduleVendorOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>vendor</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Hersteller</pre></td></tr>
- * </table>
- * <li>"{@link #getModuleVersionOptionMessage moduleVersionOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Version of the merged module.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Version des Ergebnis-Moduls.</pre></td></tr>
- * </table>
- * <li>"{@link #getModuleVersionOptionArgNameMessage moduleVersionOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>version</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Version</pre></td></tr>
- * </table>
  * <li>"{@link #getModulesReportMessage modulesReport}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Modules</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Module</pre></td></tr>
- * </table>
- * <li>"{@link #getNoClasspathResolutionOptionMessage noClasspathResolutionOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Do not perform classpath resolution.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Keine Klassenpfad-Aufl&ouml;sung durchf&uuml;hren.</pre></td></tr>
  * </table>
  * <li>"{@link #getSeparatorMessage separator}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>--------------------------------------------------------------------------------</pre></td></tr>
@@ -307,14 +172,6 @@ import org.jomc.model.ObjectFactory;
  * <li>"{@link #getStartingProcessingMessage startingProcessing}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} ...</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>F&uuml;hrt Befehl {0} aus ... </pre></td></tr>
- * </table>
- * <li>"{@link #getStylesheetOptionMessage stylesheetOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Name of a XSLT file to use for transforming the merged module.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Name einer XSLT Datei mit der das zusammengef&uuml;gte Modul transformiert werden soll.</pre></td></tr>
- * </table>
- * <li>"{@link #getStylesheetOptionArgNameMessage stylesheetOptionArgName}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>XSLT file</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>XSLT-Datei</pre></td></tr>
  * </table>
  * <li>"{@link #getToolFailureMessage toolFailure}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>{0} failure.</pre></td></tr>
@@ -488,108 +345,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
     }
 
     // SECTION-END
-    // SECTION-START[AssembleModulesCommand]
-    private Option stylesheetOption;
-
-    private Option documentOption;
-
-    private Option moduleVersionOption;
-
-    private Option moduleVendorOption;
-
-    private Option moduleIncludesOption;
-
-    private Option moduleExcludesOption;
-
-    protected Option getStylesheetOption()
-    {
-        if ( this.stylesheetOption == null )
-        {
-            this.stylesheetOption = new Option( this.getStylesheetOptionShortName(),
-                                                this.getStylesheetOptionLongName(), true,
-                                                this.getStylesheetOptionMessage( this.getLocale() ) );
-
-            this.stylesheetOption.setArgName( this.getStylesheetOptionArgNameMessage( this.getLocale() ) );
-        }
-
-        return this.stylesheetOption;
-    }
-
-    protected Option getDocumentOption()
-    {
-        if ( this.documentOption == null )
-        {
-            this.documentOption = new Option( this.getDocumentOptionShortName(),
-                                              this.getDocumentOptionLongName(), true,
-                                              this.getDocumentOptionMessage( this.getLocale() ) );
-
-            this.documentOption.setRequired( true );
-            this.documentOption.setArgName( this.getDocumentOptionArgNameMessage( this.getLocale() ) );
-        }
-
-        return this.documentOption;
-    }
-
-    protected Option getModuleVersionOption()
-    {
-        if ( this.moduleVersionOption == null )
-        {
-            this.moduleVersionOption = new Option( this.getModuleVersionOptionShortName(),
-                                                   this.getModuleVersionOptionLongName(), true,
-                                                   this.getModuleVersionOptionMessage( this.getLocale() ) );
-
-            this.moduleVersionOption.setArgName( this.getModuleVersionOptionArgNameMessage( this.getLocale() ) );
-        }
-
-        return this.moduleVersionOption;
-    }
-
-    protected Option getModuleVendorOption()
-    {
-        if ( this.moduleVendorOption == null )
-        {
-            this.moduleVendorOption = new Option( this.getModuleVendorOptionShortName(),
-                                                  this.getModuleVendorOptionLongName(), true,
-                                                  this.getModuleVendorOptionMessage( this.getLocale() ) );
-
-            this.moduleVendorOption.setArgName( this.getModuleVendorOptionArgNameMessage( this.getLocale() ) );
-        }
-
-        return this.moduleVendorOption;
-    }
-
-    protected Option getModuleIncludesOption()
-    {
-        if ( this.moduleIncludesOption == null )
-        {
-            this.moduleIncludesOption = new Option( this.getModuleIncludesOptionShortName(),
-                                                    this.getModuleIncludesOptionLongName(), false,
-                                                    this.getModuleIncludesOptionMessage( this.getLocale() ) );
-
-            this.moduleIncludesOption.setArgName( this.getModuleIncludesOptionArgNameMessage( this.getLocale() ) );
-            this.moduleIncludesOption.setValueSeparator( ':' );
-            this.moduleIncludesOption.setArgs( Option.UNLIMITED_VALUES );
-        }
-
-        return this.moduleIncludesOption;
-    }
-
-    protected Option getModuleExcludesOption()
-    {
-        if ( this.moduleExcludesOption == null )
-        {
-            this.moduleExcludesOption = new Option( this.getModuleExcludesOptionShortName(),
-                                                    this.getModuleExcludesOptionLongName(), false,
-                                                    this.getModuleExcludesOptionMessage( this.getLocale() ) );
-
-            this.moduleExcludesOption.setArgName( this.getModuleExcludesOptionArgNameMessage( this.getLocale() ) );
-            this.moduleExcludesOption.setValueSeparator( ':' );
-            this.moduleExcludesOption.setArgs( Option.UNLIMITED_VALUES );
-        }
-
-        return this.moduleExcludesOption;
-    }
-
+    // SECTION-START[MergeModulesCommand]
     // SECTION-END
     // SECTION-START[Constructors]
     // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
@@ -609,6 +365,59 @@ public final class MergeModulesCommand extends AbstractJomcCommand
     // <editor-fold defaultstate="collapsed" desc=" Generated Dependencies ">
 
     /**
+     * Gets the {@code ClasspathOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Classpath Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code ClasspathOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getClasspathOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ClasspathOption" );
+        assert _d != null : "'ClasspathOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code DocumentOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Document Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * <p><b>Properties</b><dl>
+     * <dt>"{@code required}"</dt>
+     * <dd>Property of type {@code boolean}.
+     * </dd>
+     * </dl>
+     * @return The {@code DocumentOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getDocumentOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "DocumentOption" );
+        assert _d != null : "'DocumentOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code DocumentsOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Documents Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code DocumentsOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getDocumentsOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "DocumentsOption" );
+        assert _d != null : "'DocumentsOption' dependency not found.";
+        return _d;
+    }
+
+    /**
      * Gets the {@code Locale} dependency.
      * <p>This method returns the "{@code default}" object of the {@code java.util.Locale} specification at specification level 1.1.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
@@ -621,6 +430,155 @@ public final class MergeModulesCommand extends AbstractJomcCommand
     {
         final java.util.Locale _d = (java.util.Locale) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "Locale" );
         assert _d != null : "'Locale' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code ModuleExcludesOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Module Excludes Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code ModuleExcludesOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getModuleExcludesOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModuleExcludesOption" );
+        assert _d != null : "'ModuleExcludesOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code ModuleIncludesOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Module Includes Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code ModuleIncludesOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getModuleIncludesOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModuleIncludesOption" );
+        assert _d != null : "'ModuleIncludesOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code ModuleLocationOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Module Location Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code ModuleLocationOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getModuleLocationOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModuleLocationOption" );
+        assert _d != null : "'ModuleLocationOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code ModuleNameOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Module Name Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * <p><b>Properties</b><dl>
+     * <dt>"{@code required}"</dt>
+     * <dd>Property of type {@code boolean}.
+     * </dd>
+     * </dl>
+     * @return The {@code ModuleNameOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getModuleNameOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModuleNameOption" );
+        assert _d != null : "'ModuleNameOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code ModuleVendorOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Module Vendor Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code ModuleVendorOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getModuleVendorOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModuleVendorOption" );
+        assert _d != null : "'ModuleVendorOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code ModuleVersionOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Module Version Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code ModuleVersionOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getModuleVersionOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModuleVersionOption" );
+        assert _d != null : "'ModuleVersionOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code NoClasspathResolutionOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI No Classpath Resolution Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code NoClasspathResolutionOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getNoClasspathResolutionOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "NoClasspathResolutionOption" );
+        assert _d != null : "'NoClasspathResolutionOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code NoModelProcessingOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI No Model Processing Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code NoModelProcessingOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getNoModelProcessingOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "NoModelProcessingOption" );
+        assert _d != null : "'NoModelProcessingOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code StylesheetOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Stylesheet Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code StylesheetOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getStylesheetOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "StylesheetOption" );
+        assert _d != null : "'StylesheetOption' dependency not found.";
         return _d;
     }
     // </editor-fold>
@@ -643,34 +601,6 @@ public final class MergeModulesCommand extends AbstractJomcCommand
     }
 
     /**
-     * Gets the value of the {@code classpathOptionLongName} property.
-     * @return Long name of the 'classpath' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getClasspathOptionLongName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "classpathOptionLongName" );
-        assert _p != null : "'classpathOptionLongName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code classpathOptionShortName} property.
-     * @return Name of the 'classpath' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getClasspathOptionShortName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "classpathOptionShortName" );
-        assert _p != null : "'classpathOptionShortName' property not found.";
-        return _p;
-    }
-
-    /**
      * Gets the value of the {@code commandName} property.
      * @return Name of the command.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
@@ -683,286 +613,6 @@ public final class MergeModulesCommand extends AbstractJomcCommand
         assert _p != null : "'commandName' property not found.";
         return _p;
     }
-
-    /**
-     * Gets the value of the {@code documentOptionLongName} property.
-     * @return Long name of the 'document' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getDocumentOptionLongName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "documentOptionLongName" );
-        assert _p != null : "'documentOptionLongName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code documentOptionShortName} property.
-     * @return Name of the 'document' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getDocumentOptionShortName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "documentOptionShortName" );
-        assert _p != null : "'documentOptionShortName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code documentsOptionLongName} property.
-     * @return Long name of the 'documents' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getDocumentsOptionLongName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "documentsOptionLongName" );
-        assert _p != null : "'documentsOptionLongName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code documentsOptionShortName} property.
-     * @return Name of the 'documents' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getDocumentsOptionShortName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "documentsOptionShortName" );
-        assert _p != null : "'documentsOptionShortName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code moduleExcludesOptionLongName} property.
-     * @return Long name of the 'module-excludes' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getModuleExcludesOptionLongName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleExcludesOptionLongName" );
-        assert _p != null : "'moduleExcludesOptionLongName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code moduleExcludesOptionShortName} property.
-     * @return Name of the 'module-excludes' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getModuleExcludesOptionShortName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleExcludesOptionShortName" );
-        assert _p != null : "'moduleExcludesOptionShortName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code moduleIncludesOptionLongName} property.
-     * @return Long name of the 'module-includes' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getModuleIncludesOptionLongName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleIncludesOptionLongName" );
-        assert _p != null : "'moduleIncludesOptionLongName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code moduleIncludesOptionShortName} property.
-     * @return Name of the 'module-includes' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getModuleIncludesOptionShortName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleIncludesOptionShortName" );
-        assert _p != null : "'moduleIncludesOptionShortName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code moduleLocationOptionLongName} property.
-     * @return Long name of the 'module-location' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getModuleLocationOptionLongName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleLocationOptionLongName" );
-        assert _p != null : "'moduleLocationOptionLongName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code moduleLocationOptionShortName} property.
-     * @return Name of the 'module-location' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getModuleLocationOptionShortName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleLocationOptionShortName" );
-        assert _p != null : "'moduleLocationOptionShortName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code moduleNameOptionLongName} property.
-     * @return Long name of the 'module' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getModuleNameOptionLongName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleNameOptionLongName" );
-        assert _p != null : "'moduleNameOptionLongName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code moduleNameOptionShortName} property.
-     * @return Name of the 'module' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getModuleNameOptionShortName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleNameOptionShortName" );
-        assert _p != null : "'moduleNameOptionShortName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code moduleVendorOptionLongName} property.
-     * @return Long name of the 'module-vendor' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getModuleVendorOptionLongName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleVendorOptionLongName" );
-        assert _p != null : "'moduleVendorOptionLongName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code moduleVendorOptionShortName} property.
-     * @return Name of the 'module-vendor' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getModuleVendorOptionShortName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleVendorOptionShortName" );
-        assert _p != null : "'moduleVendorOptionShortName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code moduleVersionOptionLongName} property.
-     * @return Long name of the 'module-version' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getModuleVersionOptionLongName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleVersionOptionLongName" );
-        assert _p != null : "'moduleVersionOptionLongName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code moduleVersionOptionShortName} property.
-     * @return Name of the 'module-version' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getModuleVersionOptionShortName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "moduleVersionOptionShortName" );
-        assert _p != null : "'moduleVersionOptionShortName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code noClasspathResolutionOptionLongName} property.
-     * @return Long name of the 'no-classpath-resolution' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getNoClasspathResolutionOptionLongName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "noClasspathResolutionOptionLongName" );
-        assert _p != null : "'noClasspathResolutionOptionLongName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code noClasspathResolutionOptionShortName} property.
-     * @return Name of the 'no-classpath-resolution' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getNoClasspathResolutionOptionShortName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "noClasspathResolutionOptionShortName" );
-        assert _p != null : "'noClasspathResolutionOptionShortName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code stylesheetOptionLongName} property.
-     * @return Long name of the 'xslt' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getStylesheetOptionLongName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "stylesheetOptionLongName" );
-        assert _p != null : "'stylesheetOptionLongName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code stylesheetOptionShortName} property.
-     * @return Name of the 'xslt' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getStylesheetOptionShortName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "stylesheetOptionShortName" );
-        assert _p != null : "'stylesheetOptionShortName' property not found.";
-        return _p;
-    }
     // </editor-fold>
     // SECTION-END
     // SECTION-START[Messages]
@@ -971,7 +621,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-16-SNAPSHOT Build 2010-01-22T18:09:52+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-16-SNAPSHOT Build 2010-01-23T17:34:04+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -1031,47 +681,6 @@ public final class MergeModulesCommand extends AbstractJomcCommand
     }
 
     /**
-     * Gets the text of the {@code classpathOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath elements separated by ''{0}''. If starting with a ''@'' character, a file name of a file holding classpath elements.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Klassenpfad-Elemente mit ''{0}'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Klassenpfad-Elementen.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @param pathSeparator Format argument.
-     * @return The text of the {@code classpathOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getClasspathOptionMessage( final java.util.Locale locale, final java.lang.String pathSeparator )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "classpathOption", locale, pathSeparator );
-        assert _m != null : "'classpathOption' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code classpathOptionArgName} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>elements</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Elemente</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code classpathOptionArgName} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getClasspathOptionArgNameMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "classpathOptionArgName", locale );
-        assert _m != null : "'classpathOptionArgName' message not found.";
-        return _m;
-    }
-
-    /**
      * Gets the text of the {@code defaultLogLevelInfo} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Default log level: ''{0}''</pre></td></tr>
@@ -1110,87 +719,6 @@ public final class MergeModulesCommand extends AbstractJomcCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentFile", locale, documentFile );
         assert _m != null : "'documentFile' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code documentOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Name of the file to write the merged module to.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Name der Datei in die das zusammengef&uuml;gte Modul geschrieben werden soll.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code documentOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getDocumentOptionMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentOption", locale );
-        assert _m != null : "'documentOption' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code documentOptionArgName} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>file</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Datei</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code documentOptionArgName} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getDocumentOptionArgNameMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentOptionArgName", locale );
-        assert _m != null : "'documentOptionArgName' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code documentsOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Document filenames separated by ''{0}''. If starting with a ''@'' character, a file name of a file holding document filenames.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Dateinamen mit ''{0}'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Dokument-Dateinamen.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @param pathSeparator Format argument.
-     * @return The text of the {@code documentsOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getDocumentsOptionMessage( final java.util.Locale locale, final java.lang.String pathSeparator )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentsOption", locale, pathSeparator );
-        assert _m != null : "'documentsOption' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code documentsOptionArgName} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>files</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dateien</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code documentsOptionArgName} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getDocumentsOptionArgNameMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentsOptionArgName", locale );
-        assert _m != null : "'documentsOptionArgName' message not found.";
         return _m;
     }
 
@@ -1260,13 +788,19 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * Gets the text of the {@code longDescription} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
-     *   jomc merge-modules -df examples/xml/jomc-cli.xml \
+     *   jomc merge-modules -cp &lt;classpath&gt; \
+     *                      -df examples/xml/jomc-cli.xml \
      *                      -xs examples/xslt/relocate-classes.xsl \
-     *                      -mn &quot;Merged Name&quot; -d /tmp/jomc.xml -v</pre></td></tr>
+     *                      -mn &quot;Merged Name&quot; \
+     *                      -d /tmp/jomc.xml \
+     *                      -v</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
-     *   jomc merge-modules -df examples/xml/jomc-cli.xml \
+     *   jomc merge-modules -cp &lt;classpath&gt; \
+     *                      -df examples/xml/jomc-cli.xml \
      *                      -xs examples/xslt/relocate-classes.xsl \
-     *                      -mn &quot;Merged Name&quot; -d /tmp/jomc.xml -v</pre></td></tr>
+     *                      -mn &quot;Merged Name&quot; \
+     *                      -d /tmp/jomc.xml \
+     *                      -v</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code longDescription} message.
@@ -1304,246 +838,6 @@ public final class MergeModulesCommand extends AbstractJomcCommand
     }
 
     /**
-     * Gets the text of the {@code moduleExcludesOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Module names separated by '':'' of modules to exclude.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul-Namen auszuschlie&szlig;ender Module mit '':'' getrennt.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code moduleExcludesOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getModuleExcludesOptionMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleExcludesOption", locale );
-        assert _m != null : "'moduleExcludesOption' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code moduleExcludesOptionArgName} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>names</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Namen</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code moduleExcludesOptionArgName} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getModuleExcludesOptionArgNameMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleExcludesOptionArgName", locale );
-        assert _m != null : "'moduleExcludesOptionArgName' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code moduleIncludesOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Module names separated by '':'' of modules to include.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul-Namen einzuschlie&szlig;ender Module mit '':'' getrennt.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code moduleIncludesOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getModuleIncludesOptionMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleIncludesOption", locale );
-        assert _m != null : "'moduleIncludesOption' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code moduleIncludesOptionArgName} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>names</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Namen</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code moduleIncludesOptionArgName} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getModuleIncludesOptionArgNameMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleIncludesOptionArgName", locale );
-        assert _m != null : "'moduleIncludesOptionArgName' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code moduleLocationOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Location of classpath modules.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort der Klassenpfad-Module.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code moduleLocationOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getModuleLocationOptionMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleLocationOption", locale );
-        assert _m != null : "'moduleLocationOption' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code moduleLocationOptionArgName} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>location</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ort</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code moduleLocationOptionArgName} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getModuleLocationOptionArgNameMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleLocationOptionArgName", locale );
-        assert _m != null : "'moduleLocationOptionArgName' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code moduleNameOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Name of the module to process.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Name des zu verarbeitenden Moduls.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code moduleNameOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getModuleNameOptionMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleNameOption", locale );
-        assert _m != null : "'moduleNameOption' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code moduleNameOptionArgName} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>name</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Name</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code moduleNameOptionArgName} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getModuleNameOptionArgNameMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleNameOptionArgName", locale );
-        assert _m != null : "'moduleNameOptionArgName' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code moduleVendorOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Vendor of the merged module.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Hersteller des Ergebnis-Moduls.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code moduleVendorOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getModuleVendorOptionMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleVendorOption", locale );
-        assert _m != null : "'moduleVendorOption' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code moduleVendorOptionArgName} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>vendor</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Hersteller</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code moduleVendorOptionArgName} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getModuleVendorOptionArgNameMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleVendorOptionArgName", locale );
-        assert _m != null : "'moduleVendorOptionArgName' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code moduleVersionOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Version of the merged module.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Version des Ergebnis-Moduls.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code moduleVersionOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getModuleVersionOptionMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleVersionOption", locale );
-        assert _m != null : "'moduleVersionOption' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code moduleVersionOptionArgName} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>version</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Version</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code moduleVersionOptionArgName} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getModuleVersionOptionArgNameMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleVersionOptionArgName", locale );
-        assert _m != null : "'moduleVersionOptionArgName' message not found.";
-        return _m;
-    }
-
-    /**
      * Gets the text of the {@code modulesReport} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Modules</pre></td></tr>
@@ -1560,26 +854,6 @@ public final class MergeModulesCommand extends AbstractJomcCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "modulesReport", locale );
         assert _m != null : "'modulesReport' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code noClasspathResolutionOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Do not perform classpath resolution.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Keine Klassenpfad-Aufl&ouml;sung durchf&uuml;hren.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code noClasspathResolutionOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getNoClasspathResolutionOptionMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "noClasspathResolutionOption", locale );
-        assert _m != null : "'noClasspathResolutionOption' message not found.";
         return _m;
     }
 
@@ -1662,46 +936,6 @@ public final class MergeModulesCommand extends AbstractJomcCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "startingProcessing", locale, toolName );
         assert _m != null : "'startingProcessing' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code stylesheetOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Name of a XSLT file to use for transforming the merged module.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Name einer XSLT Datei mit der das zusammengef&uuml;gte Modul transformiert werden soll.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code stylesheetOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getStylesheetOptionMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "stylesheetOption", locale );
-        assert _m != null : "'stylesheetOption' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code stylesheetOptionArgName} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>XSLT file</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>XSLT-Datei</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code stylesheetOptionArgName} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getStylesheetOptionArgNameMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "stylesheetOptionArgName", locale );
-        assert _m != null : "'stylesheetOptionArgName' message not found.";
         return _m;
     }
 

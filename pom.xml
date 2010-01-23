@@ -415,9 +415,9 @@
             </configuration>
           </execution>
           <execution>
-            <id>validate-runtime-modules</id>
+            <id>main-model</id>
             <goals>
-              <goal>validate-runtime-modules</goal>
+              <goal>validate-main-modules</goal>
             </goals>
           </execution>
         </executions>

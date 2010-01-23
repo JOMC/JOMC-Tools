@@ -56,6 +56,779 @@
   </specifications>
   <implementations>
     <!-- *********************************************************************************************************** -->
+    <!--                                                                                                             -->
+    <!-- Options                                                                                                     -->
+    <!--                                                                                                             -->
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="org.jomc.cli.model.OptionFactory" class="org.jomc.cli.model.OptionFactory"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}" abstract="true">
+
+      <documentation defaultLanguage="en">
+        <text language="en"><![CDATA[
+Creates {@code Option} objects describing a single command-line option by maintaining information regarding the
+short-name, the long-name, a flag indicating if an argument is required, and a self-documenting description.]]>
+        </text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <specifications>
+        <reference identifier="org.apache.commons.cli.Option" final="true"/>
+      </specifications>
+      <dependencies>
+        <dependency identifier="java.util.Locale" name="Locale" version="1.1" implementationName="default" final="true"/>
+      </dependencies>
+      <properties>
+        <property name="opt">
+          <documentation defaultLanguage="en">
+            <text language="en">Name of the option.</text>
+          </documentation>
+        </property>
+        <property name="longOpt">
+          <documentation defaultLanguage="en">
+            <text language="en">Long name of the option.</text>
+          </documentation>
+        </property>
+        <property name="numberOfArgs" type="int" value="0">
+          <documentation defaultLanguage="en">
+            <text language="en">Number of argument values the option can take.</text>
+          </documentation>
+        </property>
+        <property name="required" type="boolean" value="false">
+          <documentation defaultLanguage="en">
+            <text language="en">Query to see if the option is required.</text>
+          </documentation>
+        </property>
+        <property name="optionalArg" type="boolean" value="false">
+          <documentation defaultLanguage="en">
+            <text language="en">Query to see if the option can have an optional argument.</text>
+          </documentation>
+        </property>
+        <property name="valueSeparator" type="char" value=":">
+          <documentation defaultLanguage="en">
+            <text language="en">Value separator of the option.</text>
+          </documentation>
+        </property>
+      </properties>
+      <messages>
+        <message name="description">
+          <documentation defaultLanguage="en">
+            <text language="en">Display description of the option.</text>
+          </documentation>
+          <template defaultLanguage="en">
+            <text language="en"/>
+          </template>
+        </message>
+        <message name="argumentDescription">
+          <documentation defaultLanguage="en">
+            <text language="en">Display name for the argument value of the option.</text>
+          </documentation>
+          <template defaultLanguage="en">
+            <text language="en"/>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Verbose Option" name="${project.name} Verbose Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="v" override="true"/>
+        <property name="longOpt" value="verbose" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Enables verbose output.</text>
+            <text language="de">Aktiviert ausführliche Ausgaben.</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Debug Option" name="${project.name} Debug Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="D" override="true"/>
+        <property name="longOpt" value="debug" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Enables debugging output.</text>
+            <text language="de">Aktiviert Diagnose-Ausgaben.</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Fail-On-Warnings Option" name="${project.name} Fail-On-Warnings Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="fw" override="true"/>
+        <property name="longOpt" value="fail-on-warnings" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Exit with failure on warnings.</text>
+            <text language="de">Bei Warnungen Fehler melden.</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Classpath Option" name="${project.name} Classpath Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="cp" override="true"/>
+        <property name="longOpt" value="classpath" override="true"/>
+        <property name="numberOfArgs" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Classpath elements separated by '':''. If starting with a ''@'' character, a file name of a file holding classpath elements.</text>
+            <text language="de">Klassenpfad-Elemente mit '':'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Klassenpfad-Elementen.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">elements</text>
+            <text language="de">Elemente</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Documents Option" name="${project.name} Documents Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="df" override="true"/>
+        <property name="longOpt" value="documents" override="true"/>
+        <property name="numberOfArgs" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Document filenames separated by '':''. If starting with a ''@'' character, a file name of a file holding document filenames.</text>
+            <text language="de">Dokument-Dateinamen mit '':'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Dokument-Dateinamen.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">files</text>
+            <text language="de">Dateien</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Module Location Option" name="${project.name} Module Location Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="ml" override="true"/>
+        <property name="longOpt" value="module-location" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Location of classpath modules.</text>
+            <text language="de">Ort der Klassenpfad-Module.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">location</text>
+            <text language="de">Ort</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Module Name Option" name="${project.name} Module Name Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="mn" override="true"/>
+        <property name="longOpt" value="module" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Name of the module to process.</text>
+            <text language="de">Name des zu verarbeitenden Moduls.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">name</text>
+            <text language="de">Name</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} No Classpath Resolution Option"
+                    name="${project.name} No Classpath Resolution Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="ncr" override="true"/>
+        <property name="longOpt" value="no-classpath-resolution" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Deactivates classpath resolution.</text>
+            <text language="de">Deaktiviert die Klassenpfad-Auflösung.</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} No Model Processing Option"
+                    name="${project.name} No Model Processing Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="nmp" override="true"/>
+        <property name="longOpt" value="no-model-processing" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Deactivates model processing.</text>
+            <text language="de">Deaktiviert die Modell-Bearbeitung.</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Language Option"
+                    name="${project.name} Language Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="l" override="true"/>
+        <property name="longOpt" value="language" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Default language (defaults to system's default locale).</text>
+            <text language="de">Standard-Sprache (Standardlokalisierung des Systems, wenn nicht angegeben).</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">language</text>
+            <text language="de">Sprache</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Resource Directory Option"
+                    name="${project.name} Resource Directory Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="rd" override="true"/>
+        <property name="longOpt" value="resource-dir" override="true"/>
+        <property name="numberOfArgs" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Directory to write resource files to.</text>
+            <text language="de">Verzeichnis in das Ressource-Dateien geschrieben werden sollen.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">directory</text>
+            <text language="de">Verzeichnis</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Source Directory Option"
+                    name="${project.name} Source Directory Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="sd" override="true"/>
+        <property name="longOpt" value="source-dir" override="true"/>
+        <property name="numberOfArgs" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Directory to write source files to.</text>
+            <text language="de">Verzeichnis in das Quelltext-Dateien geschrieben werden sollen.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">directory</text>
+            <text language="de">Verzeichnis</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Profile Option"
+                    name="${project.name} Profile Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="p" override="true"/>
+        <property name="longOpt" value="profile" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Templates profile to use.</text>
+            <text language="de">Zu verwendendes Vorlagen-Profil.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">profile</text>
+            <text language="de">Profil</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Template Encoding Option"
+                    name="${project.name} Template Encoding Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="te" override="true"/>
+        <property name="longOpt" value="template-encoding" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Template encoding.</text>
+            <text language="de">Vorlagenkodierung.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">encoding</text>
+            <text language="de">Kodierung</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Input Encoding Option"
+                    name="${project.name} Input Encoding Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="ie" override="true"/>
+        <property name="longOpt" value="input-encoding" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Input encoding.</text>
+            <text language="de">Eingabekodierung.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">encoding</text>
+            <text language="de">Kodierung</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Output Encoding Option"
+                    name="${project.name} Output Encoding Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="oe" override="true"/>
+        <property name="longOpt" value="output-encoding" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Output encoding.</text>
+            <text language="de">Ausgabekodierung.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">encoding</text>
+            <text language="de">Kodierung</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Classes Directory Option"
+                    name="${project.name} Classes Directory Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="cd" override="true"/>
+        <property name="longOpt" value="classes-dir" override="true"/>
+        <property name="numberOfArgs" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Directory holding the class files to process.</text>
+            <text language="de">Verzeichnis mit den zu verarbeitenden Klassendateien.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">directory</text>
+            <text language="de">Verzeichnis</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Document Option"
+                    name="${project.name} Document Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}" final="true">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="d" override="true"/>
+        <property name="longOpt" value="document" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Name of the file to write the merged module to.</text>
+            <text language="de">Name der Datei, in die das zusammengefügte Modul geschrieben werden soll.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">filename</text>
+            <text language="de">Dateiname</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Stylesheet Option"
+                    name="${project.name} Stylesheet Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}" final="true">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="xs" override="true"/>
+        <property name="longOpt" value="stylesheet" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Name of a XSLT file to use for transforming the merged module.</text>
+            <text language="de">Name einer XSLT Datei mit der das zusammengefügte Modul transformiert werden soll.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">filename</text>
+            <text language="de">Dateiname</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Module Version Option"
+                    name="${project.name} Module Version Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="mv" override="true"/>
+        <property name="longOpt" value="module-version" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Version of the merged module.</text>
+            <text language="de">Version des Ergebnis-Moduls.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">version</text>
+            <text language="de">Version</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Module Vendor Option"
+                    name="${project.name} Module Vendor Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="mve" override="true"/>
+        <property name="longOpt" value="module-vendor" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Vendor of the merged module.</text>
+            <text language="de">Hersteller des Ergebnis-Moduls.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">vendor</text>
+            <text language="de">Hersteller</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Module Includes Option"
+                    name="${project.name} Module Includes Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="minc" override="true"/>
+        <property name="longOpt" value="module-includes" override="true"/>
+        <property name="numberOfArgs" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Module names separated by '':'' of modules to include.</text>
+            <text language="de">Modul-Namen einzuschließender Module mit '':'' getrennt.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">names</text>
+            <text language="de">Namen</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Module Excludes Option"
+                    name="${project.name} Module Excludes Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="mexc" override="true"/>
+        <property name="longOpt" value="module-excludes" override="true"/>
+        <property name="numberOfArgs" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Module names separated by '':'' of modules to exclude.</text>
+            <text language="de">Modul-Namen auszuschließender Module mit '':'' getrennt.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">names</text>
+            <text language="de">Namen</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <!--                                                                                                             -->
+    <!-- Application                                                                                                 -->
+    <!--                                                                                                             -->
+    <!-- *********************************************************************************************************** -->
     <implementation identifier="org.jomc.cli.Jomc" class="org.jomc.cli.Jomc" classDeclaration="true"
                     name="${project.name}" version="${project.version}" vendor="${project.organization.name}"
                     final="true">
@@ -69,6 +842,15 @@
       <dependencies>
         <dependency name="Commands" identifier="org.jomc.cli.Command" version="${project.version}" bound="false"/>
         <dependency name="Locale" identifier="java.util.Locale" version="1.1" implementationName="default"/>
+        <dependency name="DebugOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Debug Option" bound="true"/>
+
+        <dependency name="FailOnWarningsOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Fail-On-Warnings Option" bound="true"/>
+
+        <dependency name="VerboseOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Verbose Option" bound="true"/>
+
       </dependencies>
       <properties>
         <property name="width" type="int" value="80">
@@ -89,36 +871,6 @@
         <property name="helpCommandName" value="help">
           <documentation defaultLanguage="en">
             <text language="en">The name of the command used to request help.</text>
-          </documentation>
-        </property>
-        <property name="verboseOptionShortName" value="v" final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Name of the 'verbose' option.</text>
-          </documentation>
-        </property>
-        <property name="verboseOptionLongName" value="verbose" final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Long name of the 'verbose' option.</text>
-          </documentation>
-        </property>
-        <property name="debugOptionShortName" value="D" final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Name of the 'debug' option.</text>
-          </documentation>
-        </property>
-        <property name="debugOptionLongName" value="debug" final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Long name of the 'debug' option.</text>
-          </documentation>
-        </property>
-        <property name="failOnWarningsOptionShortName" value="fw" final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Name of the 'fail-on-warnings' option.</text>
-          </documentation>
-        </property>
-        <property name="failOnWarningsOptionLongName" value="fail-on-warnings" final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Long name of the 'fail-on-warnings' option.</text>
           </documentation>
         </property>
       </properties>
@@ -142,25 +894,7 @@
             <argument index="1" name="helpCommandName"/>
           </arguments>
         </message>
-        <message name="verboseOption" final="true">
-          <template defaultLanguage="en">
-            <text language="en">Enables verbose output.</text>
-            <text language="de">Aktiviert ausführliche Ausgaben.</text>
-          </template>
-        </message>
-        <message name="debugOption" final="true">
-          <template defaultLanguage="en">
-            <text language="en">Enables debug output.</text>
-            <text language="de">Aktiviert Diagnose-Ausgaben.</text>
-          </template>
-        </message>
-        <message name="failOnWarningsOption" final="true">
-          <template defaultLanguage="en">
-            <text language="en">Exit with failure on warnings.</text>
-            <text language="de">Bei Warnungen Fehler melden.</text>
-          </template>
-        </message>
-        <message name="commandLineInfo" final="true">
+        <message name="commandLineInfo">
           <template defaultLanguage="en">
             <text language="en">Command line:
 {0}</text>
@@ -173,6 +907,10 @@
         </message>
       </messages>
     </implementation>
+    <!-- *********************************************************************************************************** -->
+    <!--                                                                                                             -->
+    <!-- Commands                                                                                                    -->
+    <!--                                                                                                             -->
     <!-- *********************************************************************************************************** -->
     <implementation identifier="org.jomc.cli.commands.AbstractJomcCommand"
                     class="org.jomc.cli.commands.AbstractJomcCommand" classDeclaration="true"
@@ -190,6 +928,24 @@
       </specifications>
       <dependencies>
         <dependency name="Locale" identifier="java.util.Locale" version="1.1" implementationName="default" final="true"/>
+        <dependency name="ClasspathOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Classpath Option" bound="true"/>
+
+        <dependency name="DocumentsOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Documents Option" bound="true"/>
+
+        <dependency name="ModuleLocationOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Module Location Option" bound="true"/>
+
+        <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Module Name Option" bound="true"/>
+
+        <dependency name="NoClasspathResolutionOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} No Classpath Resolution Option" bound="true"/>
+
+        <dependency name="NoModelProcessingOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} No Model Processing Option" bound="true"/>
+
       </dependencies>
       <properties>
         <property name="commandName" value="no-operation">
@@ -202,130 +958,16 @@
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
-        <property name="classpathOptionShortName" value="cp" final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Name of the 'classpath' option.</text>
-          </documentation>
-        </property>
-        <property name="classpathOptionLongName" value="classpath" final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Long name of the 'classpath' option.</text>
-          </documentation>
-        </property>
-        <property name="documentsOptionShortName" value="df" final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Name of the 'documents' option.</text>
-          </documentation>
-        </property>
-        <property name="documentsOptionLongName" value="documents" final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Long name of the 'documents' option.</text>
-          </documentation>
-        </property>
-        <property name="moduleLocationOptionShortName" value="ml"
-                  final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Name of the 'module-location' option.</text>
-          </documentation>
-        </property>
-        <property name="moduleLocationOptionLongName" value="module-location"
-                  final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Long name of the 'module-location' option.</text>
-          </documentation>
-        </property>
-        <property name="moduleNameOptionShortName" value="mn" final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Name of the 'module' option.</text>
-          </documentation>
-        </property>
-        <property name="moduleNameOptionLongName" value="module" final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Long name of the 'module' option.</text>
-          </documentation>
-        </property>
-        <property name="noClasspathResolutionOptionShortName" value="ncr" final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Name of the 'no-classpath-resolution' option.</text>
-          </documentation>
-        </property>
-        <property name="noClasspathResolutionOptionLongName" value="no-classpath-resolution" final="true">
-          <documentation defaultLanguage="en">
-            <text language="en">Long name of the 'no-classpath-resolution' option.</text>
-          </documentation>
-        </property>
       </properties>
       <messages>
         <message name="shortDescription">
           <template defaultLanguage="en">
-            <text language="en">Does nothing.</text>
-            <text language="de">Führt nichts aus.</text>
+            <text language="en"/>
           </template>
         </message>
         <message name="longDescription">
           <template defaultLanguage="en">
-            <text language="en"></text>
-            <text language="de"></text>
-          </template>
-        </message>
-        <message name="classpathOption" final="true">
-          <template defaultLanguage="en">
-            <text language="en">Classpath elements separated by ''{0}''. If starting with a ''@'' character, a file name of a file holding classpath elements.</text>
-            <text language="de">Klassenpfad-Elemente mit ''{0}'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Klassenpfad-Elementen.</text>
-          </template>
-          <arguments>
-            <argument index="0" name="pathSeparator"/>
-          </arguments>
-        </message>
-        <message name="classpathOptionArgName" final="true">
-          <template defaultLanguage="en">
-            <text language="en">elements</text>
-            <text language="de">Elemente</text>
-          </template>
-        </message>
-        <message name="documentsOption" final="true">
-          <template defaultLanguage="en">
-            <text language="en">Document filenames separated by ''{0}''. If starting with a ''@'' character, a file name of a file holding document filenames.</text>
-            <text language="de">Dokument-Dateinamen mit ''{0}'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Dokument-Dateinamen.</text>
-          </template>
-          <arguments>
-            <argument index="0" name="pathSeparator"/>
-          </arguments>
-        </message>
-        <message name="documentsOptionArgName" final="true">
-          <template defaultLanguage="en">
-            <text language="en">files</text>
-            <text language="de">Dateien</text>
-          </template>
-        </message>
-        <message name="moduleLocationOption" final="true">
-          <template defaultLanguage="en">
-            <text language="en">Location of classpath modules.</text>
-            <text language="de">Ort der Klassenpfad-Module.</text>
-          </template>
-        </message>
-        <message name="moduleLocationOptionArgName" final="true">
-          <template defaultLanguage="en">
-            <text language="en">location</text>
-            <text language="de">Ort</text>
-          </template>
-        </message>
-        <message name="moduleNameOption" final="true">
-          <template defaultLanguage="en">
-            <text language="en">Name of the module to process.</text>
-            <text language="de">Name des zu verarbeitenden Moduls.</text>
-          </template>
-        </message>
-        <message name="moduleNameOptionArgName" final="true">
-          <template defaultLanguage="en">
-            <text language="en">name</text>
-            <text language="de">Name</text>
-          </template>
-        </message>
-        <message name="noClasspathResolutionOption" final="true">
-          <template defaultLanguage="en">
-            <text language="en">Do not perform classpath resolution.</text>
-            <text language="de">Keine Klassenpfad-Auflösung durchführen.</text>
+            <text language="en"/>
           </template>
         </message>
         <message name="separator" final="true">
@@ -430,8 +1072,7 @@
     <!-- *********************************************************************************************************** -->
     <implementation identifier="org.jomc.cli.commands.GenerateJavaBundlesCommand"
                     class="org.jomc.cli.commands.GenerateJavaBundlesCommand" classDeclaration="true"
-                    name="default-generate-java-bundles" version="${project.version}" vendor="${project.organization.name}"
-                    final="true">
+                    name="default-generate-java-bundles" version="${project.version}" vendor="${project.organization.name}">
       <documentation defaultLanguage="en">
         <text language="en">Command line interface for the {@code JavaBundles} tool.</text>
       </documentation>
@@ -439,8 +1080,36 @@
         <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
       </authors>
       <implementations>
-        <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}"/>
+        <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}" final="true"/>
       </implementations>
+      <dependencies>
+        <dependency name="LanguageOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Language Option" bound="true"/>
+
+        <dependency name="ResourceDirectoryOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Resource Directory Option" bound="true">
+
+          <properties>
+            <property name="required" type="boolean" value="true" override="true"/>
+          </properties>
+        </dependency>
+        <dependency name="SourceDirectoryOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Source Directory Option" bound="true">
+
+          <properties>
+            <property name="required" type="boolean" value="true" override="true"/>
+          </properties>
+        </dependency>
+        <dependency name="ProfileOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Profile Option" bound="true"/>
+
+        <dependency name="TemplateEncodingOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Template Encoding Option" bound="true"/>
+
+        <dependency name="OutputEncodingOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Output Encoding Option" bound="true"/>
+
+      </dependencies>
       <properties>
         <property name="commandName" value="generate-java-bundles" override="true">
           <documentation defaultLanguage="en">
@@ -452,26 +1121,6 @@
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
-        <property name="languageOptionShortName" value="l">
-          <documentation defaultLanguage="en">
-            <text language="en">Name of the 'language' option.</text>
-          </documentation>
-        </property>
-        <property name="languageOptionLongName" value="language">
-          <documentation defaultLanguage="en">
-            <text language="en">Long name of the 'language' option.</text>
-          </documentation>
-        </property>
-        <reference name="resourceDirectoryOptionShortName"/>
-        <reference name="resourceDirectoryOptionLongName"/>
-        <reference name="sourceDirectoryOptionShortName"/>
-        <reference name="sourceDirectoryOptionLongName"/>
-        <reference name="profileOptionShortName"/>
-        <reference name="profileOptionLongName"/>
-        <reference name="templateEncodingOptionShortName"/>
-        <reference name="templateEncodingOptionLongName"/>
-        <reference name="outputEncodingOptionShortName"/>
-        <reference name="outputEncodingOptionLongName"/>
       </properties>
       <messages>
         <message name="shortDescription" override="true">
@@ -482,51 +1131,28 @@
         </message>
         <message name="longDescription" override="true">
           <template defaultLanguage="en">
-            <text language="en">Example:
-  jomc generate-java-bundles -sd /tmp/src  -rd /tmp/rsrc \
+            <text language="en"><![CDATA[Example:
+  jomc generate-java-bundles -cp <classpath> \
+                             -sd /tmp/src \
+                             -rd /tmp/rsrc \
                              -df examples/xml/jomc-cli.xml \
-                             -mn "JOMC CLI" -v</text>
-            <text language="de">Beispiel:
-  jomc generate-java-bundles -sd /tmp/src -rd /tmp/rsrc \
+                             -mn "JOMC CLI" \
+                             -v]]></text>
+            <text language="de"><![CDATA[Beispiel:
+  jomc generate-java-bundles -cp <classpath> \
+                             -sd /tmp/src \
+                             -rd /tmp/rsrc \
                              -df examples/xml/jomc-cli.xml \
-                             -mn "JOMC CLI" -v</text>
+                             -mn "JOMC CLI" \
+                             -v]]></text>
           </template>
         </message>
-        <message name="languageOption">
-          <template defaultLanguage="en">
-            <text language="en">Default language (defaults to ''{0}'').</text>
-            <text language="de">Standard-Sprache (Standard ''{0}'').</text>
-          </template>
-          <arguments>
-            <argument index="0" name="defaultLanguage"/>
-          </arguments>
-        </message>
-        <message name="languageOptionArgName">
-          <template defaultLanguage="en">
-            <text language="en">language</text>
-            <text language="de">Sprache</text>
-          </template>
-          <arguments>
-            <argument index="0" name="defaultLanguage"/>
-          </arguments>
-        </message>
-        <reference name="sourceDirectoryOption"/>
-        <reference name="sourceDirectoryOptionArgName"/>
-        <reference name="resourceDirectoryOption"/>
-        <reference name="resourceDirectoryOptionArgName"/>
-        <reference name="profileOption"/>
-        <reference name="profileOptionArgName"/>
-        <reference name="templateEncodingOption"/>
-        <reference name="templateEncodingOptionArgName"/>
-        <reference name="outputEncodingOption"/>
-        <reference name="outputEncodingOptionArgName"/>
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
     <implementation identifier="org.jomc.cli.commands.ManageJavaSourcesCommand"
                     class="org.jomc.cli.commands.ManageJavaSourcesCommand" classDeclaration="true"
-                    name="default-manage-java-sources" version="${project.version}" vendor="${project.organization.name}"
-                    final="true">
+                    name="default-manage-java-sources" version="${project.version}" vendor="${project.organization.name}">
 
       <documentation defaultLanguage="en">
         <text language="en">Command line interface for the {@code JavaSources} tool.</text>
@@ -535,8 +1161,29 @@
         <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
       </authors>
       <implementations>
-        <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}"/>
+        <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}" final="true"/>
       </implementations>
+      <dependencies>
+        <dependency name="SourceDirectoryOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Source Directory Option" bound="true">
+
+          <properties>
+            <property name="required" type="boolean" value="true" override="true"/>
+          </properties>
+        </dependency>
+        <dependency name="ProfileOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Profile Option" bound="true"/>
+
+        <dependency name="TemplateEncodingOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Template Encoding Option" bound="true"/>
+
+        <dependency name="OutputEncodingOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Output Encoding Option" bound="true"/>
+
+        <dependency name="InputEncodingOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Input Encoding Option" bound="true"/>
+
+      </dependencies>
       <properties>
         <property name="commandName" value="manage-java-sources" override="true">
           <documentation defaultLanguage="en">
@@ -548,16 +1195,6 @@
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
-        <reference name="sourceDirectoryOptionShortName"/>
-        <reference name="sourceDirectoryOptionLongName"/>
-        <reference name="profileOptionShortName"/>
-        <reference name="profileOptionLongName"/>
-        <reference name="templateEncodingOptionShortName"/>
-        <reference name="templateEncodingOptionLongName"/>
-        <reference name="inputEncodingOptionShortName"/>
-        <reference name="inputEncodingOptionLongName"/>
-        <reference name="outputEncodingOptionShortName"/>
-        <reference name="outputEncodingOptionLongName"/>
       </properties>
       <messages>
         <message name="shortDescription" override="true">
@@ -568,31 +1205,26 @@
         </message>
         <message name="longDescription" override="true">
           <template defaultLanguage="en">
-            <text language="en">Example:
-  jomc manage-java-sources -sd /tmp/src -df examples/xml/jomc-cli.xml } \
-                           -mn "JOMC CLI" -v</text>
-            <text language="de">Beispiel:
-  jomc manage-java-sources -sd /tmp/src -df examples/xml/jomc-cli.xml \
-                           -mn "JOMC CLI" -v</text>
+            <text language="en"><![CDATA[Example:
+  jomc manage-java-sources -cp <classpath> \
+                           -sd /tmp/src \
+                           -df examples/xml/jomc-cli.xml \
+                           -mn "JOMC CLI" \
+                           -v]]></text>
+            <text language="de"><![CDATA[Beispiel:
+  jomc manage-java-sources -cp <classpath> \
+                           -sd /tmp/src \
+                           -df examples/xml/jomc-cli.xml \
+                           -mn "JOMC CLI" \
+                           -v]]></text>
           </template>
         </message>
-        <reference name="sourceDirectoryOption"/>
-        <reference name="sourceDirectoryOptionArgName"/>
-        <reference name="profileOption"/>
-        <reference name="profileOptionArgName"/>
-        <reference name="templateEncodingOption"/>
-        <reference name="templateEncodingOptionArgName"/>
-        <reference name="inputEncodingOption"/>
-        <reference name="inputEncodingOptionArgName"/>
-        <reference name="outputEncodingOption"/>
-        <reference name="outputEncodingOptionArgName"/>
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
     <implementation identifier="org.jomc.cli.commands.CommitJavaClassesCommand"
                     class="org.jomc.cli.commands.CommitJavaClassesCommand" classDeclaration="true"
-                    name="default-commit-java-classes" version="${project.version}" vendor="${project.organization.name}"
-                    final="true">
+                    name="default-commit-java-classes" version="${project.version}" vendor="${project.organization.name}">
 
       <documentation defaultLanguage="en">
         <text language="en">Command line interface for committing Java classes with the {@code JavaClasses} tool.</text>
@@ -601,8 +1233,17 @@
         <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
       </authors>
       <implementations>
-        <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}"/>
+        <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}" final="true"/>
       </implementations>
+      <dependencies>
+        <dependency name="ClassesDirectoryOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Classes Directory Option" bound="true">
+
+          <properties>
+            <property name="required" type="boolean" value="true" override="true"/>
+          </properties>
+        </dependency>
+      </dependencies>
       <properties>
         <property name="commandName" value="commit-java-classes" override="true">
           <documentation defaultLanguage="en">
@@ -614,8 +1255,6 @@
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
-        <reference name="classesDirectoryOptionShortName"/>
-        <reference name="classesDirectoryOptionLongName"/>
       </properties>
       <messages>
         <message name="shortDescription" override="true">
@@ -626,23 +1265,26 @@
         </message>
         <message name="longDescription" override="true">
           <template defaultLanguage="en">
-            <text language="en">Example:
-  jomc commit-java-classes -df examples/xml/jomc-cli.xml -cd target/classes \
-                           -mn "JOMC CLI" -v</text>
-            <text language="de">Beispiel:
-  jomc commit-java-classes -df examples/xml/jomc-cli.xml -cd target/classes \
-                           -mn "JOMC CLI" -v</text>
+            <text language="en"><![CDATA[Example:
+  jomc commit-java-classes -cp <classpath> \
+                           -df examples/xml/jomc-cli.xml \
+                           -cd target/classes \
+                           -mn "JOMC CLI" \
+                           -v]]></text>
+            <text language="de"><![CDATA[Beispiel:
+  jomc commit-java-classes -cp <classpath> \
+                           -df examples/xml/jomc-cli.xml \
+                           -cd target/classes \
+                           -mn "JOMC CLI" \
+                           -v]]></text>
           </template>
         </message>
-        <reference name="classesDirectoryOption"/>
-        <reference name="classesDirectoryOptionArgName"/>
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
     <implementation identifier="org.jomc.cli.commands.ValidateJavaClassesCommand"
                     class="org.jomc.cli.commands.ValidateJavaClassesCommand" classDeclaration="true"
-                    name="default-validate-java-classes" version="${project.version}" vendor="${project.organization.name}"
-                    final="true">
+                    name="default-validate-java-classes" version="${project.version}" vendor="${project.organization.name}">
 
       <documentation defaultLanguage="en">
         <text language="en">Command line interface for validating Java classes with the {@code JavaClasses} tool.</text>
@@ -651,7 +1293,7 @@
         <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
       </authors>
       <implementations>
-        <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}"/>
+        <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}" final="true"/>
       </implementations>
       <properties>
         <property name="commandName" value="validate-java-classes" override="true">
@@ -674,10 +1316,14 @@
         </message>
         <message name="longDescription" override="true">
           <template defaultLanguage="en">
-            <text language="en">Example:
-  jomc validate-java-classes -cp target/classes -df examples/xml/jomc-cli.xml -v</text>
-            <text language="de">Beispiel:
-  jomc validate-java-classes -cp target/classes -df examples/xml/jomc-cli.xml -v</text>
+            <text language="en"><![CDATA[Example:
+  jomc validate-java-classes -cp target/classes \
+                             -df examples/xml/jomc-cli.xml \
+                             -v]]></text>
+            <text language="de"><![CDATA[Beispiel:
+  jomc validate-java-classes -cp target/classes \
+                             -df examples/xml/jomc-cli.xml \
+                             -v]]></text>
           </template>
         </message>
       </messages>
@@ -685,8 +1331,7 @@
     <!-- *********************************************************************************************************** -->
     <implementation identifier="org.jomc.cli.commands.ValidateModulesCommand"
                     class="org.jomc.cli.commands.ValidateModulesCommand" classDeclaration="true"
-                    name="default-validate-modules" version="${project.version}" vendor="${project.organization.name}"
-                    final="true">
+                    name="default-validate-modules" version="${project.version}" vendor="${project.organization.name}">
 
       <documentation defaultLanguage="en">
         <text language="en">Command line interface for validating modules.</text>
@@ -695,7 +1340,7 @@
         <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
       </authors>
       <implementations>
-        <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}"/>
+        <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}" final="true"/>
       </implementations>
       <properties>
         <property name="commandName" value="validate-modules" override="true">
@@ -718,10 +1363,14 @@
         </message>
         <message name="longDescription" override="true">
           <template defaultLanguage="en">
-            <text language="en">Example:
-  jomc validate-modules -df examples/xml/jomc-cli.xml -v</text>
-            <text language="de">Beispiel:
-  jomc validate-modules -df examples/xml/jomc-cli.xml -v</text>
+            <text language="en"><![CDATA[Example:
+  jomc validate-modules -cp <classpath> \
+                        -df examples/xml/jomc-cli.xml \
+                        -v]]></text>
+            <text language="de"><![CDATA[Beispiel:
+  jomc validate-modules -cp <classpath> \
+                        -df examples/xml/jomc-cli.xml \
+                        -v]]></text>
           </template>
         </message>
       </messages>
@@ -729,8 +1378,7 @@
     <!-- *********************************************************************************************************** -->
     <implementation identifier="org.jomc.cli.commands.MergeModulesCommand"
                     class="org.jomc.cli.commands.MergeModulesCommand" classDeclaration="true"
-                    name="default-merge-modules" version="${project.version}" vendor="${project.organization.name}"
-                    final="true">
+                    name="default-merge-modules" version="${project.version}" vendor="${project.organization.name}">
 
       <documentation defaultLanguage="en">
         <text language="en">Command line interface for merging modules.</text>
@@ -739,8 +1387,40 @@
         <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
       </authors>
       <implementations>
-        <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}"/>
+        <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}" final="true"/>
       </implementations>
+      <dependencies>
+        <dependency name="DocumentOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Document Option" bound="true">
+
+          <properties>
+            <property name="required" type="boolean" value="true" override="true"/>
+          </properties>
+        </dependency>
+        <dependency name="StylesheetOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Stylesheet Option" bound="true"/>
+
+        <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Module Name Option" bound="true">
+
+          <properties>
+            <property name="required" type="boolean" value="true"/>
+          </properties>
+        </dependency>
+        <dependency name="ModuleVersionOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Module Version Option" bound="true"/>
+
+        <dependency name="ModuleVendorOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Module Vendor Option" bound="true"/>
+
+        <dependency name="ModuleIncludesOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Module Includes Option" bound="true"/>
+
+        <dependency name="ModuleExcludesOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Module Excludes Option" bound="true"/>
+
+      </dependencies>
+
       <properties>
         <property name="commandName" value="merge-modules" override="true">
           <documentation defaultLanguage="en">
@@ -750,66 +1430,6 @@
         <property name="abbreviatedCommandName" value="mm" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Abbreviated name of the command.</text>
-          </documentation>
-        </property>
-        <property name="documentOptionShortName" value="d">
-          <documentation defaultLanguage="en">
-            <text language="en">Name of the 'document' option.</text>
-          </documentation>
-        </property>
-        <property name="documentOptionLongName" value="document">
-          <documentation defaultLanguage="en">
-            <text language="en">Long name of the 'document' option.</text>
-          </documentation>
-        </property>
-        <property name="stylesheetOptionShortName" value="xs">
-          <documentation defaultLanguage="en">
-            <text language="en">Name of the 'xslt' option.</text>
-          </documentation>
-        </property>
-        <property name="stylesheetOptionLongName" value="stylesheet">
-          <documentation defaultLanguage="en">
-            <text language="en">Long name of the 'xslt' option.</text>
-          </documentation>
-        </property>
-        <property name="moduleVersionOptionShortName" value="mv">
-          <documentation defaultLanguage="en">
-            <text language="en">Name of the 'module-version' option.</text>
-          </documentation>
-        </property>
-        <property name="moduleVersionOptionLongName" value="module-version">
-          <documentation defaultLanguage="en">
-            <text language="en">Long name of the 'module-version' option.</text>
-          </documentation>
-        </property>
-        <property name="moduleVendorOptionShortName" value="mve">
-          <documentation defaultLanguage="en">
-            <text language="en">Name of the 'module-vendor' option.</text>
-          </documentation>
-        </property>
-        <property name="moduleVendorOptionLongName" value="module-vendor">
-          <documentation defaultLanguage="en">
-            <text language="en">Long name of the 'module-vendor' option.</text>
-          </documentation>
-        </property>
-        <property name="moduleIncludesOptionShortName" value="minc">
-          <documentation defaultLanguage="en">
-            <text language="en">Name of the 'module-includes' option.</text>
-          </documentation>
-        </property>
-        <property name="moduleIncludesOptionLongName" value="module-includes">
-          <documentation defaultLanguage="en">
-            <text language="en">Long name of the 'module-includes' option.</text>
-          </documentation>
-        </property>
-        <property name="moduleExcludesOptionShortName" value="mexc">
-          <documentation defaultLanguage="en">
-            <text language="en">Name of the 'module-excludes' option.</text>
-          </documentation>
-        </property>
-        <property name="moduleExcludesOptionLongName" value="module-excludes">
-          <documentation defaultLanguage="en">
-            <text language="en">Long name of the 'module-excludes' option.</text>
           </documentation>
         </property>
       </properties>
@@ -822,89 +1442,23 @@
         </message>
         <message name="longDescription" override="true">
           <template defaultLanguage="en">
-            <text language="en">Example:
-  jomc merge-modules -df examples/xml/jomc-cli.xml \
+            <text language="en"><![CDATA[Example:
+  jomc merge-modules -cp <classpath> \
+                     -df examples/xml/jomc-cli.xml \
                      -xs examples/xslt/relocate-classes.xsl \
-                     -mn "Merged Name" -d /tmp/jomc.xml -v</text>
-            <text language="de">Beispiel:
-  jomc merge-modules -df examples/xml/jomc-cli.xml \
+                     -mn "Merged Name" \
+                     -d /tmp/jomc.xml \
+                     -v]]></text>
+            <text language="de"><![CDATA[Beispiel:
+  jomc merge-modules -cp <classpath> \
+                     -df examples/xml/jomc-cli.xml \
                      -xs examples/xslt/relocate-classes.xsl \
-                     -mn "Merged Name" -d /tmp/jomc.xml -v</text>
+                     -mn "Merged Name" \
+                     -d /tmp/jomc.xml \
+                     -v]]></text>
           </template>
         </message>
-        <message name="documentOption">
-          <template defaultLanguage="en">
-            <text language="en">Name of the file to write the merged module to.</text>
-            <text language="de">Name der Datei in die das zusammengefügte Modul geschrieben werden soll.</text>
-          </template>
-        </message>
-        <message name="documentOptionArgName">
-          <template defaultLanguage="en">
-            <text language="en">file</text>
-            <text language="de">Datei</text>
-          </template>
-        </message>
-        <message name="stylesheetOption">
-          <template defaultLanguage="en">
-            <text language="en">Name of a XSLT file to use for transforming the merged module.</text>
-            <text language="de">Name einer XSLT Datei mit der das zusammengefügte Modul transformiert werden soll.</text>
-          </template>
-        </message>
-        <message name="stylesheetOptionArgName">
-          <template defaultLanguage="en">
-            <text language="en">XSLT file</text>
-            <text language="de">XSLT-Datei</text>
-          </template>
-        </message>
-        <message name="moduleVersionOption">
-          <template defaultLanguage="en">
-            <text language="en">Version of the merged module.</text>
-            <text language="de">Version des Ergebnis-Moduls.</text>
-          </template>
-        </message>
-        <message name="moduleVersionOptionArgName">
-          <template defaultLanguage="en">
-            <text language="en">version</text>
-            <text language="de">Version</text>
-          </template>
-        </message>
-        <message name="moduleVendorOption">
-          <template defaultLanguage="en">
-            <text language="en">Vendor of the merged module.</text>
-            <text language="de">Hersteller des Ergebnis-Moduls.</text>
-          </template>
-        </message>
-        <message name="moduleVendorOptionArgName">
-          <template defaultLanguage="en">
-            <text language="en">vendor</text>
-            <text language="de">Hersteller</text>
-          </template>
-        </message>
-        <message name="moduleIncludesOption">
-          <template defaultLanguage="en">
-            <text language="en">Module names separated by '':'' of modules to include.</text>
-            <text language="de">Modul-Namen einzuschließender Module mit '':'' getrennt.</text>
-          </template>
-        </message>
-        <message name="moduleIncludesOptionArgName">
-          <template defaultLanguage="en">
-            <text language="en">names</text>
-            <text language="de">Namen</text>
-          </template>
-        </message>
-        <message name="moduleExcludesOption">
-          <template defaultLanguage="en">
-            <text language="en">Module names separated by '':'' of modules to exclude.</text>
-            <text language="de">Modul-Namen auszuschließender Module mit '':'' getrennt.</text>
-          </template>
-        </message>
-        <message name="moduleExcludesOptionArgName">
-          <template defaultLanguage="en">
-            <text language="en">names</text>
-            <text language="de">Namen</text>
-          </template>
-        </message>
-        <message name="includingModule">
+        <message name="includingModule" final="true">
           <template defaultLanguage="en">
             <text language="en">Including module ''{0}''.</text>
             <text language="de">Schließt Modul ''{0}'' ein.</text>
@@ -913,7 +1467,7 @@
             <argument index="0" name="moduleName"/>
           </arguments>
         </message>
-        <message name="excludingModule">
+        <message name="excludingModule" final="true">
           <template defaultLanguage="en">
             <text language="en">Excluding module ''{0}''.</text>
             <text language="de">Schließt Modul ''{0}'' aus.</text>
@@ -926,191 +1480,7 @@
       </messages>
     </implementation>
   </implementations>
-  <properties>
-    <!-- *********************************************************************************************************** -->
-    <property name="sourceDirectoryOptionShortName" value="sd">
-      <documentation defaultLanguage="en">
-        <text language="en">Name of the 'source-dir' option.</text>
-      </documentation>
-    </property>
-    <!-- *********************************************************************************************************** -->
-    <property name="sourceDirectoryOptionLongName" value="source-dir">
-      <documentation defaultLanguage="en">
-        <text language="en">Long name of the 'source-dir' option.</text>
-      </documentation>
-    </property>
-    <!-- *********************************************************************************************************** -->
-    <property name="resourceDirectoryOptionShortName" value="rd">
-      <documentation defaultLanguage="en">
-        <text language="en">Name of the 'resource-dir' option.</text>
-      </documentation>
-    </property>
-    <!-- *********************************************************************************************************** -->
-    <property name="resourceDirectoryOptionLongName" value="resource-dir">
-      <documentation defaultLanguage="en">
-        <text language="en">Long name of the 'resource-dir' option.</text>
-      </documentation>
-    </property>
-    <!-- *********************************************************************************************************** -->
-    <property name="classesDirectoryOptionShortName" value="cd">
-      <documentation defaultLanguage="en">
-        <text language="en">Name of the 'classes-dir' option.</text>
-      </documentation>
-    </property>
-    <!-- *********************************************************************************************************** -->
-    <property name="classesDirectoryOptionLongName" value="classes-dir">
-      <documentation defaultLanguage="en">
-        <text language="en">Long name of the 'classes-dir' option.</text>
-      </documentation>
-    </property>
-    <!-- *********************************************************************************************************** -->
-    <property name="profileOptionShortName" value="p">
-      <documentation defaultLanguage="en">
-        <text language="en">Name of the 'profile' option.</text>
-      </documentation>
-    </property>
-    <!-- *********************************************************************************************************** -->
-    <property name="profileOptionLongName" value="profile">
-      <documentation defaultLanguage="en">
-        <text language="en">Long name of the 'profile' option.</text>
-      </documentation>
-    </property>
-    <!-- *********************************************************************************************************** -->
-    <property name="templateEncodingOptionShortName" value="te">
-      <documentation defaultLanguage="en">
-        <text language="en">Name of the 'template-encoding' option.</text>
-      </documentation>
-    </property>
-    <!-- *********************************************************************************************************** -->
-    <property name="templateEncodingOptionLongName" value="template-encoding">
-      <documentation defaultLanguage="en">
-        <text language="en">Long name of the 'template-encoding' option.</text>
-      </documentation>
-    </property>
-    <!-- *********************************************************************************************************** -->
-    <property name="inputEncodingOptionShortName" value="ie">
-      <documentation defaultLanguage="en">
-        <text language="en">Name of the 'input-encoding' option.</text>
-      </documentation>
-    </property>
-    <!-- *********************************************************************************************************** -->
-    <property name="inputEncodingOptionLongName" value="input-encoding">
-      <documentation defaultLanguage="en">
-        <text language="en">Long name of the 'input-encoding' option.</text>
-      </documentation>
-    </property>
-    <!-- *********************************************************************************************************** -->
-    <property name="outputEncodingOptionShortName" value="oe">
-      <documentation defaultLanguage="en">
-        <text language="en">Name of the 'output-encoding' option.</text>
-      </documentation>
-    </property>
-    <!-- *********************************************************************************************************** -->
-    <property name="outputEncodingOptionLongName" value="output-encoding">
-      <documentation defaultLanguage="en">
-        <text language="en">Long name of the 'output-encoding' option.</text>
-      </documentation>
-    </property>
-  </properties>
   <messages>
-    <!-- *********************************************************************************************************** -->
-    <message name="profileOption">
-      <template defaultLanguage="en">
-        <text language="en">Templates profile to use.</text>
-        <text language="de">Zu verwendendes Vorlagen-Profil.</text>
-      </template>
-    </message>
-    <!-- *********************************************************************************************************** -->
-    <message name="profileOptionArgName">
-      <template defaultLanguage="en">
-        <text language="en">profile</text>
-        <text language="de">Profil</text>
-      </template>
-    </message>
-    <!-- *********************************************************************************************************** -->
-    <message name="templateEncodingOption">
-      <template defaultLanguage="en">
-        <text language="en">Template encoding.</text>
-        <text language="de">Vorlagenkodierung.</text>
-      </template>
-    </message>
-    <!-- *********************************************************************************************************** -->
-    <message name="templateEncodingOptionArgName">
-      <template defaultLanguage="en">
-        <text language="en">encoding</text>
-        <text language="de">Kodierung</text>
-      </template>
-    </message>
-    <!-- *********************************************************************************************************** -->
-    <message name="inputEncodingOption">
-      <template defaultLanguage="en">
-        <text language="en">Input encoding.</text>
-        <text language="de">Eingabekodierung.</text>
-      </template>
-    </message>
-    <!-- *********************************************************************************************************** -->
-    <message name="inputEncodingOptionArgName">
-      <template defaultLanguage="en">
-        <text language="en">encoding</text>
-        <text language="de">Kodierung</text>
-      </template>
-    </message>
-    <!-- *********************************************************************************************************** -->
-    <message name="outputEncodingOption">
-      <template defaultLanguage="en">
-        <text language="en">Output encoding.</text>
-        <text language="de">Ausgabekodierung.</text>
-      </template>
-    </message>
-    <!-- *********************************************************************************************************** -->
-    <message name="outputEncodingOptionArgName">
-      <template defaultLanguage="en">
-        <text language="en">encoding</text>
-        <text language="de">Kodierung</text>
-      </template>
-    </message>
-    <!-- *********************************************************************************************************** -->
-    <message name="sourceDirectoryOption">
-      <template defaultLanguage="en">
-        <text language="en">Directory to write source files to.</text>
-        <text language="de">Verzeichnis in das Quelltext-Dateien geschrieben werden sollen.</text>
-      </template>
-    </message>
-    <!-- *********************************************************************************************************** -->
-    <message name="sourceDirectoryOptionArgName">
-      <template defaultLanguage="en">
-        <text language="en">directory</text>
-        <text language="de">Verzeichnis</text>
-      </template>
-    </message>
-    <!-- *********************************************************************************************************** -->
-    <message name="resourceDirectoryOption">
-      <template defaultLanguage="en">
-        <text language="en">Directory to write resource files to.</text>
-        <text language="de">Verzeichnis in das Ressource-Dateien geschrieben werden sollen.</text>
-      </template>
-    </message>
-    <!-- *********************************************************************************************************** -->
-    <message name="resourceDirectoryOptionArgName">
-      <template defaultLanguage="en">
-        <text language="en">directory</text>
-        <text language="de">Verzeichnis</text>
-      </template>
-    </message>
-    <!-- *********************************************************************************************************** -->
-    <message name="classesDirectoryOption">
-      <template defaultLanguage="en">
-        <text language="en">Directory holding the class files to process.</text>
-        <text language="de">Verzeichnis mit den zu verarbeitenden Klassendateien.</text>
-      </template>
-    </message>
-    <!-- *********************************************************************************************************** -->
-    <message name="classesDirectoryOptionArgName">
-      <template defaultLanguage="en">
-        <text language="en">directory</text>
-        <text language="de">Verzeichnis</text>
-      </template>
-    </message>
     <!-- *********************************************************************************************************** -->
     <message name="writing">
       <template defaultLanguage="en">

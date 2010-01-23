@@ -45,7 +45,6 @@ import java.util.logging.Level;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang.StringUtils;
@@ -58,25 +57,9 @@ import org.jomc.model.bootstrap.DefaultSchemaProvider;
 /**
  * JOMC command line interface.
  * <p><b>Properties</b><ul>
- * <li>"{@link #getDebugOptionLongName debugOptionLongName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'debug' option.</p>
- * </blockquote></li>
- * <li>"{@link #getDebugOptionShortName debugOptionShortName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'debug' option.</p>
- * </blockquote></li>
  * <li>"{@link #getDescPad descPad}"
  * <blockquote>Property of type {@code int}.
  * <p>The number of characters of padding to be prefixed to each description line.</p>
- * </blockquote></li>
- * <li>"{@link #getFailOnWarningsOptionLongName failOnWarningsOptionLongName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'fail-on-warnings' option.</p>
- * </blockquote></li>
- * <li>"{@link #getFailOnWarningsOptionShortName failOnWarningsOptionShortName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'fail-on-warnings' option.</p>
  * </blockquote></li>
  * <li>"{@link #getHelpCommandName helpCommandName}"
  * <blockquote>Property of type {@code java.lang.String}.
@@ -86,14 +69,6 @@ import org.jomc.model.bootstrap.DefaultSchemaProvider;
  * <blockquote>Property of type {@code int}.
  * <p>The number of characters of padding to be prefixed to each line.</p>
  * </blockquote></li>
- * <li>"{@link #getVerboseOptionLongName verboseOptionLongName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the 'verbose' option.</p>
- * </blockquote></li>
- * <li>"{@link #getVerboseOptionShortName verboseOptionShortName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'verbose' option.</p>
- * </blockquote></li>
  * <li>"{@link #getWidth width}"
  * <blockquote>Property of type {@code int}.
  * <p>The number of characters per line for the usage statement.</p>
@@ -102,8 +77,14 @@ import org.jomc.model.bootstrap.DefaultSchemaProvider;
  * <p><b>Dependencies</b><ul>
  * <li>"{@link #getCommands Commands}"<blockquote>
  * Dependency on {@code org.jomc.cli.Command} at specification level 1.0-alpha-16-SNAPSHOT.</blockquote></li>
+ * <li>"{@link #getDebugOption DebugOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getFailOnWarningsOption FailOnWarningsOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getLocale Locale}"<blockquote>
  * Dependency on {@code java.util.Locale} at specification level 1.1 bound to an instance.</blockquote></li>
+ * <li>"{@link #getVerboseOption VerboseOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getCommandLineInfoMessage commandLineInfo}"<table>
@@ -112,14 +93,6 @@ import org.jomc.model.bootstrap.DefaultSchemaProvider;
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kommandozeile:
  * {0}</pre></td></tr>
  * </table>
- * <li>"{@link #getDebugOptionMessage debugOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Enables debug output.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert Diagnose-Ausgaben.</pre></td></tr>
- * </table>
- * <li>"{@link #getFailOnWarningsOptionMessage failOnWarningsOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Exit with failure on warnings.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Bei Warnungen Fehler melden.</pre></td></tr>
- * </table>
  * <li>"{@link #getIllegalArgumentsMessage illegalArguments}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal arguments. Type &raquo;jomc {0} {1}&laquo; for further information.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ung&uuml;ltige Argumente. Geben Sie &raquo;jomc {0} {1}&laquo; f&uuml;r weitere Informationen ein.</pre></td></tr>
@@ -127,10 +100,6 @@ import org.jomc.model.bootstrap.DefaultSchemaProvider;
  * <li>"{@link #getUsageMessage usage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Type &raquo;jomc &lt;command&gt; {0}&laquo; for further information.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Geben Sie &raquo;jomc &lt;Befehl&gt; {0}&laquo; f&uuml;r weitere Informationen ein.</pre></td></tr>
- * </table>
- * <li>"{@link #getVerboseOptionMessage verboseOption}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Enables verbose output.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert ausf&uuml;hrliche Ausgaben.</pre></td></tr>
  * </table>
  * </ul></p>
  *
@@ -157,15 +126,6 @@ public class Jomc
 
     /** Default log level. */
     private static volatile Level defaultLogLevel;
-
-    /** 'verbose' option of the instance. */
-    private Option verboseOption;
-
-    /** 'debug' option of the instance. */
-    private Option debugOption;
-
-    /** 'fail-on-warnings' option of the instance. */
-    private Option failOnWarningsOption;
 
     /** Print writer of the instance. */
     private PrintWriter printWriter;
@@ -290,43 +250,6 @@ public class Jomc
         return level.intValue() >= this.getLogLevel().intValue();
     }
 
-    public Option getVerboseOption()
-    {
-        if ( this.verboseOption == null )
-        {
-            this.verboseOption = new Option( this.getVerboseOptionShortName(), this.getVerboseOptionLongName(),
-                                             false, this.getVerboseOptionMessage( this.getLocale() ) );
-
-        }
-
-        return this.verboseOption;
-    }
-
-    public Option getDebugOption()
-    {
-        if ( this.debugOption == null )
-        {
-            this.debugOption = new Option( this.getDebugOptionShortName(), this.getDebugOptionLongName(),
-                                           false, this.getDebugOptionMessage( this.getLocale() ) );
-
-        }
-
-        return this.debugOption;
-    }
-
-    public Option getFailOnWarningsOption()
-    {
-        if ( this.failOnWarningsOption == null )
-        {
-            this.failOnWarningsOption = new Option( this.getFailOnWarningsOptionShortName(),
-                                                    this.getFailOnWarningsOptionLongName(),
-                                                    false, this.getFailOnWarningsOptionMessage( this.getLocale() ) );
-
-        }
-
-        return this.failOnWarningsOption;
-    }
-
     /**
      * Processes the given arguments and executes the corresponding command.
      *
@@ -345,7 +268,7 @@ public class Jomc
         try
         {
             DefaultModelProvider.setDefaultModuleLocation( "META-INF/jomc-cli.xml" );
-            DefaultModelProcessor.setDefaultTransformerLocation( "META-INF/jomc-cli.xslt" );
+            DefaultModelProcessor.setDefaultTransformerLocation( "META-INF/jomc-cli.xsl" );
             DefaultSchemaProvider.setDefaultSchemaLocation( "META-INF/jomc-bootstrap.xml" );
 
             final StringBuilder commandInfo = new StringBuilder();
@@ -635,6 +558,38 @@ public class Jomc
     }
 
     /**
+     * Gets the {@code DebugOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Debug Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code DebugOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getDebugOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "DebugOption" );
+        assert _d != null : "'DebugOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code FailOnWarningsOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Fail-On-Warnings Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code FailOnWarningsOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getFailOnWarningsOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "FailOnWarningsOption" );
+        assert _d != null : "'FailOnWarningsOption' dependency not found.";
+        return _d;
+    }
+
+    /**
      * Gets the {@code Locale} dependency.
      * <p>This method returns the "{@code default}" object of the {@code java.util.Locale} specification at specification level 1.1.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
@@ -649,38 +604,26 @@ public class Jomc
         assert _d != null : "'Locale' dependency not found.";
         return _d;
     }
+
+    /**
+     * Gets the {@code VerboseOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Verbose Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code VerboseOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getVerboseOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "VerboseOption" );
+        assert _d != null : "'VerboseOption' dependency not found.";
+        return _d;
+    }
     // </editor-fold>
     // SECTION-END
     // SECTION-START[Properties]
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
-
-    /**
-     * Gets the value of the {@code debugOptionLongName} property.
-     * @return Long name of the 'debug' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getDebugOptionLongName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "debugOptionLongName" );
-        assert _p != null : "'debugOptionLongName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code debugOptionShortName} property.
-     * @return Name of the 'debug' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getDebugOptionShortName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "debugOptionShortName" );
-        assert _p != null : "'debugOptionShortName' property not found.";
-        return _p;
-    }
 
     /**
      * Gets the value of the {@code descPad} property.
@@ -694,34 +637,6 @@ public class Jomc
         final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "descPad" );
         assert _p != null : "'descPad' property not found.";
         return _p.intValue();
-    }
-
-    /**
-     * Gets the value of the {@code failOnWarningsOptionLongName} property.
-     * @return Long name of the 'fail-on-warnings' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getFailOnWarningsOptionLongName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "failOnWarningsOptionLongName" );
-        assert _p != null : "'failOnWarningsOptionLongName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code failOnWarningsOptionShortName} property.
-     * @return Name of the 'fail-on-warnings' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getFailOnWarningsOptionShortName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "failOnWarningsOptionShortName" );
-        assert _p != null : "'failOnWarningsOptionShortName' property not found.";
-        return _p;
     }
 
     /**
@@ -750,34 +665,6 @@ public class Jomc
         final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "leftPad" );
         assert _p != null : "'leftPad' property not found.";
         return _p.intValue();
-    }
-
-    /**
-     * Gets the value of the {@code verboseOptionLongName} property.
-     * @return Long name of the 'verbose' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getVerboseOptionLongName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "verboseOptionLongName" );
-        assert _p != null : "'verboseOptionLongName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code verboseOptionShortName} property.
-     * @return Name of the 'verbose' option.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private java.lang.String getVerboseOptionShortName()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "verboseOptionShortName" );
-        assert _p != null : "'verboseOptionShortName' property not found.";
-        return _p;
     }
 
     /**
@@ -822,46 +709,6 @@ public class Jomc
     }
 
     /**
-     * Gets the text of the {@code debugOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Enables debug output.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert Diagnose-Ausgaben.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code debugOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getDebugOptionMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "debugOption", locale );
-        assert _m != null : "'debugOption' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code failOnWarningsOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Exit with failure on warnings.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Bei Warnungen Fehler melden.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code failOnWarningsOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getFailOnWarningsOptionMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "failOnWarningsOption", locale );
-        assert _m != null : "'failOnWarningsOption' message not found.";
-        return _m;
-    }
-
-    /**
      * Gets the text of the {@code illegalArguments} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal arguments. Type &raquo;jomc {0} {1}&laquo; for further information.</pre></td></tr>
@@ -901,26 +748,6 @@ public class Jomc
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "usage", locale, helpCommandName );
         assert _m != null : "'usage' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code verboseOption} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Enables verbose output.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Aktiviert ausf&uuml;hrliche Ausgaben.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code verboseOption} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getVerboseOptionMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "verboseOption", locale );
-        assert _m != null : "'verboseOption' message not found.";
         return _m;
     }
     // </editor-fold>

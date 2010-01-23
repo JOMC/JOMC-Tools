@@ -93,6 +93,9 @@
         <xsl:when test="starts-with($value, 'org.jomc.ri.')">
           <xsl:value-of select="concat('org.jomc.cli.util.', substring-after($value, 'org.jomc.ri.'))"/>
         </xsl:when>
+        <xsl:when test="starts-with($value, 'org.apache.commons.cli.')">
+          <xsl:value-of select="concat('org.jomc.cli.util.cli.', substring-after($value, 'org.apache.commons.cli.'))"/>
+        </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="."/>
         </xsl:otherwise>
