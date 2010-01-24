@@ -143,17 +143,19 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     private boolean modelProcessingEnabled;
 
-    /** The tool for managing sources. */
-    private JavaSources javaSourcesTool;
+    /**
+     * Name of the JOMC module to process.
+     *
+     * @parameter default-value="${project.name}"
+     */
+    private String jomcModuleName;
 
-    /** The tool for managing classes. */
-    private JavaClasses javaClassesTool;
-
-    /** The class loader of the project's runtime classpath including provided dependencies. */
-    private ClassLoader mainClassLoader;
-
-    /** The class loader of the project's test classpath including provided dependencies. */
-    private ClassLoader testClassLoader;
+    /**
+     * Name of the JOMC test module to process.
+     *
+     * @parameter default-value="${project.name} Tests"
+     */
+    private String jomcTestModuleName;
 
     public void execute() throws MojoExecutionException, MojoFailureException
     {
@@ -236,13 +238,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected JavaSources getJavaSourcesTool() throws MojoExecutionException
     {
-        if ( this.javaSourcesTool == null )
-        {
-            this.javaSourcesTool = new JavaSources();
-            this.setupJomcTool( this.javaSourcesTool );
-        }
-
-        return this.javaSourcesTool;
+        final JavaSources tool = new JavaSources();
+        this.setupJomcTool( tool );
+        return tool;
     }
 
     /**
@@ -254,13 +252,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected JavaClasses getJavaClassesTool() throws MojoExecutionException
     {
-        if ( this.javaClassesTool == null )
-        {
-            this.javaClassesTool = new JavaClasses();
-            this.setupJomcTool( this.javaClassesTool );
-        }
-
-        return this.javaClassesTool;
+        final JavaClasses tool = new JavaClasses();
+        this.setupJomcTool( tool );
+        return tool;
     }
 
     /**
@@ -274,26 +268,21 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         try
         {
-            if ( this.mainClassLoader == null )
+            final Collection urls = new LinkedList();
+            for ( final Iterator it = this.getMainClasspathElements().iterator(); it.hasNext(); )
             {
-                final Collection urls = new LinkedList();
-                for ( final Iterator it = this.getMainClasspathElements().iterator(); it.hasNext(); )
+                final String element = (String) it.next();
+                final URL url = new File( element ).toURI().toURL();
+                if ( !urls.contains( url ) )
                 {
-                    final String element = (String) it.next();
-                    final URL url = new File( element ).toURI().toURL();
-                    if ( !urls.contains( url ) )
-                    {
-                        urls.add( url );
-                        this.log( Level.FINE, this.getClasspathElementMessage( url.toExternalForm() ), null );
-                    }
+                    urls.add( url );
+                    this.log( Level.FINE, this.getClasspathElementMessage( url.toExternalForm() ), null );
                 }
-
-                this.mainClassLoader = new URLClassLoader( (URL[]) urls.toArray( new URL[ urls.size() ] ),
-                                                           Thread.currentThread().getContextClassLoader() );
-
             }
 
-            return this.mainClassLoader;
+            return new URLClassLoader( (URL[]) urls.toArray( new URL[ urls.size() ] ),
+                                       Thread.currentThread().getContextClassLoader() );
+
         }
         catch ( final IOException e )
         {
@@ -312,26 +301,21 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         try
         {
-            if ( this.testClassLoader == null )
+            final Collection urls = new LinkedList();
+            for ( final Iterator it = this.getTestClasspathElements().iterator(); it.hasNext(); )
             {
-                final Collection urls = new LinkedList();
-                for ( final Iterator it = this.getTestClasspathElements().iterator(); it.hasNext(); )
+                final String element = (String) it.next();
+                final URL url = new File( element ).toURI().toURL();
+                if ( !urls.contains( url ) )
                 {
-                    final String element = (String) it.next();
-                    final URL url = new File( element ).toURI().toURL();
-                    if ( !urls.contains( url ) )
-                    {
-                        urls.add( url );
-                        this.log( Level.FINE, this.getClasspathElementMessage( url.toExternalForm() ), null );
-                    }
+                    urls.add( url );
+                    this.log( Level.FINE, this.getClasspathElementMessage( url.toExternalForm() ), null );
                 }
-
-                this.testClassLoader = new URLClassLoader( (URL[]) urls.toArray( new URL[ urls.size() ] ),
-                                                           Thread.currentThread().getContextClassLoader() );
-
             }
 
-            return this.testClassLoader;
+            return new URLClassLoader( (URL[]) urls.toArray( new URL[ urls.size() ] ),
+                                       Thread.currentThread().getContextClassLoader() );
+
         }
         catch ( final IOException e )
         {
@@ -476,7 +460,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected String getJomcModuleName() throws MojoExecutionException
     {
-        return this.getMavenProject().getName();
+        return this.jomcModuleName;
     }
 
     /**
@@ -488,7 +472,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected String getJomcTestModuleName() throws MojoExecutionException
     {
-        return this.getMavenProject().getName() + " Tests";
+        return this.jomcTestModuleName;
     }
 
     /**
@@ -646,7 +630,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                  this.verbose )
             {
                 String line;
-                final BufferedReader reader = new BufferedReader( new StringReader( message ) );
+                final BufferedReader reader = new BufferedReader( new StringReader( message == null ? "" : message ) );
+                boolean throwableLogged = false;
+
                 while ( ( line = reader.readLine() ) != null )
                 {
                     final String mojoMessage = "[JOMC] " + line;
@@ -654,24 +640,26 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     if ( ( level.equals( Level.CONFIG ) || level.equals( Level.FINE ) || level.equals( Level.FINER ) ||
                            level.equals( Level.FINEST ) ) && this.getLog().isDebugEnabled() )
                     {
-                        this.getLog().debug( mojoMessage, throwable );
+                        this.getLog().debug( mojoMessage, throwableLogged ? null : throwable );
                     }
                     else if ( level.equals( Level.INFO ) && this.getLog().isInfoEnabled() )
                     {
-                        this.getLog().info( mojoMessage, throwable );
+                        this.getLog().info( mojoMessage, throwableLogged ? null : throwable );
                     }
                     else if ( level.equals( Level.SEVERE ) && this.getLog().isErrorEnabled() )
                     {
-                        this.getLog().error( mojoMessage, throwable );
+                        this.getLog().error( mojoMessage, throwableLogged ? null : throwable );
                     }
                     else if ( level.equals( Level.WARNING ) && this.getLog().isWarnEnabled() )
                     {
-                        this.getLog().warn( mojoMessage, throwable );
+                        this.getLog().warn( mojoMessage, throwableLogged ? null : throwable );
                     }
                     else if ( this.getLog().isDebugEnabled() )
                     {
-                        this.getLog().debug( mojoMessage, throwable );
+                        this.getLog().debug( mojoMessage, throwableLogged ? null : throwable );
                     }
+
+                    throwableLogged = true;
                 }
             }
         }

@@ -59,7 +59,7 @@ public class ValidateMainModulesMojo extends AbstractJomcMojo
     @Override
     protected String getToolName()
     {
-        return "ValidateMainModulesMojo";
+        return "validate-main-modules";
     }
 
     @Override
