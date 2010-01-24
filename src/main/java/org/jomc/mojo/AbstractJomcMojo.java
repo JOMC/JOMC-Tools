@@ -173,23 +173,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
-     * Gets the name of this tool.
-     *
-     * @return The name of this tool.
-     * @throws MojoExecutionException if getting the name of this tool fails.
-     */
-    protected abstract String getToolName() throws MojoExecutionException;
-
-    /**
-     * Gets the class loader of this tool.
-     *
-     * @return The class loader of this tool.
-     *
-     * @throws MojoExecutionException if getting the class loader fails.
-     */
-    protected abstract ClassLoader getToolClassLoader() throws MojoExecutionException;
-
-    /**
      * Executes this tool.
      *
      * @throws Exception if execution of this tool fais.
@@ -199,15 +182,17 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Gets the model context of the instance.
      *
+     * @param classLoader The class loader to use for creating the context.
+     * 
      * @return The model context of the instance.
      *
      * @throws MojoExecutionException if getting the model context of the instance fails.
      */
-    protected ModelContext getModelContext() throws MojoExecutionException
+    protected ModelContext getModelContext( final ClassLoader classLoader ) throws MojoExecutionException
     {
         try
         {
-            final ModelContext context = ModelContext.createModelContext( this.getToolClassLoader() );
+            final ModelContext context = ModelContext.createModelContext( classLoader );
             this.setupModelContext( context );
             return context;
         }
@@ -232,28 +217,44 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Gets the tool for managing sources of the instance.
      *
+     * @param context The context of the tool.
+     * 
      * @return The tool for managing sources of the instance.
      *
+     * @throws NullPointerException if {@code context} is {@code null}.
      * @throws MojoExecutionException if getting the tool of the instance fails.
      */
-    protected JavaSources getJavaSourcesTool() throws MojoExecutionException
+    protected JavaSources getJavaSourcesTool( final ModelContext context ) throws MojoExecutionException
     {
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+
         final JavaSources tool = new JavaSources();
-        this.setupJomcTool( tool );
+        this.setupJomcTool( context, tool );
         return tool;
     }
 
     /**
      * Gets the tool for managing classes of the instance.
      *
+     * @param context The context of the tool.
+     * 
      * @return The tool for managing classes of the instance.
      *
+     * @throws NullPointerException if {@code context} is {@code null}.
      * @throws MojoExecutionException if getting the tool of the instance fails.
      */
-    protected JavaClasses getJavaClassesTool() throws MojoExecutionException
+    protected JavaClasses getJavaClassesTool( final ModelContext context ) throws MojoExecutionException
     {
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+
         final JavaClasses tool = new JavaClasses();
-        this.setupJomcTool( tool );
+        this.setupJomcTool( context, tool );
         return tool;
     }
 
@@ -526,15 +527,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
     }
 
-    protected Modules getToolModules() throws MojoExecutionException
+    protected Modules getToolModules( final ModelContext context ) throws MojoExecutionException
     {
         try
         {
             DefaultModelProvider.setDefaultModuleLocation( this.moduleLocation );
-            final ModelContext context = this.getModelContext();
             Modules modules = context.findModules();
-            final Module classpathModule = modules.getClasspathModule(
-                Modules.getDefaultClasspathModuleName(), this.getToolClassLoader() );
+            final Module classpathModule =
+                modules.getClasspathModule( Modules.getDefaultClasspathModuleName(), context.getClassLoader() );
 
             if ( classpathModule != null )
             {
@@ -559,9 +559,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         this.log( level, this.getMessage( "separator" ).format( null ), null );
     }
 
-    protected void logProcessingModule( final Module module ) throws MojoExecutionException
+    protected void logProcessingModule( final String toolName, final Module module ) throws MojoExecutionException
     {
-        this.log( Level.INFO, this.getProcessingModuleMesage( module ), null );
+        this.log( Level.INFO, this.getProcessingModuleMesage( toolName, module ), null );
     }
 
     protected void logMissingModule( final String moduleName ) throws MojoExecutionException
@@ -569,12 +569,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         this.log( Level.WARNING, this.getMissingModuleMesage( moduleName ), null );
     }
 
-    protected void logToolSuccess() throws MojoExecutionException
+    protected void logToolSuccess( final String toolName ) throws MojoExecutionException
     {
-        this.log( Level.INFO, this.getToolSuccessMessage(), null );
+        this.log( Level.INFO, this.getToolSuccessMessage( toolName ), null );
     }
 
-    protected void log( final Level level, final ModelValidationReport report ) throws MojoExecutionException
+    protected void log( final ModelContext context, final Level level, final ModelValidationReport report )
+        throws MojoExecutionException
     {
         try
         {
@@ -590,7 +591,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( !report.getDetails().isEmpty() )
             {
-                final Marshaller marshaller = this.getModelContext().createMarshaller();
+                final Marshaller marshaller = context.createMarshaller();
                 marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
 
                 for ( ModelValidationReport.Detail detail : report.getDetails() )
@@ -670,7 +671,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
     }
 
-    private void setupJomcTool( final JomcTool tool ) throws MojoExecutionException
+    private void setupJomcTool( final ModelContext context, final JomcTool tool ) throws MojoExecutionException
     {
         if ( this.verbose || this.getLog().isDebugEnabled() )
         {
@@ -691,7 +692,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         tool.setInputEncoding( this.sourceEncoding );
         tool.setOutputEncoding( this.sourceEncoding );
         tool.setProfile( this.templateProfile );
-        tool.setModules( this.getToolModules() );
+        tool.setModules( this.getToolModules( context ) );
     }
 
     private void setupModelContext( final ModelContext modelContext )
@@ -764,20 +765,20 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     }
 
-    private String getProcessingModuleMesage( final Module module ) throws MojoExecutionException
+    private String getProcessingModuleMesage( final String toolName, final Module module ) throws MojoExecutionException
     {
         return this.getMessage( "processingModule" ).format( new Object[]
             {
-                this.getToolName(), module.getName()
+                toolName, module.getName()
             } );
 
     }
 
-    private String getToolSuccessMessage() throws MojoExecutionException
+    private String getToolSuccessMessage( final String toolName ) throws MojoExecutionException
     {
         return this.getMessage( "toolSuccess" ).format( new Object[]
             {
-                this.getToolName()
+                toolName
             } );
 
     }

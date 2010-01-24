@@ -59,22 +59,13 @@ import org.jomc.tools.JavaClasses;
 public class ValidateMainJavaClassesMojo extends AbstractJomcMojo
 {
 
+    /** Constant for the name of the tool backing the mojo. */
+    private static final String TOOLNAME = "JavaClasses";
+
     /** Creates a new {@code ValidateMainJavaClassesMojo} instance. */
     public ValidateMainJavaClassesMojo()
     {
         super();
-    }
-
-    @Override
-    protected String getToolName()
-    {
-        return "JavaClasses";
-    }
-
-    @Override
-    protected ClassLoader getToolClassLoader() throws MojoExecutionException
-    {
-        return this.getMainClassLoader();
     }
 
     @Override
@@ -90,33 +81,35 @@ public class ValidateMainJavaClassesMojo extends AbstractJomcMojo
 
             }
 
-            final JavaClasses tool = this.getJavaClassesTool();
-            final ModelContext context = this.getModelContext();
+            final ModelContext context = this.getModelContext( this.getMainClassLoader() );
+            final JavaClasses tool = this.getJavaClassesTool( context );
             final JAXBContext jaxbContext = context.createContext();
             final Unmarshaller unmarshaller = context.createUnmarshaller();
             final Schema schema = context.createSchema();
 
             unmarshaller.setSchema( schema );
 
-            final ModelValidationReport validationReport = this.getModelContext().validateModel(
+            final ModelValidationReport validationReport = context.validateModel(
                 new JAXBSource( jaxbContext, new ObjectFactory().createModules( tool.getModules() ) ) );
 
-            this.log( validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
+            this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 
             if ( validationReport.isModelValid() )
             {
                 this.logSeparator( Level.INFO );
                 final Module module = tool.getModules().getModule( this.getJomcModuleName() );
+
                 if ( module != null )
                 {
-                    this.logProcessingModule( module );
+                    this.logProcessingModule( TOOLNAME, module );
                     tool.validateClasses( module, unmarshaller, classesDirectory );
-                    this.logToolSuccess();
+                    this.logToolSuccess( TOOLNAME );
                 }
                 else
                 {
                     this.logMissingModule( this.getJomcModuleName() );
                 }
+
                 this.logSeparator( Level.INFO );
             }
             else

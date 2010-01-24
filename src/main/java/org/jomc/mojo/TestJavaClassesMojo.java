@@ -62,6 +62,9 @@ import org.jomc.tools.JavaClasses;
 public class TestJavaClassesMojo extends AbstractJomcMojo
 {
 
+    /** Constant for the name of the tool backing the mojo. */
+    private static final String TOOLNAME = "JavaClasses";
+
     /**
      * Style sheet to use for transforming model objects.
      *
@@ -73,18 +76,6 @@ public class TestJavaClassesMojo extends AbstractJomcMojo
     public TestJavaClassesMojo()
     {
         super();
-    }
-
-    @Override
-    protected String getToolName()
-    {
-        return "JavaClasses";
-    }
-
-    @Override
-    protected ClassLoader getToolClassLoader() throws MojoExecutionException
-    {
-        return this.getTestClassLoader();
     }
 
     @Override
@@ -100,8 +91,8 @@ public class TestJavaClassesMojo extends AbstractJomcMojo
 
             }
 
-            final JavaClasses tool = this.getJavaClassesTool();
-            final ModelContext context = this.getModelContext();
+            final ModelContext context = this.getModelContext( this.getTestClassLoader() );
+            final JavaClasses tool = this.getJavaClassesTool( context );
             final JAXBContext jaxbContext = context.createContext();
             final Marshaller marshaller = context.createMarshaller();
             final Unmarshaller unmarshaller = context.createUnmarshaller();
@@ -113,7 +104,7 @@ public class TestJavaClassesMojo extends AbstractJomcMojo
             final ModelValidationReport validationReport = context.validateModel( new JAXBSource(
                 jaxbContext, new ObjectFactory().createModules( tool.getModules() ) ) );
 
-            this.log( validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
+            this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 
             if ( validationReport.isModelValid() )
             {
@@ -122,7 +113,7 @@ public class TestJavaClassesMojo extends AbstractJomcMojo
 
                 if ( module != null )
                 {
-                    this.logProcessingModule( module );
+                    this.logProcessingModule( TOOLNAME, module );
                     tool.commitClasses( module, marshaller, classesDirectory );
 
                     if ( this.modelObjectStylesheet != null )
@@ -136,12 +127,13 @@ public class TestJavaClassesMojo extends AbstractJomcMojo
 
                     }
 
-                    this.logToolSuccess();
+                    this.logToolSuccess( TOOLNAME );
                 }
                 else
                 {
                     this.logMissingModule( this.getJomcTestModuleName() );
                 }
+
                 this.logSeparator( Level.INFO );
             }
             else

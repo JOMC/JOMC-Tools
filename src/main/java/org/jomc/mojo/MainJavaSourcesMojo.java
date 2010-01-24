@@ -57,22 +57,13 @@ import org.jomc.tools.JavaSources;
 public final class MainJavaSourcesMojo extends AbstractJomcMojo
 {
 
+    /** Constant for the name of the tool backing the mojo. */
+    private static final String TOOLNAME = "JavaSources";
+
     /** Creates a new {@code MainJavaSourcesMojo} instance. */
     public MainJavaSourcesMojo()
     {
         super();
-    }
-
-    @Override
-    protected String getToolName()
-    {
-        return "JavaSources";
-    }
-
-    @Override
-    protected ClassLoader getToolClassLoader() throws MojoExecutionException
-    {
-        return this.getMainClassLoader();
     }
 
     @Override
@@ -89,29 +80,31 @@ public final class MainJavaSourcesMojo extends AbstractJomcMojo
 
             }
 
-            final JavaSources tool = this.getJavaSourcesTool();
-            final ModelContext context = this.getModelContext();
+            final ModelContext context = this.getModelContext( this.getMainClassLoader() );
+            final JavaSources tool = this.getJavaSourcesTool( context );
             final JAXBContext jaxbContext = context.createContext();
 
             final ModelValidationReport validationReport = context.validateModel( new JAXBSource(
                 jaxbContext, new ObjectFactory().createModules( tool.getModules() ) ) );
 
-            this.log( validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
+            this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 
             if ( validationReport.isModelValid() )
             {
                 this.logSeparator( Level.INFO );
                 final Module module = tool.getModules().getModule( this.getJomcModuleName() );
+
                 if ( module != null )
                 {
-                    this.logProcessingModule( module );
+                    this.logProcessingModule( TOOLNAME, module );
                     tool.manageSources( module, sourceDirectory );
-                    this.logToolSuccess();
+                    this.logToolSuccess( TOOLNAME );
                 }
                 else
                 {
                     this.logMissingModule( this.getJomcModuleName() );
                 }
+
                 this.logSeparator( Level.INFO );
             }
             else

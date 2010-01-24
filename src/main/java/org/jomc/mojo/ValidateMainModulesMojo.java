@@ -35,6 +35,7 @@ package org.jomc.mojo;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.jomc.model.ModelContext;
 import org.jomc.model.ModelValidationReport;
 
 /**
@@ -50,6 +51,9 @@ import org.jomc.model.ModelValidationReport;
 public class ValidateMainModulesMojo extends AbstractJomcMojo
 {
 
+    /** Constant for the name of the tool backing the mojo. */
+    private static final String TOOLNAME = "validate-main-modules";
+
     /** Creates a new {@code ValidateMainModulesMojo} instance. */
     public ValidateMainModulesMojo()
     {
@@ -57,23 +61,12 @@ public class ValidateMainModulesMojo extends AbstractJomcMojo
     }
 
     @Override
-    protected String getToolName()
-    {
-        return "validate-main-modules";
-    }
-
-    @Override
-    protected ClassLoader getToolClassLoader() throws MojoExecutionException
-    {
-        return this.getMainClassLoader();
-    }
-
-    @Override
     protected void executeTool() throws Exception
     {
-        final ModelValidationReport validationReport = this.getModelContext().validateModel( this.getToolModules() );
+        final ModelContext context = this.getModelContext( this.getMainClassLoader() );
+        final ModelValidationReport validationReport = context.validateModel( this.getToolModules( context ) );
 
-        this.log( validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
+        this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 
         if ( !validationReport.isModelValid() )
         {
@@ -81,7 +74,7 @@ public class ValidateMainModulesMojo extends AbstractJomcMojo
         }
 
         this.logSeparator( Level.INFO );
-        this.logToolSuccess();
+        this.logToolSuccess( TOOLNAME );
         this.logSeparator( Level.INFO );
     }
 
