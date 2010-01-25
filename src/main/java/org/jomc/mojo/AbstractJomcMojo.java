@@ -157,6 +157,20 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     private String jomcTestModuleName;
 
+    /**
+     * Directory holding compiled class files of the project.
+     *
+     * @parameter default-value="${project.build.outputDirectory}"
+     */
+    private String classesDirectory;
+
+    /**
+     * Directory holding compiled test class files of the project.
+     *
+     * @parameter default-value="${project.build.testOutputDirectory}"
+     */
+    private String testClassesDirectory;
+
     public void execute() throws MojoExecutionException, MojoFailureException
     {
         try
@@ -183,7 +197,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * Gets the model context of the instance.
      *
      * @param classLoader The class loader to use for creating the context.
-     * 
+     *
      * @return The model context of the instance.
      *
      * @throws MojoExecutionException if getting the model context of the instance fails.
@@ -218,7 +232,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * Gets the tool for managing sources of the instance.
      *
      * @param context The context of the tool.
-     * 
+     *
      * @return The tool for managing sources of the instance.
      *
      * @throws NullPointerException if {@code context} is {@code null}.
@@ -240,7 +254,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * Gets the tool for managing classes of the instance.
      *
      * @param context The context of the tool.
-     * 
+     *
      * @return The tool for managing classes of the instance.
      *
      * @throws NullPointerException if {@code context} is {@code null}.
@@ -331,10 +345,16 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *
      * @throws MojoExecutionException if getting the classpath elements fails.
      */
-    protected Set getMainClasspathElements() throws MojoExecutionException
+    protected Set<String> getMainClasspathElements() throws MojoExecutionException
     {
-        final Set elements = new HashSet();
-        elements.add( this.getMavenProject().getBuild().getOutputDirectory() );
+        final Set<String> elements = new HashSet<String>();
+
+        File f = new File( this.classesDirectory );
+        if ( !f.isAbsolute() )
+        {
+            f = new File( this.getMavenProject().getBasedir(), this.classesDirectory );
+        }
+        elements.add( f.getAbsolutePath() );
 
         for ( final Iterator it = this.getMavenProject().getRuntimeArtifacts().iterator(); it.hasNext(); )
         {
@@ -390,12 +410,23 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *
      * @throws MojoExecutionException if getting the classpath elements fails.
      */
-    protected Set getTestClasspathElements() throws MojoExecutionException
+    protected Set<String> getTestClasspathElements() throws MojoExecutionException
     {
-        final Set elements = new HashSet();
+        final Set<String> elements = new HashSet<String>();
 
-        elements.add( this.getMavenProject().getBuild().getOutputDirectory() );
-        elements.add( this.getMavenProject().getBuild().getTestOutputDirectory() );
+        File f = new File( this.classesDirectory );
+        if ( !f.isAbsolute() )
+        {
+            f = new File( this.getMavenProject().getBasedir(), this.classesDirectory );
+        }
+        elements.add( f.getAbsolutePath() );
+
+        f = new File( this.testClassesDirectory );
+        if ( !f.isAbsolute() )
+        {
+            f = new File( this.getMavenProject().getBasedir(), this.testClassesDirectory );
+        }
+        elements.add( f.getAbsolutePath() );
 
         for ( final Iterator it = this.getMavenProject().getTestArtifacts().iterator(); it.hasNext(); )
         {
