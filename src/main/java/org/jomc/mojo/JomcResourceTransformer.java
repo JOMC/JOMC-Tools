@@ -60,6 +60,8 @@ import org.jomc.model.bootstrap.BootstrapContext;
 import org.jomc.model.bootstrap.BootstrapException;
 import org.jomc.model.bootstrap.Schema;
 import org.jomc.model.bootstrap.Schemas;
+import org.jomc.model.bootstrap.Service;
+import org.jomc.model.bootstrap.Services;
 
 /**
  * Maven Shade Plugin {@code ResourceTransformer} implementation for assembling JOMC resources.
@@ -78,12 +80,16 @@ import org.jomc.model.bootstrap.Schemas;
  *   &lt;moduleExcludes&gt;
  *     &lt;moduleExclude&gt;module name&lt;/moduleExclude&gt;
  *   &lt;/moduleExcludes&gt;
- *   &lt;bootstrapResource&gt;META-INF/jomc-something-else-bootstrap.xml&lt;/bootstrapResource&gt;
- *   &lt;bootstrapResources&gt;
- *     &lt;bootstrapResource&gt;META-INF/jomc-bootstrap.xml&lt;/bootstrapResource&gt;
- *   &lt;/bootstrapResources&gt;
+ *   &lt;schemasResource&gt;META-INF/jomc-something-else-schemas.xml&lt;/schemasResource&gt;
+ *   &lt;schemaResources&gt;
+ *     &lt;schemaResource&gt;META-INF/jomc-schemas.xml&lt;/schemaResource&gt;
+ *   &lt;/schemaResources&gt;
+ *   &lt;servicesResource&gt;META-INF/jomc-something-else-services.xml&lt;/servicesResource&gt;
+ *   &lt;serviceResources&gt;
+ *     &lt;serviceResource&gt;META-INF/jomc-services.xml&lt;/serviceResource&gt;
+ *   &lt;/serviceResources&gt;
  *   &lt;modelObjectStylesheet&gt;Filename of a style sheet to use for transforming the merged model document.&lt;/modelObjectStylesheet&gt;
- *   &lt;bootstrapObjectStylesheet&gt;Filename of a style sheet to use for transforming the merged bootstrap document.&lt;/bootstrapObjectStylesheet&gt;
+ *   &lt;bootstrapObjectStylesheet&gt;Filename of a style sheet to use for transforming the merged bootstrap documents.&lt;/bootstrapObjectStylesheet&gt;
  * &lt;/transformer&gt;
  * </pre></p>
  *
@@ -121,13 +127,22 @@ public class JomcResourceTransformer implements ResourceTransformer
         "META-INF/jomc.xml"
     };
 
-    /** The resource name of the assembled bootstrap resources. */
-    private String bootstrapResource = "META-INF/jomc-bootstrap.xml";
+    /** The resource name of the assembled schema resources. */
+    private String schemasResource = "META-INF/jomc-schemas.xml";
 
-    /** Names of bootstrap resources to process. */
-    private String[] bootstrapResources =
+    /** Names of schema resources to process. */
+    private String[] schemaResources =
     {
-        "META-INF/jomc-bootstrap.xml"
+        "META-INF/jomc-schemas.xml"
+    };
+
+    /** The resource name of the assembled service resources. */
+    private String servicesResource = "META-INF/jomc-services.xml";
+
+    /** Names of service resources to process. */
+    private String[] serviceResources =
+    {
+        "META-INF/jomc-services.xml"
     };
 
     /** Model object style sheet to apply. */
@@ -142,8 +157,11 @@ public class JomcResourceTransformer implements ResourceTransformer
     /** Excluded modules. */
     private List<String> moduleExcludes;
 
-    /** Bootstrap resources. */
+    /** Schemas resources. */
     private final Schemas schemas = new Schemas();
+
+    /** Services resources. */
+    private final Services services = new Services();
 
     /** Model resources. */
     private final Modules modules = new Modules();
@@ -342,9 +360,20 @@ public class JomcResourceTransformer implements ResourceTransformer
                 }
             }
         }
-        if ( this.bootstrapResources != null )
+        if ( this.schemaResources != null )
         {
-            for ( String r : this.bootstrapResources )
+            for ( String r : this.schemaResources )
+            {
+                if ( arg.endsWith( r ) )
+                {
+                    this.currentResourceType = ResourceType.BOOTSTRAP_OBJECT_RESOURCE;
+                    return true;
+                }
+            }
+        }
+        if ( this.serviceResources != null )
+        {
+            for ( String r : this.serviceResources )
             {
                 if ( arg.endsWith( r ) )
                 {
@@ -376,10 +405,7 @@ public class JomcResourceTransformer implements ResourceTransformer
                     }
                     if ( modelObject instanceof Modules )
                     {
-                        for ( Module m : ( (Modules) modelObject ).getModule() )
-                        {
-                            this.modules.getModule().add( m );
-                        }
+                        this.modules.getModule().addAll( ( (Modules) modelObject ).getModule() );
                     }
                     if ( modelObject instanceof Module )
                     {
@@ -399,15 +425,21 @@ public class JomcResourceTransformer implements ResourceTransformer
                     }
                     if ( bootstrapObject instanceof Schemas )
                     {
-                        for ( Schema s : ( (Schemas) bootstrapObject ).getSchema() )
-                        {
-                            this.schemas.getSchema().add( s );
-                        }
+                        this.schemas.getSchema().addAll( ( (Schemas) bootstrapObject ).getSchema() );
                     }
                     if ( bootstrapObject instanceof Schema )
                     {
                         this.schemas.getSchema().add( (Schema) bootstrapObject );
                     }
+                    if ( bootstrapObject instanceof Services )
+                    {
+                        this.services.getService().addAll( ( (Services) bootstrapObject ).getService() );
+                    }
+                    if ( bootstrapObject instanceof Service )
+                    {
+                        this.services.getService().add( (Service) bootstrapObject );
+                    }
+
                     break;
 
                 default:
@@ -436,7 +468,9 @@ public class JomcResourceTransformer implements ResourceTransformer
 
     public boolean hasTransformedResource()
     {
-        return !( this.modules.getModule().isEmpty() && this.schemas.getSchema().isEmpty() );
+        return !( this.modules.getModule().isEmpty() && this.schemas.getSchema().isEmpty() &&
+                  this.services.getService().isEmpty() );
+
     }
 
     public void modifyOutputStream( final JarOutputStream out ) throws IOException
@@ -516,12 +550,40 @@ public class JomcResourceTransformer implements ResourceTransformer
                     copy = ( (JAXBElement<Schemas>) result.getResult() ).getValue();
                 }
 
-                out.putNextEntry( new JarEntry( this.bootstrapResource ) );
+                out.putNextEntry( new JarEntry( this.schemasResource ) );
 
                 final Marshaller m = this.getBootstrapMarshaller();
                 m.setSchema( this.getBootstrapSchema() );
                 m.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
                 m.marshal( bootstrapObjectFactory.createSchemas( copy ), out );
+            }
+
+            if ( !this.services.getService().isEmpty() )
+            {
+                final org.jomc.model.bootstrap.ObjectFactory bootstrapObjectFactory =
+                    new org.jomc.model.bootstrap.ObjectFactory();
+
+                Services copy = new Services( this.services );
+
+                if ( this.bootstrapObjectStylesheet != null )
+                {
+                    final Transformer transformer = TransformerFactory.newInstance().newTransformer(
+                        new StreamSource( this.bootstrapObjectStylesheet ) );
+
+                    final JAXBSource source =
+                        new JAXBSource( this.getBootstrapMarshaller(), bootstrapObjectFactory.createServices( copy ) );
+
+                    final JAXBResult result = new JAXBResult( this.getBootstrapUnmarshaller() );
+                    transformer.transform( source, result );
+                    copy = ( (JAXBElement<Services>) result.getResult() ).getValue();
+                }
+
+                out.putNextEntry( new JarEntry( this.servicesResource ) );
+
+                final Marshaller m = this.getBootstrapMarshaller();
+                m.setSchema( this.getBootstrapSchema() );
+                m.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
+                m.marshal( bootstrapObjectFactory.createServices( copy ), out );
             }
         }
         catch ( final TransformerConfigurationException e )

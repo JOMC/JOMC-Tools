@@ -60,12 +60,15 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.jomc.model.DefaultModelProcessor;
 import org.jomc.model.DefaultModelProvider;
 import org.jomc.model.ModelContext;
 import org.jomc.model.ModelException;
 import org.jomc.model.ModelValidationReport;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
+import org.jomc.model.bootstrap.DefaultSchemaProvider;
+import org.jomc.model.bootstrap.DefaultServiceProvider;
 import org.jomc.tools.JavaClasses;
 import org.jomc.tools.JavaSources;
 import org.jomc.tools.JomcTool;
@@ -101,11 +104,32 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private String templateProfile;
 
     /**
+     * The location to search for services.
+     *
+     * @parameter
+     */
+    private String serviceLocation;
+
+    /**
+     * The location to search for schemas.
+     *
+     * @parameter
+     */
+    private String schemaLocation;
+
+    /**
      * The location to search for modules.
      *
      * @parameter
      */
     private String moduleLocation;
+
+    /**
+     * The location to search for transformers.
+     *
+     * @parameter
+     */
+    private String transformerLocation;
 
     /**
      * The Maven project of the instance.
@@ -175,6 +199,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         try
         {
+            DefaultSchemaProvider.setDefaultSchemaLocation( this.schemaLocation );
+            DefaultServiceProvider.setDefaultServiceLocation( this.serviceLocation );
+            DefaultModelProvider.setDefaultModuleLocation( this.moduleLocation );
+            DefaultModelProcessor.setDefaultTransformerLocation( this.transformerLocation );
+
             this.logSeparator( Level.INFO );
             this.log( Level.INFO, this.getMessage( "title" ).format( null ), null );
             this.logSeparator( Level.INFO );
@@ -183,6 +212,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         catch ( final Exception e )
         {
             throw new MojoExecutionException( e.getMessage(), e );
+        }
+        finally
+        {
+            DefaultSchemaProvider.setDefaultSchemaLocation( null );
+            DefaultServiceProvider.setDefaultServiceLocation( null );
+            DefaultModelProvider.setDefaultModuleLocation( null );
+            DefaultModelProcessor.setDefaultTransformerLocation( null );
         }
     }
 
@@ -562,7 +598,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         try
         {
-            DefaultModelProvider.setDefaultModuleLocation( this.moduleLocation );
             Modules modules = context.findModules();
             final Module classpathModule =
                 modules.getClasspathModule( Modules.getDefaultClasspathModuleName(), context.getClassLoader() );
