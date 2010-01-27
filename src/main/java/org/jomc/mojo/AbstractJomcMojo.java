@@ -205,7 +205,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             DefaultModelProcessor.setDefaultTransformerLocation( this.transformerLocation );
 
             this.logSeparator( Level.INFO );
-            this.log( Level.INFO, this.getMessage( "title" ).format( null ), null );
+            this.log( Level.INFO, getMessage( "title" ), null );
             this.logSeparator( Level.INFO );
             this.executeTool();
         }
@@ -327,7 +327,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 if ( !urls.contains( url ) )
                 {
                     urls.add( url );
-                    this.log( Level.FINE, this.getClasspathElementMessage( url.toExternalForm() ), null );
+                    this.log( Level.FINE, getMessage( "classpathElement", url.toExternalForm() ), null );
                 }
             }
 
@@ -360,7 +360,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 if ( !urls.contains( url ) )
                 {
                     urls.add( url );
-                    this.log( Level.FINE, this.getClasspathElementMessage( url.toExternalForm() ), null );
+                    this.log( Level.FINE, getMessage( "classpathElement", url.toExternalForm() ), null );
                 }
             }
 
@@ -398,7 +398,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( a.getFile() == null )
             {
-                this.log( Level.WARNING, this.getIgnoredMessage( a.toString() ), null );
+                this.log( Level.WARNING, getMessage( "ignored", a.toString() ), null );
                 continue;
             }
 
@@ -410,7 +410,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
 
             final String element = a.getFile().getAbsolutePath();
-            this.log( Level.FINE, this.getRuntimeElementMessage( element ), null );
+            this.log( Level.FINE, getMessage( "runtimeElement", element ), null );
             elements.add( element );
         }
 
@@ -420,7 +420,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( a.getFile() == null )
             {
-                this.log( Level.WARNING, this.getIgnoredMessage( a.toString() ), null );
+                this.log( Level.WARNING, getMessage( "ignored", a.toString() ), null );
                 continue;
             }
 
@@ -432,7 +432,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
 
             final String element = a.getFile().getAbsolutePath();
-            this.log( Level.FINE, this.getCompileElementMessage( element ), null );
+            this.log( Level.FINE, getMessage( "compiletimeElement", element ), null );
             elements.add( element );
         }
 
@@ -470,7 +470,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( a.getFile() == null )
             {
-                this.log( Level.WARNING, this.getIgnoredMessage( a.toString() ), null );
+                this.log( Level.WARNING, getMessage( "ignored", a.toString() ), null );
                 continue;
             }
 
@@ -482,7 +482,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
 
             final String element = a.getFile().getAbsolutePath();
-            this.log( Level.FINE, this.getTestElementMessage( element ), null );
+            this.log( Level.FINE, getMessage( "testElement", element ), null );
             elements.add( element );
         }
 
@@ -622,22 +622,22 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     protected void logSeparator( final Level level ) throws MojoExecutionException
     {
-        this.log( level, this.getMessage( "separator" ).format( null ), null );
+        this.log( level, getMessage( "separator" ), null );
     }
 
-    protected void logProcessingModule( final String toolName, final Module module ) throws MojoExecutionException
+    protected void logProcessingModule( final String toolName, final String moduleName ) throws MojoExecutionException
     {
-        this.log( Level.INFO, this.getProcessingModuleMesage( toolName, module ), null );
+        this.log( Level.INFO, getMessage( "processingModule", toolName, moduleName ), null );
     }
 
     protected void logMissingModule( final String moduleName ) throws MojoExecutionException
     {
-        this.log( Level.WARNING, this.getMissingModuleMesage( moduleName ), null );
+        this.log( Level.WARNING, getMessage( "missingModule", moduleName ), null );
     }
 
     protected void logToolSuccess( final String toolName ) throws MojoExecutionException
     {
-        this.log( Level.INFO, this.getToolSuccessMessage( toolName ), null );
+        this.log( Level.INFO, getMessage( "toolSuccess", toolName ), null );
     }
 
     protected void log( final ModelContext context, final Level level, final ModelValidationReport report )
@@ -652,7 +652,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( !report.isModelValid() )
             {
-                this.log( level, this.getMessage( "invalidModel" ).format( null ), null );
+                this.log( level, getMessage( "invalidModel" ), null );
             }
 
             if ( !report.getDetails().isEmpty() )
@@ -779,82 +779,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         } );
     }
 
-    private MessageFormat getMessage( final String key )
+    private static String getMessage( final String key, final Object... args )
     {
-        return new MessageFormat( ResourceBundle.getBundle( AbstractJomcMojo.class.getName().replace( '.', '/' ) ).
-            getString( key ) );
-
-    }
-
-    private String getIgnoredMessage( final String item )
-    {
-        return this.getMessage( "ignored" ).format( new Object[]
-            {
-                item
-            } );
-
-    }
-
-    private String getRuntimeElementMessage( final String element )
-    {
-        return this.getMessage( "runtimeElement" ).format( new Object[]
-            {
-                element
-            } );
-
-    }
-
-    private String getTestElementMessage( final String element )
-    {
-        return this.getMessage( "testElement" ).format( new Object[]
-            {
-                element
-            } );
-
-    }
-
-    private String getCompileElementMessage( final String element )
-    {
-        return this.getMessage( "compiletimeElement" ).format( new Object[]
-            {
-                element
-            } );
-
-    }
-
-    private String getClasspathElementMessage( final String element )
-    {
-        return this.getMessage( "classpathElement" ).format( new Object[]
-            {
-                element
-            } );
-
-    }
-
-    private String getProcessingModuleMesage( final String toolName, final Module module ) throws MojoExecutionException
-    {
-        return this.getMessage( "processingModule" ).format( new Object[]
-            {
-                toolName, module.getName()
-            } );
-
-    }
-
-    private String getToolSuccessMessage( final String toolName ) throws MojoExecutionException
-    {
-        return this.getMessage( "toolSuccess" ).format( new Object[]
-            {
-                toolName
-            } );
-
-    }
-
-    private String getMissingModuleMesage( final String moduleName )
-    {
-        return this.getMessage( "missingModule" ).format( new Object[]
-            {
-                moduleName
-            } );
+        return MessageFormat.format( ResourceBundle.getBundle( AbstractJomcMojo.class.getName().replace( '.', '/' ) ).
+            getString( key ), args );
 
     }
 

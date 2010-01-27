@@ -70,7 +70,7 @@ public class ValidateMainModulesMojo extends AbstractJomcMojo
 
         if ( !validationReport.isModelValid() )
         {
-            throw new MojoExecutionException( this.getMessage( "failed" ) );
+            throw new MojoExecutionException( getMessage( "failed" ) );
         }
 
         this.logSeparator( Level.INFO );
@@ -78,7 +78,7 @@ public class ValidateMainModulesMojo extends AbstractJomcMojo
         this.logSeparator( Level.INFO );
     }
 
-    private String getMessage( final String key )
+    private static String getMessage( final String key )
     {
         return ResourceBundle.getBundle( ValidateMainModulesMojo.class.getName().replace( '.', '/' ) ).getString( key );
     }

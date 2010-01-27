@@ -101,7 +101,7 @@ public class ValidateTestJavaClassesMojo extends AbstractJomcMojo
 
                 if ( module != null )
                 {
-                    this.logProcessingModule( TOOLNAME, module );
+                    this.logProcessingModule( TOOLNAME, module.getName() );
                     tool.validateClasses( module, unmarshaller, classesDirectory );
                     this.logToolSuccess( TOOLNAME );
                 }
@@ -114,18 +114,18 @@ public class ValidateTestJavaClassesMojo extends AbstractJomcMojo
             }
             else
             {
-                throw new MojoExecutionException( this.getMessage( "failed" ) );
+                throw new MojoExecutionException( getMessage( "failed" ) );
             }
         }
         else
         {
             this.logSeparator( Level.INFO );
-            this.log( Level.INFO, this.getMessage( "disabled" ), null );
+            this.log( Level.INFO, getMessage( "disabled" ), null );
             this.logSeparator( Level.INFO );
         }
     }
 
-    private String getMessage( final String key )
+    private static String getMessage( final String key )
     {
         return ResourceBundle.getBundle( ValidateTestJavaClassesMojo.class.getName().replace( '.', '/' ) ).
             getString( key );
