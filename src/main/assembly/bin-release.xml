@@ -67,12 +67,18 @@
       <source>${project.build.directory}/JOMC_LICENSE.txt</source>
     </file>
     <file>
-      <destName>relocate-classes.xsl</destName>
       <fileMode>0444</fileMode>
       <filtered>false</filtered>
       <lineEnding>dos</lineEnding>
       <outputDirectory>/examples/xslt</outputDirectory>
-      <source>src/main/jomc/relocations.xsl</source>
+      <source>src/main/jomc/model-relocations.xsl</source>
+    </file>
+    <file>
+      <fileMode>0444</fileMode>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <outputDirectory>/examples/xslt</outputDirectory>
+      <source>src/main/jomc/bootstrap-relocations.xsl</source>
     </file>
     <file>
       <destName>jomc-cli.xml</destName>

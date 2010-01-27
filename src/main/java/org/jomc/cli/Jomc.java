@@ -51,6 +51,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jomc.model.DefaultModelProcessor;
 import org.jomc.model.DefaultModelProvider;
 import org.jomc.model.bootstrap.DefaultSchemaProvider;
+import org.jomc.model.bootstrap.DefaultServiceProvider;
 
 // SECTION-START[Documentation]
 // <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
@@ -269,7 +270,8 @@ public class Jomc
         {
             DefaultModelProvider.setDefaultModuleLocation( "META-INF/jomc-cli.xml" );
             DefaultModelProcessor.setDefaultTransformerLocation( "META-INF/jomc-cli.xsl" );
-            DefaultSchemaProvider.setDefaultSchemaLocation( "META-INF/jomc-bootstrap.xml" );
+            DefaultSchemaProvider.setDefaultSchemaLocation( "META-INF/jomc-schemas.xml" );
+            DefaultServiceProvider.setDefaultServiceLocation( "META-INF/jomc-services.xml" );
 
             final StringBuilder commandInfo = new StringBuilder();
 
@@ -339,6 +341,7 @@ public class Jomc
             DefaultModelProvider.setDefaultModuleLocation( null );
             DefaultModelProcessor.setDefaultTransformerLocation( null );
             DefaultSchemaProvider.setDefaultSchemaLocation( null );
+            DefaultServiceProvider.setDefaultServiceLocation( null );
 
             final Options options = cmd.getOptions();
             options.addOption( this.getDebugOption() );
@@ -400,6 +403,7 @@ public class Jomc
             DefaultModelProvider.setDefaultModuleLocation( null );
             DefaultModelProcessor.setDefaultTransformerLocation( null );
             DefaultSchemaProvider.setDefaultSchemaLocation( null );
+            DefaultServiceProvider.setDefaultServiceLocation( null );
             this.getPrintWriter().flush();
         }
     }
