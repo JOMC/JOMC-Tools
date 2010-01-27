@@ -99,7 +99,7 @@
   </files>
   <fileSets>
     <fileSet>
-      <directory>${project.build.directory}/maven-shared-archive-resources/META-INF</directory>
+      <directory>${remoteResourcesOutputDirectory}/META-INF</directory>
       <fileMode>0444</fileMode>
       <directoryMode>0755</directoryMode>
       <outputDirectory>/</outputDirectory>
