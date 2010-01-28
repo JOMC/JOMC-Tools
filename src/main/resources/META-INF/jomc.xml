@@ -296,6 +296,100 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Schema Location Option" name="${project.name} Schema Location Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="scl" override="true"/>
+        <property name="longOpt" value="schema-location" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Location of classpath schemas.</text>
+            <text language="de">Ort der Klassenpfad-Schemata.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">location</text>
+            <text language="de">Ort</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Service Location Option" name="${project.name} Service Location Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="sel" override="true"/>
+        <property name="longOpt" value="service-location" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Location of classpath services.</text>
+            <text language="de">Ort der Klassenpfad-Services.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">location</text>
+            <text language="de">Ort</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Transformer Location Option"
+                    name="${project.name} Transformer Location Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="trl" override="true"/>
+        <property name="longOpt" value="transformer-location" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Location of classpath transformers.</text>
+            <text language="de">Ort der Klassenpfad-Transformatoren.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">location</text>
+            <text language="de">Ort</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} Module Name Option" name="${project.name} Module Name Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
                     vendor="${project.organization.name}">
@@ -936,6 +1030,15 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
         <dependency name="ModuleLocationOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Module Location Option" bound="true"/>
+
+        <dependency name="SchemaLocationOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Schema Location Option" bound="true"/>
+
+        <dependency name="ServiceLocationOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Service Location Option" bound="true"/>
+
+        <dependency name="TransformerLocationOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Transformer Location Option" bound="true"/>
 
         <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Module Name Option" bound="true"/>
