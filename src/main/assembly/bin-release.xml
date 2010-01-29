@@ -238,7 +238,6 @@
         <exclude>com.sun.xml.bind:jaxb-impl</exclude>
         <exclude>org.jomc:jomc-api</exclude>
         <exclude>org.jomc:jomc-cli</exclude>
-        <exclude>org.jomc:jomc-spi</exclude>
         <exclude>javax.annotation:jsr250-api</exclude>
         <exclude>javax.xml.stream:stax-api</exclude>
         <exclude>commons-cli:commons-cli</exclude>
