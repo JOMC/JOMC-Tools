@@ -119,6 +119,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
           <template defaultLanguage="en">
             <text language="en"/>
           </template>
+          <arguments>
+            <argument index="0" name="valueSeparator"/>
+          </arguments>
         </message>
         <message name="argumentDescription">
           <documentation defaultLanguage="en">
@@ -221,9 +224,12 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Classpath elements separated by '':''. If starting with a ''@'' character, a file name of a file holding classpath elements.</text>
-            <text language="de">Klassenpfad-Elemente mit '':'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Klassenpfad-Elementen.</text>
+            <text language="en">Classpath elements separated by ''{0}''. If starting with a ''@'' character, a file name of a file holding classpath elements.</text>
+            <text language="de">Klassenpfad-Elemente mit ''{0}'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Klassenpfad-Elementen.</text>
           </template>
+          <arguments>
+            <argument index="0" name="valueSeparator"/>
+          </arguments>
         </message>
         <message name="argumentDescription" override="true">
           <template defaultLanguage="en">
@@ -252,9 +258,12 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Document filenames separated by '':''. If starting with a ''@'' character, a file name of a file holding document filenames.</text>
-            <text language="de">Dokument-Dateinamen mit '':'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Dokument-Dateinamen.</text>
+            <text language="en">Document filenames separated by ''{0}''. If starting with a ''@'' character, a file name of a file holding document filenames.</text>
+            <text language="de">Dokument-Dateinamen mit ''{0}'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Dokument-Dateinamen.</text>
           </template>
+          <arguments>
+            <argument index="0" name="valueSeparator"/>
+          </arguments>
         </message>
         <message name="argumentDescription" override="true">
           <template defaultLanguage="en">
@@ -874,9 +883,12 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Module names separated by '':'' of modules to include.</text>
-            <text language="de">Modul-Namen einzuschließender Module mit '':'' getrennt.</text>
+            <text language="en">Module names separated by ''{0}'' of modules to include.</text>
+            <text language="de">Modul-Namen einzuschließender Module mit ''{0}'' getrennt.</text>
           </template>
+          <arguments>
+            <argument index="0" name="valueSeparator"/>
+          </arguments>
         </message>
         <message name="argumentDescription" override="true">
           <template defaultLanguage="en">
@@ -906,9 +918,12 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Module names separated by '':'' of modules to exclude.</text>
-            <text language="de">Modul-Namen auszuschließender Module mit '':'' getrennt.</text>
+            <text language="en">Module names separated by ''{0}'' of modules to exclude.</text>
+            <text language="de">Modul-Namen auszuschließender Module mit ''{0}'' getrennt.</text>
           </template>
+          <arguments>
+            <argument index="0" name="valueSeparator"/>
+          </arguments>
         </message>
         <message name="argumentDescription" override="true">
           <template defaultLanguage="en">

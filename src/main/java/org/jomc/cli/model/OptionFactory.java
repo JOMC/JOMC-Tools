@@ -36,6 +36,7 @@
 // SECTION-END
 package org.jomc.cli.model;
 
+import java.io.File;
 import org.apache.commons.cli.Option;
 
 // SECTION-START[Documentation]
@@ -104,7 +105,11 @@ public class OptionFactory
 
     public Option getObject()
     {
-        final Option option = new Option( this.getOpt(), this.getDescriptionMessage( this.getLocale() ) );
+        final char valueSeparator = this.getValueSeparator() == ':' ? File.pathSeparatorChar : this.getValueSeparator();
+
+        final Option option = new Option( this.getOpt(), this.getDescriptionMessage(
+            this.getLocale(), Character.toString( valueSeparator ) ) );
+
         option.setArgs( this.getNumberOfArgs() );
         option.setLongOpt( this.getLongOpt() );
         option.setOptionalArg( this.isOptionalArg() );
@@ -112,7 +117,8 @@ public class OptionFactory
 
         if ( option.getArgs() > 0 || option.getArgs() == Option.UNLIMITED_VALUES )
         {
-            option.setValueSeparator( this.getValueSeparator() );
+            option.setValueSeparator( valueSeparator );
+
             if ( this.getArgumentDescriptionMessage( this.getLocale() ).trim().length() > 0 )
             {
                 option.setArgName( this.getArgumentDescriptionMessage( this.getLocale() ) );
@@ -273,15 +279,16 @@ public class OptionFactory
      * <tr><td valign="top">English:</td><td valign="top"><pre></pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
+     * @param valueSeparator Format argument.
      * @return Display description of the option.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-16-SNAPSHOT/jomc-tools" )
-    private String getDescriptionMessage( final java.util.Locale locale )
+    private String getDescriptionMessage( final java.util.Locale locale, final java.lang.String valueSeparator )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "description", locale );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "description", locale, valueSeparator );
         assert _m != null : "'description' message not found.";
         return _m;
     }
