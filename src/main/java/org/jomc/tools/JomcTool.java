@@ -260,10 +260,8 @@ public abstract class JomcTool
         if ( this.logLevel == null )
         {
             this.logLevel = getDefaultLogLevel();
-            this.log( Level.CONFIG, this.getMessage( "defaultLogLevelInfo", new Object[]
-                {
-                    this.getClass().getCanonicalName(), this.logLevel.getLocalizedName()
-                } ), null );
+            this.log( Level.CONFIG, getMessage( "defaultLogLevelInfo", this.getClass().getCanonicalName(),
+                                                this.logLevel.getLocalizedName() ), null );
 
         }
 
@@ -1278,15 +1276,11 @@ public abstract class JomcTool
     {
         if ( this.templateEncoding == null )
         {
-            this.templateEncoding = this.getMessage( "buildSourceEncoding", null );
+            this.templateEncoding = getMessage( "buildSourceEncoding" );
             this.templateCache.clear();
             if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.CONFIG, this.getMessage( "defaultTemplateEncoding", new Object[]
-                    {
-                        this.templateEncoding
-                    } ), null );
-
+                this.log( Level.CONFIG, getMessage( "defaultTemplateEncoding", this.templateEncoding ), null );
             }
         }
 
@@ -1320,11 +1314,7 @@ public abstract class JomcTool
             this.inputEncoding = new InputStreamReader( new ByteArrayInputStream( NO_BYTES ) ).getEncoding();
             if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.CONFIG, this.getMessage( "defaultInputEncoding", new Object[]
-                    {
-                        this.inputEncoding
-                    } ), null );
-
+                this.log( Level.CONFIG, getMessage( "defaultInputEncoding", this.inputEncoding ), null );
             }
         }
 
@@ -1357,11 +1347,7 @@ public abstract class JomcTool
             this.outputEncoding = new OutputStreamWriter( new ByteArrayOutputStream() ).getEncoding();
             if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.CONFIG, this.getMessage( "defaultOutputEncoding", new Object[]
-                    {
-                        this.outputEncoding
-                    } ), null );
-
+                this.log( Level.CONFIG, getMessage( "defaultOutputEncoding", this.outputEncoding ), null );
             }
         }
 
@@ -1392,13 +1378,10 @@ public abstract class JomcTool
         if ( this.profile == null )
         {
             this.profile = DEFAULT_PROFILE;
+            this.templateCache.clear();
             if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.CONFIG, this.getMessage( "defaultProfile", new Object[]
-                    {
-                        this.profile
-                    } ), null );
-
+                this.log( Level.CONFIG, getMessage( "defaultProfile", this.profile ), null );
             }
         }
 
@@ -1458,16 +1441,17 @@ public abstract class JomcTool
                     TEMPLATE_PREFIX + this.getProfile() + "/" + templateName, this.getTemplateEncoding() );
 
                 templates.put( templateName, template );
+
+                if ( this.templateCache.get() == null )
+                {
+                    this.templateCache = new WeakReference<Map<String, Template>>( templates );
+                }
             }
             catch ( final ResourceNotFoundException e )
             {
                 if ( this.isLoggable( Level.CONFIG ) )
                 {
-                    this.log( Level.CONFIG, this.getMessage( "templateNotFound", new Object[]
-                        {
-                            templateName, this.getProfile()
-                        } ), e );
-
+                    this.log( Level.CONFIG, getMessage( "templateNotFound", templateName, this.getProfile() ), e );
                 }
 
                 try
@@ -1477,39 +1461,28 @@ public abstract class JomcTool
 
                     if ( this.isLoggable( Level.CONFIG ) )
                     {
-                        this.log( Level.CONFIG, this.getMessage( "defaultTemplate", new Object[]
-                            {
-                                templateName, DEFAULT_PROFILE
-                            } ), e );
-
+                        this.log( Level.CONFIG, getMessage( "defaultTemplate", templateName, DEFAULT_PROFILE ), e );
                     }
 
                     templates.put( templateName, template );
+
+                    if ( this.templateCache.get() == null )
+                    {
+                        this.templateCache = new WeakReference<Map<String, Template>>( templates );
+                    }
                 }
                 catch ( final ResourceNotFoundException e2 )
                 {
-                    throw new ToolException( this.getMessage( "templateNotFound", new Object[]
-                        {
-                            templateName, DEFAULT_PROFILE
-                        } ), e2 );
-
+                    throw new ToolException( getMessage( "templateNotFound", templateName, DEFAULT_PROFILE ), e2 );
                 }
                 catch ( final Exception e2 )
                 {
-                    throw new ToolException( this.getMessage( "failedGettingTemplate", new Object[]
-                        {
-                            templateName
-                        } ), e2 );
-
+                    throw new ToolException( getMessage( "failedGettingTemplate", templateName ), e2 );
                 }
             }
             catch ( final Exception e )
             {
-                throw new ToolException( this.getMessage( "failedGettingTemplate", new Object[]
-                    {
-                        templateName
-                    } ), e );
-
+                throw new ToolException( getMessage( "failedGettingTemplate", templateName ), e );
             }
         }
 
@@ -1554,15 +1527,16 @@ public abstract class JomcTool
         return idx != -1 ? identifier.substring( 0, idx ) : "";
     }
 
-    private String getMessage( final String key, final Object args )
+    private static String getMessage( final String key, final Object... arguments )
     {
         if ( key == null )
         {
             throw new NullPointerException( "key" );
         }
 
-        final ResourceBundle b = ResourceBundle.getBundle( JomcTool.class.getName().replace( '.', '/' ) );
-        return args == null ? b.getString( key ) : new MessageFormat( b.getString( key ) ).format( args );
+        return MessageFormat.format( ResourceBundle.getBundle( JomcTool.class.getName().replace( '.', '/' ) ).
+            getString( key ), arguments );
+
     }
 
 }

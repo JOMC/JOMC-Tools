@@ -119,11 +119,7 @@ public class JavaBundles extends JomcTool
             this.defaultLocale = Locale.getDefault();
             if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.CONFIG, this.getMessage( "defaultLocale", new Object[]
-                    {
-                        this.defaultLocale.toString()
-                    } ), null );
-
+                this.log( Level.CONFIG, getMessage( "defaultLocale", this.defaultLocale ), null );
             }
         }
 
@@ -232,20 +228,14 @@ public class JavaBundles extends JomcTool
 
                 if ( !bundleFile.getParentFile().exists() && !bundleFile.getParentFile().mkdirs() )
                 {
-                    throw new ToolException( this.getMessage( "failedCreatingDirectory", new Object[]
-                        {
-                            bundleFile.getParentFile().getAbsolutePath()
-                        } ) );
+                    throw new ToolException( getMessage( "failedCreatingDirectory",
+                                                         bundleFile.getParentFile().getAbsolutePath() ) );
 
                 }
 
                 if ( this.isLoggable( Level.INFO ) )
                 {
-                    this.log( Level.INFO, this.getMessage( "writing", new Object[]
-                        {
-                            bundleFile.getCanonicalPath()
-                        } ), null );
-
+                    this.log( Level.INFO, getMessage( "writing", bundleFile.getCanonicalPath() ), null );
                 }
 
                 FileUtils.writeStringToFile( bundleFile, this.getResourceBundleSources( implementation ),
@@ -356,20 +346,14 @@ public class JavaBundles extends JomcTool
 
                     if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
                     {
-                        throw new ToolException( this.getMessage( "failedCreatingDirectory", new Object[]
-                            {
-                                file.getParentFile().getAbsolutePath()
-                            } ) );
+                        throw new ToolException( getMessage( "failedCreatingDirectory",
+                                                             file.getParentFile().getAbsolutePath() ) );
 
                     }
 
                     if ( this.isLoggable( Level.INFO ) )
                     {
-                        this.log( Level.INFO, this.getMessage( "writing", new Object[]
-                            {
-                                file.getCanonicalPath()
-                            } ), null );
-
+                        this.log( Level.INFO, getMessage( "writing", file.getCanonicalPath() ), null );
                     }
 
                     OutputStream out = null;
@@ -404,20 +388,14 @@ public class JavaBundles extends JomcTool
                     final File file = new File( resourcesDirectory, bundlePath + ".properties" );
                     if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
                     {
-                        throw new ToolException( this.getMessage( "failedCreatingDirectory", new Object[]
-                            {
-                                file.getParentFile().getAbsolutePath()
-                            } ) );
+                        throw new ToolException( getMessage( "failedCreatingDirectory",
+                                                             file.getParentFile().getAbsolutePath() ) );
 
                     }
 
                     if ( this.isLoggable( Level.INFO ) )
                     {
-                        this.log( Level.INFO, this.getMessage( "writing", new Object[]
-                            {
-                                file.getCanonicalPath()
-                            } ), null );
-
+                        this.log( Level.INFO, getMessage( "writing", file.getCanonicalPath() ), null );
                     }
 
                     OutputStream out = null;
@@ -560,10 +538,16 @@ public class JavaBundles extends JomcTool
         }
     }
 
-    private String getMessage( final String key, final Object args )
+    private static String getMessage( final String key, final Object... arguments )
     {
-        final ResourceBundle b = ResourceBundle.getBundle( JavaBundles.class.getName().replace( '.', '/' ) );
-        return new MessageFormat( b.getString( key ) ).format( args );
+        if ( key == null )
+        {
+            throw new NullPointerException( "key" );
+        }
+
+        return MessageFormat.format( ResourceBundle.getBundle( JavaBundles.class.getName().replace( '.', '/' ) ).
+            getString( key ), arguments );
+
     }
 
 }

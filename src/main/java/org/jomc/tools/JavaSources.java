@@ -265,40 +265,27 @@ public class JavaSources extends JomcTool
                 }
                 catch ( final IOException e )
                 {
-                    throw new ToolException( this.getMessage( "failedEditing", new Object[]
-                        {
-                            f.getCanonicalPath(), e.getMessage()
-                        } ), e );
-
+                    throw new ToolException( getMessage( "failedEditing", f.getCanonicalPath(), e.getMessage() ), e );
                 }
 
                 if ( !editor.isLicenseSectionPresent() && this.isLoggable( Level.INFO ) )
                 {
-                    this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
-                        {
-                            LICENSE_SECTION_NAME,
-                            f.getCanonicalPath()
-                        } ), null );
+                    this.log( Level.INFO, getMessage( "missingOptionalSection", LICENSE_SECTION_NAME,
+                                                      f.getCanonicalPath() ), null );
 
                 }
 
                 if ( !editor.isAnnotationsSectionPresent() )
                 {
-                    throw new IOException( this.getMessage( "missingSection", new Object[]
-                        {
-                            ANNOTATIONS_SECTION_NAME,
-                            f.getCanonicalPath()
-                        } ) );
+                    throw new IOException( getMessage( "missingSection", ANNOTATIONS_SECTION_NAME,
+                                                       f.getCanonicalPath() ) );
 
                 }
 
                 if ( !editor.isDocumentationSectionPresent() && this.isLoggable( Level.INFO ) )
                 {
-                    this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
-                        {
-                            DOCUMENTATION_SECTION_NAME,
-                            f.getCanonicalPath()
-                        } ), null );
+                    this.log( Level.INFO, getMessage( "missingOptionalSection", DOCUMENTATION_SECTION_NAME,
+                                                      f.getCanonicalPath() ), null );
 
                 }
 
@@ -306,20 +293,14 @@ public class JavaSources extends JomcTool
                 {
                     if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
                     {
-                        throw new ToolException( this.getMessage( "failedCreatingDirectory", new Object[]
-                            {
-                                f.getParentFile().getAbsolutePath()
-                            } ) );
+                        throw new ToolException( getMessage( "failedCreatingDirectory",
+                                                             f.getParentFile().getAbsolutePath() ) );
 
                     }
 
                     if ( this.isLoggable( Level.INFO ) )
                     {
-                        this.log( Level.INFO, this.getMessage( "editing", new Object[]
-                            {
-                                f.getCanonicalPath()
-                            } ), null );
-
+                        this.log( Level.INFO, getMessage( "editing", f.getCanonicalPath() ), null );
                     }
 
                     FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
@@ -371,40 +352,27 @@ public class JavaSources extends JomcTool
                 }
                 catch ( final IOException e )
                 {
-                    throw new ToolException( this.getMessage( "failedEditing", new Object[]
-                        {
-                            f.getCanonicalPath(), e.getMessage()
-                        } ), e );
-
+                    throw new ToolException( getMessage( "failedEditing", f.getCanonicalPath(), e.getMessage() ), e );
                 }
 
                 if ( !editor.isLicenseSectionPresent() && this.isLoggable( Level.INFO ) )
                 {
-                    this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
-                        {
-                            LICENSE_SECTION_NAME,
-                            f.getCanonicalPath()
-                        } ), null );
+                    this.log( Level.INFO, getMessage( "missingOptionalSection", LICENSE_SECTION_NAME,
+                                                      f.getCanonicalPath() ), null );
 
                 }
 
                 if ( !editor.isAnnotationsSectionPresent() )
                 {
-                    throw new ToolException( this.getMessage( "missingSection", new Object[]
-                        {
-                            ANNOTATIONS_SECTION_NAME,
-                            f.getCanonicalPath()
-                        } ) );
+                    throw new ToolException( getMessage( "missingSection", ANNOTATIONS_SECTION_NAME,
+                                                         f.getCanonicalPath() ) );
 
                 }
 
                 if ( !editor.isDocumentationSectionPresent() && this.isLoggable( Level.INFO ) )
                 {
-                    this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
-                        {
-                            DOCUMENTATION_SECTION_NAME,
-                            f.getCanonicalPath()
-                        } ), null );
+                    this.log( Level.INFO, getMessage( "missingOptionalSection", DOCUMENTATION_SECTION_NAME,
+                                                      f.getCanonicalPath() ), null );
 
                 }
 
@@ -416,30 +384,21 @@ public class JavaSources extends JomcTool
                     if ( specifications != null &&
                          !( specifications.getSpecification().isEmpty() && specifications.getReference().isEmpty() ) )
                     {
-                        throw new ToolException( this.getMessage( "missingSection", new Object[]
-                            {
-                                CONSTRUCTORS_SECTION_NAME,
-                                f.getCanonicalPath()
-                            } ) );
+                        throw new ToolException( getMessage( "missingSection", CONSTRUCTORS_SECTION_NAME,
+                                                             f.getCanonicalPath() ) );
 
                     }
                     else if ( this.isLoggable( Level.INFO ) )
                     {
-                        this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
-                            {
-                                CONSTRUCTORS_SECTION_NAME,
-                                f.getCanonicalPath()
-                            } ), null );
+                        this.log( Level.INFO, getMessage( "missingOptionalSection", CONSTRUCTORS_SECTION_NAME,
+                                                          f.getCanonicalPath() ), null );
 
                     }
                 }
                 else if ( !editor.isDefaultConstructorSectionPresent() )
                 {
-                    throw new ToolException( this.getMessage( "missingSection", new Object[]
-                        {
-                            DEFAULT_CONSTRUCTOR_SECTION_NAME,
-                            f.getCanonicalPath()
-                        } ) );
+                    throw new ToolException( getMessage( "missingSection", DEFAULT_CONSTRUCTOR_SECTION_NAME,
+                                                         f.getCanonicalPath() ) );
 
                 }
 
@@ -449,20 +408,14 @@ public class JavaSources extends JomcTool
 
                     if ( properties != null && !properties.getProperty().isEmpty() )
                     {
-                        throw new ToolException( this.getMessage( "missingSection", new Object[]
-                            {
-                                PROPERTIES_SECTION_NAME,
-                                f.getCanonicalPath()
-                            } ) );
+                        throw new ToolException( getMessage( "missingSection", PROPERTIES_SECTION_NAME,
+                                                             f.getCanonicalPath() ) );
 
                     }
                     else if ( this.isLoggable( Level.INFO ) )
                     {
-                        this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
-                            {
-                                PROPERTIES_SECTION_NAME,
-                                f.getCanonicalPath()
-                            } ), null );
+                        this.log( Level.INFO, getMessage( "missingOptionalSection", PROPERTIES_SECTION_NAME,
+                                                          f.getCanonicalPath() ), null );
 
                     }
                 }
@@ -474,20 +427,14 @@ public class JavaSources extends JomcTool
 
                     if ( dependencies != null && !dependencies.getDependency().isEmpty() )
                     {
-                        throw new ToolException( this.getMessage( "missingSection", new Object[]
-                            {
-                                DEPENDENCIES_SECTION_NAME,
-                                f.getCanonicalPath()
-                            } ) );
+                        throw new ToolException( getMessage( "missingSection", DEPENDENCIES_SECTION_NAME,
+                                                             f.getCanonicalPath() ) );
 
                     }
                     else if ( this.isLoggable( Level.INFO ) )
                     {
-                        this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
-                            {
-                                DEPENDENCIES_SECTION_NAME,
-                                f.getCanonicalPath()
-                            } ), null );
+                        this.log( Level.INFO, getMessage( "missingOptionalSection", DEPENDENCIES_SECTION_NAME,
+                                                          f.getCanonicalPath() ), null );
 
                     }
                 }
@@ -498,20 +445,14 @@ public class JavaSources extends JomcTool
 
                     if ( messages != null && !messages.getMessage().isEmpty() )
                     {
-                        throw new ToolException( this.getMessage( "missingSection", new Object[]
-                            {
-                                MESSAGES_SECTION_NAME,
-                                f.getCanonicalPath()
-                            } ) );
+                        throw new ToolException( getMessage( "missingSection", MESSAGES_SECTION_NAME,
+                                                             f.getCanonicalPath() ) );
 
                     }
                     else if ( this.isLoggable( Level.INFO ) )
                     {
-                        this.log( Level.INFO, this.getMessage( "missingOptionalSection", new Object[]
-                            {
-                                MESSAGES_SECTION_NAME,
-                                f.getCanonicalPath()
-                            } ), null );
+                        this.log( Level.INFO, getMessage( "missingOptionalSection", MESSAGES_SECTION_NAME,
+                                                          f.getCanonicalPath() ), null );
 
                     }
                 }
@@ -520,20 +461,14 @@ public class JavaSources extends JomcTool
                 {
                     if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
                     {
-                        throw new ToolException( this.getMessage( "failedCreatingDirectory", new Object[]
-                            {
-                                f.getParentFile().getAbsolutePath()
-                            } ) );
+                        throw new ToolException( getMessage( "failedCreatingDirectory",
+                                                             f.getParentFile().getAbsolutePath() ) );
 
                     }
 
                     if ( this.isLoggable( Level.INFO ) )
                     {
-                        this.log( Level.INFO, this.getMessage( "editing", new Object[]
-                            {
-                                f.getCanonicalPath()
-                            } ), null );
-
+                        this.log( Level.INFO, getMessage( "editing", f.getCanonicalPath() ), null );
                     }
 
                     FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
@@ -936,11 +871,16 @@ public class JavaSources extends JomcTool
         }
     }
 
-    private String getMessage( final String key, final Object args )
+    private static String getMessage( final String key, final Object... arguments )
     {
-        final ResourceBundle b = ResourceBundle.getBundle( JavaSources.class.getName().replace( '.', '/' ) );
-        final MessageFormat f = new MessageFormat( b.getString( key ) );
-        return f.format( args );
+        if ( key == null )
+        {
+            throw new NullPointerException( "key" );
+        }
+
+        return MessageFormat.format( ResourceBundle.getBundle( JavaSources.class.getName().replace( '.', '/' ) ).
+            getString( key ), arguments );
+
     }
 
     /**

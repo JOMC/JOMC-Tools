@@ -231,11 +231,7 @@ public class JavaClasses extends JomcTool
                 final File classFile = new File( classesDirectory, classLocation );
                 if ( this.isLoggable( Level.INFO ) )
                 {
-                    this.log( Level.INFO, this.getMessage( "committing", new Object[]
-                        {
-                            classFile.getAbsolutePath()
-                        } ), null );
-
+                    this.log( Level.INFO, getMessage( "committing", classFile.getAbsolutePath() ), null );
                 }
 
                 final JavaClass javaClass = this.getJavaClass( classFile );
@@ -313,10 +309,8 @@ public class JavaClasses extends JomcTool
                     if ( specifications.getSpecification( r.getIdentifier() ) == null &&
                          this.isLoggable( Level.WARNING ) )
                     {
-                        this.log( Level.WARNING, this.getMessage( "unresolvedSpecification", new Object[]
-                            {
-                                r.getIdentifier(), implementation.getIdentifier()
-                            } ), null );
+                        this.log( Level.WARNING, getMessage( "unresolvedSpecification", r.getIdentifier(),
+                                                             implementation.getIdentifier() ), null );
 
                     }
                 }
@@ -334,10 +328,8 @@ public class JavaClasses extends JomcTool
                     }
                     else if ( this.isLoggable( Level.WARNING ) )
                     {
-                        this.log( Level.WARNING, this.getMessage( "unresolvedDependencySpecification", new Object[]
-                            {
-                                d.getIdentifier(), d.getName(), implementation.getIdentifier()
-                            } ), null );
+                        this.log( Level.WARNING, getMessage( "unresolvedDependencySpecification", d.getIdentifier(),
+                                                             d.getName(), implementation.getIdentifier() ), null );
 
                     }
                 }
@@ -347,11 +339,7 @@ public class JavaClasses extends JomcTool
 
                 if ( this.isLoggable( Level.INFO ) )
                 {
-                    this.log( Level.INFO, this.getMessage( "committing", new Object[]
-                        {
-                            classFile.getAbsolutePath()
-                        } ), null );
-
+                    this.log( Level.INFO, getMessage( "committing", classFile.getAbsolutePath() ), null );
                 }
 
                 final JavaClass javaClass = this.getJavaClass( classFile );
@@ -563,11 +551,7 @@ public class JavaClasses extends JomcTool
 
                     if ( classUrl == null )
                     {
-                        throw new ToolException( this.getMessage( "resourceNotFound", new Object[]
-                            {
-                                classLocation
-                            } ) );
-
+                        throw new ToolException( getMessage( "resourceNotFound", classLocation ) );
                     }
 
                     final JavaClass javaClass = this.getJavaClass( classUrl, classLocation );
@@ -590,17 +574,11 @@ public class JavaClasses extends JomcTool
 
                     if ( classUrl == null )
                     {
-                        throw new ToolException( this.getMessage( "resourceNotFound", new Object[]
-                            {
-                                classLocation
-                            } ) );
-
+                        throw new ToolException( getMessage( "resourceNotFound", classLocation ) );
                     }
 
                     final JavaClass javaClass = this.getJavaClass( classUrl, classLocation );
-                    final ModelValidationReport current =
-                        this.validateClasses( i, unmarshaller, javaClass );
-
+                    final ModelValidationReport current = this.validateClasses( i, unmarshaller, javaClass );
                     report.getDetails().addAll( current.getDetails() );
                 }
             }
@@ -642,11 +620,7 @@ public class JavaClasses extends JomcTool
 
         if ( this.isLoggable( Level.INFO ) )
         {
-            this.log( Level.INFO, this.getMessage( "validatingSpecification", new Object[]
-                {
-                    specification.getIdentifier()
-                } ), null );
-
+            this.log( Level.INFO, getMessage( "validatingSpecification", specification.getIdentifier() ), null );
         }
 
         final ModelValidationReport report = new ModelValidationReport();
@@ -663,12 +637,9 @@ public class JavaClasses extends JomcTool
             if ( decoded.getMultiplicity() != specification.getMultiplicity() )
             {
                 report.getDetails().add( new ModelValidationReport.Detail(
-                    "CLASS_ILLEGAL_SPECIFICATION_MULTIPLICITY", Level.SEVERE,
-                    this.getMessage( "illegalMultiplicity", new Object[]
-                    {
-                        specification.getIdentifier(), specification.getMultiplicity().value(),
-                        decoded.getMultiplicity().value()
-                    } ), new ObjectFactory().createSpecification( specification ) ) );
+                    "CLASS_ILLEGAL_SPECIFICATION_MULTIPLICITY", Level.SEVERE, getMessage(
+                    "illegalMultiplicity", specification.getIdentifier(), specification.getMultiplicity().value(),
+                    decoded.getMultiplicity().value() ), new ObjectFactory().createSpecification( specification ) ) );
 
             }
 
@@ -677,13 +648,11 @@ public class JavaClasses extends JomcTool
                  : !decoded.getScope().equals( specification.getScope() ) )
             {
                 report.getDetails().add( new ModelValidationReport.Detail(
-                    "CLASS_ILLEGAL_SPECIFICATION_SCOPE", Level.SEVERE,
-                    this.getMessage( "illegalScope", new Object[]
-                    {
-                        specification.getIdentifier(),
-                        specification.getScope() == null ? "Multiton" : specification.getScope(),
-                        decoded.getScope() == null ? "Multiton" : decoded.getScope()
-                    } ), new ObjectFactory().createSpecification( specification ) ) );
+                    "CLASS_ILLEGAL_SPECIFICATION_SCOPE", Level.SEVERE, getMessage(
+                    "illegalScope", specification.getIdentifier(),
+                    specification.getScope() == null ? "Multiton" : specification.getScope(),
+                    decoded.getScope() == null ? "Multiton" : decoded.getScope() ),
+                    new ObjectFactory().createSpecification( specification ) ) );
 
             }
 
@@ -692,20 +661,17 @@ public class JavaClasses extends JomcTool
                  : !decoded.getClazz().equals( specification.getClazz() ) )
             {
                 report.getDetails().add( new ModelValidationReport.Detail(
-                    "CLASS_ILLEGAL_SPECIFICATION_CLASS", Level.SEVERE,
-                    this.getMessage( "illegalSpecificationClass", new Object[]
-                    {
-                        decoded.getIdentifier(), specification.getClazz(), decoded.getClazz()
-                    } ), new ObjectFactory().createSpecification( specification ) ) );
+                    "CLASS_ILLEGAL_SPECIFICATION_CLASS", Level.SEVERE, getMessage(
+                    "illegalSpecificationClass", decoded.getIdentifier(),
+                    specification.getClazz(), decoded.getClazz() ),
+                    new ObjectFactory().createSpecification( specification ) ) );
 
             }
         }
         else if ( this.isLoggable( Level.WARNING ) )
         {
-            this.log( Level.WARNING, this.getMessage( "cannotValidateSpecification", new Object[]
-                {
-                    specification.getIdentifier(), Specification.class.getName()
-                } ), null );
+            this.log( Level.WARNING, getMessage( "cannotValidateSpecification", specification.getIdentifier(),
+                                                 Specification.class.getName() ), null );
 
         }
 
@@ -746,11 +712,7 @@ public class JavaClasses extends JomcTool
 
         if ( this.isLoggable( Level.INFO ) )
         {
-            this.log( Level.INFO, this.getMessage( "validatingImplementation", new Object[]
-                {
-                    implementation.getIdentifier()
-                } ), null );
-
+            this.log( Level.INFO, getMessage( "validatingImplementation", implementation.getIdentifier() ), null );
         }
 
         final ModelValidationReport report = new ModelValidationReport();
@@ -818,11 +780,9 @@ public class JavaClasses extends JomcTool
                     if ( dependency == null )
                     {
                         report.getDetails().add( new ModelValidationReport.Detail(
-                            "CLASS_MISSING_IMPLEMENTATION_DEPENDENCY", Level.SEVERE,
-                            this.getMessage( "missingDependency", new Object[]
-                            {
-                                implementation.getIdentifier(), decodedDependency.getName()
-                            } ), new ObjectFactory().createImplementation( implementation ) ) );
+                            "CLASS_MISSING_IMPLEMENTATION_DEPENDENCY", Level.SEVERE, getMessage(
+                            "missingDependency", implementation.getIdentifier(), decodedDependency.getName() ),
+                            new ObjectFactory().createImplementation( implementation ) ) );
 
                     }
 
@@ -838,25 +798,21 @@ public class JavaClasses extends JomcTool
                             this.getModules().getModuleOfImplementation( implementation.getIdentifier() );
 
                         report.getDetails().add( new ModelValidationReport.Detail(
-                            "CLASS_INCOMPATIBLE_IMPLEMENTATION_DEPENDENCY", Level.SEVERE,
-                            this.getMessage( "incompatibleDependency", new Object[]
-                            {
-                                javaClass.getClassName(), moduleOfImplementation == null
-                                                          ? "<>" : moduleOfImplementation.getName(),
-                                s.getIdentifier(), moduleOfSpecification == null
-                                                   ? "<>" : moduleOfSpecification.getName(),
-                                decodedDependency.getVersion(), s.getVersion()
-                            } ), new ObjectFactory().createImplementation( implementation ) ) );
+                            "CLASS_INCOMPATIBLE_IMPLEMENTATION_DEPENDENCY", Level.SEVERE, getMessage(
+                            "incompatibleDependency", javaClass.getClassName(),
+                            moduleOfImplementation == null ? "<>" : moduleOfImplementation.getName(),
+                            s.getIdentifier(),
+                            moduleOfSpecification == null ? "<>" : moduleOfSpecification.getName(),
+                            decodedDependency.getVersion(), s.getVersion() ),
+                            new ObjectFactory().createImplementation( implementation ) ) );
 
                     }
                 }
             }
             else if ( this.isLoggable( Level.WARNING ) )
             {
-                this.log( Level.WARNING, this.getMessage( "cannotValidateImplementation", new Object[]
-                    {
-                        implementation.getIdentifier(), Dependencies.class.getName()
-                    } ), null );
+                this.log( Level.WARNING, getMessage( "cannotValidateImplementation", implementation.getIdentifier(),
+                                                     Dependencies.class.getName() ), null );
 
             }
 
@@ -869,27 +825,22 @@ public class JavaClasses extends JomcTool
                     if ( property == null )
                     {
                         report.getDetails().add( new ModelValidationReport.Detail(
-                            "CLASS_MISSING_IMPLEMENTATION_PROPERTY", Level.SEVERE,
-                            this.getMessage( "missingProperty", new Object[]
-                            {
-                                implementation.getIdentifier(), decodedProperty.getName()
-                            } ), new ObjectFactory().createImplementation( implementation ) ) );
+                            "CLASS_MISSING_IMPLEMENTATION_PROPERTY", Level.SEVERE, getMessage(
+                            "missingProperty", implementation.getIdentifier(), decodedProperty.getName() ),
+                            new ObjectFactory().createImplementation( implementation ) ) );
 
                     }
                     else
                     {
-                        if ( decodedProperty.getType() == null
-                             ? property.getType() != null
+                        if ( decodedProperty.getType() == null ? property.getType() != null
                              : !decodedProperty.getType().equals( property.getType() ) )
                         {
                             report.getDetails().add( new ModelValidationReport.Detail(
-                                "CLASS_ILLEGAL_IMPLEMENTATION_PROPERTY", Level.SEVERE,
-                                this.getMessage( "illegalPropertyType", new Object[]
-                                {
-                                    implementation.getIdentifier(), decodedProperty.getName(),
-                                    property.getType() == null ? "default" : property.getType(),
-                                    decodedProperty.getType() == null ? "default" : decodedProperty.getType()
-                                } ), new ObjectFactory().createImplementation( implementation ) ) );
+                                "CLASS_ILLEGAL_IMPLEMENTATION_PROPERTY", Level.SEVERE, getMessage(
+                                "illegalPropertyType", implementation.getIdentifier(), decodedProperty.getName(),
+                                property.getType() == null ? "default" : property.getType(),
+                                decodedProperty.getType() == null ? "default" : decodedProperty.getType() ),
+                                new ObjectFactory().createImplementation( implementation ) ) );
 
                         }
                     }
@@ -897,10 +848,8 @@ public class JavaClasses extends JomcTool
             }
             else if ( this.isLoggable( Level.WARNING ) )
             {
-                this.log( Level.WARNING, this.getMessage( "cannotValidateImplementation", new Object[]
-                    {
-                        implementation.getIdentifier(), Properties.class.getName()
-                    } ), null );
+                this.log( Level.WARNING, getMessage( "cannotValidateImplementation", implementation.getIdentifier(),
+                                                     Properties.class.getName() ), null );
 
             }
 
@@ -913,21 +862,17 @@ public class JavaClasses extends JomcTool
                     if ( message == null )
                     {
                         report.getDetails().add( new ModelValidationReport.Detail(
-                            "CLASS_MISSING_IMPLEMENTATION_MESSAGE", Level.SEVERE,
-                            this.getMessage( "missingMessage", new Object[]
-                            {
-                                implementation.getIdentifier(), decodedMessage.getName()
-                            } ), new ObjectFactory().createImplementation( implementation ) ) );
+                            "CLASS_MISSING_IMPLEMENTATION_MESSAGE", Level.SEVERE, getMessage(
+                            "missingMessage", implementation.getIdentifier(), decodedMessage.getName() ),
+                            new ObjectFactory().createImplementation( implementation ) ) );
 
                     }
                 }
             }
             else if ( this.isLoggable( Level.WARNING ) )
             {
-                this.log( Level.WARNING, this.getMessage( "cannotValidateImplementation", new Object[]
-                    {
-                        implementation.getIdentifier(), Messages.class.getName()
-                    } ), null );
+                this.log( Level.WARNING, getMessage( "cannotValidateImplementation",
+                                                     implementation.getIdentifier(), Messages.class.getName() ), null );
 
             }
 
@@ -941,11 +886,10 @@ public class JavaClasses extends JomcTool
                     if ( specification == null )
                     {
                         report.getDetails().add( new ModelValidationReport.Detail(
-                            "CLASS_MISSING_SPECIFICATION", Level.SEVERE,
-                            this.getMessage( "missingSpecification", new Object[]
-                            {
-                                implementation.getIdentifier(), decodedSpecification.getIdentifier()
-                            } ), new ObjectFactory().createImplementation( implementation ) ) );
+                            "CLASS_MISSING_SPECIFICATION", Level.SEVERE, getMessage(
+                            "missingSpecification", implementation.getIdentifier(),
+                            decodedSpecification.getIdentifier() ),
+                            new ObjectFactory().createImplementation( implementation ) ) );
 
                     }
                     else
@@ -953,12 +897,11 @@ public class JavaClasses extends JomcTool
                         if ( decodedSpecification.getMultiplicity() != specification.getMultiplicity() )
                         {
                             report.getDetails().add( new ModelValidationReport.Detail(
-                                "CLASS_ILLEGAL_SPECIFICATION_MULTIPLICITY", Level.SEVERE,
-                                this.getMessage( "illegalMultiplicity", new Object[]
-                                {
-                                    specification.getIdentifier(), specification.getMultiplicity().value(),
-                                    decodedSpecification.getMultiplicity().value()
-                                } ), new ObjectFactory().createImplementation( implementation ) ) );
+                                "CLASS_ILLEGAL_SPECIFICATION_MULTIPLICITY", Level.SEVERE, getMessage(
+                                "illegalMultiplicity", specification.getIdentifier(),
+                                specification.getMultiplicity().value(),
+                                decodedSpecification.getMultiplicity().value() ),
+                                new ObjectFactory().createImplementation( implementation ) ) );
 
                         }
 
@@ -967,29 +910,22 @@ public class JavaClasses extends JomcTool
                              : !decodedSpecification.getScope().equals( specification.getScope() ) )
                         {
                             report.getDetails().add( new ModelValidationReport.Detail(
-                                "CLASS_ILLEGAL_SPECIFICATION_SCOPE", Level.SEVERE,
-                                this.getMessage( "illegalScope", new Object[]
-                                {
-                                    decodedSpecification.getIdentifier(),
-                                    specification.getScope() == null
-                                    ? "Multiton" : specification.getScope(),
-                                    decodedSpecification.getScope() == null
-                                    ? "Multiton" : decodedSpecification.getScope()
-                                } ), new ObjectFactory().createImplementation( implementation ) ) );
+                                "CLASS_ILLEGAL_SPECIFICATION_SCOPE", Level.SEVERE, getMessage(
+                                "illegalScope", decodedSpecification.getIdentifier(),
+                                specification.getScope() == null ? "Multiton" : specification.getScope(),
+                                decodedSpecification.getScope() == null ? "Multiton" : decodedSpecification.getScope() ),
+                                new ObjectFactory().createImplementation( implementation ) ) );
 
                         }
 
-                        if ( decodedSpecification.getClazz() == null
-                             ? specification.getClazz() != null
+                        if ( decodedSpecification.getClazz() == null ? specification.getClazz() != null
                              : !decodedSpecification.getClazz().equals( specification.getClazz() ) )
                         {
                             report.getDetails().add( new ModelValidationReport.Detail(
-                                "CLASS_ILLEGAL_SPECIFICATION_CLASS", Level.SEVERE,
-                                this.getMessage( "illegalSpecificationClass", new Object[]
-                                {
-                                    decodedSpecification.getIdentifier(), specification.getClazz(),
-                                    decodedSpecification.getClazz()
-                                } ), new ObjectFactory().createImplementation( implementation ) ) );
+                                "CLASS_ILLEGAL_SPECIFICATION_CLASS", Level.SEVERE, getMessage(
+                                "illegalSpecificationClass", decodedSpecification.getIdentifier(),
+                                specification.getClazz(), decodedSpecification.getClazz() ),
+                                new ObjectFactory().createImplementation( implementation ) ) );
 
                         }
                     }
@@ -1003,11 +939,9 @@ public class JavaClasses extends JomcTool
                     if ( specification == null )
                     {
                         report.getDetails().add( new ModelValidationReport.Detail(
-                            "CLASS_MISSING_SPECIFICATION", Level.SEVERE,
-                            this.getMessage( "missingSpecification", new Object[]
-                            {
-                                implementation.getIdentifier(), decodedReference.getIdentifier()
-                            } ), new ObjectFactory().createImplementation( implementation ) ) );
+                            "CLASS_MISSING_SPECIFICATION", Level.SEVERE, getMessage(
+                            "missingSpecification", implementation.getIdentifier(), decodedReference.getIdentifier() ),
+                            new ObjectFactory().createImplementation( implementation ) ) );
 
                     }
                     else if ( decodedReference.getVersion() != null && specification.getVersion() != null &&
@@ -1020,25 +954,21 @@ public class JavaClasses extends JomcTool
                             this.getModules().getModuleOfImplementation( implementation.getIdentifier() );
 
                         report.getDetails().add( new ModelValidationReport.Detail(
-                            "CLASS_INCOMPATIBLE_IMPLEMENTATION", Level.SEVERE,
-                            this.getMessage( "incompatibleImplementation", new Object[]
-                            {
-                                javaClass.getClassName(), moduleOfImplementation == null
-                                                          ? "<>" : moduleOfImplementation.getName(),
-                                specification.getIdentifier(), moduleOfSpecification == null
-                                                               ? "<>" : moduleOfSpecification.getName(),
-                                decodedReference.getVersion(), specification.getVersion()
-                            } ), new ObjectFactory().createImplementation( implementation ) ) );
+                            "CLASS_INCOMPATIBLE_IMPLEMENTATION", Level.SEVERE, getMessage(
+                            "incompatibleImplementation", javaClass.getClassName(),
+                            moduleOfImplementation == null ? "<>" : moduleOfImplementation.getName(),
+                            specification.getIdentifier(),
+                            moduleOfSpecification == null ? "<>" : moduleOfSpecification.getName(),
+                            decodedReference.getVersion(), specification.getVersion() ),
+                            new ObjectFactory().createImplementation( implementation ) ) );
 
                     }
                 }
             }
             else if ( this.isLoggable( Level.WARNING ) )
             {
-                this.log( Level.WARNING, this.getMessage( "cannotValidateImplementation", new Object[]
-                    {
-                        implementation.getIdentifier(), Specifications.class.getName()
-                    } ), null );
+                this.log( Level.WARNING, getMessage( "cannotValidateImplementation", implementation.getIdentifier(),
+                                                     Specifications.class.getName() ), null );
 
             }
 
@@ -1149,11 +1079,7 @@ public class JavaClasses extends JomcTool
 
                         if ( this.isLoggable( Level.INFO ) )
                         {
-                            this.log( Level.INFO, this.getMessage( "transforming", new Object[]
-                                {
-                                    classFile.getAbsolutePath()
-                                } ), null );
-
+                            this.log( Level.INFO, getMessage( "transforming", classFile.getAbsolutePath() ), null );
                         }
 
                         final JavaClass javaClass = this.getJavaClass( classFile );
@@ -1174,11 +1100,7 @@ public class JavaClasses extends JomcTool
 
                         if ( this.isLoggable( Level.INFO ) )
                         {
-                            this.log( Level.INFO, this.getMessage( "transforming", new Object[]
-                                {
-                                    classFile.getAbsolutePath()
-                                } ), null );
-
+                            this.log( Level.INFO, getMessage( "transforming", classFile.getAbsolutePath() ), null );
                         }
 
                         final JavaClass javaClass = this.getJavaClass( classFile );
@@ -1724,11 +1646,16 @@ public class JavaClasses extends JomcTool
         }
     }
 
-    private String getMessage( final String key, final Object args )
+    private static String getMessage( final String key, final Object... arguments )
     {
-        final ResourceBundle b = ResourceBundle.getBundle( JavaClasses.class.getName().replace( '.', '/' ) );
-        final MessageFormat f = new MessageFormat( b.getString( key ) );
-        return f.format( args );
+        if ( key == null )
+        {
+            throw new NullPointerException( "key" );
+        }
+
+        return MessageFormat.format( ResourceBundle.getBundle( JavaClasses.class.getName().replace( '.', '/' ) ).
+            getString( key ), arguments );
+
     }
 
 }
