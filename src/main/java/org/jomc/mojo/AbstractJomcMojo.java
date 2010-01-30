@@ -737,7 +737,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
     }
 
-    private void setupJomcTool( final ModelContext context, final JomcTool tool ) throws MojoExecutionException
+    protected void setupJomcTool( final ModelContext context, final JomcTool tool ) throws MojoExecutionException
     {
         if ( this.verbose || this.getLog().isDebugEnabled() )
         {
@@ -761,7 +761,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         tool.setModules( this.getToolModules( context ) );
     }
 
-    private void setupModelContext( final ModelContext modelContext )
+    protected void setupModelContext( final ModelContext modelContext )
     {
         if ( this.verbose || this.getLog().isDebugEnabled() )
         {
