@@ -39,7 +39,7 @@ import org.jomc.model.ModelContext;
 import org.jomc.model.ModelValidationReport;
 
 /**
- * Validates a projects' main modules.
+ * Validates a projects' test modules.
  *
  * @author <a href="mailto:cs@jomc.org">Christian Schulte</a>
  * @version $Id$
