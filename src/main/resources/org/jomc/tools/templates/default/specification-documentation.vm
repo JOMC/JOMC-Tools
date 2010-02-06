@@ -41,15 +41,15 @@
 #if($specification.getMultiplicity().value() == "One")
  * An application assembler is required to provide no more than one implementation of this specification (including none).
  * Use of class {@link org.jomc.ObjectManager ObjectManager} is supported for getting that implementation.<pre>
- * ${tool.getJavaTypeName($specification,false)} object = (${tool.getJavaTypeName($specification,false)}) ObjectManagerFactory.getObjectManager( getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}.class );
+ * ${tool.getJavaTypeName($specification,false)} object = (${tool.getJavaTypeName($specification,false)}) ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}.class );
  * </pre>
 #end
 #if($specification.getMultiplicity().value() == "Many")
  * An application assembler may provide multiple implementations of this specification (including none).
  * Use of class {@link org.jomc.ObjectManager ObjectManager} is supported for getting these implementations or for
  * selecting a single implementation.<pre>
- * ${tool.getJavaTypeName($specification,false)}[] objects = (${tool.getJavaTypeName($specification,false)}[]) ObjectManagerFactory.getObjectManager( getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}.class );
- * ${tool.getJavaTypeName($specification,false)} object = ObjectManagerFactory.getObjectManager( getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}.class, "<i>implementation name</i>" );
+ * ${tool.getJavaTypeName($specification,false)}[] objects = (${tool.getJavaTypeName($specification,false)}[]) ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}.class );
+ * ${tool.getJavaTypeName($specification,false)} object = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}.class, "<i>implementation name</i>" );
  * </pre>
 #end
  * </p>
