@@ -50,8 +50,8 @@ import org.apache.commons.cli.Options;
  * An application assembler may provide multiple implementations of this specification (including none).
  * Use of class {@link org.jomc.ObjectManager ObjectManager} is supported for getting these implementations or for
  * selecting a single implementation.<pre>
- * Command[] objects = (Command[]) ObjectManagerFactory.getObjectManager( getClassLoader() ).getObject( Command.class );
- * Command object = ObjectManagerFactory.getObjectManager( getClassLoader() ).getObject( Command.class, "<i>implementation name</i>" );
+ * Command[] objects = (Command[]) ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( Command.class );
+ * Command object = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( Command.class, "<i>implementation name</i>" );
  * </pre>
  * </p>
  *
