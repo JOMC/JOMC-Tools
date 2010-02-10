@@ -116,7 +116,7 @@ import org.xml.sax.SAXException;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-17-SNAPSHOT Build 2010-02-06T12:20:39+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-17-SNAPSHOT Build 2010-02-10T19:52:00+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -186,31 +186,7 @@ import org.xml.sax.SAXException;
 // SECTION-END
 public abstract class AbstractJomcCommand implements Command
 {
-    // SECTION-START[AbstractJomcCommand]
-
-    /**
-     * Log level events are logged at by default.
-     * @see #getDefaultLogLevel()
-     */
-    private static final Level DEFAULT_LOG_LEVEL = Level.WARNING;
-
-    /** Default log level. */
-    private static volatile Level defaultLogLevel;
-
-    /** The {@code JavaBundles} tool of the instance. */
-    private JavaBundles javaBundles;
-
-    /** The {@code JavaClasses} tool of the instance. */
-    private JavaClasses javaClasses;
-
-    /** The {@code JavaSources} tool of the instance. */
-    private JavaSources javaSources;
-
-    /** The listeners of the instance. */
-    private List<Listener> listeners;
-
-    /** Log level of the instance. */
-    private Level logLevel;
+    // SECTION-START[Command]
 
     /**
      * Gets the list of registered listeners.
@@ -230,41 +206,6 @@ public abstract class AbstractJomcCommand implements Command
         }
 
         return this.listeners;
-    }
-
-    /**
-     * Gets the default log level events are logged at.
-     * <p>The default log level is controlled by system property
-     * {@code org.jomc.cli.command.AbstractJomcCommand.defaultLogLevel} holding the log level to log events at by
-     * default. If that property is not set, the {@code WARNING} default is returned.</p>
-     *
-     * @return The log level events are logged at by default.
-     *
-     * @see #getLogLevel()
-     * @see Level#parse(java.lang.String)
-     */
-    public static Level getDefaultLogLevel()
-    {
-        if ( defaultLogLevel == null )
-        {
-            defaultLogLevel = Level.parse( System.getProperty(
-                "org.jomc.cli.command.AbstractJomcCommand.defaultLogLevel", DEFAULT_LOG_LEVEL.getName() ) );
-
-        }
-
-        return defaultLogLevel;
-    }
-
-    /**
-     * Sets the default log level events are logged at.
-     *
-     * @param value The new default level events are logged at or {@code null}.
-     *
-     * @see #getDefaultLogLevel()
-     */
-    public static void setDefaultLogLevel( final Level value )
-    {
-        defaultLogLevel = value;
     }
 
     /**
@@ -423,6 +364,67 @@ public abstract class AbstractJomcCommand implements Command
             DefaultModelProcessor.setDefaultTransformerLocation( null );
             DefaultModelProvider.setDefaultModuleLocation( null );
         }
+    }
+
+    // SECTION-END
+    // SECTION-START[AbstractJomcCommand]
+    /**
+     * Log level events are logged at by default.
+     * @see #getDefaultLogLevel()
+     */
+    private static final Level DEFAULT_LOG_LEVEL = Level.WARNING;
+
+    /** Default log level. */
+    private static volatile Level defaultLogLevel;
+
+    /** The {@code JavaBundles} tool of the instance. */
+    private JavaBundles javaBundles;
+
+    /** The {@code JavaClasses} tool of the instance. */
+    private JavaClasses javaClasses;
+
+    /** The {@code JavaSources} tool of the instance. */
+    private JavaSources javaSources;
+
+    /** The listeners of the instance. */
+    private List<Listener> listeners;
+
+    /** Log level of the instance. */
+    private Level logLevel;
+
+    /**
+     * Gets the default log level events are logged at.
+     * <p>The default log level is controlled by system property
+     * {@code org.jomc.cli.command.AbstractJomcCommand.defaultLogLevel} holding the log level to log events at by
+     * default. If that property is not set, the {@code WARNING} default is returned.</p>
+     *
+     * @return The log level events are logged at by default.
+     *
+     * @see #getLogLevel()
+     * @see Level#parse(java.lang.String)
+     */
+    public static Level getDefaultLogLevel()
+    {
+        if ( defaultLogLevel == null )
+        {
+            defaultLogLevel = Level.parse( System.getProperty(
+                "org.jomc.cli.command.AbstractJomcCommand.defaultLogLevel", DEFAULT_LOG_LEVEL.getName() ) );
+
+        }
+
+        return defaultLogLevel;
+    }
+
+    /**
+     * Sets the default log level events are logged at.
+     *
+     * @param value The new default level events are logged at or {@code null}.
+     *
+     * @see #getDefaultLogLevel()
+     */
+    public static void setDefaultLogLevel( final Level value )
+    {
+        defaultLogLevel = value;
     }
 
     protected abstract int executeCommand( final CommandLine commandLine ) throws Exception;
@@ -990,7 +992,7 @@ public abstract class AbstractJomcCommand implements Command
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-17-SNAPSHOT Build 2010-02-06T12:20:39+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-17-SNAPSHOT Build 2010-02-10T19:52:00+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

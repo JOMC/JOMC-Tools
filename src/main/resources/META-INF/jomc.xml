@@ -934,6 +934,102 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Source Files Model Option"
+                    name="${project.name} Source Files Model Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="sfm" override="true"/>
+        <property name="longOpt" value="source-files-model" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Source files model.</text>
+            <text language="de">Quelltext-Modell.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">file</text>
+            <text language="de">Datei</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Whitespaces Per Indent Option"
+                    name="${project.name} Whitespaces Per Indent Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="wpi" override="true"/>
+        <property name="longOpt" value="whitespaces-per-indent" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Number of whitespace characters per indentation level.</text>
+            <text language="de">Anzahl Leerraum-Zeichen pro Einrückungs-Ebene.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">number</text>
+            <text language="de">Zahl</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Indentation Character Option"
+                    name="${project.name} Indentation Character Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="ic" override="true"/>
+        <property name="longOpt" value="indentation-character" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Indentation character.</text>
+            <text language="de">Leerraum-Zeichen.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">character</text>
+            <text language="de">Zeichen</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
     <!--                                                                                                             -->
     <!-- Application                                                                                                 -->
     <!--                                                                                                             -->
@@ -1301,6 +1397,15 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <dependency name="InputEncodingOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Input Encoding Option" bound="true"/>
 
+        <dependency name="SourceFilesModelOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Source Files Model Option" bound="true"/>
+
+        <dependency name="WhitepsacesPerIndentOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Whitespaces Per Indent Option" bound="true"/>
+
+        <dependency name="IndentationCharacterOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Indentation Character Option" bound="true"/>
+
       </dependencies>
       <properties>
         <property name="commandName" value="manage-java-sources" override="true">
@@ -1315,6 +1420,15 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         </property>
       </properties>
       <messages>
+        <message name="illegalSourceFilesModel">
+          <template defaultLanguage="en">
+            <text language="en">Illegal source files model ''{0}''.</text>
+            <text language="de">Ungültiges Quelltext-Modell ''{0}''.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="elementQName"/>
+          </arguments>
+        </message>
         <message name="shortDescription" override="true">
           <template defaultLanguage="en">
             <text language="en">Manages Java source files.</text>

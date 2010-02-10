@@ -67,6 +67,12 @@ import org.jomc.model.Module;
  * <li>"{@link #getTestDocumentIllegal testDocumentIllegal}"
  * <blockquote>Property of type {@code java.lang.String}.
  * </blockquote></li>
+ * <li>"{@link #getTestIllegalSourceFilesModel testIllegalSourceFilesModel}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
+ * <li>"{@link #getTestLegalSourceFilesModel testLegalSourceFilesModel}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
  * <li>"{@link #getTestModuleName testModuleName}"
  * <blockquote>Property of type {@code java.lang.String}.
  * </blockquote></li>
@@ -145,7 +151,8 @@ public class JomcTest extends TestCase
         final String[] args = new String[]
         {
             "manage-java-sources", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-df",
-            '"' + this.getTestDocument() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-D"
+            '"' + this.getTestDocument() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-D",
+            "-wpi", "8", "-ic", "\t"
         };
 
         final String[] unsupportedOption = new String[]
@@ -159,10 +166,26 @@ public class JomcTest extends TestCase
             '"' + this.getTestDocument() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
         };
 
+        final String[] illegalSourceFilesModel = new String[]
+        {
+            "manage-java-sources", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-df",
+            '"' + this.getTestDocument() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-D",
+            "-sfm", '"' + this.getTestIllegalSourceFilesModel() + '"'
+        };
+
+        final String[] legalSourceFilesModel = new String[]
+        {
+            "manage-java-sources", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-df",
+            '"' + this.getTestDocument() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-D",
+            "-sfm", '"' + this.getTestLegalSourceFilesModel() + '"', "-wpi", "8", "-ic", "\t"
+        };
+
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
+        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( legalSourceFilesModel ) );
         Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
         Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( failOnWarnings ) );
+        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( illegalSourceFilesModel ) );
     }
 
     public void testCommitValidateJavaClasses() throws Exception
@@ -403,6 +426,34 @@ public class JomcTest extends TestCase
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testDocumentIllegal" );
         assert _p != null : "'testDocumentIllegal' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code testIllegalSourceFilesModel} property.
+     * @return The value of the {@code testIllegalSourceFilesModel} property.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
+    private java.lang.String getTestIllegalSourceFilesModel()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testIllegalSourceFilesModel" );
+        assert _p != null : "'testIllegalSourceFilesModel' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code testLegalSourceFilesModel} property.
+     * @return The value of the {@code testLegalSourceFilesModel} property.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
+    private java.lang.String getTestLegalSourceFilesModel()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testLegalSourceFilesModel" );
+        assert _p != null : "'testLegalSourceFilesModel' property not found.";
         return _p;
     }
 

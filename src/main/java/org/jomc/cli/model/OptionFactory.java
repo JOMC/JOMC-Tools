@@ -101,6 +101,8 @@ import org.apache.commons.cli.Option;
 // SECTION-END
 public class OptionFactory
 {
+    // SECTION-START[Option]
+    // SECTION-END
     // SECTION-START[OptionFactory]
 
     public Option getObject()
@@ -117,12 +119,15 @@ public class OptionFactory
 
         if ( option.getArgs() > 0 || option.getArgs() == Option.UNLIMITED_VALUES )
         {
-            option.setValueSeparator( valueSeparator );
-
             if ( this.getArgumentDescriptionMessage( this.getLocale() ).trim().length() > 0 )
             {
                 option.setArgName( this.getArgumentDescriptionMessage( this.getLocale() ) );
             }
+        }
+
+        if ( option.getArgs() > 1 || option.getArgs() == Option.UNLIMITED_VALUES )
+        {
+            option.setValueSeparator( valueSeparator );
         }
 
         return option;
