@@ -33,7 +33,7 @@
 package org.jomc.mojo;
 
 import java.io.File;
-import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
@@ -59,18 +59,11 @@ import org.jomc.tools.JavaClasses;
  * @goal main-java-classes
  * @requiresDependencyResolution test
  */
-public final class MainJavaClassesMojo extends AbstractJomcMojo
+public final class MainJavaClassesMojo extends AbstractClassesMojo
 {
 
     /** Constant for the name of the tool backing the mojo. */
     private static final String TOOLNAME = "JavaClasses";
-
-    /**
-     * Style sheet to use for transforming model objects.
-     *
-     * @parameter
-     */
-    private File modelObjectStylesheet;
 
     /** Creates a new {@code MainJavaClassesMojo} instance. */
     public MainJavaClassesMojo()
@@ -91,12 +84,14 @@ public final class MainJavaClassesMojo extends AbstractJomcMojo
 
             }
 
-            final ModelContext context = this.getModelContext( this.getMainClassLoader() );
+            final ClassLoader classLoader = this.getMainClassLoader();
+            final ModelContext context = this.getModelContext( classLoader );
             final JavaClasses tool = this.getJavaClassesTool( context );
             final JAXBContext jaxbContext = context.createContext();
             final Marshaller marshaller = context.createMarshaller();
             final Unmarshaller unmarshaller = context.createUnmarshaller();
             final Schema schema = context.createSchema();
+            final List<Transformer> transformers = this.getTransformers( classLoader );
 
             marshaller.setSchema( schema );
             unmarshaller.setSchema( schema );
@@ -116,15 +111,9 @@ public final class MainJavaClassesMojo extends AbstractJomcMojo
                     this.logProcessingModule( TOOLNAME, module.getName() );
                     tool.commitClasses( module, marshaller, classesDirectory );
 
-                    if ( this.modelObjectStylesheet != null )
+                    if ( !transformers.isEmpty() )
                     {
-                        tool.transformClasses(
-                            module, marshaller, unmarshaller, classesDirectory,
-                            Arrays.asList( new Transformer[]
-                            {
-                                this.getTransformer( this.modelObjectStylesheet )
-                            } ) );
-
+                        tool.transformClasses( module, marshaller, unmarshaller, classesDirectory, transformers );
                     }
 
                     this.logToolSuccess( TOOLNAME );

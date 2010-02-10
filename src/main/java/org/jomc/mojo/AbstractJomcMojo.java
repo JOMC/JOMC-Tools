@@ -49,12 +49,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.transform.ErrorListener;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamSource;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -541,57 +535,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     protected String getJomcTestModuleName() throws MojoExecutionException
     {
         return this.jomcTestModuleName;
-    }
-
-    /**
-     * Gets a transformer from a given file.
-     *
-     * @param file The file to initialize the transformer with.
-     *
-     * @return A {@code Transformer} backed by {@code file}.
-     *
-     * @throws NullPointerException if {@code file} is {@code null}.
-     * @throws MojoExecutionException if there are errors when parsing {@code file} or creating a
-     * {@code Transformer} fails.
-     */
-    protected Transformer getTransformer( final File file ) throws MojoExecutionException
-    {
-        if ( file == null )
-        {
-            throw new NullPointerException( "file" );
-        }
-
-        try
-        {
-            final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            transformerFactory.setErrorListener( new ErrorListener()
-            {
-
-                public void warning( final TransformerException exception ) throws TransformerException
-                {
-                    getLog().warn( exception );
-                }
-
-                public void error( final TransformerException exception ) throws TransformerException
-                {
-                    getLog().error( exception );
-                    throw exception;
-                }
-
-                public void fatalError( final TransformerException exception ) throws TransformerException
-                {
-                    getLog().error( exception );
-                    throw exception;
-                }
-
-            } );
-
-            return transformerFactory.newTransformer( new StreamSource( file ) );
-        }
-        catch ( final TransformerConfigurationException e )
-        {
-            throw new MojoExecutionException( e.getMessage(), e );
-        }
     }
 
     protected Modules getToolModules( final ModelContext context ) throws MojoExecutionException
