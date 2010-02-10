@@ -164,30 +164,22 @@ public abstract class JomcTool
      * Creates a new {@code JomcTool} instance taking a {@code JomcTool} instance to initialize the new instance with.
      *
      * @param tool The instance to initialize the new instance with.
+     *
+     * @throws ToolException if copying {@code tool} fails.
      */
-    public JomcTool( final JomcTool tool )
+    public JomcTool( final JomcTool tool ) throws ToolException
     {
         this();
         if ( tool != null )
         {
-            try
-            {
-                this.setTemplateEncoding( tool.getTemplateEncoding() );
-                this.setInputEncoding( tool.getInputEncoding() );
-                this.setOutputEncoding( tool.getOutputEncoding() );
-                this.setModules( tool.getModules() );
-                this.setProfile( tool.getProfile() );
-                this.setVelocityEngine( tool.getVelocityEngine() );
-                this.setLogLevel( tool.getLogLevel() );
-                this.getListeners().addAll( tool.getListeners() );
-            }
-            catch ( final Exception e )
-            {
-                if ( this.isLoggable( Level.SEVERE ) )
-                {
-                    this.log( Level.SEVERE, e.getMessage(), e );
-                }
-            }
+            this.setTemplateEncoding( tool.getTemplateEncoding() );
+            this.setInputEncoding( tool.getInputEncoding() );
+            this.setOutputEncoding( tool.getOutputEncoding() );
+            this.setModules( tool.getModules() );
+            this.setProfile( tool.getProfile() );
+            this.setVelocityEngine( tool.getVelocityEngine() );
+            this.setLogLevel( tool.getLogLevel() );
+            this.getListeners().addAll( tool.getListeners() );
         }
     }
 
@@ -1223,7 +1215,7 @@ public abstract class JomcTool
             }
             catch ( final Exception e )
             {
-                throw new ToolException( e );
+                throw new ToolException( e.getMessage(), e );
             }
         }
 

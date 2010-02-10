@@ -33,6 +33,7 @@
 package org.jomc.tools.test;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,6 +45,7 @@ import org.jomc.model.Module;
 import org.jomc.model.Specification;
 import org.jomc.tools.JavaSources;
 import org.jomc.tools.ToolException;
+import org.jomc.util.SectionEditor;
 
 /**
  * Tests {@code JavaSources} implementations.
@@ -109,20 +111,40 @@ public class JavaSourcesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().getImplementationEditor( null );
+            this.getTestTool().getSourceFileType( (Specification) null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
-        catch ( NullPointerException e )
+        catch ( final NullPointerException e )
         {
             assertNullPointerException( e );
         }
 
         try
         {
-            this.getTestTool().getSpecificationEditor( null );
+            this.getTestTool().getSourceFileType( (Implementation) null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
-        catch ( NullPointerException e )
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
+            this.getTestTool().getSourceCodeEditor( (Specification) null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
+            this.getTestTool().getSourceCodeEditor( (Implementation) null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
         {
             assertNullPointerException( e );
         }
@@ -132,7 +154,7 @@ public class JavaSourcesTest extends JomcToolTest
             this.getTestTool().manageSources( null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
-        catch ( NullPointerException e )
+        catch ( final NullPointerException e )
         {
             assertNullPointerException( e );
         }
@@ -142,7 +164,7 @@ public class JavaSourcesTest extends JomcToolTest
             this.getTestTool().manageSources( (Implementation) null, new File( "/" ) );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
-        catch ( NullPointerException e )
+        catch ( final NullPointerException e )
         {
             assertNullPointerException( e );
         }
@@ -152,7 +174,7 @@ public class JavaSourcesTest extends JomcToolTest
             this.getTestTool().manageSources( new Implementation(), null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
-        catch ( NullPointerException e )
+        catch ( final NullPointerException e )
         {
             assertNullPointerException( e );
         }
@@ -162,7 +184,7 @@ public class JavaSourcesTest extends JomcToolTest
             this.getTestTool().manageSources( (Module) null, new File( "/" ) );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
-        catch ( NullPointerException e )
+        catch ( final NullPointerException e )
         {
             assertNullPointerException( e );
         }
@@ -173,7 +195,7 @@ public class JavaSourcesTest extends JomcToolTest
             this.getTestTool().manageSources( new Module(), null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
-        catch ( NullPointerException e )
+        catch ( final NullPointerException e )
         {
             assertNullPointerException( e );
         }
@@ -183,7 +205,7 @@ public class JavaSourcesTest extends JomcToolTest
             this.getTestTool().manageSources( (Specification) null, new File( "/" ) );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
-        catch ( NullPointerException e )
+        catch ( final NullPointerException e )
         {
             assertNullPointerException( e );
         }
@@ -193,147 +215,7 @@ public class JavaSourcesTest extends JomcToolTest
             this.getTestTool().manageSources( new Specification(), null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        final JavaSources.JavaSpecificationEditor specEditor =
-            this.getTestTool().getSpecificationEditor( new Specification() );
-
-        Assert.assertNotNull( specEditor );
-
-        try
-        {
-            specEditor.editAnnotationsSection( null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            specEditor.editDocumentationSection( null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            specEditor.editLicenseSection( null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        final JavaSources.JavaImplementationEditor implEditor =
-            this.getTestTool().getImplementationEditor( new Implementation() );
-
-        Assert.assertNotNull( implEditor );
-
-        try
-        {
-            implEditor.editAnnotationsSection( null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            implEditor.editConstructorsSection( null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            implEditor.editDefaultConstructorSection( null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            implEditor.editDependenciesSection( null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            implEditor.editDocumentationSection( null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            implEditor.editLicenseSection( null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            implEditor.editMessagesSection( null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            implEditor.editPropertiesSection( null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            implEditor.editSection( null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            implEditor.getOutput( null );
-            Assert.fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( NullPointerException e )
+        catch ( final NullPointerException e )
         {
             assertNullPointerException( e );
         }
@@ -352,8 +234,10 @@ public class JavaSourcesTest extends JomcToolTest
         s.setIdentifier( "TEST" );
         s.setClazz( "TEST" );
 
-        Assert.assertNotNull( this.getTestTool().getImplementationEditor( i ) );
-        Assert.assertNotNull( this.getTestTool().getSpecificationEditor( s ) );
+        Assert.assertNotNull( this.getTestTool().getSourceFileType( i ) );
+        Assert.assertNotNull( this.getTestTool().getSourceFileType( s ) );
+        Assert.assertNotNull( this.getTestTool().getSourceCodeEditor( i ) );
+        Assert.assertNotNull( this.getTestTool().getSourceCodeEditor( s ) );
     }
 
     public void testManageSources() throws Exception
@@ -389,7 +273,7 @@ public class JavaSourcesTest extends JomcToolTest
 
             Assert.fail( "Expected ToolException not thrown." );
         }
-        catch ( ToolException e )
+        catch ( final ToolException e )
         {
             Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
@@ -402,7 +286,7 @@ public class JavaSourcesTest extends JomcToolTest
 
             Assert.fail( "Expected ToolException not thrown." );
         }
-        catch ( ToolException e )
+        catch ( final ToolException e )
         {
             Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
@@ -424,150 +308,153 @@ public class JavaSourcesTest extends JomcToolTest
 
     public void testMandatorySections() throws Exception
     {
+        final SectionEditor editor = new SectionEditor();
         final File specificationDirectory = this.getTestSourcesDirectory();
         final File implementationDirectory = this.getTestSourcesDirectory();
 
+        File f = new File( implementationDirectory, "Implementation.java" );
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutAnnotationsSection.java.txt" ),
-                      new FileOutputStream( new File( implementationDirectory, "Implementation.java" ) ) );
+                      new FileOutputStream( f ) );
 
-        try
-        {
-            this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
-                                              implementationDirectory );
+        this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
+                                          implementationDirectory );
 
-            Assert.fail( "Expected ToolException not thrown." );
-        }
-        catch ( ToolException e )
-        {
-            Assert.assertNotNull( e.getMessage() );
-            System.out.println( e );
-        }
+        String edited = IOUtils.toString( new FileInputStream( f ) );
+        editor.edit( edited );
+        Assert.assertTrue( editor.isSectionPresent( "Annotations" ) );
 
+        f = new File( implementationDirectory, "Implementation.java" );
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutDependenciesSection.java.txt" ),
-                      new FileOutputStream( new File( implementationDirectory, "Implementation.java" ) ) );
+                      new FileOutputStream( f ) );
 
-        try
-        {
-            this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
-                                              implementationDirectory );
+        this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
+                                          implementationDirectory );
 
-            Assert.fail( "Expected ToolException not thrown." );
-        }
-        catch ( ToolException e )
-        {
-            Assert.assertNotNull( e.getMessage() );
-            System.out.println( e );
-        }
+        edited = IOUtils.toString( new FileInputStream( f ) );
+        editor.edit( edited );
+        Assert.assertTrue( editor.isSectionPresent( "Dependencies" ) );
 
+        f = new File( implementationDirectory, "Implementation.java" );
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutMessagesSection.java.txt" ),
-                      new FileOutputStream( new File( implementationDirectory, "Implementation.java" ) ) );
+                      new FileOutputStream( f ) );
 
-        try
-        {
-            this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
-                                              implementationDirectory );
+        this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
+                                          implementationDirectory );
 
-            Assert.fail( "Expected ToolException not thrown." );
-        }
-        catch ( ToolException e )
-        {
-            Assert.assertNotNull( e.getMessage() );
-            System.out.println( e );
-        }
+        edited = IOUtils.toString( new FileInputStream( f ) );
+        editor.edit( edited );
+        Assert.assertTrue( editor.isSectionPresent( "Messages" ) );
 
+        f = new File( implementationDirectory, "Implementation.java" );
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutPropertiesSection.java.txt" ),
-                      new FileOutputStream( new File( implementationDirectory, "Implementation.java" ) ) );
+                      new FileOutputStream( f ) );
 
-        try
-        {
-            this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
-                                              implementationDirectory );
+        this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
+                                          implementationDirectory );
 
-            Assert.fail( "Expected ToolException not thrown." );
-        }
-        catch ( ToolException e )
-        {
-            Assert.assertNotNull( e.getMessage() );
-            System.out.println( e );
-        }
+        edited = IOUtils.toString( new FileInputStream( f ) );
+        editor.edit( edited );
+        Assert.assertTrue( editor.isSectionPresent( "Properties" ) );
 
+        f = new File( implementationDirectory, "ImplementationOfSpecification.java" );
         IOUtils.copy(
             this.getClass().getResourceAsStream( "ImplementationOfSpecificationWithoutConstructorsSection.java.txt" ),
-            new FileOutputStream( new File( implementationDirectory, "ImplementationOfSpecification.java" ) ) );
+            new FileOutputStream( f ) );
 
-        try
-        {
-            this.getTestTool().manageSources(
-                this.getTestTool().getModules().getImplementation( "ImplementationOfSpecification" ),
-                implementationDirectory );
+        this.getTestTool().manageSources(
+            this.getTestTool().getModules().getImplementation( "ImplementationOfSpecification" ),
+            implementationDirectory );
 
-            Assert.fail( "Expected ToolException not thrown." );
-        }
-        catch ( ToolException e )
-        {
-            Assert.assertNotNull( e.getMessage() );
-            System.out.println( e );
-        }
+        edited = IOUtils.toString( new FileInputStream( f ) );
+        editor.edit( edited );
+        Assert.assertTrue( editor.isSectionPresent( "Constructors" ) );
 
+        f = new File( specificationDirectory, "Specification.java" );
         IOUtils.copy( this.getClass().getResourceAsStream( "SpecificationWithoutAnnotationsSection.java.txt" ),
-                      new FileOutputStream( new File( specificationDirectory, "Specification.java" ) ) );
+                      new FileOutputStream( f ) );
 
-        try
-        {
-            this.getTestTool().manageSources( this.getTestTool().getModules().getSpecification( "Specification" ),
-                                              specificationDirectory );
+        this.getTestTool().manageSources( this.getTestTool().getModules().getSpecification( "Specification" ),
+                                          specificationDirectory );
 
-            Assert.fail( "Expected ToolException not thrown." );
-        }
-        catch ( ToolException e )
-        {
-            Assert.assertNotNull( e.getMessage() );
-            System.out.println( e );
-        }
+        edited = IOUtils.toString( new FileInputStream( f ) );
+        editor.edit( edited );
+        Assert.assertTrue( editor.isSectionPresent( "Annotations" ) );
     }
 
     public void testOptionalSections() throws Exception
     {
+        final SectionEditor editor = new SectionEditor();
         final File implementationDirectory = this.getTestSourcesDirectory();
         final File specificationDirectory = this.getTestSourcesDirectory();
 
+        File f = new File( implementationDirectory, "Implementation.java" );
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutConstructorsSection.java.txt" ),
-                      new FileOutputStream( new File( implementationDirectory, "Implementation.java" ) ) );
+                      new FileOutputStream( f ) );
 
         this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
                                           implementationDirectory );
+
+        String edited = IOUtils.toString( new FileInputStream( f ) );
+        editor.edit( edited );
+        Assert.assertFalse( editor.isSectionPresent( "Constructors" ) );
 
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutDefaultConstructorSection.java.txt" ),
-                      new FileOutputStream( new File( implementationDirectory, "Implementation.java" ) ) );
+                      new FileOutputStream( f ) );
 
         this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
                                           implementationDirectory );
+
+        edited = IOUtils.toString( new FileInputStream( f ) );
+        editor.edit( edited );
+        Assert.assertTrue( editor.isSectionPresent( "Constructors" ) );
+        Assert.assertTrue( editor.isSectionPresent( "Default Constructor" ) );
 
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutDocumentationSection.java.txt" ),
-                      new FileOutputStream( new File( implementationDirectory, "Implementation.java" ) ) );
+                      new FileOutputStream( f ) );
 
         this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
                                           implementationDirectory );
+
+        edited = IOUtils.toString( new FileInputStream( f ) );
+        editor.edit( edited );
+        Assert.assertFalse( editor.isSectionPresent( "Documentation" ) );
 
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutLicenseSection.java.txt" ),
-                      new FileOutputStream( new File( implementationDirectory, "Implementation.java" ) ) );
+                      new FileOutputStream( f ) );
 
         this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
                                           implementationDirectory );
 
+        edited = IOUtils.toString( new FileInputStream( f ) );
+        editor.edit( edited );
+        Assert.assertFalse( editor.isSectionPresent( "License Header" ) );
+
+        f = new File( specificationDirectory, "Specification.java" );
         IOUtils.copy( this.getClass().getResourceAsStream( "SpecificationWithoutDocumentationSection.java.txt" ),
-                      new FileOutputStream( new File( specificationDirectory, "Specification.java" ) ) );
+                      new FileOutputStream( f ) );
 
         this.getTestTool().manageSources( this.getTestTool().getModules().getSpecification( "Specification" ),
                                           specificationDirectory );
 
+
+        edited = IOUtils.toString( new FileInputStream( f ) );
+        editor.edit( edited );
+        Assert.assertFalse( editor.isSectionPresent( "Documentation" ) );
 
         IOUtils.copy( this.getClass().getResourceAsStream( "SpecificationWithoutLicenseSection.java.txt" ),
-                      new FileOutputStream( new File( specificationDirectory, "Specification.java" ) ) );
+                      new FileOutputStream( f ) );
 
         this.getTestTool().manageSources( this.getTestTool().getModules().getSpecification( "Specification" ),
                                           specificationDirectory );
 
+        edited = IOUtils.toString( new FileInputStream( f ) );
+        editor.edit( edited );
+        Assert.assertFalse( editor.isSectionPresent( "License Header" ) );
+    }
+
+    public void testCopyConstructor() throws Exception
+    {
+        new JavaSources( this.getTestTool() );
     }
 
 }

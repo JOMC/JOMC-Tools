@@ -33,6 +33,7 @@
 package org.jomc.tools.test;
 
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
@@ -494,6 +495,36 @@ public abstract class JomcToolTest extends TestCase
     /** Tests that method declaring not to return {@code null} do not return {@code null}. */
     public void testNotNull() throws Exception
     {
+        final Specification specification = new Specification();
+        specification.setClazz( "java.lang.Object" );
+        specification.setIdentifier( "java.lang.Object" );
+
+        final Specification defaultPackageSpecification = new Specification();
+        defaultPackageSpecification.setClazz( "Object" );
+        defaultPackageSpecification.setIdentifier( "Object" );
+
+        final Implementation implementation = new Implementation();
+        implementation.setIdentifier( "java.lang.Object" );
+        implementation.setName( "java.lang.Object" );
+        implementation.setClazz( "java.lang.Object" );
+
+        final Implementation defaultPackageImplementation = new Implementation();
+        defaultPackageImplementation.setIdentifier( "Object" );
+        defaultPackageImplementation.setName( "Object" );
+        defaultPackageImplementation.setClazz( "Object" );
+
+        final Dependency d = new Dependency();
+        d.setIdentifier( "java.util.Locale" );
+        d.setName( "locale" );
+        d.setImplementationName( "default" );
+
+        final Property p = new Property();
+        p.setName( "property" );
+        p.setValue( "Test" );
+
+        final Message m = new Message();
+        m.setName( "message" );
+
         Assert.assertNotNull( this.getTestTool().getListeners() );
         Assert.assertNotNull( this.getTestTool().getInputEncoding() );
         Assert.assertNotNull( this.getTestTool().getModules() );
@@ -502,6 +533,27 @@ public abstract class JomcToolTest extends TestCase
         Assert.assertNotNull( this.getTestTool().getTemplateEncoding() );
         Assert.assertNotNull( this.getTestTool().getVelocityContext() );
         Assert.assertNotNull( this.getTestTool().getVelocityEngine() );
+        Assert.assertNotNull( JomcTool.getDefaultLogLevel() );
+        Assert.assertEquals( Locale.getDefault().getDisplayLanguage(),
+                             this.getTestTool().getDisplayLanguage( Locale.getDefault().getLanguage() ) );
+
+        Assert.assertEquals( "java/lang/Object", this.getTestTool().getJavaClasspathLocation( implementation ) );
+        Assert.assertEquals( "Object", this.getTestTool().getJavaClasspathLocation( defaultPackageImplementation ) );
+        Assert.assertEquals( "java/lang/Object", this.getTestTool().getJavaClasspathLocation( specification ) );
+        Assert.assertEquals( "Object", this.getTestTool().getJavaClasspathLocation( defaultPackageSpecification ) );
+        Assert.assertEquals( "getLocale", this.getTestTool().getJavaGetterMethodName( d ) );
+        Assert.assertEquals( "getMessageMessage", this.getTestTool().getJavaGetterMethodName( m ) );
+        Assert.assertEquals( "getProperty", this.getTestTool().getJavaGetterMethodName( p ) );
+        Assert.assertEquals( 0, this.getTestTool().getJavaInterfaceNames( implementation, true ).size() );
+        Assert.assertEquals( "private", this.getTestTool().getJavaModifierName( implementation, d ) );
+        Assert.assertEquals( "private", this.getTestTool().getJavaModifierName( implementation, m ) );
+        Assert.assertEquals( "private", this.getTestTool().getJavaModifierName( implementation, p ) );
+        Assert.assertEquals( "java.lang", this.getTestTool().getJavaPackageName( implementation ) );
+        Assert.assertEquals( "", this.getTestTool().getJavaPackageName( defaultPackageImplementation ) );
+        Assert.assertEquals( "java.lang", this.getTestTool().getJavaPackageName( specification ) );
+        Assert.assertEquals( "", this.getTestTool().getJavaPackageName( defaultPackageSpecification ) );
+        Assert.assertEquals( "java.util", this.getTestTool().getJavaPackageName( d ) );
+        Assert.assertEquals( "", this.getTestTool().getJavaString( "" ) );
     }
 
     /** Tests the {@code getVelocityTemplate} method. */

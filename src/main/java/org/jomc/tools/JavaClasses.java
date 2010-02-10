@@ -115,8 +115,10 @@ public class JavaClasses extends JomcTool
      * Creates a new {@code JavaClasses} instance taking a {@code JavaClasses} instance to initialize the instance with.
      *
      * @param tool The instance to initialize the new instance with,
+     *
+     * @throws ToolException if copying {@code tool} fails.
      */
-    public JavaClasses( final JavaClasses tool )
+    public JavaClasses( final JavaClasses tool ) throws ToolException
     {
         super( tool );
     }
@@ -243,7 +245,7 @@ public class JavaClasses extends JomcTool
         }
         catch ( final IOException e )
         {
-            throw new ToolException( e );
+            throw new ToolException( e.getMessage(), e );
         }
     }
 
@@ -362,7 +364,7 @@ public class JavaClasses extends JomcTool
         }
         catch ( final IOException e )
         {
-            throw new ToolException( e );
+            throw new ToolException( e.getMessage(), e );
         }
     }
 
@@ -976,11 +978,11 @@ public class JavaClasses extends JomcTool
         }
         catch ( final ParseException e )
         {
-            throw new ToolException( e );
+            throw new ToolException( e.getMessage(), e );
         }
         catch ( final TokenMgrError e )
         {
-            throw new ToolException( e );
+            throw new ToolException( e.getMessage(), e );
         }
     }
 
@@ -1112,7 +1114,7 @@ public class JavaClasses extends JomcTool
         }
         catch ( final IOException e )
         {
-            throw new ToolException( e );
+            throw new ToolException( e.getMessage(), e );
         }
     }
 
@@ -1186,11 +1188,11 @@ public class JavaClasses extends JomcTool
         }
         catch ( final JAXBException e )
         {
-            throw new ToolException( e );
+            throw new ToolException( e.getMessage(), e );
         }
         catch ( final TransformerException e )
         {
-            throw new ToolException( e );
+            throw new ToolException( e.getMessage(), e );
         }
     }
 
@@ -1333,11 +1335,11 @@ public class JavaClasses extends JomcTool
         }
         catch ( final JAXBException e )
         {
-            throw new ToolException( e );
+            throw new ToolException( e.getMessage(), e );
         }
         catch ( final TransformerException e )
         {
-            throw new ToolException( e );
+            throw new ToolException( e.getMessage(), e );
         }
     }
 
@@ -1366,7 +1368,7 @@ public class JavaClasses extends JomcTool
         }
         catch ( final IOException e )
         {
-            throw new ToolException( e );
+            throw new ToolException( e.getMessage(), e );
         }
     }
 
@@ -1400,7 +1402,7 @@ public class JavaClasses extends JomcTool
         }
         catch ( final IOException e )
         {
-            throw new ToolException( e );
+            throw new ToolException( e.getMessage(), e );
         }
     }
 
@@ -1437,7 +1439,7 @@ public class JavaClasses extends JomcTool
         }
         catch ( final IOException e )
         {
-            throw new ToolException( e );
+            throw new ToolException( e.getMessage(), e );
         }
     }
 
@@ -1591,11 +1593,11 @@ public class JavaClasses extends JomcTool
         }
         catch ( final JAXBException e )
         {
-            throw new ToolException( e );
+            throw new ToolException( e.getMessage(), e );
         }
         catch ( final IOException e )
         {
-            throw new ToolException( e );
+            throw new ToolException( e.getMessage(), e );
         }
     }
 
@@ -1638,11 +1640,11 @@ public class JavaClasses extends JomcTool
         }
         catch ( final JAXBException e )
         {
-            throw new ToolException( e );
+            throw new ToolException( e.getMessage(), e );
         }
         catch ( final IOException e )
         {
-            throw new ToolException( e );
+            throw new ToolException( e.getMessage(), e );
         }
     }
 

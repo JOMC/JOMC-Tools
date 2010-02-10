@@ -36,6 +36,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.commons.io.FileUtils;
@@ -48,6 +51,10 @@ import org.jomc.model.Module;
 import org.jomc.model.Properties;
 import org.jomc.model.Specification;
 import org.jomc.model.Specifications;
+import org.jomc.tools.model.SourceFileType;
+import org.jomc.tools.model.SourceFilesType;
+import org.jomc.tools.model.SourceSectionType;
+import org.jomc.tools.model.SourceSectionsType;
 import org.jomc.util.LineEditor;
 import org.jomc.util.Section;
 import org.jomc.util.SectionEditor;
@@ -107,6 +114,9 @@ public class JavaSources extends JomcTool
     /** Name of the {@code implementation-constructors-tail.vm} template. */
     private static final String CONSTRUCTORS_TAIL_TEMPLATE = "implementation-constructors-tail.vm";
 
+    /** Name of the {@code implementation-default-constructor.vm} template. */
+    private static final String DEFAULT_CONSTRUCTOR_TEMPLATE = "implementation-default-constructor.vm";
+
     /** Name of the {@code implementation-dependencies.vm} template. */
     private static final String DEPENDENCIES_TEMPLATE = "implementation-dependencies.vm";
 
@@ -140,6 +150,15 @@ public class JavaSources extends JomcTool
     /** Name of the {@code implementation-annotations.vm} template. */
     private static final String IMPLEMENTATION_ANNOTATIONS_TEMPLATE = "implementation-annotations.vm";
 
+    /** Number of whitespace characters per indentation level. */
+    private Integer whitespacesPerIndent;
+
+    /** Indentation character. */
+    private Character indentationCharacter;
+
+    /** Source files model. */
+    private SourceFilesType sourceFilesType;
+
     /** Creates a new {@code JavaSources} instance. */
     public JavaSources()
     {
@@ -150,10 +169,260 @@ public class JavaSources extends JomcTool
      * Creates a new {@code JavaSources} instance taking a {@code JavaSources} instance to initialize the instance with.
      *
      * @param tool The instance to initialize the new instance with,
+     *
+     * @throws ToolException if copying {@code tool} fails.
      */
-    public JavaSources( final JavaSources tool )
+    public JavaSources( final JavaSources tool ) throws ToolException
     {
         super( tool );
+        this.setIndentationCharacter( tool.getIndentationCharacter() );
+        this.setWhitespacesPerIndent( tool.getWhitespacesPerIndent() );
+        this.sourceFilesType = new SourceFilesType( tool.getSourceFilesType() );
+    }
+
+    /**
+     * Gets the number of whitespace characters per indentation level.
+     *
+     * @return The number of whitespace characters per indentation level.
+     */
+    public int getWhitespacesPerIndent()
+    {
+        if ( this.whitespacesPerIndent == null )
+        {
+            this.whitespacesPerIndent = 4;
+        }
+
+        return this.whitespacesPerIndent;
+    }
+
+    /**
+     * Sets the number of whitespace characters per indentation level.
+     *
+     * @param value The new number of whitespace characters per indentation level.
+     */
+    public void setWhitespacesPerIndent( final int value )
+    {
+        this.whitespacesPerIndent = value;
+    }
+
+    /**
+     * Gets the indentation character.
+     *
+     * @return The indentation character.
+     */
+    public char getIndentationCharacter()
+    {
+        if ( this.indentationCharacter == null )
+        {
+            this.indentationCharacter = ' ';
+        }
+
+        return this.indentationCharacter;
+    }
+
+    /**
+     * Sets the indentation character.
+     *
+     * @param value The new indentation character.
+     */
+    public void setIndentationCharacter( final char value )
+    {
+        this.indentationCharacter = value;
+    }
+
+    /**
+     * Gets the source files model of the instance.
+     * <p>This accessor method returns a reference to the live object, not a snapshot. Therefore any modification you
+     * make to the returned object will be present inside the object. This is why there is no {@code set} method.</p>
+     *
+     * @return The source files model of the instance.
+     *
+     * @see #getSourceFileType(org.jomc.model.Specification)
+     * @see #getSourceFileType(org.jomc.model.Implementation)
+     */
+    public SourceFilesType getSourceFilesType()
+    {
+        if ( this.sourceFilesType == null )
+        {
+            this.sourceFilesType = new SourceFilesType();
+        }
+
+        return this.sourceFilesType;
+    }
+
+    /**
+     * Gets the model of a specification source file.
+     *
+     * @param specification The specification to get a source file model for.
+     *
+     * @return The source file model for {@code specification}.
+     *
+     * @throws NullPointerException if {@code specification} is {@code null}.
+     *
+     * @see #getSourceFilesType()
+     */
+    public SourceFileType getSourceFileType( final Specification specification )
+    {
+        if ( specification == null )
+        {
+            throw new NullPointerException( "specification" );
+        }
+
+        SourceFileType sourceFileType = this.getSourceFilesType().getSourceFile( specification.getIdentifier() );
+
+        if ( sourceFileType == null )
+        {
+            sourceFileType = new SourceFileType();
+            sourceFileType.setIdentifier( specification.getIdentifier() );
+            sourceFileType.setTemplate( SPECIFICATION_TEMPLATE );
+            sourceFileType.setSourceSections( new SourceSectionsType() );
+
+            SourceSectionType s = new SourceSectionType();
+            s.setName( LICENSE_SECTION_NAME );
+            s.setHeadTemplate( SPECIFICATION_LICENSE_TEMPLATE );
+            s.setOptional( true );
+            sourceFileType.getSourceSections().getSourceSection().add( s );
+
+            s = new SourceSectionType();
+            s.setName( ANNOTATIONS_SECTION_NAME );
+            s.setHeadTemplate( SPECIFICATION_ANNOTATIONS_TEMPLATE );
+            s.setOptional( false );
+            sourceFileType.getSourceSections().getSourceSection().add( s );
+
+            s = new SourceSectionType();
+            s.setName( DOCUMENTATION_SECTION_NAME );
+            s.setHeadTemplate( SPECIFICATION_DOCUMENTATION_TEMPLATE );
+            s.setOptional( true );
+            sourceFileType.getSourceSections().getSourceSection().add( s );
+
+            final String javaTypeName = this.getJavaTypeName( specification, false );
+            if ( javaTypeName != null )
+            {
+                s = new SourceSectionType();
+                s.setName( javaTypeName );
+                s.setIndentationLevel( 1 );
+                s.setOptional( false );
+                s.setEditable( true );
+                sourceFileType.getSourceSections().getSourceSection().add( s );
+            }
+
+            this.getSourceFilesType().getSourceFile().add( sourceFileType );
+        }
+
+        return sourceFileType;
+    }
+
+    /**
+     * Gets the model of an implementation source file.
+     *
+     * @param implementation The implementation to get a source file model for.
+     *
+     * @return The source file model for {@code implementation}.
+     *
+     * @throws NullPointerException if {@code implementation} is {@code null}.
+     *
+     * @see #getSourceFilesType()
+     */
+    public SourceFileType getSourceFileType( final Implementation implementation )
+    {
+        if ( implementation == null )
+        {
+            throw new NullPointerException( "implementation" );
+        }
+
+        SourceFileType sourceFileType = this.getSourceFilesType().getSourceFile( implementation.getIdentifier() );
+
+        if ( sourceFileType == null )
+        {
+            final Specifications specifications = this.getModules().getSpecifications( implementation.getIdentifier() );
+            final Dependencies dependencies = this.getModules().getDependencies( implementation.getIdentifier() );
+            final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
+            final Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
+
+            sourceFileType = new SourceFileType();
+            sourceFileType.setIdentifier( implementation.getIdentifier() );
+            sourceFileType.setTemplate( IMPLEMENTATION_TEMPLATE );
+            sourceFileType.setSourceSections( new SourceSectionsType() );
+
+            SourceSectionType s = new SourceSectionType();
+            s.setName( LICENSE_SECTION_NAME );
+            s.setHeadTemplate( IMPLEMENTATION_LICENSE_TEMPLATE );
+            s.setOptional( true );
+            sourceFileType.getSourceSections().getSourceSection().add( s );
+
+            s = new SourceSectionType();
+            s.setName( ANNOTATIONS_SECTION_NAME );
+            s.setHeadTemplate( IMPLEMENTATION_ANNOTATIONS_TEMPLATE );
+            s.setOptional( false );
+            sourceFileType.getSourceSections().getSourceSection().add( s );
+
+            s = new SourceSectionType();
+            s.setName( DOCUMENTATION_SECTION_NAME );
+            s.setHeadTemplate( IMPLEMENTATION_DOCUMENTATION_TEMPLATE );
+            s.setOptional( true );
+            sourceFileType.getSourceSections().getSourceSection().add( s );
+
+            for ( String interfaceName : this.getJavaInterfaceNames( implementation, false ) )
+            {
+                s = new SourceSectionType();
+                s.setName( interfaceName );
+                s.setIndentationLevel( 1 );
+                s.setOptional( false );
+                s.setEditable( true );
+                sourceFileType.getSourceSections().getSourceSection().add( s );
+            }
+
+            s = new SourceSectionType();
+            s.setName( this.getJavaTypeName( implementation, false ) );
+            s.setIndentationLevel( 1 );
+            s.setOptional( false );
+            s.setEditable( true );
+            sourceFileType.getSourceSections().getSourceSection().add( s );
+
+            s = new SourceSectionType();
+            s.setName( CONSTRUCTORS_SECTION_NAME );
+            s.setIndentationLevel( 1 );
+            s.setHeadTemplate( CONSTRUCTORS_HEAD_TEMPLATE );
+            s.setTailTemplate( CONSTRUCTORS_TAIL_TEMPLATE );
+            s.setOptional( specifications == null ||
+                           ( specifications.getSpecification().isEmpty() && specifications.getReference().isEmpty() ) );
+
+            s.setSourceSections( new SourceSectionsType() );
+            sourceFileType.getSourceSections().getSourceSection().add( s );
+
+            final SourceSectionType defaultCtor = new SourceSectionType();
+            defaultCtor.setName( DEFAULT_CONSTRUCTOR_SECTION_NAME );
+            defaultCtor.setIndentationLevel( 2 );
+            defaultCtor.setHeadTemplate( DEFAULT_CONSTRUCTOR_TEMPLATE );
+            defaultCtor.setOptional( false );
+            defaultCtor.setEditable( true );
+            s.getSourceSections().getSourceSection().add( defaultCtor );
+
+            s = new SourceSectionType();
+            s.setName( DEPENDENCIES_SECTION_NAME );
+            s.setIndentationLevel( 1 );
+            s.setHeadTemplate( DEPENDENCIES_TEMPLATE );
+            s.setOptional( dependencies == null || dependencies.getDependency().isEmpty() );
+            sourceFileType.getSourceSections().getSourceSection().add( s );
+
+            s = new SourceSectionType();
+            s.setName( PROPERTIES_SECTION_NAME );
+            s.setIndentationLevel( 1 );
+            s.setHeadTemplate( PROPERTIES_TEMPLATE );
+            s.setOptional( properties == null || properties.getProperty().isEmpty() );
+            sourceFileType.getSourceSections().getSourceSection().add( s );
+
+            s = new SourceSectionType();
+            s.setName( MESSAGES_SECTION_NAME );
+            s.setIndentationLevel( 1 );
+            s.setHeadTemplate( MESSAGES_TEMPLATE );
+            s.setOptional( messages == null || messages.getMessage().isEmpty() );
+            sourceFileType.getSourceSections().getSourceSection().add( s );
+
+            this.getSourceFilesType().getSourceFile().add( sourceFileType );
+        }
+
+        return sourceFileType;
     }
 
     /**
@@ -227,7 +496,7 @@ public class JavaSources extends JomcTool
      * @throws NullPointerException if {@code specification} or {@code sourcesDirectory} is {@code null}.
      * @throws ToolException if managing sources fails.
      *
-     * @see #getSpecificationEditor(org.jomc.model.Specification)
+     * @see #getSourceCodeEditor(org.jomc.model.Specification)
      */
     public void manageSources( final Specification specification, final File sourcesDirectory ) throws ToolException
     {
@@ -250,66 +519,14 @@ public class JavaSources extends JomcTool
             }
             else if ( specification.isClassDeclaration() )
             {
-                final File f =
-                    new File( sourcesDirectory, specification.getIdentifier().replace( '.', '/' ) + ".java" );
+                this.editFile( new File( sourcesDirectory, specification.getClazz().replace( '.', '/' ) + ".java" ),
+                               this.getSourceCodeEditor( specification ) );
 
-                final String content = f.exists()
-                                       ? FileUtils.readFileToString( f, this.getInputEncoding() )
-                                       : this.getSpecificationTemplate( specification );
-
-                final JavaSpecificationEditor editor = this.getSpecificationEditor( specification );
-                final String edited;
-                try
-                {
-                    edited = editor.edit( content );
-                }
-                catch ( final IOException e )
-                {
-                    throw new ToolException( getMessage( "failedEditing", f.getCanonicalPath(), e.getMessage() ), e );
-                }
-
-                if ( !editor.isLicenseSectionPresent() && this.isLoggable( Level.INFO ) )
-                {
-                    this.log( Level.INFO, getMessage( "missingOptionalSection", LICENSE_SECTION_NAME,
-                                                      f.getCanonicalPath() ), null );
-
-                }
-
-                if ( !editor.isAnnotationsSectionPresent() )
-                {
-                    throw new IOException( getMessage( "missingSection", ANNOTATIONS_SECTION_NAME,
-                                                       f.getCanonicalPath() ) );
-
-                }
-
-                if ( !editor.isDocumentationSectionPresent() && this.isLoggable( Level.INFO ) )
-                {
-                    this.log( Level.INFO, getMessage( "missingOptionalSection", DOCUMENTATION_SECTION_NAME,
-                                                      f.getCanonicalPath() ), null );
-
-                }
-
-                if ( !edited.equals( content ) )
-                {
-                    if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
-                    {
-                        throw new ToolException( getMessage( "failedCreatingDirectory",
-                                                             f.getParentFile().getAbsolutePath() ) );
-
-                    }
-
-                    if ( this.isLoggable( Level.INFO ) )
-                    {
-                        this.log( Level.INFO, getMessage( "editing", f.getCanonicalPath() ), null );
-                    }
-
-                    FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
-                }
             }
         }
         catch ( final IOException e )
         {
-            throw new ToolException( e );
+            throw new ToolException( e.getMessage(), e );
         }
     }
 
@@ -322,7 +539,7 @@ public class JavaSources extends JomcTool
      * @throws NullPointerException if {@code implementation} or {@code sourcesDirectory} is {@code null}.
      * @throws ToolException if managing sources fails.
      *
-     * @see #getImplementationEditor(org.jomc.model.Implementation)
+     * @see #getSourceCodeEditor(org.jomc.model.Implementation)
      */
     public void manageSources( final Implementation implementation, final File sourcesDirectory ) throws ToolException
     {
@@ -339,184 +556,53 @@ public class JavaSources extends JomcTool
         {
             if ( implementation.isClassDeclaration() )
             {
-                final File f = new File( sourcesDirectory, implementation.getClazz().replace( '.', '/' ) + ".java" );
-                final String content = f.exists()
-                                       ? FileUtils.readFileToString( f, this.getInputEncoding() )
-                                       : this.getImplementationTemplate( implementation );
+                this.editFile( new File( sourcesDirectory, implementation.getClazz().replace( '.', '/' ) + ".java" ),
+                               this.getSourceCodeEditor( implementation ) );
 
-                final JavaImplementationEditor editor = this.getImplementationEditor( implementation );
-                final String edited;
-                try
-                {
-                    edited = editor.edit( content );
-                }
-                catch ( final IOException e )
-                {
-                    throw new ToolException( getMessage( "failedEditing", f.getCanonicalPath(), e.getMessage() ), e );
-                }
-
-                if ( !editor.isLicenseSectionPresent() && this.isLoggable( Level.INFO ) )
-                {
-                    this.log( Level.INFO, getMessage( "missingOptionalSection", LICENSE_SECTION_NAME,
-                                                      f.getCanonicalPath() ), null );
-
-                }
-
-                if ( !editor.isAnnotationsSectionPresent() )
-                {
-                    throw new ToolException( getMessage( "missingSection", ANNOTATIONS_SECTION_NAME,
-                                                         f.getCanonicalPath() ) );
-
-                }
-
-                if ( !editor.isDocumentationSectionPresent() && this.isLoggable( Level.INFO ) )
-                {
-                    this.log( Level.INFO, getMessage( "missingOptionalSection", DOCUMENTATION_SECTION_NAME,
-                                                      f.getCanonicalPath() ), null );
-
-                }
-
-                if ( !editor.isConstructorsSectionPresent() )
-                {
-                    final Specifications specifications =
-                        this.getModules().getSpecifications( implementation.getIdentifier() );
-
-                    if ( specifications != null &&
-                         !( specifications.getSpecification().isEmpty() && specifications.getReference().isEmpty() ) )
-                    {
-                        throw new ToolException( getMessage( "missingSection", CONSTRUCTORS_SECTION_NAME,
-                                                             f.getCanonicalPath() ) );
-
-                    }
-                    else if ( this.isLoggable( Level.INFO ) )
-                    {
-                        this.log( Level.INFO, getMessage( "missingOptionalSection", CONSTRUCTORS_SECTION_NAME,
-                                                          f.getCanonicalPath() ), null );
-
-                    }
-                }
-                else if ( !editor.isDefaultConstructorSectionPresent() )
-                {
-                    throw new ToolException( getMessage( "missingSection", DEFAULT_CONSTRUCTOR_SECTION_NAME,
-                                                         f.getCanonicalPath() ) );
-
-                }
-
-                if ( !editor.isPropertiesSectionPresent() )
-                {
-                    final Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
-
-                    if ( properties != null && !properties.getProperty().isEmpty() )
-                    {
-                        throw new ToolException( getMessage( "missingSection", PROPERTIES_SECTION_NAME,
-                                                             f.getCanonicalPath() ) );
-
-                    }
-                    else if ( this.isLoggable( Level.INFO ) )
-                    {
-                        this.log( Level.INFO, getMessage( "missingOptionalSection", PROPERTIES_SECTION_NAME,
-                                                          f.getCanonicalPath() ), null );
-
-                    }
-                }
-
-                if ( !editor.isDependenciesSectionPresent() )
-                {
-                    final Dependencies dependencies =
-                        this.getModules().getDependencies( implementation.getIdentifier() );
-
-                    if ( dependencies != null && !dependencies.getDependency().isEmpty() )
-                    {
-                        throw new ToolException( getMessage( "missingSection", DEPENDENCIES_SECTION_NAME,
-                                                             f.getCanonicalPath() ) );
-
-                    }
-                    else if ( this.isLoggable( Level.INFO ) )
-                    {
-                        this.log( Level.INFO, getMessage( "missingOptionalSection", DEPENDENCIES_SECTION_NAME,
-                                                          f.getCanonicalPath() ), null );
-
-                    }
-                }
-
-                if ( !editor.isMessagesSectionPresent() )
-                {
-                    final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
-
-                    if ( messages != null && !messages.getMessage().isEmpty() )
-                    {
-                        throw new ToolException( getMessage( "missingSection", MESSAGES_SECTION_NAME,
-                                                             f.getCanonicalPath() ) );
-
-                    }
-                    else if ( this.isLoggable( Level.INFO ) )
-                    {
-                        this.log( Level.INFO, getMessage( "missingOptionalSection", MESSAGES_SECTION_NAME,
-                                                          f.getCanonicalPath() ), null );
-
-                    }
-                }
-
-                if ( !edited.equals( content ) )
-                {
-                    if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
-                    {
-                        throw new ToolException( getMessage( "failedCreatingDirectory",
-                                                             f.getParentFile().getAbsolutePath() ) );
-
-                    }
-
-                    if ( this.isLoggable( Level.INFO ) )
-                    {
-                        this.log( Level.INFO, getMessage( "editing", f.getCanonicalPath() ), null );
-                    }
-
-                    FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
-                }
             }
         }
         catch ( final IOException e )
         {
-            throw new ToolException( e );
+            throw new ToolException( e.getMessage(), e );
         }
     }
 
     /**
-     * Gets a new editor for editing Java specification source code.
+     * Gets a new editor for editing specification source code.
      *
-     * @param specification The specification to create a new editor for.
+     * @param specification The specification to edit source code of.
      *
      * @return A new editor for editing the source code of {@code specification}.
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
      */
-    public JavaSpecificationEditor getSpecificationEditor( final Specification specification )
+    public SourceCodeEditor getSourceCodeEditor( final Specification specification )
     {
         if ( specification == null )
         {
             throw new NullPointerException( "specification" );
         }
 
-        return new JavaSpecificationEditor( new TrailingWhitespaceEditor(), specification );
+        return new SourceCodeEditor( specification, new TrailingWhitespaceEditor() );
     }
 
     /**
-     * Gets a new editor for editing Java implementation source code.
+     * Gets a new editor for editing implementation source code.
      *
-     * @param implementation The implementation to create a new editor for.
+     * @param implementation The implementation to edit source code of.
      *
      * @return A new editor for editing the source code of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      */
-    public JavaImplementationEditor getImplementationEditor( final Implementation implementation )
+    public SourceCodeEditor getSourceCodeEditor( final Implementation implementation )
     {
         if ( implementation == null )
         {
             throw new NullPointerException( "implementation" );
         }
 
-        return new JavaImplementationEditor( new TrailingWhitespaceEditor(), implementation );
+        return new SourceCodeEditor( implementation, new TrailingWhitespaceEditor() );
     }
 
     /**
@@ -533,341 +619,85 @@ public class JavaSources extends JomcTool
         return ctx;
     }
 
-    /**
-     * Gets the Java source code template of specification.
-     *
-     * @param specification The specification to get the source code template of.
-     *
-     * @throws ToolException if getting the source code section fails.
-     */
-    private String getSpecificationTemplate( final Specification specification ) throws ToolException
+    private void editFile( final File f, final SourceCodeEditor editor ) throws IOException, ToolException
     {
-        try
+        String content = null;
+
+        if ( !f.exists() )
         {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final Template template = this.getVelocityTemplate( SPECIFICATION_TEMPLATE );
-            ctx.put( "specification", specification );
-            ctx.put( "template", template );
-            template.merge( ctx, writer );
-            writer.close();
-            return writer.toString();
+            final SourceFileType sourceFileType = editor.getSourceFileType();
+
+            if ( sourceFileType != null && sourceFileType.getTemplate() != null )
+            {
+                final StringWriter writer = new StringWriter();
+                final Template template = this.getVelocityTemplate( sourceFileType.getTemplate() );
+                final VelocityContext ctx = editor.getVelocityContext();
+                ctx.put( "template", template );
+                template.merge( ctx, writer );
+                writer.close();
+                content = writer.toString();
+            }
         }
-        catch ( final IOException e )
+        else
         {
-            throw new ToolException( e );
+            content = FileUtils.readFileToString( f, this.getInputEncoding() );
+        }
+
+        if ( content != null )
+        {
+            String edited = null;
+
+            try
+            {
+                edited = editor.edit( content );
+            }
+            catch ( final IOException e )
+            {
+                throw new ToolException( getMessage( "failedEditing", f.getCanonicalPath(), e.getMessage() ), e );
+            }
+
+            if ( this.isLoggable( Level.FINE ) )
+            {
+                this.logAddedSections( f, editor.getAddedSections() );
+            }
+
+            if ( this.isLoggable( Level.WARNING ) )
+            {
+                this.logUnknownSections( f, editor.getUnknownSections() );
+            }
+
+            if ( !edited.equals( content ) )
+            {
+                if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
+                {
+                    throw new ToolException( getMessage( "failedCreatingDirectory",
+                                                         f.getParentFile().getAbsolutePath() ) );
+
+                }
+
+                if ( this.isLoggable( Level.INFO ) )
+                {
+                    this.log( Level.INFO, getMessage( "editing", f.getCanonicalPath() ), null );
+                }
+
+                FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
+            }
         }
     }
 
-    /**
-     * Gets the Java source code template of an implementation.
-     *
-     * @param implementation The implementation to get the source code template of.
-     *
-     * @throws ToolException if getting the source code section fails.
-     */
-    private String getImplementationTemplate( final Implementation implementation ) throws ToolException
+    private void logAddedSections( final File f, final List<Section> sections ) throws IOException
     {
-        try
+        for ( Section s : sections )
         {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final Template template = this.getVelocityTemplate( IMPLEMENTATION_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "template", template );
-            template.merge( ctx, writer );
-            writer.close();
-            return writer.toString();
-        }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e );
+            this.log( Level.FINE, getMessage( "addedSection", f.getCanonicalPath(), s.getName() ), null );
         }
     }
 
-    /**
-     * Gets the Java source code of the license section of a specification.
-     *
-     * @param specification The specification to get the source code of the license section of.
-     *
-     * @throws ToolException if getting the source code section fails.
-     */
-    private String getLicenseSection( final Specification specification ) throws ToolException
+    private void logUnknownSections( final File f, final List<Section> sections ) throws IOException
     {
-        try
+        for ( Section s : sections )
         {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final Template template = this.getVelocityTemplate( SPECIFICATION_LICENSE_TEMPLATE );
-            ctx.put( "specification", specification );
-            ctx.put( "template", template );
-            template.merge( ctx, writer );
-            writer.close();
-            return writer.toString();
-        }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e );
-        }
-    }
-
-    /**
-     * Gets the Java source code of the license section of an implementation..
-     *
-     * @param implementation The implementation to get the source code of the license section of.
-     *
-     * @throws ToolException if getting the source code section fails.
-     */
-    private String getLicenseSection( final Implementation implementation ) throws ToolException
-    {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final Template template = this.getVelocityTemplate( IMPLEMENTATION_LICENSE_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "template", template );
-            template.merge( ctx, writer );
-            writer.close();
-            return writer.toString();
-        }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e );
-        }
-    }
-
-    /**
-     * Gets the Java source code of the specification annotations section.
-     *
-     * @param specification The specification to get the source code of the annotations section of.
-     *
-     * @throws ToolException if getting the source code section fails.
-     */
-    private String getAnnotationsSection( final Specification specification ) throws ToolException
-    {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final Template template = this.getVelocityTemplate( SPECIFICATION_ANNOTATIONS_TEMPLATE );
-            ctx.put( "specification", specification );
-            ctx.put( "template", template );
-            template.merge( ctx, writer );
-            writer.close();
-            return writer.toString();
-        }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e );
-        }
-    }
-
-    /**
-     * Gets the Java source code of the implementation annotations section.
-     *
-     * @param implementation The implementation to get the source code of the annotations section of.
-     *
-     * @throws ToolException if getting the source code section fails.
-     */
-    private String getAnnotationsSection( final Implementation implementation ) throws ToolException
-    {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final Template template = this.getVelocityTemplate( IMPLEMENTATION_ANNOTATIONS_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "template", template );
-            template.merge( ctx, writer );
-            writer.close();
-            return writer.toString();
-        }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e );
-        }
-    }
-
-    /**
-     * Gets the Java source code of the documentation section of a specification.
-     *
-     * @param specification The specification to get the source code section of.
-     *
-     * @throws ToolException if getting the source code section fails.
-     */
-    private String getDocumentationSection( final Specification specification ) throws ToolException
-    {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final Template template = this.getVelocityTemplate( SPECIFICATION_DOCUMENTATION_TEMPLATE );
-            ctx.put( "specification", specification );
-            ctx.put( "template", template );
-            template.merge( ctx, writer );
-            writer.close();
-            return writer.toString();
-        }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e );
-        }
-    }
-
-    /**
-     * Gets the Java source code of the documentation section of an implementation.
-     *
-     * @param implementation The implementation to get the source code section of.
-     *
-     * @throws ToolException if getting the source code section fails.
-     */
-    private String getDocumentationSection( final Implementation implementation ) throws ToolException
-    {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final Template template = this.getVelocityTemplate( IMPLEMENTATION_DOCUMENTATION_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "template", template );
-            template.merge( ctx, writer );
-            writer.close();
-            return writer.toString();
-        }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e );
-        }
-    }
-
-    /**
-     * Gets the Java source code of the constructors section head content of an implementation.
-     *
-     * @param implementation The implementation to get the constructors section head content of.
-     *
-     * @throws ToolException if getting the source code section fails.
-     */
-    private String getConstructorsSectionHeadContent( final Implementation implementation ) throws ToolException
-    {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final Template template = this.getVelocityTemplate( CONSTRUCTORS_HEAD_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "template", template );
-            template.merge( ctx, writer );
-            writer.close();
-            return writer.toString();
-        }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e );
-        }
-    }
-
-    /**
-     * Gets the Java source code of the constructors section tail content of an implementation.
-     *
-     * @param implementation The implementation to get the constructors section tail content of.
-     *
-     * @throws ToolException if getting the source code section fails.
-     */
-    private String getConstructorsSectionTailContent( final Implementation implementation ) throws ToolException
-    {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final Template template = this.getVelocityTemplate( CONSTRUCTORS_TAIL_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "template", template );
-            template.merge( ctx, writer );
-            writer.close();
-            return writer.toString();
-        }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e );
-        }
-    }
-
-    /**
-     * Gets the Java source code of the dependencies section of an implementation.
-     *
-     * @param implementation The implementation to get the source code of the dependencies section of.
-     *
-     * @throws ToolException if getting the source code section fails.
-     */
-    private String getDependenciesSection( final Implementation implementation ) throws ToolException
-    {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final Template template = this.getVelocityTemplate( DEPENDENCIES_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "template", template );
-            template.merge( ctx, writer );
-            writer.close();
-            return writer.toString();
-        }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e );
-        }
-    }
-
-    /**
-     * Gets the Java source code of the properties section of an implementation.
-     *
-     * @param implementation The implementation to get the source code of the properties section of.
-     *
-     * @throws ToolException if getting the source code section fails.
-     */
-    private String getPropertiesSection( final Implementation implementation ) throws ToolException
-    {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final Template template = this.getVelocityTemplate( PROPERTIES_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "template", template );
-            template.merge( ctx, writer );
-            writer.close();
-            return writer.toString();
-        }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e );
-        }
-    }
-
-    /**
-     * Gets the Java source code of the messages section of an implementation.
-     *
-     * @param implementation The implementation to get the source code of the messages section of.
-     *
-     * @throws ToolException if getting the source code section fails.
-     */
-    private String getMessagesSection( final Implementation implementation ) throws ToolException
-    {
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final Template template = this.getVelocityTemplate( MESSAGES_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "template", template );
-            template.merge( ctx, writer );
-            writer.close();
-            return writer.toString();
-        }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e );
+            this.log( Level.WARNING, getMessage( "unknownSection", f.getCanonicalPath(), s.getName() ), null );
         }
     }
 
@@ -884,509 +714,228 @@ public class JavaSources extends JomcTool
     }
 
     /**
-     * Extension to {@code SectionEditor} for editing Java source code.
+     * Extension to {@code SectionEditor} adding support for editing source code files.
      *
      * @author <a href="mailto:cs@jomc.org">Christian Schulte</a>
      * @version $Id$
      */
-    public abstract class JavaEditor extends SectionEditor
+    public class SourceCodeEditor extends SectionEditor
     {
 
-        /** Flag indicating that the source code of the editor contains a license section. */
-        private boolean licenseSectionPresent;
+        /** {@code Specification} of the instance or {@code null}. */
+        private final Specification specification;
 
-        /** Flag indicating that the source code of the editor contains an annotations section. */
-        private boolean annotationsSectionPresent;
+        /** {@code Implementation} of the instance or {@code null}. */
+        private final Implementation implementation;
 
-        /** Flag indicating that the source code of the editor contains a documentation section. */
-        private boolean documentationSectionPresent;
+        /** List of sections added to the input. */
+        private List<Section> addedSections;
 
-        /** Creates a new {@code JavaEditor} instance. */
-        public JavaEditor()
-        {
-            super();
-        }
+        /** List of sections without corresponding model entry. */
+        private List<Section> unknownSections;
 
         /**
-         * Creates a new {@code JavaEditor} instance taking a {@code LineEditor} to chain.
+         * Creates a new {@code SourceCodeEditor} taking a {@code Specification} to edit source code of.
          *
-         * @param lineEditor The editor to chain.
+         * @param specification The specification to edit source code of.
          */
-        public JavaEditor( final LineEditor lineEditor )
-        {
-            super( lineEditor );
-        }
-
-        @Override
-        public String getOutput( final Section section ) throws IOException
-        {
-            if ( section == null )
-            {
-                throw new NullPointerException( "section" );
-            }
-
-            this.licenseSectionPresent = false;
-            this.annotationsSectionPresent = false;
-            this.documentationSectionPresent = false;
-            return super.getOutput( section );
-        }
-
-        @Override
-        public void editSection( final Section section ) throws IOException
-        {
-            if ( section == null )
-            {
-                throw new NullPointerException( "section" );
-            }
-
-            if ( section.getName() != null )
-            {
-                if ( LICENSE_SECTION_NAME.equals( section.getName() ) )
-                {
-                    this.editLicenseSection( section );
-                    this.licenseSectionPresent = true;
-                }
-                if ( ANNOTATIONS_SECTION_NAME.equals( section.getName() ) )
-                {
-                    this.editAnnotationsSection( section );
-                    this.annotationsSectionPresent = true;
-                }
-                if ( DOCUMENTATION_SECTION_NAME.equals( section.getName() ) )
-                {
-                    this.editDocumentationSection( section );
-                    this.documentationSectionPresent = true;
-                }
-            }
-        }
-
-        /**
-         * Edits the license section of the source code of the editor.
-         *
-         * @param s The section to edit.
-         *
-         * @throws NullPointerException if {@code s} is {@code null}.
-         * @throws IOException if editing {@code s} fails.
-         */
-        public abstract void editLicenseSection( final Section s ) throws IOException;
-
-        /**
-         * Edits the annotations section of the source code of the editor.
-         *
-         * @param s The section to edit.
-         *
-         * @throws NullPointerException if {@code s} is {@code null}.
-         * @throws IOException if editing {@code s} fails.
-         */
-        public abstract void editAnnotationsSection( final Section s ) throws IOException;
-
-        /**
-         * Edits the documentation section of the source code of the editor.
-         *
-         * @param s The section to edit.
-         *
-         * @throws NullPointerException if {@code s} is {@code null}.
-         * @throws IOException if editing {@code s} fails.
-         */
-        public abstract void editDocumentationSection( final Section s ) throws IOException;
-
-        /**
-         * Gets a flag indicating that the source code of the editor contains a license section.
-         *
-         * @return {@code true} if the source code of the editor contains a license section; {@code false} if the
-         * source code of the editor does not contain a license section.
-         */
-        public boolean isLicenseSectionPresent()
-        {
-            return this.licenseSectionPresent;
-        }
-
-        /**
-         * Gets a flag indicating that the source code of the editor contains an annotations section.
-         *
-         * @return {@code true} if the source code of the editor contains an annotations section; {@code false} if the
-         * source code of the editor does not contain an annotations section.
-         */
-        public boolean isAnnotationsSectionPresent()
-        {
-            return this.annotationsSectionPresent;
-        }
-
-        /**
-         * Gets a flag indicating that the source code of the editor contains a documentation section.
-         *
-         * @return {@code true} if the source code of the editor contains a documentation section; {@code false} if the
-         * source code of the editor does not contain a documentation section.
-         */
-        public boolean isDocumentationSectionPresent()
-        {
-            return this.documentationSectionPresent;
-        }
-
-    }
-
-    /**
-     * Extension to {@code JavaEditor} for editing specification source code.
-     *
-     * @author <a href="mailto:cs@jomc.org">Christian Schulte</a>
-     * @version $Id$
-     */
-    public class JavaSpecificationEditor extends JavaEditor
-    {
-
-        /** The specification to edit. */
-        private Specification specification;
-
-        /**
-         * Creates a new {@code JavaSpecificationEditor} instance for editing the source code of a given specification.
-         *
-         * @param specification The specification to edit.
-         */
-        public JavaSpecificationEditor( final Specification specification )
+        public SourceCodeEditor( final Specification specification )
         {
             super();
             this.specification = specification;
+            this.implementation = null;
         }
 
         /**
-         * Creates a new {@code JavaSpecificationEditor} instance for editing the source code of a given specification
-         * taking a {@code LineEditor} to chain.
+         * Creates a new {@code SourceCodeEditor} taking a {@code Specification} to edit source code of and an editor to
+         * chain.
          *
+         * @param specification The specification backing the editor.
          * @param lineEditor The editor to chain.
-         * @param specification The specification to edit.
          */
-        public JavaSpecificationEditor( final LineEditor lineEditor, final Specification specification )
+        public SourceCodeEditor( final Specification specification, final LineEditor lineEditor )
         {
             super( lineEditor );
             this.specification = specification;
+            this.implementation = null;
         }
 
         /**
-         * Edits the license section of the source code of the editor.
+         * Creates a new {@code SourceCodeEditor} taking an {@code Implementation} to edit source code of.
          *
-         * @param s The section to edit.
-         *
-         * @throws NullPointerException if {@code s} is {@code null}.
-         * @throws IOException if editing {@code s} fails.
+         * @param implementation The implementation to edit source code of.
          */
-        public void editLicenseSection( final Section s ) throws IOException
-        {
-            if ( s == null )
-            {
-                throw new NullPointerException( "s" );
-            }
-
-            try
-            {
-                s.getHeadContent().setLength( 0 );
-                if ( this.specification != null )
-                {
-                    s.getHeadContent().append( getLicenseSection( this.specification ) );
-                }
-            }
-            catch ( final ToolException e )
-            {
-                throw (IOException) new IOException( e.getMessage() ).initCause( e );
-            }
-        }
-
-        /**
-         * Edits the annotations section of the source code of the editor.
-         *
-         * @param s The section to edit.
-         *
-         * @throws NullPointerException if {@code s} is {@code null}.
-         * @throws IOException if editing {@code s} fails.
-         */
-        public void editAnnotationsSection( final Section s ) throws IOException
-        {
-            if ( s == null )
-            {
-                throw new NullPointerException( "s" );
-            }
-
-            try
-            {
-                s.getHeadContent().setLength( 0 );
-                if ( this.specification != null )
-                {
-                    s.getHeadContent().append( getAnnotationsSection( this.specification ) );
-                }
-            }
-            catch ( final ToolException e )
-            {
-                throw (IOException) new IOException( e.getMessage() ).initCause( e );
-            }
-        }
-
-        /**
-         * Edits the documentation section of the source code of the editor.
-         *
-         * @param s The section to edit.
-         *
-         * @throws NullPointerException if {@code s} is {@code null}.
-         * @throws IOException if editing {@code s} fails.
-         */
-        public void editDocumentationSection( final Section s ) throws IOException
-        {
-            if ( s == null )
-            {
-                throw new NullPointerException( "s" );
-            }
-
-            try
-            {
-                s.getHeadContent().setLength( 0 );
-                if ( this.specification != null )
-                {
-                    s.getHeadContent().append( getDocumentationSection( this.specification ) );
-                }
-            }
-            catch ( final ToolException e )
-            {
-                throw (IOException) new IOException( e.getMessage() ).initCause( e );
-            }
-        }
-
-    }
-
-    /**
-     * Extension to {@code JavaEditor} for editing implementation source code.
-     *
-     * @author <a href="mailto:cs@jomc.org">Christian Schulte</a>
-     * @version $Id$
-     */
-    public class JavaImplementationEditor extends JavaEditor
-    {
-
-        /** The implementation to edit. */
-        private Implementation implementation;
-
-        /** Flag indicating that the source code of the editor contains a constructors section. */
-        private boolean constructorsSectionPresent;
-
-        /** Flag indicating that the source code of the editor contains a default constructor section. */
-        private boolean defaultConstructorSectionPresent;
-
-        /** Flag indicating that the source code of the editor contains a messages section. */
-        private boolean messagesSectionPresent;
-
-        /** Flag indicating that the source code of the editor contains a dependencies section. */
-        private boolean dependenciesSectionPresent;
-
-        /** Flag indicating that the source code of the editor contains a properties section. */
-        private boolean propertiesSectionPresent;
-
-        /**
-         * Creates a new {@code JavaImplementationEditor} instance for editing the source code of a given implementation.
-         *
-         * @param implementation The implementation to edit.
-         */
-        public JavaImplementationEditor( final Implementation implementation )
+        public SourceCodeEditor( final Implementation implementation )
         {
             super();
             this.implementation = implementation;
+            this.specification = null;
         }
 
         /**
-         * Creates a new {@code JavaImplementationEditor} instance for editing the source code of a given implementation
-         * taking a {@code LineEditor} to chain.
+         * Creates a new {@code SourceCodeEditor} taking an {@code Implementation} to edit source code of and an editor
+         * to chain.
          *
+         * @param implementation The implementation to edit source code of.
          * @param lineEditor The editor to chain.
-         * @param implementation The implementation to edit.
          */
-        public JavaImplementationEditor( final LineEditor lineEditor, final Implementation implementation )
+        public SourceCodeEditor( final Implementation implementation, final LineEditor lineEditor )
         {
             super( lineEditor );
             this.implementation = implementation;
+            this.specification = null;
         }
 
+        /**
+         * Gets a list of sections added to the input.
+         *
+         * @return A list of sections added to the input.
+         */
+        public List<Section> getAddedSections()
+        {
+            if ( this.addedSections == null )
+            {
+                this.addedSections = new LinkedList<Section>();
+            }
+
+            return this.addedSections;
+        }
+
+        /**
+         * Gets a list of sections without corresponding model entry.
+         *
+         * @return A list of sections without corresponding model entry.
+         */
+        public List<Section> getUnknownSections()
+        {
+            if ( this.unknownSections == null )
+            {
+                this.unknownSections = new LinkedList<Section>();
+            }
+
+            return this.unknownSections;
+        }
+
+        /**
+         * Gets the model of the editor.
+         *
+         * @return The model of the editor.
+         */
+        protected SourceFileType getSourceFileType()
+        {
+            if ( this.specification != null )
+            {
+                return JavaSources.this.getSourceFileType( this.specification );
+            }
+
+            if ( this.implementation != null )
+            {
+                return JavaSources.this.getSourceFileType( this.implementation );
+            }
+
+            return null;
+        }
+
+        /**
+         * Gets the velocity context used for merging templates.
+         *
+         * @return The velocity context used for merging templates.
+         */
+        protected VelocityContext getVelocityContext()
+        {
+            final VelocityContext ctx = JavaSources.this.getVelocityContext();
+
+            if ( this.specification != null )
+            {
+                ctx.put( "specification", this.specification );
+            }
+
+            if ( this.implementation != null )
+            {
+                ctx.put( "implementation", this.implementation );
+            }
+
+            return ctx;
+        }
+
+        /**
+         * {@inheritDoc}
+         * <p>This method creates any sections declared in the model of the editor as returned by method
+         * {@code getSourceFileType} prior to rendering the output of the editor.</p>
+         *
+         * @see #getSourceFileType()
+         */
         @Override
-        public String getOutput( final Section section ) throws IOException
+        protected String getOutput( final Section root ) throws IOException
         {
-            if ( section == null )
+            this.getAddedSections().clear();
+            this.getUnknownSections().clear();
+
+            final SourceFileType sourceFileType = this.getSourceFileType();
+
+            if ( sourceFileType != null )
             {
-                throw new NullPointerException( "section" );
+                this.createSections( sourceFileType.getSourceSections(), root );
             }
 
-            this.constructorsSectionPresent = false;
-            this.defaultConstructorSectionPresent = false;
-            this.messagesSectionPresent = false;
-            this.dependenciesSectionPresent = false;
-            this.propertiesSectionPresent = false;
-            return super.getOutput( section );
+            return super.getOutput( root );
         }
 
+        /**
+         * {@inheritDoc}
+         * <p>This method searches the model of the editor for a section matching {@code s} and updates properties
+         * {@code headContent} and {@code tailContent} of {@code s} according to the templates declared in the model
+         * as returned by method {@code getSourceFileType}.</p>
+         *
+         * @see #getSourceFileType()
+         */
         @Override
-        public void editSection( final Section section ) throws IOException
+        protected void editSection( final Section s ) throws IOException
         {
-            if ( section == null )
-            {
-                throw new NullPointerException( "section" );
-            }
-
-            super.editSection( section );
-
-            if ( section.getName() != null )
-            {
-                if ( CONSTRUCTORS_SECTION_NAME.equals( section.getName() ) )
-                {
-                    this.editConstructorsSection( section );
-                    this.constructorsSectionPresent = true;
-                }
-                else if ( DEFAULT_CONSTRUCTOR_SECTION_NAME.equals( section.getName() ) )
-                {
-                    this.editDefaultConstructorSection( section );
-                    this.defaultConstructorSectionPresent = true;
-                }
-                else if ( DEPENDENCIES_SECTION_NAME.equals( section.getName() ) )
-                {
-                    this.editDependenciesSection( section );
-                    this.dependenciesSectionPresent = true;
-                }
-                else if ( MESSAGES_SECTION_NAME.equals( section.getName() ) )
-                {
-                    this.editMessagesSection( section );
-                    this.messagesSectionPresent = true;
-                }
-                else if ( PROPERTIES_SECTION_NAME.equals( section.getName() ) )
-                {
-                    this.editPropertiesSection( section );
-                    this.propertiesSectionPresent = true;
-                }
-            }
-        }
-
-        /**
-         * Edits the license section of the source code of the editor.
-         *
-         * @param s The section to edit.
-         *
-         * @throws IOException if editing {@code s} fails.
-         */
-        public void editLicenseSection( final Section s ) throws IOException
-        {
-            if ( s == null )
-            {
-                throw new NullPointerException( "s" );
-            }
-
             try
             {
-                s.getHeadContent().setLength( 0 );
-                if ( this.implementation != null )
+                super.editSection( s );
+
+                final SourceFileType sourceFileType = this.getSourceFileType();
+
+                if ( s.getName() != null && sourceFileType != null && sourceFileType.getSourceSections() != null )
                 {
-                    s.getHeadContent().append( getLicenseSection( this.implementation ) );
-                }
-            }
-            catch ( final ToolException e )
-            {
-                throw (IOException) new IOException( e.getMessage() ).initCause( e );
-            }
-        }
+                    final SourceSectionType sourceSectionType =
+                        sourceFileType.getSourceSections().getSourceSection( s.getName() );
 
-        /**
-         * Edits the annotations section of the source code of the editor.
-         *
-         * @param s The section to edit.
-         *
-         * @throws NullPointerException if {@code s} is {@code null}.
-         * @throws IOException if editing {@code s} fails.
-         */
-        public void editAnnotationsSection( final Section s ) throws IOException
-        {
-            if ( s == null )
-            {
-                throw new NullPointerException( "s" );
-            }
-
-            try
-            {
-                s.getHeadContent().setLength( 0 );
-                if ( this.implementation != null )
-                {
-                    s.getHeadContent().append( getAnnotationsSection( this.implementation ) );
-                }
-            }
-            catch ( final ToolException e )
-            {
-                throw (IOException) new IOException( e.getMessage() ).initCause( e );
-            }
-        }
-
-        /**
-         * Edits the documentation section of the source code of the editor.
-         *
-         * @param s The section to edit.
-         *
-         * @throws NullPointerException if {@code s} is {@code null}.
-         * @throws IOException if editing {@code s} fails.
-         */
-        public void editDocumentationSection( final Section s ) throws IOException
-        {
-            if ( s == null )
-            {
-                throw new NullPointerException( "s" );
-            }
-
-            try
-            {
-                s.getHeadContent().setLength( 0 );
-                if ( this.implementation != null )
-                {
-                    s.getHeadContent().append( getDocumentationSection( this.implementation ) );
-                }
-            }
-            catch ( final ToolException e )
-            {
-                throw (IOException) new IOException( e.getMessage() ).initCause( e );
-            }
-        }
-
-        /**
-         * Edits the constructors section of the source code of the editor.
-         *
-         * @param s The section to edit.
-         *
-         * @throws NullPointerException if {@code s} is {@code null}.
-         * @throws IOException if editing {@code s} fails.
-         */
-        public void editConstructorsSection( final Section s ) throws IOException
-        {
-            if ( s == null )
-            {
-                throw new NullPointerException( "s" );
-            }
-
-            try
-            {
-                s.getHeadContent().setLength( 0 );
-                s.getTailContent().setLength( 0 );
-
-                if ( this.implementation != null )
-                {
-                    s.getHeadContent().append( getConstructorsSectionHeadContent( this.implementation ) );
-                    s.getTailContent().append( getConstructorsSectionTailContent( this.implementation ) );
-                }
-
-                for ( Section child : s.getSections() )
-                {
-                    if ( child.getName() != null && DEFAULT_CONSTRUCTOR_SECTION_NAME.equals( child.getName() ) )
+                    if ( sourceSectionType != null )
                     {
-                        this.defaultConstructorSectionPresent = true;
-                        break;
+                        if ( sourceSectionType.getHeadTemplate() != null &&
+                             ( !sourceSectionType.isEditable() || s.getHeadContent().toString().trim().length() == 0 ) )
+                        {
+                            final StringWriter writer = new StringWriter();
+                            final Template template = getVelocityTemplate( sourceSectionType.getHeadTemplate() );
+                            final VelocityContext ctx = getVelocityContext();
+                            ctx.put( "template", template );
+                            template.merge( ctx, writer );
+                            writer.close();
+                            s.getHeadContent().setLength( 0 );
+                            s.getHeadContent().append( writer.toString() );
+                        }
+
+                        if ( sourceSectionType.getTailTemplate() != null &&
+                             ( !sourceSectionType.isEditable() || s.getTailContent().toString().trim().length() == 0 ) )
+                        {
+                            final StringWriter writer = new StringWriter();
+                            final Template template = getVelocityTemplate( sourceSectionType.getTailTemplate() );
+                            final VelocityContext ctx = getVelocityContext();
+                            ctx.put( "template", template );
+                            template.merge( ctx, writer );
+                            writer.close();
+                            s.getTailContent().setLength( 0 );
+                            s.getTailContent().append( writer.toString() );
+                        }
+                    }
+                    else
+                    {
+                        this.getUnknownSections().add( s );
                     }
                 }
-
-                if ( !this.defaultConstructorSectionPresent )
-                {
-                    final Section defaultCtor = new Section();
-                    defaultCtor.setName( DEFAULT_CONSTRUCTOR_SECTION_NAME );
-                    defaultCtor.setStartingLine( "        // SECTION-START[" + DEFAULT_CONSTRUCTOR_SECTION_NAME + "]" );
-                    defaultCtor.setEndingLine( "        // SECTION-END" );
-                    defaultCtor.getHeadContent().append( "        super();" ).append( this.getLineSeparator() );
-                    s.getSections().add( defaultCtor );
-                    this.defaultConstructorSectionPresent = true;
-                }
             }
             catch ( final ToolException e )
             {
@@ -1394,172 +943,35 @@ public class JavaSources extends JomcTool
             }
         }
 
-        /**
-         * Edits the default constructor section of the source code of the editor.
-         *
-         * @param s The section to edit.
-         *
-         * @throws NullPointerException if {@code s} is {@code null}.
-         * @throws IOException if editing {@code s} fails.
-         */
-        public void editDefaultConstructorSection( final Section s ) throws IOException
+        private void createSections( final SourceSectionsType sourceSectionsType, final Section section )
         {
-            if ( s == null )
+            if ( sourceSectionsType != null && section != null )
             {
-                throw new NullPointerException( "s" );
-            }
-
-            if ( s.getHeadContent().toString().trim().length() == 0 )
-            {
-                s.getHeadContent().setLength( 0 );
-
-                if ( this.implementation != null )
+                for ( SourceSectionType sourceSectionType : sourceSectionsType.getSourceSection() )
                 {
-                    s.getHeadContent().append( "        super();" ).append( this.getLineSeparator() );
+                    Section childSection = section.getSection( sourceSectionType.getName() );
+
+                    if ( childSection == null && !sourceSectionType.isOptional() )
+                    {
+                        final char[] indent =
+                            new char[ getWhitespacesPerIndent() * sourceSectionType.getIndentationLevel() ];
+
+                        Arrays.fill( indent, getIndentationCharacter() );
+
+                        childSection = new Section();
+                        childSection.setName( sourceSectionType.getName() );
+                        childSection.setStartingLine(
+                            String.valueOf( indent ) + "// SECTION-START[" + sourceSectionType.getName() + "]" );
+
+                        childSection.setEndingLine( String.valueOf( indent ) + "// SECTION-END" );
+                        section.getSections().add( childSection );
+
+                        this.getAddedSections().add( childSection );
+                    }
+
+                    this.createSections( sourceSectionType.getSourceSections(), childSection );
                 }
             }
-        }
-
-        /**
-         * Edits the dependencies section of the source code of the editor.
-         *
-         * @param s The section to edit.
-         *
-         * @throws NullPointerException if {@code s} is {@code null}.
-         * @throws IOException if editing {@code s} fails.
-         */
-        public void editDependenciesSection( final Section s ) throws IOException
-        {
-            if ( s == null )
-            {
-                throw new NullPointerException( "s" );
-            }
-
-            try
-            {
-                s.getHeadContent().setLength( 0 );
-                if ( this.implementation != null )
-                {
-                    s.getHeadContent().append( getDependenciesSection( this.implementation ) );
-                }
-            }
-            catch ( final ToolException e )
-            {
-                throw (IOException) new IOException( e.getMessage() ).initCause( e );
-            }
-        }
-
-        /**
-         * Edits the messages section of the source code of the editor.
-         *
-         * @param s The section to edit.
-         *
-         * @throws NullPointerException if {@code s} is {@code null}.
-         * @throws IOException if editing {@code s} fails.
-         */
-        public void editMessagesSection( final Section s ) throws IOException
-        {
-            if ( s == null )
-            {
-                throw new NullPointerException( "s" );
-            }
-
-            try
-            {
-                s.getHeadContent().setLength( 0 );
-                if ( this.implementation != null )
-                {
-                    s.getHeadContent().append( getMessagesSection( this.implementation ) );
-                }
-            }
-            catch ( final ToolException e )
-            {
-                throw (IOException) new IOException( e.getMessage() ).initCause( e );
-            }
-        }
-
-        /**
-         * Edits the properties section of the source code of the editor.
-         *
-         * @param s The section to edit.
-         *
-         * @throws NullPointerException if {@code s} is {@code null}.
-         * @throws IOException if editing {@code s} fails.
-         */
-        public void editPropertiesSection( final Section s ) throws IOException
-        {
-            if ( s == null )
-            {
-                throw new NullPointerException( "s" );
-            }
-
-            try
-            {
-                s.getHeadContent().setLength( 0 );
-                if ( this.implementation != null )
-                {
-                    s.getHeadContent().append( getPropertiesSection( this.implementation ) );
-                }
-            }
-            catch ( final ToolException e )
-            {
-                throw (IOException) new IOException( e.getMessage() ).initCause( e );
-            }
-        }
-
-        /**
-         * Gets a flag indicating that the source code of the editor contains a constructors section.
-         *
-         * @return {@code true} if the source code of the editor contains a constructors section; {@code false} if the
-         * source code of the editor does not contain a constructors section.
-         */
-        public boolean isConstructorsSectionPresent()
-        {
-            return this.constructorsSectionPresent;
-        }
-
-        /**
-         * Gets a flag indicating that the source code of the editor contains a default constructor section.
-         *
-         * @return {@code true} if the source code of the editor contains a default constructor section; {@code false}
-         * if the source code of the editor does not contain a default constructor section.
-         */
-        public boolean isDefaultConstructorSectionPresent()
-        {
-            return this.defaultConstructorSectionPresent;
-        }
-
-        /**
-         * Gets a flag indicating that the source code of the editor contains a messages section.
-         *
-         * @return {@code true} if the source code of the editor contains a messages section; {@code false}
-         * if the source code of the editor does not contain a messages section.
-         */
-        public boolean isMessagesSectionPresent()
-        {
-            return this.messagesSectionPresent;
-        }
-
-        /**
-         * Gets a flag indicating that the source code of the editor contains a dependencies section.
-         *
-         * @return {@code true} if the source code of the editor contains a dependencies section; {@code false}
-         * if the source code of the editor does not contain a dependencies section.
-         */
-        public boolean isDependenciesSectionPresent()
-        {
-            return this.dependenciesSectionPresent;
-        }
-
-        /**
-         * Gets a flag indicating that the source code of the editor contains a properties section.
-         *
-         * @return {@code true} if the source code of the editor contains a properties section; {@code false}
-         * if the source code of the editor does not contain a properties section.
-         */
-        public boolean isPropertiesSectionPresent()
-        {
-            return this.propertiesSectionPresent;
         }
 
     }

@@ -45,116 +45,127 @@
   </documentation>
 
   <specifications>
-
-    <!-- ******************************************************************* -->
-    <specification identifier="org.jomc.tools.JavaBundles"
-                   class="org.jomc.tools.JavaBundles"
-                   classDeclaration="true"
-                   vendor="${project.organization.name}"
-                   version="1.0">
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="org.jomc.tools.JavaBundles" class="org.jomc.tools.JavaBundles"
+                   classDeclaration="true" vendor="${project.organization.name}" version="${project.version}">
 
       <documentation defaultLanguage="en">
         <text language="en">Test specification.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0"
-                mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
       </authors>
     </specification>
-
-    <!-- ******************************************************************* -->
-    <specification identifier="org.jomc.tools.JavaSources"
-                   class="org.jomc.tools.JavaSources"
-                   classDeclaration="true"
-                   vendor="${project.organization.name}"
-                   version="1.0">
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="org.jomc.tools.JavaSources" class="org.jomc.tools.JavaSources"
+                   classDeclaration="true" vendor="${project.organization.name}" version="${project.version}">
 
       <documentation defaultLanguage="en">
         <text language="en">Test specification.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0"
-                mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
       </authors>
     </specification>
-
-    <!-- ******************************************************************* -->
-    <specification identifier="org.jomc.tools.JavaClasses"
-                   class="org.jomc.tools.JavaClasses"
-                   classDeclaration="true"
-                   vendor="${project.organization.name}"
-                   version="1.0">
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="org.jomc.tools.JavaClasses" class="org.jomc.tools.JavaClasses"
+                   classDeclaration="true" vendor="${project.organization.name}" version="${project.version}">
 
       <documentation defaultLanguage="en">
         <text language="en">Test specification.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0"
-                mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
       </authors>
     </specification>
   </specifications>
-
   <implementations>
-
-    <!-- ******************************************************************* -->
-    <implementation identifier="org.jomc.tools.JavaBundles"
-                    class="org.jomc.tools.JavaBundles"
-                    classDeclaration="true"
-                    name="${project.name}"
-                    version="${project.version}"
-                    vendor="${project.organization.name}"
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="org.jomc.tools.JavaBundles" class="org.jomc.tools.JavaBundles" classDeclaration="true"
+                    name="${project.name}" version="${project.version}" vendor="${project.organization.name}"
                     final="true">
 
       <documentation defaultLanguage="en">
         <text language="en">Test implementation.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0"
-                mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
       </authors>
+      <specifications>
+        <reference identifier="org.jomc.tools.JavaBundles" version="${project.version}"/>
+      </specifications>
+      <dependencies>
+        <dependency identifier="java.util.Locale" name="Locale" implementationName="default" version="1.1"/>
+      </dependencies>
+      <properties>
+        <property name="TestStringProperty" value="Test"/>
+        <property name="TestPrimitiveProperty" type="int" value="1"/>
+      </properties>
+      <messages>
+        <message name="TestMessage">
+          <template defaultLanguage="en">
+            <text language="en">Test</text>
+          </template>
+        </message>
+      </messages>
     </implementation>
-
-    <!-- ******************************************************************* -->
-    <implementation identifier="org.jomc.tools.JavaSources"
-                    class="org.jomc.tools.JavaSources"
-                    classDeclaration="true"
-                    name="${project.name}"
-                    version="${project.version}"
-                    vendor="${project.organization.name}"
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="org.jomc.tools.JavaSources" class="org.jomc.tools.JavaSources" classDeclaration="true"
+                    name="${project.name}" version="${project.version}" vendor="${project.organization.name}"
                     final="true">
 
       <documentation defaultLanguage="en">
         <text language="en">Test implementation.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0"
-                mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
       </authors>
+      <specifications>
+        <reference identifier="org.jomc.tools.JavaSources" version="${project.version}"/>
+      </specifications>
+      <dependencies>
+        <dependency identifier="java.util.Locale" name="Locale" implementationName="default" version="1.1"/>
+      </dependencies>
+      <properties>
+        <property name="TestStringProperty" value="Test"/>
+        <property name="TestPrimitiveProperty" type="int" value="1"/>
+      </properties>
+      <messages>
+        <message name="TestMessage">
+          <template defaultLanguage="en">
+            <text language="en">Test</text>
+          </template>
+        </message>
+      </messages>
     </implementation>
-
-    <!-- ******************************************************************* -->
-    <implementation identifier="org.jomc.tools.JavaClasses"
-                    class="org.jomc.tools.JavaClasses"
-                    classDeclaration="true"
-                    name="${project.name}"
-                    version="${project.version}"
-                    vendor="${project.organization.name}"
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="org.jomc.tools.JavaClasses" class="org.jomc.tools.JavaClasses" classDeclaration="true"
+                    name="${project.name}" version="${project.version}" vendor="${project.organization.name}"
                     final="true">
 
       <documentation defaultLanguage="en">
         <text language="en">Test implementation.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0"
-                mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
       </authors>
+      <specifications>
+        <reference identifier="org.jomc.tools.JavaClasses" version="${project.version}"/>
+      </specifications>
+      <dependencies>
+        <dependency identifier="java.util.Locale" name="Locale" implementationName="default" version="1.1"/>
+      </dependencies>
+      <properties>
+        <property name="TestStringProperty" value="Test"/>
+        <property name="TestPrimitiveProperty" type="int" value="1"/>
+      </properties>
+      <messages>
+        <message name="TestMessage">
+          <template defaultLanguage="en">
+            <text language="en">Test</text>
+          </template>
+        </message>
+      </messages>
     </implementation>
   </implementations>
 </module>

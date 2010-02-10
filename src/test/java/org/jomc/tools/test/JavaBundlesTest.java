@@ -293,4 +293,9 @@ public class JavaBundlesTest extends JomcToolTest
 
     }
 
+    public void testCopyConstructor() throws Exception
+    {
+        new JavaBundles( this.getTestTool() );
+    }
+
 }

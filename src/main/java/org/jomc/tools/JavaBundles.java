@@ -97,9 +97,11 @@ public class JavaBundles extends JomcTool
     /**
      * Creates a new {@code JavaBundles} instance taking a {@code JavaBundles} instance to initialize the instance with.
      *
-     * @param tool The instance to initialize the new instance with,
+     * @param tool The instance to initialize the new instance with.
+     *
+     * @throws ToolException if copying {@code tool} fails.
      */
-    public JavaBundles( final JavaBundles tool )
+    public JavaBundles( final JavaBundles tool ) throws ToolException
     {
         super( tool );
         this.setDefaultLocale( tool.getDefaultLocale() );
@@ -245,7 +247,7 @@ public class JavaBundles extends JomcTool
         }
         catch ( final IOException e )
         {
-            throw new ToolException( e );
+            throw new ToolException( e.getMessage(), e );
         }
     }
 
@@ -416,7 +418,7 @@ public class JavaBundles extends JomcTool
         }
         catch ( final IOException e )
         {
-            throw new ToolException( e );
+            throw new ToolException( e.getMessage(), e );
         }
     }
 
@@ -450,7 +452,7 @@ public class JavaBundles extends JomcTool
         }
         catch ( final IOException e )
         {
-            throw new ToolException( e );
+            throw new ToolException( e.getMessage(), e );
         }
     }
 

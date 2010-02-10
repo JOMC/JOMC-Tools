@@ -37,6 +37,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.List;
 import javax.xml.bind.JAXBElement;
@@ -766,7 +767,17 @@ public class JavaClassesTest extends JomcToolTest
         final Marshaller marshaller = context.createMarshaller();
         final Unmarshaller unmarshaller = context.createUnmarshaller();
         final File allClasses = this.getTestClassesDirectory();
+        final ClassLoader allClassesLoader = new URLClassLoader( new URL[]
+            {
+                allClasses.toURI().toURL()
+            } );
+
         final File moduleClasses = this.getTestClassesDirectory();
+        final ClassLoader moduleClassesLoader = new URLClassLoader( new URL[]
+            {
+                moduleClasses.toURI().toURL()
+            } );
+
         final File implementationClasses = this.getTestClassesDirectory();
         final File specificationClasses = this.getTestClassesDirectory();
         final File uncommittedClasses = this.getTestClassesDirectory();
@@ -797,11 +808,18 @@ public class JavaClassesTest extends JomcToolTest
         this.getTestTool().transformClasses( i, marshaller, unmarshaller, implementationClass, transformers );
 
         this.getTestTool().validateClasses( unmarshaller, allClasses );
+        this.getTestTool().validateClasses( unmarshaller, allClassesLoader );
         this.getTestTool().validateClasses( m, unmarshaller, moduleClasses );
+        this.getTestTool().validateClasses( m, unmarshaller, moduleClassesLoader );
         this.getTestTool().validateClasses( s, unmarshaller, specificationClass );
         this.getTestTool().validateClasses( i, unmarshaller, implementationClass );
 
         this.getTestTool().validateClasses( unmarshaller, uncommittedClasses );
+    }
+
+    public void testCopyConstructor() throws Exception
+    {
+        new JavaClasses( this.getTestTool() );
     }
 
 }

@@ -45,50 +45,32 @@
   </documentation>
 
   <specifications>
-
-    <!-- ******************************************************************* -->
-    <specification identifier="Specification"
-                   class="Specification"
-                   classDeclaration="true"
-                   vendor="${project.organization.name}"
-                   version="${project.version}">
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="Specification" class="Specification" classDeclaration="true"
+                   vendor="${project.organization.name}" version="${project.version}">
 
       <documentation defaultLanguage="en">
         <text language="en">Test specification.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0"
-                mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
       </authors>
     </specification>
   </specifications>
-
   <implementations>
-
-    <!-- ******************************************************************* -->
-    <implementation identifier="Implementation"
-                    class="Implementation"
-                    classDeclaration="true"
-                    name="${project.name}"
-                    version="${project.version}"
-                    vendor="${project.organization.name}"
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="Implementation" class="Implementation" classDeclaration="true"
+                    name="${project.name}" version="${project.version}" vendor="${project.organization.name}"
                     final="true">
 
       <documentation defaultLanguage="en">
         <text language="en">Test implementation.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0"
-                mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
       </authors>
       <dependencies>
-        <dependency name="Locale"
-                    identifier="java.util.Locale"
-                    version="1.1"
-                    bound="false"/>
-
+        <dependency name="Locale" identifier="java.util.Locale" version="1.1" bound="false"/>
       </dependencies>
       <properties>
         <property name="property" value="TEST">
@@ -100,8 +82,7 @@
       <messages>
         <message name="message">
           <template defaultLanguage="en">
-            <text language="en"><![CDATA[TEST ''{0}''.]]>
-            </text>
+            <text language="en">TEST ''{0}''.</text>
           </template>
           <arguments>
             <argument index="0" name="test"/>
@@ -109,33 +90,22 @@
         </message>
       </messages>
     </implementation>
-
-    <!-- ******************************************************************* -->
-    <implementation identifier="ImplementationOfSpecification"
-                    class="ImplementationOfSpecification"
-                    classDeclaration="true"
-                    name="${project.name}"
-                    version="${project.version}"
-                    vendor="${project.organization.name}"
-                    final="true">
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="ImplementationOfSpecification" class="ImplementationOfSpecification"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}" final="true">
 
       <documentation defaultLanguage="en">
         <text language="en">Test implementation of test specification.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0"
-                mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
       </authors>
       <specifications>
         <reference identifier="Specification" version="${project.version}"/>
       </specifications>
       <dependencies>
-        <dependency name="Locale"
-                    identifier="java.util.Locale"
-                    version="1.1"
-                    bound="false"/>
-
+        <dependency name="Locale" identifier="java.util.Locale" version="1.1" bound="false"/>
       </dependencies>
       <properties>
         <property name="property" value="TEST">
@@ -147,8 +117,7 @@
       <messages>
         <message name="message">
           <template defaultLanguage="en">
-            <text language="en"><![CDATA[TEST ''{0}''.]]>
-            </text>
+            <text language="en">TEST ''{0}''.</text>
           </template>
           <arguments>
             <argument index="0" name="test"/>
