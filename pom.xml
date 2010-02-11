@@ -333,6 +333,14 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.jomc</groupId>
+                  <artifactId>jomc-tools</artifactId>
+                  <classifier>schemas</classifier>
+                  <version>${project.version}</version>
+                  <type>jar</type>
+                  <outputDirectory>${project.build.directory}/jomc-schemas</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.jomc</groupId>
                   <artifactId>jomc-model</artifactId>
                   <classifier>schemas</classifier>
                   <version>${project.version}</version>

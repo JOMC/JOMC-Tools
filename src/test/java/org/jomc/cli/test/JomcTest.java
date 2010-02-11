@@ -166,26 +166,10 @@ public class JomcTest extends TestCase
             '"' + this.getTestDocument() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
         };
 
-        final String[] illegalSourceFilesModel = new String[]
-        {
-            "manage-java-sources", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-df",
-            '"' + this.getTestDocument() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-D",
-            "-sfm", '"' + this.getTestIllegalSourceFilesModel() + '"'
-        };
-
-        final String[] legalSourceFilesModel = new String[]
-        {
-            "manage-java-sources", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-df",
-            '"' + this.getTestDocument() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-D",
-            "-sfm", '"' + this.getTestLegalSourceFilesModel() + '"', "-wpi", "8", "-ic", "\t"
-        };
-
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
-        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( legalSourceFilesModel ) );
         Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
         Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( failOnWarnings ) );
-        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( illegalSourceFilesModel ) );
     }
 
     public void testCommitValidateJavaClasses() throws Exception

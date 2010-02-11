@@ -39,9 +39,7 @@ package org.jomc.cli.commands;
 import java.io.File;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.util.JAXBSource;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
@@ -51,9 +49,6 @@ import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.ObjectFactory;
 import org.jomc.tools.JavaSources;
-import org.jomc.tools.model.SourceFileType;
-import org.jomc.tools.model.SourceFilesType;
-import org.jomc.tools.model.ToolsModel;
 
 // SECTION-START[Documentation]
 // <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
@@ -101,8 +96,6 @@ import org.jomc.tools.model.ToolsModel;
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getSourceDirectoryOption SourceDirectoryOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
- * <li>"{@link #getSourceFilesModelOption SourceFilesModelOption}"<blockquote>
- * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getTemplateEncodingOption TemplateEncodingOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getTransformerLocationOption TransformerLocationOption}"<blockquote>
@@ -112,7 +105,7 @@ import org.jomc.tools.model.ToolsModel;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-17-SNAPSHOT Build 2010-02-10T20:23:09+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-17-SNAPSHOT Build 2010-02-11T11:42:44+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -129,10 +122,6 @@ import org.jomc.tools.model.ToolsModel;
  * <li>"{@link #getDocumentFileMessage documentFile}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Document file: ''{0}''</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Datei: ''{0}''</pre></td></tr>
- * </table>
- * <li>"{@link #getIllegalSourceFilesModelMessage illegalSourceFilesModel}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal source files model ''{0}''.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ung&uuml;ltiges Quelltext-Modell ''{0}''.</pre></td></tr>
  * </table>
  * <li>"{@link #getInvalidModelMessage invalidModel}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Invalid model.</pre></td></tr>
@@ -214,7 +203,6 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
             this.options.addOption( this.getTemplateEncodingOption() );
             this.options.addOption( this.getInputEncodingOption() );
             this.options.addOption( this.getOutputEncodingOption() );
-            this.options.addOption( this.getSourceFilesModelOption() );
             this.options.addOption( this.getWhitepsacesPerIndentOption() );
             this.options.addOption( this.getIndentationCharacterOption() );
         }
@@ -254,29 +242,6 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
             if ( commandLine.hasOption( this.getOutputEncodingOption().getOpt() ) )
             {
                 tool.setOutputEncoding( commandLine.getOptionValue( this.getOutputEncodingOption().getOpt() ) );
-            }
-            if ( commandLine.hasOption( this.getSourceFilesModelOption().getOpt() ) )
-            {
-                final Unmarshaller unmarshaller = ToolsModel.createUnmarshaller();
-                unmarshaller.setSchema( ToolsModel.createSchema() );
-
-                final File sourceFilesModel =
-                    new File( commandLine.getOptionValue( this.getSourceFilesModelOption().getOpt() ) );
-
-                final JAXBElement e = (JAXBElement) unmarshaller.unmarshal( sourceFilesModel );
-
-                if ( !ToolsModel.TOOLS_NS_URI.equals( e.getName().getNamespaceURI() ) ||
-                     !"source-files".equals( e.getName().getLocalPart() ) )
-                {
-                    throw new Exception( this.getIllegalSourceFilesModelMessage(
-                        this.getLocale(), e.getName().toString() ) );
-
-                }
-
-                for ( SourceFileType s : ( (JAXBElement<SourceFilesType>) e ).getValue().getSourceFile() )
-                {
-                    tool.getSourceFilesType().getSourceFile().add( s );
-                }
             }
             if ( commandLine.hasOption( this.getWhitepsacesPerIndentOption().getOpt() ) )
             {
@@ -583,22 +548,6 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
     }
 
     /**
-     * Gets the {@code SourceFilesModelOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Source Files Model Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code SourceFilesModelOption} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
-    private org.apache.commons.cli.Option getSourceFilesModelOption()
-    {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "SourceFilesModelOption" );
-        assert _d != null : "'SourceFilesModelOption' dependency not found.";
-        return _d;
-    }
-
-    /**
      * Gets the {@code TemplateEncodingOption} dependency.
      * <p>This method returns the "{@code JOMC CLI Template Encoding Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
@@ -685,7 +634,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-17-SNAPSHOT Build 2010-02-10T20:23:09+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-17-SNAPSHOT Build 2010-02-11T11:42:44+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -783,27 +732,6 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentFile", locale, documentFile );
         assert _m != null : "'documentFile' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code illegalSourceFilesModel} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal source files model ''{0}''.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ung&uuml;ltiges Quelltext-Modell ''{0}''.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @param elementQName Format argument.
-     * @return The text of the {@code illegalSourceFilesModel} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
-    private String getIllegalSourceFilesModelMessage( final java.util.Locale locale, final java.lang.String elementQName )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "illegalSourceFilesModel", locale, elementQName );
-        assert _m != null : "'illegalSourceFilesModel' message not found.";
         return _m;
     }
 
