@@ -323,8 +323,6 @@ public class JavaSources extends JomcTool
                 s.setEditable( true );
                 sourceFileType.getSourceSections().getSourceSection().add( s );
             }
-
-            this.getSourceFilesType().getSourceFile().add( sourceFileType );
         }
 
         return sourceFileType;
@@ -453,8 +451,6 @@ public class JavaSources extends JomcTool
             s.setHeadTemplate( MESSAGES_TEMPLATE );
             s.setOptional( messages == null || messages.getMessage().isEmpty() );
             sourceFileType.getSourceSections().getSourceSection().add( s );
-
-            this.getSourceFilesType().getSourceFile().add( sourceFileType );
         }
 
         return sourceFileType;
