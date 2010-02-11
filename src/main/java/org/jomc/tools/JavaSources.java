@@ -41,6 +41,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+import javax.xml.bind.JAXBElement;
 import org.apache.commons.io.FileUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -272,6 +273,23 @@ public class JavaSources extends JomcTool
 
         if ( sourceFileType == null )
         {
+            for ( Object any : specification.getAny() )
+            {
+                if ( any instanceof JAXBElement )
+                {
+                    any = ( (JAXBElement) any ).getValue();
+                }
+
+                if ( any instanceof SourceFileType )
+                {
+                    sourceFileType = (SourceFileType) any;
+                    break;
+                }
+            }
+        }
+
+        if ( sourceFileType == null )
+        {
             sourceFileType = new SourceFileType();
             sourceFileType.setIdentifier( specification.getIdentifier() );
             sourceFileType.setTemplate( SPECIFICATION_TEMPLATE );
@@ -331,6 +349,23 @@ public class JavaSources extends JomcTool
         }
 
         SourceFileType sourceFileType = this.getSourceFilesType().getSourceFile( implementation.getIdentifier() );
+
+        if ( sourceFileType == null )
+        {
+            for ( Object any : implementation.getAny() )
+            {
+                if ( any instanceof JAXBElement )
+                {
+                    any = ( (JAXBElement) any ).getValue();
+                }
+
+                if ( any instanceof SourceFileType )
+                {
+                    sourceFileType = (SourceFileType) any;
+                    break;
+                }
+            }
+        }
 
         if ( sourceFileType == null )
         {
@@ -863,10 +898,12 @@ public class JavaSources extends JomcTool
          * <p>This method creates any sections declared in the model of the editor as returned by method
          * {@code getSourceFileType} prior to rendering the output of the editor.</p>
          *
+         * @param section The section to start rendering the editor's output with.
+         *
          * @see #getSourceFileType()
          */
         @Override
-        protected String getOutput( final Section root ) throws IOException
+        protected String getOutput( final Section section ) throws IOException
         {
             this.getAddedSections().clear();
             this.getUnknownSections().clear();
@@ -875,10 +912,10 @@ public class JavaSources extends JomcTool
 
             if ( sourceFileType != null )
             {
-                this.createSections( sourceFileType.getSourceSections(), root );
+                this.createSections( sourceFileType.getSourceSections(), section );
             }
 
-            return super.getOutput( root );
+            return super.getOutput( section );
         }
 
         /**
@@ -886,6 +923,8 @@ public class JavaSources extends JomcTool
          * <p>This method searches the model of the editor for a section matching {@code s} and updates properties
          * {@code headContent} and {@code tailContent} of {@code s} according to the templates declared in the model
          * as returned by method {@code getSourceFileType}.</p>
+         *
+         * @param s The section to edit.
          *
          * @see #getSourceFileType()
          */
