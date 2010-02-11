@@ -31,6 +31,8 @@
 
   $Id$
 
+  Location: http://jomc.org/tools/model/jomc-tools-1.0.xsd
+
 -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             xmlns:tools="http://jomc.org/tools/model"
@@ -69,6 +71,8 @@
   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   $Id$
+
+  Location: http://jomc.org/tools/model/jomc-tools-1.0.xsd
 
 ]]>
     </xsd:documentation>
