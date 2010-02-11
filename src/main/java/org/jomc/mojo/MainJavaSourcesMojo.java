@@ -43,8 +43,6 @@ import org.jomc.model.ModelValidationReport;
 import org.jomc.model.Module;
 import org.jomc.model.ObjectFactory;
 import org.jomc.tools.JavaSources;
-import org.jomc.tools.model.SourceFileType;
-import org.jomc.tools.model.SourceFilesType;
 
 /**
  * Manages a projects' main java sources.
@@ -86,19 +84,10 @@ public final class MainJavaSourcesMojo extends AbstractSourcesMojo
             final ModelContext context = this.getModelContext( classLoader );
             final JavaSources tool = this.getJavaSourcesTool( context );
             final JAXBContext jaxbContext = context.createContext();
-            final SourceFilesType sourceFilesType = this.getSourceFilesType( classLoader );
             final ModelValidationReport validationReport = context.validateModel( new JAXBSource(
                 jaxbContext, new ObjectFactory().createModules( tool.getModules() ) ) );
 
             this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
-
-            if ( sourceFilesType != null )
-            {
-                for ( SourceFileType s : sourceFilesType.getSourceFile() )
-                {
-                    tool.getSourceFilesType().getSourceFile().add( s );
-                }
-            }
 
             tool.setIndentationCharacter( this.getIndentationCharacter() );
             tool.setWhitespacesPerIndent( this.getWhitespacesPerIndent() );
