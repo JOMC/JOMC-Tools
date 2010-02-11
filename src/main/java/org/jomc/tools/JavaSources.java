@@ -273,19 +273,7 @@ public class JavaSources extends JomcTool
 
         if ( sourceFileType == null )
         {
-            for ( Object any : specification.getAny() )
-            {
-                if ( any instanceof JAXBElement )
-                {
-                    any = ( (JAXBElement) any ).getValue();
-                }
-
-                if ( any instanceof SourceFileType )
-                {
-                    sourceFileType = (SourceFileType) any;
-                    break;
-                }
-            }
+            sourceFileType = specification.getAnyObject( SourceFileType.class );
         }
 
         if ( sourceFileType == null )
@@ -350,19 +338,7 @@ public class JavaSources extends JomcTool
 
         if ( sourceFileType == null )
         {
-            for ( Object any : implementation.getAny() )
-            {
-                if ( any instanceof JAXBElement )
-                {
-                    any = ( (JAXBElement) any ).getValue();
-                }
-
-                if ( any instanceof SourceFileType )
-                {
-                    sourceFileType = (SourceFileType) any;
-                    break;
-                }
-            }
+            sourceFileType = implementation.getAnyObject( SourceFileType.class );
         }
 
         if ( sourceFileType == null )
