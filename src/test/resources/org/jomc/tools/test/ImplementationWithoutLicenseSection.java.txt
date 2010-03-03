@@ -22,7 +22,7 @@ import java.lang.*;
  * </table>
  * </ul></p>
  *
- * @author <a href="mailto:cs@jomc.org">Christian Schulte</a> 1.0
+ * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
  * @version $Id$
  */
 // SECTION-END
