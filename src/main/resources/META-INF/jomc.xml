@@ -2,7 +2,7 @@
 <!--
 
   Copyright (c) 2009 The JOMC Project
-  Copyright (c) 2005 Christian Schulte <cs@jomc.org>
+  Copyright (c) 2005 Christian Schulte <schulte2005@users.sourceforge.net>
   All rights reserved.
 
   Redistribution and use in source and binary forms, with or without
@@ -50,7 +50,9 @@
         <text language="en">Command.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
     </specification>
   </specifications>
@@ -71,7 +73,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         </text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <specifications>
         <reference identifier="org.apache.commons.cli.Option" final="true"/>
@@ -139,7 +143,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -163,7 +169,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -187,7 +195,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -211,7 +221,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -245,7 +257,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -279,7 +293,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -310,7 +326,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -341,7 +359,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -373,7 +393,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -404,7 +426,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -436,7 +460,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -461,7 +487,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -486,7 +514,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -518,7 +548,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -550,7 +582,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -582,7 +616,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -614,7 +650,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -646,7 +684,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -678,7 +718,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -710,7 +752,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -742,7 +786,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}" final="true">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -774,7 +820,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}" final="true">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -806,7 +854,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -838,7 +888,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -870,7 +922,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -905,7 +959,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -940,7 +996,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -972,7 +1030,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
@@ -1010,7 +1070,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <text language="en">JOMC command line interface.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <dependencies>
         <dependency name="Commands" identifier="org.jomc.cli.Command" version="${project.version}" bound="false"/>
@@ -1094,7 +1156,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <text language="en">Base JOMC {@code Command} implementation.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <specifications>
         <reference identifier="org.jomc.cli.Command" version="1.0" final="true"/>
@@ -1259,7 +1323,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <text language="en">Command line interface for the {@code JavaBundles} tool.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}" final="true"/>
@@ -1340,7 +1406,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <text language="en">Command line interface for the {@code JavaSources} tool.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}" final="true"/>
@@ -1418,7 +1486,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <text language="en">Command line interface for committing Java classes with the {@code JavaClasses} tool.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}" final="true"/>
@@ -1478,7 +1548,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <text language="en">Command line interface for validating Java classes with the {@code JavaClasses} tool.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}" final="true"/>
@@ -1525,7 +1597,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <text language="en">Command line interface for validating modules.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}" final="true"/>
@@ -1572,7 +1646,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <text language="en">Command line interface for merging modules.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
       </authors>
       <implementations>
         <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}" final="true"/>

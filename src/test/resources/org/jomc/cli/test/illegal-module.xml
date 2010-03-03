@@ -2,7 +2,7 @@
 <!--
 
   Copyright (c) 2009 The JOMC Project
-  Copyright (c) 2005 Christian Schulte <cs@jomc.org>
+  Copyright (c) 2005 Christian Schulte <schulte2005@users.sourceforge.net>
   All rights reserved.
 
   Redistribution and use in source and binary forms, with or without
@@ -57,7 +57,7 @@
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0"
-                mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+                mail="schulte2005@users.sourceforge.net" createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
     </specification>
@@ -79,7 +79,7 @@
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0"
-                mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+                mail="schulte2005@users.sourceforge.net" createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
       <dependencies>
@@ -152,7 +152,7 @@
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0"
-                mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+                mail="schulte2005@users.sourceforge.net" createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
       <specifications>
@@ -457,7 +457,7 @@
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0"
-                mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+                mail="schulte2005@users.sourceforge.net" createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
       <implementations>
@@ -561,7 +561,7 @@
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0"
-                mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+                mail="schulte2005@users.sourceforge.net" createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
       <implementations>
@@ -635,7 +635,7 @@
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0"
-                mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+                mail="schulte2005@users.sourceforge.net" createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
       <implementations>
@@ -693,7 +693,7 @@
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0"
-                mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+                mail="schulte2005@users.sourceforge.net" createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
       <implementations>
@@ -745,7 +745,7 @@
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0"
-                mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+                mail="schulte2005@users.sourceforge.net" createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
       <implementations>
@@ -797,7 +797,7 @@
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0"
-                mail="cs@jomc.org" createDate="2005-07-25T19:56:45Z"/>
+                mail="schulte2005@users.sourceforge.net" createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
       <implementations>
