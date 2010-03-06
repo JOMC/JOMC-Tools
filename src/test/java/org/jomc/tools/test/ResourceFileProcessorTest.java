@@ -191,6 +191,17 @@ public class ResourceFileProcessorTest extends JomcToolTest
 
     public void testCopyConstructor() throws Exception
     {
+        try
+        {
+            new ResourceFileProcessor( null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
+        }
+
         new ResourceFileProcessor( this.getTestTool() );
     }
 

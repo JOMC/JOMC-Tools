@@ -453,6 +453,17 @@ public class SourceFileProcessorTest extends JomcToolTest
 
     public void testCopyConstructor() throws Exception
     {
+        try
+        {
+            new SourceFileProcessor( null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            Assert.assertNotNull( e.getMessage() );
+            System.out.println( e.toString() );
+        }
+
         new SourceFileProcessor( this.getTestTool() );
     }
 

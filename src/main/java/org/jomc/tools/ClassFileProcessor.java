@@ -117,6 +117,7 @@ public class ClassFileProcessor extends JomcTool
      *
      * @param tool The instance to initialize the new instance with,
      *
+     * @throws NullPointerException if {@code tool} is {@code null}.
      * @throws ToolException if copying {@code tool} fails.
      */
     public ClassFileProcessor( final ClassFileProcessor tool ) throws ToolException

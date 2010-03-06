@@ -165,22 +165,26 @@ public abstract class JomcTool
      *
      * @param tool The instance to initialize the new instance with.
      *
+     * @throws NullPointerException if {@code tool} is {@code null}.
      * @throws ToolException if copying {@code tool} fails.
      */
     public JomcTool( final JomcTool tool ) throws ToolException
     {
         this();
-        if ( tool != null )
+
+        if ( tool == null )
         {
-            this.setTemplateEncoding( tool.getTemplateEncoding() );
-            this.setInputEncoding( tool.getInputEncoding() );
-            this.setOutputEncoding( tool.getOutputEncoding() );
-            this.setModules( tool.getModules() );
-            this.setProfile( tool.getProfile() );
-            this.setVelocityEngine( tool.getVelocityEngine() );
-            this.setLogLevel( tool.getLogLevel() );
-            this.getListeners().addAll( tool.getListeners() );
+            throw new NullPointerException( "tool" );
         }
+
+        this.setTemplateEncoding( tool.getTemplateEncoding() );
+        this.setInputEncoding( tool.getInputEncoding() );
+        this.setOutputEncoding( tool.getOutputEncoding() );
+        this.setModules( tool.getModules() );
+        this.setProfile( tool.getProfile() );
+        this.setVelocityEngine( tool.getVelocityEngine() );
+        this.setLogLevel( tool.getLogLevel() );
+        this.getListeners().addAll( tool.getListeners() );
     }
 
     /**
