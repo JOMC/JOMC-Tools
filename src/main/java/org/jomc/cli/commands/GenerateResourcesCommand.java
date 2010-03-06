@@ -96,7 +96,7 @@ import org.jomc.tools.ResourceFileProcessor;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-17-SNAPSHOT Build 2010-03-06T07:12:26+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-17-SNAPSHOT Build 2010-03-06T09:09:03+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -124,13 +124,27 @@ import org.jomc.tools.ResourceFileProcessor;
  *                           -rd /tmp/rsrc \
  *                           -df examples/xml/jomc-cli.xml \
  *                           -mn &quot;JOMC CLI&quot; \
- *                           -v</pre></td></tr>
+ *                           -v
+ *
+ *   jomc manage-sources -cp &lt;classpath&gt; \
+ *                       -sd /tmp/src \
+ *                       -df examples/xml/jomc-cli.xml \
+ *                       -mn &quot;JOMC CLI&quot; \
+ *                       -p &quot;jomc-java-bundles&quot; \
+ *                       -v</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
  *   jomc generate-resources -cp &lt;classpath&gt; \
  *                           -rd /tmp/rsrc \
  *                           -df examples/xml/jomc-cli.xml \
  *                           -mn &quot;JOMC CLI&quot; \
- *                           -v</pre></td></tr>
+ *                           -v
+ *
+ *   jomc manage-sources -cp &lt;classpath&gt; \
+ *                       -sd /tmp/src \
+ *                       -df examples/xml/jomc-cli.xml \
+ *                       -mn &quot;JOMC CLI&quot; \
+ *                       -p &quot;jomc-java-bundles&quot; \
+ *                       -v</pre></td></tr>
  * </table>
  * <li>"{@link #getMissingModuleMessage missingModule}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
@@ -517,7 +531,7 @@ public final class GenerateResourcesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-17-SNAPSHOT Build 2010-03-06T07:12:26+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-17-SNAPSHOT Build 2010-03-06T09:09:03+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -646,13 +660,27 @@ public final class GenerateResourcesCommand extends AbstractJomcCommand
      *                           -rd /tmp/rsrc \
      *                           -df examples/xml/jomc-cli.xml \
      *                           -mn &quot;JOMC CLI&quot; \
-     *                           -v</pre></td></tr>
+     *                           -v
+     *
+     *   jomc manage-sources -cp &lt;classpath&gt; \
+     *                       -sd /tmp/src \
+     *                       -df examples/xml/jomc-cli.xml \
+     *                       -mn &quot;JOMC CLI&quot; \
+     *                       -p &quot;jomc-java-bundles&quot; \
+     *                       -v</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
      *   jomc generate-resources -cp &lt;classpath&gt; \
      *                           -rd /tmp/rsrc \
      *                           -df examples/xml/jomc-cli.xml \
      *                           -mn &quot;JOMC CLI&quot; \
-     *                           -v</pre></td></tr>
+     *                           -v
+     *
+     *   jomc manage-sources -cp &lt;classpath&gt; \
+     *                       -sd /tmp/src \
+     *                       -df examples/xml/jomc-cli.xml \
+     *                       -mn &quot;JOMC CLI&quot; \
+     *                       -p &quot;jomc-java-bundles&quot; \
+     *                       -v</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code longDescription} message.

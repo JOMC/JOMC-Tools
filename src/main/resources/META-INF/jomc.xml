@@ -1368,13 +1368,27 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                           -rd /tmp/rsrc \
                           -df examples/xml/jomc-cli.xml \
                           -mn "JOMC CLI" \
-                          -v]]></text>
+                          -v
+
+  jomc manage-sources -cp <classpath> \
+                      -sd /tmp/src \
+                      -df examples/xml/jomc-cli.xml \
+                      -mn "JOMC CLI" \
+                      -p "jomc-java-bundles" \
+                      -v]]></text>
             <text language="de"><![CDATA[Beispiel:
   jomc generate-resources -cp <classpath> \
                           -rd /tmp/rsrc \
                           -df examples/xml/jomc-cli.xml \
                           -mn "JOMC CLI" \
-                          -v]]></text>
+                          -v
+
+  jomc manage-sources -cp <classpath> \
+                      -sd /tmp/src \
+                      -df examples/xml/jomc-cli.xml \
+                      -mn "JOMC CLI" \
+                      -p "jomc-java-bundles" \
+                      -v]]></text>
           </template>
         </message>
       </messages>

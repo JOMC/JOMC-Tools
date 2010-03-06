@@ -117,12 +117,10 @@ public class OptionFactory
         option.setOptionalArg( this.isOptionalArg() );
         option.setRequired( this.isRequired() );
 
-        if ( option.getArgs() > 0 || option.getArgs() == Option.UNLIMITED_VALUES )
+        if ( ( option.getArgs() > 0 || option.getArgs() == Option.UNLIMITED_VALUES ) &&
+             this.getArgumentDescriptionMessage( this.getLocale() ).trim().length() > 0 )
         {
-            if ( this.getArgumentDescriptionMessage( this.getLocale() ).trim().length() > 0 )
-            {
-                option.setArgName( this.getArgumentDescriptionMessage( this.getLocale() ) );
-            }
+            option.setArgName( this.getArgumentDescriptionMessage( this.getLocale() ) );
         }
 
         if ( option.getArgs() > 1 || option.getArgs() == Option.UNLIMITED_VALUES )
