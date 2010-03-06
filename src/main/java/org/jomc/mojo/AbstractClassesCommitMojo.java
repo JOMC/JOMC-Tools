@@ -39,22 +39,36 @@ import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.jomc.model.ModelContext;
+import org.jomc.model.ModelValidationReport;
+import org.jomc.model.Module;
+import org.jomc.model.ObjectFactory;
+import org.jomc.tools.ClassFileProcessor;
 
 /**
- * Base mojo class for managing classes.
+ * Base class for committing model objects to class files.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public abstract class AbstractClassesMojo extends AbstractJomcMojo
+public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
 {
+
+    /** Constant for the name of the tool backing the mojo. */
+    private static final String TOOLNAME = "ClassFileProcessor";
 
     /**
      * Style sheet to use for transforming model objects.
@@ -164,10 +178,77 @@ public abstract class AbstractClassesMojo extends AbstractJomcMojo
         return transformerFactory.newTransformer( new StreamSource( url.openStream() ) );
     }
 
+    @Override
+    protected final void executeTool() throws Exception
+    {
+        if ( this.isClassProcessingEnabled() )
+        {
+            final ClassLoader classLoader = this.getClassesClassLoader();
+            final ModelContext context = this.createModelContext( classLoader );
+            final ClassFileProcessor tool = this.createClassFileProcessor( context );
+            final JAXBContext jaxbContext = context.createContext();
+            final Marshaller marshaller = context.createMarshaller();
+            final Unmarshaller unmarshaller = context.createUnmarshaller();
+            final Schema schema = context.createSchema();
+            final List<Transformer> transformers = this.getTransformers( classLoader );
+
+            marshaller.setSchema( schema );
+            unmarshaller.setSchema( schema );
+
+            final ModelValidationReport validationReport = context.validateModel(
+                new JAXBSource( jaxbContext, new ObjectFactory().createModules( tool.getModules() ) ) );
+
+            this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
+
+            if ( validationReport.isModelValid() )
+            {
+                this.logSeparator( Level.INFO );
+                final Module module = tool.getModules().getModule( this.getClassesModuleName() );
+
+                if ( module != null )
+                {
+                    this.logProcessingModule( TOOLNAME, module.getName() );
+                    tool.commitModelObjects( module, marshaller, this.getClassesDirectory() );
+
+                    if ( !transformers.isEmpty() )
+                    {
+                        tool.transformModelObjects(
+                            module, marshaller, unmarshaller, this.getClassesDirectory(), transformers );
+
+                    }
+
+                    this.logToolSuccess( TOOLNAME );
+                }
+                else
+                {
+                    this.logMissingModule( this.getClassesModuleName() );
+                }
+
+                this.logSeparator( Level.INFO );
+            }
+            else
+            {
+                throw new MojoExecutionException( getMessage( "failed" ) );
+            }
+        }
+        else
+        {
+            this.logSeparator( Level.INFO );
+            this.log( Level.INFO, getMessage( "disabled" ), null );
+            this.logSeparator( Level.INFO );
+        }
+    }
+
+    protected abstract String getClassesModuleName() throws MojoExecutionException;
+
+    protected abstract ClassLoader getClassesClassLoader() throws MojoExecutionException;
+
+    protected abstract File getClassesDirectory() throws MojoExecutionException;
+
     private static String getMessage( final String key, final Object... args )
     {
         return MessageFormat.format( ResourceBundle.getBundle(
-            AbstractClassesMojo.class.getName().replace( '.', '/' ) ).getString( key ), args );
+            AbstractClassesCommitMojo.class.getName().replace( '.', '/' ) ).getString( key ), args );
 
     }
 

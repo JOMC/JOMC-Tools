@@ -33,94 +33,64 @@
 package org.jomc.mojo;
 
 import java.io.File;
-import java.util.List;
+import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.util.JAXBSource;
-import javax.xml.transform.Transformer;
 import javax.xml.validation.Schema;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.jomc.model.ModelContext;
 import org.jomc.model.ModelValidationReport;
 import org.jomc.model.Module;
 import org.jomc.model.ObjectFactory;
-import org.jomc.tools.JavaClasses;
+import org.jomc.tools.ClassFileProcessor;
 
 /**
- * Manages a projects' test java classes.
+ * Base class for validating class file model objects.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
- *
- * @phase process-test-classes
- * @goal test-java-classes
- * @requiresDependencyResolution test
  */
-public class TestJavaClassesMojo extends AbstractClassesMojo
+public abstract class AbstractClassesValidateMojo extends AbstractJomcMojo
 {
 
     /** Constant for the name of the tool backing the mojo. */
-    private static final String TOOLNAME = "JavaClasses";
-
-    /** Creates a new {@code TestJavaClassesMojo} instance. */
-    public TestJavaClassesMojo()
-    {
-        super();
-    }
+    private static final String TOOLNAME = "ClassFileProcessor";
 
     @Override
-    public void executeTool() throws Exception
+    protected final void executeTool() throws Exception
     {
         if ( this.isClassProcessingEnabled() )
         {
-            File classesDirectory = new File( this.getMavenProject().getBuild().getTestOutputDirectory() );
-            if ( !classesDirectory.isAbsolute() )
-            {
-                classesDirectory = new File( this.getMavenProject().getBasedir(),
-                                             this.getMavenProject().getBuild().getTestOutputDirectory() );
-
-            }
-
-            final ClassLoader classLoader = this.getTestClassLoader();
-            final ModelContext context = this.getModelContext( classLoader );
-            final JavaClasses tool = this.getJavaClassesTool( context );
+            final ModelContext context = this.createModelContext( this.getClassesClassLoader() );
+            final ClassFileProcessor tool = this.createClassFileProcessor( context );
             final JAXBContext jaxbContext = context.createContext();
-            final Marshaller marshaller = context.createMarshaller();
             final Unmarshaller unmarshaller = context.createUnmarshaller();
             final Schema schema = context.createSchema();
-            final List<Transformer> transformers = this.getTransformers( classLoader );
 
-            marshaller.setSchema( schema );
             unmarshaller.setSchema( schema );
 
-            final ModelValidationReport validationReport = context.validateModel( new JAXBSource(
-                jaxbContext, new ObjectFactory().createModules( tool.getModules() ) ) );
+            final ModelValidationReport validationReport = context.validateModel(
+                new JAXBSource( jaxbContext, new ObjectFactory().createModules( tool.getModules() ) ) );
 
             this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 
             if ( validationReport.isModelValid() )
             {
                 this.logSeparator( Level.INFO );
-                final Module module = tool.getModules().getModule( this.getJomcTestModuleName() );
+                final Module module = tool.getModules().getModule( this.getClassesModuleName() );
 
                 if ( module != null )
                 {
                     this.logProcessingModule( TOOLNAME, module.getName() );
-                    tool.commitClasses( module, marshaller, classesDirectory );
-
-                    if ( !transformers.isEmpty() )
-                    {
-                        tool.transformClasses( module, marshaller, unmarshaller, classesDirectory, transformers );
-                    }
-
+                    tool.validateModelObjects( module, unmarshaller, this.getClassesDirectory() );
                     this.logToolSuccess( TOOLNAME );
                 }
                 else
                 {
-                    this.logMissingModule( this.getJomcTestModuleName() );
+                    this.logMissingModule( this.getClassesModuleName() );
                 }
 
                 this.logSeparator( Level.INFO );
@@ -138,9 +108,17 @@ public class TestJavaClassesMojo extends AbstractClassesMojo
         }
     }
 
-    private static String getMessage( final String key )
+    protected abstract String getClassesModuleName() throws MojoExecutionException;
+
+    protected abstract ClassLoader getClassesClassLoader() throws MojoExecutionException;
+
+    protected abstract File getClassesDirectory() throws MojoExecutionException;
+
+    private static String getMessage( final String key, final Object... args )
     {
-        return ResourceBundle.getBundle( TestJavaClassesMojo.class.getName().replace( '.', '/' ) ).getString( key );
+        return MessageFormat.format( ResourceBundle.getBundle(
+            AbstractClassesValidateMojo.class.getName().replace( '.', '/' ) ).getString( key ), args );
+
     }
 
 }

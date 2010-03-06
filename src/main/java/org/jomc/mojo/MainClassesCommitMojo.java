@@ -32,55 +32,50 @@
  */
 package org.jomc.mojo;
 
-import java.util.ResourceBundle;
-import java.util.logging.Level;
+import java.io.File;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.jomc.model.ModelContext;
-import org.jomc.model.ModelValidationReport;
 
 /**
- * Validates a projects' test modules.
+ * Commits model objects to a projects' main classes.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  *
- * @phase process-test-classes
- * @goal validate-test-modules
+ * @phase process-classes
+ * @goal commit-main-classes
  * @requiresDependencyResolution test
  */
-public class ValidateTestModulesMojo extends AbstractJomcMojo
+public final class MainClassesCommitMojo extends AbstractClassesCommitMojo
 {
 
-    /** Constant for the name of the tool backing the mojo. */
-    private static final String TOOLNAME = "ModelValidator";
-
-    /** Creates a new {@code ValidateTestModulesMojo} instance. */
-    public ValidateTestModulesMojo()
+    /** Creates a new {@code MainClassesCommitMojo} instance. */
+    public MainClassesCommitMojo()
     {
         super();
     }
 
-    @Override
-    protected void executeTool() throws Exception
+    protected String getClassesModuleName() throws MojoExecutionException
     {
-        final ModelContext context = this.createModelContext( this.getTestClassLoader() );
-        final ModelValidationReport validationReport = context.validateModel( this.getToolModules( context ) );
-
-        this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
-
-        if ( !validationReport.isModelValid() )
-        {
-            throw new MojoExecutionException( getMessage( "failed" ) );
-        }
-
-        this.logSeparator( Level.INFO );
-        this.logToolSuccess( TOOLNAME );
-        this.logSeparator( Level.INFO );
+        return this.getJomcModuleName();
     }
 
-    private static String getMessage( final String key )
+    protected ClassLoader getClassesClassLoader() throws MojoExecutionException
     {
-        return ResourceBundle.getBundle( ValidateTestModulesMojo.class.getName().replace( '.', '/' ) ).getString( key );
+        return this.getMainClassLoader();
+    }
+
+    protected File getClassesDirectory() throws MojoExecutionException
+    {
+        File classesDirectory = new File( this.getMavenProject().getBuild().getOutputDirectory() );
+
+        if ( !classesDirectory.isAbsolute() )
+        {
+            classesDirectory = new File( this.getMavenProject().getBasedir(),
+                                         this.getMavenProject().getBuild().getOutputDirectory() );
+
+        }
+
+        return classesDirectory;
     }
 
 }

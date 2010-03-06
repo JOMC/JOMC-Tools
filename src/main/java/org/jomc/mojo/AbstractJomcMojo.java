@@ -63,8 +63,8 @@ import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.bootstrap.DefaultSchemaProvider;
 import org.jomc.model.bootstrap.DefaultServiceProvider;
-import org.jomc.tools.JavaClasses;
-import org.jomc.tools.JavaSources;
+import org.jomc.tools.ClassFileProcessor;
+import org.jomc.tools.SourceFileProcessor;
 import org.jomc.tools.JomcTool;
 
 /**
@@ -93,7 +93,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * The template profile to use when accessing templates.
      *
-     * @parameter default-value="default"
+     * @parameter default-value="jomc-java"
      */
     private String templateProfile;
 
@@ -224,15 +224,27 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     protected abstract void executeTool() throws Exception;
 
     /**
-     * Gets the model context of the instance.
+     * Gets the Maven project of the instance.
+     *
+     * @return The Maven project of the instance.
+     *
+     * @throws MojoExecutionException if getting the maven project of the instance fails.
+     */
+    protected MavenProject getMavenProject() throws MojoExecutionException
+    {
+        return this.mavenProject;
+    }
+
+    /**
+     * Creates a new model context instance for a given class loader.
      *
      * @param classLoader The class loader to use for creating the context.
      *
-     * @return The model context of the instance.
+     * @return A new model context instance for {@code classLoader}.
      *
-     * @throws MojoExecutionException if getting the model context of the instance fails.
+     * @throws MojoExecutionException if creating the model context fails.
      */
-    protected ModelContext getModelContext( final ClassLoader classLoader ) throws MojoExecutionException
+    protected ModelContext createModelContext( final ClassLoader classLoader ) throws MojoExecutionException
     {
         try
         {
@@ -247,57 +259,45 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
-     * Gets the Maven project of the instance.
-     *
-     * @return The Maven project of the instance.
-     *
-     * @throws MojoExecutionException if getting the maven project of the instance fails.
-     */
-    protected MavenProject getMavenProject() throws MojoExecutionException
-    {
-        return this.mavenProject;
-    }
-
-    /**
-     * Gets the tool for managing sources of the instance.
+     * Creates a new tool instance for managing source files.
      *
      * @param context The context of the tool.
      *
-     * @return The tool for managing sources of the instance.
+     * @return A new tool instance for managing source files.
      *
      * @throws NullPointerException if {@code context} is {@code null}.
      * @throws MojoExecutionException if getting the tool of the instance fails.
      */
-    protected JavaSources getJavaSourcesTool( final ModelContext context ) throws MojoExecutionException
+    protected SourceFileProcessor createSourceFileProcessor( final ModelContext context ) throws MojoExecutionException
     {
         if ( context == null )
         {
             throw new NullPointerException( "context" );
         }
 
-        final JavaSources tool = new JavaSources();
+        final SourceFileProcessor tool = new SourceFileProcessor();
         this.setupJomcTool( context, tool );
         return tool;
     }
 
     /**
-     * Gets the tool for managing classes of the instance.
+     * Creates a new tool instance for managing class files.
      *
      * @param context The context of the tool.
      *
-     * @return The tool for managing classes of the instance.
+     * @return A new tool instance for managing class files.
      *
      * @throws NullPointerException if {@code context} is {@code null}.
      * @throws MojoExecutionException if getting the tool of the instance fails.
      */
-    protected JavaClasses getJavaClassesTool( final ModelContext context ) throws MojoExecutionException
+    protected ClassFileProcessor createClassFileProcessor( final ModelContext context ) throws MojoExecutionException
     {
         if ( context == null )
         {
             throw new NullPointerException( "context" );
         }
 
-        final JavaClasses tool = new JavaClasses();
+        final ClassFileProcessor tool = new ClassFileProcessor();
         this.setupJomcTool( context, tool );
         return tool;
     }
