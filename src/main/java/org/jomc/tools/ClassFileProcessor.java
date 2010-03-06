@@ -81,20 +81,20 @@ import org.jomc.util.VersionParser;
  * Processes class files.
  *
  * <p><b>Use cases</b><br/><ul>
- * <li>{@link #commitModelObjects(javax.xml.bind.Marshaller, java.io.File) }</li>
- * <li>{@link #commitModelObjects(org.jomc.model.Module, javax.xml.bind.Marshaller, java.io.File) }</li>
- * <li>{@link #commitModelObjects(org.jomc.model.Specification, javax.xml.bind.Marshaller, java.io.File) }</li>
- * <li>{@link #commitModelObjects(org.jomc.model.Implementation, javax.xml.bind.Marshaller, java.io.File) }</li>
- * <li>{@link #validateModelObjects(javax.xml.bind.Unmarshaller, java.io.File) }</li>
- * <li>{@link #validateModelObjects(javax.xml.bind.Unmarshaller, java.lang.ClassLoader) }</li>
- * <li>{@link #validateModelObjects(org.jomc.model.Module, javax.xml.bind.Unmarshaller, java.io.File) }</li>
- * <li>{@link #validateModelObjects(org.jomc.model.Module, javax.xml.bind.Unmarshaller, java.lang.ClassLoader) }</li>
- * <li>{@link #validateModelObjects(org.jomc.model.Specification, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass) }</li>
- * <li>{@link #validateModelObjects(org.jomc.model.Implementation, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass) }</li>
- * <li>{@link #transformModelObjects(javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, java.io.File, java.util.List) }</li>
- * <li>{@link #transformModelObjects(org.jomc.model.Module, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, java.io.File, java.util.List) }</li>
- * <li>{@link #transformModelObjects(org.jomc.model.Specification, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass, java.util.List) }</li>
- * <li>{@link #transformModelObjects(org.jomc.model.Implementation, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass, java.util.List) }</li>
+ * <li>{@link #commitModelObjects(Marshaller, File) }</li>
+ * <li>{@link #commitModelObjects(Module, Marshaller, File) }</li>
+ * <li>{@link #commitModelObjects(Specification, Marshaller, File) }</li>
+ * <li>{@link #commitModelObjects(Implementation, Marshaller, File) }</li>
+ * <li>{@link #validateModelObjects(Unmarshaller, File) }</li>
+ * <li>{@link #validateModelObjects(Unmarshaller, ClassLoader) }</li>
+ * <li>{@link #validateModelObjects(Module, Unmarshaller, File) }</li>
+ * <li>{@link #validateModelObjects(Module, Unmarshaller, ClassLoader) }</li>
+ * <li>{@link #validateModelObjects(Specification, Unmarshaller, JavaClass) }</li>
+ * <li>{@link #validateModelObjects(Implementation, Unmarshaller, JavaClass) }</li>
+ * <li>{@link #transformModelObjects(Marshaller, Unmarshaller, File, List) }</li>
+ * <li>{@link #transformModelObjects(Module, Marshaller, Unmarshaller, File, List) }</li>
+ * <li>{@link #transformModelObjects(Specification, Marshaller, Unmarshaller, JavaClass, List) }</li>
+ * <li>{@link #transformModelObjects(Implementation, Marshaller, Unmarshaller, JavaClass, List) }</li>
  * </ul></p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>

@@ -61,7 +61,14 @@ import org.jomc.util.SectionEditor;
 import org.jomc.util.TrailingWhitespaceEditor;
 
 /**
- * Manages source code files.
+ * Processes source code files.
+ *
+ * <p><b>Use cases</b><br/><ul>
+ * <li>{@link #manageSourceFiles(File) }</li>
+ * <li>{@link #manageSourceFiles(Module, File) }</li>
+ * <li>{@link #manageSourceFiles(Specification, File) }</li>
+ * <li>{@link #manageSourceFiles(Implementation, File) }</li>
+ * </ul></p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$

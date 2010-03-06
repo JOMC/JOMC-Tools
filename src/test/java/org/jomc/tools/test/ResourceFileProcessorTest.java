@@ -39,6 +39,7 @@ import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
 import org.jomc.model.Implementation;
 import org.jomc.model.Module;
+import org.jomc.model.Specification;
 import org.jomc.tools.ResourceFileProcessor;
 import org.jomc.tools.ToolException;
 
@@ -106,7 +107,17 @@ public class ResourceFileProcessorTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().getResourceBundleResources( null );
+            this.getTestTool().getResourceBundleResources( (Specification) null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
+            this.getTestTool().getResourceBundleResources( (Implementation) null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( NullPointerException e )
@@ -146,6 +157,26 @@ public class ResourceFileProcessorTest extends JomcToolTest
 
         try
         {
+            this.getTestTool().writeResourceBundleResourceFiles( (Specification) null, new File( "/" ) );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
+            this.getTestTool().writeResourceBundleResourceFiles( new Specification(), null );
+            Assert.fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
             this.getTestTool().writeResourceBundleResourceFiles( (Implementation) null, new File( "/" ) );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
@@ -170,22 +201,31 @@ public class ResourceFileProcessorTest extends JomcToolTest
     {
         super.testNotNull();
 
+        final Specification s = new Specification();
+        s.setIdentifier( "TEST" );
+        s.setClazz( "TEST" );
+
         final Implementation i = new Implementation();
         i.setIdentifier( "TEST" );
         i.setClazz( "TEST" );
 
         Assert.assertNotNull( this.getTestTool().getResourceBundleDefaultLocale() );
+        Assert.assertNotNull( this.getTestTool().getResourceBundleResources( s ) );
         Assert.assertNotNull( this.getTestTool().getResourceBundleResources( i ) );
     }
 
     public void testWriteResourceBundleResourceFiles() throws Exception
     {
         this.getTestTool().writeResourceBundleResourceFiles( this.getTestResourcesDirectory() );
-        this.getTestTool().writeResourceBundleResourceFiles(
-            this.getTestTool().getModules().getImplementation( "Implementation" ), this.getTestResourcesDirectory() );
 
         this.getTestTool().writeResourceBundleResourceFiles(
             this.getTestTool().getModules().getModule( "Module" ), this.getTestResourcesDirectory() );
+
+        this.getTestTool().writeResourceBundleResourceFiles(
+            this.getTestTool().getModules().getSpecification( "Specification" ), this.getTestResourcesDirectory() );
+
+        this.getTestTool().writeResourceBundleResourceFiles(
+            this.getTestTool().getModules().getImplementation( "Implementation" ), this.getTestResourcesDirectory() );
 
     }
 
