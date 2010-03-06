@@ -54,6 +54,14 @@
     <xsl:call-template name="relocate-system-id"/>
   </xsl:template>
 
+  <xsl:template match="bootstrap:schemas/bootstrap:schema/@context-id">
+    <xsl:call-template name="relocate-context-id"/>
+  </xsl:template>
+
+  <xsl:template match="bootstrap:schemas/bootstrap:schema/@classpath-id">
+    <xsl:call-template name="relocate-classpath-id"/>
+  </xsl:template>
+
   <xsl:template match="bootstrap:services/bootstrap:service/@identifier">
     <xsl:call-template name="relocate-classname"/>
   </xsl:template>
@@ -68,6 +76,9 @@
       <xsl:choose>
         <xsl:when test="starts-with($value, 'org.jomc.model.')">
           <xsl:value-of select="concat('org.jomc.model.', substring-after($value, 'org.jomc.model.'))"/>
+        </xsl:when>
+        <xsl:when test="starts-with($value, 'org.jomc.tools.model.')">
+          <xsl:value-of select="concat('org.jomc.cli.util.tools.model.', substring-after($value, 'org.jomc.tools.model.'))"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="."/>
@@ -94,8 +105,36 @@
     <xsl:variable name="value" select="string(.)"/>
     <xsl:attribute name="{name()}">
       <xsl:choose>
-        <xsl:when test="starts-with($value, 'http://jomc.org/model')">
-          <xsl:value-of select="concat('http://jomc.org/model', substring-after($value, 'http://jomc.org/model'))"/>
+        <xsl:when test="starts-with($value, 'http://jomc.sourceforge.net/model')">
+          <xsl:value-of select="concat('http://jomc.sourceforge.net/model', substring-after($value, 'http://jomc.sourceforge.net/model'))"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="."/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:attribute>
+  </xsl:template>
+
+  <xsl:template name="relocate-context-id">
+    <xsl:variable name="value" select="string(.)"/>
+    <xsl:attribute name="{name()}">
+      <xsl:choose>
+        <xsl:when test="starts-with($value, 'org.jomc.tools')">
+          <xsl:value-of select="concat('org.jomc.cli.util.tools', substring-after($value, 'org.jomc.tools'))"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="."/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:attribute>
+  </xsl:template>
+
+  <xsl:template name="relocate-classpath-id">
+    <xsl:variable name="value" select="string(.)"/>
+    <xsl:attribute name="{name()}">
+      <xsl:choose>
+        <xsl:when test="starts-with($value, 'org/jomc/tools')">
+          <xsl:value-of select="concat('org/jomc/cli/util/tools', substring-after($value, 'org/jomc/tools'))"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="."/>

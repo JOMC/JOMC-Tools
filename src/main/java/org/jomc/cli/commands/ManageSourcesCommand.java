@@ -48,7 +48,7 @@ import org.jomc.model.ModelValidationReport;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.ObjectFactory;
-import org.jomc.tools.JavaSources;
+import org.jomc.tools.SourceFileProcessor;
 
 // SECTION-START[Documentation]
 // <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
@@ -105,7 +105,7 @@ import org.jomc.tools.JavaSources;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-17-SNAPSHOT Build 2010-03-04T15:50:39+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-17-SNAPSHOT Build 2010-03-06T07:12:26+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -129,17 +129,17 @@ import org.jomc.tools.JavaSources;
  * </table>
  * <li>"{@link #getLongDescriptionMessage longDescription}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
- *   jomc manage-java-sources -cp &lt;classpath&gt; \
- *                            -sd /tmp/src \
- *                            -df examples/xml/jomc-cli.xml \
- *                            -mn &quot;JOMC CLI&quot; \
- *                            -v</pre></td></tr>
+ *   jomc manage-sources -cp &lt;classpath&gt; \
+ *                       -sd /tmp/src \
+ *                       -df examples/xml/jomc-cli.xml \
+ *                       -mn &quot;JOMC CLI&quot; \
+ *                       -v</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
- *   jomc manage-java-sources -cp &lt;classpath&gt; \
- *                            -sd /tmp/src \
- *                            -df examples/xml/jomc-cli.xml \
- *                            -mn &quot;JOMC CLI&quot; \
- *                            -v</pre></td></tr>
+ *   jomc manage-sources -cp &lt;classpath&gt; \
+ *                       -sd /tmp/src \
+ *                       -df examples/xml/jomc-cli.xml \
+ *                       -mn &quot;JOMC CLI&quot; \
+ *                       -v</pre></td></tr>
  * </table>
  * <li>"{@link #getMissingModuleMessage missingModule}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
@@ -153,8 +153,8 @@ import org.jomc.tools.JavaSources;
  * <tr><td valign="top">English:</td><td valign="top"><pre>--------------------------------------------------------------------------------</pre></td></tr>
  * </table>
  * <li>"{@link #getShortDescriptionMessage shortDescription}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Manages Java source files.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verwaltet Java Quelltext-Dateien.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Manages source files.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verwaltet Quelltext-Dateien.</pre></td></tr>
  * </table>
  * <li>"{@link #getStartingModuleProcessingMessage startingModuleProcessing}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} with module ''{1}'' ...</pre></td></tr>
@@ -181,11 +181,11 @@ import org.jomc.tools.JavaSources;
 // SECTION-END
 // SECTION-START[Annotations]
 // <editor-fold defaultstate="collapsed" desc=" Generated Annotations ">
-@javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+@javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                              comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
 // </editor-fold>
 // SECTION-END
-public final class ManageJavaSourcesCommand extends AbstractJomcCommand
+public final class ManageSourcesCommand extends AbstractJomcCommand
 {
     // SECTION-START[Command]
 
@@ -224,7 +224,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
 
         if ( validationReport.isModelValid() )
         {
-            final JavaSources tool = this.getJavaSources();
+            final SourceFileProcessor tool = this.getSourceFileProcessor();
             tool.setModules( modules );
 
             if ( commandLine.hasOption( this.getProfileOption().getOpt() ) )
@@ -273,7 +273,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
 
                     }
 
-                    tool.manageSources( module, sourcesDirectory );
+                    tool.manageSourceFiles( module, sourcesDirectory );
                 }
                 else if ( this.isLoggable( Level.WARNING ) )
                 {
@@ -289,7 +289,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
 
                 }
 
-                tool.manageSources( sourcesDirectory );
+                tool.manageSourceFiles( sourcesDirectory );
             }
 
             return STATUS_SUCCESS;
@@ -299,15 +299,15 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
     }
 
     // SECTION-END
-    // SECTION-START[ManageJavaSourcesCommand]
+    // SECTION-START[ManageSourcesCommand]
     // SECTION-END
     // SECTION-START[Constructors]
     // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
 
-    /** Creates a new {@code ManageJavaSourcesCommand} instance. */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    /** Creates a new {@code ManageSourcesCommand} instance. */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
-    public ManageJavaSourcesCommand()
+    public ManageSourcesCommand()
     {
         // SECTION-START[Default Constructor]
         super();
@@ -325,7 +325,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      * @return The {@code ClasspathOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private org.apache.commons.cli.Option getClasspathOption()
     {
@@ -341,7 +341,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      * @return The {@code DocumentsOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private org.apache.commons.cli.Option getDocumentsOption()
     {
@@ -357,7 +357,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      * @return The {@code IndentationCharacterOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private org.apache.commons.cli.Option getIndentationCharacterOption()
     {
@@ -373,7 +373,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      * @return The {@code InputEncodingOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private org.apache.commons.cli.Option getInputEncodingOption()
     {
@@ -389,7 +389,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      * @return The {@code Locale} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private java.util.Locale getLocale()
     {
@@ -405,7 +405,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      * @return The {@code ModuleLocationOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private org.apache.commons.cli.Option getModuleLocationOption()
     {
@@ -421,7 +421,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      * @return The {@code ModuleNameOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private org.apache.commons.cli.Option getModuleNameOption()
     {
@@ -437,7 +437,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      * @return The {@code NoClasspathResolutionOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private org.apache.commons.cli.Option getNoClasspathResolutionOption()
     {
@@ -453,7 +453,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      * @return The {@code NoModelProcessingOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private org.apache.commons.cli.Option getNoModelProcessingOption()
     {
@@ -469,7 +469,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      * @return The {@code OutputEncodingOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private org.apache.commons.cli.Option getOutputEncodingOption()
     {
@@ -485,7 +485,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      * @return The {@code ProfileOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private org.apache.commons.cli.Option getProfileOption()
     {
@@ -501,7 +501,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      * @return The {@code SchemaLocationOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private org.apache.commons.cli.Option getSchemaLocationOption()
     {
@@ -517,7 +517,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      * @return The {@code ServiceLocationOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private org.apache.commons.cli.Option getServiceLocationOption()
     {
@@ -538,7 +538,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      * @return The {@code SourceDirectoryOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private org.apache.commons.cli.Option getSourceDirectoryOption()
     {
@@ -554,7 +554,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      * @return The {@code TemplateEncodingOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private org.apache.commons.cli.Option getTemplateEncodingOption()
     {
@@ -570,7 +570,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      * @return The {@code TransformerLocationOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private org.apache.commons.cli.Option getTransformerLocationOption()
     {
@@ -586,7 +586,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      * @return The {@code WhitepsacesPerIndentOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private org.apache.commons.cli.Option getWhitepsacesPerIndentOption()
     {
@@ -604,7 +604,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      * @return Abbreviated name of the command.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private java.lang.String getAbbreviatedCommandName()
     {
@@ -618,7 +618,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      * @return Name of the command.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private java.lang.String getCommandName()
     {
@@ -634,14 +634,14 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-17-SNAPSHOT Build 2010-03-04T15:50:39+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-17-SNAPSHOT Build 2010-03-06T07:12:26+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private String getApplicationTitleMessage( final java.util.Locale locale )
     {
@@ -663,7 +663,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private String getCannotProcessMessage( final java.util.Locale locale, final java.lang.String itemInfo, final java.lang.String detailMessage )
     {
@@ -684,7 +684,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private String getClasspathElementMessage( final java.util.Locale locale, final java.lang.String classpathElement )
     {
@@ -705,7 +705,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private String getDefaultLogLevelInfoMessage( final java.util.Locale locale, final java.lang.String defaultLogLevel )
     {
@@ -726,7 +726,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private String getDocumentFileMessage( final java.util.Locale locale, final java.lang.String documentFile )
     {
@@ -746,7 +746,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private String getInvalidModelMessage( final java.util.Locale locale )
     {
@@ -759,24 +759,24 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      * Gets the text of the {@code longDescription} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
-     *   jomc manage-java-sources -cp &lt;classpath&gt; \
-     *                            -sd /tmp/src \
-     *                            -df examples/xml/jomc-cli.xml \
-     *                            -mn &quot;JOMC CLI&quot; \
-     *                            -v</pre></td></tr>
+     *   jomc manage-sources -cp &lt;classpath&gt; \
+     *                       -sd /tmp/src \
+     *                       -df examples/xml/jomc-cli.xml \
+     *                       -mn &quot;JOMC CLI&quot; \
+     *                       -v</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
-     *   jomc manage-java-sources -cp &lt;classpath&gt; \
-     *                            -sd /tmp/src \
-     *                            -df examples/xml/jomc-cli.xml \
-     *                            -mn &quot;JOMC CLI&quot; \
-     *                            -v</pre></td></tr>
+     *   jomc manage-sources -cp &lt;classpath&gt; \
+     *                       -sd /tmp/src \
+     *                       -df examples/xml/jomc-cli.xml \
+     *                       -mn &quot;JOMC CLI&quot; \
+     *                       -v</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code longDescription} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private String getLongDescriptionMessage( final java.util.Locale locale )
     {
@@ -797,7 +797,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private String getMissingModuleMessage( final java.util.Locale locale, final java.lang.String moduleName )
     {
@@ -817,7 +817,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private String getModulesReportMessage( final java.util.Locale locale )
     {
@@ -836,7 +836,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private String getSeparatorMessage( final java.util.Locale locale )
     {
@@ -848,15 +848,15 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code shortDescription} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Manages Java source files.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verwaltet Java Quelltext-Dateien.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Manages source files.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verwaltet Quelltext-Dateien.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code shortDescription} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private String getShortDescriptionMessage( final java.util.Locale locale )
     {
@@ -878,7 +878,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private String getStartingModuleProcessingMessage( final java.util.Locale locale, final java.lang.String toolName, final java.lang.String moduleName )
     {
@@ -899,7 +899,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private String getStartingProcessingMessage( final java.util.Locale locale, final java.lang.String toolName )
     {
@@ -920,7 +920,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private String getToolFailureMessage( final java.util.Locale locale, final java.lang.String toolName )
     {
@@ -941,7 +941,7 @@ public final class ManageJavaSourcesCommand extends AbstractJomcCommand
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private String getToolSuccessMessage( final java.util.Locale locale, final java.lang.String toolName )
     {

@@ -418,20 +418,19 @@
         <artifactId>maven-jomc-plugin</artifactId>
         <executions>
           <execution>
-            <id>main-java-classes</id>
             <goals>
-              <goal>main-java-classes</goal>
-              <goal>validate-main-java-classes</goal>
+              <goal>manage-main-sources</goal>
+              <goal>commit-main-classes</goal>
+              <goal>validate-main-classes</goal>
+              <goal>validate-main-modules</goal>
+              <goal>manage-test-sources</goal>
+              <goal>commit-test-classes</goal>
+              <goal>validate-test-classes</goal>
+              <goal>validate-test-modules</goal>
             </goals>
             <configuration>
               <modelObjectStylesheet>src/main/jomc/model-relocations.xsl</modelObjectStylesheet>
             </configuration>
-          </execution>
-          <execution>
-            <id>main-model</id>
-            <goals>
-              <goal>validate-main-modules</goal>
-            </goals>
           </execution>
         </executions>
       </plugin>

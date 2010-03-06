@@ -1316,11 +1316,11 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.cli.commands.GenerateJavaBundlesCommand"
-                    class="org.jomc.cli.commands.GenerateJavaBundlesCommand" classDeclaration="true"
-                    name="default-generate-java-bundles" version="${project.version}" vendor="${project.organization.name}">
+    <implementation identifier="org.jomc.cli.commands.GenerateResourcesCommand"
+                    class="org.jomc.cli.commands.GenerateResourcesCommand" classDeclaration="true"
+                    name="default-generate-resources" version="${project.version}" vendor="${project.organization.name}">
       <documentation defaultLanguage="en">
-        <text language="en">Command line interface for the {@code JavaBundles} tool.</text>
+        <text language="en">Command line interface for the {@code org.jomc.tools.ResourceFileProcessor} tool.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -1341,30 +1341,14 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <property name="required" type="boolean" value="true" override="true"/>
           </properties>
         </dependency>
-        <dependency name="SourceDirectoryOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Source Directory Option" bound="true">
-
-          <properties>
-            <property name="required" type="boolean" value="true" override="true"/>
-          </properties>
-        </dependency>
-        <dependency name="ProfileOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Profile Option" bound="true"/>
-
-        <dependency name="TemplateEncodingOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Template Encoding Option" bound="true"/>
-
-        <dependency name="OutputEncodingOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Output Encoding Option" bound="true"/>
-
       </dependencies>
       <properties>
-        <property name="commandName" value="generate-java-bundles" override="true">
+        <property name="commandName" value="generate-resources" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
         </property>
-        <property name="abbreviatedCommandName" value="gjb" override="true">
+        <property name="abbreviatedCommandName" value="gr" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
@@ -1373,33 +1357,31 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="shortDescription" override="true">
           <template defaultLanguage="en">
-            <text language="en">Generates Java resource bundles.</text>
-            <text language="de">Generiert Java Ressource-Bündel.</text>
+            <text language="en">Generates resources.</text>
+            <text language="de">Generiert Ressourcen.</text>
           </template>
         </message>
         <message name="longDescription" override="true">
           <template defaultLanguage="en">
             <text language="en"><![CDATA[Example:
-  jomc generate-java-bundles -cp <classpath> \
-                             -sd /tmp/src \
-                             -rd /tmp/rsrc \
-                             -df examples/xml/jomc-cli.xml \
-                             -mn "JOMC CLI" \
-                             -v]]></text>
+  jomc generate-resources -cp <classpath> \
+                          -rd /tmp/rsrc \
+                          -df examples/xml/jomc-cli.xml \
+                          -mn "JOMC CLI" \
+                          -v]]></text>
             <text language="de"><![CDATA[Beispiel:
-  jomc generate-java-bundles -cp <classpath> \
-                             -sd /tmp/src \
-                             -rd /tmp/rsrc \
-                             -df examples/xml/jomc-cli.xml \
-                             -mn "JOMC CLI" \
-                             -v]]></text>
+  jomc generate-resources -cp <classpath> \
+                          -rd /tmp/rsrc \
+                          -df examples/xml/jomc-cli.xml \
+                          -mn "JOMC CLI" \
+                          -v]]></text>
           </template>
         </message>
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.cli.commands.ManageJavaSourcesCommand"
-                    class="org.jomc.cli.commands.ManageJavaSourcesCommand" classDeclaration="true"
+    <implementation identifier="org.jomc.cli.commands.ManageSourcesCommand"
+                    class="org.jomc.cli.commands.ManageSourcesCommand" classDeclaration="true"
                     name="default-manage-java-sources" version="${project.version}" vendor="${project.organization.name}">
 
       <documentation defaultLanguage="en">
@@ -1441,12 +1423,12 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </dependencies>
       <properties>
-        <property name="commandName" value="manage-java-sources" override="true">
+        <property name="commandName" value="manage-sources" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
         </property>
-        <property name="abbreviatedCommandName" value="mjs" override="true">
+        <property name="abbreviatedCommandName" value="ms" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
@@ -1455,35 +1437,35 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="shortDescription" override="true">
           <template defaultLanguage="en">
-            <text language="en">Manages Java source files.</text>
-            <text language="de">Verwaltet Java Quelltext-Dateien.</text>
+            <text language="en">Manages source files.</text>
+            <text language="de">Verwaltet Quelltext-Dateien.</text>
           </template>
         </message>
         <message name="longDescription" override="true">
           <template defaultLanguage="en">
             <text language="en"><![CDATA[Example:
-  jomc manage-java-sources -cp <classpath> \
-                           -sd /tmp/src \
-                           -df examples/xml/jomc-cli.xml \
-                           -mn "JOMC CLI" \
-                           -v]]></text>
+  jomc manage-sources -cp <classpath> \
+                      -sd /tmp/src \
+                      -df examples/xml/jomc-cli.xml \
+                      -mn "JOMC CLI" \
+                      -v]]></text>
             <text language="de"><![CDATA[Beispiel:
-  jomc manage-java-sources -cp <classpath> \
-                           -sd /tmp/src \
-                           -df examples/xml/jomc-cli.xml \
-                           -mn "JOMC CLI" \
-                           -v]]></text>
+  jomc manage-sources -cp <classpath> \
+                      -sd /tmp/src \
+                      -df examples/xml/jomc-cli.xml \
+                      -mn "JOMC CLI" \
+                      -v]]></text>
           </template>
         </message>
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.cli.commands.CommitJavaClassesCommand"
-                    class="org.jomc.cli.commands.CommitJavaClassesCommand" classDeclaration="true"
+    <implementation identifier="org.jomc.cli.commands.CommitClassesCommand"
+                    class="org.jomc.cli.commands.CommitClassesCommand" classDeclaration="true"
                     name="default-commit-java-classes" version="${project.version}" vendor="${project.organization.name}">
 
       <documentation defaultLanguage="en">
-        <text language="en">Command line interface for committing Java classes with the {@code JavaClasses} tool.</text>
+        <text language="en">Command line interface for committing model objects to class files with the {@code org.jomc.tools.ClassFileProcessor} tool.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -1503,12 +1485,12 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         </dependency>
       </dependencies>
       <properties>
-        <property name="commandName" value="commit-java-classes" override="true">
+        <property name="commandName" value="commit-classes" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
         </property>
-        <property name="abbreviatedCommandName" value="cjc" override="true">
+        <property name="abbreviatedCommandName" value="cc" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
@@ -1517,35 +1499,35 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="shortDescription" override="true">
           <template defaultLanguage="en">
-            <text language="en">Commits Java class files.</text>
-            <text language="de">Schreibt Java Klassendateien fest.</text>
+            <text language="en">Commits model objects to class files.</text>
+            <text language="de">Schreibt Klassendateien fest.</text>
           </template>
         </message>
         <message name="longDescription" override="true">
           <template defaultLanguage="en">
             <text language="en"><![CDATA[Example:
-  jomc commit-java-classes -cp <classpath> \
-                           -df examples/xml/jomc-cli.xml \
-                           -cd target/classes \
-                           -mn "JOMC CLI" \
-                           -v]]></text>
+  jomc commit-classes -cp <classpath> \
+                      -df examples/xml/jomc-cli.xml \
+                      -cd target/classes \
+                      -mn "JOMC CLI" \
+                      -v]]></text>
             <text language="de"><![CDATA[Beispiel:
-  jomc commit-java-classes -cp <classpath> \
-                           -df examples/xml/jomc-cli.xml \
-                           -cd target/classes \
-                           -mn "JOMC CLI" \
-                           -v]]></text>
+  jomc commit-classes -cp <classpath> \
+                      -df examples/xml/jomc-cli.xml \
+                      -cd target/classes \
+                      -mn "JOMC CLI" \
+                      -v]]></text>
           </template>
         </message>
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.cli.commands.ValidateJavaClassesCommand"
-                    class="org.jomc.cli.commands.ValidateJavaClassesCommand" classDeclaration="true"
+    <implementation identifier="org.jomc.cli.commands.ValidateClassesCommand"
+                    class="org.jomc.cli.commands.ValidateClassesCommand" classDeclaration="true"
                     name="default-validate-java-classes" version="${project.version}" vendor="${project.organization.name}">
 
       <documentation defaultLanguage="en">
-        <text language="en">Command line interface for validating Java classes with the {@code JavaClasses} tool.</text>
+        <text language="en">Command line interface for validating model objects of class files with the {@code org.jomc.tools.ClassFileProcessor} tool.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -1556,12 +1538,12 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="commandName" value="validate-java-classes" override="true">
+        <property name="commandName" value="validate-classes" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
         </property>
-        <property name="abbreviatedCommandName" value="vjc" override="true">
+        <property name="abbreviatedCommandName" value="vc" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
@@ -1570,20 +1552,20 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="shortDescription" override="true">
           <template defaultLanguage="en">
-            <text language="en">Validates Java class files.</text>
-            <text language="de">Prüft Java Klassendateien.</text>
+            <text language="en">Validates model objects of class files.</text>
+            <text language="de">Prüft Klassendateien.</text>
           </template>
         </message>
         <message name="longDescription" override="true">
           <template defaultLanguage="en">
             <text language="en"><![CDATA[Example:
-  jomc validate-java-classes -cp target/classes \
-                             -df examples/xml/jomc-cli.xml \
-                             -v]]></text>
+  jomc validate-classes -cp target/classes \
+                        -df examples/xml/jomc-cli.xml \
+                        -v]]></text>
             <text language="de"><![CDATA[Beispiel:
-  jomc validate-java-classes -cp target/classes \
-                             -df examples/xml/jomc-cli.xml \
-                             -v]]></text>
+  jomc validate-classes -cp target/classes \
+                        -df examples/xml/jomc-cli.xml \
+                        -v]]></text>
           </template>
         </message>
       </messages>

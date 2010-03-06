@@ -97,7 +97,7 @@ import org.jomc.model.Module;
 // SECTION-END
 // SECTION-START[Annotations]
 // <editor-fold defaultstate="collapsed" desc=" Generated Annotations ">
-@javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+@javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                              comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
 // </editor-fold>
 // SECTION-END
@@ -114,25 +114,24 @@ public class JomcTest extends TestCase
     {
         final String[] help = new String[]
         {
-            "generate-java-bundles", "help"
+            "generate-resources", "help"
         };
 
         final String[] args = new String[]
         {
-            "generate-java-bundles", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-rd",
-            '"' + this.getTestResourcesDirectory() + '"', "-df", '"' + this.getTestDocument() + '"', "-D"
+            "generate-resources", "-rd", '"' + this.getTestResourcesDirectory() + '"', "-df",
+            '"' + this.getTestDocument() + '"', "-D"
         };
 
         final String[] unsupportedOption = new String[]
         {
-            "generate-java-bundles", "--unsupported-option"
+            "generate-resources", "--unsupported-option"
         };
 
         final String[] failOnWarnings = new String[]
         {
-            "generate-java-bundles", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-rd",
-            '"' + this.getTestResourcesDirectory() + '"', "-df", '"' + this.getTestDocument() + '"', "-mn",
-            "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
+            "generate-resources", "-rd", '"' + this.getTestResourcesDirectory() + '"', "-df",
+            '"' + this.getTestDocument() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
         };
 
         Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
@@ -145,24 +144,24 @@ public class JomcTest extends TestCase
     {
         final String[] help = new String[]
         {
-            "manage-java-sources", "help"
+            "manage-sources", "help"
         };
 
         final String[] args = new String[]
         {
-            "manage-java-sources", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-df",
+            "manage-sources", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-df",
             '"' + this.getTestDocument() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-D",
             "-wpi", "8", "-ic", "\t"
         };
 
         final String[] unsupportedOption = new String[]
         {
-            "manage-java-sources", "--unsupported-option"
+            "manage-sources", "--unsupported-option"
         };
 
         final String[] failOnWarnings = new String[]
         {
-            "manage-java-sources", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-df",
+            "manage-sources", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-df",
             '"' + this.getTestDocument() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
         };
 
@@ -176,45 +175,45 @@ public class JomcTest extends TestCase
     {
         final String[] commitHelp = new String[]
         {
-            "commit-java-classes", "help"
+            "commit-classes", "help"
         };
 
         final String[] validateHelp = new String[]
         {
-            "validate-java-classes", "help"
+            "validate-classes", "help"
         };
 
         final String[] commitArgs = new String[]
         {
-            "commit-java-classes", "-df", '"' + this.getTestDocument() + '"', "-cd",
+            "commit-classes", "-df", '"' + this.getTestDocument() + '"', "-cd",
             '"' + this.getTestClassesDirectory() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-D"
         };
 
         final String[] validateArgs = new String[]
         {
-            "validate-java-classes", "-df", '"' + this.getTestDocument() + '"', "-cp",
+            "validate-classes", "-df", '"' + this.getTestDocument() + '"', "-cp",
             '"' + this.getTestClassesDirectory() + '"', "-D"
         };
 
         final String[] commitUnsupportedOption = new String[]
         {
-            "commit-java-classes", "--unsupported-option"
+            "commit-classes", "--unsupported-option"
         };
 
         final String[] validateUnsupportedOption = new String[]
         {
-            "validate-java-classes", "--unsupported-option"
+            "validate-classes", "--unsupported-option"
         };
 
         final String[] commitFailOnWarnings = new String[]
         {
-            "commit-java-classes", "-df", '"' + this.getTestDocument() + '"', "-cd",
+            "commit-classes", "-df", '"' + this.getTestDocument() + '"', "-cd",
             '"' + this.getTestClassesDirectory() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
         };
 
         final String[] validateFailOnWarnings = new String[]
         {
-            "validate-java-classes", "-df", '"' + this.getTestDocument() + '"', "-cp",
+            "validate-classes", "-df", '"' + this.getTestDocument() + '"', "-cp",
             '"' + this.getTestClassesDirectory() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
         };
 
@@ -342,7 +341,7 @@ public class JomcTest extends TestCase
     // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
 
     /** Creates a new {@code JomcTest} instance. */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     public JomcTest()
     {
@@ -362,7 +361,7 @@ public class JomcTest extends TestCase
      * @return The value of the {@code classesDirectory} property.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private java.lang.String getClassesDirectory()
     {
@@ -376,7 +375,7 @@ public class JomcTest extends TestCase
      * @return The value of the {@code testClassesDirectory} property.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private java.lang.String getTestClassesDirectory()
     {
@@ -390,7 +389,7 @@ public class JomcTest extends TestCase
      * @return The value of the {@code testDocument} property.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private java.lang.String getTestDocument()
     {
@@ -404,7 +403,7 @@ public class JomcTest extends TestCase
      * @return The value of the {@code testDocumentIllegal} property.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private java.lang.String getTestDocumentIllegal()
     {
@@ -418,7 +417,7 @@ public class JomcTest extends TestCase
      * @return The value of the {@code testIllegalSourceFilesModel} property.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private java.lang.String getTestIllegalSourceFilesModel()
     {
@@ -432,7 +431,7 @@ public class JomcTest extends TestCase
      * @return The value of the {@code testLegalSourceFilesModel} property.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private java.lang.String getTestLegalSourceFilesModel()
     {
@@ -446,7 +445,7 @@ public class JomcTest extends TestCase
      * @return The value of the {@code testModuleName} property.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private java.lang.String getTestModuleName()
     {
@@ -460,7 +459,7 @@ public class JomcTest extends TestCase
      * @return The value of the {@code testOutputDocument} property.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private java.lang.String getTestOutputDocument()
     {
@@ -474,7 +473,7 @@ public class JomcTest extends TestCase
      * @return The value of the {@code testResourcesDirectory} property.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private java.lang.String getTestResourcesDirectory()
     {
@@ -488,7 +487,7 @@ public class JomcTest extends TestCase
      * @return The value of the {@code testSourcesDirectory} property.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private java.lang.String getTestSourcesDirectory()
     {
@@ -502,7 +501,7 @@ public class JomcTest extends TestCase
      * @return The value of the {@code testStylesheet} property.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private java.lang.String getTestStylesheet()
     {
