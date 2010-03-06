@@ -68,7 +68,7 @@ import org.jomc.tools.SourceFileProcessor;
 import org.jomc.tools.JomcTool;
 
 /**
- * Base mojo class for executing {@code JomcTool}s.
+ * Base class for executing {@code JomcTool}s.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
@@ -605,8 +605,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
                 for ( ModelValidationReport.Detail detail : report.getDetails() )
                 {
-                    this.log( detail.getLevel(), System.getProperty( "line.separator" ), null );
-                    this.log( detail.getLevel(), detail.getMessage(), null );
+                    this.log( detail.getLevel(), "o " + detail.getMessage(), null );
 
                     if ( detail.getElement() != null )
                     {
