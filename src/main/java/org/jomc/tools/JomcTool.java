@@ -115,7 +115,7 @@ public abstract class JomcTool
     private static final String VELOCITY_RESOURCE_LOADER = ClasspathResourceLoader.class.getName();
 
     /** Constant for the default profile. */
-    private static final String DEFAULT_PROFILE = "default";
+    private static final String DEFAULT_PROFILE = "jomc-java";
 
     /**
      * Log level events are logged at by default.

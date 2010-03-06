@@ -43,31 +43,31 @@ import org.apache.commons.io.IOUtils;
 import org.jomc.model.Implementation;
 import org.jomc.model.Module;
 import org.jomc.model.Specification;
-import org.jomc.tools.JavaSources;
+import org.jomc.tools.SourceFileProcessor;
 import org.jomc.tools.ToolException;
 import org.jomc.util.SectionEditor;
 
 /**
- * Tests {@code JavaSources} implementations.
+ * Test cases for class {@code org.jomc.tools.SourceFileProcessor} implementations.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public class JavaSourcesTest extends JomcToolTest
+public class SourceFileProcessorTest extends JomcToolTest
 {
 
     /** Serial number of the test sources directory. */
     private int testSourcesId;
 
-    /** The {@code JavaSources} instance tests are performed with. */
-    private JavaSources testTool;
+    /** The {@code SourceFileProcessor} instance tests are performed with. */
+    private SourceFileProcessor testTool;
 
     @Override
-    public JavaSources getTestTool() throws ToolException
+    public SourceFileProcessor getTestTool() throws ToolException
     {
         if ( this.testTool == null )
         {
-            this.testTool = new JavaSources();
+            this.testTool = new SourceFileProcessor();
             this.testTool.setModules( this.getTestModules() );
         }
 
@@ -97,7 +97,7 @@ public class JavaSourcesTest extends JomcToolTest
     private String getTestProperty( final String key ) throws IOException
     {
         final java.util.Properties p = new java.util.Properties();
-        final InputStream in = this.getClass().getResourceAsStream( "JavaSourcesTest.properties" );
+        final InputStream in = this.getClass().getResourceAsStream( "SourceFileProcessorTest.properties" );
         p.load( in );
         in.close();
 
@@ -131,7 +131,7 @@ public class JavaSourcesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().getSourceCodeEditor( (Specification) null );
+            this.getTestTool().getSourceFileEditor( (Specification) null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -141,7 +141,7 @@ public class JavaSourcesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().getSourceCodeEditor( (Implementation) null );
+            this.getTestTool().getSourceFileEditor( (Implementation) null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -151,7 +151,7 @@ public class JavaSourcesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().manageSources( null );
+            this.getTestTool().manageSourceFiles( null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -161,7 +161,7 @@ public class JavaSourcesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().manageSources( (Implementation) null, new File( "/" ) );
+            this.getTestTool().manageSourceFiles( (Implementation) null, new File( "/" ) );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -171,7 +171,7 @@ public class JavaSourcesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().manageSources( new Implementation(), null );
+            this.getTestTool().manageSourceFiles( new Implementation(), null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -181,7 +181,7 @@ public class JavaSourcesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().manageSources( (Module) null, new File( "/" ) );
+            this.getTestTool().manageSourceFiles( (Module) null, new File( "/" ) );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -192,7 +192,7 @@ public class JavaSourcesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().manageSources( new Module(), null );
+            this.getTestTool().manageSourceFiles( new Module(), null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -202,7 +202,7 @@ public class JavaSourcesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().manageSources( (Specification) null, new File( "/" ) );
+            this.getTestTool().manageSourceFiles( (Specification) null, new File( "/" ) );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -212,7 +212,7 @@ public class JavaSourcesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().manageSources( new Specification(), null );
+            this.getTestTool().manageSourceFiles( new Specification(), null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -236,29 +236,29 @@ public class JavaSourcesTest extends JomcToolTest
 
         Assert.assertNotNull( this.getTestTool().getSourceFileType( i ) );
         Assert.assertNotNull( this.getTestTool().getSourceFileType( s ) );
-        Assert.assertNotNull( this.getTestTool().getSourceCodeEditor( i ) );
-        Assert.assertNotNull( this.getTestTool().getSourceCodeEditor( s ) );
+        Assert.assertNotNull( this.getTestTool().getSourceFileEditor( i ) );
+        Assert.assertNotNull( this.getTestTool().getSourceFileEditor( s ) );
     }
 
     public void testManageSources() throws Exception
     {
-        this.getTestTool().manageSources( this.getTestSourcesDirectory() );
-        this.getTestTool().manageSources( this.getTestTool().getModules().getModule( "Module" ),
-                                          this.getTestSourcesDirectory() );
+        this.getTestTool().manageSourceFiles( this.getTestSourcesDirectory() );
+        this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getModule( "Module" ),
+                                              this.getTestSourcesDirectory() );
 
         final File implementationDirectory = this.getTestSourcesDirectory();
-        this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
-                                          implementationDirectory );
+        this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
+                                              implementationDirectory );
 
-        this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
-                                          implementationDirectory );
+        this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
+                                              implementationDirectory );
 
         final File specificationDirectory = this.getTestSourcesDirectory();
-        this.getTestTool().manageSources( this.getTestTool().getModules().getSpecification( "Specification" ),
-                                          specificationDirectory );
+        this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getSpecification( "Specification" ),
+                                              specificationDirectory );
 
-        this.getTestTool().manageSources( this.getTestTool().getModules().getSpecification( "Specification" ),
-                                          specificationDirectory );
+        this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getSpecification( "Specification" ),
+                                              specificationDirectory );
 
         IOUtils.copy( this.getClass().getResourceAsStream( "IllegalImplementationSource.java.txt" ),
                       new FileOutputStream( new File( implementationDirectory, "Implementation.java" ) ) );
@@ -268,8 +268,8 @@ public class JavaSourcesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
-                                              implementationDirectory );
+            this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
+                                                  implementationDirectory );
 
             Assert.fail( "Expected ToolException not thrown." );
         }
@@ -281,8 +281,8 @@ public class JavaSourcesTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().manageSources( this.getTestTool().getModules().getSpecification( "Specification" ),
-                                              specificationDirectory );
+            this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getSpecification( "Specification" ),
+                                                  specificationDirectory );
 
             Assert.fail( "Expected ToolException not thrown." );
         }
@@ -294,15 +294,15 @@ public class JavaSourcesTest extends JomcToolTest
 
         this.getTestTool().setProfile( "DOES_NOT_EXIST" );
 
-        this.getTestTool().manageSources( this.getTestSourcesDirectory() );
-        this.getTestTool().manageSources( this.getTestTool().getModules().getModule( "Module" ),
-                                          this.getTestSourcesDirectory() );
+        this.getTestTool().manageSourceFiles( this.getTestSourcesDirectory() );
+        this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getModule( "Module" ),
+                                              this.getTestSourcesDirectory() );
 
-        this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
-                                          this.getTestSourcesDirectory() );
+        this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
+                                              this.getTestSourcesDirectory() );
 
-        this.getTestTool().manageSources( this.getTestTool().getModules().getSpecification( "Specification" ),
-                                          this.getTestSourcesDirectory() );
+        this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getSpecification( "Specification" ),
+                                              this.getTestSourcesDirectory() );
 
     }
 
@@ -316,8 +316,8 @@ public class JavaSourcesTest extends JomcToolTest
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutAnnotationsSection.java.txt" ),
                       new FileOutputStream( f ) );
 
-        this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
-                                          implementationDirectory );
+        this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
+                                              implementationDirectory );
 
         String edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
@@ -327,8 +327,8 @@ public class JavaSourcesTest extends JomcToolTest
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutDependenciesSection.java.txt" ),
                       new FileOutputStream( f ) );
 
-        this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
-                                          implementationDirectory );
+        this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
+                                              implementationDirectory );
 
         edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
@@ -338,8 +338,8 @@ public class JavaSourcesTest extends JomcToolTest
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutMessagesSection.java.txt" ),
                       new FileOutputStream( f ) );
 
-        this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
-                                          implementationDirectory );
+        this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
+                                              implementationDirectory );
 
         edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
@@ -349,8 +349,8 @@ public class JavaSourcesTest extends JomcToolTest
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutPropertiesSection.java.txt" ),
                       new FileOutputStream( f ) );
 
-        this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
-                                          implementationDirectory );
+        this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
+                                              implementationDirectory );
 
         edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
@@ -361,7 +361,7 @@ public class JavaSourcesTest extends JomcToolTest
             this.getClass().getResourceAsStream( "ImplementationOfSpecificationWithoutConstructorsSection.java.txt" ),
             new FileOutputStream( f ) );
 
-        this.getTestTool().manageSources(
+        this.getTestTool().manageSourceFiles(
             this.getTestTool().getModules().getImplementation( "ImplementationOfSpecification" ),
             implementationDirectory );
 
@@ -373,8 +373,8 @@ public class JavaSourcesTest extends JomcToolTest
         IOUtils.copy( this.getClass().getResourceAsStream( "SpecificationWithoutAnnotationsSection.java.txt" ),
                       new FileOutputStream( f ) );
 
-        this.getTestTool().manageSources( this.getTestTool().getModules().getSpecification( "Specification" ),
-                                          specificationDirectory );
+        this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getSpecification( "Specification" ),
+                                              specificationDirectory );
 
         edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
@@ -391,8 +391,8 @@ public class JavaSourcesTest extends JomcToolTest
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutConstructorsSection.java.txt" ),
                       new FileOutputStream( f ) );
 
-        this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
-                                          implementationDirectory );
+        this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
+                                              implementationDirectory );
 
         String edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
@@ -401,8 +401,8 @@ public class JavaSourcesTest extends JomcToolTest
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutDefaultConstructorSection.java.txt" ),
                       new FileOutputStream( f ) );
 
-        this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
-                                          implementationDirectory );
+        this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
+                                              implementationDirectory );
 
         edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
@@ -412,8 +412,8 @@ public class JavaSourcesTest extends JomcToolTest
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutDocumentationSection.java.txt" ),
                       new FileOutputStream( f ) );
 
-        this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
-                                          implementationDirectory );
+        this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
+                                              implementationDirectory );
 
         edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
@@ -422,8 +422,8 @@ public class JavaSourcesTest extends JomcToolTest
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutLicenseSection.java.txt" ),
                       new FileOutputStream( f ) );
 
-        this.getTestTool().manageSources( this.getTestTool().getModules().getImplementation( "Implementation" ),
-                                          implementationDirectory );
+        this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
+                                              implementationDirectory );
 
         edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
@@ -433,9 +433,8 @@ public class JavaSourcesTest extends JomcToolTest
         IOUtils.copy( this.getClass().getResourceAsStream( "SpecificationWithoutDocumentationSection.java.txt" ),
                       new FileOutputStream( f ) );
 
-        this.getTestTool().manageSources( this.getTestTool().getModules().getSpecification( "Specification" ),
-                                          specificationDirectory );
-
+        this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getSpecification( "Specification" ),
+                                              specificationDirectory );
 
         edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
@@ -444,8 +443,8 @@ public class JavaSourcesTest extends JomcToolTest
         IOUtils.copy( this.getClass().getResourceAsStream( "SpecificationWithoutLicenseSection.java.txt" ),
                       new FileOutputStream( f ) );
 
-        this.getTestTool().manageSources( this.getTestTool().getModules().getSpecification( "Specification" ),
-                                          specificationDirectory );
+        this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getSpecification( "Specification" ),
+                                              specificationDirectory );
 
         edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
@@ -454,7 +453,7 @@ public class JavaSourcesTest extends JomcToolTest
 
     public void testCopyConstructor() throws Exception
     {
-        new JavaSources( this.getTestTool() );
+        new SourceFileProcessor( this.getTestTool() );
     }
 
 }

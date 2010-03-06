@@ -46,7 +46,7 @@
 
   <specifications>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.tools.JavaBundles" class="org.jomc.tools.JavaBundles"
+    <specification identifier="org.jomc.tools.ResourceFileProcessor" class="org.jomc.tools.ResourceFileProcessor"
                    classDeclaration="true" vendor="${project.organization.name}" version="${project.version}">
 
       <documentation defaultLanguage="en">
@@ -59,7 +59,7 @@
       </authors>
     </specification>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.tools.JavaSources" class="org.jomc.tools.JavaSources"
+    <specification identifier="org.jomc.tools.SourceFileProcessor" class="org.jomc.tools.SourceFileProcessor"
                    classDeclaration="true" vendor="${project.organization.name}" version="${project.version}">
 
       <documentation defaultLanguage="en">
@@ -72,7 +72,7 @@
       </authors>
     </specification>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.tools.JavaClasses" class="org.jomc.tools.JavaClasses"
+    <specification identifier="org.jomc.tools.ClassFileProcessor" class="org.jomc.tools.ClassFileProcessor"
                    classDeclaration="true" vendor="${project.organization.name}" version="${project.version}">
 
       <documentation defaultLanguage="en">
@@ -87,9 +87,9 @@
   </specifications>
   <implementations>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.tools.JavaBundles" class="org.jomc.tools.JavaBundles" classDeclaration="true"
-                    name="${project.name}" version="${project.version}" vendor="${project.organization.name}"
-                    final="true">
+    <implementation identifier="org.jomc.tools.ResourceFileProcessor" class="org.jomc.tools.ResourceFileProcessor"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}" final="true">
 
       <documentation defaultLanguage="en">
         <text language="en">Test implementation.</text>
@@ -118,9 +118,9 @@
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.tools.JavaSources" class="org.jomc.tools.JavaSources" classDeclaration="true"
-                    name="${project.name}" version="${project.version}" vendor="${project.organization.name}"
-                    final="true">
+    <implementation identifier="org.jomc.tools.SourceFileProcessor" class="org.jomc.tools.SourceFileProcessor"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}" final="true">
 
       <documentation defaultLanguage="en">
         <text language="en">Test implementation.</text>
@@ -149,9 +149,9 @@
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.tools.JavaClasses" class="org.jomc.tools.JavaClasses" classDeclaration="true"
-                    name="${project.name}" version="${project.version}" vendor="${project.organization.name}"
-                    final="true">
+    <implementation identifier="org.jomc.tools.ClassFileProcessor" class="org.jomc.tools.ClassFileProcessor"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}" final="true">
 
       <documentation defaultLanguage="en">
         <text language="en">Test implementation.</text>

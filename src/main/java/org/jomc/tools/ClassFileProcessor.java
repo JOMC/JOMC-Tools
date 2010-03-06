@@ -78,23 +78,23 @@ import org.jomc.util.TokenMgrError;
 import org.jomc.util.VersionParser;
 
 /**
- * Manages Java classes.
+ * Processes class files.
  *
  * <p><b>Use cases</b><br/><ul>
- * <li>{@link #commitClasses(javax.xml.bind.Marshaller, java.io.File) }</li>
- * <li>{@link #commitClasses(org.jomc.model.Module, javax.xml.bind.Marshaller, java.io.File) }</li>
- * <li>{@link #commitClasses(org.jomc.model.Specification, javax.xml.bind.Marshaller, java.io.File) }</li>
- * <li>{@link #commitClasses(org.jomc.model.Implementation, javax.xml.bind.Marshaller, java.io.File) }</li>
- * <li>{@link #validateClasses(javax.xml.bind.Unmarshaller, java.io.File) }</li>
- * <li>{@link #validateClasses(javax.xml.bind.Unmarshaller, java.lang.ClassLoader) }</li>
- * <li>{@link #validateClasses(org.jomc.model.Module, javax.xml.bind.Unmarshaller, java.io.File) }</li>
- * <li>{@link #validateClasses(org.jomc.model.Module, javax.xml.bind.Unmarshaller, java.lang.ClassLoader) }</li>
- * <li>{@link #validateClasses(org.jomc.model.Specification, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass) }</li>
- * <li>{@link #validateClasses(org.jomc.model.Implementation, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass) }</li>
- * <li>{@link #transformClasses(javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, java.io.File, java.util.List) }</li>
- * <li>{@link #transformClasses(org.jomc.model.Module, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, java.io.File, java.util.List) }</li>
- * <li>{@link #transformClasses(org.jomc.model.Specification, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass, java.util.List) }</li>
- * <li>{@link #transformClasses(org.jomc.model.Implementation, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass, java.util.List) }</li>
+ * <li>{@link #commitModelObjects(javax.xml.bind.Marshaller, java.io.File) }</li>
+ * <li>{@link #commitModelObjects(org.jomc.model.Module, javax.xml.bind.Marshaller, java.io.File) }</li>
+ * <li>{@link #commitModelObjects(org.jomc.model.Specification, javax.xml.bind.Marshaller, java.io.File) }</li>
+ * <li>{@link #commitModelObjects(org.jomc.model.Implementation, javax.xml.bind.Marshaller, java.io.File) }</li>
+ * <li>{@link #validateModelObjects(javax.xml.bind.Unmarshaller, java.io.File) }</li>
+ * <li>{@link #validateModelObjects(javax.xml.bind.Unmarshaller, java.lang.ClassLoader) }</li>
+ * <li>{@link #validateModelObjects(org.jomc.model.Module, javax.xml.bind.Unmarshaller, java.io.File) }</li>
+ * <li>{@link #validateModelObjects(org.jomc.model.Module, javax.xml.bind.Unmarshaller, java.lang.ClassLoader) }</li>
+ * <li>{@link #validateModelObjects(org.jomc.model.Specification, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass) }</li>
+ * <li>{@link #validateModelObjects(org.jomc.model.Implementation, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass) }</li>
+ * <li>{@link #transformModelObjects(javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, java.io.File, java.util.List) }</li>
+ * <li>{@link #transformModelObjects(org.jomc.model.Module, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, java.io.File, java.util.List) }</li>
+ * <li>{@link #transformModelObjects(org.jomc.model.Specification, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass, java.util.List) }</li>
+ * <li>{@link #transformModelObjects(org.jomc.model.Implementation, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass, java.util.List) }</li>
  * </ul></p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
@@ -102,39 +102,41 @@ import org.jomc.util.VersionParser;
  *
  * @see #getModules()
  */
-public class JavaClasses extends JomcTool
+public class ClassFileProcessor extends JomcTool
 {
 
-    /** Creates a new {@code JavaClasses} instance. */
-    public JavaClasses()
+    /** Creates a new {@code ClassFileProcessor} instance. */
+    public ClassFileProcessor()
     {
         super();
     }
 
     /**
-     * Creates a new {@code JavaClasses} instance taking a {@code JavaClasses} instance to initialize the instance with.
+     * Creates a new {@code ClassFileProcessor} instance taking a {@code ClassFileProcessor} instance to initialize the
+     * instance with.
      *
      * @param tool The instance to initialize the new instance with,
      *
      * @throws ToolException if copying {@code tool} fails.
      */
-    public JavaClasses( final JavaClasses tool ) throws ToolException
+    public ClassFileProcessor( final ClassFileProcessor tool ) throws ToolException
     {
         super( tool );
     }
 
     /**
-     * Commits meta-data of the modules of the instance to compiled Java classes.
+     * Commits model objects of the modules of the instance to class files.
      *
-     * @param marshaller The marshaller to use for committing the classes.
-     * @param classesDirectory The directory holding the compiled class files.
+     * @param marshaller The marshaller to use for committing the model objects.
+     * @param classesDirectory The directory holding the class files.
      *
      * @throws NullPointerException if {@code marshaller} or {@code classesDirectory} is {@code null}.
-     * @throws ToolException if committing meta-data fails.
+     * @throws ToolException if committing model objects fails.
      *
-     * @see #commitClasses(org.jomc.model.Module, javax.xml.bind.Marshaller, java.io.File)
+     * @see #commitModelObjects(org.jomc.model.Module, javax.xml.bind.Marshaller, java.io.File)
+     * @see org.jomc.model.ModelContext#createMarshaller()
      */
-    public void commitClasses( final Marshaller marshaller, final File classesDirectory ) throws ToolException
+    public void commitModelObjects( final Marshaller marshaller, final File classesDirectory ) throws ToolException
     {
         if ( marshaller == null )
         {
@@ -147,24 +149,25 @@ public class JavaClasses extends JomcTool
 
         for ( Module m : this.getModules().getModule() )
         {
-            this.commitClasses( m, marshaller, classesDirectory );
+            this.commitModelObjects( m, marshaller, classesDirectory );
         }
     }
 
     /**
-     * Commits meta-data of a given module of the modules of the instance to compiled Java classes.
+     * Commits model objects of a given module of the modules of the instance to class files.
      *
      * @param module The module to process.
-     * @param marshaller The marshaller to use for committing the classes.
-     * @param classesDirectory The directory holding the compiled class files.
+     * @param marshaller The marshaller to use for committing the model objects.
+     * @param classesDirectory The directory holding the class files.
      *
      * @throws NullPointerException if {@code module}, {@code marshaller} or {@code classesDirectory} is {@code null}.
-     * @throws ToolException if committing meta-data fails.
+     * @throws ToolException if committing model objects fails.
      *
-     * @see #commitClasses(org.jomc.model.Specification, javax.xml.bind.Marshaller, java.io.File)
-     * @see #commitClasses(org.jomc.model.Implementation, javax.xml.bind.Marshaller, java.io.File)
+     * @see #commitModelObjects(org.jomc.model.Specification, javax.xml.bind.Marshaller, java.io.File)
+     * @see #commitModelObjects(org.jomc.model.Implementation, javax.xml.bind.Marshaller, java.io.File)
+     * @see org.jomc.model.ModelContext#createMarshaller()
      */
-    public void commitClasses( final Module module, final Marshaller marshaller, final File classesDirectory )
+    public void commitModelObjects( final Module module, final Marshaller marshaller, final File classesDirectory )
         throws ToolException
     {
         if ( module == null )
@@ -184,33 +187,33 @@ public class JavaClasses extends JomcTool
         {
             for ( Specification s : module.getSpecifications().getSpecification() )
             {
-                this.commitClasses( s, marshaller, classesDirectory );
+                this.commitModelObjects( s, marshaller, classesDirectory );
             }
         }
         if ( module.getImplementations() != null )
         {
             for ( Implementation i : module.getImplementations().getImplementation() )
             {
-                this.commitClasses( i, marshaller, classesDirectory );
+                this.commitModelObjects( i, marshaller, classesDirectory );
             }
         }
     }
 
     /**
-     * Commits meta-data of a given specification of the modules of the instance to compiled Java classes.
+     * Commits model objects of a given specification of the modules of the instance to class files.
      *
      * @param specification The specification to process.
-     * @param marshaller The marshaller to use for committing the classes.
-     * @param classesDirectory The directory holding the compiled class files.
+     * @param marshaller The marshaller to use for committing the model objects.
+     * @param classesDirectory The directory holding the class files.
      *
      * @throws NullPointerException if {@code specification}, {@code marshaller} or {@code classesDirectory} is
      * {@code null}.
-     * @throws ToolException if committing meta-data fails.
+     * @throws ToolException if committing model objects fails.
      *
      * @see org.jomc.model.ModelContext#createMarshaller()
      */
-    public void commitClasses( final Specification specification, final Marshaller marshaller,
-                               final File classesDirectory ) throws ToolException
+    public void commitModelObjects( final Specification specification, final Marshaller marshaller,
+                                    final File classesDirectory ) throws ToolException
     {
         if ( specification == null )
         {
@@ -250,20 +253,20 @@ public class JavaClasses extends JomcTool
     }
 
     /**
-     * Commits meta-data of a given implementation of the modules of the instance to compiled Java classes.
+     * Commits model objects of a given implementation of the modules of the instance to class files.
      *
      * @param implementation The implementation to process.
-     * @param marshaller The marshaller to use for committing the classes.
-     * @param classesDirectory The directory holding the compiled class files.
+     * @param marshaller The marshaller to use for committing the model objects.
+     * @param classesDirectory The directory holding the class files.
      *
      * @throws NullPointerException if {@code implementation}, {@code marshaller} or {@code classesDirectory} is
      * {@code null}.
-     * @throws ToolException if committing meta-data fails.
+     * @throws ToolException if committing model objects fails.
      *
      * @see org.jomc.model.ModelContext#createMarshaller()
      */
-    public void commitClasses( final Implementation implementation, final Marshaller marshaller,
-                               final File classesDirectory ) throws ToolException
+    public void commitModelObjects( final Implementation implementation, final Marshaller marshaller,
+                                    final File classesDirectory ) throws ToolException
     {
         if ( implementation == null )
         {
@@ -369,19 +372,20 @@ public class JavaClasses extends JomcTool
     }
 
     /**
-     * Validates compiled Java classes against the modules of the instance.
+     * Validates model objects of class files.
      *
-     * @param unmarshaller The unmarshaller to use for validating classes.
-     * @param classesDirectory The directory holding the compiled class files.
+     * @param unmarshaller The unmarshaller to use for validating model objects.
+     * @param classesDirectory The directory holding the class files.
      *
      * @return The report of the validation.
      *
      * @throws NullPointerException if {@code unmarshaller} or {@code classesDirectory} is {@code null}.
-     * @throws ToolException if reading class files fails.
+     * @throws ToolException if validating model objects fails.
      *
-     * @see #validateClasses(org.jomc.model.Module, javax.xml.bind.Unmarshaller, java.io.File)
+     * @see #validateModelObjects(org.jomc.model.Module, javax.xml.bind.Unmarshaller, java.io.File)
+     * @see org.jomc.model.ModelContext#createUnmarshaller()
      */
-    public ModelValidationReport validateClasses( final Unmarshaller unmarshaller, final File classesDirectory )
+    public ModelValidationReport validateModelObjects( final Unmarshaller unmarshaller, final File classesDirectory )
         throws ToolException
     {
         if ( unmarshaller == null )
@@ -397,7 +401,7 @@ public class JavaClasses extends JomcTool
 
         for ( Module m : this.getModules().getModule() )
         {
-            final ModelValidationReport current = this.validateClasses( m, unmarshaller, classesDirectory );
+            final ModelValidationReport current = this.validateModelObjects( m, unmarshaller, classesDirectory );
             report.getDetails().addAll( current.getDetails() );
         }
 
@@ -405,19 +409,20 @@ public class JavaClasses extends JomcTool
     }
 
     /**
-     * Validates compiled Java classes against the modules of the instance.
+     * Validates model objects of class files.
      *
-     * @param unmarshaller The unmarshaller to use for validating classes.
-     * @param classLoader The class loader to search for classes.
+     * @param unmarshaller The unmarshaller to use for validating model objects.
+     * @param classLoader The class loader to search for class files.
      *
      * @return The report of the validation.
      *
      * @throws NullPointerException if {@code unmarshaller} or {@code classLoader} is {@code null}.
-     * @throws ToolException if reading class files fails.
+     * @throws ToolException if validating model objects fails.
      *
-     * @see #validateClasses(org.jomc.model.Module, javax.xml.bind.Unmarshaller, java.lang.ClassLoader)
+     * @see #validateModelObjects(org.jomc.model.Module, javax.xml.bind.Unmarshaller, java.lang.ClassLoader)
+     * @see org.jomc.model.ModelContext#createUnmarshaller()
      */
-    public ModelValidationReport validateClasses( final Unmarshaller unmarshaller, final ClassLoader classLoader )
+    public ModelValidationReport validateModelObjects( final Unmarshaller unmarshaller, final ClassLoader classLoader )
         throws ToolException
     {
         if ( unmarshaller == null )
@@ -433,7 +438,7 @@ public class JavaClasses extends JomcTool
 
         for ( Module m : this.getModules().getModule() )
         {
-            final ModelValidationReport current = this.validateClasses( m, unmarshaller, classLoader );
+            final ModelValidationReport current = this.validateModelObjects( m, unmarshaller, classLoader );
             report.getDetails().addAll( current.getDetails() );
         }
 
@@ -441,22 +446,23 @@ public class JavaClasses extends JomcTool
     }
 
     /**
-     * Validates compiled Java classes against a given module of the modules of the instance.
+     * Validates model objects of class files.
      *
      * @param module The module to process.
-     * @param unmarshaller The unmarshaller to use for validating classes.
-     * @param classesDirectory The directory holding the compiled class files.
+     * @param unmarshaller The unmarshaller to use for validating model objects.
+     * @param classesDirectory The directory holding the class files.
      *
      * @return The report of the validation.
      *
      * @throws NullPointerException if {@code module}, {@code unmarshaller} or {@code classesDirectory} is {@code null}.
-     * @throws ToolException if reading class files fails.
+     * @throws ToolException if validating model objects fails.
      *
-     * @see #validateClasses(org.jomc.model.Specification, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
-     * @see #validateClasses(org.jomc.model.Implementation, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
+     * @see #validateModelObjects(org.jomc.model.Specification, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
+     * @see #validateModelObjects(org.jomc.model.Implementation, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
+     * @see org.jomc.model.ModelContext#createUnmarshaller()
      */
-    public ModelValidationReport validateClasses( final Module module, final Unmarshaller unmarshaller,
-                                                  final File classesDirectory ) throws ToolException
+    public ModelValidationReport validateModelObjects( final Module module, final Unmarshaller unmarshaller,
+                                                       final File classesDirectory ) throws ToolException
     {
         if ( module == null )
         {
@@ -482,7 +488,7 @@ public class JavaClasses extends JomcTool
                     final String classLocation = s.getClazz().replace( '.', File.separatorChar ) + ".class";
                     final File classFile = new File( classesDirectory, classLocation );
                     final ModelValidationReport current =
-                        this.validateClasses( s, unmarshaller, this.getJavaClass( classFile ) );
+                        this.validateModelObjects( s, unmarshaller, this.getJavaClass( classFile ) );
 
                     report.getDetails().addAll( current.getDetails() );
                 }
@@ -499,7 +505,7 @@ public class JavaClasses extends JomcTool
                     final File classFile = new File( classesDirectory, classLocation );
                     final JavaClass javaClass = this.getJavaClass( classFile );
                     final ModelValidationReport current =
-                        this.validateClasses( i, unmarshaller, javaClass );
+                        this.validateModelObjects( i, unmarshaller, javaClass );
 
                     report.getDetails().addAll( current.getDetails() );
                 }
@@ -510,22 +516,23 @@ public class JavaClasses extends JomcTool
     }
 
     /**
-     * Validates compiled Java classes against a given module of the modules of the instance.
+     * Validates model objects of class files.
      *
      * @param module The module to process.
-     * @param unmarshaller The unmarshaller to use for validating classes.
-     * @param classLoader The class loader to search for classes.
+     * @param unmarshaller The unmarshaller to use for validating model objects.
+     * @param classLoader The class loader to search for class files.
      *
      * @return The report of the validation.
      *
      * @throws NullPointerException if {@code module}, {@code unmarshaller} or {@code classLoader} is {@code null}.
-     * @throws ToolException if reading class files fails.
+     * @throws ToolException if validating model objects fails.
      *
-     * @see #validateClasses(org.jomc.model.Specification, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
-     * @see #validateClasses(org.jomc.model.Implementation, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
+     * @see #validateModelObjects(org.jomc.model.Specification, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
+     * @see #validateModelObjects(org.jomc.model.Implementation, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
+     * @see org.jomc.model.ModelContext#createUnmarshaller()
      */
-    public ModelValidationReport validateClasses( final Module module, final Unmarshaller unmarshaller,
-                                                  final ClassLoader classLoader ) throws ToolException
+    public ModelValidationReport validateModelObjects( final Module module, final Unmarshaller unmarshaller,
+                                                       final ClassLoader classLoader ) throws ToolException
     {
         if ( module == null )
         {
@@ -558,7 +565,7 @@ public class JavaClasses extends JomcTool
 
                     final JavaClass javaClass = this.getJavaClass( classUrl, classLocation );
                     final ModelValidationReport current =
-                        this.validateClasses( s, unmarshaller, javaClass );
+                        this.validateModelObjects( s, unmarshaller, javaClass );
 
                     report.getDetails().addAll( current.getDetails() );
                 }
@@ -580,7 +587,7 @@ public class JavaClasses extends JomcTool
                     }
 
                     final JavaClass javaClass = this.getJavaClass( classUrl, classLocation );
-                    final ModelValidationReport current = this.validateClasses( i, unmarshaller, javaClass );
+                    final ModelValidationReport current = this.validateModelObjects( i, unmarshaller, javaClass );
                     report.getDetails().addAll( current.getDetails() );
                 }
             }
@@ -590,21 +597,21 @@ public class JavaClasses extends JomcTool
     }
 
     /**
-     * Validates compiled Java classes against a given specification of the modules of the instance.
+     * Validates model objects of class files.
      *
      * @param specification The specification to process.
-     * @param unmarshaller The unmarshaller to use for validating classes.
-     * @param javaClass The class to validate.
+     * @param unmarshaller The unmarshaller to use for validating model objects.
+     * @param classFile The class file to validate model objects of.
      *
      * @return The report of the validation.
      *
-     * @throws NullPointerException if {@code specification}, {@code unmarshaller} or {@code javaClass} is {@code null}.
-     * @throws ToolException if reading class files fails.
+     * @throws NullPointerException if {@code specification}, {@code unmarshaller} or {@code classFile} is {@code null}.
+     * @throws ToolException if validating model objects fails.
      *
      * @see org.jomc.model.ModelContext#createUnmarshaller()
      */
-    public ModelValidationReport validateClasses( final Specification specification,
-                                                  final Unmarshaller unmarshaller, final JavaClass javaClass )
+    public ModelValidationReport validateModelObjects( final Specification specification,
+                                                       final Unmarshaller unmarshaller, final JavaClass classFile )
         throws ToolException
     {
         if ( specification == null )
@@ -615,9 +622,9 @@ public class JavaClasses extends JomcTool
         {
             throw new NullPointerException( "unmarshaller" );
         }
-        if ( javaClass == null )
+        if ( classFile == null )
         {
-            throw new NullPointerException( "javaClass" );
+            throw new NullPointerException( "classFile" );
         }
 
         if ( this.isLoggable( Level.INFO ) )
@@ -628,7 +635,7 @@ public class JavaClasses extends JomcTool
         final ModelValidationReport report = new ModelValidationReport();
 
         Specification decoded = null;
-        final byte[] bytes = this.getClassfileAttribute( javaClass, Specification.class.getName() );
+        final byte[] bytes = this.getClassfileAttribute( classFile, Specification.class.getName() );
         if ( bytes != null )
         {
             decoded = this.decodeModelObject( unmarshaller, bytes, Specification.class );
@@ -681,22 +688,21 @@ public class JavaClasses extends JomcTool
     }
 
     /**
-     * Validates compiled Java classes against a given implementation of the modules of the instance.
+     * Validates model objects of class files.
      *
      * @param implementation The implementation to process.
-     * @param unmarshaller The unmarshaller to use for validating classes.
-     * @param javaClass The class to validate.
+     * @param unmarshaller The unmarshaller to use for validating model objects.
+     * @param classFile The class file to validate model objects of.
      *
      * @return The report of the validation.
      *
-     * @throws NullPointerException if {@code implementation}, {@code unmarshaller} or {@code javaClass} is
-     * {@code null}.
-     * @throws ToolException if reading class files fails.
+     * @throws NullPointerException if {@code implementation}, {@code unmarshaller} or {@code classFile} is {@code null}.
+     * @throws ToolException if validating model objects fails.
      *
      * @see org.jomc.model.ModelContext#createUnmarshaller()
      */
-    public ModelValidationReport validateClasses( final Implementation implementation,
-                                                  final Unmarshaller unmarshaller, final JavaClass javaClass )
+    public ModelValidationReport validateModelObjects( final Implementation implementation,
+                                                       final Unmarshaller unmarshaller, final JavaClass classFile )
         throws ToolException
     {
         if ( implementation == null )
@@ -707,9 +713,9 @@ public class JavaClasses extends JomcTool
         {
             throw new NullPointerException( "unmarshaller" );
         }
-        if ( javaClass == null )
+        if ( classFile == null )
         {
-            throw new NullPointerException( "javaClass" );
+            throw new NullPointerException( "classFile" );
         }
 
         if ( this.isLoggable( Level.INFO ) )
@@ -746,28 +752,28 @@ public class JavaClasses extends JomcTool
             }
 
             Dependencies decodedDependencies = null;
-            byte[] bytes = this.getClassfileAttribute( javaClass, Dependencies.class.getName() );
+            byte[] bytes = this.getClassfileAttribute( classFile, Dependencies.class.getName() );
             if ( bytes != null )
             {
                 decodedDependencies = this.decodeModelObject( unmarshaller, bytes, Dependencies.class );
             }
 
             Properties decodedProperties = null;
-            bytes = this.getClassfileAttribute( javaClass, Properties.class.getName() );
+            bytes = this.getClassfileAttribute( classFile, Properties.class.getName() );
             if ( bytes != null )
             {
                 decodedProperties = this.decodeModelObject( unmarshaller, bytes, Properties.class );
             }
 
             Messages decodedMessages = null;
-            bytes = this.getClassfileAttribute( javaClass, Messages.class.getName() );
+            bytes = this.getClassfileAttribute( classFile, Messages.class.getName() );
             if ( bytes != null )
             {
                 decodedMessages = this.decodeModelObject( unmarshaller, bytes, Messages.class );
             }
 
             Specifications decodedSpecifications = null;
-            bytes = this.getClassfileAttribute( javaClass, Specifications.class.getName() );
+            bytes = this.getClassfileAttribute( classFile, Specifications.class.getName() );
             if ( bytes != null )
             {
                 decodedSpecifications = this.decodeModelObject( unmarshaller, bytes, Specifications.class );
@@ -801,7 +807,7 @@ public class JavaClasses extends JomcTool
 
                         report.getDetails().add( new ModelValidationReport.Detail(
                             "CLASS_INCOMPATIBLE_IMPLEMENTATION_DEPENDENCY", Level.SEVERE, getMessage(
-                            "incompatibleDependency", javaClass.getClassName(),
+                            "incompatibleDependency", classFile.getClassName(),
                             moduleOfImplementation == null ? "<>" : moduleOfImplementation.getName(),
                             s.getIdentifier(),
                             moduleOfSpecification == null ? "<>" : moduleOfSpecification.getName(),
@@ -957,7 +963,7 @@ public class JavaClasses extends JomcTool
 
                         report.getDetails().add( new ModelValidationReport.Detail(
                             "CLASS_INCOMPATIBLE_IMPLEMENTATION", Level.SEVERE, getMessage(
-                            "incompatibleImplementation", javaClass.getClassName(),
+                            "incompatibleImplementation", classFile.getClassName(),
                             moduleOfImplementation == null ? "<>" : moduleOfImplementation.getName(),
                             specification.getIdentifier(),
                             moduleOfSpecification == null ? "<>" : moduleOfSpecification.getName(),
@@ -987,21 +993,23 @@ public class JavaClasses extends JomcTool
     }
 
     /**
-     * Transforms committed meta-data of compiled Java classes of the modules of the instance.
+     * Transforms model objects of class files.
      *
-     * @param marshaller The marshaller to use for transforming classes.
-     * @param unmarshaller The unmarshaller to use for transforming classes.
-     * @param classesDirectory The directory holding the compiled class files.
-     * @param transformers The transformers to use for transforming the classes.
+     * @param marshaller The marshaller to use for transforming model objects.
+     * @param unmarshaller The unmarshaller to use for transforming model objects.
+     * @param classesDirectory The directory holding the class files.
+     * @param transformers The transformers to use for transforming model objects.
      *
      * @throws NullPointerException if {@code marshaller}, {@code unmarshaller}, {@code classesDirectory} or
      * {@code transformers} is {@code null}.
-     * @throws ToolException if accessing class files fails.
+     * @throws ToolException if transforming model objects fails.
      *
-     * @see #transformClasses(org.jomc.model.Module, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, java.io.File, java.util.List)
+     * @see #transformModelObjects(org.jomc.model.Module, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, java.io.File, java.util.List)
+     * @see org.jomc.model.ModelContext#createMarshaller()
+     * @see org.jomc.model.ModelContext#createUnmarshaller()
      */
-    public void transformClasses( final Marshaller marshaller, final Unmarshaller unmarshaller,
-                                  final File classesDirectory, final List<Transformer> transformers )
+    public void transformModelObjects( final Marshaller marshaller, final Unmarshaller unmarshaller,
+                                       final File classesDirectory, final List<Transformer> transformers )
         throws ToolException
     {
         if ( marshaller == null )
@@ -1023,28 +1031,30 @@ public class JavaClasses extends JomcTool
 
         for ( Module m : this.getModules().getModule() )
         {
-            this.transformClasses( m, marshaller, unmarshaller, classesDirectory, transformers );
+            this.transformModelObjects( m, marshaller, unmarshaller, classesDirectory, transformers );
         }
     }
 
     /**
-     * Transforms committed meta-data of compiled Java classes of a given module of the modules of the instance.
+     * Transforms model objects of class files.
      *
      * @param module The module to process.
-     * @param marshaller The marshaller to use for transforming classes.
-     * @param unmarshaller The unmarshaller to use for transforming classes.
-     * @param classesDirectory The directory holding the compiled class files.
-     * @param transformers The transformers to use for transforming the classes.
+     * @param marshaller The marshaller to use for transforming model objects.
+     * @param unmarshaller The unmarshaller to use for transforming model objects.
+     * @param classesDirectory The directory holding the class files.
+     * @param transformers The transformers to use for transforming the model objects.
      *
      * @throws NullPointerException if {@code module}, {@code marshaller}, {@code unmarshaller},
      * {@code classesDirectory} or {@code transformers} is {@code null}.
-     * @throws ToolException if accessing class files fails.
+     * @throws ToolException if transforming model objects fails.
      *
-     * @see #transformClasses(org.jomc.model.Specification, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass, java.util.List)
-     * @see #transformClasses(org.jomc.model.Implementation, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass, java.util.List)
+     * @see #transformModelObjects(org.jomc.model.Specification, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass, java.util.List)
+     * @see #transformModelObjects(org.jomc.model.Implementation, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass, java.util.List)
+     * @see org.jomc.model.ModelContext#createMarshaller()
+     * @see org.jomc.model.ModelContext#createUnmarshaller()
      */
-    public void transformClasses( final Module module, final Marshaller marshaller, final Unmarshaller unmarshaller,
-                                  final File classesDirectory, final List<Transformer> transformers )
+    public void transformModelObjects( final Module module, final Marshaller marshaller, final Unmarshaller unmarshaller,
+                                       final File classesDirectory, final List<Transformer> transformers )
         throws ToolException
     {
         if ( module == null )
@@ -1085,7 +1095,7 @@ public class JavaClasses extends JomcTool
                         }
 
                         final JavaClass javaClass = this.getJavaClass( classFile );
-                        this.transformClasses( s, marshaller, unmarshaller, javaClass, transformers );
+                        this.transformModelObjects( s, marshaller, unmarshaller, javaClass, transformers );
                         javaClass.dump( classFile );
                     }
                 }
@@ -1106,7 +1116,7 @@ public class JavaClasses extends JomcTool
                         }
 
                         final JavaClass javaClass = this.getJavaClass( classFile );
-                        this.transformClasses( i, marshaller, unmarshaller, javaClass, transformers );
+                        this.transformModelObjects( i, marshaller, unmarshaller, javaClass, transformers );
                         javaClass.dump( classFile );
                     }
                 }
@@ -1119,24 +1129,24 @@ public class JavaClasses extends JomcTool
     }
 
     /**
-     * Transforms committed meta-data of compiled Java classes of a given specification of the modules of the instance.
+     * Transforms model objects of class files.
      *
      * @param specification The specification to process.
-     * @param marshaller The marshaller to use for transforming classes.
-     * @param unmarshaller The unmarshaller to use for transforming classes.
-     * @param javaClass The java class to process.
-     * @param transformers The transformers to use for transforming the classes.
+     * @param marshaller The marshaller to use for transforming model objects.
+     * @param unmarshaller The unmarshaller to use for transforming model objects.
+     * @param classFile The class file to transform model objects of.
+     * @param transformers The transformers to use for transforming the model objects.
      *
      * @throws NullPointerException if {@code specification}, {@code marshaller}, {@code unmarshaller},
-     * {@code javaClass} or {@code transformers} is {@code null}.
-     * @throws ToolException if accessing class files fails.
+     * {@code classFile} or {@code transformers} is {@code null}.
+     * @throws ToolException if transforming model objects fails.
      *
      * @see org.jomc.model.ModelContext#createMarshaller()
      * @see org.jomc.model.ModelContext#createUnmarshaller()
      */
-    public void transformClasses( final Specification specification, final Marshaller marshaller,
-                                  final Unmarshaller unmarshaller, final JavaClass javaClass,
-                                  final List<Transformer> transformers ) throws ToolException
+    public void transformModelObjects( final Specification specification, final Marshaller marshaller,
+                                       final Unmarshaller unmarshaller, final JavaClass classFile,
+                                       final List<Transformer> transformers ) throws ToolException
     {
         if ( specification == null )
         {
@@ -1150,9 +1160,9 @@ public class JavaClasses extends JomcTool
         {
             throw new NullPointerException( "unmarshaller" );
         }
-        if ( javaClass == null )
+        if ( classFile == null )
         {
-            throw new NullPointerException( "javaClass" );
+            throw new NullPointerException( "classFile" );
         }
         if ( transformers == null )
         {
@@ -1163,7 +1173,7 @@ public class JavaClasses extends JomcTool
         {
             Specification decodedSpecification = null;
             final ObjectFactory objectFactory = new ObjectFactory();
-            final byte[] bytes = this.getClassfileAttribute( javaClass, Specification.class.getName() );
+            final byte[] bytes = this.getClassfileAttribute( classFile, Specification.class.getName() );
             if ( bytes != null )
             {
                 decodedSpecification = this.decodeModelObject( unmarshaller, bytes, Specification.class );
@@ -1181,7 +1191,7 @@ public class JavaClasses extends JomcTool
                     decodedSpecification = ( (JAXBElement<Specification>) result.getResult() ).getValue();
                 }
 
-                this.setClassfileAttribute( javaClass, Specification.class.getName(), this.encodeModelObject(
+                this.setClassfileAttribute( classFile, Specification.class.getName(), this.encodeModelObject(
                     marshaller, objectFactory.createSpecification( decodedSpecification ) ) );
 
             }
@@ -1197,24 +1207,24 @@ public class JavaClasses extends JomcTool
     }
 
     /**
-     * Transforms committed meta-data of compiled Java classes of a given implementation of the modules of the instance.
+     * Transforms model objects of class files.
      *
      * @param implementation The implementation to process.
-     * @param marshaller The marshaller to use for transforming classes.
-     * @param unmarshaller The unmarshaller to use for transforming classes.
-     * @param javaClass The java class to process.
-     * @param transformers The transformers to use for transforming the classes.
+     * @param marshaller The marshaller to use for transforming model objects.
+     * @param unmarshaller The unmarshaller to use for transforming model objects.
+     * @param classFile The class file to transform model objects of.
+     * @param transformers The transformers to use for transforming the model objects.
      *
      * @throws NullPointerException if {@code implementation}, {@code marshaller}, {@code unmarshaller},
-     * {@code javaClass} or {@code transformers} is {@code null}.
-     * @throws ToolException if accessing class files fails.
+     * {@code classFile} or {@code transformers} is {@code null}.
+     * @throws ToolException if transforming model objects fails.
      *
      * @see org.jomc.model.ModelContext#createMarshaller()
      * @see org.jomc.model.ModelContext#createUnmarshaller()
      */
-    public void transformClasses( final Implementation implementation, final Marshaller marshaller,
-                                  final Unmarshaller unmarshaller, final JavaClass javaClass,
-                                  final List<Transformer> transformers ) throws ToolException
+    public void transformModelObjects( final Implementation implementation, final Marshaller marshaller,
+                                       final Unmarshaller unmarshaller, final JavaClass classFile,
+                                       final List<Transformer> transformers ) throws ToolException
     {
         if ( implementation == null )
         {
@@ -1228,9 +1238,9 @@ public class JavaClasses extends JomcTool
         {
             throw new NullPointerException( "unmarshaller" );
         }
-        if ( javaClass == null )
+        if ( classFile == null )
         {
-            throw new NullPointerException( "javaClass" );
+            throw new NullPointerException( "classFile" );
         }
         if ( transformers == null )
         {
@@ -1240,28 +1250,28 @@ public class JavaClasses extends JomcTool
         try
         {
             Dependencies decodedDependencies = null;
-            byte[] bytes = this.getClassfileAttribute( javaClass, Dependencies.class.getName() );
+            byte[] bytes = this.getClassfileAttribute( classFile, Dependencies.class.getName() );
             if ( bytes != null )
             {
                 decodedDependencies = this.decodeModelObject( unmarshaller, bytes, Dependencies.class );
             }
 
             Messages decodedMessages = null;
-            bytes = this.getClassfileAttribute( javaClass, Messages.class.getName() );
+            bytes = this.getClassfileAttribute( classFile, Messages.class.getName() );
             if ( bytes != null )
             {
                 decodedMessages = this.decodeModelObject( unmarshaller, bytes, Messages.class );
             }
 
             Properties decodedProperties = null;
-            bytes = this.getClassfileAttribute( javaClass, Properties.class.getName() );
+            bytes = this.getClassfileAttribute( classFile, Properties.class.getName() );
             if ( bytes != null )
             {
                 decodedProperties = this.decodeModelObject( unmarshaller, bytes, Properties.class );
             }
 
             Specifications decodedSpecifications = null;
-            bytes = this.getClassfileAttribute( javaClass, Specifications.class.getName() );
+            bytes = this.getClassfileAttribute( classFile, Specifications.class.getName() );
             if ( bytes != null )
             {
                 decodedSpecifications = this.decodeModelObject( unmarshaller, bytes, Specifications.class );
@@ -1307,28 +1317,28 @@ public class JavaClasses extends JomcTool
 
             if ( decodedDependencies != null )
             {
-                this.setClassfileAttribute( javaClass, Dependencies.class.getName(), this.encodeModelObject(
+                this.setClassfileAttribute( classFile, Dependencies.class.getName(), this.encodeModelObject(
                     marshaller, of.createDependencies( decodedDependencies ) ) );
 
             }
 
             if ( decodedMessages != null )
             {
-                this.setClassfileAttribute( javaClass, Messages.class.getName(), this.encodeModelObject(
+                this.setClassfileAttribute( classFile, Messages.class.getName(), this.encodeModelObject(
                     marshaller, of.createMessages( decodedMessages ) ) );
 
             }
 
             if ( decodedProperties != null )
             {
-                this.setClassfileAttribute( javaClass, Properties.class.getName(), this.encodeModelObject(
+                this.setClassfileAttribute( classFile, Properties.class.getName(), this.encodeModelObject(
                     marshaller, of.createProperties( decodedProperties ) ) );
 
             }
 
             if ( decodedSpecifications != null )
             {
-                this.setClassfileAttribute( javaClass, Specifications.class.getName(), this.encodeModelObject(
+                this.setClassfileAttribute( classFile, Specifications.class.getName(), this.encodeModelObject(
                     marshaller, of.createSpecifications( decodedSpecifications ) ) );
 
             }
@@ -1655,7 +1665,7 @@ public class JavaClasses extends JomcTool
             throw new NullPointerException( "key" );
         }
 
-        return MessageFormat.format( ResourceBundle.getBundle( JavaClasses.class.getName().replace( '.', '/' ) ).
+        return MessageFormat.format( ResourceBundle.getBundle( ClassFileProcessor.class.getName().replace( '.', '/' ) ).
             getString( key ), arguments );
 
     }

@@ -61,21 +61,12 @@ import org.jomc.util.SectionEditor;
 import org.jomc.util.TrailingWhitespaceEditor;
 
 /**
- * Manages Java source code.
- *
- * <p><b>Use cases</b><br/><ul>
- * <li>{@link #manageSources(java.io.File) }</li>
- * <li>{@link #manageSources(org.jomc.model.Module, java.io.File) }</li>
- * <li>{@link #manageSources(org.jomc.model.Specification, java.io.File) }</li>
- * <li>{@link #manageSources(org.jomc.model.Implementation, java.io.File) }</li>
- * </ul></p>
+ * Manages source code files.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
- *
- * @see #getModules()
  */
-public class JavaSources extends JomcTool
+public class SourceFileProcessor extends JomcTool
 {
 
     /** Constant for the name of the constructors source code section. */
@@ -103,7 +94,7 @@ public class JavaSources extends JomcTool
     private static final String ANNOTATIONS_SECTION_NAME = "Annotations";
 
     /** Name of the generator. */
-    private static final String GENERATOR_NAME = JavaSources.class.getName();
+    private static final String GENERATOR_NAME = SourceFileProcessor.class.getName();
 
     /** Constant for the version of the generator. */
     private static final String GENERATOR_VERSION = "1.0";
@@ -159,20 +150,21 @@ public class JavaSources extends JomcTool
     /** Source files model. */
     private SourceFilesType sourceFilesType;
 
-    /** Creates a new {@code JavaSources} instance. */
-    public JavaSources()
+    /** Creates a new {@code SourceFileProcessor} instance. */
+    public SourceFileProcessor()
     {
         super();
     }
 
     /**
-     * Creates a new {@code JavaSources} instance taking a {@code JavaSources} instance to initialize the instance with.
+     * Creates a new {@code SourceFileProcessor} instance taking a {@code SourceFileProcessor} instance to initialize
+     * the instance with.
      *
      * @param tool The instance to initialize the new instance with,
      *
      * @throws ToolException if copying {@code tool} fails.
      */
-    public JavaSources( final JavaSources tool ) throws ToolException
+    public SourceFileProcessor( final SourceFileProcessor tool ) throws ToolException
     {
         super( tool );
         this.setIndentationCharacter( tool.getIndentationCharacter() );
@@ -432,16 +424,16 @@ public class JavaSources extends JomcTool
     }
 
     /**
-     * Manages the source code of the modules of the instance.
+     * Manages the source files of the modules of the instance.
      *
-     * @param sourcesDirectory The directory holding the sources to manage.
+     * @param sourcesDirectory The directory holding the source files to manage.
      *
      * @throws NullPointerException if {@code sourcesDirectory} is {@code null}.
-     * @throws ToolException if managing sources fails.
+     * @throws ToolException if managing source files fails.
      *
-     * @see #manageSources(org.jomc.model.Module, java.io.File)
+     * @see #manageSourceFiles(org.jomc.model.Module, java.io.File)
      */
-    public void manageSources( final File sourcesDirectory ) throws ToolException
+    public void manageSourceFiles( final File sourcesDirectory ) throws ToolException
     {
         if ( sourcesDirectory == null )
         {
@@ -450,23 +442,23 @@ public class JavaSources extends JomcTool
 
         for ( Module m : this.getModules().getModule() )
         {
-            this.manageSources( m, sourcesDirectory );
+            this.manageSourceFiles( m, sourcesDirectory );
         }
     }
 
     /**
-     * Manages the source code of a given module of the modules of the instance.
+     * Manages the source files of a given module of the modules of the instance.
      *
      * @param module The module to process.
-     * @param sourcesDirectory The directory holding the sources to manage.
+     * @param sourcesDirectory The directory holding the source files to manage.
      *
      * @throws NullPointerException if {@code module} or {@code sourcesDirectory} is {@code null}.
-     * @throws ToolException if managing sources fails.
+     * @throws ToolException if managing source files fails.
      *
-     * @see #manageSources(org.jomc.model.Specification, java.io.File)
-     * @see #manageSources(org.jomc.model.Implementation, java.io.File)
+     * @see #manageSourceFiles(org.jomc.model.Specification, java.io.File)
+     * @see #manageSourceFiles(org.jomc.model.Implementation, java.io.File)
      */
-    public void manageSources( final Module module, final File sourcesDirectory ) throws ToolException
+    public void manageSourceFiles( final Module module, final File sourcesDirectory ) throws ToolException
     {
         if ( module == null )
         {
@@ -481,30 +473,30 @@ public class JavaSources extends JomcTool
         {
             for ( Specification s : module.getSpecifications().getSpecification() )
             {
-                this.manageSources( s, sourcesDirectory );
+                this.manageSourceFiles( s, sourcesDirectory );
             }
         }
         if ( module.getImplementations() != null )
         {
             for ( Implementation i : module.getImplementations().getImplementation() )
             {
-                this.manageSources( i, sourcesDirectory );
+                this.manageSourceFiles( i, sourcesDirectory );
             }
         }
     }
 
     /**
-     * Manages the source code of a given specification of the modules of the instance.
+     * Manages the source file of a given specification of the modules of the instance.
      *
      * @param specification The specification to process.
-     * @param sourcesDirectory The directory holding the sources to manage.
+     * @param sourcesDirectory The directory holding the source files to manage.
      *
      * @throws NullPointerException if {@code specification} or {@code sourcesDirectory} is {@code null}.
-     * @throws ToolException if managing sources fails.
+     * @throws ToolException if managing source files fails.
      *
-     * @see #getSourceCodeEditor(org.jomc.model.Specification)
+     * @see #getSourceFileEditor(org.jomc.model.Specification)
      */
-    public void manageSources( final Specification specification, final File sourcesDirectory ) throws ToolException
+    public void manageSourceFiles( final Specification specification, final File sourcesDirectory ) throws ToolException
     {
         if ( specification == null )
         {
@@ -515,39 +507,34 @@ public class JavaSources extends JomcTool
             throw new NullPointerException( "sourcesDirectory" );
         }
 
-        try
+        final Implementation i = this.getModules().getImplementation( specification.getIdentifier() );
+
+        if ( i != null && i.isClassDeclaration() )
         {
-            final Implementation i = this.getModules().getImplementation( specification.getIdentifier() );
-
-            if ( i != null && i.isClassDeclaration() )
-            {
-                this.manageSources( i, sourcesDirectory );
-            }
-            else if ( specification.isClassDeclaration() )
-            {
-                this.editFile( new File( sourcesDirectory, specification.getClazz().replace( '.', '/' ) + ".java" ),
-                               this.getSourceCodeEditor( specification ) );
-
-            }
+            this.manageSourceFiles( i, sourcesDirectory );
         }
-        catch ( final IOException e )
+        else if ( specification.isClassDeclaration() )
         {
-            throw new ToolException( e.getMessage(), e );
+            final File sourceFile =
+                new File( sourcesDirectory, specification.getClazz().replace( '.', '/' ) + ".java" );
+
+            this.editSourceFile( sourceFile, this.getSourceFileEditor( specification ) );
         }
     }
 
     /**
-     * Manages the source code of a given implementation of the modules of the instance.
+     * Manages the source file of a given implementation of the modules of the instance.
      *
      * @param implementation The implementation to process.
-     * @param sourcesDirectory The directory holding the sources to manage.
+     * @param sourcesDirectory The directory holding the source files to manage.
      *
      * @throws NullPointerException if {@code implementation} or {@code sourcesDirectory} is {@code null}.
-     * @throws ToolException if managing sources fails.
+     * @throws ToolException if managing source files fails.
      *
-     * @see #getSourceCodeEditor(org.jomc.model.Implementation)
+     * @see #getSourceFileEditor(org.jomc.model.Implementation)
      */
-    public void manageSources( final Implementation implementation, final File sourcesDirectory ) throws ToolException
+    public void manageSourceFiles( final Implementation implementation, final File sourcesDirectory )
+        throws ToolException
     {
         if ( implementation == null )
         {
@@ -558,57 +545,51 @@ public class JavaSources extends JomcTool
             throw new NullPointerException( "sourcesDirectory" );
         }
 
-        try
+        if ( implementation.isClassDeclaration() )
         {
-            if ( implementation.isClassDeclaration() )
-            {
-                this.editFile( new File( sourcesDirectory, implementation.getClazz().replace( '.', '/' ) + ".java" ),
-                               this.getSourceCodeEditor( implementation ) );
+            final File sourceFile =
+                new File( sourcesDirectory, implementation.getClazz().replace( '.', '/' ) + ".java" );
 
-            }
-        }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e.getMessage(), e );
+            this.editSourceFile( sourceFile, this.getSourceFileEditor( implementation ) );
         }
     }
 
     /**
-     * Gets a new editor for editing specification source code.
+     * Gets a new editor for editing the source file of a given specification.
      *
-     * @param specification The specification to edit source code of.
+     * @param specification The specification whose source file to edit.
      *
-     * @return A new editor for editing the source code of {@code specification}.
+     * @return A new editor for editing the source file of {@code specification}.
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
      */
-    public SourceCodeEditor getSourceCodeEditor( final Specification specification )
+    public SourceFileEditor getSourceFileEditor( final Specification specification )
     {
         if ( specification == null )
         {
             throw new NullPointerException( "specification" );
         }
 
-        return new SourceCodeEditor( specification, new TrailingWhitespaceEditor() );
+        return new SourceFileEditor( specification, new TrailingWhitespaceEditor() );
     }
 
     /**
-     * Gets a new editor for editing implementation source code.
+     * Gets a new editor for editing the source file of a given implementation.
      *
-     * @param implementation The implementation to edit source code of.
+     * @param implementation The implementation whose source file to edit.
      *
-     * @return A new editor for editing the source code of {@code implementation}.
+     * @return A new editor for editing the source file of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      */
-    public SourceCodeEditor getSourceCodeEditor( final Implementation implementation )
+    public SourceFileEditor getSourceFileEditor( final Implementation implementation )
     {
         if ( implementation == null )
         {
             throw new NullPointerException( "implementation" );
         }
 
-        return new SourceCodeEditor( implementation, new TrailingWhitespaceEditor() );
+        return new SourceFileEditor( implementation, new TrailingWhitespaceEditor() );
     }
 
     /**
@@ -625,85 +606,102 @@ public class JavaSources extends JomcTool
         return ctx;
     }
 
-    private void editFile( final File f, final SourceCodeEditor editor ) throws IOException, ToolException
+    /**
+     * Edits a given file using a given editor.
+     *
+     * @param f The file to edit.
+     * @param editor The editor to edit {@code f} with.
+     *
+     * @throws NullPointerException if {@code f} or {@code editor} is {@code null}.
+     * @throws ToolException if editing fails.
+     */
+    private void editSourceFile( final File f, final SourceFileEditor editor ) throws ToolException
     {
-        String content = null;
-
-        if ( !f.exists() )
+        if ( f == null )
         {
-            final SourceFileType sourceFileType = editor.getSourceFileType();
-
-            if ( sourceFileType != null && sourceFileType.getTemplate() != null )
-            {
-                final StringWriter writer = new StringWriter();
-                final Template template = this.getVelocityTemplate( sourceFileType.getTemplate() );
-                final VelocityContext ctx = editor.getVelocityContext();
-                ctx.put( "template", template );
-                template.merge( ctx, writer );
-                writer.close();
-                content = writer.toString();
-            }
+            throw new NullPointerException( "f" );
         }
-        else
+        if ( editor == null )
         {
-            content = FileUtils.readFileToString( f, this.getInputEncoding() );
+            throw new NullPointerException( "editor" );
         }
 
-        if ( content != null )
+        try
         {
-            String edited = null;
+            String content = null;
 
-            try
+            if ( !f.exists() )
             {
-                edited = editor.edit( content );
-            }
-            catch ( final IOException e )
-            {
-                throw new ToolException( getMessage( "failedEditing", f.getCanonicalPath(), e.getMessage() ), e );
-            }
+                final SourceFileType sourceFileType = editor.getSourceFileType();
 
-            if ( this.isLoggable( Level.FINE ) )
-            {
-                this.logAddedSections( f, editor.getAddedSections() );
-            }
-
-            if ( this.isLoggable( Level.WARNING ) )
-            {
-                this.logUnknownSections( f, editor.getUnknownSections() );
-            }
-
-            if ( !edited.equals( content ) )
-            {
-                if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
+                if ( sourceFileType != null && sourceFileType.getTemplate() != null )
                 {
-                    throw new ToolException( getMessage( "failedCreatingDirectory",
-                                                         f.getParentFile().getAbsolutePath() ) );
+                    final StringWriter writer = new StringWriter();
+                    final Template template = this.getVelocityTemplate( sourceFileType.getTemplate() );
+                    final VelocityContext ctx = editor.getVelocityContext();
+                    ctx.put( "template", template );
+                    template.merge( ctx, writer );
+                    writer.close();
+                    content = writer.toString();
+                }
+            }
+            else
+            {
+                content = FileUtils.readFileToString( f, this.getInputEncoding() );
+            }
 
+            if ( content != null )
+            {
+                String edited = null;
+
+                try
+                {
+                    edited = editor.edit( content );
+                }
+                catch ( final IOException e )
+                {
+                    throw new ToolException( getMessage( "failedEditing", f.getCanonicalPath(), e.getMessage() ), e );
                 }
 
-                if ( this.isLoggable( Level.INFO ) )
+                if ( this.isLoggable( Level.FINE ) )
                 {
-                    this.log( Level.INFO, getMessage( "editing", f.getCanonicalPath() ), null );
+                    for ( Section s : editor.getAddedSections() )
+                    {
+                        this.log( Level.FINE, getMessage( "addedSection", f.getCanonicalPath(), s.getName() ), null );
+                    }
                 }
 
-                FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
+                if ( this.isLoggable( Level.WARNING ) )
+                {
+                    for ( Section s : editor.getUnknownSections() )
+                    {
+                        this.log( Level.WARNING, getMessage( "unknownSection", f.getCanonicalPath(), s.getName() ),
+                                  null );
+
+                    }
+                }
+
+                if ( !edited.equals( content ) )
+                {
+                    if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
+                    {
+                        throw new ToolException( getMessage( "failedCreatingDirectory",
+                                                             f.getParentFile().getAbsolutePath() ) );
+
+                    }
+
+                    if ( this.isLoggable( Level.INFO ) )
+                    {
+                        this.log( Level.INFO, getMessage( "editing", f.getCanonicalPath() ), null );
+                    }
+
+                    FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
+                }
             }
         }
-    }
-
-    private void logAddedSections( final File f, final List<Section> sections ) throws IOException
-    {
-        for ( Section s : sections )
+        catch ( final IOException e )
         {
-            this.log( Level.FINE, getMessage( "addedSection", f.getCanonicalPath(), s.getName() ), null );
-        }
-    }
-
-    private void logUnknownSections( final File f, final List<Section> sections ) throws IOException
-    {
-        for ( Section s : sections )
-        {
-            this.log( Level.WARNING, getMessage( "unknownSection", f.getCanonicalPath(), s.getName() ), null );
+            throw new ToolException( e.getMessage(), e );
         }
     }
 
@@ -714,7 +712,7 @@ public class JavaSources extends JomcTool
             throw new NullPointerException( "key" );
         }
 
-        return MessageFormat.format( ResourceBundle.getBundle( JavaSources.class.getName().replace( '.', '/' ) ).
+        return MessageFormat.format( ResourceBundle.getBundle( SourceFileProcessor.class.getName().replace( '.', '/' ) ).
             getString( key ), arguments );
 
     }
@@ -725,7 +723,7 @@ public class JavaSources extends JomcTool
      * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
      * @version $Id$
      */
-    public class SourceCodeEditor extends SectionEditor
+    public class SourceFileEditor extends SectionEditor
     {
 
         /** {@code Specification} of the instance or {@code null}. */
@@ -741,11 +739,11 @@ public class JavaSources extends JomcTool
         private List<Section> unknownSections;
 
         /**
-         * Creates a new {@code SourceCodeEditor} taking a {@code Specification} to edit source code of.
+         * Creates a new {@code SourceFileEditor} taking a {@code Specification} to edit source code of.
          *
          * @param specification The specification to edit source code of.
          */
-        public SourceCodeEditor( final Specification specification )
+        public SourceFileEditor( final Specification specification )
         {
             super();
             this.specification = specification;
@@ -753,13 +751,13 @@ public class JavaSources extends JomcTool
         }
 
         /**
-         * Creates a new {@code SourceCodeEditor} taking a {@code Specification} to edit source code of and an editor to
+         * Creates a new {@code SourceFileEditor} taking a {@code Specification} to edit source code of and an editor to
          * chain.
          *
          * @param specification The specification backing the editor.
          * @param lineEditor The editor to chain.
          */
-        public SourceCodeEditor( final Specification specification, final LineEditor lineEditor )
+        public SourceFileEditor( final Specification specification, final LineEditor lineEditor )
         {
             super( lineEditor );
             this.specification = specification;
@@ -767,11 +765,11 @@ public class JavaSources extends JomcTool
         }
 
         /**
-         * Creates a new {@code SourceCodeEditor} taking an {@code Implementation} to edit source code of.
+         * Creates a new {@code SourceFileEditor} taking an {@code Implementation} to edit source code of.
          *
          * @param implementation The implementation to edit source code of.
          */
-        public SourceCodeEditor( final Implementation implementation )
+        public SourceFileEditor( final Implementation implementation )
         {
             super();
             this.implementation = implementation;
@@ -779,13 +777,13 @@ public class JavaSources extends JomcTool
         }
 
         /**
-         * Creates a new {@code SourceCodeEditor} taking an {@code Implementation} to edit source code of and an editor
+         * Creates a new {@code SourceFileEditor} taking an {@code Implementation} to edit source code of and an editor
          * to chain.
          *
          * @param implementation The implementation to edit source code of.
          * @param lineEditor The editor to chain.
          */
-        public SourceCodeEditor( final Implementation implementation, final LineEditor lineEditor )
+        public SourceFileEditor( final Implementation implementation, final LineEditor lineEditor )
         {
             super( lineEditor );
             this.implementation = implementation;
@@ -831,12 +829,12 @@ public class JavaSources extends JomcTool
         {
             if ( this.specification != null )
             {
-                return JavaSources.this.getSourceFileType( this.specification );
+                return SourceFileProcessor.this.getSourceFileType( this.specification );
             }
 
             if ( this.implementation != null )
             {
-                return JavaSources.this.getSourceFileType( this.implementation );
+                return SourceFileProcessor.this.getSourceFileType( this.implementation );
             }
 
             return null;
@@ -849,7 +847,7 @@ public class JavaSources extends JomcTool
          */
         protected VelocityContext getVelocityContext()
         {
-            final VelocityContext ctx = JavaSources.this.getVelocityContext();
+            final VelocityContext ctx = SourceFileProcessor.this.getVelocityContext();
 
             if ( this.specification != null )
             {

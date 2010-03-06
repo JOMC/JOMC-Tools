@@ -559,9 +559,9 @@ public abstract class JomcToolTest extends TestCase
     /** Tests the {@code getVelocityTemplate} method. */
     public void testVelocityTemplate() throws Exception
     {
-        Assert.assertNotNull( this.getTestTool().getVelocityTemplate( "Bundle.java.vm" ) );
+        Assert.assertNotNull( this.getTestTool().getVelocityTemplate( "Implementation.java.vm" ) );
         this.getTestTool().setProfile( "DOES_NOT_EXIST" );
-        Assert.assertNotNull( this.getTestTool().getVelocityTemplate( "Bundle.java.vm" ) );
+        Assert.assertNotNull( this.getTestTool().getVelocityTemplate( "Implementation.java.vm" ) );
         this.getTestTool().setProfile( null );
 
         try

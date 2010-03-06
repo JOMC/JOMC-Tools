@@ -36,7 +36,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.StringWriter;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Locale;
@@ -44,9 +43,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
-import org.apache.commons.io.FileUtils;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
 import org.jomc.model.Implementation;
 import org.jomc.model.Message;
 import org.jomc.model.Messages;
@@ -54,15 +50,12 @@ import org.jomc.model.Module;
 import org.jomc.model.Text;
 
 /**
- * Generates Java bundles.
+ * Manages resource files.
  *
  * <p><b>Use cases</b><br/><ul>
- * <li>{@link #writeBundleResources(java.io.File) }</li>
- * <li>{@link #writeBundleResources(org.jomc.model.Module, java.io.File) }</li>
- * <li>{@link #writeBundleResources(org.jomc.model.Implementation, java.io.File) }</li>
- * <li>{@link #writeBundleSources(java.io.File) }</li>
- * <li>{@link #writeBundleSources(org.jomc.model.Module, java.io.File) }</li>
- * <li>{@link #writeBundleSources(org.jomc.model.Implementation, java.io.File) }</li>
+ * <li>{@link #writeResourceBundleResourceFiles(java.io.File) }</li>
+ * <li>{@link #writeResourceBundleResourceFiles(org.jomc.model.Module, java.io.File) }</li>
+ * <li>{@link #writeResourceBundleResourceFiles(org.jomc.model.Implementation, java.io.File) }</li>
  * </ul></p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
@@ -70,198 +63,85 @@ import org.jomc.model.Text;
  *
  * @see #getModules()
  */
-public class JavaBundles extends JomcTool
+public class ResourceFileProcessor extends JomcTool
 {
 
     /** Name of the generator. */
-    private static final String GENERATOR_NAME = JavaBundles.class.getName();
+    private static final String GENERATOR_NAME = ResourceFileProcessor.class.getName();
 
     /** Constant for the version of the generator. */
     private static final String GENERATOR_VERSION = "1.0";
 
-    /** Location of the {@code Bundle.java.vm} template. */
-    private static final String BUNDLE_TEMPLATE = "Bundle.java.vm";
+    /** The language of the default language properties file of generated resource bundle resources. */
+    private Locale resourceBundleDefaultLocale;
 
-    /** Constant for the suffix appended to implementation identifiers. */
-    private static final String BUNDLE_SUFFIX = "Bundle";
-
-    /** The language of the default language properties file of the bundle. */
-    private Locale defaultLocale;
-
-    /** Creates a new {@code JavaBundles} instance. */
-    public JavaBundles()
+    /** Creates a new {@code ResourceFileProcessor} instance. */
+    public ResourceFileProcessor()
     {
         super();
     }
 
     /**
-     * Creates a new {@code JavaBundles} instance taking a {@code JavaBundles} instance to initialize the instance with.
+     * Creates a new {@code ResourceFileProcessor} instance taking a {@code ResourceFileProcessor} instance to
+     * initialize the instance with.
      *
      * @param tool The instance to initialize the new instance with.
      *
      * @throws ToolException if copying {@code tool} fails.
      */
-    public JavaBundles( final JavaBundles tool ) throws ToolException
+    public ResourceFileProcessor( final ResourceFileProcessor tool ) throws ToolException
     {
         super( tool );
-        this.setDefaultLocale( tool.getDefaultLocale() );
+        this.setResourceBundleDefaultLocale( tool.getResourceBundleDefaultLocale() );
     }
 
     /**
-     * Gets the language of the default language properties file of the bundle.
+     * Gets the language of the default language properties file of generated resource bundle resource files.
      *
-     * @return The language of the default language properties file of the bundle.
+     * @return The language of the default language properties file of generated resource bundle resource files.
      *
-     * @see #setDefaultLocale(java.util.Locale)
+     * @see #setResourceBundleDefaultLocale(java.util.Locale)
      */
-    public Locale getDefaultLocale()
+    public Locale getResourceBundleDefaultLocale()
     {
-        if ( this.defaultLocale == null )
+        if ( this.resourceBundleDefaultLocale == null )
         {
-            this.defaultLocale = Locale.getDefault();
+            this.resourceBundleDefaultLocale = Locale.getDefault();
+
             if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.CONFIG, getMessage( "defaultLocale", this.defaultLocale ), null );
-            }
-        }
-
-        return this.defaultLocale;
-    }
-
-    /**
-     * Sets the language of the default language properties file of the bundle.
-     *
-     * @param value The language of the default language properties file of the bundle.
-     *
-     * @see #getDefaultLocale()
-     */
-    public void setDefaultLocale( final Locale value )
-    {
-        this.defaultLocale = value;
-    }
-
-    /**
-     * Writes bundle sources of the modules of the instance to a given directory.
-     *
-     * @param sourcesDirectory The directory to write sources to.
-     *
-     * @throws NullPointerException if {@code sourcesDirectory} is {@code null}.
-     * @throws ToolException if writing fails.
-     *
-     * @see #writeBundleSources(org.jomc.model.Module, java.io.File)
-     */
-    public void writeBundleSources( final File sourcesDirectory ) throws ToolException
-    {
-        if ( sourcesDirectory == null )
-        {
-            throw new NullPointerException( "sourcesDirectory" );
-        }
-
-        for ( Module m : this.getModules().getModule() )
-        {
-            this.writeBundleSources( m, sourcesDirectory );
-        }
-    }
-
-    /**
-     * Writes bundle sources of a given module from the modules of the instance to a given directory.
-     *
-     * @param module The module to process.
-     * @param sourcesDirectory The directory to write sources to.
-     *
-     * @throws NullPointerException if {@code module} or {@code sourcesDirectory} is {@code null}.
-     * @throws ToolException if writing fails.
-     *
-     * @see #writeBundleSources(org.jomc.model.Implementation, java.io.File)
-     */
-    public void writeBundleSources( final Module module, final File sourcesDirectory ) throws ToolException
-    {
-        if ( module == null )
-        {
-            throw new NullPointerException( "module" );
-        }
-        if ( sourcesDirectory == null )
-        {
-            throw new NullPointerException( "sourcesDirectory" );
-        }
-
-        if ( module.getImplementations() != null )
-        {
-            for ( Implementation i : module.getImplementations().getImplementation() )
-            {
-                this.writeBundleSources( i, sourcesDirectory );
-            }
-        }
-    }
-
-    /**
-     * Writes bundle sources of a given implementation from the modules of the instance to a given directory.
-     *
-     * @param implementation The implementation to process.
-     * @param sourcesDirectory The directory to write sources to.
-     *
-     * @throws NullPointerException if {@code implementation} or {@code sourcesDirectory} is {@code null}.
-     * @throws ToolException if writing fails.
-     *
-     * @see #getResourceBundleSources(org.jomc.model.Implementation)
-     */
-    public void writeBundleSources( final Implementation implementation, final File sourcesDirectory )
-        throws ToolException
-    {
-        if ( implementation == null )
-        {
-            throw new NullPointerException( "implementation" );
-        }
-        if ( sourcesDirectory == null )
-        {
-            throw new NullPointerException( "sourcesDirectory" );
-        }
-
-        try
-        {
-            if ( implementation.isClassDeclaration() )
-            {
-                this.assertValidTemplates( implementation );
-
-                final String bundlePath =
-                    ( this.getJavaTypeName( implementation, true ) + BUNDLE_SUFFIX ).replace( '.', File.separatorChar );
-
-                final File bundleFile = new File( sourcesDirectory, bundlePath + ".java" );
-
-                if ( !bundleFile.getParentFile().exists() && !bundleFile.getParentFile().mkdirs() )
-                {
-                    throw new ToolException( getMessage( "failedCreatingDirectory",
-                                                         bundleFile.getParentFile().getAbsolutePath() ) );
-
-                }
-
-                if ( this.isLoggable( Level.INFO ) )
-                {
-                    this.log( Level.INFO, getMessage( "writing", bundleFile.getCanonicalPath() ), null );
-                }
-
-                FileUtils.writeStringToFile( bundleFile, this.getResourceBundleSources( implementation ),
-                                             this.getOutputEncoding() );
+                this.log( Level.CONFIG, getMessage( "resourceBundleDefaultLocale", this.resourceBundleDefaultLocale ),
+                          null );
 
             }
         }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e.getMessage(), e );
-        }
+
+        return this.resourceBundleDefaultLocale;
     }
 
     /**
-     * Writes bundle resources of the modules of the instance to a given directory.
+     * Sets the language of the default language properties file of generated resource bundle resource files.
      *
-     * @param resourcesDirectory The directory to write resources to.
+     * @param value The language of the default language properties file of generated resource bundle resource files.
+     *
+     * @see #getResourceBundleDefaultLocale()
+     */
+    public void setResourceBundleDefaultLocale( final Locale value )
+    {
+        this.resourceBundleDefaultLocale = value;
+    }
+
+    /**
+     * Writes resource bundle resource files of the modules of the instance to a given directory.
+     *
+     * @param resourcesDirectory The directory to write resource bundle resource files to.
      *
      * @throws NullPointerException if {@code resourcesDirectory} is {@code null}.
-     * @throws ToolException if writing fails.
+     * @throws ToolException if writing resource bundle resource files fails.
      *
-     * @see #writeBundleResources(org.jomc.model.Module, java.io.File)
+     * @see #writeResourceBundleResourceFiles(org.jomc.model.Module, java.io.File)
      */
-    public void writeBundleResources( final File resourcesDirectory ) throws ToolException
+    public void writeResourceBundleResourceFiles( final File resourcesDirectory ) throws ToolException
     {
         if ( resourcesDirectory == null )
         {
@@ -270,22 +150,23 @@ public class JavaBundles extends JomcTool
 
         for ( Module m : this.getModules().getModule() )
         {
-            this.writeBundleResources( m, resourcesDirectory );
+            this.writeResourceBundleResourceFiles( m, resourcesDirectory );
         }
     }
 
     /**
-     * Writes bundle resources of a given module from the modules of the instance to a given directory.
+     * Writes resource bundle resource files of a given module from the modules of the instance to a given directory.
      *
      * @param module The module to process.
-     * @param resourcesDirectory The directory to write resources to.
+     * @param resourcesDirectory The directory to write resource bundle resource files to.
      *
      * @throws NullPointerException if {@code module} or {@code resourcesDirectory} is {@code null}.
-     * @throws ToolException if writing fails.
+     * @throws ToolException if writing resource bundle resource files fails.
      *
-     * @see #writeBundleResources(org.jomc.model.Implementation, java.io.File)
+     * @see #writeResourceBundleResourceFiles(org.jomc.model.Implementation, java.io.File)
      */
-    public void writeBundleResources( final Module module, final File resourcesDirectory ) throws ToolException
+    public void writeResourceBundleResourceFiles( final Module module, final File resourcesDirectory )
+        throws ToolException
     {
         if ( module == null )
         {
@@ -300,23 +181,23 @@ public class JavaBundles extends JomcTool
         {
             for ( Implementation i : module.getImplementations().getImplementation() )
             {
-                this.writeBundleResources( i, resourcesDirectory );
+                this.writeResourceBundleResourceFiles( i, resourcesDirectory );
             }
         }
     }
 
     /**
-     * Writes the bundle resources of a given implementation from the modules of the instance to a directory.
+     * Writes resource bundle resource files of a given implementation from the modules of the instance to a directory.
      *
      * @param implementation The implementation to process.
-     * @param resourcesDirectory The directory to write resources to.
+     * @param resourcesDirectory The directory to write resource bundle resource files to.
      *
      * @throws NullPointerException if {@code implementation} or {@code resourcesDirectory} is {@code null}.
-     * @throws ToolException if writing fails.
+     * @throws ToolException if writing resource bundle resource files fails.
      *
      * @see #getResourceBundleResources(org.jomc.model.Implementation)
      */
-    public void writeBundleResources( final Implementation implementation, final File resourcesDirectory )
+    public void writeResourceBundleResourceFiles( final Implementation implementation, final File resourcesDirectory )
         throws ToolException
     {
         if ( implementation == null )
@@ -335,7 +216,7 @@ public class JavaBundles extends JomcTool
                 this.assertValidTemplates( implementation );
 
                 final String bundlePath =
-                    ( this.getJavaTypeName( implementation, true ) + BUNDLE_SUFFIX ).replace( '.', File.separatorChar );
+                    this.getJavaTypeName( implementation, true ).replace( '.', File.separatorChar );
 
                 Properties defProperties = null;
                 Properties fallbackProperties = null;
@@ -372,7 +253,7 @@ public class JavaBundles extends JomcTool
                         }
                     }
 
-                    if ( this.getDefaultLocale().getLanguage().equalsIgnoreCase( language ) )
+                    if ( this.getResourceBundleDefaultLocale().getLanguage().equalsIgnoreCase( language ) )
                     {
                         defProperties = p;
                     }
@@ -423,48 +304,14 @@ public class JavaBundles extends JomcTool
     }
 
     /**
-     * Gets the source code of the Java class for accessing the resource bundle of a given implementation.
+     * Gets resource bundle properties resources of a given implementation.
      *
-     * @param implementation The implementation to get the source code of.
+     * @param implementation The implementation to get resource bundle properties resources of.
      *
-     * @return The source code of the Java class for accessing the resource bundle of {@code implementation}.
-     *
-     * @throws NullPointerException if {@code implementation} is {@code null}.
-     * @throws ToolException if getting the source code fails.
-     */
-    public String getResourceBundleSources( final Implementation implementation ) throws ToolException
-    {
-        if ( implementation == null )
-        {
-            throw new NullPointerException( "implementation" );
-        }
-
-        try
-        {
-            final StringWriter writer = new StringWriter();
-            final VelocityContext ctx = this.getVelocityContext();
-            final Template template = this.getVelocityTemplate( BUNDLE_TEMPLATE );
-            ctx.put( "implementation", implementation );
-            ctx.put( "template", template );
-            template.merge( ctx, writer );
-            writer.close();
-            return writer.toString();
-        }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e.getMessage(), e );
-        }
-    }
-
-    /**
-     * Gets the resource bundle properties of a given implementation.
-     *
-     * @param implementation The implementation to get resource bundle properties of.
-     *
-     * @return Resource bundle properties of {@code implementation}.
+     * @return Resource bundle properties resources of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
-     * @throws ToolException if getting the resources fails.
+     * @throws ToolException if getting the resource bundle properties resources fails.
      */
     public Map<Locale, Properties> getResourceBundleResources( final Implementation implementation )
         throws ToolException
@@ -503,20 +350,6 @@ public class JavaBundles extends JomcTool
         return properties;
     }
 
-    /**
-     * Gets the velocity context used for merging templates.
-     *
-     * @return The velocity context used for merging templates.
-     */
-    @Override
-    public VelocityContext getVelocityContext()
-    {
-        final VelocityContext ctx = super.getVelocityContext();
-        ctx.put( "classSuffix", BUNDLE_SUFFIX );
-        ctx.put( "comment", Boolean.TRUE );
-        return ctx;
-    }
-
     private void assertValidTemplates( final Implementation implementation )
     {
         if ( implementation == null )
@@ -525,6 +358,7 @@ public class JavaBundles extends JomcTool
         }
 
         final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
+
         if ( messages != null )
         {
             for ( Message m : messages.getMessage() )
@@ -547,8 +381,8 @@ public class JavaBundles extends JomcTool
             throw new NullPointerException( "key" );
         }
 
-        return MessageFormat.format( ResourceBundle.getBundle( JavaBundles.class.getName().replace( '.', '/' ) ).
-            getString( key ), arguments );
+        return MessageFormat.format( ResourceBundle.getBundle(
+            ResourceFileProcessor.class.getName().replace( '.', '/' ) ).getString( key ), arguments );
 
     }
 
