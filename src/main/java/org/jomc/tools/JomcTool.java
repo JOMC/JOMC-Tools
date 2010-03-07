@@ -1220,7 +1220,7 @@ public abstract class JomcTool
             }
             catch ( final Exception e )
             {
-                throw new IOException( e.getMessage(), e );
+                throw (IOException) new IOException( e.getMessage() ).initCause( e );
             }
         }
 
@@ -1470,16 +1470,22 @@ public abstract class JomcTool
                 }
                 catch ( final ResourceNotFoundException e2 )
                 {
-                    throw new IOException( getMessage( "templateNotFound", templateName, DEFAULT_PROFILE ), e2 );
+                    throw (IOException) new IOException( getMessage(
+                        "templateNotFound", templateName, DEFAULT_PROFILE ) ).initCause( e2 );
+
                 }
                 catch ( final Exception e2 )
                 {
-                    throw new IOException( getMessage( "failedGettingTemplate", templateName ), e2 );
+                    throw (IOException) new IOException( getMessage(
+                        "failedGettingTemplate", templateName ) ).initCause( e2 );
+
                 }
             }
             catch ( final Exception e )
             {
-                throw new IOException( getMessage( "failedGettingTemplate", templateName ), e );
+                throw (IOException) new IOException( getMessage(
+                    "failedGettingTemplate", templateName ) ).initCause( e );
+
             }
         }
 

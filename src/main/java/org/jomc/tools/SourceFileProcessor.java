@@ -666,7 +666,9 @@ public class SourceFileProcessor extends JomcTool
             }
             catch ( final IOException e )
             {
-                throw new IOException( getMessage( "failedEditing", f.getCanonicalPath(), e.getMessage() ), e );
+                throw (IOException) new IOException( getMessage(
+                    "failedEditing", f.getCanonicalPath(), e.getMessage() ) ).initCause( e );
+
             }
 
             if ( this.isLoggable( Level.FINE ) )

@@ -113,11 +113,11 @@ public class ClassFileProcessorTest extends JomcToolTest
         }
         catch ( final JAXBException e )
         {
-            throw new IOException( e.getMessage(), e );
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
         catch ( final ModelException e )
         {
-            throw new IOException( e.getMessage(), e );
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
     }
 

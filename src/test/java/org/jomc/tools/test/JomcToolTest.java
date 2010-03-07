@@ -133,11 +133,11 @@ public abstract class JomcToolTest extends TestCase
         }
         catch ( final JAXBException e )
         {
-            throw new IOException( e.getMessage(), e );
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
         catch ( final ModelException e )
         {
-            throw new IOException( e.getMessage(), e );
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
     }
 

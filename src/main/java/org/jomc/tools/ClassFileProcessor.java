@@ -971,11 +971,11 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ParseException e )
         {
-            throw new IOException( e.getMessage(), e );
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
         catch ( final TokenMgrError e )
         {
-            throw new IOException( e.getMessage(), e );
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
     }
 
@@ -1178,11 +1178,11 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final JAXBException e )
         {
-            throw new IOException( e.getMessage(), e );
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
         catch ( final TransformerException e )
         {
-            throw new IOException( e.getMessage(), e );
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
     }
 
@@ -1325,11 +1325,11 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final JAXBException e )
         {
-            throw new IOException( e.getMessage(), e );
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
         catch ( final TransformerException e )
         {
-            throw new IOException( e.getMessage(), e );
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
     }
 
@@ -1562,7 +1562,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final JAXBException e )
         {
-            throw new IOException( e.getMessage(), e );
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
     }
 
@@ -1605,7 +1605,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final JAXBException e )
         {
-            throw new IOException( e.getMessage(), e );
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
     }
 
