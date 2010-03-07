@@ -44,7 +44,6 @@ import org.jomc.model.Implementation;
 import org.jomc.model.Module;
 import org.jomc.model.Specification;
 import org.jomc.tools.SourceFileProcessor;
-import org.jomc.tools.ToolException;
 import org.jomc.util.SectionEditor;
 
 /**
@@ -63,7 +62,7 @@ public class SourceFileProcessorTest extends JomcToolTest
     private SourceFileProcessor testTool;
 
     @Override
-    public SourceFileProcessor getTestTool() throws ToolException
+    public SourceFileProcessor getTestTool() throws IOException
     {
         if ( this.testTool == null )
         {
@@ -271,9 +270,9 @@ public class SourceFileProcessorTest extends JomcToolTest
             this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
                                                   implementationDirectory );
 
-            Assert.fail( "Expected ToolException not thrown." );
+            Assert.fail( "Expected IOException not thrown." );
         }
-        catch ( final ToolException e )
+        catch ( final IOException e )
         {
             Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
@@ -284,9 +283,9 @@ public class SourceFileProcessorTest extends JomcToolTest
             this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getSpecification( "Specification" ),
                                                   specificationDirectory );
 
-            Assert.fail( "Expected ToolException not thrown." );
+            Assert.fail( "Expected IOException not thrown." );
         }
-        catch ( final ToolException e )
+        catch ( final IOException e )
         {
             Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );

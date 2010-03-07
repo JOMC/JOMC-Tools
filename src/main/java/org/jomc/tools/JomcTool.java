@@ -34,6 +34,7 @@ package org.jomc.tools;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.ref.Reference;
@@ -166,9 +167,9 @@ public abstract class JomcTool
      * @param tool The instance to initialize the new instance with.
      *
      * @throws NullPointerException if {@code tool} is {@code null}.
-     * @throws ToolException if copying {@code tool} fails.
+     * @throws IOException if copying {@code tool} fails.
      */
-    public JomcTool( final JomcTool tool ) throws ToolException
+    public JomcTool( final JomcTool tool ) throws IOException
     {
         this();
 
@@ -1148,11 +1149,11 @@ public abstract class JomcTool
      *
      * @return The {@code VelocityEngine} used for generating source code.
      *
-     * @throws ToolException if initializing a new velocity engine fails.
+     * @throws IOException if initializing a new velocity engine fails.
      *
      * @see #setVelocityEngine(org.apache.velocity.app.VelocityEngine)
      */
-    public VelocityEngine getVelocityEngine() throws ToolException
+    public VelocityEngine getVelocityEngine() throws IOException
     {
         if ( this.velocityEngine == null )
         {
@@ -1219,7 +1220,7 @@ public abstract class JomcTool
             }
             catch ( final Exception e )
             {
-                throw new ToolException( e.getMessage(), e );
+                throw new IOException( e.getMessage(), e );
             }
         }
 
@@ -1408,12 +1409,12 @@ public abstract class JomcTool
      * @return The template matching {@code templateName}.
      *
      * @throws NullPointerException if {@code templateName} is {@code null}.
-     * @throws ToolException if getting the template fails.
+     * @throws IOException if getting the template fails.
      *
      * @see #getProfile()
      * @see #getTemplateEncoding()
      */
-    public Template getVelocityTemplate( final String templateName ) throws ToolException
+    public Template getVelocityTemplate( final String templateName ) throws IOException
     {
         if ( templateName == null )
         {
@@ -1469,16 +1470,16 @@ public abstract class JomcTool
                 }
                 catch ( final ResourceNotFoundException e2 )
                 {
-                    throw new ToolException( getMessage( "templateNotFound", templateName, DEFAULT_PROFILE ), e2 );
+                    throw new IOException( getMessage( "templateNotFound", templateName, DEFAULT_PROFILE ), e2 );
                 }
                 catch ( final Exception e2 )
                 {
-                    throw new ToolException( getMessage( "failedGettingTemplate", templateName ), e2 );
+                    throw new IOException( getMessage( "failedGettingTemplate", templateName ), e2 );
                 }
             }
             catch ( final Exception e )
             {
-                throw new ToolException( getMessage( "failedGettingTemplate", templateName ), e );
+                throw new IOException( getMessage( "failedGettingTemplate", templateName ), e );
             }
         }
 

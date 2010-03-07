@@ -90,9 +90,9 @@ public class ResourceFileProcessor extends JomcTool
      * @param tool The instance to initialize the new instance with.
      *
      * @throws NullPointerException if {@code tool} is {@code null}.
-     * @throws ToolException if copying {@code tool} fails.
+     * @throws IOException if copying {@code tool} fails.
      */
-    public ResourceFileProcessor( final ResourceFileProcessor tool ) throws ToolException
+    public ResourceFileProcessor( final ResourceFileProcessor tool ) throws IOException
     {
         super( tool );
         this.setResourceBundleDefaultLocale( tool.getResourceBundleDefaultLocale() );
@@ -140,11 +140,11 @@ public class ResourceFileProcessor extends JomcTool
      * @param resourcesDirectory The directory to write resource bundle resource files to.
      *
      * @throws NullPointerException if {@code resourcesDirectory} is {@code null}.
-     * @throws ToolException if writing resource bundle resource files fails.
+     * @throws IOException if writing resource bundle resource files fails.
      *
      * @see #writeResourceBundleResourceFiles(org.jomc.model.Module, java.io.File)
      */
-    public void writeResourceBundleResourceFiles( final File resourcesDirectory ) throws ToolException
+    public void writeResourceBundleResourceFiles( final File resourcesDirectory ) throws IOException
     {
         if ( resourcesDirectory == null )
         {
@@ -164,13 +164,13 @@ public class ResourceFileProcessor extends JomcTool
      * @param resourcesDirectory The directory to write resource bundle resource files to.
      *
      * @throws NullPointerException if {@code module} or {@code resourcesDirectory} is {@code null}.
-     * @throws ToolException if writing resource bundle resource files fails.
+     * @throws IOException if writing resource bundle resource files fails.
      *
      * @see #writeResourceBundleResourceFiles(org.jomc.model.Specification, java.io.File)
      * @see #writeResourceBundleResourceFiles(org.jomc.model.Implementation, java.io.File)
      */
     public void writeResourceBundleResourceFiles( final Module module, final File resourcesDirectory )
-        throws ToolException
+        throws IOException
     {
         if ( module == null )
         {
@@ -205,12 +205,12 @@ public class ResourceFileProcessor extends JomcTool
      * @param resourcesDirectory The directory to write resource bundle resource files to.
      *
      * @throws NullPointerException if {@code specification} or {@code resourcesDirectory} is {@code null}.
-     * @throws ToolException if writing resource bundle resource files fails.
+     * @throws IOException if writing resource bundle resource files fails.
      *
      * @see #getResourceBundleResources(org.jomc.model.Specification)
      */
     public void writeResourceBundleResourceFiles( final Specification specification, final File resourcesDirectory )
-        throws ToolException
+        throws IOException
     {
         if ( specification == null )
         {
@@ -241,12 +241,12 @@ public class ResourceFileProcessor extends JomcTool
      * @param resourcesDirectory The directory to write resource bundle resource files to.
      *
      * @throws NullPointerException if {@code implementation} or {@code resourcesDirectory} is {@code null}.
-     * @throws ToolException if writing resource bundle resource files fails.
+     * @throws IOException if writing resource bundle resource files fails.
      *
      * @see #getResourceBundleResources(org.jomc.model.Implementation)
      */
     public void writeResourceBundleResourceFiles( final Implementation implementation, final File resourcesDirectory )
-        throws ToolException
+        throws IOException
     {
         if ( implementation == null )
         {
@@ -278,10 +278,10 @@ public class ResourceFileProcessor extends JomcTool
      * @return Resource bundle properties resources of {@code specification}.
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
-     * @throws ToolException if getting the resource bundle properties resources fails.
+     * @throws IOException if getting the resource bundle properties resources fails.
      */
     public Map<Locale, Properties> getResourceBundleResources( final Specification specification )
-        throws ToolException
+        throws IOException
     {
         if ( specification == null )
         {
@@ -299,10 +299,10 @@ public class ResourceFileProcessor extends JomcTool
      * @return Resource bundle properties resources of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
-     * @throws ToolException if getting the resource bundle properties resources fails.
+     * @throws IOException if getting the resource bundle properties resources fails.
      */
     public Map<Locale, Properties> getResourceBundleResources( final Implementation implementation )
-        throws ToolException
+        throws IOException
     {
         if ( implementation == null )
         {
@@ -340,7 +340,7 @@ public class ResourceFileProcessor extends JomcTool
 
     private void writeResourceBundleResourceFiles( final Map<Locale, Properties> resources,
                                                    final File resourcesDirectory, final String bundlePath )
-        throws ToolException
+        throws IOException
     {
         if ( resources == null )
         {
@@ -355,89 +355,82 @@ public class ResourceFileProcessor extends JomcTool
             throw new NullPointerException( "bundlePath" );
         }
 
-        try
+        Properties defProperties = null;
+        Properties fallbackProperties = null;
+
+        for ( Map.Entry<Locale, Properties> e : resources.entrySet() )
         {
-            Properties defProperties = null;
-            Properties fallbackProperties = null;
+            final String language = e.getKey().getLanguage().toLowerCase();
+            final Properties p = e.getValue();
+            final File file = new File( resourcesDirectory, bundlePath + "_" + language + ".properties" );
 
-            for ( Map.Entry<Locale, Properties> e : resources.entrySet() )
+            if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
             {
-                final String language = e.getKey().getLanguage().toLowerCase();
-                final Properties p = e.getValue();
-                final File file = new File( resourcesDirectory, bundlePath + "_" + language + ".properties" );
+                throw new IOException( getMessage( "failedCreatingDirectory",
+                                                   file.getParentFile().getAbsolutePath() ) );
 
-                if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
-                {
-                    throw new ToolException( getMessage( "failedCreatingDirectory",
-                                                         file.getParentFile().getAbsolutePath() ) );
-
-                }
-
-                if ( this.isLoggable( Level.INFO ) )
-                {
-                    this.log( Level.INFO, getMessage( "writing", file.getCanonicalPath() ), null );
-                }
-
-                OutputStream out = null;
-                try
-                {
-                    out = new FileOutputStream( file );
-                    p.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
-                }
-                finally
-                {
-                    if ( out != null )
-                    {
-                        out.close();
-                    }
-                }
-
-                if ( this.getResourceBundleDefaultLocale().getLanguage().equalsIgnoreCase( language ) )
-                {
-                    defProperties = p;
-                }
-
-                fallbackProperties = p;
             }
 
-            if ( defProperties == null )
+            if ( this.isLoggable( Level.INFO ) )
             {
-                defProperties = fallbackProperties;
+                this.log( Level.INFO, getMessage( "writing", file.getCanonicalPath() ), null );
             }
 
-            if ( defProperties != null )
+            OutputStream out = null;
+            try
             {
-                final File file = new File( resourcesDirectory, bundlePath + ".properties" );
-                if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
+                out = new FileOutputStream( file );
+                p.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
+            }
+            finally
+            {
+                if ( out != null )
                 {
-                    throw new ToolException( getMessage( "failedCreatingDirectory",
-                                                         file.getParentFile().getAbsolutePath() ) );
-
-                }
-
-                if ( this.isLoggable( Level.INFO ) )
-                {
-                    this.log( Level.INFO, getMessage( "writing", file.getCanonicalPath() ), null );
-                }
-
-                OutputStream out = null;
-                try
-                {
-                    out = new FileOutputStream( file );
-                    defProperties.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
-                }
-                finally
-                {
-                    if ( out != null )
-                    {
-                        out.close();
-                    }
+                    out.close();
                 }
             }
+
+            if ( this.getResourceBundleDefaultLocale().getLanguage().equalsIgnoreCase( language ) )
+            {
+                defProperties = p;
+            }
+
+            fallbackProperties = p;
         }
-        catch ( final IOException e )
+
+        if ( defProperties == null )
         {
-            throw new ToolException( e.getMessage(), e );
+            defProperties = fallbackProperties;
+        }
+
+        if ( defProperties != null )
+        {
+            final File file = new File( resourcesDirectory, bundlePath + ".properties" );
+            if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
+            {
+                throw new IOException( getMessage( "failedCreatingDirectory",
+                                                   file.getParentFile().getAbsolutePath() ) );
+
+            }
+
+            if ( this.isLoggable( Level.INFO ) )
+            {
+                this.log( Level.INFO, getMessage( "writing", file.getCanonicalPath() ), null );
+            }
+
+            OutputStream out = null;
+            try
+            {
+                out = new FileOutputStream( file );
+                defProperties.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
+            }
+            finally
+            {
+                if ( out != null )
+                {
+                    out.close();
+                }
+            }
         }
     }
 

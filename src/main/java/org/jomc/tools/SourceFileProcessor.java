@@ -170,9 +170,9 @@ public class SourceFileProcessor extends JomcTool
      * @param tool The instance to initialize the new instance with,
      *
      * @throws NullPointerException if {@code tool} is {@code null}.
-     * @throws ToolException if copying {@code tool} fails.
+     * @throws IOException if copying {@code tool} fails.
      */
-    public SourceFileProcessor( final SourceFileProcessor tool ) throws ToolException
+    public SourceFileProcessor( final SourceFileProcessor tool ) throws IOException
     {
         super( tool );
         this.setIndentationCharacter( tool.getIndentationCharacter() );
@@ -437,11 +437,11 @@ public class SourceFileProcessor extends JomcTool
      * @param sourcesDirectory The directory holding the source files to manage.
      *
      * @throws NullPointerException if {@code sourcesDirectory} is {@code null}.
-     * @throws ToolException if managing source files fails.
+     * @throws IOException if managing source files fails.
      *
      * @see #manageSourceFiles(org.jomc.model.Module, java.io.File)
      */
-    public void manageSourceFiles( final File sourcesDirectory ) throws ToolException
+    public void manageSourceFiles( final File sourcesDirectory ) throws IOException
     {
         if ( sourcesDirectory == null )
         {
@@ -461,12 +461,12 @@ public class SourceFileProcessor extends JomcTool
      * @param sourcesDirectory The directory holding the source files to manage.
      *
      * @throws NullPointerException if {@code module} or {@code sourcesDirectory} is {@code null}.
-     * @throws ToolException if managing source files fails.
+     * @throws IOException if managing source files fails.
      *
      * @see #manageSourceFiles(org.jomc.model.Specification, java.io.File)
      * @see #manageSourceFiles(org.jomc.model.Implementation, java.io.File)
      */
-    public void manageSourceFiles( final Module module, final File sourcesDirectory ) throws ToolException
+    public void manageSourceFiles( final Module module, final File sourcesDirectory ) throws IOException
     {
         if ( module == null )
         {
@@ -500,11 +500,11 @@ public class SourceFileProcessor extends JomcTool
      * @param sourcesDirectory The directory holding the source files to manage.
      *
      * @throws NullPointerException if {@code specification} or {@code sourcesDirectory} is {@code null}.
-     * @throws ToolException if managing source files fails.
+     * @throws IOException if managing source files fails.
      *
      * @see #getSourceFileEditor(org.jomc.model.Specification)
      */
-    public void manageSourceFiles( final Specification specification, final File sourcesDirectory ) throws ToolException
+    public void manageSourceFiles( final Specification specification, final File sourcesDirectory ) throws IOException
     {
         if ( specification == null )
         {
@@ -537,12 +537,12 @@ public class SourceFileProcessor extends JomcTool
      * @param sourcesDirectory The directory holding the source files to manage.
      *
      * @throws NullPointerException if {@code implementation} or {@code sourcesDirectory} is {@code null}.
-     * @throws ToolException if managing source files fails.
+     * @throws IOException if managing source files fails.
      *
      * @see #getSourceFileEditor(org.jomc.model.Implementation)
      */
     public void manageSourceFiles( final Implementation implementation, final File sourcesDirectory )
-        throws ToolException
+        throws IOException
     {
         if ( implementation == null )
         {
@@ -621,9 +621,9 @@ public class SourceFileProcessor extends JomcTool
      * @param editor The editor to edit {@code f} with.
      *
      * @throws NullPointerException if {@code f} or {@code editor} is {@code null}.
-     * @throws ToolException if editing fails.
+     * @throws IOException if editing fails.
      */
-    private void editSourceFile( final File f, final SourceFileEditor editor ) throws ToolException
+    private void editSourceFile( final File f, final SourceFileEditor editor ) throws IOException
     {
         if ( f == null )
         {
@@ -634,82 +634,75 @@ public class SourceFileProcessor extends JomcTool
             throw new NullPointerException( "editor" );
         }
 
-        try
+        String content = null;
+
+        if ( !f.exists() )
         {
-            String content = null;
+            final SourceFileType sourceFileType = editor.getSourceFileType();
 
-            if ( !f.exists() )
+            if ( sourceFileType != null && sourceFileType.getTemplate() != null )
             {
-                final SourceFileType sourceFileType = editor.getSourceFileType();
-
-                if ( sourceFileType != null && sourceFileType.getTemplate() != null )
-                {
-                    final StringWriter writer = new StringWriter();
-                    final Template template = this.getVelocityTemplate( sourceFileType.getTemplate() );
-                    final VelocityContext ctx = editor.getVelocityContext();
-                    ctx.put( "template", template );
-                    template.merge( ctx, writer );
-                    writer.close();
-                    content = writer.toString();
-                }
-            }
-            else
-            {
-                content = FileUtils.readFileToString( f, this.getInputEncoding() );
-            }
-
-            if ( content != null )
-            {
-                String edited = null;
-
-                try
-                {
-                    edited = editor.edit( content );
-                }
-                catch ( final IOException e )
-                {
-                    throw new ToolException( getMessage( "failedEditing", f.getCanonicalPath(), e.getMessage() ), e );
-                }
-
-                if ( this.isLoggable( Level.FINE ) )
-                {
-                    for ( Section s : editor.getAddedSections() )
-                    {
-                        this.log( Level.FINE, getMessage( "addedSection", f.getCanonicalPath(), s.getName() ), null );
-                    }
-                }
-
-                if ( this.isLoggable( Level.WARNING ) )
-                {
-                    for ( Section s : editor.getUnknownSections() )
-                    {
-                        this.log( Level.WARNING, getMessage( "unknownSection", f.getCanonicalPath(), s.getName() ),
-                                  null );
-
-                    }
-                }
-
-                if ( !edited.equals( content ) )
-                {
-                    if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
-                    {
-                        throw new ToolException( getMessage( "failedCreatingDirectory",
-                                                             f.getParentFile().getAbsolutePath() ) );
-
-                    }
-
-                    if ( this.isLoggable( Level.INFO ) )
-                    {
-                        this.log( Level.INFO, getMessage( "editing", f.getCanonicalPath() ), null );
-                    }
-
-                    FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
-                }
+                final StringWriter writer = new StringWriter();
+                final Template template = this.getVelocityTemplate( sourceFileType.getTemplate() );
+                final VelocityContext ctx = editor.getVelocityContext();
+                ctx.put( "template", template );
+                template.merge( ctx, writer );
+                writer.close();
+                content = writer.toString();
             }
         }
-        catch ( final IOException e )
+        else
         {
-            throw new ToolException( e.getMessage(), e );
+            content = FileUtils.readFileToString( f, this.getInputEncoding() );
+        }
+
+        if ( content != null )
+        {
+            String edited = null;
+
+            try
+            {
+                edited = editor.edit( content );
+            }
+            catch ( final IOException e )
+            {
+                throw new IOException( getMessage( "failedEditing", f.getCanonicalPath(), e.getMessage() ), e );
+            }
+
+            if ( this.isLoggable( Level.FINE ) )
+            {
+                for ( Section s : editor.getAddedSections() )
+                {
+                    this.log( Level.FINE, getMessage( "addedSection", f.getCanonicalPath(), s.getName() ), null );
+                }
+            }
+
+            if ( this.isLoggable( Level.WARNING ) )
+            {
+                for ( Section s : editor.getUnknownSections() )
+                {
+                    this.log( Level.WARNING, getMessage( "unknownSection", f.getCanonicalPath(), s.getName() ),
+                              null );
+
+                }
+            }
+
+            if ( !edited.equals( content ) )
+            {
+                if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
+                {
+                    throw new IOException( getMessage( "failedCreatingDirectory",
+                                                       f.getParentFile().getAbsolutePath() ) );
+
+                }
+
+                if ( this.isLoggable( Level.INFO ) )
+                {
+                    this.log( Level.INFO, getMessage( "editing", f.getCanonicalPath() ), null );
+                }
+
+                FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
+            }
         }
     }
 
@@ -908,54 +901,47 @@ public class SourceFileProcessor extends JomcTool
         @Override
         protected void editSection( final Section s ) throws IOException
         {
-            try
+            super.editSection( s );
+
+            final SourceFileType sourceFileType = this.getSourceFileType();
+
+            if ( s.getName() != null && sourceFileType != null && sourceFileType.getSourceSections() != null )
             {
-                super.editSection( s );
+                final SourceSectionType sourceSectionType =
+                    sourceFileType.getSourceSections().getSourceSection( s.getName() );
 
-                final SourceFileType sourceFileType = this.getSourceFileType();
-
-                if ( s.getName() != null && sourceFileType != null && sourceFileType.getSourceSections() != null )
+                if ( sourceSectionType != null )
                 {
-                    final SourceSectionType sourceSectionType =
-                        sourceFileType.getSourceSections().getSourceSection( s.getName() );
-
-                    if ( sourceSectionType != null )
+                    if ( sourceSectionType.getHeadTemplate() != null &&
+                         ( !sourceSectionType.isEditable() || s.getHeadContent().toString().trim().length() == 0 ) )
                     {
-                        if ( sourceSectionType.getHeadTemplate() != null &&
-                             ( !sourceSectionType.isEditable() || s.getHeadContent().toString().trim().length() == 0 ) )
-                        {
-                            final StringWriter writer = new StringWriter();
-                            final Template template = getVelocityTemplate( sourceSectionType.getHeadTemplate() );
-                            final VelocityContext ctx = getVelocityContext();
-                            ctx.put( "template", template );
-                            template.merge( ctx, writer );
-                            writer.close();
-                            s.getHeadContent().setLength( 0 );
-                            s.getHeadContent().append( writer.toString() );
-                        }
-
-                        if ( sourceSectionType.getTailTemplate() != null &&
-                             ( !sourceSectionType.isEditable() || s.getTailContent().toString().trim().length() == 0 ) )
-                        {
-                            final StringWriter writer = new StringWriter();
-                            final Template template = getVelocityTemplate( sourceSectionType.getTailTemplate() );
-                            final VelocityContext ctx = getVelocityContext();
-                            ctx.put( "template", template );
-                            template.merge( ctx, writer );
-                            writer.close();
-                            s.getTailContent().setLength( 0 );
-                            s.getTailContent().append( writer.toString() );
-                        }
+                        final StringWriter writer = new StringWriter();
+                        final Template template = getVelocityTemplate( sourceSectionType.getHeadTemplate() );
+                        final VelocityContext ctx = getVelocityContext();
+                        ctx.put( "template", template );
+                        template.merge( ctx, writer );
+                        writer.close();
+                        s.getHeadContent().setLength( 0 );
+                        s.getHeadContent().append( writer.toString() );
                     }
-                    else
+
+                    if ( sourceSectionType.getTailTemplate() != null &&
+                         ( !sourceSectionType.isEditable() || s.getTailContent().toString().trim().length() == 0 ) )
                     {
-                        this.getUnknownSections().add( s );
+                        final StringWriter writer = new StringWriter();
+                        final Template template = getVelocityTemplate( sourceSectionType.getTailTemplate() );
+                        final VelocityContext ctx = getVelocityContext();
+                        ctx.put( "template", template );
+                        template.merge( ctx, writer );
+                        writer.close();
+                        s.getTailContent().setLength( 0 );
+                        s.getTailContent().append( writer.toString() );
                     }
                 }
-            }
-            catch ( final ToolException e )
-            {
-                throw (IOException) new IOException( e.getMessage() ).initCause( e );
+                else
+                {
+                    this.getUnknownSections().add( s );
+                }
             }
         }
 

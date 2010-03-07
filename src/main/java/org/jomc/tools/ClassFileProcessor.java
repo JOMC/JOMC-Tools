@@ -118,9 +118,9 @@ public class ClassFileProcessor extends JomcTool
      * @param tool The instance to initialize the new instance with,
      *
      * @throws NullPointerException if {@code tool} is {@code null}.
-     * @throws ToolException if copying {@code tool} fails.
+     * @throws IOException if copying {@code tool} fails.
      */
-    public ClassFileProcessor( final ClassFileProcessor tool ) throws ToolException
+    public ClassFileProcessor( final ClassFileProcessor tool ) throws IOException
     {
         super( tool );
     }
@@ -132,12 +132,12 @@ public class ClassFileProcessor extends JomcTool
      * @param classesDirectory The directory holding the class files.
      *
      * @throws NullPointerException if {@code marshaller} or {@code classesDirectory} is {@code null}.
-     * @throws ToolException if committing model objects fails.
+     * @throws IOException if committing model objects fails.
      *
      * @see #commitModelObjects(org.jomc.model.Module, javax.xml.bind.Marshaller, java.io.File)
      * @see org.jomc.model.ModelContext#createMarshaller()
      */
-    public void commitModelObjects( final Marshaller marshaller, final File classesDirectory ) throws ToolException
+    public void commitModelObjects( final Marshaller marshaller, final File classesDirectory ) throws IOException
     {
         if ( marshaller == null )
         {
@@ -162,14 +162,14 @@ public class ClassFileProcessor extends JomcTool
      * @param classesDirectory The directory holding the class files.
      *
      * @throws NullPointerException if {@code module}, {@code marshaller} or {@code classesDirectory} is {@code null}.
-     * @throws ToolException if committing model objects fails.
+     * @throws IOException if committing model objects fails.
      *
      * @see #commitModelObjects(org.jomc.model.Specification, javax.xml.bind.Marshaller, java.io.File)
      * @see #commitModelObjects(org.jomc.model.Implementation, javax.xml.bind.Marshaller, java.io.File)
      * @see org.jomc.model.ModelContext#createMarshaller()
      */
     public void commitModelObjects( final Module module, final Marshaller marshaller, final File classesDirectory )
-        throws ToolException
+        throws IOException
     {
         if ( module == null )
         {
@@ -209,12 +209,12 @@ public class ClassFileProcessor extends JomcTool
      *
      * @throws NullPointerException if {@code specification}, {@code marshaller} or {@code classesDirectory} is
      * {@code null}.
-     * @throws ToolException if committing model objects fails.
+     * @throws IOException if committing model objects fails.
      *
      * @see org.jomc.model.ModelContext#createMarshaller()
      */
     public void commitModelObjects( final Specification specification, final Marshaller marshaller,
-                                    final File classesDirectory ) throws ToolException
+                                    final File classesDirectory ) throws IOException
     {
         if ( specification == null )
         {
@@ -229,27 +229,20 @@ public class ClassFileProcessor extends JomcTool
             throw new NullPointerException( "classesDirectory" );
         }
 
-        try
+        if ( specification.isClassDeclaration() )
         {
-            if ( specification.isClassDeclaration() )
+            final String classLocation = specification.getClazz().replace( '.', File.separatorChar ) + ".class";
+            final File classFile = new File( classesDirectory, classLocation );
+            if ( this.isLoggable( Level.INFO ) )
             {
-                final String classLocation = specification.getClazz().replace( '.', File.separatorChar ) + ".class";
-                final File classFile = new File( classesDirectory, classLocation );
-                if ( this.isLoggable( Level.INFO ) )
-                {
-                    this.log( Level.INFO, getMessage( "committing", classFile.getAbsolutePath() ), null );
-                }
-
-                final JavaClass javaClass = this.getJavaClass( classFile );
-                this.setClassfileAttribute( javaClass, Specification.class.getName(), this.encodeModelObject(
-                    marshaller, new ObjectFactory().createSpecification( specification ) ) );
-
-                javaClass.dump( classFile );
+                this.log( Level.INFO, getMessage( "committing", classFile.getAbsolutePath() ), null );
             }
-        }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e.getMessage(), e );
+
+            final JavaClass javaClass = this.getJavaClass( classFile );
+            this.setClassfileAttribute( javaClass, Specification.class.getName(), this.encodeModelObject(
+                marshaller, new ObjectFactory().createSpecification( specification ) ) );
+
+            javaClass.dump( classFile );
         }
     }
 
@@ -262,12 +255,12 @@ public class ClassFileProcessor extends JomcTool
      *
      * @throws NullPointerException if {@code implementation}, {@code marshaller} or {@code classesDirectory} is
      * {@code null}.
-     * @throws ToolException if committing model objects fails.
+     * @throws IOException if committing model objects fails.
      *
      * @see org.jomc.model.ModelContext#createMarshaller()
      */
     public void commitModelObjects( final Implementation implementation, final Marshaller marshaller,
-                                    final File classesDirectory ) throws ToolException
+                                    final File classesDirectory ) throws IOException
     {
         if ( implementation == null )
         {
@@ -282,93 +275,86 @@ public class ClassFileProcessor extends JomcTool
             throw new NullPointerException( "classesDirectory" );
         }
 
-        try
+        if ( implementation.isClassDeclaration() )
         {
-            if ( implementation.isClassDeclaration() )
+            Dependencies dependencies = this.getModules().getDependencies( implementation.getIdentifier() );
+            if ( dependencies == null )
             {
-                Dependencies dependencies = this.getModules().getDependencies( implementation.getIdentifier() );
-                if ( dependencies == null )
-                {
-                    dependencies = new Dependencies();
-                }
-
-                Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
-                if ( properties == null )
-                {
-                    properties = new Properties();
-                }
-
-                Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
-                if ( messages == null )
-                {
-                    messages = new Messages();
-                }
-
-                Specifications specifications = this.getModules().getSpecifications( implementation.getIdentifier() );
-                if ( specifications == null )
-                {
-                    specifications = new Specifications();
-                }
-
-                for ( SpecificationReference r : specifications.getReference() )
-                {
-                    if ( specifications.getSpecification( r.getIdentifier() ) == null &&
-                         this.isLoggable( Level.WARNING ) )
-                    {
-                        this.log( Level.WARNING, getMessage( "unresolvedSpecification", r.getIdentifier(),
-                                                             implementation.getIdentifier() ), null );
-
-                    }
-                }
-
-                for ( Dependency d : dependencies.getDependency() )
-                {
-                    final Specification s = this.getModules().getSpecification( d.getIdentifier() );
-
-                    if ( s != null )
-                    {
-                        if ( specifications.getSpecification( s.getIdentifier() ) == null )
-                        {
-                            specifications.getSpecification().add( s );
-                        }
-                    }
-                    else if ( this.isLoggable( Level.WARNING ) )
-                    {
-                        this.log( Level.WARNING, getMessage( "unresolvedDependencySpecification", d.getIdentifier(),
-                                                             d.getName(), implementation.getIdentifier() ), null );
-
-                    }
-                }
-
-                final String classLocation = implementation.getClazz().replace( '.', File.separatorChar ) + ".class";
-                final File classFile = new File( classesDirectory, classLocation );
-
-                if ( this.isLoggable( Level.INFO ) )
-                {
-                    this.log( Level.INFO, getMessage( "committing", classFile.getAbsolutePath() ), null );
-                }
-
-                final JavaClass javaClass = this.getJavaClass( classFile );
-                final ObjectFactory of = new ObjectFactory();
-
-                this.setClassfileAttribute( javaClass, Dependencies.class.getName(), this.encodeModelObject(
-                    marshaller, of.createDependencies( dependencies ) ) );
-
-                this.setClassfileAttribute( javaClass, Properties.class.getName(), this.encodeModelObject(
-                    marshaller, of.createProperties( properties ) ) );
-
-                this.setClassfileAttribute( javaClass, Messages.class.getName(), this.encodeModelObject(
-                    marshaller, of.createMessages( messages ) ) );
-
-                this.setClassfileAttribute( javaClass, Specifications.class.getName(), this.encodeModelObject(
-                    marshaller, of.createSpecifications( specifications ) ) );
-
-                javaClass.dump( classFile );
+                dependencies = new Dependencies();
             }
-        }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e.getMessage(), e );
+
+            Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
+            if ( properties == null )
+            {
+                properties = new Properties();
+            }
+
+            Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
+            if ( messages == null )
+            {
+                messages = new Messages();
+            }
+
+            Specifications specifications = this.getModules().getSpecifications( implementation.getIdentifier() );
+            if ( specifications == null )
+            {
+                specifications = new Specifications();
+            }
+
+            for ( SpecificationReference r : specifications.getReference() )
+            {
+                if ( specifications.getSpecification( r.getIdentifier() ) == null &&
+                     this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, getMessage( "unresolvedSpecification", r.getIdentifier(),
+                                                         implementation.getIdentifier() ), null );
+
+                }
+            }
+
+            for ( Dependency d : dependencies.getDependency() )
+            {
+                final Specification s = this.getModules().getSpecification( d.getIdentifier() );
+
+                if ( s != null )
+                {
+                    if ( specifications.getSpecification( s.getIdentifier() ) == null )
+                    {
+                        specifications.getSpecification().add( s );
+                    }
+                }
+                else if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, getMessage( "unresolvedDependencySpecification", d.getIdentifier(),
+                                                         d.getName(), implementation.getIdentifier() ), null );
+
+                }
+            }
+
+            final String classLocation = implementation.getClazz().replace( '.', File.separatorChar ) + ".class";
+            final File classFile = new File( classesDirectory, classLocation );
+
+            if ( this.isLoggable( Level.INFO ) )
+            {
+                this.log( Level.INFO, getMessage( "committing", classFile.getAbsolutePath() ), null );
+            }
+
+            final JavaClass javaClass = this.getJavaClass( classFile );
+            final ObjectFactory of = new ObjectFactory();
+
+            this.setClassfileAttribute( javaClass, Dependencies.class.getName(), this.encodeModelObject(
+                marshaller, of.createDependencies( dependencies ) ) );
+
+            this.setClassfileAttribute( javaClass, Properties.class.getName(), this.encodeModelObject(
+                marshaller, of.createProperties( properties ) ) );
+
+            this.setClassfileAttribute( javaClass, Messages.class.getName(), this.encodeModelObject(
+                marshaller, of.createMessages( messages ) ) );
+
+            this.setClassfileAttribute( javaClass, Specifications.class.getName(), this.encodeModelObject(
+                marshaller, of.createSpecifications( specifications ) ) );
+
+            javaClass.dump( classFile );
         }
     }
 
@@ -381,13 +367,13 @@ public class ClassFileProcessor extends JomcTool
      * @return The report of the validation.
      *
      * @throws NullPointerException if {@code unmarshaller} or {@code classesDirectory} is {@code null}.
-     * @throws ToolException if validating model objects fails.
+     * @throws IOException if validating model objects fails.
      *
      * @see #validateModelObjects(org.jomc.model.Module, javax.xml.bind.Unmarshaller, java.io.File)
      * @see org.jomc.model.ModelContext#createUnmarshaller()
      */
     public ModelValidationReport validateModelObjects( final Unmarshaller unmarshaller, final File classesDirectory )
-        throws ToolException
+        throws IOException
     {
         if ( unmarshaller == null )
         {
@@ -418,13 +404,13 @@ public class ClassFileProcessor extends JomcTool
      * @return The report of the validation.
      *
      * @throws NullPointerException if {@code unmarshaller} or {@code classLoader} is {@code null}.
-     * @throws ToolException if validating model objects fails.
+     * @throws IOException if validating model objects fails.
      *
      * @see #validateModelObjects(org.jomc.model.Module, javax.xml.bind.Unmarshaller, java.lang.ClassLoader)
      * @see org.jomc.model.ModelContext#createUnmarshaller()
      */
     public ModelValidationReport validateModelObjects( final Unmarshaller unmarshaller, final ClassLoader classLoader )
-        throws ToolException
+        throws IOException
     {
         if ( unmarshaller == null )
         {
@@ -456,14 +442,14 @@ public class ClassFileProcessor extends JomcTool
      * @return The report of the validation.
      *
      * @throws NullPointerException if {@code module}, {@code unmarshaller} or {@code classesDirectory} is {@code null}.
-     * @throws ToolException if validating model objects fails.
+     * @throws IOException if validating model objects fails.
      *
      * @see #validateModelObjects(org.jomc.model.Specification, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
      * @see #validateModelObjects(org.jomc.model.Implementation, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
      * @see org.jomc.model.ModelContext#createUnmarshaller()
      */
     public ModelValidationReport validateModelObjects( final Module module, final Unmarshaller unmarshaller,
-                                                       final File classesDirectory ) throws ToolException
+                                                       final File classesDirectory ) throws IOException
     {
         if ( module == null )
         {
@@ -526,14 +512,14 @@ public class ClassFileProcessor extends JomcTool
      * @return The report of the validation.
      *
      * @throws NullPointerException if {@code module}, {@code unmarshaller} or {@code classLoader} is {@code null}.
-     * @throws ToolException if validating model objects fails.
+     * @throws IOException if validating model objects fails.
      *
      * @see #validateModelObjects(org.jomc.model.Specification, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
      * @see #validateModelObjects(org.jomc.model.Implementation, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
      * @see org.jomc.model.ModelContext#createUnmarshaller()
      */
     public ModelValidationReport validateModelObjects( final Module module, final Unmarshaller unmarshaller,
-                                                       final ClassLoader classLoader ) throws ToolException
+                                                       final ClassLoader classLoader ) throws IOException
     {
         if ( module == null )
         {
@@ -561,7 +547,7 @@ public class ClassFileProcessor extends JomcTool
 
                     if ( classUrl == null )
                     {
-                        throw new ToolException( getMessage( "resourceNotFound", classLocation ) );
+                        throw new IOException( getMessage( "resourceNotFound", classLocation ) );
                     }
 
                     final JavaClass javaClass = this.getJavaClass( classUrl, classLocation );
@@ -584,7 +570,7 @@ public class ClassFileProcessor extends JomcTool
 
                     if ( classUrl == null )
                     {
-                        throw new ToolException( getMessage( "resourceNotFound", classLocation ) );
+                        throw new IOException( getMessage( "resourceNotFound", classLocation ) );
                     }
 
                     final JavaClass javaClass = this.getJavaClass( classUrl, classLocation );
@@ -607,13 +593,13 @@ public class ClassFileProcessor extends JomcTool
      * @return The report of the validation.
      *
      * @throws NullPointerException if {@code specification}, {@code unmarshaller} or {@code classFile} is {@code null}.
-     * @throws ToolException if validating model objects fails.
+     * @throws IOException if validating model objects fails.
      *
      * @see org.jomc.model.ModelContext#createUnmarshaller()
      */
     public ModelValidationReport validateModelObjects( final Specification specification,
                                                        final Unmarshaller unmarshaller, final JavaClass classFile )
-        throws ToolException
+        throws IOException
     {
         if ( specification == null )
         {
@@ -698,13 +684,13 @@ public class ClassFileProcessor extends JomcTool
      * @return The report of the validation.
      *
      * @throws NullPointerException if {@code implementation}, {@code unmarshaller} or {@code classFile} is {@code null}.
-     * @throws ToolException if validating model objects fails.
+     * @throws IOException if validating model objects fails.
      *
      * @see org.jomc.model.ModelContext#createUnmarshaller()
      */
     public ModelValidationReport validateModelObjects( final Implementation implementation,
                                                        final Unmarshaller unmarshaller, final JavaClass classFile )
-        throws ToolException
+        throws IOException
     {
         if ( implementation == null )
         {
@@ -985,11 +971,11 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ParseException e )
         {
-            throw new ToolException( e.getMessage(), e );
+            throw new IOException( e.getMessage(), e );
         }
         catch ( final TokenMgrError e )
         {
-            throw new ToolException( e.getMessage(), e );
+            throw new IOException( e.getMessage(), e );
         }
     }
 
@@ -1003,7 +989,7 @@ public class ClassFileProcessor extends JomcTool
      *
      * @throws NullPointerException if {@code marshaller}, {@code unmarshaller}, {@code classesDirectory} or
      * {@code transformers} is {@code null}.
-     * @throws ToolException if transforming model objects fails.
+     * @throws IOException if transforming model objects fails.
      *
      * @see #transformModelObjects(org.jomc.model.Module, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, java.io.File, java.util.List)
      * @see org.jomc.model.ModelContext#createMarshaller()
@@ -1011,7 +997,7 @@ public class ClassFileProcessor extends JomcTool
      */
     public void transformModelObjects( final Marshaller marshaller, final Unmarshaller unmarshaller,
                                        final File classesDirectory, final List<Transformer> transformers )
-        throws ToolException
+        throws IOException
     {
         if ( marshaller == null )
         {
@@ -1047,7 +1033,7 @@ public class ClassFileProcessor extends JomcTool
      *
      * @throws NullPointerException if {@code module}, {@code marshaller}, {@code unmarshaller},
      * {@code classesDirectory} or {@code transformers} is {@code null}.
-     * @throws ToolException if transforming model objects fails.
+     * @throws IOException if transforming model objects fails.
      *
      * @see #transformModelObjects(org.jomc.model.Specification, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass, java.util.List)
      * @see #transformModelObjects(org.jomc.model.Implementation, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass, java.util.List)
@@ -1056,7 +1042,7 @@ public class ClassFileProcessor extends JomcTool
      */
     public void transformModelObjects( final Module module, final Marshaller marshaller, final Unmarshaller unmarshaller,
                                        final File classesDirectory, final List<Transformer> transformers )
-        throws ToolException
+        throws IOException
     {
         if ( module == null )
         {
@@ -1079,53 +1065,46 @@ public class ClassFileProcessor extends JomcTool
             throw new NullPointerException( "classesDirectory" );
         }
 
-        try
+        if ( module.getSpecifications() != null )
         {
-            if ( module.getSpecifications() != null )
+            for ( Specification s : module.getSpecifications().getSpecification() )
             {
-                for ( Specification s : module.getSpecifications().getSpecification() )
+                if ( s.isClassDeclaration() )
                 {
-                    if ( s.isClassDeclaration() )
+                    final String classLocation = s.getIdentifier().replace( '.', File.separatorChar ) + ".class";
+                    final File classFile = new File( classesDirectory, classLocation );
+
+                    if ( this.isLoggable( Level.INFO ) )
                     {
-                        final String classLocation = s.getIdentifier().replace( '.', File.separatorChar ) + ".class";
-                        final File classFile = new File( classesDirectory, classLocation );
-
-                        if ( this.isLoggable( Level.INFO ) )
-                        {
-                            this.log( Level.INFO, getMessage( "transforming", classFile.getAbsolutePath() ), null );
-                        }
-
-                        final JavaClass javaClass = this.getJavaClass( classFile );
-                        this.transformModelObjects( s, marshaller, unmarshaller, javaClass, transformers );
-                        javaClass.dump( classFile );
+                        this.log( Level.INFO, getMessage( "transforming", classFile.getAbsolutePath() ), null );
                     }
-                }
-            }
 
-            if ( module.getImplementations() != null )
-            {
-                for ( Implementation i : module.getImplementations().getImplementation() )
-                {
-                    if ( i.isClassDeclaration() )
-                    {
-                        final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
-                        final File classFile = new File( classesDirectory, classLocation );
-
-                        if ( this.isLoggable( Level.INFO ) )
-                        {
-                            this.log( Level.INFO, getMessage( "transforming", classFile.getAbsolutePath() ), null );
-                        }
-
-                        final JavaClass javaClass = this.getJavaClass( classFile );
-                        this.transformModelObjects( i, marshaller, unmarshaller, javaClass, transformers );
-                        javaClass.dump( classFile );
-                    }
+                    final JavaClass javaClass = this.getJavaClass( classFile );
+                    this.transformModelObjects( s, marshaller, unmarshaller, javaClass, transformers );
+                    javaClass.dump( classFile );
                 }
             }
         }
-        catch ( final IOException e )
+
+        if ( module.getImplementations() != null )
         {
-            throw new ToolException( e.getMessage(), e );
+            for ( Implementation i : module.getImplementations().getImplementation() )
+            {
+                if ( i.isClassDeclaration() )
+                {
+                    final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
+                    final File classFile = new File( classesDirectory, classLocation );
+
+                    if ( this.isLoggable( Level.INFO ) )
+                    {
+                        this.log( Level.INFO, getMessage( "transforming", classFile.getAbsolutePath() ), null );
+                    }
+
+                    final JavaClass javaClass = this.getJavaClass( classFile );
+                    this.transformModelObjects( i, marshaller, unmarshaller, javaClass, transformers );
+                    javaClass.dump( classFile );
+                }
+            }
         }
     }
 
@@ -1140,14 +1119,14 @@ public class ClassFileProcessor extends JomcTool
      *
      * @throws NullPointerException if {@code specification}, {@code marshaller}, {@code unmarshaller},
      * {@code classFile} or {@code transformers} is {@code null}.
-     * @throws ToolException if transforming model objects fails.
+     * @throws IOException if transforming model objects fails.
      *
      * @see org.jomc.model.ModelContext#createMarshaller()
      * @see org.jomc.model.ModelContext#createUnmarshaller()
      */
     public void transformModelObjects( final Specification specification, final Marshaller marshaller,
                                        final Unmarshaller unmarshaller, final JavaClass classFile,
-                                       final List<Transformer> transformers ) throws ToolException
+                                       final List<Transformer> transformers ) throws IOException
     {
         if ( specification == null )
         {
@@ -1199,11 +1178,11 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final JAXBException e )
         {
-            throw new ToolException( e.getMessage(), e );
+            throw new IOException( e.getMessage(), e );
         }
         catch ( final TransformerException e )
         {
-            throw new ToolException( e.getMessage(), e );
+            throw new IOException( e.getMessage(), e );
         }
     }
 
@@ -1218,14 +1197,14 @@ public class ClassFileProcessor extends JomcTool
      *
      * @throws NullPointerException if {@code implementation}, {@code marshaller}, {@code unmarshaller},
      * {@code classFile} or {@code transformers} is {@code null}.
-     * @throws ToolException if transforming model objects fails.
+     * @throws IOException if transforming model objects fails.
      *
      * @see org.jomc.model.ModelContext#createMarshaller()
      * @see org.jomc.model.ModelContext#createUnmarshaller()
      */
     public void transformModelObjects( final Implementation implementation, final Marshaller marshaller,
                                        final Unmarshaller unmarshaller, final JavaClass classFile,
-                                       final List<Transformer> transformers ) throws ToolException
+                                       final List<Transformer> transformers ) throws IOException
     {
         if ( implementation == null )
         {
@@ -1346,11 +1325,11 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final JAXBException e )
         {
-            throw new ToolException( e.getMessage(), e );
+            throw new IOException( e.getMessage(), e );
         }
         catch ( final TransformerException e )
         {
-            throw new ToolException( e.getMessage(), e );
+            throw new IOException( e.getMessage(), e );
         }
     }
 
@@ -1362,25 +1341,18 @@ public class ClassFileProcessor extends JomcTool
      * @return The parsed class file.
      *
      * @throws NullPointerException if {@code classFile} is {@code null}.
-     * @throws ToolException if parsing {@code classFile} fails.
+     * @throws IOException if parsing {@code classFile} fails.
      *
      * @see JavaClass
      */
-    public JavaClass getJavaClass( final File classFile ) throws ToolException
+    public JavaClass getJavaClass( final File classFile ) throws IOException
     {
         if ( classFile == null )
         {
             throw new NullPointerException( "classFile" );
         }
 
-        try
-        {
-            return this.getJavaClass( classFile.toURI().toURL(), classFile.getName() );
-        }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e.getMessage(), e );
-        }
+        return this.getJavaClass( classFile.toURI().toURL(), classFile.getName() );
     }
 
     /**
@@ -1392,11 +1364,11 @@ public class ClassFileProcessor extends JomcTool
      * @return The parsed class file.
      *
      * @throws NullPointerException if {@code url} or {@code className} is {@code null}.
-     * @throws ToolException if parsing fails.
+     * @throws IOException if parsing fails.
      *
      * @see JavaClass
      */
-    public JavaClass getJavaClass( final URL url, final String className ) throws ToolException
+    public JavaClass getJavaClass( final URL url, final String className ) throws IOException
     {
         if ( url == null )
         {
@@ -1407,14 +1379,7 @@ public class ClassFileProcessor extends JomcTool
             throw new NullPointerException( "className" );
         }
 
-        try
-        {
-            return this.getJavaClass( url.openStream(), className );
-        }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e.getMessage(), e );
-        }
+        return this.getJavaClass( url.openStream(), className );
     }
 
     /**
@@ -1426,11 +1391,11 @@ public class ClassFileProcessor extends JomcTool
      * @return The parsed class file.
      *
      * @throws NullPointerException if {@code stream} or {@code className} is {@code null}.
-     * @throws ToolException if parsing fails.
+     * @throws IOException if parsing fails.
      *
      * @see JavaClass
      */
-    public JavaClass getJavaClass( final InputStream stream, final String className ) throws ToolException
+    public JavaClass getJavaClass( final InputStream stream, final String className ) throws IOException
     {
         if ( stream == null )
         {
@@ -1441,17 +1406,10 @@ public class ClassFileProcessor extends JomcTool
             throw new NullPointerException( "className" );
         }
 
-        try
-        {
-            final ClassParser parser = new ClassParser( stream, className );
-            final JavaClass clazz = parser.parse();
-            stream.close();
-            return clazz;
-        }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e.getMessage(), e );
-        }
+        final ClassParser parser = new ClassParser( stream, className );
+        final JavaClass clazz = parser.parse();
+        stream.close();
+        return clazz;
     }
 
     /**
@@ -1464,11 +1422,11 @@ public class ClassFileProcessor extends JomcTool
      * exists.
      *
      * @throws NullPointerException if {@code clazz} or {@code attributeName} is {@code null}.
-     * @throws ToolException if getting the attribute fails.
+     * @throws IOException if getting the attribute fails.
      *
      * @see JavaClass#getAttributes()
      */
-    public byte[] getClassfileAttribute( final JavaClass clazz, final String attributeName ) throws ToolException
+    public byte[] getClassfileAttribute( final JavaClass clazz, final String attributeName ) throws IOException
     {
         if ( clazz == null )
         {
@@ -1503,12 +1461,12 @@ public class ClassFileProcessor extends JomcTool
      * @param data The new data of the attribute to update the {@code classFile} with.
      *
      * @throws NullPointerException if {@code clazz} or {@code attributeName} is {@code null}.
-     * @throws ToolException if updating the class file fails.
+     * @throws IOException if updating the class file fails.
      *
      * @see JavaClass#getAttributes()
      */
     public void setClassfileAttribute( final JavaClass clazz, final String attributeName, final byte[] data )
-        throws ToolException
+        throws IOException
     {
         if ( clazz == null )
         {
@@ -1580,10 +1538,10 @@ public class ClassFileProcessor extends JomcTool
      * @return GZIP compressed XML document for {@code modelObject}.
      *
      * @throws NullPointerException if {@code marshaller} or {@code modelObject} is {@code null}.
-     * @throws ToolException if encoding {@code modelObject} fails.
+     * @throws IOException if encoding {@code modelObject} fails.
      */
     public byte[] encodeModelObject( final Marshaller marshaller, final JAXBElement<? extends ModelObject> modelObject )
-        throws ToolException
+        throws IOException
     {
         if ( marshaller == null )
         {
@@ -1604,11 +1562,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final JAXBException e )
         {
-            throw new ToolException( e.getMessage(), e );
-        }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e.getMessage(), e );
+            throw new IOException( e.getMessage(), e );
         }
     }
 
@@ -1623,10 +1577,10 @@ public class ClassFileProcessor extends JomcTool
      * @return Model object decoded from {@code bytes}.
      *
      * @throws NullPointerException if {@code unmarshaller}, {@code bytes} or {@code type} is {@code null}.
-     * @throws ToolException if decoding {@code bytes} fails.
+     * @throws IOException if decoding {@code bytes} fails.
      */
     public <T extends ModelObject> T decodeModelObject( final Unmarshaller unmarshaller, final byte[] bytes,
-                                                        final Class<T> type ) throws ToolException
+                                                        final Class<T> type ) throws IOException
     {
         if ( unmarshaller == null )
         {
@@ -1651,11 +1605,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final JAXBException e )
         {
-            throw new ToolException( e.getMessage(), e );
-        }
-        catch ( final IOException e )
-        {
-            throw new ToolException( e.getMessage(), e );
+            throw new IOException( e.getMessage(), e );
         }
     }
 
