@@ -449,15 +449,15 @@ public class JomcResourceTransformer implements ResourceTransformer
         }
         catch ( final JAXBException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw new IOException( e.getMessage(), e );
         }
         catch ( final BootstrapException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw new IOException( e.getMessage(), e );
         }
         catch ( final ModelException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw new IOException( e.getMessage(), e );
         }
     }
 
@@ -588,23 +588,23 @@ public class JomcResourceTransformer implements ResourceTransformer
         }
         catch ( final TransformerConfigurationException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw new IOException( e.getMessage(), e );
         }
         catch ( final TransformerException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw new IOException( e.getMessage(), e );
         }
         catch ( final JAXBException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw new IOException( e.getMessage(), e );
         }
         catch ( final BootstrapException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw new IOException( e.getMessage(), e );
         }
         catch ( final ModelException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw new IOException( e.getMessage(), e );
         }
     }
 
