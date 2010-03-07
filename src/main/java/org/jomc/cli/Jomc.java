@@ -530,7 +530,6 @@ public class Jomc
     // SECTION-END
     // SECTION-START[Constructors]
     // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
-
     /** Creates a new {@code Jomc} instance. */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
@@ -556,7 +555,8 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private org.jomc.cli.Command[] getCommands()
     {
-        final org.jomc.cli.Command[] _d = (org.jomc.cli.Command[]) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "Commands" );
+        final org.jomc.cli.Command[] _d = (org.jomc.cli.Command[]) org.jomc.ObjectManagerFactory.getObjectManager( this.
+            getClass().getClassLoader() ).getDependency( this, "Commands" );
         assert _d != null : "'Commands' dependency not found.";
         return _d;
     }
@@ -572,7 +572,8 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private org.apache.commons.cli.Option getDebugOption()
     {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "DebugOption" );
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.
+            getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "DebugOption" );
         assert _d != null : "'DebugOption' dependency not found.";
         return _d;
     }
@@ -588,7 +589,8 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private org.apache.commons.cli.Option getFailOnWarningsOption()
     {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "FailOnWarningsOption" );
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.
+            getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "FailOnWarningsOption" );
         assert _d != null : "'FailOnWarningsOption' dependency not found.";
         return _d;
     }
@@ -604,7 +606,8 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private java.util.Locale getLocale()
     {
-        final java.util.Locale _d = (java.util.Locale) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "Locale" );
+        final java.util.Locale _d = (java.util.Locale) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().
+            getClassLoader() ).getDependency( this, "Locale" );
         assert _d != null : "'Locale' dependency not found.";
         return _d;
     }
@@ -620,7 +623,8 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private org.apache.commons.cli.Option getVerboseOption()
     {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "VerboseOption" );
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.
+            getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "VerboseOption" );
         assert _d != null : "'VerboseOption' dependency not found.";
         return _d;
     }
@@ -638,7 +642,8 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private int getDescPad()
     {
-        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "descPad" );
+        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().
+            getClassLoader() ).getProperty( this, "descPad" );
         assert _p != null : "'descPad' property not found.";
         return _p.intValue();
     }
@@ -652,7 +657,8 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private java.lang.String getHelpCommandName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "helpCommandName" );
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().
+            getClassLoader() ).getProperty( this, "helpCommandName" );
         assert _p != null : "'helpCommandName' property not found.";
         return _p;
     }
@@ -666,7 +672,8 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private int getLeftPad()
     {
-        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "leftPad" );
+        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().
+            getClassLoader() ).getProperty( this, "leftPad" );
         assert _p != null : "'leftPad' property not found.";
         return _p.intValue();
     }
@@ -680,7 +687,8 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private int getWidth()
     {
-        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "width" );
+        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().
+            getClassLoader() ).getProperty( this, "width" );
         assert _p != null : "'width' property not found.";
         return _p.intValue();
     }
@@ -707,7 +715,11 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private String getCommandLineInfoMessage( final java.util.Locale locale, final java.lang.String commandLine )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "commandLineInfo", locale, commandLine );
+        final String _m =
+            org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this,
+                                                                                                           "commandLineInfo",
+                                                                                                           locale,
+                                                                                                           commandLine );
         assert _m != null : "'commandLineInfo' message not found.";
         return _m;
     }
@@ -727,9 +739,15 @@ public class Jomc
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
-    private String getIllegalArgumentsMessage( final java.util.Locale locale, final java.lang.String command, final java.lang.String helpCommandName )
+    private String getIllegalArgumentsMessage( final java.util.Locale locale, final java.lang.String command,
+                                               final java.lang.String helpCommandName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "illegalArguments", locale, command, helpCommandName );
+        final String _m =
+            org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this,
+                                                                                                           "illegalArguments",
+                                                                                                           locale,
+                                                                                                           command,
+                                                                                                           helpCommandName );
         assert _m != null : "'illegalArguments' message not found.";
         return _m;
     }
@@ -750,7 +768,10 @@ public class Jomc
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-17-SNAPSHOT/jomc-tools" )
     private String getUsageMessage( final java.util.Locale locale, final java.lang.String helpCommandName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "usage", locale, helpCommandName );
+        final String _m =
+            org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "usage",
+                                                                                                           locale,
+                                                                                                           helpCommandName );
         assert _m != null : "'usage' message not found.";
         return _m;
     }
