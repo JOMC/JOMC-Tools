@@ -37,8 +37,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.lang.ref.Reference;
-import java.lang.ref.WeakReference;
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.MessageFormat;
@@ -47,11 +45,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -150,10 +146,6 @@ public abstract class JomcTool
 
     /** Log level of the instance. */
     private Level logLevel;
-
-    /** Cached templates. */
-    private Reference<Map<String, Template>> templateCache =
-        new WeakReference<Map<String, Template>>( new HashMap<String, Template>() );
 
     /** Creates a new {@code JomcTool} instance. */
     public JomcTool()
@@ -1162,6 +1154,7 @@ public abstract class JomcTool
                 final java.util.Properties props = new java.util.Properties();
                 props.put( "resource.loader", "class" );
                 props.put( "class.resource.loader.class", VELOCITY_RESOURCE_LOADER );
+                props.put( "class.resource.loader.cache", Boolean.TRUE.toString() );
                 props.put( "runtime.references.strict", Boolean.TRUE.toString() );
 
                 final VelocityEngine engine = new VelocityEngine();
@@ -1216,7 +1209,6 @@ public abstract class JomcTool
 
                 engine.init( props );
                 this.velocityEngine = engine;
-                this.templateCache.clear();
             }
             catch ( final Exception e )
             {
@@ -1274,7 +1266,8 @@ public abstract class JomcTool
         if ( this.templateEncoding == null )
         {
             this.templateEncoding = getMessage( "buildSourceEncoding" );
-            this.templateCache.clear();
+            this.velocityEngine = null;
+
             if ( this.isLoggable( Level.CONFIG ) )
             {
                 this.log( Level.CONFIG, getMessage( "defaultTemplateEncoding", this.templateEncoding ), null );
@@ -1294,7 +1287,7 @@ public abstract class JomcTool
     public void setTemplateEncoding( final String value )
     {
         this.templateEncoding = value;
-        this.templateCache.clear();
+        this.velocityEngine = null;
     }
 
     /**
@@ -1375,7 +1368,6 @@ public abstract class JomcTool
         if ( this.profile == null )
         {
             this.profile = DEFAULT_PROFILE;
-            this.templateCache.clear();
             if ( this.isLoggable( Level.CONFIG ) )
             {
                 this.log( Level.CONFIG, getMessage( "defaultProfile", this.profile ), null );
@@ -1395,7 +1387,6 @@ public abstract class JomcTool
     public void setProfile( final String value )
     {
         this.profile = value;
-        this.templateCache.clear();
     }
 
     /**
@@ -1421,75 +1412,54 @@ public abstract class JomcTool
             throw new NullPointerException( "templateName" );
         }
 
-        Map<String, Template> templates = this.templateCache.get();
-        if ( templates == null )
+        try
         {
-            templates = new HashMap<String, Template>();
-            this.templateCache = new WeakReference<Map<String, Template>>( templates );
+            final Template template = this.getVelocityEngine().getTemplate(
+                TEMPLATE_PREFIX + this.getProfile() + "/" + templateName, this.getTemplateEncoding() );
+
+            if ( this.isLoggable( Level.CONFIG ) )
+            {
+                this.log( Level.CONFIG, getMessage( "templateInfo", templateName, this.getProfile() ), null );
+            }
+
+            return template;
         }
-
-        Template template = templates.get( templateName );
-
-        if ( template == null )
+        catch ( final ResourceNotFoundException e )
         {
+            if ( this.isLoggable( Level.CONFIG ) )
+            {
+                this.log( Level.CONFIG, getMessage( "templateNotFound", templateName, this.getProfile() ), e );
+            }
+
             try
             {
-                template = this.getVelocityEngine().getTemplate(
-                    TEMPLATE_PREFIX + this.getProfile() + "/" + templateName, this.getTemplateEncoding() );
+                final Template template = this.getVelocityEngine().getTemplate(
+                    TEMPLATE_PREFIX + DEFAULT_PROFILE + "/" + templateName, this.getTemplateEncoding() );
 
-                templates.put( templateName, template );
-
-                if ( this.templateCache.get() == null )
-                {
-                    this.templateCache = new WeakReference<Map<String, Template>>( templates );
-                }
-            }
-            catch ( final ResourceNotFoundException e )
-            {
                 if ( this.isLoggable( Level.CONFIG ) )
                 {
-                    this.log( Level.CONFIG, getMessage( "templateNotFound", templateName, this.getProfile() ), e );
+                    this.log( Level.CONFIG, getMessage( "templateInfo", templateName, DEFAULT_PROFILE ), e );
                 }
 
-                try
-                {
-                    template = this.getVelocityEngine().getTemplate(
-                        TEMPLATE_PREFIX + DEFAULT_PROFILE + "/" + templateName, this.getTemplateEncoding() );
-
-                    if ( this.isLoggable( Level.CONFIG ) )
-                    {
-                        this.log( Level.CONFIG, getMessage( "defaultTemplate", templateName, DEFAULT_PROFILE ), e );
-                    }
-
-                    templates.put( templateName, template );
-
-                    if ( this.templateCache.get() == null )
-                    {
-                        this.templateCache = new WeakReference<Map<String, Template>>( templates );
-                    }
-                }
-                catch ( final ResourceNotFoundException e2 )
-                {
-                    throw (IOException) new IOException( getMessage(
-                        "templateNotFound", templateName, DEFAULT_PROFILE ) ).initCause( e2 );
-
-                }
-                catch ( final Exception e2 )
-                {
-                    throw (IOException) new IOException( getMessage(
-                        "failedGettingTemplate", templateName ) ).initCause( e2 );
-
-                }
+                return template;
             }
-            catch ( final Exception e )
+            catch ( final ResourceNotFoundException e2 )
             {
                 throw (IOException) new IOException( getMessage(
-                    "failedGettingTemplate", templateName ) ).initCause( e );
+                    "templateNotFound", templateName, DEFAULT_PROFILE ) ).initCause( e2 );
+
+            }
+            catch ( final Exception e2 )
+            {
+                throw (IOException) new IOException( getMessage(
+                    "failedGettingTemplate", templateName ) ).initCause( e2 );
 
             }
         }
-
-        return template;
+        catch ( final Exception e )
+        {
+            throw (IOException) new IOException( getMessage( "failedGettingTemplate", templateName ) ).initCause( e );
+        }
     }
 
     /**
