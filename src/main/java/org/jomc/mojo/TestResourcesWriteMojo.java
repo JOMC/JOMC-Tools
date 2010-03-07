@@ -36,48 +36,43 @@ import java.io.File;
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
- * Validates a projects' test java classes.
+ * Writes a projects' test resource files.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  *
- * @phase process-test-classes
- * @goal validate-test-classes
+ * @phase process-test-resources
+ * @goal write-test-resources
  * @requiresDependencyResolution test
  */
-public final class TestClassesValidateMojo extends AbstractClassesValidateMojo
+public class TestResourcesWriteMojo extends AbstractResourcesMojo
 {
 
-    /** Creates a new {@code TestClassesValidateMojo} instance. */
-    public TestClassesValidateMojo()
-    {
-        super();
-    }
-
     @Override
-    protected String getClassesModuleName() throws MojoExecutionException
+    protected String getResourcesModuleName() throws MojoExecutionException
     {
         return this.getJomcTestModuleName();
     }
 
     @Override
-    protected ClassLoader getClassesClassLoader() throws MojoExecutionException
+    protected ClassLoader getResourcesClassLoader() throws MojoExecutionException
     {
         return this.getTestClassLoader();
     }
 
     @Override
-    protected File getClassesDirectory() throws MojoExecutionException
+    protected File getResourcesDirectory() throws MojoExecutionException
     {
-        File classesDirectory = new File( this.getMavenProject().getBuild().getTestOutputDirectory() );
-        if ( !classesDirectory.isAbsolute() )
+        File resourcesDirectory = new File( this.getMavenProject().getBuild().getTestOutputDirectory() );
+
+        if ( !resourcesDirectory.isAbsolute() )
         {
-            classesDirectory = new File( this.getMavenProject().getBasedir(),
-                                         this.getMavenProject().getBuild().getTestOutputDirectory() );
+            resourcesDirectory = new File( this.getMavenProject().getBasedir(),
+                                           this.getMavenProject().getBuild().getTestOutputDirectory() );
 
         }
 
-        return classesDirectory;
+        return resourcesDirectory;
     }
 
 }

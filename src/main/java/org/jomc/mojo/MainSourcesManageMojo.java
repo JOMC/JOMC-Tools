@@ -54,16 +54,19 @@ public final class MainSourcesManageMojo extends AbstractSourcesMojo
         super();
     }
 
+    @Override
     protected String getSourcesModuleName() throws MojoExecutionException
     {
         return this.getJomcModuleName();
     }
 
+    @Override
     protected ClassLoader getSourcesClassLoader() throws MojoExecutionException
     {
         return this.getMainClassLoader();
     }
 
+    @Override
     protected File getSourcesDirectory() throws MojoExecutionException
     {
         File sourcesDirectory = new File( this.getMavenProject().getBuild().getSourceDirectory() );

@@ -33,6 +33,7 @@
 package org.jomc.mojo;
 
 import java.io.File;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
@@ -42,84 +43,61 @@ import org.jomc.model.ModelContext;
 import org.jomc.model.ModelValidationReport;
 import org.jomc.model.Module;
 import org.jomc.model.ObjectFactory;
-import org.jomc.tools.SourceFileProcessor;
+import org.jomc.tools.ResourceFileProcessor;
 
 /**
- * Base class for managing source code files.
+ * Base class for managing resource files.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public abstract class AbstractSourcesMojo extends AbstractJomcMojo
+public abstract class AbstractResourcesMojo extends AbstractJomcMojo
 {
 
     /** Constant for the name of the tool backing the class. */
-    private static final String TOOLNAME = "SourceFileProcessor";
+    private static final String TOOLNAME = "ResourceFileProcessor";
 
     /**
-     * The number of whitespace characters per indentation level.
+     * The language of the default language properties file of generated resource bundle resources.
      *
-     * @parameter default-value="4"
+     * @parameter
      */
-    private int whitespacesPerIndent;
-
-    /**
-     * The indentation character.
-     *
-     * @parameter default-value=" "
-     */
-    private char indentationCharacter;
-
-    /**
-     * Gets the number of whitespace characters per indentation level.
-     *
-     * @return The number of whitespace characters per indentation level.
-     */
-    protected int getWhitespacesPerIndent()
-    {
-        return this.whitespacesPerIndent;
-    }
-
-    /**
-     * Gets the indentation character.
-     *
-     * @return The indentation character.
-     */
-    protected char getIndentationCharacter()
-    {
-        return this.indentationCharacter;
-    }
+    private String resourceBundleDefaultLanguage;
 
     @Override
     protected final void executeTool() throws Exception
     {
-        if ( this.isSourceProcessingEnabled() )
+        if ( this.isResourceProcessingEnabled() )
         {
-            final ModelContext context = this.createModelContext( this.getSourcesClassLoader() );
-            final SourceFileProcessor tool = this.createSourceFileProcessor( context );
+            final ModelContext context = this.createModelContext( this.getResourcesClassLoader() );
+            final ResourceFileProcessor tool = this.createResourceFileProcessor( context );
             final JAXBContext jaxbContext = context.createContext();
             final ModelValidationReport validationReport = context.validateModel( new JAXBSource(
                 jaxbContext, new ObjectFactory().createModules( tool.getModules() ) ) );
 
             this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 
-            tool.setIndentationCharacter( this.getIndentationCharacter() );
-            tool.setWhitespacesPerIndent( this.getWhitespacesPerIndent() );
+            if ( this.resourceBundleDefaultLanguage != null )
+            {
+                tool.setResourceBundleDefaultLocale(
+                    new Locale( this.resourceBundleDefaultLanguage.toLowerCase( Locale.ENGLISH ) ) );
+
+            }
 
             if ( validationReport.isModelValid() )
             {
                 this.logSeparator( Level.INFO );
-                final Module module = tool.getModules().getModule( this.getSourcesModuleName() );
+                final Module module = tool.getModules().getModule( this.getResourcesModuleName() );
 
                 if ( module != null )
                 {
                     this.logProcessingModule( TOOLNAME, module.getName() );
-                    tool.manageSourceFiles( module, this.getSourcesDirectory() );
+                    tool.writeResourceBundleResourceFiles( module, this.getResourcesDirectory() );
                     this.logToolSuccess( TOOLNAME );
                 }
                 else
                 {
-                    this.logMissingModule( this.getSourcesModuleName() );
+                    this.logMissingModule( this.getResourcesModuleName() );
                 }
 
                 this.logSeparator( Level.INFO );
@@ -137,15 +115,15 @@ public abstract class AbstractSourcesMojo extends AbstractJomcMojo
         }
     }
 
-    protected abstract String getSourcesModuleName() throws MojoExecutionException;
+    protected abstract String getResourcesModuleName() throws MojoExecutionException;
 
-    protected abstract ClassLoader getSourcesClassLoader() throws MojoExecutionException;
+    protected abstract ClassLoader getResourcesClassLoader() throws MojoExecutionException;
 
-    protected abstract File getSourcesDirectory() throws MojoExecutionException;
+    protected abstract File getResourcesDirectory() throws MojoExecutionException;
 
     private static String getMessage( final String key )
     {
-        return ResourceBundle.getBundle( AbstractSourcesMojo.class.getName().replace( '.', '/' ) ).getString( key );
+        return ResourceBundle.getBundle( AbstractResourcesMojo.class.getName().replace( '.', '/' ) ).getString( key );
     }
 
 }

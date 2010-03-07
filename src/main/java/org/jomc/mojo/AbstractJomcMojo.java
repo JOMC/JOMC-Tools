@@ -66,6 +66,7 @@ import org.jomc.model.bootstrap.DefaultServiceProvider;
 import org.jomc.tools.ClassFileProcessor;
 import org.jomc.tools.SourceFileProcessor;
 import org.jomc.tools.JomcTool;
+import org.jomc.tools.ResourceFileProcessor;
 
 /**
  * Base class for executing {@code JomcTool}s.
@@ -141,14 +142,21 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private boolean verbose;
 
     /**
-     * Contols processing of sources.
+     * Contols processing of source code files.
      *
      * @parameter expression="${jomc.sourceProcessing}" default-value="true"
      */
     private boolean sourceProcessingEnabled;
 
     /**
-     * Contols processing of classes.
+     * Contols processing of resource files.
+     *
+     * @parameter expression="${jomc.resourceProcessing}" default-value="true"
+     */
+    private boolean resourceProcessingEnabled;
+
+    /**
+     * Contols processing of class files.
      *
      * @parameter expression="${jomc.classProcessing}" default-value="true"
      */
@@ -276,6 +284,29 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
 
         final SourceFileProcessor tool = new SourceFileProcessor();
+        this.setupJomcTool( context, tool );
+        return tool;
+    }
+
+    /**
+     * Creates a new tool instance for managing resource files.
+     *
+     * @param context The context of the tool.
+     *
+     * @return A new tool instance for managing resource files.
+     *
+     * @throws NullPointerException if {@code context} is {@code null}.
+     * @throws MojoExecutionException if getting the tool of the instance fails.
+     */
+    protected ResourceFileProcessor createResourceFileProcessor( final ModelContext context )
+        throws MojoExecutionException
+    {
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+
+        final ResourceFileProcessor tool = new ResourceFileProcessor();
         this.setupJomcTool( context, tool );
         return tool;
     }
@@ -491,6 +522,16 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     protected boolean isSourceProcessingEnabled()
     {
         return this.sourceProcessingEnabled;
+    }
+
+    /**
+     * Gets a flag indicating the processing of resources is enabled.
+     *
+     * @return {@code true} if processing of resources is enabled; {@code false} else.
+     */
+    protected boolean isResourceProcessingEnabled()
+    {
+        return this.resourceProcessingEnabled;
     }
 
     /**

@@ -54,16 +54,19 @@ public final class TestClassesCommitMojo extends AbstractClassesCommitMojo
         super();
     }
 
+    @Override
     protected String getClassesModuleName() throws MojoExecutionException
     {
         return this.getJomcTestModuleName();
     }
 
+    @Override
     protected ClassLoader getClassesClassLoader() throws MojoExecutionException
     {
         return this.getTestClassLoader();
     }
 
+    @Override
     protected File getClassesDirectory() throws MojoExecutionException
     {
         File classesDirectory = new File( this.getMavenProject().getBuild().getTestOutputDirectory() );

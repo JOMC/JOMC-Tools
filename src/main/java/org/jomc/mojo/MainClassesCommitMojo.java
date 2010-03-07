@@ -54,16 +54,19 @@ public final class MainClassesCommitMojo extends AbstractClassesCommitMojo
         super();
     }
 
+    @Override
     protected String getClassesModuleName() throws MojoExecutionException
     {
         return this.getJomcModuleName();
     }
 
+    @Override
     protected ClassLoader getClassesClassLoader() throws MojoExecutionException
     {
         return this.getMainClassLoader();
     }
 
+    @Override
     protected File getClassesDirectory() throws MojoExecutionException
     {
         File classesDirectory = new File( this.getMavenProject().getBuild().getOutputDirectory() );

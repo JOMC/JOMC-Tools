@@ -36,48 +36,43 @@ import java.io.File;
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
- * Validates a projects' test java classes.
+ * Writes a projects' main resource files.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  *
- * @phase process-test-classes
- * @goal validate-test-classes
+ * @phase process-resources
+ * @goal write-main-resources
  * @requiresDependencyResolution test
  */
-public final class TestClassesValidateMojo extends AbstractClassesValidateMojo
+public final class MainResourcesWriteMojo extends AbstractResourcesMojo
 {
 
-    /** Creates a new {@code TestClassesValidateMojo} instance. */
-    public TestClassesValidateMojo()
+    @Override
+    protected String getResourcesModuleName() throws MojoExecutionException
     {
-        super();
+        return this.getJomcModuleName();
     }
 
     @Override
-    protected String getClassesModuleName() throws MojoExecutionException
+    protected ClassLoader getResourcesClassLoader() throws MojoExecutionException
     {
-        return this.getJomcTestModuleName();
+        return this.getMainClassLoader();
     }
 
     @Override
-    protected ClassLoader getClassesClassLoader() throws MojoExecutionException
+    protected File getResourcesDirectory() throws MojoExecutionException
     {
-        return this.getTestClassLoader();
-    }
+        File resourcesDirectory = new File( this.getMavenProject().getBuild().getOutputDirectory() );
 
-    @Override
-    protected File getClassesDirectory() throws MojoExecutionException
-    {
-        File classesDirectory = new File( this.getMavenProject().getBuild().getTestOutputDirectory() );
-        if ( !classesDirectory.isAbsolute() )
+        if ( !resourcesDirectory.isAbsolute() )
         {
-            classesDirectory = new File( this.getMavenProject().getBasedir(),
-                                         this.getMavenProject().getBuild().getTestOutputDirectory() );
+            resourcesDirectory = new File( this.getMavenProject().getBasedir(),
+                                           this.getMavenProject().getBuild().getOutputDirectory() );
 
         }
 
-        return classesDirectory;
+        return resourcesDirectory;
     }
 
 }
