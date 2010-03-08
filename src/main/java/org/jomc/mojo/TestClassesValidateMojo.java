@@ -36,7 +36,7 @@ import java.io.File;
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
- * Validates a projects' test java classes.
+ * Validates a projects' test class file model objects.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
