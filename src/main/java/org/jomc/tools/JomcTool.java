@@ -32,11 +32,13 @@
  */
 package org.jomc.tools;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.MessageFormat;
@@ -853,11 +855,35 @@ public abstract class JomcTool
             throw new NullPointerException( "linebreak" );
         }
 
-        String normalized = text.getValue();
-        normalized = normalized.replaceAll( "\\/\\*\\*", "/*" );
-        normalized = normalized.replaceAll( "\\*/", "/" );
-        normalized = normalized.replaceAll( "\n", "\n" + linebreak );
-        return StringEscapeUtils.escapeHtml( normalized );
+        try
+        {
+            String javadoc = text.getValue();
+
+            if ( javadoc != null )
+            {
+                final String lineSeparator = System.getProperty( "line.separator" );
+                final BufferedReader reader = new BufferedReader( new StringReader( javadoc ) );
+                final StringBuilder builder = new StringBuilder( javadoc.length() );
+
+                String line;
+                while ( ( line = reader.readLine() ) != null )
+                {
+                    builder.append( lineSeparator ).append( linebreak ).
+                        append( line.replaceAll( "\\/\\*\\*", "/*" ).replaceAll( "\\*/", "/" ) );
+
+                }
+
+                javadoc = builder.length() == 0 ? "" : StringEscapeUtils.escapeHtml(
+                    builder.substring( lineSeparator.length() + linebreak.length() ) );
+
+            }
+
+            return javadoc;
+        }
+        catch ( final IOException e )
+        {
+            throw new AssertionError( e );
+        }
     }
 
     /**
