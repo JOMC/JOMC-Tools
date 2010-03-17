@@ -344,7 +344,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         try
         {
-            final Collection urls = new LinkedList();
+            final Collection<URL> urls = new LinkedList<URL>();
+
             for ( final Iterator it = this.getMainClasspathElements().iterator(); it.hasNext(); )
             {
                 final String element = (String) it.next();
@@ -356,7 +357,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 }
             }
 
-            return new URLClassLoader( (URL[]) urls.toArray( new URL[ urls.size() ] ),
+            return new URLClassLoader( urls.toArray( new URL[ urls.size() ] ),
                                        Thread.currentThread().getContextClassLoader() );
 
         }
@@ -377,7 +378,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         try
         {
-            final Collection urls = new LinkedList();
+            final Collection<URL> urls = new LinkedList<URL>();
+
             for ( final Iterator it = this.getTestClasspathElements().iterator(); it.hasNext(); )
             {
                 final String element = (String) it.next();
@@ -389,7 +391,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 }
             }
 
-            return new URLClassLoader( (URL[]) urls.toArray( new URL[ urls.size() ] ),
+            return new URLClassLoader( urls.toArray( new URL[ urls.size() ] ),
                                        Thread.currentThread().getContextClassLoader() );
 
         }
