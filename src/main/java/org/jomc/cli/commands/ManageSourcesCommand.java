@@ -117,7 +117,7 @@ import org.jomc.tools.SourceFileProcessor;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-18T22:22:44+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-18T23:44:21+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -153,13 +153,13 @@ import org.jomc.tools.SourceFileProcessor;
  * </table>
  * <li>"{@link #getLongDescriptionMessage longDescription}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
- *   jomc manage-sources -cp &lt;classpath&gt; \
+ *   jomc manage-sources -cp examples/lib/commons-cli-1.2.jar \
  *                       -sd /tmp/src \
  *                       -df examples/xml/jomc-cli.xml \
  *                       -mn &quot;JOMC CLI&quot; \
  *                       -v</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
- *   jomc manage-sources -cp &lt;classpath&gt; \
+ *   jomc manage-sources -cp examples/lib/commons-cli-1.2.jar \
  *                       -sd /tmp/src \
  *                       -df examples/xml/jomc-cli.xml \
  *                       -mn &quot;JOMC CLI&quot; \
@@ -700,7 +700,7 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-18T22:22:44+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-18T23:44:21+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -891,13 +891,13 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
      * Gets the text of the {@code longDescription} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
-     *   jomc manage-sources -cp &lt;classpath&gt; \
+     *   jomc manage-sources -cp examples/lib/commons-cli-1.2.jar \
      *                       -sd /tmp/src \
      *                       -df examples/xml/jomc-cli.xml \
      *                       -mn &quot;JOMC CLI&quot; \
      *                       -v</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
-     *   jomc manage-sources -cp &lt;classpath&gt; \
+     *   jomc manage-sources -cp examples/lib/commons-cli-1.2.jar \
      *                       -sd /tmp/src \
      *                       -df examples/xml/jomc-cli.xml \
      *                       -mn &quot;JOMC CLI&quot; \

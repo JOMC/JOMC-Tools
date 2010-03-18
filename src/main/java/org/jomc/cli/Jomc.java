@@ -300,15 +300,16 @@ public class Jomc
             final String[] commandArguments = new String[ args.length - 1 ];
             System.arraycopy( args, 1, commandArguments, 0, commandArguments.length );
 
+            final Options options = cmd.getOptions();
+            options.addOption( this.getDebugOption() );
+            options.addOption( this.getVerboseOption() );
+            options.addOption( this.getFailOnWarningsOption() );
+
             if ( commandArguments.length > 0 && this.getHelpCommandName().equals( commandArguments[0] ) )
             {
                 final StringWriter usage = new StringWriter();
                 final StringWriter opts = new StringWriter();
                 final HelpFormatter formatter = new HelpFormatter();
-                final Options options = cmd.getOptions();
-                options.addOption( this.getDebugOption() );
-                options.addOption( this.getVerboseOption() );
-                options.addOption( this.getFailOnWarningsOption() );
 
                 PrintWriter pw = new PrintWriter( usage );
                 formatter.printUsage( pw, this.getWidth(), cmd.getName(), options );
@@ -343,18 +344,23 @@ public class Jomc
             DefaultSchemaProvider.setDefaultSchemaLocation( null );
             DefaultServiceProvider.setDefaultServiceLocation( null );
 
-            final Options options = cmd.getOptions();
-            options.addOption( this.getDebugOption() );
-            options.addOption( this.getVerboseOption() );
-            options.addOption( this.getFailOnWarningsOption() );
-
             final CommandLine commandLine = new GnuParser().parse( options, commandArguments );
             final boolean debug = commandLine.hasOption( this.getDebugOption().getOpt() );
             final boolean verbose = commandLine.hasOption( this.getVerboseOption().getOpt() );
+            Level debugLevel = Level.ALL;
+
+            if ( debug )
+            {
+                final String debugOption = commandLine.getOptionValue( this.getDebugOption().getOpt() );
+                if ( debugOption != null )
+                {
+                    debugLevel = Level.parse( debugOption );
+                }
+            }
 
             if ( debug || verbose )
             {
-                this.setLogLevel( debug ? Level.ALL : Level.INFO );
+                this.setLogLevel( debug ? debugLevel : Level.INFO );
             }
 
             cmd.setLogLevel( this.getLogLevel() );

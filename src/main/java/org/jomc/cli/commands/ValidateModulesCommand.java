@@ -95,7 +95,7 @@ import org.jomc.model.ModelValidationReport;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-18T22:22:44+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-18T23:44:21+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -131,11 +131,11 @@ import org.jomc.model.ModelValidationReport;
  * </table>
  * <li>"{@link #getLongDescriptionMessage longDescription}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
- *   jomc validate-modules -cp &lt;classpath&gt; \
+ *   jomc validate-modules -cp examples/lib/commons-cli-1.2.jar \
  *                         -df examples/xml/jomc-cli.xml \
  *                         -v</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
- *   jomc validate-modules -cp &lt;classpath&gt; \
+ *   jomc validate-modules -cp examples/lib/commons-cli-1.2.jar \
  *                         -df examples/xml/jomc-cli.xml \
  *                         -v</pre></td></tr>
  * </table>
@@ -477,7 +477,7 @@ public class ValidateModulesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-18T22:22:44+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-18T23:44:21+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -668,11 +668,11 @@ public class ValidateModulesCommand extends AbstractJomcCommand
      * Gets the text of the {@code longDescription} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
-     *   jomc validate-modules -cp &lt;classpath&gt; \
+     *   jomc validate-modules -cp examples/lib/commons-cli-1.2.jar \
      *                         -df examples/xml/jomc-cli.xml \
      *                         -v</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
-     *   jomc validate-modules -cp &lt;classpath&gt; \
+     *   jomc validate-modules -cp examples/lib/commons-cli-1.2.jar \
      *                         -df examples/xml/jomc-cli.xml \
      *                         -v</pre></td></tr>
      * </table></p>

@@ -236,5 +236,14 @@
         <exclude>commons-cli:commons-cli</exclude>
       </excludes>
     </dependencySet>
+    <dependencySet>
+      <directoryMode>0755</directoryMode>
+      <fileMode>0555</fileMode>
+      <scope>compile</scope>
+      <outputDirectory>/examples/lib</outputDirectory>
+      <includes>
+        <include>commons-cli:commons-cli</include>
+      </includes>
+    </dependencySet>
   </dependencySets>
 </assembly>
