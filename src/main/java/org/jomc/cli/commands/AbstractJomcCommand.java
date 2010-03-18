@@ -39,13 +39,18 @@ package org.jomc.cli.commands;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -59,6 +64,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
+import org.apache.commons.io.IOUtils;
 import org.jomc.cli.Command;
 import org.jomc.model.DefaultModelProcessor;
 import org.jomc.model.DefaultModelProvider;
@@ -66,10 +72,17 @@ import org.jomc.model.ModelContext;
 import org.jomc.model.ModelException;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
+import org.jomc.model.bootstrap.BootstrapException;
 import org.jomc.tools.JomcTool;
 import org.jomc.model.ModelValidationReport;
+import org.jomc.model.bootstrap.BootstrapContext;
 import org.jomc.model.bootstrap.DefaultSchemaProvider;
 import org.jomc.model.bootstrap.DefaultServiceProvider;
+import org.jomc.model.bootstrap.ObjectFactory;
+import org.jomc.model.bootstrap.Schema;
+import org.jomc.model.bootstrap.Schemas;
+import org.jomc.model.bootstrap.Service;
+import org.jomc.model.bootstrap.Services;
 import org.jomc.tools.ResourceFileProcessor;
 import org.jomc.tools.ClassFileProcessor;
 import org.jomc.tools.SourceFileProcessor;
@@ -90,6 +103,18 @@ import org.xml.sax.SAXException;
  * <li>"{@link #getCommandName commandName}"
  * <blockquote>Property of type {@code java.lang.String}.
  * <p>Name of the command.</p>
+ * </blockquote></li>
+ * <li>"{@link #getProviderExcludes providerExcludes}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>List of providers to exclude from any {@code META-INF/services} file separated by {@code :}.</p>
+ * </blockquote></li>
+ * <li>"{@link #getSchemaExcludes schemaExcludes}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>List of schema context-ids to exclude from any {@code META-INF/jomc-schemas.xml} file separated by {@code :}.</p>
+ * </blockquote></li>
+ * <li>"{@link #getServiceExcludes serviceExcludes}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>List of service classes to exclude from any {@code META-INF/jomc-services.xml} file separated by {@code :}.</p>
  * </blockquote></li>
  * </ul></p>
  * <p><b>Dependencies</b><ul>
@@ -116,7 +141,7 @@ import org.xml.sax.SAXException;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-13T18:50:32+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-18T22:22:44+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -133,6 +158,18 @@ import org.xml.sax.SAXException;
  * <li>"{@link #getDocumentFileMessage documentFile}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Document file: ''{0}''</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Datei: ''{0}''</pre></td></tr>
+ * </table>
+ * <li>"{@link #getExcludedProviderMessage excludedProvider}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Provider ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Provider ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getExcludedSchemaMessage excludedSchema}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Context ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kontext ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getExcludedServiceMessage excludedService}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Service ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Service ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
  * </table>
  * <li>"{@link #getInvalidModelMessage invalidModel}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Invalid model.</pre></td></tr>
@@ -588,65 +625,6 @@ public abstract class AbstractJomcCommand implements Command
         return this.sourceFileProcessor;
     }
 
-    protected ClassLoader getClassLoader( final CommandLine commandLine ) throws IOException
-    {
-        final Set<URI> uris = new HashSet<URI>();
-
-        if ( commandLine.hasOption( this.getClasspathOption().getOpt() ) )
-        {
-            final String[] elements = commandLine.getOptionValues( this.getClasspathOption().getOpt() );
-            if ( elements != null )
-            {
-                for ( String e : elements )
-                {
-                    if ( this.isLoggable( Level.FINE ) )
-                    {
-                        this.log( Level.FINE, this.getClasspathElementMessage( this.getLocale(), e ), null );
-                    }
-
-                    if ( e.startsWith( "@" ) )
-                    {
-                        String line = null;
-                        final File file = new File( e.substring( 1 ) );
-                        BufferedReader reader = null;
-
-                        try
-                        {
-                            reader = new BufferedReader( new FileReader( file ) );
-                            while ( ( line = reader.readLine() ) != null )
-                            {
-                                if ( !line.startsWith( "#" ) )
-                                {
-                                    uris.add( new File( line ).toURI() );
-                                }
-                            }
-                        }
-                        finally
-                        {
-                            if ( reader != null )
-                            {
-                                reader.close();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        uris.add( new File( e ).toURI() );
-                    }
-                }
-            }
-        }
-
-        int i = 0;
-        final URL[] urls = new URL[ uris.size() ];
-        for ( URI uri : uris )
-        {
-            urls[i++] = uri.toURL();
-        }
-
-        return new URLClassLoader( urls );
-    }
-
     protected Set<File> getDocumentFiles( final CommandLine commandLine ) throws IOException
     {
         final Set<File> files = new HashSet<File>();
@@ -773,6 +751,403 @@ public abstract class AbstractJomcCommand implements Command
         }
 
         return modules;
+    }
+
+    /**
+     * Class loader backed by a command line.
+     *
+     * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+     * @version $Id$
+     */
+    public class CommandLineClassLoader extends URLClassLoader
+    {
+
+        /**
+         * Creates a new {@code CommandLineClassLoader} taking a command line backing the class loader.
+         *
+         * @param commandLine The command line backing the class loader.
+         *
+         * @throws NullPointerException if {@code commandLine} is {@code null}.
+         * @throws IOException if processing {@code commandLine} fails.
+         */
+        public CommandLineClassLoader( final CommandLine commandLine ) throws IOException
+        {
+            super( new URL[ 0 ] );
+
+            if ( commandLine.hasOption( getClasspathOption().getOpt() ) )
+            {
+                final Set<URI> uris = new HashSet<URI>();
+                final String[] elements = commandLine.getOptionValues( getClasspathOption().getOpt() );
+
+                if ( elements != null )
+                {
+                    for ( String e : elements )
+                    {
+                        if ( isLoggable( Level.FINE ) )
+                        {
+                            log( Level.FINE, getClasspathElementMessage( getLocale(), e ), null );
+                        }
+
+                        if ( e.startsWith( "@" ) )
+                        {
+                            String line = null;
+                            final File file = new File( e.substring( 1 ) );
+                            BufferedReader reader = null;
+
+                            try
+                            {
+                                reader = new BufferedReader( new FileReader( file ) );
+                                while ( ( line = reader.readLine() ) != null )
+                                {
+                                    if ( !line.startsWith( "#" ) )
+                                    {
+                                        uris.add( new File( line ).toURI() );
+                                    }
+                                }
+                            }
+                            finally
+                            {
+                                if ( reader != null )
+                                {
+                                    reader.close();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            uris.add( new File( e ).toURI() );
+                        }
+                    }
+                }
+
+                for ( URI uri : uris )
+                {
+                    this.addURL( uri.toURL() );
+                }
+            }
+        }
+
+        /**
+         * Finds the resource with the specified name on the URL search path.
+         *
+         * @param name The name of the resource.
+         *
+         * @return A {@code URL} for the resource, or {@code null} if the resource could not be found.
+         */
+        @Override
+        public URL findResource( final String name )
+        {
+            try
+            {
+                URL resource = super.findResource( name );
+
+                if ( resource != null )
+                {
+                    if ( name.contains( "META-INF/services" ) )
+                    {
+                        resource = this.filterProviders( resource );
+                    }
+                    else if ( name.contains( DefaultSchemaProvider.getDefaultSchemaLocation() ) )
+                    {
+                        resource = this.filterSchemas( resource );
+                    }
+                    else if ( name.contains( DefaultServiceProvider.getDefaultServiceLocation() ) )
+                    {
+                        resource = this.filterServices( resource );
+                    }
+                }
+
+                return resource;
+            }
+            catch ( final IOException e )
+            {
+                log( Level.SEVERE, e.getMessage(), e );
+                return null;
+            }
+            catch ( final JAXBException e )
+            {
+                log( Level.SEVERE, e.getMessage(), e );
+                return null;
+            }
+            catch ( final BootstrapException e )
+            {
+                log( Level.SEVERE, e.getMessage(), e );
+                return null;
+            }
+        }
+
+        /**
+         * Returns an {@code Enumeration} of {@code URL}s representing all of the resources on the URL search path
+         * having the specified name.
+         *
+         * @param name The resource name.
+         *
+         * @throws IOException if an I/O exception occurs
+         *
+         * @return An {@code Enumeration} of {@code URL}s.
+         */
+        @Override
+        public Enumeration<URL> findResources( final String name ) throws IOException
+        {
+            final Enumeration<URL> allResources = super.findResources( name );
+
+            Enumeration<URL> enumeration = allResources;
+
+            if ( name.contains( "META-INF/services" ) )
+            {
+                enumeration = new Enumeration<URL>()
+                {
+
+                    public boolean hasMoreElements()
+                    {
+                        return allResources.hasMoreElements();
+                    }
+
+                    public URL nextElement()
+                    {
+                        try
+                        {
+                            return filterProviders( allResources.nextElement() );
+                        }
+                        catch ( final IOException e )
+                        {
+                            log( Level.SEVERE, e.getMessage(), e );
+                            return null;
+                        }
+                    }
+
+                };
+            }
+            else if ( name.contains( DefaultSchemaProvider.getDefaultSchemaLocation() ) )
+            {
+                enumeration = new Enumeration<URL>()
+                {
+
+                    public boolean hasMoreElements()
+                    {
+                        return allResources.hasMoreElements();
+                    }
+
+                    public URL nextElement()
+                    {
+                        try
+                        {
+                            return filterSchemas( allResources.nextElement() );
+                        }
+                        catch ( final IOException e )
+                        {
+                            log( Level.SEVERE, e.getMessage(), e );
+                            return null;
+                        }
+                        catch ( final JAXBException e )
+                        {
+                            log( Level.SEVERE, e.getMessage(), e );
+                            return null;
+                        }
+                        catch ( final BootstrapException e )
+                        {
+                            log( Level.SEVERE, e.getMessage(), e );
+                            return null;
+                        }
+                    }
+
+                };
+            }
+            else if ( name.contains( DefaultServiceProvider.getDefaultServiceLocation() ) )
+            {
+                enumeration = new Enumeration<URL>()
+                {
+
+                    public boolean hasMoreElements()
+                    {
+                        return allResources.hasMoreElements();
+                    }
+
+                    public URL nextElement()
+                    {
+                        try
+                        {
+                            return filterServices( allResources.nextElement() );
+                        }
+                        catch ( final IOException e )
+                        {
+                            log( Level.SEVERE, e.getMessage(), e );
+                            return null;
+                        }
+                        catch ( final JAXBException e )
+                        {
+                            log( Level.SEVERE, e.getMessage(), e );
+                            return null;
+                        }
+                        catch ( final BootstrapException e )
+                        {
+                            log( Level.SEVERE, e.getMessage(), e );
+                            return null;
+                        }
+                    }
+
+                };
+            }
+
+            return enumeration;
+        }
+
+        private URL filterProviders( final URL resource ) throws IOException
+        {
+            URL filteredResource = resource;
+            final InputStream in = resource.openStream();
+            final List lines = IOUtils.readLines( in, "UTF-8" );
+            final List<String> providerExcludes = Arrays.asList( getProviderExcludes().split( ":" ) );
+            final List<String> filteredLines = new ArrayList<String>( lines.size() );
+
+            for ( Object line : lines )
+            {
+                if ( !providerExcludes.contains( line.toString() ) )
+                {
+                    filteredLines.add( line.toString() );
+                }
+                else
+                {
+                    log( Level.FINE, getExcludedProviderMessage(
+                        getLocale(), resource.toExternalForm(), line.toString() ), null );
+
+                }
+            }
+
+            if ( lines.size() != filteredLines.size() )
+            {
+                final File tmpResource = File.createTempFile( this.getClass().getName(), ".rsrc" );
+                tmpResource.deleteOnExit();
+
+                final OutputStream out = new FileOutputStream( tmpResource );
+                IOUtils.writeLines( filteredLines, System.getProperty( "line.separator" ), out, "UTF-8" );
+                out.close();
+
+                filteredResource = tmpResource.toURI().toURL();
+            }
+
+            in.close();
+            return filteredResource;
+        }
+
+        private URL filterSchemas( final URL resource ) throws BootstrapException, IOException, JAXBException
+        {
+            URL filteredResource = resource;
+            final List<String> excludedSchemas = Arrays.asList( getSchemaExcludes().split( ":" ) );
+            final BootstrapContext bootstrapContext =
+                BootstrapContext.createBootstrapContext( this.getClass().getClassLoader() );
+
+            final InputStream in = resource.openStream();
+            final JAXBElement e = (JAXBElement) bootstrapContext.createUnmarshaller().unmarshal( in );
+            final Object o = e.getValue();
+            final Schemas schemas = new Schemas();
+            boolean filtered = false;
+
+            if ( o instanceof Schemas )
+            {
+                for ( Schema s : ( (Schemas) e.getValue() ).getSchema() )
+                {
+                    if ( !excludedSchemas.contains( s.getContextId() ) )
+                    {
+                        schemas.getSchema().add( s );
+                    }
+                    else
+                    {
+                        log( Level.FINE, getExcludedSchemaMessage(
+                            getLocale(), resource.toExternalForm(), s.getContextId() ), null );
+
+                        filtered = true;
+                    }
+                }
+            }
+            else if ( o instanceof Schema )
+            {
+                final Schema s = (Schema) o;
+                if ( !excludedSchemas.contains( s.getContextId() ) )
+                {
+                    schemas.getSchema().add( s );
+                }
+                else
+                {
+                    log( Level.FINE, getExcludedSchemaMessage(
+                        getLocale(), resource.toExternalForm(), s.getContextId() ), null );
+
+                    filtered = true;
+                }
+            }
+
+            if ( filtered )
+            {
+                final File tmpResource = File.createTempFile( this.getClass().getName(), ".rsrc" );
+                tmpResource.deleteOnExit();
+                bootstrapContext.createMarshaller().marshal(
+                    new ObjectFactory().createSchemas( schemas ), tmpResource );
+
+                filteredResource = tmpResource.toURI().toURL();
+            }
+
+            return filteredResource;
+        }
+
+        private URL filterServices( final URL resource ) throws BootstrapException, IOException, JAXBException
+        {
+            URL filteredResource = resource;
+            final List<String> excludedServices = Arrays.asList( getServiceExcludes().split( ":" ) );
+            final BootstrapContext bootstrapContext =
+                BootstrapContext.createBootstrapContext( this.getClass().getClassLoader() );
+
+            final InputStream in = resource.openStream();
+            final JAXBElement e = (JAXBElement) bootstrapContext.createUnmarshaller().unmarshal( in );
+            final Object o = e.getValue();
+            final Services services = new Services();
+            boolean filtered = false;
+
+            if ( o instanceof Services )
+            {
+                for ( Service s : ( (Services) e.getValue() ).getService() )
+                {
+                    if ( !excludedServices.contains( s.getClazz() ) )
+                    {
+                        services.getService().add( s );
+                    }
+                    else
+                    {
+                        log( Level.FINE, getExcludedServiceMessage(
+                            getLocale(), resource.toExternalForm(), s.getClazz() ), null );
+
+                        filtered = true;
+                    }
+                }
+            }
+            else if ( o instanceof Service )
+            {
+                final Service s = (Service) o;
+                if ( !excludedServices.contains( s.getClazz() ) )
+                {
+                    services.getService().add( s );
+                }
+                else
+                {
+                    log( Level.FINE, getExcludedServiceMessage(
+                        getLocale(), resource.toExternalForm(), s.getClazz() ), null );
+
+                    filtered = true;
+                }
+            }
+
+            if ( filtered )
+            {
+                final File tmpResource = File.createTempFile( this.getClass().getName(), ".rsrc" );
+                tmpResource.deleteOnExit();
+                bootstrapContext.createMarshaller().marshal(
+                    new ObjectFactory().createServices( services ), tmpResource );
+
+                filteredResource = tmpResource.toURI().toURL();
+            }
+
+            return filteredResource;
+        }
+
     }
 
     // SECTION-END
@@ -984,6 +1359,48 @@ public abstract class AbstractJomcCommand implements Command
         assert _p != null : "'commandName' property not found.";
         return _p;
     }
+
+    /**
+     * Gets the value of the {@code providerExcludes} property.
+     * @return List of providers to exclude from any {@code META-INF/services} file separated by {@code :}.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-18-SNAPSHOT/jomc-tools" )
+    private java.lang.String getProviderExcludes()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "providerExcludes" );
+        assert _p != null : "'providerExcludes' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code schemaExcludes} property.
+     * @return List of schema context-ids to exclude from any {@code META-INF/jomc-schemas.xml} file separated by {@code :}.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-18-SNAPSHOT/jomc-tools" )
+    private java.lang.String getSchemaExcludes()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "schemaExcludes" );
+        assert _p != null : "'schemaExcludes' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code serviceExcludes} property.
+     * @return List of service classes to exclude from any {@code META-INF/jomc-services.xml} file separated by {@code :}.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-18-SNAPSHOT/jomc-tools" )
+    private java.lang.String getServiceExcludes()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "serviceExcludes" );
+        assert _p != null : "'serviceExcludes' property not found.";
+        return _p;
+    }
     // </editor-fold>
     // SECTION-END
     // SECTION-START[Messages]
@@ -992,7 +1409,7 @@ public abstract class AbstractJomcCommand implements Command
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-13T18:50:32+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-18T22:22:44+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -1090,6 +1507,72 @@ public abstract class AbstractJomcCommand implements Command
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentFile", locale, documentFile );
         assert _m != null : "'documentFile' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code excludedProvider} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Provider ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Provider ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param resourceName Format argument.
+     * @param providerName Format argument.
+     * @return The text of the {@code excludedProvider} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-18-SNAPSHOT/jomc-tools" )
+    private String getExcludedProviderMessage( final java.util.Locale locale, final java.lang.String resourceName, final java.lang.String providerName )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "excludedProvider", locale, resourceName, providerName );
+        assert _m != null : "'excludedProvider' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code excludedSchema} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Context ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kontext ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param resourceName Format argument.
+     * @param contextId Format argument.
+     * @return The text of the {@code excludedSchema} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-18-SNAPSHOT/jomc-tools" )
+    private String getExcludedSchemaMessage( final java.util.Locale locale, final java.lang.String resourceName, final java.lang.String contextId )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "excludedSchema", locale, resourceName, contextId );
+        assert _m != null : "'excludedSchema' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code excludedService} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Service ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Service ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param resourceName Format argument.
+     * @param serviceName Format argument.
+     * @return The text of the {@code excludedService} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-18-SNAPSHOT/jomc-tools" )
+    private String getExcludedServiceMessage( final java.util.Locale locale, final java.lang.String resourceName, final java.lang.String serviceName )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "excludedService", locale, resourceName, serviceName );
+        assert _m != null : "'excludedService' message not found.";
         return _m;
     }
 

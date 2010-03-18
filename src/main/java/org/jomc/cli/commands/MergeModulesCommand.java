@@ -73,6 +73,18 @@ import org.jomc.model.ObjectFactory;
  * <blockquote>Property of type {@code java.lang.String}.
  * <p>Name of the command.</p>
  * </blockquote></li>
+ * <li>"{@link #getProviderExcludes providerExcludes}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>List of providers to exclude from any {@code META-INF/services} file separated by {@code :}.</p>
+ * </blockquote></li>
+ * <li>"{@link #getSchemaExcludes schemaExcludes}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>List of schema context-ids to exclude from any {@code META-INF/jomc-schemas.xml} file separated by {@code :}.</p>
+ * </blockquote></li>
+ * <li>"{@link #getServiceExcludes serviceExcludes}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>List of service classes to exclude from any {@code META-INF/jomc-services.xml} file separated by {@code :}.</p>
+ * </blockquote></li>
  * </ul></p>
  * <p><b>Dependencies</b><ul>
  * <li>"{@link #getClasspathOption ClasspathOption}"<blockquote>
@@ -110,7 +122,7 @@ import org.jomc.model.ObjectFactory;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-13T18:50:32+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-18T22:22:44+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -127,6 +139,18 @@ import org.jomc.model.ObjectFactory;
  * <li>"{@link #getDocumentFileMessage documentFile}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Document file: ''{0}''</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Datei: ''{0}''</pre></td></tr>
+ * </table>
+ * <li>"{@link #getExcludedProviderMessage excludedProvider}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Provider ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Provider ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getExcludedSchemaMessage excludedSchema}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Context ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kontext ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getExcludedServiceMessage excludedService}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Service ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Service ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
  * </table>
  * <li>"{@link #getExcludingModuleMessage excludingModule}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Excluding module ''{0}''.</pre></td></tr>
@@ -237,7 +261,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
             this.log( Level.INFO, this.getStartingProcessingMessage( this.getLocale(), this.getCommandName() ), null );
         }
 
-        final ClassLoader classLoader = this.getClassLoader( commandLine );
+        final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
         final ModelContext context = this.getModelContext( classLoader );
         final Modules modules = this.getModules( context, commandLine );
         final Marshaller marshaller = context.createMarshaller();
@@ -667,6 +691,48 @@ public final class MergeModulesCommand extends AbstractJomcCommand
         assert _p != null : "'commandName' property not found.";
         return _p;
     }
+
+    /**
+     * Gets the value of the {@code providerExcludes} property.
+     * @return List of providers to exclude from any {@code META-INF/services} file separated by {@code :}.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-18-SNAPSHOT/jomc-tools" )
+    private java.lang.String getProviderExcludes()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "providerExcludes" );
+        assert _p != null : "'providerExcludes' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code schemaExcludes} property.
+     * @return List of schema context-ids to exclude from any {@code META-INF/jomc-schemas.xml} file separated by {@code :}.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-18-SNAPSHOT/jomc-tools" )
+    private java.lang.String getSchemaExcludes()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "schemaExcludes" );
+        assert _p != null : "'schemaExcludes' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code serviceExcludes} property.
+     * @return List of service classes to exclude from any {@code META-INF/jomc-services.xml} file separated by {@code :}.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-18-SNAPSHOT/jomc-tools" )
+    private java.lang.String getServiceExcludes()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "serviceExcludes" );
+        assert _p != null : "'serviceExcludes' property not found.";
+        return _p;
+    }
     // </editor-fold>
     // SECTION-END
     // SECTION-START[Messages]
@@ -675,7 +741,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-13T18:50:32+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-18T22:22:44+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -773,6 +839,72 @@ public final class MergeModulesCommand extends AbstractJomcCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentFile", locale, documentFile );
         assert _m != null : "'documentFile' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code excludedProvider} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Provider ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Provider ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param resourceName Format argument.
+     * @param providerName Format argument.
+     * @return The text of the {@code excludedProvider} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-18-SNAPSHOT/jomc-tools" )
+    private String getExcludedProviderMessage( final java.util.Locale locale, final java.lang.String resourceName, final java.lang.String providerName )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "excludedProvider", locale, resourceName, providerName );
+        assert _m != null : "'excludedProvider' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code excludedSchema} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Context ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kontext ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param resourceName Format argument.
+     * @param contextId Format argument.
+     * @return The text of the {@code excludedSchema} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-18-SNAPSHOT/jomc-tools" )
+    private String getExcludedSchemaMessage( final java.util.Locale locale, final java.lang.String resourceName, final java.lang.String contextId )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "excludedSchema", locale, resourceName, contextId );
+        assert _m != null : "'excludedSchema' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code excludedService} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Service ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Service ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param resourceName Format argument.
+     * @param serviceName Format argument.
+     * @return The text of the {@code excludedService} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-18-SNAPSHOT/jomc-tools" )
+    private String getExcludedServiceMessage( final java.util.Locale locale, final java.lang.String resourceName, final java.lang.String serviceName )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "excludedService", locale, resourceName, serviceName );
+        assert _m != null : "'excludedService' message not found.";
         return _m;
     }
 

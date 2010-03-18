@@ -75,7 +75,7 @@
     <xsl:attribute name="{name()}">
       <xsl:choose>
         <xsl:when test="starts-with($value, 'org.jomc.model.')">
-          <xsl:value-of select="concat('org.jomc.model.', substring-after($value, 'org.jomc.model.'))"/>
+          <xsl:value-of select="concat('org.jomc.cli.util.model.', substring-after($value, 'org.jomc.model.'))"/>
         </xsl:when>
         <xsl:when test="starts-with($value, 'org.jomc.tools.model.')">
           <xsl:value-of select="concat('org.jomc.cli.util.tools.model.', substring-after($value, 'org.jomc.tools.model.'))"/>
@@ -119,6 +119,9 @@
     <xsl:variable name="value" select="string(.)"/>
     <xsl:attribute name="{name()}">
       <xsl:choose>
+        <xsl:when test="starts-with($value, 'org.jomc.model')">
+          <xsl:value-of select="concat('org.jomc.cli.util.model', substring-after($value, 'org.jomc.model'))"/>
+        </xsl:when>
         <xsl:when test="starts-with($value, 'org.jomc.tools')">
           <xsl:value-of select="concat('org.jomc.cli.util.tools', substring-after($value, 'org.jomc.tools'))"/>
         </xsl:when>
@@ -133,6 +136,9 @@
     <xsl:variable name="value" select="string(.)"/>
     <xsl:attribute name="{name()}">
       <xsl:choose>
+        <xsl:when test="starts-with($value, 'org/jomc/model')">
+          <xsl:value-of select="concat('org/jomc/cli/util/model', substring-after($value, 'org/jomc/model'))"/>
+        </xsl:when>
         <xsl:when test="starts-with($value, 'org/jomc/tools')">
           <xsl:value-of select="concat('org/jomc/cli/util/tools', substring-after($value, 'org/jomc/tools'))"/>
         </xsl:when>

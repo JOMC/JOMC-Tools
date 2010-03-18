@@ -157,6 +157,10 @@
                     <shadedPattern>org.jomc.cli.util.tools</shadedPattern>
                   </relocation>
                   <relocation>
+                    <pattern>org.jomc.model</pattern>
+                    <shadedPattern>org.jomc.cli.util.model</shadedPattern>
+                  </relocation>
+                  <relocation>
                     <pattern>org.apache.commons.cli</pattern>
                     <shadedPattern>org.jomc.cli.util.cli</shadedPattern>
                   </relocation>
@@ -253,6 +257,8 @@
                       <exclude>META-INF/LICENSE.txt</exclude>
                       <exclude>META-INF/PROJEKT.txt</exclude>
                       <exclude>META-INF/PROJECT.txt</exclude>
+                      <exclude>META-INF/services/org.jomc.model.bootstrap.SchemaProvider</exclude>
+                      <exclude>META-INF/services/org.jomc.model.bootstrap.ServiceProvider</exclude>
                     </excludes>
                   </filter>
                 </filters>
