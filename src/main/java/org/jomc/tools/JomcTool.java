@@ -1198,35 +1198,37 @@ public abstract class JomcTool
 
                     public void log( final int level, final String message, final Throwable throwable )
                     {
-                        JomcTool.this.log( this.toToolLevel( level ), message, throwable );
+                        final StringBuilder b = new StringBuilder();
+                        b.append( "Velocity:" ).append( this.getLogChutePrefix( level ) ).append( message );
+                        JomcTool.this.log( Level.FINE, b.toString(), throwable );
                     }
 
                     public boolean isLevelEnabled( final int level )
                     {
-                        return isLoggable( this.toToolLevel( level ) );
+                        return isLoggable( Level.FINE );
                     }
 
-                    private Level toToolLevel( final int logChuteLevel )
+                    private String getLogChutePrefix( final int logChuteLevel )
                     {
                         switch ( logChuteLevel )
                         {
                             case LogChute.DEBUG_ID:
-                                return Level.FINE;
+                                return LogChute.DEBUG_PREFIX;
 
                             case LogChute.ERROR_ID:
-                                return Level.SEVERE;
+                                return LogChute.ERROR_PREFIX;
 
                             case LogChute.INFO_ID:
-                                return Level.INFO;
+                                return LogChute.INFO_PREFIX;
 
                             case LogChute.TRACE_ID:
-                                return Level.FINER;
+                                return LogChute.TRACE_PREFIX;
 
                             case LogChute.WARN_ID:
-                                return Level.WARNING;
+                                return LogChute.WARN_PREFIX;
 
                             default:
-                                return Level.FINEST;
+                                return LogChute.TRACE_PREFIX;
 
                         }
                     }
@@ -1452,9 +1454,9 @@ public abstract class JomcTool
         }
         catch ( final ResourceNotFoundException e )
         {
-            if ( this.isLoggable( Level.CONFIG ) )
+            if ( this.isLoggable( Level.FINE ) )
             {
-                this.log( Level.CONFIG, getMessage( "templateNotFound", templateName, this.getProfile() ), e );
+                this.log( Level.FINE, getMessage( "templateNotFound", templateName, this.getProfile() ), null );
             }
 
             try
@@ -1464,7 +1466,7 @@ public abstract class JomcTool
 
                 if ( this.isLoggable( Level.CONFIG ) )
                 {
-                    this.log( Level.CONFIG, getMessage( "templateInfo", templateName, DEFAULT_PROFILE ), e );
+                    this.log( Level.CONFIG, getMessage( "templateInfo", templateName, DEFAULT_PROFILE ), null );
                 }
 
                 return template;
