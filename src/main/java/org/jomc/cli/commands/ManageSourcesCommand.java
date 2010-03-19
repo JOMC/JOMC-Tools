@@ -117,7 +117,7 @@ import org.jomc.tools.SourceFileProcessor;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-18T23:44:21+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-19T20:34:03+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -237,7 +237,7 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
     public int executeCommand( final CommandLine commandLine ) throws Exception
     {
         final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
-        final ModelContext context = this.getModelContext( classLoader );
+        final ModelContext context = this.createModelContext( classLoader );
         final Modules modules = this.getModules( context, commandLine );
         final JAXBContext jaxbContext = context.createContext();
         final Marshaller marshaller = context.createMarshaller();
@@ -248,7 +248,7 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
 
         if ( validationReport.isModelValid() )
         {
-            final SourceFileProcessor tool = this.getSourceFileProcessor();
+            final SourceFileProcessor tool = this.createSourceFileProcessor();
             tool.setModules( modules );
 
             if ( commandLine.hasOption( this.getProfileOption().getOpt() ) )
@@ -700,7 +700,7 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-18T23:44:21+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-19T20:34:03+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

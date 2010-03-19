@@ -141,7 +141,7 @@ import org.xml.sax.SAXException;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-18T23:44:21+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-19T20:34:03+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -414,15 +414,6 @@ public abstract class AbstractJomcCommand implements Command
     /** Default log level. */
     private static volatile Level defaultLogLevel;
 
-    /** The {@code ResourceFileProcessor} tool of the instance. */
-    private ResourceFileProcessor resourceFileProcessor;
-
-    /** The {@code ClassFileProcessor} tool of the instance. */
-    private ClassFileProcessor classFileProcessor;
-
-    /** The {@code SourceFileProcessor} tool of the instance. */
-    private SourceFileProcessor sourceFileProcessor;
-
     /** The listeners of the instance. */
     private List<Listener> listeners;
 
@@ -542,7 +533,7 @@ public abstract class AbstractJomcCommand implements Command
         }
     }
 
-    protected ModelContext getModelContext( final ClassLoader classLoader ) throws ModelException
+    protected ModelContext createModelContext( final ClassLoader classLoader ) throws ModelException
     {
         final ModelContext modelContext = ModelContext.createModelContext( classLoader );
         modelContext.setLogLevel( this.getLogLevel() );
@@ -559,70 +550,55 @@ public abstract class AbstractJomcCommand implements Command
         return modelContext;
     }
 
-    protected ResourceFileProcessor getResourceFileProcessor()
+    protected ResourceFileProcessor createResourceFileProcessor()
     {
-        if ( this.resourceFileProcessor == null )
+        final ResourceFileProcessor tool = new ResourceFileProcessor();
+        tool.setLogLevel( this.getLogLevel() );
+        tool.getListeners().add( new JomcTool.Listener()
         {
-            final ResourceFileProcessor tool = new ResourceFileProcessor();
-            tool.setLogLevel( this.getLogLevel() );
-            tool.getListeners().add( new JomcTool.Listener()
+
+            public void onLog( final Level level, final String message, final Throwable throwable )
             {
+                log( level, message, throwable );
+            }
 
-                public void onLog( final Level level, final String message, final Throwable throwable )
-                {
-                    log( level, message, throwable );
-                }
+        } );
 
-            } );
-
-            return tool;
-        }
-
-        return this.resourceFileProcessor;
+        return tool;
     }
 
-    protected ClassFileProcessor getClassFileProcessor()
+    protected ClassFileProcessor createClassFileProcessor()
     {
-        if ( this.classFileProcessor == null )
+        final ClassFileProcessor tool = new ClassFileProcessor();
+        tool.setLogLevel( this.getLogLevel() );
+        tool.getListeners().add( new JomcTool.Listener()
         {
-            final ClassFileProcessor tool = new ClassFileProcessor();
-            tool.setLogLevel( this.getLogLevel() );
-            tool.getListeners().add( new JomcTool.Listener()
+
+            public void onLog( final Level level, final String message, final Throwable throwable )
             {
+                log( level, message, throwable );
+            }
 
-                public void onLog( final Level level, final String message, final Throwable throwable )
-                {
-                    log( level, message, throwable );
-                }
+        } );
 
-            } );
-
-            return tool;
-        }
-
-        return this.classFileProcessor;
+        return tool;
     }
 
-    protected SourceFileProcessor getSourceFileProcessor()
+    protected SourceFileProcessor createSourceFileProcessor()
     {
-        if ( this.sourceFileProcessor == null )
+        final SourceFileProcessor tool = new SourceFileProcessor();
+        tool.setLogLevel( this.getLogLevel() );
+        tool.getListeners().add( new JomcTool.Listener()
         {
-            final SourceFileProcessor tool = new SourceFileProcessor();
-            tool.setLogLevel( this.getLogLevel() );
-            tool.getListeners().add( new JomcTool.Listener()
+
+            public void onLog( final Level level, final String message, final Throwable throwable )
             {
+                log( level, message, throwable );
+            }
 
-                public void onLog( final Level level, final String message, final Throwable throwable )
-                {
-                    log( level, message, throwable );
-                }
+        } );
 
-            } );
-
-            return tool;
-        }
-
-        return this.sourceFileProcessor;
+        return tool;
     }
 
     protected Set<File> getDocumentFiles( final CommandLine commandLine ) throws IOException
@@ -1409,7 +1385,7 @@ public abstract class AbstractJomcCommand implements Command
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-18T23:44:21+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-18-SNAPSHOT Build 2010-03-19T20:34:03+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
