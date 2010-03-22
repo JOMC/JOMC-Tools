@@ -735,6 +735,10 @@
           </plugin>
         </plugins>
       </build>
+      <properties>
+        <jomc.verbose>true</jomc.verbose>
+        <jomc.sourceProcessing>false</jomc.sourceProcessing>
+      </properties>
     </profile>
   </profiles>
 </project>
