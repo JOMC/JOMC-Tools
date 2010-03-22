@@ -361,7 +361,7 @@ public class JomcResourceTransformer implements ResourceTransformer
                     }
                 }
 
-                Module mergedModule = this.modules.getMergedModule();
+                final Module mergedModule = this.modules.getMergedModule();
                 mergedModule.setName( this.moduleName );
                 mergedModule.setVersion( this.moduleVersion );
                 mergedModule.setVendor( this.moduleVendor );
@@ -488,7 +488,7 @@ public class JomcResourceTransformer implements ResourceTransformer
     }
 
     private <T> JAXBElement<T> transformModelObject( final JAXBElement<T> element )
-        throws TransformerConfigurationException, TransformerException, JAXBException, ModelException
+        throws TransformerException, JAXBException, ModelException
     {
         if ( element == null )
         {
@@ -590,7 +590,7 @@ public class JomcResourceTransformer implements ResourceTransformer
     }
 
     private <T> JAXBElement<T> transformBootstrapObject( final JAXBElement<T> element )
-        throws TransformerConfigurationException, TransformerException, JAXBException, BootstrapException
+        throws TransformerException, JAXBException, BootstrapException
     {
         if ( element == null )
         {
