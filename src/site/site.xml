@@ -81,6 +81,7 @@ piwikTracker.enableLinkTracking();
     <menu name="Examples">
       <item name="Validating modules" href="examples/validate-modules.html"/>
       <item name="Performing a release" href="examples/release-project.html"/>
+      <item name="Shading artifacts" href="examples/shade-artifacts.html"/>
     </menu>
     <menu name="Sourceforge">
       <item name="Project Summary" href="http://sourceforge.net/projects/jomc/"/>
