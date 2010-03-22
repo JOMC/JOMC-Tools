@@ -95,11 +95,11 @@ import org.jomc.model.bootstrap.Services;
  *   &lt;/serviceResources&gt;
  *   &lt;modelObjectStylesheet&gt;Filename of a style sheet to use for transforming the merged model document.&lt;/modelObjectStylesheet&gt;
  *   &lt;bootstrapObjectStylesheet&gt;Filename of a style sheet to use for transforming the merged bootstrap documents.&lt;/bootstrapObjectStylesheet&gt;
- *   &lt;providerLocation&gt;META-INF/custom-services&lt;providerLocation&gt;
- *   &lt;platformProviderLocation&gt;${java.home}/jre/lib/custom-jomc.properties&lt;platformProviderLocation&gt;
- *   &lt;serviceLocation&gt;META-INF/custom-jomc-services.xml&lt;serviceLocation&gt;
- *   &lt;schemaLocation&gt;META-INF/custom-jomc-schemas.xml&lt;schemaLocation&gt;
- *   &lt;bootstrapSchemaSystemId&gt;http://custom.host.tld/custom/path/jomc-bootstrap-1.0.xsd&lt;bootstrapSchemaSystemId&gt;
+ *   &lt;providerLocation&gt;META-INF/custom-services&lt;/providerLocation&gt;
+ *   &lt;platformProviderLocation&gt;${java.home}/jre/lib/custom-jomc.properties&lt;/platformProviderLocation&gt;
+ *   &lt;serviceLocation&gt;META-INF/custom-jomc-services.xml&lt;/serviceLocation&gt;
+ *   &lt;schemaLocation&gt;META-INF/custom-jomc-schemas.xml&lt;/schemaLocation&gt;
+ *   &lt;bootstrapSchemaSystemId&gt;http://custom.host.tld/custom/path/jomc-bootstrap-1.0.xsd&lt;/bootstrapSchemaSystemId&gt;
  * &lt;/transformer&gt;
  * </pre></p>
  *
