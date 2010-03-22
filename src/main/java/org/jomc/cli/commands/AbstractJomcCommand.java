@@ -76,6 +76,7 @@ import org.jomc.model.bootstrap.BootstrapException;
 import org.jomc.tools.JomcTool;
 import org.jomc.model.ModelValidationReport;
 import org.jomc.model.bootstrap.BootstrapContext;
+import org.jomc.model.bootstrap.DefaultBootstrapContext;
 import org.jomc.model.bootstrap.DefaultSchemaProvider;
 import org.jomc.model.bootstrap.DefaultServiceProvider;
 import org.jomc.model.bootstrap.ObjectFactory;
@@ -118,6 +119,8 @@ import org.xml.sax.SAXException;
  * </blockquote></li>
  * </ul></p>
  * <p><b>Dependencies</b><ul>
+ * <li>"{@link #getBootstrapSchemaSystemIdOption BootstrapSchemaSystemIdOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getClasspathOption ClasspathOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getDocumentsOption DocumentsOption}"<blockquote>
@@ -132,6 +135,10 @@ import org.xml.sax.SAXException;
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getNoModelProcessingOption NoModelProcessingOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getPlatformProviderLocationOption PlatformProviderLocationOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getProviderLocationOption ProviderLocationOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getSchemaLocationOption SchemaLocationOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getServiceLocationOption ServiceLocationOption}"<blockquote>
@@ -141,7 +148,7 @@ import org.xml.sax.SAXException;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-19-SNAPSHOT Build 2010-03-19T23:12:26+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-19-SNAPSHOT Build 2010-03-22T01:11:16+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -309,6 +316,9 @@ public abstract class AbstractJomcCommand implements Command
         options.addOption( this.getSchemaLocationOption() );
         options.addOption( this.getServiceLocationOption() );
         options.addOption( this.getTransformerLocationOption() );
+        options.addOption( this.getProviderLocationOption() );
+        options.addOption( this.getPlatformProviderLocationOption() );
+        options.addOption( this.getBootstrapSchemaSystemIdOption() );
         options.addOption( this.getModuleNameOption() );
         options.addOption( this.getNoClasspathResolutionOption() );
         options.addOption( this.getNoModelProcessingOption() );
@@ -319,6 +329,39 @@ public abstract class AbstractJomcCommand implements Command
     {
         try
         {
+            if ( commandLine.hasOption( this.getProviderLocationOption().getOpt() ) )
+            {
+                DefaultBootstrapContext.setDefaultProviderLocation(
+                    commandLine.getOptionValue( this.getProviderLocationOption().getOpt() ) );
+
+            }
+            else
+            {
+                DefaultBootstrapContext.setDefaultProviderLocation( null );
+            }
+
+            if ( commandLine.hasOption( this.getPlatformProviderLocationOption().getOpt() ) )
+            {
+                DefaultBootstrapContext.setDefaultPlatformProviderLocation(
+                    commandLine.getOptionValue( this.getPlatformProviderLocationOption().getOpt() ) );
+
+            }
+            else
+            {
+                DefaultBootstrapContext.setDefaultPlatformProviderLocation( null );
+            }
+
+            if ( commandLine.hasOption( this.getBootstrapSchemaSystemIdOption().getOpt() ) )
+            {
+                DefaultBootstrapContext.setDefaultBootstrapSchemaSystemId(
+                    commandLine.getOptionValue( this.getBootstrapSchemaSystemIdOption().getOpt() ) );
+
+            }
+            else
+            {
+                DefaultBootstrapContext.setDefaultBootstrapSchemaSystemId( null );
+            }
+
             if ( commandLine.hasOption( this.getSchemaLocationOption().getOpt() ) )
             {
                 DefaultSchemaProvider.setDefaultSchemaLocation(
@@ -396,6 +439,9 @@ public abstract class AbstractJomcCommand implements Command
         }
         finally
         {
+            DefaultBootstrapContext.setDefaultBootstrapSchemaSystemId( null );
+            DefaultBootstrapContext.setDefaultPlatformProviderLocation( null );
+            DefaultBootstrapContext.setDefaultProviderLocation( null );
             DefaultSchemaProvider.setDefaultSchemaLocation( null );
             DefaultServiceProvider.setDefaultServiceLocation( null );
             DefaultModelProcessor.setDefaultTransformerLocation( null );
@@ -1145,6 +1191,22 @@ public abstract class AbstractJomcCommand implements Command
     // <editor-fold defaultstate="collapsed" desc=" Generated Dependencies ">
 
     /**
+     * Gets the {@code BootstrapSchemaSystemIdOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Bootstrap Schema System Id Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code BootstrapSchemaSystemIdOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-19-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getBootstrapSchemaSystemIdOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "BootstrapSchemaSystemIdOption" );
+        assert _d != null : "'BootstrapSchemaSystemIdOption' dependency not found.";
+        return _d;
+    }
+
+    /**
      * Gets the {@code ClasspathOption} dependency.
      * <p>This method returns the "{@code JOMC CLI Classpath Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
@@ -1253,6 +1315,38 @@ public abstract class AbstractJomcCommand implements Command
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "NoModelProcessingOption" );
         assert _d != null : "'NoModelProcessingOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code PlatformProviderLocationOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Platform Provider Location Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code PlatformProviderLocationOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-19-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getPlatformProviderLocationOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "PlatformProviderLocationOption" );
+        assert _d != null : "'PlatformProviderLocationOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code ProviderLocationOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Provider Location Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code ProviderLocationOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-19-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getProviderLocationOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ProviderLocationOption" );
+        assert _d != null : "'ProviderLocationOption' dependency not found.";
         return _d;
     }
 
@@ -1385,7 +1479,7 @@ public abstract class AbstractJomcCommand implements Command
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-19-SNAPSHOT Build 2010-03-19T23:12:26+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-19-SNAPSHOT Build 2010-03-22T01:11:16+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

@@ -80,6 +80,8 @@ import org.jomc.tools.SourceFileProcessor;
  * </blockquote></li>
  * </ul></p>
  * <p><b>Dependencies</b><ul>
+ * <li>"{@link #getBootstrapSchemaSystemIdOption BootstrapSchemaSystemIdOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getClasspathOption ClasspathOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getDocumentsOption DocumentsOption}"<blockquote>
@@ -100,7 +102,11 @@ import org.jomc.tools.SourceFileProcessor;
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getOutputEncodingOption OutputEncodingOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getPlatformProviderLocationOption PlatformProviderLocationOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getProfileOption ProfileOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getProviderLocationOption ProviderLocationOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getSchemaLocationOption SchemaLocationOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
@@ -117,7 +123,7 @@ import org.jomc.tools.SourceFileProcessor;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-19-SNAPSHOT Build 2010-03-19T23:12:26+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-19-SNAPSHOT Build 2010-03-22T01:11:16+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -343,6 +349,22 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
     // <editor-fold defaultstate="collapsed" desc=" Generated Dependencies ">
 
     /**
+     * Gets the {@code BootstrapSchemaSystemIdOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Bootstrap Schema System Id Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code BootstrapSchemaSystemIdOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-19-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getBootstrapSchemaSystemIdOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "BootstrapSchemaSystemIdOption" );
+        assert _d != null : "'BootstrapSchemaSystemIdOption' dependency not found.";
+        return _d;
+    }
+
+    /**
      * Gets the {@code ClasspathOption} dependency.
      * <p>This method returns the "{@code JOMC CLI Classpath Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
@@ -503,6 +525,22 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
     }
 
     /**
+     * Gets the {@code PlatformProviderLocationOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Platform Provider Location Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code PlatformProviderLocationOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-19-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getPlatformProviderLocationOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "PlatformProviderLocationOption" );
+        assert _d != null : "'PlatformProviderLocationOption' dependency not found.";
+        return _d;
+    }
+
+    /**
      * Gets the {@code ProfileOption} dependency.
      * <p>This method returns the "{@code JOMC CLI Profile Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
@@ -515,6 +553,22 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ProfileOption" );
         assert _d != null : "'ProfileOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code ProviderLocationOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Provider Location Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code ProviderLocationOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-19-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getProviderLocationOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ProviderLocationOption" );
+        assert _d != null : "'ProviderLocationOption' dependency not found.";
         return _d;
     }
 
@@ -700,7 +754,7 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-19-SNAPSHOT Build 2010-03-19T23:12:26+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-19-SNAPSHOT Build 2010-03-22T01:11:16+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
