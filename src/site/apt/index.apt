@@ -89,4 +89,6 @@ Maven JOMC Plugin
 
   * {{{./examples/release-project.html}Performing a release of a project using the JOMC Plugin.}}
 
+  * {{{./examples/shade-artifacts.html}'Shading' JOMC artifacts.}}
+
   []

@@ -114,13 +114,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private String platformProviderLocation;
 
     /**
-     * The system id of the bootstrap schema.
-     *
-     * @parameter
-     */
-    private String bootstrapSchemaSystemId;
-
-    /**
      * The location to search for services.
      *
      * @parameter
@@ -225,7 +218,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         {
             DefaultBootstrapContext.setDefaultProviderLocation( this.providerLocation );
             DefaultBootstrapContext.setDefaultPlatformProviderLocation( this.platformProviderLocation );
-            DefaultBootstrapContext.setDefaultBootstrapSchemaSystemId( this.bootstrapSchemaSystemId );
             DefaultSchemaProvider.setDefaultSchemaLocation( this.schemaLocation );
             DefaultServiceProvider.setDefaultServiceLocation( this.serviceLocation );
             DefaultModelProvider.setDefaultModuleLocation( this.moduleLocation );
@@ -244,7 +236,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         {
             DefaultBootstrapContext.setDefaultProviderLocation( null );
             DefaultBootstrapContext.setDefaultPlatformProviderLocation( null );
-            DefaultBootstrapContext.setDefaultBootstrapSchemaSystemId( null );
             DefaultSchemaProvider.setDefaultSchemaLocation( null );
             DefaultServiceProvider.setDefaultServiceLocation( null );
             DefaultModelProvider.setDefaultModuleLocation( null );
