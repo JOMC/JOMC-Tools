@@ -61,6 +61,7 @@ import org.jomc.model.ModelException;
 import org.jomc.model.ModelValidationReport;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
+import org.jomc.model.bootstrap.DefaultBootstrapContext;
 import org.jomc.model.bootstrap.DefaultSchemaProvider;
 import org.jomc.model.bootstrap.DefaultServiceProvider;
 import org.jomc.tools.ClassFileProcessor;
@@ -97,6 +98,27 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @parameter default-value="jomc-java"
      */
     private String templateProfile;
+
+    /**
+     * The location to search for providers.
+     *
+     * @parameter
+     */
+    private String providerLocation;
+
+    /**
+     * The location to search for platform providers.
+     *
+     * @parameter
+     */
+    private String platformProviderLocation;
+
+    /**
+     * The system id of the bootstrap schema.
+     *
+     * @parameter
+     */
+    private String bootstrapSchemaSystemId;
 
     /**
      * The location to search for services.
@@ -201,6 +223,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         try
         {
+            DefaultBootstrapContext.setDefaultProviderLocation( this.providerLocation );
+            DefaultBootstrapContext.setDefaultPlatformProviderLocation( this.platformProviderLocation );
+            DefaultBootstrapContext.setDefaultBootstrapSchemaSystemId( this.bootstrapSchemaSystemId );
             DefaultSchemaProvider.setDefaultSchemaLocation( this.schemaLocation );
             DefaultServiceProvider.setDefaultServiceLocation( this.serviceLocation );
             DefaultModelProvider.setDefaultModuleLocation( this.moduleLocation );
@@ -217,6 +242,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         finally
         {
+            DefaultBootstrapContext.setDefaultProviderLocation( null );
+            DefaultBootstrapContext.setDefaultPlatformProviderLocation( null );
+            DefaultBootstrapContext.setDefaultBootstrapSchemaSystemId( null );
             DefaultSchemaProvider.setDefaultSchemaLocation( null );
             DefaultServiceProvider.setDefaultServiceLocation( null );
             DefaultModelProvider.setDefaultModuleLocation( null );
