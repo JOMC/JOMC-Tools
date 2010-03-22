@@ -39,23 +39,23 @@ import org.jomc.model.ModelContext;
 import org.jomc.model.ModelValidationReport;
 
 /**
- * Validates a projects' test modules.
+ * Validates a projects' main modules.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  *
- * @phase process-test-classes
- * @goal validate-test-modules
+ * @phase process-classes
+ * @goal validate-main-modules
  * @requiresDependencyResolution test
  */
-public class ValidateTestModulesMojo extends AbstractJomcMojo
+public class MainModulesValidateMojo extends AbstractJomcMojo
 {
 
     /** Constant for the name of the tool backing the mojo. */
     private static final String TOOLNAME = "ModelValidator";
 
-    /** Creates a new {@code ValidateTestModulesMojo} instance. */
-    public ValidateTestModulesMojo()
+    /** Creates a new {@code ValidateMainModulesMojo} instance. */
+    public MainModulesValidateMojo()
     {
         super();
     }
@@ -63,7 +63,7 @@ public class ValidateTestModulesMojo extends AbstractJomcMojo
     @Override
     protected void executeTool() throws Exception
     {
-        final ModelContext context = this.createModelContext( this.getTestClassLoader() );
+        final ModelContext context = this.createModelContext( this.getMainClassLoader() );
         final ModelValidationReport validationReport = context.validateModel( this.getToolModules( context ) );
 
         this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
@@ -80,7 +80,7 @@ public class ValidateTestModulesMojo extends AbstractJomcMojo
 
     private static String getMessage( final String key )
     {
-        return ResourceBundle.getBundle( ValidateTestModulesMojo.class.getName().replace( '.', '/' ) ).getString( key );
+        return ResourceBundle.getBundle( MainModulesValidateMojo.class.getName().replace( '.', '/' ) ).getString( key );
     }
 
 }
