@@ -496,40 +496,6 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="${project.name} Bootstrap Schema System Id Option"
-                    name="${project.name} Bootstrap Schema System Id Option"
-                    class="org.jomc.cli.util.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
-
-      <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
-                createDate="2005-07-25T19:56:45Z"/>
-
-      </authors>
-      <implementations>
-        <reference identifier="org.jomc.cli.util.OptionFactory" version="${project.version}" final="true"/>
-      </implementations>
-      <properties>
-        <property name="opt" value="bsid" override="true"/>
-        <property name="longOpt" value="bootstrap-schema-system-id" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
-      </properties>
-      <messages>
-        <message name="description" override="true">
-          <template defaultLanguage="en">
-            <text language="en">System ID of the bootstrap schema.</text>
-            <text language="de">System-ID des ''Bootstrap''-Schemas.</text>
-          </template>
-        </message>
-        <message name="argumentDescription" override="true">
-          <template defaultLanguage="en">
-            <text language="en">system-id</text>
-            <text language="de">System-ID</text>
-          </template>
-        </message>
-      </messages>
-    </implementation>
-    <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} Module Name Option" name="${project.name} Module Name Option"
                     class="org.jomc.cli.util.OptionFactory" version="${project.version}"
                     vendor="${project.organization.name}">
@@ -1297,9 +1263,6 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
         <dependency name="PlatformProviderLocationOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Platform Provider Location Option" bound="true"/>
-
-        <dependency name="BootstrapSchemaSystemIdOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Bootstrap Schema System Id Option" bound="true"/>
 
         <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Module Name Option" bound="true"/>
