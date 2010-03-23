@@ -291,7 +291,7 @@ public class SourceFileProcessorTest extends JomcToolTest
             System.out.println( e.toString() );
         }
 
-        this.getTestTool().setProfile( "DOES_NOT_EXIST" );
+        this.getTestTool().setTemplateProfile( "DOES_NOT_EXIST" );
 
         this.getTestTool().manageSourceFiles( this.getTestSourcesDirectory() );
         this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getModule( "Module" ),

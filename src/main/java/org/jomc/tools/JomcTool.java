@@ -113,8 +113,11 @@ public abstract class JomcTool
     /** Name of the velocity classpath resource loader implementation. */
     private static final String VELOCITY_RESOURCE_LOADER = ClasspathResourceLoader.class.getName();
 
-    /** Constant for the default profile. */
-    private static final String DEFAULT_PROFILE = "jomc-java";
+    /** Constant for the default template profile. */
+    private static final String DEFAULT_TEMPLATE_PROFILE = "jomc-java";
+
+    /** Default template profile. */
+    private volatile static String defaultTemplateProfile;
 
     /**
      * Log level events are logged at by default.
@@ -140,8 +143,8 @@ public abstract class JomcTool
     /** The encoding to use for writing files. */
     private String outputEncoding;
 
-    /** The profile of the instance. */
-    private String profile;
+    /** The template profile of the instance. */
+    private String templateProfile;
 
     /** The listeners of the instance. */
     private List<Listener> listeners;
@@ -176,7 +179,7 @@ public abstract class JomcTool
         this.setInputEncoding( tool.getInputEncoding() );
         this.setOutputEncoding( tool.getOutputEncoding() );
         this.setModules( tool.getModules() );
-        this.setProfile( tool.getProfile() );
+        this.setTemplateProfile( tool.getTemplateProfile() );
         this.setVelocityEngine( tool.getVelocityEngine() );
         this.setLogLevel( tool.getLogLevel() );
         this.getListeners().addAll( tool.getListeners() );
@@ -1385,36 +1388,71 @@ public abstract class JomcTool
     }
 
     /**
-     * Gets the profile of the instance.
+     * Gets the default template profile.
+     * <p>The default template profile is controlled by system property
+     * {@code org.jomc.tools.JomcTool.defaultTemplateProfile} holding the name of the template profile to use by
+     * default. If that property is not set, the {@code jomc-java} default is returned.</p>
      *
-     * @return The profile of the instance.
+     * @return The default template profile.
      *
-     * @see #setProfile(java.lang.String)
+     * @see #setDefaultTemplateProfile(java.lang.String)
      */
-    public String getProfile()
+    public static String getDefaultTemplateProfile()
     {
-        if ( this.profile == null )
+        if ( defaultTemplateProfile == null )
         {
-            this.profile = DEFAULT_PROFILE;
-            if ( this.isLoggable( Level.CONFIG ) )
-            {
-                this.log( Level.CONFIG, getMessage( "defaultProfile", this.profile ), null );
-            }
+            defaultTemplateProfile = System.getProperty( "org.jomc.tools.JomcTool.defaultTemplateProfile",
+                                                         DEFAULT_TEMPLATE_PROFILE );
+
         }
 
-        return this.profile;
+        return defaultTemplateProfile;
     }
 
     /**
-     * Sets the profile of the instance.
+     * Sets the default template profile.
      *
-     * @param value The profile of the instance.
+     * @param value The new default template profile or {@code null}.
      *
-     * @see #getProfile()
+     * @see #getDefaultTemplateProfile()
      */
-    public void setProfile( final String value )
+    public static void setDefaultTemplateProfile( final String value )
     {
-        this.profile = value;
+        defaultTemplateProfile = value;
+    }
+
+    /**
+     * Gets the template profile of the instance.
+     *
+     * @return The template profile of the instance.
+     *
+     * @see #getDefaultTemplateProfile()
+     * @see #setTemplateProfile(java.lang.String)
+     */
+    public String getTemplateProfile()
+    {
+        if ( this.templateProfile == null )
+        {
+            this.templateProfile = getDefaultTemplateProfile();
+            if ( this.isLoggable( Level.CONFIG ) )
+            {
+                this.log( Level.CONFIG, getMessage( "defaultTemplateProfile", this.templateProfile ), null );
+            }
+        }
+
+        return this.templateProfile;
+    }
+
+    /**
+     * Sets the template profile of the instance.
+     *
+     * @param value The new template profile of the instance or {@code null}.
+     *
+     * @see #getTemplateProfile()
+     */
+    public void setTemplateProfile( final String value )
+    {
+        this.templateProfile = value;
     }
 
     /**
@@ -1430,7 +1468,7 @@ public abstract class JomcTool
      * @throws NullPointerException if {@code templateName} is {@code null}.
      * @throws IOException if getting the template fails.
      *
-     * @see #getProfile()
+     * @see #getTemplateProfile()
      * @see #getTemplateEncoding()
      */
     public Template getVelocityTemplate( final String templateName ) throws IOException
@@ -1443,11 +1481,11 @@ public abstract class JomcTool
         try
         {
             final Template template = this.getVelocityEngine().getTemplate(
-                TEMPLATE_PREFIX + this.getProfile() + "/" + templateName, this.getTemplateEncoding() );
+                TEMPLATE_PREFIX + this.getTemplateProfile() + "/" + templateName, this.getTemplateEncoding() );
 
             if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.CONFIG, getMessage( "templateInfo", templateName, this.getProfile() ), null );
+                this.log( Level.CONFIG, getMessage( "templateInfo", templateName, this.getTemplateProfile() ), null );
             }
 
             return template;
@@ -1456,17 +1494,19 @@ public abstract class JomcTool
         {
             if ( this.isLoggable( Level.FINE ) )
             {
-                this.log( Level.FINE, getMessage( "templateNotFound", templateName, this.getProfile() ), null );
+                this.log( Level.FINE, getMessage( "templateNotFound", templateName, this.getTemplateProfile() ), null );
             }
 
             try
             {
                 final Template template = this.getVelocityEngine().getTemplate(
-                    TEMPLATE_PREFIX + DEFAULT_PROFILE + "/" + templateName, this.getTemplateEncoding() );
+                    TEMPLATE_PREFIX + getDefaultTemplateProfile() + "/" + templateName, this.getTemplateEncoding() );
 
                 if ( this.isLoggable( Level.CONFIG ) )
                 {
-                    this.log( Level.CONFIG, getMessage( "templateInfo", templateName, DEFAULT_PROFILE ), null );
+                    this.log( Level.CONFIG, getMessage(
+                        "templateInfo", templateName, getDefaultTemplateProfile() ), null );
+
                 }
 
                 return template;
@@ -1474,7 +1514,7 @@ public abstract class JomcTool
             catch ( final ResourceNotFoundException e2 )
             {
                 throw (IOException) new IOException( getMessage(
-                    "templateNotFound", templateName, DEFAULT_PROFILE ) ).initCause( e2 );
+                    "templateNotFound", templateName, getDefaultTemplateProfile() ) ).initCause( e2 );
 
             }
             catch ( final Exception e2 )

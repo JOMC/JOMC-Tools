@@ -529,7 +529,7 @@ public abstract class JomcToolTest extends TestCase
         Assert.assertNotNull( this.getTestTool().getInputEncoding() );
         Assert.assertNotNull( this.getTestTool().getModules() );
         Assert.assertNotNull( this.getTestTool().getOutputEncoding() );
-        Assert.assertNotNull( this.getTestTool().getProfile() );
+        Assert.assertNotNull( this.getTestTool().getTemplateProfile() );
         Assert.assertNotNull( this.getTestTool().getTemplateEncoding() );
         Assert.assertNotNull( this.getTestTool().getVelocityContext() );
         Assert.assertNotNull( this.getTestTool().getVelocityEngine() );
@@ -560,9 +560,9 @@ public abstract class JomcToolTest extends TestCase
     public void testVelocityTemplate() throws Exception
     {
         Assert.assertNotNull( this.getTestTool().getVelocityTemplate( "Implementation.java.vm" ) );
-        this.getTestTool().setProfile( "DOES_NOT_EXIST" );
+        this.getTestTool().setTemplateProfile( "DOES_NOT_EXIST" );
         Assert.assertNotNull( this.getTestTool().getVelocityTemplate( "Implementation.java.vm" ) );
-        this.getTestTool().setProfile( null );
+        this.getTestTool().setTemplateProfile( null );
 
         try
         {
@@ -577,7 +577,7 @@ public abstract class JomcToolTest extends TestCase
 
         try
         {
-            this.getTestTool().setProfile( "DOES_NOT_EXIST" );
+            this.getTestTool().setTemplateProfile( "DOES_NOT_EXIST" );
             this.getTestTool().getVelocityTemplate( "DOES_NOT_EXIST" );
             Assert.fail( "Expected IOException not thrown." );
         }
@@ -586,6 +586,16 @@ public abstract class JomcToolTest extends TestCase
             Assert.assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
+    }
+
+    public void testGetDefaultProfile() throws Exception
+    {
+        Assert.assertNotNull( JomcTool.getDefaultTemplateProfile() );
+        System.setProperty( "org.jomc.tools.JomcTool.defaultTemplateProfile", "TEST" );
+        JomcTool.setDefaultTemplateProfile( null );
+        Assert.assertEquals( "TEST", JomcTool.getDefaultTemplateProfile() );
+        System.clearProperty( "org.jomc.tools.JomcTool.defaultTemplateProfile" );
+        JomcTool.setDefaultTemplateProfile( null );
     }
 
     public static void assertNullPointerException( final NullPointerException e )
