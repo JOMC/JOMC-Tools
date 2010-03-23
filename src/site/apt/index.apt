@@ -91,4 +91,6 @@ Maven JOMC Plugin
 
   * {{{./examples/shade-artifacts.html}'Shading' JOMC artifacts.}}
 
+  * {{{./examples/customize-templates.html}Customizing JOMC code generation.}}
+
   []

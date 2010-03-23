@@ -761,7 +761,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         tool.setTemplateEncoding( this.templateEncoding );
         tool.setInputEncoding( this.sourceEncoding );
         tool.setOutputEncoding( this.sourceEncoding );
-        tool.setProfile( this.templateProfile );
+        tool.setTemplateProfile( this.templateProfile );
         tool.setModules( this.getToolModules( context ) );
     }
 
