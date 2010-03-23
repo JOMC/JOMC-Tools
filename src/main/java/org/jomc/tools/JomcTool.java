@@ -117,7 +117,7 @@ public abstract class JomcTool
     private static final String DEFAULT_TEMPLATE_PROFILE = "jomc-java";
 
     /** Default template profile. */
-    private volatile static String defaultTemplateProfile;
+    private static volatile String defaultTemplateProfile;
 
     /**
      * Log level events are logged at by default.
