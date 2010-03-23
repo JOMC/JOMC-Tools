@@ -102,8 +102,6 @@ import org.jomc.tools.SourceFileProcessor;
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getPlatformProviderLocationOption PlatformProviderLocationOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
- * <li>"{@link #getProfileOption ProfileOption}"<blockquote>
- * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getProviderLocationOption ProviderLocationOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getSchemaLocationOption SchemaLocationOption}"<blockquote>
@@ -114,6 +112,8 @@ import org.jomc.tools.SourceFileProcessor;
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getTemplateEncodingOption TemplateEncodingOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getTemplateProfileOption TemplateProfileOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getTransformerLocationOption TransformerLocationOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getWhitepsacesPerIndentOption WhitepsacesPerIndentOption}"<blockquote>
@@ -121,7 +121,7 @@ import org.jomc.tools.SourceFileProcessor;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-19-SNAPSHOT Build 2010-03-22T20:42:08+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-19-SNAPSHOT Build 2010-03-23T00:05:13+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -227,7 +227,7 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
         {
             this.options = super.getOptions();
             this.options.addOption( this.getSourceDirectoryOption() );
-            this.options.addOption( this.getProfileOption() );
+            this.options.addOption( this.getTemplateProfileOption() );
             this.options.addOption( this.getTemplateEncodingOption() );
             this.options.addOption( this.getInputEncodingOption() );
             this.options.addOption( this.getOutputEncodingOption() );
@@ -255,9 +255,9 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
             final SourceFileProcessor tool = this.createSourceFileProcessor();
             tool.setModules( modules );
 
-            if ( commandLine.hasOption( this.getProfileOption().getOpt() ) )
+            if ( commandLine.hasOption( this.getTemplateProfileOption().getOpt() ) )
             {
-                tool.setProfile( commandLine.getOptionValue( this.getProfileOption().getOpt() ) );
+                tool.setTemplateProfile( commandLine.getOptionValue( this.getTemplateProfileOption().getOpt() ) );
             }
             if ( commandLine.hasOption( this.getTemplateEncodingOption().getOpt() ) )
             {
@@ -523,22 +523,6 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
     }
 
     /**
-     * Gets the {@code ProfileOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Profile Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code ProfileOption} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-19-SNAPSHOT/jomc-tools" )
-    private org.apache.commons.cli.Option getProfileOption()
-    {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ProfileOption" );
-        assert _d != null : "'ProfileOption' dependency not found.";
-        return _d;
-    }
-
-    /**
      * Gets the {@code ProviderLocationOption} dependency.
      * <p>This method returns the "{@code JOMC CLI Provider Location Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
@@ -620,6 +604,22 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "TemplateEncodingOption" );
         assert _d != null : "'TemplateEncodingOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code TemplateProfileOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Template Profile Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code TemplateProfileOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-19-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getTemplateProfileOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "TemplateProfileOption" );
+        assert _d != null : "'TemplateProfileOption' dependency not found.";
         return _d;
     }
 
@@ -736,7 +736,7 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-19-SNAPSHOT Build 2010-03-22T20:42:08+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-19-SNAPSHOT Build 2010-03-23T00:05:13+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
