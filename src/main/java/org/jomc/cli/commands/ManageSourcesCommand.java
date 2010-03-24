@@ -48,6 +48,7 @@ import org.jomc.model.ModelValidationReport;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.ObjectFactory;
+import org.jomc.tools.JomcTool;
 import org.jomc.tools.SourceFileProcessor;
 
 // SECTION-START[Documentation]
@@ -81,6 +82,8 @@ import org.jomc.tools.SourceFileProcessor;
  * </ul></p>
  * <p><b>Dependencies</b><ul>
  * <li>"{@link #getClasspathOption ClasspathOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getDefaultTemplateProfileOption DefaultTemplateProfileOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getDocumentsOption DocumentsOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
@@ -121,7 +124,7 @@ import org.jomc.tools.SourceFileProcessor;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-19-SNAPSHOT Build 2010-03-23T00:05:13+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-19-SNAPSHOT Build 2010-03-24T04:48:33+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -228,6 +231,7 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
             this.options = super.getOptions();
             this.options.addOption( this.getSourceDirectoryOption() );
             this.options.addOption( this.getTemplateProfileOption() );
+            this.options.addOption( this.getDefaultTemplateProfileOption() );
             this.options.addOption( this.getTemplateEncodingOption() );
             this.options.addOption( this.getInputEncodingOption() );
             this.options.addOption( this.getOutputEncodingOption() );
@@ -240,90 +244,108 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
 
     public int executeCommand( final CommandLine commandLine ) throws Exception
     {
-        final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
-        final ModelContext context = this.createModelContext( classLoader );
-        final Modules modules = this.getModules( context, commandLine );
-        final JAXBContext jaxbContext = context.createContext();
-        final Marshaller marshaller = context.createMarshaller();
-        final ModelValidationReport validationReport =
-            context.validateModel( new JAXBSource( jaxbContext, new ObjectFactory().createModules( modules ) ) );
-
-        this.log( validationReport, marshaller );
-
-        if ( validationReport.isModelValid() )
+        try
         {
-            final SourceFileProcessor tool = this.createSourceFileProcessor();
-            tool.setModules( modules );
-
-            if ( commandLine.hasOption( this.getTemplateProfileOption().getOpt() ) )
+            if ( commandLine.hasOption( this.getDefaultTemplateProfileOption().getOpt() ) )
             {
-                tool.setTemplateProfile( commandLine.getOptionValue( this.getTemplateProfileOption().getOpt() ) );
-            }
-            if ( commandLine.hasOption( this.getTemplateEncodingOption().getOpt() ) )
-            {
-                tool.setTemplateEncoding( commandLine.getOptionValue( this.getTemplateEncodingOption().getOpt() ) );
-            }
-            if ( commandLine.hasOption( this.getInputEncodingOption().getOpt() ) )
-            {
-                tool.setInputEncoding( commandLine.getOptionValue( this.getInputEncodingOption().getOpt() ) );
-            }
-            if ( commandLine.hasOption( this.getOutputEncodingOption().getOpt() ) )
-            {
-                tool.setOutputEncoding( commandLine.getOptionValue( this.getOutputEncodingOption().getOpt() ) );
-            }
-            if ( commandLine.hasOption( this.getWhitepsacesPerIndentOption().getOpt() ) )
-            {
-                tool.setWhitespacesPerIndent( Integer.parseInt( commandLine.getOptionValue(
-                    this.getWhitepsacesPerIndentOption().getOpt() ) ) );
+                JomcTool.setDefaultTemplateProfile(
+                    commandLine.getOptionValue( this.getDefaultTemplateProfileOption().getOpt() ) );
 
-            }
-            if ( commandLine.hasOption( this.getIndentationCharacterOption().getOpt() ) )
-            {
-                tool.setIndentationCharacter( commandLine.getOptionValue(
-                    this.getIndentationCharacterOption().getOpt() ).charAt( 0 ) );
-
-            }
-
-            final File sourcesDirectory =
-                new File( commandLine.getOptionValue( this.getSourceDirectoryOption().getOpt() ) );
-
-            if ( commandLine.hasOption( this.getModuleNameOption().getOpt() ) )
-            {
-                final String moduleName = commandLine.getOptionValue( this.getModuleNameOption().getOpt() );
-                final Module module = tool.getModules().getModule( moduleName );
-
-                if ( module != null )
-                {
-                    if ( this.isLoggable( Level.INFO ) )
-                    {
-                        this.log( Level.INFO, this.getStartingModuleProcessingMessage(
-                            this.getLocale(), this.getCommandName(), module.getName() ), null );
-
-                    }
-
-                    tool.manageSourceFiles( module, sourcesDirectory );
-                }
-                else if ( this.isLoggable( Level.WARNING ) )
-                {
-                    this.log( Level.WARNING, this.getMissingModuleMessage( this.getLocale(), moduleName ), null );
-                }
             }
             else
             {
-                if ( this.isLoggable( Level.INFO ) )
+                JomcTool.setDefaultTemplateProfile( null );
+            }
+
+            final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
+            final ModelContext context = this.createModelContext( classLoader );
+            final Modules modules = this.getModules( context, commandLine );
+            final JAXBContext jaxbContext = context.createContext();
+            final Marshaller marshaller = context.createMarshaller();
+            final ModelValidationReport validationReport =
+                context.validateModel( new JAXBSource( jaxbContext, new ObjectFactory().createModules( modules ) ) );
+
+            this.log( validationReport, marshaller );
+
+            if ( validationReport.isModelValid() )
+            {
+                final SourceFileProcessor tool = this.createSourceFileProcessor();
+                tool.setModules( modules );
+
+                if ( commandLine.hasOption( this.getTemplateProfileOption().getOpt() ) )
                 {
-                    this.log( Level.INFO, this.getStartingProcessingMessage(
-                        this.getLocale(), this.getCommandName() ), null );
+                    tool.setTemplateProfile( commandLine.getOptionValue( this.getTemplateProfileOption().getOpt() ) );
+                }
+                if ( commandLine.hasOption( this.getTemplateEncodingOption().getOpt() ) )
+                {
+                    tool.setTemplateEncoding( commandLine.getOptionValue( this.getTemplateEncodingOption().getOpt() ) );
+                }
+                if ( commandLine.hasOption( this.getInputEncodingOption().getOpt() ) )
+                {
+                    tool.setInputEncoding( commandLine.getOptionValue( this.getInputEncodingOption().getOpt() ) );
+                }
+                if ( commandLine.hasOption( this.getOutputEncodingOption().getOpt() ) )
+                {
+                    tool.setOutputEncoding( commandLine.getOptionValue( this.getOutputEncodingOption().getOpt() ) );
+                }
+                if ( commandLine.hasOption( this.getWhitepsacesPerIndentOption().getOpt() ) )
+                {
+                    tool.setWhitespacesPerIndent( Integer.parseInt( commandLine.getOptionValue(
+                        this.getWhitepsacesPerIndentOption().getOpt() ) ) );
+
+                }
+                if ( commandLine.hasOption( this.getIndentationCharacterOption().getOpt() ) )
+                {
+                    tool.setIndentationCharacter( commandLine.getOptionValue(
+                        this.getIndentationCharacterOption().getOpt() ).charAt( 0 ) );
 
                 }
 
-                tool.manageSourceFiles( sourcesDirectory );
+                final File sourcesDirectory =
+                    new File( commandLine.getOptionValue( this.getSourceDirectoryOption().getOpt() ) );
+
+                if ( commandLine.hasOption( this.getModuleNameOption().getOpt() ) )
+                {
+                    final String moduleName = commandLine.getOptionValue( this.getModuleNameOption().getOpt() );
+                    final Module module = tool.getModules().getModule( moduleName );
+
+                    if ( module != null )
+                    {
+                        if ( this.isLoggable( Level.INFO ) )
+                        {
+                            this.log( Level.INFO, this.getStartingModuleProcessingMessage(
+                                this.getLocale(), this.getCommandName(), module.getName() ), null );
+
+                        }
+
+                        tool.manageSourceFiles( module, sourcesDirectory );
+                    }
+                    else if ( this.isLoggable( Level.WARNING ) )
+                    {
+                        this.log( Level.WARNING, this.getMissingModuleMessage( this.getLocale(), moduleName ), null );
+                    }
+                }
+                else
+                {
+                    if ( this.isLoggable( Level.INFO ) )
+                    {
+                        this.log( Level.INFO, this.getStartingProcessingMessage(
+                            this.getLocale(), this.getCommandName() ), null );
+
+                    }
+
+                    tool.manageSourceFiles( sourcesDirectory );
+                }
+
+                return STATUS_SUCCESS;
             }
 
-            return STATUS_SUCCESS;
+            return STATUS_FAILURE;
         }
-
-        return STATUS_FAILURE;
+        finally
+        {
+            JomcTool.setDefaultTemplateProfile( null );
+        }
     }
 
     // SECTION-END
@@ -359,6 +381,22 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ClasspathOption" );
         assert _d != null : "'ClasspathOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code DefaultTemplateProfileOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Default Template Profile Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code DefaultTemplateProfileOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-19-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getDefaultTemplateProfileOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "DefaultTemplateProfileOption" );
+        assert _d != null : "'DefaultTemplateProfileOption' dependency not found.";
         return _d;
     }
 
@@ -736,7 +774,7 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-19-SNAPSHOT Build 2010-03-23T00:05:13+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-19-SNAPSHOT Build 2010-03-24T04:48:33+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

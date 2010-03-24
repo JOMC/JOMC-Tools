@@ -719,6 +719,40 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Default Template Profile Option"
+                    name="${project.name} Default Template Profile Option"
+                    class="org.jomc.cli.util.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.util.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="dtp" override="true"/>
+        <property name="longOpt" value="default-template-profile" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Default template profile to use.</text>
+            <text language="de">Zu verwendendes Standard-Vorlagen-Profil.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">profile</text>
+            <text language="de">Profil</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} Template Encoding Option"
                     name="${project.name} Template Encoding Option"
                     class="org.jomc.cli.util.OptionFactory" version="${project.version}"
@@ -1545,6 +1579,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         </dependency>
         <dependency name="TemplateProfileOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Template Profile Option" bound="true"/>
+
+        <dependency name="DefaultTemplateProfileOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Default Template Profile Option" bound="true"/>
 
         <dependency name="TemplateEncodingOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Template Encoding Option" bound="true"/>
