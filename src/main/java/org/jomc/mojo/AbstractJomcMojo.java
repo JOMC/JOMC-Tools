@@ -100,6 +100,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private String templateProfile;
 
     /**
+     * The default template profile to use when accessing templates.
+     *
+     * @parameter
+     */
+    private String defaultTemplateProfile;
+
+    /**
      * The location to search for providers.
      *
      * @parameter
@@ -222,6 +229,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             DefaultServiceProvider.setDefaultServiceLocation( this.serviceLocation );
             DefaultModelProvider.setDefaultModuleLocation( this.moduleLocation );
             DefaultModelProcessor.setDefaultTransformerLocation( this.transformerLocation );
+            JomcTool.setDefaultTemplateProfile( this.defaultTemplateProfile );
 
             this.logSeparator( Level.INFO );
             this.log( Level.INFO, getMessage( "title" ), null );
@@ -240,6 +248,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             DefaultServiceProvider.setDefaultServiceLocation( null );
             DefaultModelProvider.setDefaultModuleLocation( null );
             DefaultModelProcessor.setDefaultTransformerLocation( null );
+            JomcTool.setDefaultTemplateProfile( null );
         }
     }
 
