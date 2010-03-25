@@ -39,7 +39,8 @@
 Releasing a project
 
   If you need to perform a release of a project using the JOMC Plugin, just instruct the plugin to not update any source
-  code files during the build. This is most commonly done by adding a corresponding release profile to your <<pom.xml>>.
+  code files during the build. This is most commonly done by adding a corresponding release profile to your
+  <<<pom.xml>>>.
 
 +-----------------+
 <project>

@@ -38,8 +38,8 @@
 
 Validating a projects' modules
 
-  If you need to validate a projects' main modules, just add the <<validate-main-modules>> goal to the
-  <<pom.xml>>.
+  If you need to validate a projects' main modules, just add the <<<validate-main-modules>>> goal to the
+  <<<pom.xml>>>.
 
 +-----------------+
 <project>

@@ -43,7 +43,7 @@ Usage
 * Using the JOMC Plugin in a multi-module build.
 
   If you need to perform object management and configuration tasks in a multi-module build, just configure the
-  JOMC Plugin in your parent <<pom.xml>> for performing the various tasks in theire corresponding phases.
+  JOMC Plugin in your parent <<<pom.xml>>> for performing the various tasks in theire corresponding phases.
 
 +-----------------+
 <project>

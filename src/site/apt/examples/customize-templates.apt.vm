@@ -39,14 +39,14 @@
 Customizing code generation
 
   If you need to customize the generated code, simply provide custom templates to the JOMC Plugin. This is done by
-  adding a template artifact as a plugin dependency and setting the <<templateProfile>> parameter of the JOMC Plugin.
+  adding a template artifact as a plugin dependency and setting the <<<templateProfile>>> parameter of the JOMC Plugin.
   As a starting point you can copy the default templates from the {{{./../../jomc-tools}JOMC Tools}} artifact from
-  directory <<org/jomc/tools/templates/jomc-java>> to a <<org/jomc/tools/templates/sub-directory>> of your template
+  directory <<<org/jomc/tools/templates/jomc-java>>> to a <<<org/jomc/tools/templates/sub-directory>>> of your template
   artifact.
 
-  For example, copying the default templates to directory <<org/jomc/tools/templates/custom-profile>>, you need to set
-  the <<templateProfile>> parameter to <<custom-profile>> and add your template artifact as a plugin dependency for the
-  templates to be found.
+  For example, copying the default templates to directory <<<org/jomc/tools/templates/custom-profile>>>, you need to set
+  the <<<templateProfile>>> parameter to <<<custom-profile>>> and add your template artifact as a plugin dependency for
+  the templates to be found.
 
   See class {{{./../../jomc-tools/apidocs/org/jomc/tools/SourceFileProcessor.html}SourceFileProcessor}} for details,
   especially the {{{./../../jomc-tools/apidocs/org/jomc/tools/JomcTool.html#getVelocityTemplate(java.lang.String)}getVelocityTemplate}}
