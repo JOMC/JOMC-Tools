@@ -126,7 +126,7 @@ import org.jomc.model.ObjectFactory;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-19-SNAPSHOT Build 2010-03-24T04:48:33+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-19-SNAPSHOT Build 2010-03-25T17:24:51+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -172,14 +172,14 @@ import org.jomc.model.ObjectFactory;
  * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
  *   jomc merge-modules -cp examples/lib/commons-cli-1.2.jar \
  *                      -df examples/xml/jomc-cli.xml \
- *                      -xs examples/xslt/relocate-classes.xsl \
+ *                      -xs examples/xslt/model-relocations.xsl \
  *                      -mn &quot;Merged Name&quot; \
  *                      -d /tmp/jomc.xml \
  *                      -v</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
  *   jomc merge-modules -cp examples/lib/commons-cli-1.2.jar \
  *                      -df examples/xml/jomc-cli.xml \
- *                      -xs examples/xslt/relocate-classes.xsl \
+ *                      -xs examples/xslt/model-relocations.xsl \
  *                      -mn &quot;Merged Name&quot; \
  *                      -d /tmp/jomc.xml \
  *                      -v</pre></td></tr>
@@ -777,7 +777,7 @@ public final class MergeModulesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-19-SNAPSHOT Build 2010-03-24T04:48:33+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-19-SNAPSHOT Build 2010-03-25T17:24:51+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -1012,14 +1012,14 @@ public final class MergeModulesCommand extends AbstractJomcCommand
      * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
      *   jomc merge-modules -cp examples/lib/commons-cli-1.2.jar \
      *                      -df examples/xml/jomc-cli.xml \
-     *                      -xs examples/xslt/relocate-classes.xsl \
+     *                      -xs examples/xslt/model-relocations.xsl \
      *                      -mn &quot;Merged Name&quot; \
      *                      -d /tmp/jomc.xml \
      *                      -v</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
      *   jomc merge-modules -cp examples/lib/commons-cli-1.2.jar \
      *                      -df examples/xml/jomc-cli.xml \
-     *                      -xs examples/xslt/relocate-classes.xsl \
+     *                      -xs examples/xslt/model-relocations.xsl \
      *                      -mn &quot;Merged Name&quot; \
      *                      -d /tmp/jomc.xml \
      *                      -v</pre></td></tr>

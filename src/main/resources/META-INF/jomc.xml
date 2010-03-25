@@ -1534,7 +1534,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                       -sd /tmp/src \
                       -df examples/xml/jomc-cli.xml \
                       -mn "JOMC CLI" \
-                      -p "jomc-java-bundles" \
+                      -tp "jomc-java-bundles" \
                       -v]]></text>
             <text language="de"><![CDATA[Beispiel:
   jomc generate-resources -cp examples/lib/commons-cli-1.2.jar \
@@ -1547,7 +1547,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                       -sd /tmp/src \
                       -df examples/xml/jomc-cli.xml \
                       -mn "JOMC CLI" \
-                      -p "jomc-java-bundles" \
+                      -tp "jomc-java-bundles" \
                       -v]]></text>
           </template>
         </message>
@@ -1736,11 +1736,11 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <message name="longDescription" override="true">
           <template defaultLanguage="en">
             <text language="en"><![CDATA[Example:
-  jomc validate-classes -cp target/classes \
+  jomc validate-classes -cp examples/lib/commons-cli-1.2.jar:target/classes \
                         -df examples/xml/jomc-cli.xml \
                         -v]]></text>
             <text language="de"><![CDATA[Beispiel:
-  jomc validate-classes -cp target/classes \
+  jomc validate-classes -cp examples/lib/commons-cli-1.2.jar:target/classes \
                         -df examples/xml/jomc-cli.xml \
                         -v]]></text>
           </template>
@@ -1868,14 +1868,14 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <text language="en"><![CDATA[Example:
   jomc merge-modules -cp examples/lib/commons-cli-1.2.jar \
                      -df examples/xml/jomc-cli.xml \
-                     -xs examples/xslt/relocate-classes.xsl \
+                     -xs examples/xslt/model-relocations.xsl \
                      -mn "Merged Name" \
                      -d /tmp/jomc.xml \
                      -v]]></text>
             <text language="de"><![CDATA[Beispiel:
   jomc merge-modules -cp examples/lib/commons-cli-1.2.jar \
                      -df examples/xml/jomc-cli.xml \
-                     -xs examples/xslt/relocate-classes.xsl \
+                     -xs examples/xslt/model-relocations.xsl \
                      -mn "Merged Name" \
                      -d /tmp/jomc.xml \
                      -v]]></text>
