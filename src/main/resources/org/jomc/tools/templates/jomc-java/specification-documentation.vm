@@ -37,28 +37,39 @@
 #if($specification.getDocumentation())
  * $tool.getJavadocComment($specification.getDocumentation().getText("en"), " * ")
 #end
- * <p>This specification declares a multiplicity of {@code $specification.getMultiplicity().value()}.
+ *
+ * <p>
+ *   This specification declares a multiplicity of {@code $specification.getMultiplicity().value()}.
 #if($specification.getMultiplicity().value() == "One")
- * An application assembler is required to provide no more than one implementation of this specification (including none).
- * Use of class {@link org.jomc.ObjectManager ObjectManager} is supported for getting that implementation.<pre>
- * ${tool.getJavaTypeName($specification,false)} object = (${tool.getJavaTypeName($specification,false)}) ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}.class );
- * </pre>
+ *   An application assembler may provide either no or one implementation of this specification.
 #end
 #if($specification.getMultiplicity().value() == "Many")
- * An application assembler may provide multiple implementations of this specification (including none).
- * Use of class {@link org.jomc.ObjectManager ObjectManager} is supported for getting these implementations or for
- * selecting a single implementation.<pre>
- * ${tool.getJavaTypeName($specification,false)}[] objects = (${tool.getJavaTypeName($specification,false)}[]) ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}.class );
- * ${tool.getJavaTypeName($specification,false)} object = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}.class, "<i>implementation name</i>" );
- * </pre>
+ *   An application assembler may provide multiple implementations of this specification (including none).
 #end
  * </p>
  *
-#if($specification.getScope())
- * <p>This specification applies to {@code $specification.getScope()} scope. The same $specification.getScope().toLowerCase() object is returned whenever requested.</p>
-#else
- * <p>This specification does not apply to any scope. A new object is returned whenever requested.</p>
+ * <p>
+ *   Use of class {@link org.jomc.ObjectManager ObjectManager} is supported for accessing implementations.
+ *   <pre>
+#if($specification.getMultiplicity().value() == "One")
+ * ${tool.getJavaTypeName($specification,false)} object = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}.class );
+ * ${tool.getJavaTypeName($specification,false)} object = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}.class, "<i>implementation name</i>" );
 #end
+#if($specification.getMultiplicity().value() == "Many")
+ * ${tool.getJavaTypeName($specification,false)}[] objects = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}[].class );
+ * ${tool.getJavaTypeName($specification,false)} object = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}.class, "<i>implementation name</i>" );
+#end
+ *   </pre>
+ * </p>
+ *
+ * <p>
+#if($specification.getScope())
+ *   This specification applies to {@code $specification.getScope()} scope.
+ *   The same $specification.getScope().toLowerCase() object is returned whenever requested.
+#else
+ *   This specification does not apply to any scope. A new object is returned whenever requested.
+#end
+ * </p>
  *
 #if($specification.getAuthors())
 #foreach($author in $specification.getAuthors().getAuthor())
