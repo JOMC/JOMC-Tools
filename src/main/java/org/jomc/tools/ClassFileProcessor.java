@@ -771,6 +771,7 @@ public class ClassFileProcessor extends JomcTool
                 for ( Dependency decodedDependency : decodedDependencies.getDependency() )
                 {
                     final Dependency dependency = dependencies.getDependency( decodedDependency.getName() );
+                    final Specification s = this.getModules().getSpecification( decodedDependency.getIdentifier() );
 
                     if ( dependency == null )
                     {
@@ -780,8 +781,16 @@ public class ClassFileProcessor extends JomcTool
                             new ObjectFactory().createImplementation( implementation ) ) );
 
                     }
+                    else if ( decodedDependency.getImplementationName() != null &&
+                              dependency.getImplementationName() == null )
+                    {
+                        report.getDetails().add( new ModelValidationReport.Detail(
+                            "CLASS_MISSING_DEPENDENCY_IMPLEMENTATION_NAME", Level.SEVERE, getMessage(
+                            "missingDependencyImplementationName", implementation.getIdentifier(),
+                            decodedDependency.getName() ),
+                            new ObjectFactory().createImplementation( implementation ) ) );
 
-                    final Specification s = this.getModules().getSpecification( decodedDependency.getIdentifier() );
+                    }
 
                     if ( s != null && s.getVersion() != null && decodedDependency.getVersion() != null &&
                          VersionParser.compare( decodedDependency.getVersion(), s.getVersion() ) > 0 )
