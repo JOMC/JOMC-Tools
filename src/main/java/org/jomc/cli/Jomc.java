@@ -88,17 +88,17 @@ import org.jomc.model.bootstrap.DefaultServiceProvider;
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * </ul></p>
  * <p><b>Messages</b><ul>
- * <li>"{@link #getCommandLineInfoMessage commandLineInfo}"<table>
+ * <li>"{@link #getCommandLineInfo commandLineInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Command line:
  * {0}</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kommandozeile:
  * {0}</pre></td></tr>
  * </table>
- * <li>"{@link #getIllegalArgumentsMessage illegalArguments}"<table>
+ * <li>"{@link #getIllegalArgumentsInfo illegalArgumentsInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal arguments. Type &raquo;jomc {0} {1}&laquo; for further information.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ung&uuml;ltige Argumente. Geben Sie &raquo;jomc {0} {1}&laquo; f&uuml;r weitere Informationen ein.</pre></td></tr>
  * </table>
- * <li>"{@link #getUsageMessage usage}"<table>
+ * <li>"{@link #getUsage usage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Type &raquo;jomc &lt;command&gt; {0}&laquo; for further information.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Geben Sie &raquo;jomc &lt;Befehl&gt; {0}&laquo; f&uuml;r weitere Informationen ein.</pre></td></tr>
  * </table>
@@ -291,7 +291,7 @@ public class Jomc
 
             if ( cmd == null )
             {
-                this.getPrintWriter().println( this.getUsageMessage( this.getLocale(), this.getHelpCommandName() ) );
+                this.getPrintWriter().println( this.getUsage( this.getLocale(), this.getHelpCommandName() ) );
                 this.getPrintWriter().println();
                 this.getPrintWriter().println( commandInfo.toString() );
                 return Command.STATUS_FAILURE;
@@ -376,9 +376,7 @@ public class Jomc
 
                 }
 
-                this.log( Level.FINE, this.getCommandLineInfoMessage(
-                    this.getLocale(), argumentInfo.toString() ), null );
-
+                this.log( Level.FINE, this.getCommandLineInfo( this.getLocale(), argumentInfo.toString() ), null );
             }
 
             final boolean failOnWarnings = commandLine.hasOption( this.getFailOnWarningsOption().getOpt() );
@@ -394,7 +392,7 @@ public class Jomc
         }
         catch ( final ParseException e )
         {
-            this.log( Level.SEVERE, this.getIllegalArgumentsMessage(
+            this.log( Level.SEVERE, this.getIllegalArgumentsInfo(
                 this.getLocale(), cmd.getName(), this.getHelpCommandName() ), e );
 
             return Command.STATUS_FAILURE;
@@ -711,7 +709,7 @@ public class Jomc
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
-    private String getCommandLineInfoMessage( final java.util.Locale locale, final java.lang.String commandLine )
+    private String getCommandLineInfo( final java.util.Locale locale, final java.lang.String commandLine )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "commandLineInfo", locale, commandLine );
         assert _m != null : "'commandLineInfo' message not found.";
@@ -719,7 +717,7 @@ public class Jomc
     }
 
     /**
-     * Gets the text of the {@code illegalArguments} message.
+     * Gets the text of the {@code illegalArgumentsInfo} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal arguments. Type &raquo;jomc {0} {1}&laquo; for further information.</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ung&uuml;ltige Argumente. Geben Sie &raquo;jomc {0} {1}&laquo; f&uuml;r weitere Informationen ein.</pre></td></tr>
@@ -727,16 +725,16 @@ public class Jomc
      * @param locale The locale of the message to return.
      * @param command Format argument.
      * @param helpCommandName Format argument.
-     * @return The text of the {@code illegalArguments} message.
+     * @return The text of the {@code illegalArgumentsInfo} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
-    private String getIllegalArgumentsMessage( final java.util.Locale locale, final java.lang.String command, final java.lang.String helpCommandName )
+    private String getIllegalArgumentsInfo( final java.util.Locale locale, final java.lang.String command, final java.lang.String helpCommandName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "illegalArguments", locale, command, helpCommandName );
-        assert _m != null : "'illegalArguments' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "illegalArgumentsInfo", locale, command, helpCommandName );
+        assert _m != null : "'illegalArgumentsInfo' message not found.";
         return _m;
     }
 
@@ -754,7 +752,7 @@ public class Jomc
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
-    private String getUsageMessage( final java.util.Locale locale, final java.lang.String helpCommandName )
+    private String getUsage( final java.util.Locale locale, final java.lang.String helpCommandName )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "usage", locale, helpCommandName );
         assert _m != null : "'usage' message not found.";

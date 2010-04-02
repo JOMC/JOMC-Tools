@@ -80,10 +80,10 @@ import org.apache.commons.cli.Option;
  * Dependency on {@code java.util.Locale} at specification level 1.1 bound to an instance.</blockquote></li>
  * </ul></p>
  * <p><b>Messages</b><ul>
- * <li>"{@link #getArgumentDescriptionMessage argumentDescription}"<table>
+ * <li>"{@link #getArgumentDescription argumentDescription}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre></pre></td></tr>
  * </table>
- * <li>"{@link #getDescriptionMessage description}"<table>
+ * <li>"{@link #getDescription description}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre></pre></td></tr>
  * </table>
  * </ul></p>
@@ -109,8 +109,8 @@ public class OptionFactory
     {
         final char valueSeparator = this.getValueSeparator() == ':' ? File.pathSeparatorChar : this.getValueSeparator();
 
-        final Option option = new Option( this.getOpt(), this.getDescriptionMessage(
-            this.getLocale(), Character.toString( valueSeparator ) ) );
+        final Option option =
+            new Option( this.getOpt(), this.getDescription( this.getLocale(), Character.toString( valueSeparator ) ) );
 
         option.setArgs( this.getNumberOfArgs() );
         option.setLongOpt( this.getLongOpt() );
@@ -118,9 +118,9 @@ public class OptionFactory
         option.setRequired( this.isRequired() );
 
         if ( ( option.getArgs() > 0 || option.getArgs() == Option.UNLIMITED_VALUES ) &&
-             this.getArgumentDescriptionMessage( this.getLocale() ).trim().length() > 0 )
+             this.getArgumentDescription( this.getLocale() ).trim().length() > 0 )
         {
-            option.setArgName( this.getArgumentDescriptionMessage( this.getLocale() ) );
+            option.setArgName( this.getArgumentDescription( this.getLocale() ) );
         }
 
         if ( option.getArgs() > 1 || option.getArgs() == Option.UNLIMITED_VALUES )
@@ -269,7 +269,7 @@ public class OptionFactory
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
-    private String getArgumentDescriptionMessage( final java.util.Locale locale )
+    private String getArgumentDescription( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "argumentDescription", locale );
         assert _m != null : "'argumentDescription' message not found.";
@@ -289,7 +289,7 @@ public class OptionFactory
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
-    private String getDescriptionMessage( final java.util.Locale locale, final java.lang.String valueSeparator )
+    private String getDescription( final java.util.Locale locale, final java.lang.String valueSeparator )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "description", locale, valueSeparator );
         assert _m != null : "'description' message not found.";

@@ -145,71 +145,71 @@ import org.xml.sax.SAXException;
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * </ul></p>
  * <p><b>Messages</b><ul>
- * <li>"{@link #getApplicationTitleMessage applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-21-SNAPSHOT Build 2010-03-31T17:10:34+0000</pre></td></tr>
+ * <li>"{@link #getApplicationTitle applicationTitle}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-21-SNAPSHOT Build 2010-04-02T22:05:26+0000</pre></td></tr>
  * </table>
- * <li>"{@link #getCannotProcessMessage cannotProcess}"<table>
+ * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kann ''{0}'' nicht verarbeiten: {1}</pre></td></tr>
  * </table>
- * <li>"{@link #getClasspathElementMessage classpathElement}"<table>
+ * <li>"{@link #getClasspathElementInfo classpathElementInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath element: ''{0}''</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Klassenpfad-Element: ''{0}''</pre></td></tr>
  * </table>
- * <li>"{@link #getDefaultLogLevelInfoMessage defaultLogLevelInfo}"<table>
+ * <li>"{@link #getDefaultLogLevelInfo defaultLogLevelInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Default log level: ''{0}''</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Standard-Protokollierungsstufe: ''{0}''</pre></td></tr>
  * </table>
- * <li>"{@link #getDocumentFileMessage documentFile}"<table>
+ * <li>"{@link #getDocumentFileInfo documentFileInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Document file: ''{0}''</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Datei: ''{0}''</pre></td></tr>
  * </table>
- * <li>"{@link #getExcludedProviderMessage excludedProvider}"<table>
+ * <li>"{@link #getExcludedProviderInfo excludedProviderInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Provider ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Provider ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
  * </table>
- * <li>"{@link #getExcludedSchemaMessage excludedSchema}"<table>
+ * <li>"{@link #getExcludedSchemaInfo excludedSchemaInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Context ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kontext ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
  * </table>
- * <li>"{@link #getExcludedServiceMessage excludedService}"<table>
+ * <li>"{@link #getExcludedServiceInfo excludedServiceInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Service ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Service ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
  * </table>
- * <li>"{@link #getInvalidModelMessage invalidModel}"<table>
+ * <li>"{@link #getInvalidModelMessage invalidModelMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Invalid model.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ung&uuml;ltiges Modell.</pre></td></tr>
  * </table>
- * <li>"{@link #getLongDescriptionMessage longDescription}"<table>
+ * <li>"{@link #getLongDescriptionMessage longDescriptionMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre></pre></td></tr>
  * </table>
- * <li>"{@link #getMissingModuleMessage missingModule}"<table>
+ * <li>"{@link #getMissingModuleMessage missingModuleMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul ''{0}'' nicht gefunden.</pre></td></tr>
  * </table>
- * <li>"{@link #getModulesReportMessage modulesReport}"<table>
+ * <li>"{@link #getModulesReport modulesReport}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Modules</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Module</pre></td></tr>
  * </table>
- * <li>"{@link #getSeparatorMessage separator}"<table>
+ * <li>"{@link #getSeparator separator}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>--------------------------------------------------------------------------------</pre></td></tr>
  * </table>
- * <li>"{@link #getShortDescriptionMessage shortDescription}"<table>
+ * <li>"{@link #getShortDescriptionMessage shortDescriptionMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre></pre></td></tr>
  * </table>
- * <li>"{@link #getStartingModuleProcessingMessage startingModuleProcessing}"<table>
+ * <li>"{@link #getStartingModuleProcessingMessage startingModuleProcessingMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} with module ''{1}'' ...</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>F&uuml;hrt Befehl {0} mit Modul ''{1}'' aus ... </pre></td></tr>
  * </table>
- * <li>"{@link #getStartingProcessingMessage startingProcessing}"<table>
+ * <li>"{@link #getStartingProcessingMessage startingProcessingMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} ...</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>F&uuml;hrt Befehl {0} aus ... </pre></td></tr>
  * </table>
- * <li>"{@link #getToolFailureMessage toolFailure}"<table>
+ * <li>"{@link #getToolFailureMessage toolFailureMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>{0} failure.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} fehlgeschlagen.</pre></td></tr>
  * </table>
- * <li>"{@link #getToolSuccessMessage toolSuccess}"<table>
+ * <li>"{@link #getToolSuccessMessage toolSuccessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>{0} successful.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} erfolgreich.</pre></td></tr>
  * </table>
@@ -264,7 +264,7 @@ public abstract class AbstractJomcCommand implements Command
         if ( this.logLevel == null )
         {
             this.logLevel = getDefaultLogLevel();
-            this.log( Level.CONFIG, this.getDefaultLogLevelInfoMessage(
+            this.log( Level.CONFIG, this.getDefaultLogLevelInfo(
                 this.getLocale(), this.logLevel.getLocalizedName() ), null );
 
         }
@@ -394,9 +394,9 @@ public abstract class AbstractJomcCommand implements Command
 
             if ( this.isLoggable( Level.INFO ) )
             {
-                this.log( Level.INFO, this.getSeparatorMessage( this.getLocale() ), null );
-                this.log( Level.INFO, this.getApplicationTitleMessage( this.getLocale() ), null );
-                this.log( Level.INFO, this.getSeparatorMessage( this.getLocale() ), null );
+                this.log( Level.INFO, this.getSeparator( this.getLocale() ), null );
+                this.log( Level.INFO, this.getApplicationTitle( this.getLocale() ), null );
+                this.log( Level.INFO, this.getSeparator( this.getLocale() ), null );
             }
 
             final int status = this.executeCommand( commandLine );
@@ -413,7 +413,7 @@ public abstract class AbstractJomcCommand implements Command
 
                 }
 
-                this.log( Level.INFO, this.getSeparatorMessage( this.getLocale() ), null );
+                this.log( Level.INFO, this.getSeparator( this.getLocale() ), null );
             }
 
             return status;
@@ -646,7 +646,7 @@ public abstract class AbstractJomcCommand implements Command
                 {
                     if ( this.isLoggable( Level.FINE ) )
                     {
-                        this.log( Level.FINE, this.getDocumentFileMessage( this.getLocale(), e ), null );
+                        this.log( Level.FINE, this.getDocumentFileInfo( this.getLocale(), e ), null );
                     }
 
                     if ( e.startsWith( "@" ) )
@@ -751,7 +751,7 @@ public abstract class AbstractJomcCommand implements Command
 
         if ( this.isLoggable( Level.FINE ) )
         {
-            this.log( Level.FINE, this.getModulesReportMessage( this.getLocale() ), null );
+            this.log( Level.FINE, this.getModulesReport( this.getLocale() ), null );
             for ( Module m : modules.getModule() )
             {
                 this.log( Level.FINE, "\t" + m.getName(), null );
@@ -793,7 +793,7 @@ public abstract class AbstractJomcCommand implements Command
                     {
                         if ( isLoggable( Level.FINE ) )
                         {
-                            log( Level.FINE, getClasspathElementMessage( getLocale(), e ), null );
+                            log( Level.FINE, getClasspathElementInfo( getLocale(), e ), null );
                         }
 
                         if ( e.startsWith( "@" ) )
@@ -1016,7 +1016,7 @@ public abstract class AbstractJomcCommand implements Command
                 }
                 else
                 {
-                    log( Level.FINE, getExcludedProviderMessage(
+                    log( Level.FINE, getExcludedProviderInfo(
                         getLocale(), resource.toExternalForm(), line.toString() ), null );
 
                 }
@@ -1061,7 +1061,7 @@ public abstract class AbstractJomcCommand implements Command
                     }
                     else
                     {
-                        log( Level.FINE, getExcludedSchemaMessage(
+                        log( Level.FINE, getExcludedSchemaInfo(
                             getLocale(), resource.toExternalForm(), s.getContextId() ), null );
 
                         filtered = true;
@@ -1077,7 +1077,7 @@ public abstract class AbstractJomcCommand implements Command
                 }
                 else
                 {
-                    log( Level.FINE, getExcludedSchemaMessage(
+                    log( Level.FINE, getExcludedSchemaInfo(
                         getLocale(), resource.toExternalForm(), s.getContextId() ), null );
 
                     filtered = true;
@@ -1120,7 +1120,7 @@ public abstract class AbstractJomcCommand implements Command
                     }
                     else
                     {
-                        log( Level.FINE, getExcludedServiceMessage(
+                        log( Level.FINE, getExcludedServiceInfo(
                             getLocale(), resource.toExternalForm(), s.getClazz() ), null );
 
                         filtered = true;
@@ -1136,7 +1136,7 @@ public abstract class AbstractJomcCommand implements Command
                 }
                 else
                 {
-                    log( Level.FINE, getExcludedServiceMessage(
+                    log( Level.FINE, getExcludedServiceInfo(
                         getLocale(), resource.toExternalForm(), s.getClazz() ), null );
 
                     filtered = true;
@@ -1449,7 +1449,7 @@ public abstract class AbstractJomcCommand implements Command
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-21-SNAPSHOT Build 2010-03-31T17:10:34+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-alpha-21-SNAPSHOT Build 2010-04-02T22:05:26+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -1458,7 +1458,7 @@ public abstract class AbstractJomcCommand implements Command
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
-    private String getApplicationTitleMessage( final java.util.Locale locale )
+    private String getApplicationTitle( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "applicationTitle", locale );
         assert _m != null : "'applicationTitle' message not found.";
@@ -1466,7 +1466,7 @@ public abstract class AbstractJomcCommand implements Command
     }
 
     /**
-     * Gets the text of the {@code cannotProcess} message.
+     * Gets the text of the {@code cannotProcessMessage} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kann ''{0}'' nicht verarbeiten: {1}</pre></td></tr>
@@ -1474,7 +1474,7 @@ public abstract class AbstractJomcCommand implements Command
      * @param locale The locale of the message to return.
      * @param itemInfo Format argument.
      * @param detailMessage Format argument.
-     * @return The text of the {@code cannotProcess} message.
+     * @return The text of the {@code cannotProcessMessage} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1482,29 +1482,29 @@ public abstract class AbstractJomcCommand implements Command
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
     private String getCannotProcessMessage( final java.util.Locale locale, final java.lang.String itemInfo, final java.lang.String detailMessage )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "cannotProcess", locale, itemInfo, detailMessage );
-        assert _m != null : "'cannotProcess' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "cannotProcessMessage", locale, itemInfo, detailMessage );
+        assert _m != null : "'cannotProcessMessage' message not found.";
         return _m;
     }
 
     /**
-     * Gets the text of the {@code classpathElement} message.
+     * Gets the text of the {@code classpathElementInfo} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath element: ''{0}''</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Klassenpfad-Element: ''{0}''</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @param classpathElement Format argument.
-     * @return The text of the {@code classpathElement} message.
+     * @return The text of the {@code classpathElementInfo} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
-    private String getClasspathElementMessage( final java.util.Locale locale, final java.lang.String classpathElement )
+    private String getClasspathElementInfo( final java.util.Locale locale, final java.lang.String classpathElement )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "classpathElement", locale, classpathElement );
-        assert _m != null : "'classpathElement' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "classpathElementInfo", locale, classpathElement );
+        assert _m != null : "'classpathElementInfo' message not found.";
         return _m;
     }
 
@@ -1522,7 +1522,7 @@ public abstract class AbstractJomcCommand implements Command
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
-    private String getDefaultLogLevelInfoMessage( final java.util.Locale locale, final java.lang.String defaultLogLevel )
+    private String getDefaultLogLevelInfo( final java.util.Locale locale, final java.lang.String defaultLogLevel )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "defaultLogLevelInfo", locale, defaultLogLevel );
         assert _m != null : "'defaultLogLevelInfo' message not found.";
@@ -1530,28 +1530,28 @@ public abstract class AbstractJomcCommand implements Command
     }
 
     /**
-     * Gets the text of the {@code documentFile} message.
+     * Gets the text of the {@code documentFileInfo} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Document file: ''{0}''</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Datei: ''{0}''</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @param documentFile Format argument.
-     * @return The text of the {@code documentFile} message.
+     * @return The text of the {@code documentFileInfo} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
-    private String getDocumentFileMessage( final java.util.Locale locale, final java.lang.String documentFile )
+    private String getDocumentFileInfo( final java.util.Locale locale, final java.lang.String documentFile )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentFile", locale, documentFile );
-        assert _m != null : "'documentFile' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentFileInfo", locale, documentFile );
+        assert _m != null : "'documentFileInfo' message not found.";
         return _m;
     }
 
     /**
-     * Gets the text of the {@code excludedProvider} message.
+     * Gets the text of the {@code excludedProviderInfo} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Provider ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Provider ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
@@ -1559,21 +1559,21 @@ public abstract class AbstractJomcCommand implements Command
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
      * @param providerName Format argument.
-     * @return The text of the {@code excludedProvider} message.
+     * @return The text of the {@code excludedProviderInfo} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
-    private String getExcludedProviderMessage( final java.util.Locale locale, final java.lang.String resourceName, final java.lang.String providerName )
+    private String getExcludedProviderInfo( final java.util.Locale locale, final java.lang.String resourceName, final java.lang.String providerName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "excludedProvider", locale, resourceName, providerName );
-        assert _m != null : "'excludedProvider' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "excludedProviderInfo", locale, resourceName, providerName );
+        assert _m != null : "'excludedProviderInfo' message not found.";
         return _m;
     }
 
     /**
-     * Gets the text of the {@code excludedSchema} message.
+     * Gets the text of the {@code excludedSchemaInfo} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Context ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kontext ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
@@ -1581,21 +1581,21 @@ public abstract class AbstractJomcCommand implements Command
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
      * @param contextId Format argument.
-     * @return The text of the {@code excludedSchema} message.
+     * @return The text of the {@code excludedSchemaInfo} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
-    private String getExcludedSchemaMessage( final java.util.Locale locale, final java.lang.String resourceName, final java.lang.String contextId )
+    private String getExcludedSchemaInfo( final java.util.Locale locale, final java.lang.String resourceName, final java.lang.String contextId )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "excludedSchema", locale, resourceName, contextId );
-        assert _m != null : "'excludedSchema' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "excludedSchemaInfo", locale, resourceName, contextId );
+        assert _m != null : "'excludedSchemaInfo' message not found.";
         return _m;
     }
 
     /**
-     * Gets the text of the {@code excludedService} message.
+     * Gets the text of the {@code excludedServiceInfo} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Service ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Service ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
@@ -1603,27 +1603,27 @@ public abstract class AbstractJomcCommand implements Command
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
      * @param serviceName Format argument.
-     * @return The text of the {@code excludedService} message.
+     * @return The text of the {@code excludedServiceInfo} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
-    private String getExcludedServiceMessage( final java.util.Locale locale, final java.lang.String resourceName, final java.lang.String serviceName )
+    private String getExcludedServiceInfo( final java.util.Locale locale, final java.lang.String resourceName, final java.lang.String serviceName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "excludedService", locale, resourceName, serviceName );
-        assert _m != null : "'excludedService' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "excludedServiceInfo", locale, resourceName, serviceName );
+        assert _m != null : "'excludedServiceInfo' message not found.";
         return _m;
     }
 
     /**
-     * Gets the text of the {@code invalidModel} message.
+     * Gets the text of the {@code invalidModelMessage} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Invalid model.</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ung&uuml;ltiges Modell.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
-     * @return The text of the {@code invalidModel} message.
+     * @return The text of the {@code invalidModelMessage} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1631,18 +1631,18 @@ public abstract class AbstractJomcCommand implements Command
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
     private String getInvalidModelMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "invalidModel", locale );
-        assert _m != null : "'invalidModel' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "invalidModelMessage", locale );
+        assert _m != null : "'invalidModelMessage' message not found.";
         return _m;
     }
 
     /**
-     * Gets the text of the {@code longDescription} message.
+     * Gets the text of the {@code longDescriptionMessage} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre></pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
-     * @return The text of the {@code longDescription} message.
+     * @return The text of the {@code longDescriptionMessage} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1650,20 +1650,20 @@ public abstract class AbstractJomcCommand implements Command
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
     private String getLongDescriptionMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "longDescription", locale );
-        assert _m != null : "'longDescription' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "longDescriptionMessage", locale );
+        assert _m != null : "'longDescriptionMessage' message not found.";
         return _m;
     }
 
     /**
-     * Gets the text of the {@code missingModule} message.
+     * Gets the text of the {@code missingModuleMessage} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul ''{0}'' nicht gefunden.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @param moduleName Format argument.
-     * @return The text of the {@code missingModule} message.
+     * @return The text of the {@code missingModuleMessage} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1671,8 +1671,8 @@ public abstract class AbstractJomcCommand implements Command
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
     private String getMissingModuleMessage( final java.util.Locale locale, final java.lang.String moduleName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "missingModule", locale, moduleName );
-        assert _m != null : "'missingModule' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "missingModuleMessage", locale, moduleName );
+        assert _m != null : "'missingModuleMessage' message not found.";
         return _m;
     }
 
@@ -1689,7 +1689,7 @@ public abstract class AbstractJomcCommand implements Command
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
-    private String getModulesReportMessage( final java.util.Locale locale )
+    private String getModulesReport( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "modulesReport", locale );
         assert _m != null : "'modulesReport' message not found.";
@@ -1708,7 +1708,7 @@ public abstract class AbstractJomcCommand implements Command
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
-    private String getSeparatorMessage( final java.util.Locale locale )
+    private String getSeparator( final java.util.Locale locale )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "separator", locale );
         assert _m != null : "'separator' message not found.";
@@ -1716,12 +1716,12 @@ public abstract class AbstractJomcCommand implements Command
     }
 
     /**
-     * Gets the text of the {@code shortDescription} message.
+     * Gets the text of the {@code shortDescriptionMessage} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre></pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
-     * @return The text of the {@code shortDescription} message.
+     * @return The text of the {@code shortDescriptionMessage} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1729,13 +1729,13 @@ public abstract class AbstractJomcCommand implements Command
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
     private String getShortDescriptionMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "shortDescription", locale );
-        assert _m != null : "'shortDescription' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "shortDescriptionMessage", locale );
+        assert _m != null : "'shortDescriptionMessage' message not found.";
         return _m;
     }
 
     /**
-     * Gets the text of the {@code startingModuleProcessing} message.
+     * Gets the text of the {@code startingModuleProcessingMessage} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} with module ''{1}'' ...</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>F&uuml;hrt Befehl {0} mit Modul ''{1}'' aus ... </pre></td></tr>
@@ -1743,7 +1743,7 @@ public abstract class AbstractJomcCommand implements Command
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
      * @param moduleName Format argument.
-     * @return The text of the {@code startingModuleProcessing} message.
+     * @return The text of the {@code startingModuleProcessingMessage} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1751,20 +1751,20 @@ public abstract class AbstractJomcCommand implements Command
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
     private String getStartingModuleProcessingMessage( final java.util.Locale locale, final java.lang.String toolName, final java.lang.String moduleName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "startingModuleProcessing", locale, toolName, moduleName );
-        assert _m != null : "'startingModuleProcessing' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "startingModuleProcessingMessage", locale, toolName, moduleName );
+        assert _m != null : "'startingModuleProcessingMessage' message not found.";
         return _m;
     }
 
     /**
-     * Gets the text of the {@code startingProcessing} message.
+     * Gets the text of the {@code startingProcessingMessage} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} ...</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>F&uuml;hrt Befehl {0} aus ... </pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
-     * @return The text of the {@code startingProcessing} message.
+     * @return The text of the {@code startingProcessingMessage} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1772,20 +1772,20 @@ public abstract class AbstractJomcCommand implements Command
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
     private String getStartingProcessingMessage( final java.util.Locale locale, final java.lang.String toolName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "startingProcessing", locale, toolName );
-        assert _m != null : "'startingProcessing' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "startingProcessingMessage", locale, toolName );
+        assert _m != null : "'startingProcessingMessage' message not found.";
         return _m;
     }
 
     /**
-     * Gets the text of the {@code toolFailure} message.
+     * Gets the text of the {@code toolFailureMessage} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>{0} failure.</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} fehlgeschlagen.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
-     * @return The text of the {@code toolFailure} message.
+     * @return The text of the {@code toolFailureMessage} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1793,20 +1793,20 @@ public abstract class AbstractJomcCommand implements Command
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
     private String getToolFailureMessage( final java.util.Locale locale, final java.lang.String toolName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "toolFailure", locale, toolName );
-        assert _m != null : "'toolFailure' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "toolFailureMessage", locale, toolName );
+        assert _m != null : "'toolFailureMessage' message not found.";
         return _m;
     }
 
     /**
-     * Gets the text of the {@code toolSuccess} message.
+     * Gets the text of the {@code toolSuccessMessage} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>{0} successful.</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} erfolgreich.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
-     * @return The text of the {@code toolSuccess} message.
+     * @return The text of the {@code toolSuccessMessage} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1814,8 +1814,8 @@ public abstract class AbstractJomcCommand implements Command
                                  comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-21-SNAPSHOT/jomc-tools" )
     private String getToolSuccessMessage( final java.util.Locale locale, final java.lang.String toolName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "toolSuccess", locale, toolName );
-        assert _m != null : "'toolSuccess' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "toolSuccessMessage", locale, toolName );
+        assert _m != null : "'toolSuccessMessage' message not found.";
         return _m;
     }
     // </editor-fold>

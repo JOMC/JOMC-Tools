@@ -1228,7 +1228,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="0" name="helpCommandName"/>
           </arguments>
         </message>
-        <message name="illegalArguments">
+        <message name="illegalArgumentsInfo">
           <template defaultLanguage="en">
             <text language="en">Illegal arguments. Type »jomc {0} {1}« for further information.</text>
             <text language="de">Ungültige Argumente. Geben Sie »jomc {0} {1}« für weitere Informationen ein.</text>
@@ -1336,12 +1336,12 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         </property>
       </properties>
       <messages>
-        <message name="shortDescription">
+        <message name="shortDescriptionMessage">
           <template defaultLanguage="en">
             <text language="en"/>
           </template>
         </message>
-        <message name="longDescription">
+        <message name="longDescriptionMessage">
           <template defaultLanguage="en">
             <text language="en"/>
           </template>
@@ -1356,7 +1356,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <text language="en">JOMC Version ${project.version} Build ${buildNumber}</text>
           </template>
         </message>
-        <message name="classpathElement" final="true">
+        <message name="classpathElementInfo" final="true">
           <template defaultLanguage="en">
             <text language="en">Classpath element: ''{0}''</text>
             <text language="de">Klassenpfad-Element: ''{0}''</text>
@@ -1365,7 +1365,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="0" name="classpathElement"/>
           </arguments>
         </message>
-        <message name="documentFile" final="true">
+        <message name="documentFileInfo" final="true">
           <template defaultLanguage="en">
             <text language="en">Document file: ''{0}''</text>
             <text language="de">Dokument-Datei: ''{0}''</text>
@@ -1374,7 +1374,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="0" name="documentFile"/>
           </arguments>
         </message>
-        <message name="startingProcessing" final="true">
+        <message name="startingProcessingMessage" final="true">
           <template defaultLanguage="en">
             <text language="en">Executing command {0} ...</text>
             <text language="de">Führt Befehl {0} aus ... </text>
@@ -1383,7 +1383,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="0" name="toolName"/>
           </arguments>
         </message>
-        <message name="startingModuleProcessing" final="true">
+        <message name="startingModuleProcessingMessage" final="true">
           <template defaultLanguage="en">
             <text language="en">Executing command {0} with module ''{1}'' ...</text>
             <text language="de">Führt Befehl {0} mit Modul ''{1}'' aus ... </text>
@@ -1393,7 +1393,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="1" name="moduleName"/>
           </arguments>
         </message>
-        <message name="toolSuccess" final="true">
+        <message name="toolSuccessMessage" final="true">
           <template defaultLanguage="en">
             <text language="en">{0} successful.</text>
             <text language="de">{0} erfolgreich.</text>
@@ -1402,7 +1402,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="0" name="toolName"/>
           </arguments>
         </message>
-        <message name="toolFailure" final="true">
+        <message name="toolFailureMessage" final="true">
           <template defaultLanguage="en">
             <text language="en">{0} failure.</text>
             <text language="de">{0} fehlgeschlagen.</text>
@@ -1411,7 +1411,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="0" name="toolName"/>
           </arguments>
         </message>
-        <message name="missingModule" final="true">
+        <message name="missingModuleMessage" final="true">
           <template defaultLanguage="en">
             <text language="en">Module ''{0}'' not found.</text>
             <text language="de">Modul ''{0}'' nicht gefunden.</text>
@@ -1426,7 +1426,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <text language="de">Module</text>
           </template>
         </message>
-        <message name="cannotProcess" final="true">
+        <message name="cannotProcessMessage" final="true">
           <template defaultLanguage="en">
             <text language="en">Cannot process ''{0}'': {1}</text>
             <text language="de">Kann ''{0}'' nicht verarbeiten: {1}</text>
@@ -1436,13 +1436,13 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="1" name="detailMessage"/>
           </arguments>
         </message>
-        <message name="invalidModel" final="true">
+        <message name="invalidModelMessage" final="true">
           <template defaultLanguage="en">
             <text language="en">Invalid model.</text>
             <text language="de">Ungültiges Modell.</text>
           </template>
         </message>
-        <message name="excludedProvider" final="true">
+        <message name="excludedProviderInfo" final="true">
           <template defaultLanguage="en">
             <text language="en">Provider ''{1}'' from class path resource ''{0}'' ignored.</text>
             <text language="de">Provider ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</text>
@@ -1452,7 +1452,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="1" name="providerName"/>
           </arguments>
         </message>
-        <message name="excludedService" final="true">
+        <message name="excludedServiceInfo" final="true">
           <template defaultLanguage="en">
             <text language="en">Service ''{1}'' from class path resource ''{0}'' ignored.</text>
             <text language="de">Service ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</text>
@@ -1462,7 +1462,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="1" name="serviceName"/>
           </arguments>
         </message>
-        <message name="excludedSchema" final="true">
+        <message name="excludedSchemaInfo" final="true">
           <template defaultLanguage="en">
             <text language="en">Context ''{1}'' from class path resource ''{0}'' ignored.</text>
             <text language="de">Kontext ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</text>
@@ -1515,13 +1515,13 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         </property>
       </properties>
       <messages>
-        <message name="shortDescription" override="true">
+        <message name="shortDescriptionMessage" override="true">
           <template defaultLanguage="en">
             <text language="en">Generates resources.</text>
             <text language="de">Generiert Ressourcen.</text>
           </template>
         </message>
-        <message name="longDescription" override="true">
+        <message name="longDescriptionMessage" override="true">
           <template defaultLanguage="en">
             <text language="en"><![CDATA[Example:
   jomc generate-resources -cp examples/lib/commons-cli-1.2.jar \
@@ -1612,13 +1612,13 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         </property>
       </properties>
       <messages>
-        <message name="shortDescription" override="true">
+        <message name="shortDescriptionMessage" override="true">
           <template defaultLanguage="en">
             <text language="en">Manages source files.</text>
             <text language="de">Verwaltet Quelltext-Dateien.</text>
           </template>
         </message>
-        <message name="longDescription" override="true">
+        <message name="longDescriptionMessage" override="true">
           <template defaultLanguage="en">
             <text language="en"><![CDATA[Example:
   jomc manage-sources -cp examples/lib/commons-cli-1.2.jar \
@@ -1674,13 +1674,13 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         </property>
       </properties>
       <messages>
-        <message name="shortDescription" override="true">
+        <message name="shortDescriptionMessage" override="true">
           <template defaultLanguage="en">
             <text language="en">Commits model objects to class files.</text>
             <text language="de">Schreibt Klassendateien fest.</text>
           </template>
         </message>
-        <message name="longDescription" override="true">
+        <message name="longDescriptionMessage" override="true">
           <template defaultLanguage="en">
             <text language="en"><![CDATA[Example:
   jomc commit-classes -cp examples/lib/commons-cli-1.2.jar \
@@ -1727,13 +1727,13 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         </property>
       </properties>
       <messages>
-        <message name="shortDescription" override="true">
+        <message name="shortDescriptionMessage" override="true">
           <template defaultLanguage="en">
             <text language="en">Validates model objects of class files.</text>
             <text language="de">Prüft Klassendateien.</text>
           </template>
         </message>
-        <message name="longDescription" override="true">
+        <message name="longDescriptionMessage" override="true">
           <template defaultLanguage="en">
             <text language="en"><![CDATA[Example:
   jomc validate-classes -cp examples/lib/commons-cli-1.2.jar:target/classes \
@@ -1776,13 +1776,13 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         </property>
       </properties>
       <messages>
-        <message name="shortDescription" override="true">
+        <message name="shortDescriptionMessage" override="true">
           <template defaultLanguage="en">
             <text language="en">Validates modules.</text>
             <text language="de">Prüft Module.</text>
           </template>
         </message>
-        <message name="longDescription" override="true">
+        <message name="longDescriptionMessage" override="true">
           <template defaultLanguage="en">
             <text language="en"><![CDATA[Example:
   jomc validate-modules -cp examples/lib/commons-cli-1.2.jar \
@@ -1857,13 +1857,13 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         </property>
       </properties>
       <messages>
-        <message name="shortDescription" override="true">
+        <message name="shortDescriptionMessage" override="true">
           <template defaultLanguage="en">
             <text language="en">Merges modules.</text>
             <text language="de">Fügt Module zusammen.</text>
           </template>
         </message>
-        <message name="longDescription" override="true">
+        <message name="longDescriptionMessage" override="true">
           <template defaultLanguage="en">
             <text language="en"><![CDATA[Example:
   jomc merge-modules -cp examples/lib/commons-cli-1.2.jar \
@@ -1881,7 +1881,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                      -v]]></text>
           </template>
         </message>
-        <message name="includingModule" final="true">
+        <message name="includingModuleInfo" final="true">
           <template defaultLanguage="en">
             <text language="en">Including module ''{0}''.</text>
             <text language="de">Schließt Modul ''{0}'' ein.</text>
@@ -1890,7 +1890,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="0" name="moduleName"/>
           </arguments>
         </message>
-        <message name="excludingModule" final="true">
+        <message name="excludingModuleInfo" final="true">
           <template defaultLanguage="en">
             <text language="en">Excluding module ''{0}''.</text>
             <text language="de">Schließt Modul ''{0}'' aus.</text>
@@ -1899,13 +1899,13 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="0" name="moduleName"/>
           </arguments>
         </message>
-        <reference name="writing"/>
+        <reference name="writeInfo"/>
       </messages>
     </implementation>
   </implementations>
   <messages>
     <!-- *********************************************************************************************************** -->
-    <message name="writing">
+    <message name="writeInfo">
       <template defaultLanguage="en">
         <text language="en">Writing ''{0}''.</text>
         <text language="de">Schreibt ''{0}''.</text>
