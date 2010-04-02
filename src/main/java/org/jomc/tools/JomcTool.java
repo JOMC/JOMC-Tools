@@ -669,8 +669,6 @@ public abstract class JomcTool
             throw new NullPointerException( "property" );
         }
 
-        final char[] name = property.getName().toCharArray();
-        name[0] = Character.toUpperCase( name[0] );
         String prefix = "get";
 
         final String javaTypeName = this.getJavaTypeName( property, true );
@@ -679,7 +677,7 @@ public abstract class JomcTool
             prefix = "is";
         }
 
-        return prefix + String.valueOf( name );
+        return prefix + this.getJavaIdentifier( property.getName() );
     }
 
     /**
@@ -731,9 +729,7 @@ public abstract class JomcTool
             throw new NullPointerException( "dependency" );
         }
 
-        final char[] name = dependency.getName().toCharArray();
-        name[0] = Character.toUpperCase( name[0] );
-        return "get" + String.valueOf( name );
+        return "get" + this.getJavaIdentifier( dependency.getName() );
     }
 
     /**
@@ -752,9 +748,7 @@ public abstract class JomcTool
             throw new NullPointerException( "message" );
         }
 
-        final char[] name = message.getName().toCharArray();
-        name[0] = Character.toUpperCase( name[0] );
-        return "get" + String.valueOf( name ) + "Message";
+        return "get" + this.getJavaIdentifier( message.getName() );
     }
 
     /**
@@ -1566,6 +1560,29 @@ public abstract class JomcTool
 
         final int idx = identifier.lastIndexOf( '.' );
         return idx != -1 ? identifier.substring( 0, idx ) : "";
+    }
+
+    private String getJavaIdentifier( final String identifier )
+    {
+        final StringBuilder builder = new StringBuilder();
+        boolean capitalize = true;
+
+        for ( int i = 0; i < identifier.length(); i++ )
+        {
+            final char c = identifier.charAt( i );
+
+            if ( Character.isWhitespace( c ) )
+            {
+                capitalize = true;
+            }
+            else if ( ( i == 0 ? Character.isJavaIdentifierStart( c ) : Character.isJavaIdentifierPart( c ) ) )
+            {
+                builder.append( capitalize ? Character.toUpperCase( c ) : c );
+                capitalize = false;
+            }
+        }
+
+        return builder.toString();
     }
 
     private static String getMessage( final String key, final Object... arguments )

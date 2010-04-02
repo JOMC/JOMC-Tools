@@ -542,7 +542,7 @@ public abstract class JomcToolTest extends TestCase
         Assert.assertEquals( "java/lang/Object", this.getTestTool().getJavaClasspathLocation( specification ) );
         Assert.assertEquals( "Object", this.getTestTool().getJavaClasspathLocation( defaultPackageSpecification ) );
         Assert.assertEquals( "getLocale", this.getTestTool().getJavaGetterMethodName( d ) );
-        Assert.assertEquals( "getMessageMessage", this.getTestTool().getJavaGetterMethodName( m ) );
+        Assert.assertEquals( "getMessage", this.getTestTool().getJavaGetterMethodName( m ) );
         Assert.assertEquals( "getProperty", this.getTestTool().getJavaGetterMethodName( p ) );
         Assert.assertEquals( 0, this.getTestTool().getJavaInterfaceNames( implementation, true ).size() );
         Assert.assertEquals( "private", this.getTestTool().getJavaModifierName( implementation, d ) );
