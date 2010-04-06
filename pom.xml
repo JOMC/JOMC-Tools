@@ -161,6 +161,10 @@
                     <shadedPattern>org.jomc.cli.util.model</shadedPattern>
                   </relocation>
                   <relocation>
+                    <pattern>/org/jomc/model/bootstrap</pattern>
+                    <shadedPattern>/org/jomc/cli/util/model/bootstrap</shadedPattern>
+                  </relocation>
+                  <relocation>
                     <pattern>org.apache.commons.cli</pattern>
                     <shadedPattern>org.jomc.cli.util.cli</shadedPattern>
                   </relocation>
