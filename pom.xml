@@ -326,9 +326,6 @@
               <goal>validate-test-classes</goal>
               <goal>validate-test-modules</goal>
             </goals>
-            <configuration>
-              <modelObjectStylesheet>src/main/jomc/model-relocations.xsl</modelObjectStylesheet>
-            </configuration>
           </execution>
         </executions>
       </plugin>

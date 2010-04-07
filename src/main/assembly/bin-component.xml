@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Copyright (c) 2009 The JOMC Project
+  Copyright (c) 2005 Christian Schulte <schulte2005@users.sourceforge.net>
+  All rights reserved.
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in
+      the documentation and/or other materials provided with the
+      distribution.
+
+  THIS SOFTWARE IS PROVIDED BY THE JOMC PROJECT AND CONTRIBUTORS "AS IS"
+  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE JOMC PROJECT OR
+  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+  $Id$
+
+-->
+<component xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/component/1.1.1"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/component/1.1.1 http://maven.apache.org/xsd/component-1.1.1.xsd">
+  <files>
+    <file>
+      <destName>The Apache Software License, Version 2.0.txt</destName>
+      <fileMode>0444</fileMode>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <outputDirectory>/</outputDirectory>
+      <source>src/main/assembly/APACHE_LICENSE-2.0.txt</source>
+    </file>
+    <file>
+      <destName>NOTICE.txt</destName>
+      <fileMode>0444</fileMode>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <outputDirectory>/</outputDirectory>
+      <source>src/main/assembly/APACHE_NOTICE.txt</source>
+    </file>
+    <file>
+      <destName>The JOMC Project Copyright.txt</destName>
+      <fileMode>0444</fileMode>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <outputDirectory>/</outputDirectory>
+      <source>${project.build.directory}/JOMC_LICENSE.txt</source>
+    </file>
+    <file>
+      <fileMode>0444</fileMode>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <outputDirectory>/examples/xslt</outputDirectory>
+      <source>src/main/jomc/model-relocations.xsl</source>
+    </file>
+    <file>
+      <fileMode>0444</fileMode>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <outputDirectory>/examples/xslt</outputDirectory>
+      <source>src/main/jomc/bootstrap-relocations.xsl</source>
+    </file>
+    <file>
+      <destName>jomc-cli.xml</destName>
+      <fileMode>0444</fileMode>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <outputDirectory>/examples/xml</outputDirectory>
+      <source>${project.build.outputDirectory}/META-INF/jomc.xml</source>
+    </file>
+    <file>
+      <destName>Changelog.html</destName>
+      <fileMode>0444</fileMode>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <outputDirectory>/</outputDirectory>
+      <source>${project.build.directory}/changes.xhtml</source>
+    </file>
+  </files>
+  <fileSets>
+    <fileSet>
+      <directory>${remoteResourcesOutputDirectory}/META-INF</directory>
+      <fileMode>0444</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/</outputDirectory>
+      <lineEnding>dos</lineEnding>
+      <filtered>false</filtered>
+      <includes>
+        <include>PROJECT.txt</include>
+        <include>PROJEKT.txt</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>src/main/assembly</directory>
+      <fileMode>0444</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/</outputDirectory>
+      <lineEnding>dos</lineEnding>
+      <filtered>true</filtered>
+      <includes>
+        <include>README.txt</include>
+        <include>LIESMICH.txt</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>src/main/assembly/bin</directory>
+      <fileMode>0555</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/bin</outputDirectory>
+      <lineEnding>dos</lineEnding>
+      <filtered>true</filtered>
+      <includes>
+        <include>jomc.bat</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>src/main/assembly/bin</directory>
+      <fileMode>0555</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/bin</outputDirectory>
+      <lineEnding>unix</lineEnding>
+      <filtered>true</filtered>
+      <includes>
+        <include>jomc</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>src/main/assembly/examples/xslt</directory>
+      <fileMode>0444</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/examples/xslt</outputDirectory>
+      <lineEnding>dos</lineEnding>
+      <filtered>true</filtered>
+      <includes>
+        <include>*.xsl</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${project.build.directory}/jomc-tools/META-INF</directory>
+      <fileMode>0444</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/lib/tools</outputDirectory>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <includes>
+        <include>PROJECT.txt</include>
+        <include>PROJEKT.txt</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${project.build.directory}/jomc-schemas</directory>
+      <fileMode>0444</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/schemas</outputDirectory>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <includes>
+        <include>**/*.xsd</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${project.build.directory}/jomc-endorsed</directory>
+      <fileMode>0555</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/lib/endorsed</outputDirectory>
+    </fileSet>
+  </fileSets>
+  <dependencySets>
+    <dependencySet>
+      <directoryMode>0755</directoryMode>
+      <fileMode>0555</fileMode>
+      <scope>compile</scope>
+      <outputDirectory>/bin</outputDirectory>
+      <includes>
+        <include>org.jomc:jomc-cli</include>
+      </includes>
+    </dependencySet>
+    <dependencySet>
+      <directoryMode>0755</directoryMode>
+      <fileMode>0555</fileMode>
+      <scope>runtime</scope>
+      <includes>
+        <include>org.jomc:jomc-api</include>
+        <include>org.jomc:jomc-spi</include>
+        <include>org.jomc:jomc-util</include>
+        <include>org.jomc:jomc-model</include>
+        <include>org.jomc:jomc-ri</include>
+      </includes>
+      <outputDirectory>/lib/jomc</outputDirectory>
+      <useProjectArtifact>false</useProjectArtifact>
+      <useProjectAttachments>false</useProjectAttachments>
+      <useTransitiveDependencies>true</useTransitiveDependencies>
+    </dependencySet>
+    <dependencySet>
+      <useProjectArtifact>false</useProjectArtifact>
+      <useProjectAttachments>false</useProjectAttachments>
+      <useTransitiveDependencies>true</useTransitiveDependencies>
+      <directoryMode>0755</directoryMode>
+      <fileMode>0555</fileMode>
+      <scope>provided</scope>
+      <outputDirectory>/lib/ext</outputDirectory>
+    </dependencySet>
+    <dependencySet>
+      <directoryMode>0755</directoryMode>
+      <fileMode>0555</fileMode>
+      <scope>compile</scope>
+      <outputDirectory>/lib/tools</outputDirectory>
+      <excludes>
+        <exclude>javax.activation:activation</exclude>
+        <exclude>javax.xml.bind:jaxb-api</exclude>
+        <exclude>com.sun.xml.bind:jaxb-impl</exclude>
+        <exclude>org.jomc:jomc-api</exclude>
+        <exclude>org.jomc:jomc-cli</exclude>
+        <exclude>javax.annotation:jsr250-api</exclude>
+        <exclude>javax.xml.stream:stax-api</exclude>
+        <exclude>commons-cli:commons-cli</exclude>
+      </excludes>
+    </dependencySet>
+    <dependencySet>
+      <directoryMode>0755</directoryMode>
+      <fileMode>0555</fileMode>
+      <scope>compile</scope>
+      <outputDirectory>/examples/lib</outputDirectory>
+      <includes>
+        <include>commons-cli:commons-cli</include>
+      </includes>
+    </dependencySet>
+  </dependencySets>
+</component>
