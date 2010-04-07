@@ -34,7 +34,7 @@
  */
 // </editor-fold>
 // SECTION-END
-package org.jomc.cli.util;
+package org.jomc.cli.model;
 
 import java.io.File;
 import org.apache.commons.cli.Option;

@@ -112,7 +112,7 @@ import org.jomc.tools.ResourceFileProcessor;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-2-SNAPSHOT Build 2010-04-07T03:27:55+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-2-SNAPSHOT Build 2010-04-07T11:14:45+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -645,7 +645,7 @@ public final class GenerateResourcesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-2-SNAPSHOT Build 2010-04-07T03:27:55+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-2-SNAPSHOT Build 2010-04-07T11:14:45+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
