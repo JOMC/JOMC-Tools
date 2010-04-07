@@ -1472,6 +1472,33 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="1" name="contextId"/>
           </arguments>
         </message>
+        <message name="excludedModuleFromClasspathInfo" final="true">
+          <template defaultLanguage="en">
+            <text language="en">Module ''{0}'' from class path ignored. Module with identical name already loaded.</text>
+            <text language="de">Modul ''{0}'' aus Klassenpfad ignoriert. Modul mit identischem Namen bereits geladen.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="moduleName"/>
+          </arguments>
+        </message>
+        <message name="documentFileNotFoundWarning" final="true">
+          <template defaultLanguage="en">
+            <text language="en">Document file ''{0}'' ignored. File not found.</text>
+            <text language="de">Dokument-Datei ''{0}'' ignoriert. Datei nicht gefunden.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="fileName"/>
+          </arguments>
+        </message>
+        <message name="classpathElementNotFoundWarning" final="true">
+          <template defaultLanguage="en">
+            <text language="en">Classpath element ''{0}'' ignored. File not found.</text>
+            <text language="de">Klassenpfad-Element ''{0}'' ignoriert. Datei nicht gefunden.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="fileName"/>
+          </arguments>
+        </message>
         <reference name="defaultLogLevelInfo" final="true"/>
       </messages>
     </implementation>

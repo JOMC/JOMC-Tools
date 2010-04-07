@@ -97,114 +97,6 @@
                     <include>oro:oro</include>
                   </includes>
                 </artifactSet>
-                <relocations>
-                  <relocation>
-                    <pattern>org.jomc.ObjectManager</pattern>
-                    <shadedPattern>org.jomc.cli.util.ObjectManager</shadedPattern>
-                  </relocation>
-                  <relocation>
-                    <pattern>org.jomc.ObjectManagerFactory</pattern>
-                    <shadedPattern>org.jomc.cli.util.ObjectManagerFactory</shadedPattern>
-                  </relocation>
-                  <relocation>
-                    <pattern>org.jomc.ObjectManagementException</pattern>
-                    <shadedPattern>org.jomc.cli.util.ObjectManagementException</shadedPattern>
-                  </relocation>
-                  <relocation>
-                    <pattern>org.jomc.spi</pattern>
-                    <shadedPattern>org.jomc.cli.util</shadedPattern>
-                  </relocation>
-                  <relocation>
-                    <pattern>org.jomc.ri</pattern>
-                    <shadedPattern>org.jomc.cli.util</shadedPattern>
-                  </relocation>
-                  <relocation>
-                    <pattern>org.jomc.util</pattern>
-                    <shadedPattern>org.jomc.cli.util.text</shadedPattern>
-                    <excludes>
-                      <exclude>org.jomc.util.WeakIdentityHashMap*</exclude>
-                      <exclude>org.jomc.util.ParseException</exclude>
-                      <exclude>org.jomc.util.SimpleCharStream</exclude>
-                      <exclude>org.jomc.util.Token*</exclude>
-                      <exclude>org.jomc.util.Version*</exclude>
-                    </excludes>
-                  </relocation>
-                  <relocation>
-                    <pattern>org.jomc.util</pattern>
-                    <shadedPattern>org.jomc.cli.util.collections.map</shadedPattern>
-                    <excludes>
-                      <exclude>org.jomc.util.Line*</exclude>
-                      <exclude>org.jomc.util.Section*</exclude>
-                      <exclude>org.jomc.util.Trailing*</exclude>
-                      <exclude>org.jomc.util.ParseException</exclude>
-                      <exclude>org.jomc.util.SimpleCharStream</exclude>
-                      <exclude>org.jomc.util.Token*</exclude>
-                      <exclude>org.jomc.util.Version*</exclude>
-                    </excludes>
-                  </relocation>
-                  <relocation>
-                    <pattern>org.jomc.util</pattern>
-                    <shadedPattern>org.jomc.cli.util.versioning</shadedPattern>
-                    <excludes>
-                      <exclude>org.jomc.util.Line*</exclude>
-                      <exclude>org.jomc.util.Section*</exclude>
-                      <exclude>org.jomc.util.Trailing*</exclude>
-                      <exclude>org.jomc.util.WeakIdentityHashMap*</exclude>
-                    </excludes>
-                  </relocation>
-                  <relocation>
-                    <pattern>org.jomc.tools</pattern>
-                    <shadedPattern>org.jomc.cli.util.tools</shadedPattern>
-                  </relocation>
-                  <relocation>
-                    <pattern>org.jomc.model</pattern>
-                    <shadedPattern>org.jomc.cli.util.model</shadedPattern>
-                  </relocation>
-                  <relocation>
-                    <pattern>/org/jomc/model/bootstrap</pattern>
-                    <shadedPattern>/org/jomc/cli/util/model/bootstrap</shadedPattern>
-                  </relocation>
-                  <relocation>
-                    <pattern>org.apache.commons.cli</pattern>
-                    <shadedPattern>org.jomc.cli.util.cli</shadedPattern>
-                  </relocation>
-                  <relocation>
-                    <pattern>org.apache.bcel</pattern>
-                    <shadedPattern>org.jomc.cli.util.bcel</shadedPattern>
-                  </relocation>
-                  <relocation>
-                    <pattern>org.apache.commons.io</pattern>
-                    <shadedPattern>org.jomc.cli.util.io</shadedPattern>
-                  </relocation>
-                  <relocation>
-                    <pattern>org.apache.commons.collections</pattern>
-                    <shadedPattern>org.jomc.cli.util.collections</shadedPattern>
-                  </relocation>
-                  <relocation>
-                    <pattern>org.apache.commons.lang</pattern>
-                    <shadedPattern>org.jomc.cli.util.lang</shadedPattern>
-                  </relocation>
-                  <relocation>
-                    <pattern>org.apache.regexp</pattern>
-                    <shadedPattern>org.jomc.cli.util.regexp</shadedPattern>
-                  </relocation>
-                  <relocation>
-                    <pattern>org.apache.oro</pattern>
-                    <shadedPattern>org.jomc.cli.util.oro</shadedPattern>
-                  </relocation>
-                  <relocation>
-                    <pattern>org.apache.velocity</pattern>
-                    <shadedPattern>org.jomc.cli.util.velocity</shadedPattern>
-                  </relocation>
-                  <relocation>
-                    <pattern>/org/apache/velocity/runtime/defaults</pattern>
-                    <shadedPattern>/org/jomc/cli/util/velocity/runtime/defaults</shadedPattern>
-                  </relocation>
-                  <relocation>
-                    <pattern>/org/apache/velocity/texen/defaults</pattern>
-                    <shadedPattern>/org/jomc/cli/util/velocity/texen/defaults</shadedPattern>
-                  </relocation>
-                </relocations>
                 <filters>
                   <filter>
                     <artifact>commons-cli:commons-cli</artifact>
@@ -261,8 +153,6 @@
                       <exclude>META-INF/LICENSE.txt</exclude>
                       <exclude>META-INF/PROJEKT.txt</exclude>
                       <exclude>META-INF/PROJECT.txt</exclude>
-                      <exclude>META-INF/services/org.jomc.model.bootstrap.SchemaProvider</exclude>
-                      <exclude>META-INF/services/org.jomc.model.bootstrap.ServiceProvider</exclude>
                     </excludes>
                   </filter>
                 </filters>
@@ -283,8 +173,6 @@
                     <serviceResources>
                       <serviceResource>META-INF/jomc-services.xml</serviceResource>
                     </serviceResources>
-                    <modelObjectStylesheet>src/main/jomc/model-relocations.xsl</modelObjectStylesheet>
-                    <bootstrapObjectStylesheet>src/main/jomc/bootstrap-relocations.xsl</bootstrapObjectStylesheet>
                   </transformer>
                   <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
                     <file>${project.build.directory}/maven-shared-archive-resources/META-INF/LIZENZ.txt</file>

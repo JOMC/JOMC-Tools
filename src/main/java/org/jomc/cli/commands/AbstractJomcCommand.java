@@ -146,7 +146,7 @@ import org.xml.sax.SAXException;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-2-SNAPSHOT Build 2010-04-06T08:19:56+0000</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-2-SNAPSHOT Build 2010-04-07T02:07:30+0000</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -156,6 +156,10 @@ import org.xml.sax.SAXException;
  * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath element: ''{0}''</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Klassenpfad-Element: ''{0}''</pre></td></tr>
  * </table>
+ * <li>"{@link #getClasspathElementNotFoundWarning classpathElementNotFoundWarning}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath element ''{0}'' ignored. File not found.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Klassenpfad-Element ''{0}'' ignoriert. Datei nicht gefunden.</pre></td></tr>
+ * </table>
  * <li>"{@link #getDefaultLogLevelInfo defaultLogLevelInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Default log level: ''{0}''</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Standard-Protokollierungsstufe: ''{0}''</pre></td></tr>
@@ -163,6 +167,14 @@ import org.xml.sax.SAXException;
  * <li>"{@link #getDocumentFileInfo documentFileInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Document file: ''{0}''</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Datei: ''{0}''</pre></td></tr>
+ * </table>
+ * <li>"{@link #getDocumentFileNotFoundWarning documentFileNotFoundWarning}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Document file ''{0}'' ignored. File not found.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Datei ''{0}'' ignoriert. Datei nicht gefunden.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getExcludedModuleFromClasspathInfo excludedModuleFromClasspathInfo}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' from class path ignored. Module with identical name already loaded.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul ''{0}'' aus Klassenpfad ignoriert. Modul mit identischem Namen bereits geladen.</pre></td></tr>
  * </table>
  * <li>"{@link #getExcludedProviderInfo excludedProviderInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Provider ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
@@ -644,11 +656,6 @@ public abstract class AbstractJomcCommand implements Command
             {
                 for ( String e : elements )
                 {
-                    if ( this.isLoggable( Level.FINE ) )
-                    {
-                        this.log( Level.FINE, this.getDocumentFileInfo( this.getLocale(), e ), null );
-                    }
-
                     if ( e.startsWith( "@" ) )
                     {
                         String line = null;
@@ -660,9 +667,28 @@ public abstract class AbstractJomcCommand implements Command
                             reader = new BufferedReader( new FileReader( file ) );
                             while ( ( line = reader.readLine() ) != null )
                             {
+                                line = line.trim();
                                 if ( !line.startsWith( "#" ) )
                                 {
-                                    files.add( new File( line ) );
+                                    final File f = new File( line );
+
+                                    if ( f.exists() )
+                                    {
+                                        if ( this.isLoggable( Level.FINE ) )
+                                        {
+                                            this.log( Level.FINE, this.getDocumentFileInfo(
+                                                this.getLocale(), f.getAbsolutePath() ), null );
+
+                                        }
+
+                                        files.add( f );
+                                    }
+                                    else if ( this.isLoggable( Level.WARNING ) )
+                                    {
+                                        this.log( Level.WARNING, this.getDocumentFileNotFoundWarning(
+                                            this.getLocale(), f.getAbsolutePath() ), null );
+
+                                    }
                                 }
                             }
                         }
@@ -676,7 +702,25 @@ public abstract class AbstractJomcCommand implements Command
                     }
                     else
                     {
-                        files.add( new File( e ) );
+                        final File file = new File( e );
+
+                        if ( file.exists() )
+                        {
+                            if ( this.isLoggable( Level.FINE ) )
+                            {
+                                this.log( Level.FINE, this.getDocumentFileInfo(
+                                    this.getLocale(), file.getAbsolutePath() ), null );
+
+                            }
+
+                            files.add( file );
+                        }
+                        else if ( this.isLoggable( Level.WARNING ) )
+                        {
+                            this.log( Level.WARNING, this.getDocumentFileNotFoundWarning(
+                                this.getLocale(), file.getAbsolutePath() ), null );
+
+                        }
                     }
                 }
             }
@@ -729,6 +773,12 @@ public abstract class AbstractJomcCommand implements Command
                 if ( modules.getModule( m.getName() ) == null )
                 {
                     modules.getModule().add( m );
+                }
+                else if ( this.isLoggable( Level.FINE ) )
+                {
+                    this.log( Level.FINE, this.getExcludedModuleFromClasspathInfo(
+                        this.getLocale(), m.getName() ), null );
+
                 }
             }
         }
@@ -791,11 +841,6 @@ public abstract class AbstractJomcCommand implements Command
                 {
                     for ( String e : elements )
                     {
-                        if ( isLoggable( Level.FINE ) )
-                        {
-                            log( Level.FINE, getClasspathElementInfo( getLocale(), e ), null );
-                        }
-
                         if ( e.startsWith( "@" ) )
                         {
                             String line = null;
@@ -807,9 +852,21 @@ public abstract class AbstractJomcCommand implements Command
                                 reader = new BufferedReader( new FileReader( file ) );
                                 while ( ( line = reader.readLine() ) != null )
                                 {
+                                    line = line.trim();
                                     if ( !line.startsWith( "#" ) )
                                     {
-                                        uris.add( new File( line ).toURI() );
+                                        final File f = new File( line );
+
+                                        if ( f.exists() )
+                                        {
+                                            uris.add( f.toURI() );
+                                        }
+                                        else if ( isLoggable( Level.WARNING ) )
+                                        {
+                                            log( Level.WARNING, getClasspathElementNotFoundWarning(
+                                                getLocale(), f.getAbsolutePath() ), null );
+
+                                        }
                                     }
                                 }
                             }
@@ -823,13 +880,29 @@ public abstract class AbstractJomcCommand implements Command
                         }
                         else
                         {
-                            uris.add( new File( e ).toURI() );
+                            final File file = new File( e );
+
+                            if ( file.exists() )
+                            {
+                                uris.add( file.toURI() );
+                            }
+                            else if ( isLoggable( Level.WARNING ) )
+                            {
+                                log( Level.WARNING, getClasspathElementNotFoundWarning(
+                                    getLocale(), file.getAbsolutePath() ), null );
+
+                            }
                         }
                     }
                 }
 
                 for ( URI uri : uris )
                 {
+                    if ( isLoggable( Level.FINE ) )
+                    {
+                        log( Level.FINE, getClasspathElementInfo( getLocale(), uri.toASCIIString() ), null );
+                    }
+
                     this.addURL( uri.toURL() );
                 }
             }
@@ -1459,7 +1532,7 @@ public abstract class AbstractJomcCommand implements Command
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-2-SNAPSHOT Build 2010-04-06T08:19:56+0000</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-2-SNAPSHOT Build 2010-04-07T02:07:30+0000</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -1519,6 +1592,27 @@ public abstract class AbstractJomcCommand implements Command
     }
 
     /**
+     * Gets the text of the {@code classpathElementNotFoundWarning} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath element ''{0}'' ignored. File not found.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Klassenpfad-Element ''{0}'' ignoriert. Datei nicht gefunden.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param fileName Format argument.
+     * @return The text of the {@code classpathElementNotFoundWarning} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-2-SNAPSHOT/jomc-tools" )
+    private String getClasspathElementNotFoundWarning( final java.util.Locale locale, final java.lang.String fileName )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "classpathElementNotFoundWarning", locale, fileName );
+        assert _m != null : "'classpathElementNotFoundWarning' message not found.";
+        return _m;
+    }
+
+    /**
      * Gets the text of the {@code defaultLogLevelInfo} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Default log level: ''{0}''</pre></td></tr>
@@ -1557,6 +1651,48 @@ public abstract class AbstractJomcCommand implements Command
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentFileInfo", locale, documentFile );
         assert _m != null : "'documentFileInfo' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code documentFileNotFoundWarning} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Document file ''{0}'' ignored. File not found.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Datei ''{0}'' ignoriert. Datei nicht gefunden.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param fileName Format argument.
+     * @return The text of the {@code documentFileNotFoundWarning} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-2-SNAPSHOT/jomc-tools" )
+    private String getDocumentFileNotFoundWarning( final java.util.Locale locale, final java.lang.String fileName )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentFileNotFoundWarning", locale, fileName );
+        assert _m != null : "'documentFileNotFoundWarning' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code excludedModuleFromClasspathInfo} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' from class path ignored. Module with identical name already loaded.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul ''{0}'' aus Klassenpfad ignoriert. Modul mit identischem Namen bereits geladen.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param moduleName Format argument.
+     * @return The text of the {@code excludedModuleFromClasspathInfo} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-2-SNAPSHOT/jomc-tools" )
+    private String getExcludedModuleFromClasspathInfo( final java.util.Locale locale, final java.lang.String moduleName )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "excludedModuleFromClasspathInfo", locale, moduleName );
+        assert _m != null : "'excludedModuleFromClasspathInfo' message not found.";
         return _m;
     }
 
