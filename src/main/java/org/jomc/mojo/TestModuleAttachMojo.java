@@ -35,7 +35,7 @@ package org.jomc.mojo;
 import java.io.File;
 
 /**
- * Attaches a project's test module artifact to a project.
+ * Attaches a project's test module artifact.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$

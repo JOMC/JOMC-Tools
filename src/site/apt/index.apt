@@ -42,9 +42,9 @@ Maven JOMC Plugin
 
 * Goals Overview
 
-  * {{{./attach-main-module-mojo.html}jomc:attach-main-module}} Attaches a project's main module artifact to a project.
+  * {{{./attach-main-module-mojo.html}jomc:attach-main-module}} Attaches a project's main module artifact.
 
-  * {{{./attach-test-module-mojo.html}jomc:attach-test-module}} Attaches a project's test module artifact to a project.
+  * {{{./attach-test-module-mojo.html}jomc:attach-test-module}} Attaches a project's test module artifact.
 
   * {{{./write-main-resources-mojo.html}jomc:write-main-resources}} Writes a projects' main resource files.
 
