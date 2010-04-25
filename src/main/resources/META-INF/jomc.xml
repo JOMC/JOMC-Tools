@@ -639,7 +639,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <message name="description" override="true">
           <template defaultLanguage="en">
             <text language="en">Directory to write resource files to.</text>
-            <text language="de">Verzeichnis in das Ressource-Dateien geschrieben werden sollen.</text>
+            <text language="de">Verzeichnis, in das Ressource-Dateien geschrieben werden sollen.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
@@ -673,7 +673,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <message name="description" override="true">
           <template defaultLanguage="en">
             <text language="en">Directory to write source files to.</text>
-            <text language="de">Verzeichnis in das Quelltext-Dateien geschrieben werden sollen.</text>
+            <text language="de">Verzeichnis, in das Quelltext-Dateien geschrieben werden sollen.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
@@ -877,7 +877,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <message name="description" override="true">
           <template defaultLanguage="en">
             <text language="en">Directory holding the class files to process.</text>
-            <text language="de">Verzeichnis mit den zu verarbeitenden Klassendateien.</text>
+            <text language="de">Verzeichnis, in dem sich die zu verarbeitenden Klassendateien befinden.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
@@ -945,7 +945,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <message name="description" override="true">
           <template defaultLanguage="en">
             <text language="en">Name of a XSLT file to use for transforming the merged module.</text>
-            <text language="de">Name einer XSLT Datei mit der das zusammengefügte Modul transformiert werden soll.</text>
+            <text language="de">Name einer XSLT Datei, mit der das zusammengefügte Modul transformiert werden soll.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
@@ -1544,8 +1544,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="shortDescriptionMessage" override="true">
           <template defaultLanguage="en">
-            <text language="en">Generates resources.</text>
-            <text language="de">Generiert Ressourcen.</text>
+            <text language="en">Generates resource files.</text>
+            <text language="de">Generiert Ressource-Dateien.</text>
           </template>
         </message>
         <message name="longDescriptionMessage" override="true">
