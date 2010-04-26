@@ -66,6 +66,10 @@ Maven JOMC Plugin
 
   * {{{./validate-test-modules-mojo.html}jomc:validate-test-modules}} Validates a projects' test modules.
 
+  * {{{./dump-main-instance-mojo.html}jomc:dump-main-instance}} Dumps a project's main instance.
+
+  * {{{./dump-test-instance-mojo.html}jomc:dump-test-instance}} Dumps a project's test instance.
+
   []
 
 * Usage
@@ -96,5 +100,7 @@ Maven JOMC Plugin
   * {{{./examples/shade-artifacts.html}'Shading' JOMC artifacts.}}
 
   * {{{./examples/customize-templates.html}Customizing JOMC code generation.}}
+
+  * {{{./examples/dump-instances.html}Dumping instances.}}
 
   []
