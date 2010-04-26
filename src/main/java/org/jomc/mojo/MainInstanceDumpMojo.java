@@ -60,7 +60,7 @@ public class MainInstanceDumpMojo extends AbstractJomcMojo
 
     /**
      * File to dump the instance to. If not set, data will be logged to the console.
-     * 
+     *
      * @parameter expression="${jomc.dumpFile}"
      */
     private File dumpFile;
