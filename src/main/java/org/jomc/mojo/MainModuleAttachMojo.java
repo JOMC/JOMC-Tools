@@ -43,7 +43,7 @@ import java.io.File;
  * @phase process-resources
  * @goal attach-main-module
  */
-public class MainModuleAttachMojo extends AbstractAttachMojo
+public final class MainModuleAttachMojo extends AbstractAttachMojo
 {
 
     /**

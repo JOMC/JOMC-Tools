@@ -55,7 +55,7 @@ import org.jomc.model.ObjectFactory;
  * @goal dump-main-instance
  * @requiresDependencyResolution test
  */
-public class MainInstanceDumpMojo extends AbstractJomcMojo
+public final class MainInstanceDumpMojo extends AbstractJomcMojo
 {
 
     /**

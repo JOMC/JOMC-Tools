@@ -45,7 +45,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  * @goal write-test-resources
  * @requiresDependencyResolution test
  */
-public class TestResourcesWriteMojo extends AbstractResourcesMojo
+public final class TestResourcesWriteMojo extends AbstractResourcesMojo
 {
 
     @Override

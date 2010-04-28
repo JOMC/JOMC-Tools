@@ -48,7 +48,7 @@ import org.jomc.model.ModelValidationReport;
  * @goal validate-test-modules
  * @requiresDependencyResolution test
  */
-public class TestModulesValidateMojo extends AbstractJomcMojo
+public final class TestModulesValidateMojo extends AbstractJomcMojo
 {
 
     /** Constant for the name of the tool backing the mojo. */
