@@ -1187,13 +1187,13 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <dependency name="Commands" identifier="org.jomc.cli.Command" version="${project.version}" bound="false"/>
         <dependency name="Locale" identifier="java.util.Locale" version="1.1" implementationName="default"/>
         <dependency name="DebugOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Debug Option" bound="true"/>
+                    implementationName="${project.name} Debug Option"/>
 
         <dependency name="FailOnWarningsOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Fail-On-Warnings Option" bound="true"/>
+                    implementationName="${project.name} Fail-On-Warnings Option"/>
 
         <dependency name="VerboseOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Verbose Option" bound="true"/>
+                    implementationName="${project.name} Verbose Option"/>
 
       </dependencies>
       <properties>
@@ -1275,37 +1275,37 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <dependencies>
         <dependency name="Locale" identifier="java.util.Locale" version="1.1" implementationName="default" final="true"/>
         <dependency name="ClasspathOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Classpath Option" bound="true"/>
+                    implementationName="${project.name} Classpath Option"/>
 
         <dependency name="DocumentsOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Documents Option" bound="true"/>
+                    implementationName="${project.name} Documents Option"/>
 
         <dependency name="ModuleLocationOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Module Location Option" bound="true"/>
+                    implementationName="${project.name} Module Location Option"/>
 
         <dependency name="SchemaLocationOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Schema Location Option" bound="true"/>
+                    implementationName="${project.name} Schema Location Option"/>
 
         <dependency name="ServiceLocationOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Service Location Option" bound="true"/>
+                    implementationName="${project.name} Service Location Option"/>
 
         <dependency name="TransformerLocationOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Transformer Location Option" bound="true"/>
+                    implementationName="${project.name} Transformer Location Option"/>
 
         <dependency name="ProviderLocationOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Provider Location Option" bound="true"/>
+                    implementationName="${project.name} Provider Location Option"/>
 
         <dependency name="PlatformProviderLocationOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Platform Provider Location Option" bound="true"/>
+                    implementationName="${project.name} Platform Provider Location Option"/>
 
         <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Module Name Option" bound="true"/>
+                    implementationName="${project.name} Module Name Option"/>
 
         <dependency name="NoClasspathResolutionOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} No Classpath Resolution Option" bound="true"/>
+                    implementationName="${project.name} No Classpath Resolution Option"/>
 
         <dependency name="NoModelProcessingOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} No Model Processing Option" bound="true"/>
+                    implementationName="${project.name} No Model Processing Option"/>
 
       </dependencies>
       <properties>
@@ -1519,10 +1519,10 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </implementations>
       <dependencies>
         <dependency name="LanguageOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Language Option" bound="true"/>
+                    implementationName="${project.name} Language Option"/>
 
         <dependency name="ResourceDirectoryOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Resource Directory Option" bound="true">
+                    implementationName="${project.name} Resource Directory Option">
 
           <properties>
             <property name="required" type="boolean" value="true" override="true"/>
@@ -1598,32 +1598,32 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </implementations>
       <dependencies>
         <dependency name="SourceDirectoryOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Source Directory Option" bound="true">
+                    implementationName="${project.name} Source Directory Option">
 
           <properties>
             <property name="required" type="boolean" value="true" override="true"/>
           </properties>
         </dependency>
         <dependency name="TemplateProfileOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Template Profile Option" bound="true"/>
+                    implementationName="${project.name} Template Profile Option"/>
 
         <dependency name="DefaultTemplateProfileOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Default Template Profile Option" bound="true"/>
+                    implementationName="${project.name} Default Template Profile Option"/>
 
         <dependency name="TemplateEncodingOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Template Encoding Option" bound="true"/>
+                    implementationName="${project.name} Template Encoding Option"/>
 
         <dependency name="OutputEncodingOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Output Encoding Option" bound="true"/>
+                    implementationName="${project.name} Output Encoding Option"/>
 
         <dependency name="InputEncodingOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Input Encoding Option" bound="true"/>
+                    implementationName="${project.name} Input Encoding Option"/>
 
         <dependency name="WhitepsacesPerIndentOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Whitespaces Per Indent Option" bound="true"/>
+                    implementationName="${project.name} Whitespaces Per Indent Option"/>
 
         <dependency name="IndentationCharacterOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Indentation Character Option" bound="true"/>
+                    implementationName="${project.name} Indentation Character Option"/>
 
       </dependencies>
       <properties>
@@ -1681,7 +1681,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </implementations>
       <dependencies>
         <dependency name="ClassesDirectoryOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Classes Directory Option" bound="true">
+                    implementationName="${project.name} Classes Directory Option">
 
           <properties>
             <property name="required" type="boolean" value="true" override="true"/>
@@ -1841,33 +1841,33 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </implementations>
       <dependencies>
         <dependency name="DocumentOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Document Option" bound="true">
+                    implementationName="${project.name} Document Option">
 
           <properties>
             <property name="required" type="boolean" value="true" override="true"/>
           </properties>
         </dependency>
         <dependency name="StylesheetOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Stylesheet Option" bound="true"/>
+                    implementationName="${project.name} Stylesheet Option"/>
 
         <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Module Name Option" bound="true">
+                    implementationName="${project.name} Module Name Option">
 
           <properties>
             <property name="required" type="boolean" value="true"/>
           </properties>
         </dependency>
         <dependency name="ModuleVersionOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Module Version Option" bound="true"/>
+                    implementationName="${project.name} Module Version Option"/>
 
         <dependency name="ModuleVendorOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Module Vendor Option" bound="true"/>
+                    implementationName="${project.name} Module Vendor Option"/>
 
         <dependency name="ModuleIncludesOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Module Includes Option" bound="true"/>
+                    implementationName="${project.name} Module Includes Option"/>
 
         <dependency name="ModuleExcludesOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Module Excludes Option" bound="true"/>
+                    implementationName="${project.name} Module Excludes Option"/>
 
       </dependencies>
 
