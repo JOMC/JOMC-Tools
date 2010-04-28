@@ -94,7 +94,7 @@ import org.jomc.model.bootstrap.Services;
  *     &lt;serviceResource&gt;META-INF/jomc-services.xml&lt;/serviceResource&gt;
  *   &lt;/serviceResources&gt;
  *   &lt;modelObjectStylesheet&gt;Filename of a style sheet to use for transforming the merged model document.&lt;/modelObjectStylesheet&gt;
- *   &lt;bootstrapObjectStylesheet&gt;Filename of a style sheet to use for transforming the merged bootstrap documents.&lt;/bootstrapObjectStylesheet&gt;
+ *   &lt;bootstrapObjectStylesheet&gt;Filename of a style sheet to use for transforming the merged bootstrap document.&lt;/bootstrapObjectStylesheet&gt;
  *   &lt;providerLocation&gt;META-INF/custom-services&lt;/providerLocation&gt;
  *   &lt;platformProviderLocation&gt;${java.home}/jre/lib/custom-jomc.properties&lt;/platformProviderLocation&gt;
  *   &lt;serviceLocation&gt;META-INF/custom-jomc-services.xml&lt;/serviceLocation&gt;
