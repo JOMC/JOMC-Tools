@@ -33,8 +33,8 @@
 
 -->
 <component xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/component/1.1.1"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/component/1.1.1 http://maven.apache.org/xsd/component-1.1.1.xsd">
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/component/1.1.1 http://maven.apache.org/xsd/component-1.1.1.xsd">
   <files>
     <file>
       <destName>The Apache Software License, Version 2.0.txt</destName>
