@@ -672,8 +672,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Directory to write source files to.</text>
-            <text language="de">Verzeichnis, in das Quelltext-Dateien geschrieben werden sollen.</text>
+            <text language="en">Directory holding the source files to manage.</text>
+            <text language="de">Verzeichnis, in dem sich die zu verwaltenden Quelltextdateien befinden.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
