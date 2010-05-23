@@ -43,6 +43,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  *
  * @phase process-resources
  * @goal manage-main-sources
+ * @threadSafe
  * @requiresDependencyResolution test
  */
 public final class MainSourcesManageMojo extends AbstractSourcesMojo

@@ -43,6 +43,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  *
  * @phase process-test-classes
  * @goal validate-test-classes
+ * @threadSafe
  * @requiresDependencyResolution test
  */
 public final class TestClassesValidateMojo extends AbstractClassesValidateMojo

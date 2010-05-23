@@ -53,6 +53,7 @@ import org.jomc.model.ObjectFactory;
  * @version $Id$
  *
  * @goal dump-main-instance
+ * @threadSafe
  * @requiresDependencyResolution test
  */
 public final class MainInstanceDumpMojo extends AbstractJomcMojo

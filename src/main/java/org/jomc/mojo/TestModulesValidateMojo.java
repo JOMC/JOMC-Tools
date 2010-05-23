@@ -46,6 +46,7 @@ import org.jomc.model.ModelValidationReport;
  *
  * @phase process-test-classes
  * @goal validate-test-modules
+ * @threadSafe
  * @requiresDependencyResolution test
  */
 public final class TestModulesValidateMojo extends AbstractJomcMojo

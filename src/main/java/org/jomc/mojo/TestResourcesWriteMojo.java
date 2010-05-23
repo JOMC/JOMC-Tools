@@ -43,6 +43,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  *
  * @phase process-test-resources
  * @goal write-test-resources
+ * @threadSafe
  * @requiresDependencyResolution test
  */
 public final class TestResourcesWriteMojo extends AbstractResourcesMojo
