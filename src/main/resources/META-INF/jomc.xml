@@ -191,7 +191,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         </message>
         <message name="argumentDescription" override="true">
           <template defaultLanguage="en">
-            <text language="en">Level</text>
+            <text language="en">level</text>
             <text language="de">Stufe</text>
           </template>
         </message>
