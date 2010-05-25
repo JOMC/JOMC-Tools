@@ -604,7 +604,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Default language (defaults to system's default locale).</text>
+            <text language="en">Default language (defaults to system''s default locale).</text>
             <text language="de">Standard-Sprache (Standardlokalisierung des Systems, wenn nicht angegeben).</text>
           </template>
         </message>
@@ -1188,7 +1188,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Line separator. The values ''dos'', ''unix'' and ''mac'' will be translated to ''\r\n'', ''\n'' and ''\r''. All other values will be used as is. Defaults to the system's line separator.</text>
+            <text language="en">Line separator. The values ''dos'', ''unix'' and ''mac'' will be translated to ''\r\n'', ''\n'' and ''\r''. All other values will be used as is. Defaults to the system''s line separator.</text>
             <text language="de">Zeilenvorschub. Die Werte ''dos'', ''unix'' und ''mac'' werden entsprechend zu ''\r\n'', ''\n'' und ''\r'' umgesetzt. Alle anderen Werte werden wie angegeben verwendet. Verwendet den System-Zeilenvorschub standardmäßig.</text>
           </template>
         </message>
