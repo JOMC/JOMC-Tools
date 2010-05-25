@@ -1179,6 +1179,7 @@ public abstract class JomcTool
                 props.put( "class.resource.loader.class", VELOCITY_RESOURCE_LOADER );
                 props.put( "class.resource.loader.cache", Boolean.TRUE.toString() );
                 props.put( "runtime.references.strict", Boolean.TRUE.toString() );
+                props.put( "velocimacro.arguments.strict", Boolean.TRUE.toString() );
 
                 final VelocityEngine engine = new VelocityEngine();
                 engine.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, new LogChute()
