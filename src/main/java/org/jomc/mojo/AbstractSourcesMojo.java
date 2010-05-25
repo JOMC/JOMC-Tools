@@ -64,11 +64,21 @@ public abstract class AbstractSourcesMojo extends AbstractJomcMojo
     private int whitespacesPerIndent;
 
     /**
-     * The indentation character.
+     * The indentation character. The values {@code 'space'} and {@code 'tab'} will be translated to {@code ' '} and
+     * {@code '\t'}. All other values will be used as is.
      *
-     * @parameter default-value=" "
+     * @parameter default-value="space"
      */
-    private char indentationCharacter;
+    private String indentationCharacter;
+
+    /**
+     * The line separator. The values {@code 'dos'}, {@code 'unix'} and {@code 'mac'} will be translated to
+     * {@code '\r\n'}, {@code '\n'} and {@code '\r'}. All other values will be used as is. By default the system's line
+     * separator is used.
+     *
+     * @parameter
+     */
+    private String lineSeparator;
 
     /**
      * Gets the number of whitespace characters per indentation level.
@@ -87,7 +97,39 @@ public abstract class AbstractSourcesMojo extends AbstractJomcMojo
      */
     protected char getIndentationCharacter()
     {
-        return this.indentationCharacter;
+        if ( "space".equalsIgnoreCase( this.indentationCharacter ) )
+        {
+            return ' ';
+        }
+        else if ( "tab".equalsIgnoreCase( this.indentationCharacter ) )
+        {
+            return '\t';
+        }
+
+        return this.indentationCharacter.charAt( 0 );
+    }
+
+    /**
+     * Gets the line separator.
+     *
+     * @return The line separator.
+     */
+    protected String getLineSeparator()
+    {
+        if ( "dos".equalsIgnoreCase( this.lineSeparator ) )
+        {
+            return "\r\n";
+        }
+        else if ( "unix".equalsIgnoreCase( this.lineSeparator ) )
+        {
+            return "\n";
+        }
+        else if ( "mac".equalsIgnoreCase( this.lineSeparator ) )
+        {
+            return "\r";
+        }
+
+        return this.lineSeparator;
     }
 
     @Override
@@ -104,6 +146,7 @@ public abstract class AbstractSourcesMojo extends AbstractJomcMojo
             this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 
             tool.setIndentationCharacter( this.getIndentationCharacter() );
+            tool.setLineSeparator( this.getLineSeparator() );
             tool.setWhitespacesPerIndent( this.getWhitespacesPerIndent() );
 
             if ( validationReport.isModelValid() )
