@@ -154,6 +154,9 @@ public class SourceFileProcessor extends JomcTool
     /** Indentation character. */
     private Character indentationCharacter;
 
+    /** Line separator. */
+    private String lineSeparator;
+
     /** Source files model. */
     private SourceFilesType sourceFilesType;
 
@@ -228,6 +231,31 @@ public class SourceFileProcessor extends JomcTool
     public void setIndentationCharacter( final char value )
     {
         this.indentationCharacter = value;
+    }
+
+    /**
+     * Gets the line separator.
+     *
+     * @return The line separator.
+     */
+    public String getLineSeparator()
+    {
+        if ( this.lineSeparator == null )
+        {
+            this.lineSeparator = System.getProperty( "line.separator", "\n" );
+        }
+
+        return this.lineSeparator;
+    }
+
+    /**
+     * Sets the line separator.
+     *
+     * @param value The new line separator.
+     */
+    public void setLineSeparator( final String value )
+    {
+        this.lineSeparator = value;
     }
 
     /**
@@ -392,8 +420,8 @@ public class SourceFileProcessor extends JomcTool
             s.setIndentationLevel( 1 );
             s.setHeadTemplate( CONSTRUCTORS_HEAD_TEMPLATE );
             s.setTailTemplate( CONSTRUCTORS_TAIL_TEMPLATE );
-            s.setOptional( specifications == null ||
-                           ( specifications.getSpecification().isEmpty() && specifications.getReference().isEmpty() ) );
+            s.setOptional( specifications == null || ( specifications.getSpecification().isEmpty()
+                                                       && specifications.getReference().isEmpty() ) );
 
             s.setSourceSections( new SourceSectionsType() );
             sourceFileType.getSourceSections().getSourceSection().add( s );
@@ -578,7 +606,9 @@ public class SourceFileProcessor extends JomcTool
             throw new NullPointerException( "specification" );
         }
 
-        return new SourceFileEditor( specification, new TrailingWhitespaceEditor() );
+        return new SourceFileEditor( specification, new TrailingWhitespaceEditor( this.getLineSeparator() ),
+                                     this.getLineSeparator() );
+
     }
 
     /**
@@ -597,7 +627,9 @@ public class SourceFileProcessor extends JomcTool
             throw new NullPointerException( "implementation" );
         }
 
-        return new SourceFileEditor( implementation, new TrailingWhitespaceEditor() );
+        return new SourceFileEditor( implementation, new TrailingWhitespaceEditor( this.getLineSeparator() ),
+                                     this.getLineSeparator() );
+
     }
 
     /**
@@ -748,9 +780,19 @@ public class SourceFileProcessor extends JomcTool
          */
         public SourceFileEditor( final Specification specification )
         {
-            super();
-            this.specification = specification;
-            this.implementation = null;
+            this( specification, null, null );
+        }
+
+        /**
+         * Creates a new {@code SourceFileEditor} taking a {@code Specification} to edit source code of and a line
+         * separator.
+         *
+         * @param specification The specification to edit source code of.
+         * @param lineSeparator The line separator of the editor.
+         */
+        public SourceFileEditor( final Specification specification, final String lineSeparator )
+        {
+            this( specification, null, lineSeparator );
         }
 
         /**
@@ -762,7 +804,21 @@ public class SourceFileProcessor extends JomcTool
          */
         public SourceFileEditor( final Specification specification, final LineEditor lineEditor )
         {
-            super( lineEditor );
+            this( specification, lineEditor, null );
+        }
+
+        /**
+         * Creates a new {@code SourceFileEditor} taking a {@code Specification} to edit source code of, an editor to
+         * chain and a line separator.
+         *
+         * @param specification The specification backing the editor.
+         * @param lineEditor The editor to chain.
+         * @param lineSeparator The line separator of the editor.
+         */
+        public SourceFileEditor( final Specification specification, final LineEditor lineEditor,
+                                 final String lineSeparator )
+        {
+            super( lineEditor, lineSeparator );
             this.specification = specification;
             this.implementation = null;
         }
@@ -774,9 +830,19 @@ public class SourceFileProcessor extends JomcTool
          */
         public SourceFileEditor( final Implementation implementation )
         {
-            super();
-            this.implementation = implementation;
-            this.specification = null;
+            this( implementation, null, null );
+        }
+
+        /**
+         * Creates a new {@code SourceFileEditor} taking an {@code Implementation} to edit source code of and a line
+         * separator.
+         *
+         * @param implementation The implementation to edit source code of.
+         * @param lineSeparator The line separator of the editor.
+         */
+        public SourceFileEditor( final Implementation implementation, final String lineSeparator )
+        {
+            this( implementation, null, lineSeparator );
         }
 
         /**
@@ -788,7 +854,21 @@ public class SourceFileProcessor extends JomcTool
          */
         public SourceFileEditor( final Implementation implementation, final LineEditor lineEditor )
         {
-            super( lineEditor );
+            this( implementation, lineEditor, null );
+        }
+
+        /**
+         * Creates a new {@code SourceFileEditor} taking an {@code Implementation} to edit source code of, an editor
+         * to chain and a line separator.
+         *
+         * @param implementation The implementation to edit source code of.
+         * @param lineEditor The editor to chain.
+         * @param lineSeparator The line separator of the editor.
+         */
+        public SourceFileEditor( final Implementation implementation, final LineEditor lineEditor,
+                                 final String lineSeparator )
+        {
+            super( lineEditor, lineSeparator );
             this.implementation = implementation;
             this.specification = null;
         }
@@ -914,8 +994,8 @@ public class SourceFileProcessor extends JomcTool
 
                 if ( sourceSectionType != null )
                 {
-                    if ( sourceSectionType.getHeadTemplate() != null &&
-                         ( !sourceSectionType.isEditable() || s.getHeadContent().toString().trim().length() == 0 ) )
+                    if ( sourceSectionType.getHeadTemplate() != null
+                         && ( !sourceSectionType.isEditable() || s.getHeadContent().toString().trim().length() == 0 ) )
                     {
                         final StringWriter writer = new StringWriter();
                         final Template template = getVelocityTemplate( sourceSectionType.getHeadTemplate() );
@@ -927,8 +1007,8 @@ public class SourceFileProcessor extends JomcTool
                         s.getHeadContent().append( writer.toString() );
                     }
 
-                    if ( sourceSectionType.getTailTemplate() != null &&
-                         ( !sourceSectionType.isEditable() || s.getTailContent().toString().trim().length() == 0 ) )
+                    if ( sourceSectionType.getTailTemplate() != null
+                         && ( !sourceSectionType.isEditable() || s.getTailContent().toString().trim().length() == 0 ) )
                     {
                         final StringWriter writer = new StringWriter();
                         final Template template = getVelocityTemplate( sourceSectionType.getTailTemplate() );
@@ -979,5 +1059,4 @@ public class SourceFileProcessor extends JomcTool
         }
 
     }
-
 }
