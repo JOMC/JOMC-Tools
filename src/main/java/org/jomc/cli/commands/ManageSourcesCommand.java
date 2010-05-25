@@ -91,6 +91,8 @@ import org.jomc.tools.SourceFileProcessor;
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getInputEncodingOption InputEncodingOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getLineSeparatorOption LineSeparatorOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getLocale Locale}"<blockquote>
  * Dependency on {@code java.util.Locale} at specification level 1.1 bound to an instance.</blockquote></li>
  * <li>"{@link #getModuleLocationOption ModuleLocationOption}"<blockquote>
@@ -124,7 +126,7 @@ import org.jomc.tools.SourceFileProcessor;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-4-SNAPSHOT Build 2010-05-25T19:05:38+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-4-SNAPSHOT Build 2010-05-25T20:32:06+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -249,6 +251,7 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
             this.options.addOption( this.getOutputEncodingOption() );
             this.options.addOption( this.getWhitepsacesPerIndentOption() );
             this.options.addOption( this.getIndentationCharacterOption() );
+            this.options.addOption( this.getLineSeparatorOption() );
         }
 
         return this.options;
@@ -308,9 +311,42 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
                 }
                 if ( commandLine.hasOption( this.getIndentationCharacterOption().getOpt() ) )
                 {
-                    tool.setIndentationCharacter( commandLine.getOptionValue(
-                        this.getIndentationCharacterOption().getOpt() ).charAt( 0 ) );
+                    final String indentationCharacter =
+                        commandLine.getOptionValue( this.getIndentationCharacterOption().getOpt() );
 
+                    if ( "space".equalsIgnoreCase( indentationCharacter ) )
+                    {
+                        tool.setIndentationCharacter( ' ' );
+                    }
+                    else if ( "tab".equalsIgnoreCase( indentationCharacter ) )
+                    {
+                        tool.setIndentationCharacter( '\t' );
+                    }
+                    else
+                    {
+                        tool.setIndentationCharacter( indentationCharacter.charAt( 0 ) );
+                    }
+                }
+                if ( commandLine.hasOption( this.getLineSeparatorOption().getOpt() ) )
+                {
+                    final String lineSeparator = commandLine.getOptionValue( this.getLineSeparatorOption().getOpt() );
+
+                    if ( "dos".equalsIgnoreCase( lineSeparator ) )
+                    {
+                        tool.setLineSeparator( "\r\n" );
+                    }
+                    else if ( "unix".equalsIgnoreCase( lineSeparator ) )
+                    {
+                        tool.setLineSeparator( "\n" );
+                    }
+                    else if ( "mac".equalsIgnoreCase( lineSeparator ) )
+                    {
+                        tool.setLineSeparator( "\r" );
+                    }
+                    else
+                    {
+                        tool.setLineSeparator( lineSeparator );
+                    }
                 }
 
                 final File sourcesDirectory =
@@ -457,6 +493,22 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "InputEncodingOption" );
         assert _d != null : "'InputEncodingOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code LineSeparatorOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Line Separator Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code LineSeparatorOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor",
+                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-4-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getLineSeparatorOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "LineSeparatorOption" );
+        assert _d != null : "'LineSeparatorOption' dependency not found.";
         return _d;
     }
 
@@ -786,7 +838,7 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-4-SNAPSHOT Build 2010-05-25T19:05:38+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-4-SNAPSHOT Build 2010-05-25T20:32:06+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

@@ -1154,14 +1154,48 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Indentation character.</text>
-            <text language="de">Leerraum-Zeichen.</text>
+            <text language="en">Indentation character. The values ''space'' and ''tab'' will be translated to '' '' and ''\t''. All other values will be used as is.</text>
+            <text language="de">Leerraum-Zeichen. Die Werte ''space'' und ''tab'' werden entsprechend zu '' '' und ''\t'' umgesetzt. Alle anderen Werte werden wie angegeben verwendet.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
           <template defaultLanguage="en">
             <text language="en">character</text>
             <text language="de">Zeichen</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Line Separator Option"
+                    name="${project.name} Line Separator Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="ls" override="true"/>
+        <property name="longOpt" value="line-separator" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Line separator. The values ''dos'', ''unix'' and ''mac'' will be translated to ''\r\n'', ''\n'' and ''\r''. All other values will be used as is. Defaults to the system's line separator.</text>
+            <text language="de">Zeilenvorschub. Die Werte ''dos'', ''unix'' und ''mac'' werden entsprechend zu ''\r\n'', ''\n'' und ''\r'' umgesetzt. Alle anderen Werte werden wie angegeben verwendet. Verwendet den System-Zeilenvorschub standardmäßig.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">line separator</text>
+            <text language="de">Zeilenvorschub</text>
           </template>
         </message>
       </messages>
@@ -1624,6 +1658,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
         <dependency name="IndentationCharacterOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Indentation Character Option"/>
+
+        <dependency name="LineSeparatorOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Line Separator Option"/>
 
       </dependencies>
       <properties>
