@@ -1099,8 +1099,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="${project.name} Whitespaces Per Indent Option"
-                    name="${project.name} Whitespaces Per Indent Option"
+    <implementation identifier="${project.name} Indentation String Option"
+                    name="${project.name} Indentation String Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
                     vendor="${project.organization.name}">
 
@@ -1113,54 +1113,20 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="wpi" override="true"/>
-        <property name="longOpt" value="whitespaces-per-indent" override="true"/>
+        <property name="opt" value="idt" override="true"/>
+        <property name="longOpt" value="indentation" override="true"/>
         <property name="numberOfArgs" type="int" value="1" override="true"/>
       </properties>
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Number of whitespace characters per indentation level.</text>
-            <text language="de">Anzahl Leerraum-Zeichen pro Einrückungs-Ebene.</text>
+            <text language="en">Indentation string.</text>
+            <text language="de">Leerraumzeichen.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
           <template defaultLanguage="en">
-            <text language="en">number</text>
-            <text language="de">Zahl</text>
-          </template>
-        </message>
-      </messages>
-    </implementation>
-    <!-- *********************************************************************************************************** -->
-    <implementation identifier="${project.name} Indentation Character Option"
-                    name="${project.name} Indentation Character Option"
-                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
-
-      <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
-                createDate="2005-07-25T19:56:45Z"/>
-
-      </authors>
-      <implementations>
-        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
-      </implementations>
-      <properties>
-        <property name="opt" value="ic" override="true"/>
-        <property name="longOpt" value="indentation-character" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
-      </properties>
-      <messages>
-        <message name="description" override="true">
-          <template defaultLanguage="en">
-            <text language="en">Indentation character. The values ''space'' and ''tab'' will be translated to '' '' and ''\t''. All other values will be used as is.</text>
-            <text language="de">Leerraum-Zeichen. Die Werte ''space'' und ''tab'' werden entsprechend zu '' '' und ''\t'' umgesetzt. Alle anderen Werte werden wie angegeben verwendet.</text>
-          </template>
-        </message>
-        <message name="argumentDescription" override="true">
-          <template defaultLanguage="en">
-            <text language="en">character</text>
+            <text language="en">characters</text>
             <text language="de">Zeichen</text>
           </template>
         </message>
@@ -1653,11 +1619,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <dependency name="InputEncodingOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Input Encoding Option"/>
 
-        <dependency name="WhitepsacesPerIndentOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Whitespaces Per Indent Option"/>
-
-        <dependency name="IndentationCharacterOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Indentation Character Option"/>
+        <dependency name="IndentationStringOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Indentation String Option"/>
 
         <dependency name="LineSeparatorOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Line Separator Option"/>
