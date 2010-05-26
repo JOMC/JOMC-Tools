@@ -56,82 +56,6 @@ public abstract class AbstractSourcesMojo extends AbstractJomcMojo
     /** Constant for the name of the tool backing the class. */
     private static final String TOOLNAME = "SourceFileProcessor";
 
-    /**
-     * The number of whitespace characters per indentation level.
-     *
-     * @parameter default-value="4"
-     */
-    private int whitespacesPerIndent;
-
-    /**
-     * The indentation character. The values {@code 'space'} and {@code 'tab'} will be translated to {@code ' '} and
-     * {@code '\t'}. All other values will be used as is.
-     *
-     * @parameter default-value="space"
-     */
-    private String indentationCharacter;
-
-    /**
-     * The line separator. The values {@code 'dos'}, {@code 'unix'} and {@code 'mac'} will be translated to
-     * {@code '\r\n'}, {@code '\n'} and {@code '\r'}. All other values will be used as is. By default the system's line
-     * separator is used.
-     *
-     * @parameter
-     */
-    private String lineSeparator;
-
-    /**
-     * Gets the number of whitespace characters per indentation level.
-     *
-     * @return The number of whitespace characters per indentation level.
-     */
-    protected int getWhitespacesPerIndent()
-    {
-        return this.whitespacesPerIndent;
-    }
-
-    /**
-     * Gets the indentation character.
-     *
-     * @return The indentation character.
-     */
-    protected char getIndentationCharacter()
-    {
-        if ( "space".equalsIgnoreCase( this.indentationCharacter ) )
-        {
-            return ' ';
-        }
-        else if ( "tab".equalsIgnoreCase( this.indentationCharacter ) )
-        {
-            return '\t';
-        }
-
-        return this.indentationCharacter.charAt( 0 );
-    }
-
-    /**
-     * Gets the line separator.
-     *
-     * @return The line separator.
-     */
-    protected String getLineSeparator()
-    {
-        if ( "dos".equalsIgnoreCase( this.lineSeparator ) )
-        {
-            return "\r\n";
-        }
-        else if ( "unix".equalsIgnoreCase( this.lineSeparator ) )
-        {
-            return "\n";
-        }
-        else if ( "mac".equalsIgnoreCase( this.lineSeparator ) )
-        {
-            return "\r";
-        }
-
-        return this.lineSeparator;
-    }
-
     @Override
     protected final void executeTool() throws Exception
     {
@@ -144,10 +68,6 @@ public abstract class AbstractSourcesMojo extends AbstractJomcMojo
                 jaxbContext, new ObjectFactory().createModules( tool.getModules() ) ) );
 
             this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
-
-            tool.setIndentationCharacter( this.getIndentationCharacter() );
-            tool.setLineSeparator( this.getLineSeparator() );
-            tool.setWhitespacesPerIndent( this.getWhitespacesPerIndent() );
 
             if ( validationReport.isModelValid() )
             {

@@ -149,6 +149,21 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private String transformerLocation;
 
     /**
+     * The indentation string.
+     *
+     * @parameter default-value="    "
+     */
+    private String indentation;
+
+    /**
+     * The line separator. The values {@code 'dos'}, {@code 'unix'} and {@code 'mac'} will be translated to
+     * {@code '\r\n'}, {@code '\n'} and {@code '\r'}. All other values will be used as is.
+     *
+     * @parameter
+     */
+    private String lineSeparator;
+
+    /**
      * The Maven project of the instance.
      * @parameter expression="${project}"
      * @required
@@ -457,9 +472,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 continue;
             }
 
-            if ( a.getGroupId().equals( "org.jomc" ) &&
-                 ( a.getArtifactId().equals( "jomc-util" ) || a.getArtifactId().equals( "jomc-model" ) ||
-                   a.getArtifactId().equals( "jomc-tools" ) ) )
+            if ( a.getGroupId().equals( "org.jomc" )
+                 && ( a.getArtifactId().equals( "jomc-util" ) || a.getArtifactId().equals( "jomc-model" )
+                      || a.getArtifactId().equals( "jomc-tools" ) ) )
             {
                 continue;
             }
@@ -479,9 +494,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 continue;
             }
 
-            if ( a.getGroupId().equals( "org.jomc" ) &&
-                 ( a.getArtifactId().equals( "jomc-util" ) || a.getArtifactId().equals( "jomc-model" ) ||
-                   a.getArtifactId().equals( "jomc-tools" ) ) )
+            if ( a.getGroupId().equals( "org.jomc" )
+                 && ( a.getArtifactId().equals( "jomc-util" ) || a.getArtifactId().equals( "jomc-model" )
+                      || a.getArtifactId().equals( "jomc-tools" ) ) )
             {
                 continue;
             }
@@ -529,9 +544,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 continue;
             }
 
-            if ( a.getGroupId().equals( "org.jomc" ) &&
-                 ( a.getArtifactId().equals( "jomc-util" ) || a.getArtifactId().equals( "jomc-model" ) ||
-                   a.getArtifactId().equals( "jomc-tools" ) ) )
+            if ( a.getGroupId().equals( "org.jomc" )
+                 && ( a.getArtifactId().equals( "jomc-util" ) || a.getArtifactId().equals( "jomc-model" )
+                      || a.getArtifactId().equals( "jomc-tools" ) ) )
             {
                 continue;
             }
@@ -706,8 +721,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         try
         {
-            if ( level.intValue() < Level.INFO.intValue() || level.intValue() >= Level.WARNING.intValue() ||
-                 this.verbose )
+            if ( level.intValue() < Level.INFO.intValue() || level.intValue() >= Level.WARNING.intValue()
+                 || this.verbose )
             {
                 String line;
                 final BufferedReader reader = new BufferedReader( new StringReader( message == null ? "" : message ) );
@@ -717,8 +732,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 {
                     final String mojoMessage = "[JOMC] " + line;
 
-                    if ( ( level.equals( Level.CONFIG ) || level.equals( Level.FINE ) || level.equals( Level.FINER ) ||
-                           level.equals( Level.FINEST ) ) && this.getLog().isDebugEnabled() )
+                    if ( ( level.equals( Level.CONFIG ) || level.equals( Level.FINE ) || level.equals( Level.FINER )
+                           || level.equals( Level.FINEST ) ) && this.getLog().isDebugEnabled() )
                     {
                         this.getLog().debug( mojoMessage, throwableLogged ? null : throwable );
                     }
@@ -771,7 +786,25 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         tool.setInputEncoding( this.sourceEncoding );
         tool.setOutputEncoding( this.sourceEncoding );
         tool.setTemplateProfile( this.templateProfile );
+        tool.setIndentation( this.indentation );
         tool.setModules( this.getToolModules( context ) );
+
+        if ( "dos".equalsIgnoreCase( this.lineSeparator ) )
+        {
+            tool.setLineSeparator( "\r\n" );
+        }
+        else if ( "unix".equalsIgnoreCase( this.lineSeparator ) )
+        {
+            tool.setLineSeparator( "\n" );
+        }
+        else if ( "mac".equalsIgnoreCase( this.lineSeparator ) )
+        {
+            tool.setLineSeparator( "\r" );
+        }
+        else
+        {
+            tool.setLineSeparator( this.lineSeparator );
+        }
     }
 
     protected void setupModelContext( final ModelContext modelContext )
