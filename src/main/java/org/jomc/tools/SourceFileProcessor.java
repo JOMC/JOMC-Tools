@@ -36,7 +36,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -148,15 +147,6 @@ public class SourceFileProcessor extends JomcTool
     /** Name of the {@code implementation-annotations.vm} template. */
     private static final String IMPLEMENTATION_ANNOTATIONS_TEMPLATE = "implementation-annotations.vm";
 
-    /** Number of whitespace characters per indentation level. */
-    private Integer whitespacesPerIndent;
-
-    /** Indentation character. */
-    private Character indentationCharacter;
-
-    /** Line separator. */
-    private String lineSeparator;
-
     /** Source files model. */
     private SourceFilesType sourceFilesType;
 
@@ -178,84 +168,7 @@ public class SourceFileProcessor extends JomcTool
     public SourceFileProcessor( final SourceFileProcessor tool ) throws IOException
     {
         super( tool );
-        this.setIndentationCharacter( tool.getIndentationCharacter() );
-        this.setWhitespacesPerIndent( tool.getWhitespacesPerIndent() );
         this.sourceFilesType = new SourceFilesType( tool.getSourceFilesType() );
-    }
-
-    /**
-     * Gets the number of whitespace characters per indentation level.
-     *
-     * @return The number of whitespace characters per indentation level.
-     */
-    public int getWhitespacesPerIndent()
-    {
-        if ( this.whitespacesPerIndent == null )
-        {
-            this.whitespacesPerIndent = 4;
-        }
-
-        return this.whitespacesPerIndent;
-    }
-
-    /**
-     * Sets the number of whitespace characters per indentation level.
-     *
-     * @param value The new number of whitespace characters per indentation level.
-     */
-    public void setWhitespacesPerIndent( final int value )
-    {
-        this.whitespacesPerIndent = value;
-    }
-
-    /**
-     * Gets the indentation character.
-     *
-     * @return The indentation character.
-     */
-    public char getIndentationCharacter()
-    {
-        if ( this.indentationCharacter == null )
-        {
-            this.indentationCharacter = ' ';
-        }
-
-        return this.indentationCharacter;
-    }
-
-    /**
-     * Sets the indentation character.
-     *
-     * @param value The new indentation character.
-     */
-    public void setIndentationCharacter( final char value )
-    {
-        this.indentationCharacter = value;
-    }
-
-    /**
-     * Gets the line separator.
-     *
-     * @return The line separator.
-     */
-    public String getLineSeparator()
-    {
-        if ( this.lineSeparator == null )
-        {
-            this.lineSeparator = System.getProperty( "line.separator", "\n" );
-        }
-
-        return this.lineSeparator;
-    }
-
-    /**
-     * Sets the line separator.
-     *
-     * @param value The new line separator.
-     */
-    public void setLineSeparator( final String value )
-    {
-        this.lineSeparator = value;
     }
 
     /**
@@ -666,7 +579,7 @@ public class SourceFileProcessor extends JomcTool
             throw new NullPointerException( "editor" );
         }
 
-        String content = null;
+        String content = "";
 
         if ( !f.exists() )
         {
@@ -688,55 +601,48 @@ public class SourceFileProcessor extends JomcTool
             content = FileUtils.readFileToString( f, this.getInputEncoding() );
         }
 
-        if ( content != null )
+        String edited = null;
+
+        try
         {
-            String edited = null;
+            edited = editor.edit( content );
+        }
+        catch ( final IOException e )
+        {
+            throw (IOException) new IOException( getMessage(
+                "failedEditing", f.getCanonicalPath(), e.getMessage() ) ).initCause( e );
 
-            try
+        }
+
+        if ( this.isLoggable( Level.FINE ) )
+        {
+            for ( Section s : editor.getAddedSections() )
             {
-                edited = editor.edit( content );
+                this.log( Level.FINE, getMessage( "addedSection", f.getCanonicalPath(), s.getName() ), null );
             }
-            catch ( final IOException e )
+        }
+
+        if ( this.isLoggable( Level.WARNING ) )
+        {
+            for ( Section s : editor.getUnknownSections() )
             {
-                throw (IOException) new IOException( getMessage(
-                    "failedEditing", f.getCanonicalPath(), e.getMessage() ) ).initCause( e );
-
+                this.log( Level.WARNING, getMessage( "unknownSection", f.getCanonicalPath(), s.getName() ), null );
             }
+        }
 
-            if ( this.isLoggable( Level.FINE ) )
+        if ( !edited.equals( content ) || edited.length() == 0 )
+        {
+            if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
             {
-                for ( Section s : editor.getAddedSections() )
-                {
-                    this.log( Level.FINE, getMessage( "addedSection", f.getCanonicalPath(), s.getName() ), null );
-                }
+                throw new IOException( getMessage( "failedCreatingDirectory", f.getParentFile().getAbsolutePath() ) );
             }
 
-            if ( this.isLoggable( Level.WARNING ) )
+            if ( this.isLoggable( Level.INFO ) )
             {
-                for ( Section s : editor.getUnknownSections() )
-                {
-                    this.log( Level.WARNING, getMessage( "unknownSection", f.getCanonicalPath(), s.getName() ),
-                              null );
-
-                }
+                this.log( Level.INFO, getMessage( "editing", f.getCanonicalPath() ), null );
             }
 
-            if ( !edited.equals( content ) )
-            {
-                if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
-                {
-                    throw new IOException( getMessage( "failedCreatingDirectory",
-                                                       f.getParentFile().getAbsolutePath() ) );
-
-                }
-
-                if ( this.isLoggable( Level.INFO ) )
-                {
-                    this.log( Level.INFO, getMessage( "editing", f.getCanonicalPath() ), null );
-                }
-
-                FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
-            }
+            FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
         }
     }
 
@@ -747,8 +653,8 @@ public class SourceFileProcessor extends JomcTool
             throw new NullPointerException( "key" );
         }
 
-        return MessageFormat.format( ResourceBundle.getBundle( SourceFileProcessor.class.getName().replace( '.', '/' ) ).
-            getString( key ), arguments );
+        return MessageFormat.format( ResourceBundle.getBundle(
+            SourceFileProcessor.class.getName().replace( '.', '/' ) ).getString( key ), arguments );
 
     }
 
@@ -1037,19 +943,15 @@ public class SourceFileProcessor extends JomcTool
 
                     if ( childSection == null && !sourceSectionType.isOptional() )
                     {
-                        final char[] indent =
-                            new char[ getWhitespacesPerIndent() * sourceSectionType.getIndentationLevel() ];
-
-                        Arrays.fill( indent, getIndentationCharacter() );
-
                         childSection = new Section();
                         childSection.setName( sourceSectionType.getName() );
-                        childSection.setStartingLine(
-                            String.valueOf( indent ) + "// SECTION-START[" + sourceSectionType.getName() + "]" );
+                        childSection.setStartingLine( getIndentation( sourceSectionType.getIndentationLevel() )
+                                                      + "// SECTION-START[" + sourceSectionType.getName() + "]" );
 
-                        childSection.setEndingLine( String.valueOf( indent ) + "// SECTION-END" );
+                        childSection.setEndingLine( getIndentation( sourceSectionType.getIndentationLevel() )
+                                                    + "// SECTION-END" );
+
                         section.getSections().add( childSection );
-
                         this.getAddedSections().add( childSection );
                     }
 

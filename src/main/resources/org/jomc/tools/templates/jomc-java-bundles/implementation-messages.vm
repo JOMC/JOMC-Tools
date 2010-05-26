@@ -34,66 +34,65 @@
 ## @param tool The builder of the template.
 #set($messages = $modules.getMessages($implementation.getIdentifier()))
 #if($messages)
-    // <editor-fold defaultstate="collapsed" desc=" Generated Messages ">
+${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generated Messages ">
 #foreach($message in $messages.getMessage())
 
-    /**
-     * Gets the text of the {@code $message.getName()} message.
-     * <p><b>Templates</b><br/><table>
+${tool.getIndentation(1)}/**
+${tool.getIndentation(1)} * Gets the text of the {@code $message.getName()} message.
+${tool.getIndentation(1)} * <p><b>Templates</b><br/><table>
 #foreach($text in $message.getTemplate().getText())
-     * <tr><td valign="top">$tool.getDisplayLanguage($text.getLanguage()):</td><td valign="top"><pre>$tool.getJavadocComment($message.getTemplate().getText($text.getLanguage()), "     * ")</pre></td></tr>
+${tool.getIndentation(1)} * <tr><td valign="top">$tool.getDisplayLanguage($text.getLanguage()):</td><td valign="top"><pre>$tool.getJavadocComment($message.getTemplate().getText($text.getLanguage()), 1, " * ")</pre></td></tr>
 #end
-     * </table></p>
-     * @param locale The locale of the message to return.
+${tool.getIndentation(1)} * </table></p>
+${tool.getIndentation(1)} * @param locale The locale of the message to return.
 #if($message.getArguments() && !$message.getArguments().getArgument().isEmpty())
 #set($i = 0)
 #foreach($argument in $message.getArguments().getArgument())
 #set($argument = $message.getArguments().getArgument($i))
 #set($i = $i + 1)
-     * @param $argument.getName() #if($argument.getDocumentation())$tool.getJavadocComment($argument.getDocumentation().getText("en"), "     * ")#end#if(!$argument.getDocumentation())Format argument.#end
+${tool.getIndentation(1)} * @param $argument.getName() #if($argument.getDocumentation())$tool.getJavadocComment($argument.getDocumentation().getText("en"), 1, " * ")#end#if(!$argument.getDocumentation())Format argument.#end
 
 #end
 #end
 #if($message.getDocumentation())
-     * @return $tool.getJavadocComment($message.getDocumentation().getText("en"), "     * ")
+${tool.getIndentation(1)} * @return $tool.getJavadocComment($message.getDocumentation().getText("en"), 1, " * ")
 #end
 #if(!$message.getDocumentation())
-     * @return The text of the {@code $message.getName()} message.
+${tool.getIndentation(1)} * @return The text of the {@code $message.getName()} message.
 #end
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
+${tool.getIndentation(1)} *
+${tool.getIndentation(1)} * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+${tool.getIndentation(1)} */
 #if($message.isDeprecated())
-    @Deprecated
+${tool.getIndentation(1)}@Deprecated
 #end
-    @javax.annotation.Generated( value = "$tool.getClass().getName()",
-                                 comments = "See ${project.url}" )
-    $tool.getJavaModifierName($implementation,$message) static String $tool.getJavaGetterMethodName($message)( final java.util.Locale locale#if($message.getArguments() && !$message.getArguments().getArgument().isEmpty())#set($i = 0)#foreach($argument in $message.getArguments().getArgument())#set($argument = $message.getArguments().getArgument($i))#set($i = $i + 1), final $tool.getJavaTypeName($argument) $argument.getName()#end#end )
-    {
-        try
-        {
-            final String message = java.text.MessageFormat.format( java.util.ResourceBundle.getBundle( "${tool.getJavaClasspathLocation($implementation)}", locale ).getString( "$message.getName()" )#if($message.getArguments() && !$message.getArguments().getArgument().isEmpty())#set($i = 0)#foreach($argument in $message.getArguments().getArgument())#set($argument = $message.getArguments().getArgument($i))#set($i = $i + 1), $argument.getName()#end#end, (Object) null );
-            final java.lang.StringBuilder builder = new java.lang.StringBuilder( message.length() );
-            final java.io.BufferedReader reader = new java.io.BufferedReader( new java.io.StringReader( message ) );
-            final String lineSeparator = System.getProperty( "line.separator", "\n" );
+${tool.getIndentation(1)}@javax.annotation.Generated( value = "$tool.getClass().getName()", comments = "See ${project.url}" )
+${tool.getIndentation(1)}$tool.getJavaModifierName($implementation,$message) static String $tool.getJavaGetterMethodName($message)( final java.util.Locale locale#if($message.getArguments() && !$message.getArguments().getArgument().isEmpty())#set($i = 0)#foreach($argument in $message.getArguments().getArgument())#set($argument = $message.getArguments().getArgument($i))#set($i = $i + 1), final $tool.getJavaTypeName($argument) $argument.getName()#end#end )
+${tool.getIndentation(1)}{
+${tool.getIndentation(2)}try
+${tool.getIndentation(2)}{
+${tool.getIndentation(3)}final String message = java.text.MessageFormat.format( java.util.ResourceBundle.getBundle( "${tool.getJavaClasspathLocation($implementation)}", locale ).getString( "$message.getName()" )#if($message.getArguments() && !$message.getArguments().getArgument().isEmpty())#set($i = 0)#foreach($argument in $message.getArguments().getArgument())#set($argument = $message.getArguments().getArgument($i))#set($i = $i + 1), $argument.getName()#end#end, (Object) null );
+${tool.getIndentation(3)}final java.lang.StringBuilder builder = new java.lang.StringBuilder( message.length() );
+${tool.getIndentation(3)}final java.io.BufferedReader reader = new java.io.BufferedReader( new java.io.StringReader( message ) );
+${tool.getIndentation(3)}final String lineSeparator = System.getProperty( "line.separator", "\n" );
 
-            String line;
-            while ( ( line = reader.readLine() ) != null )
-            {
-                builder.append( lineSeparator ).append( line );
-            }
+${tool.getIndentation(3)}String line;
+${tool.getIndentation(3)}while ( ( line = reader.readLine() ) != null )
+${tool.getIndentation(3)}{
+${tool.getIndentation(4)}builder.append( lineSeparator ).append( line );
+${tool.getIndentation(3)}}
 
-            return builder.substring( lineSeparator.length() );
-        }
-        catch( final java.util.MissingResourceException e )
-        {
-            throw new org.jomc.ObjectManagementException( e.getMessage(), e );
-        }
-        catch( final java.io.IOException e )
-        {
-            throw new org.jomc.ObjectManagementException( e.getMessage(), e );
-        }
-    }
+${tool.getIndentation(3)}return builder.substring( lineSeparator.length() );
+${tool.getIndentation(2)}}
+${tool.getIndentation(2)}catch( final java.util.MissingResourceException e )
+${tool.getIndentation(2)}{
+${tool.getIndentation(3)}throw new org.jomc.ObjectManagementException( e.getMessage(), e );
+${tool.getIndentation(2)}}
+${tool.getIndentation(2)}catch( final java.io.IOException e )
+${tool.getIndentation(2)}{
+${tool.getIndentation(3)}throw new org.jomc.ObjectManagementException( e.getMessage(), e );
+${tool.getIndentation(2)}}
+${tool.getIndentation(1)}}
 #end
-    // </editor-fold>
+${tool.getIndentation(1)}// </editor-fold>
 #end

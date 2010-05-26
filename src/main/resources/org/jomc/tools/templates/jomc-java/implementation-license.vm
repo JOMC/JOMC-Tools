@@ -32,58 +32,58 @@
 ## @param modules The modules declaring module.
 ## @param implementation The implementation of the template.
 ## @param tool The builder of the template.
-// <editor-fold defaultstate="collapsed" desc=" Generated License ">
-/*
+${tool.getIndentation(0)}// <editor-fold defaultstate="collapsed" desc=" Generated License ">
+${tool.getIndentation(0)}/*
 #if($implementation.getVendor())
 #if($implementation.getCreateDate())
- *   Copyright (c) $implementation.getCreateDate().getYear() $implementation.getVendor()
+${tool.getIndentation(0)} *   Copyright (c) $implementation.getCreateDate().getYear() $implementation.getVendor()
 #else
- *   Copyright (c) $year $implementation.getVendor()
+${tool.getIndentation(0)} *   Copyright (c) $year $implementation.getVendor()
 #end
 #end
 #if($implementation.getAuthors())
 #foreach($author in $implementation.getAuthors().getAuthor())
 #if($author.getCreateDate())
- *   Copyright (c) $author.getCreateDate().getYear() $author.getName()#if($author.getMail()) <$author.getMail()>#end
+${tool.getIndentation(0)} *   Copyright (c) $author.getCreateDate().getYear() $author.getName()#if($author.getMail()) <$author.getMail()>#end
 
 #else
- *   Copyright (c) $year $author.getName()#if($author.getMail()) <$author.getMail()>#end
+${tool.getIndentation(0)} *   Copyright (c) $year $author.getName()#if($author.getMail()) <$author.getMail()>#end
 
 #end
 #if($author.getDocumentation())
- *     $tool.getJavadocComment($author.getDocumentation().getText("en"), " *     ")
- *
+${tool.getIndentation(0)} *     $tool.getJavadocComment($author.getDocumentation().getText("en"), 0, " *     ")
+${tool.getIndentation(0)} *
 #end
 #end
 #end
- *   All rights reserved.
- *
- *   Redistribution and use in source and binary forms, with or without
- *   modification, are permitted provided that the following conditions
- *   are met:
- *
- *     o Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *
- *     o Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in
- *       the documentation and/or other materials provided with the
- *       distribution.
- *
- *   THIS SOFTWARE IS PROVIDED BY THE JOMC PROJECT AND CONTRIBUTORS "AS IS"
- *   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- *   THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- *   PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE JOMC PROJECT OR
- *   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- *   EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- *   PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
- *   OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- *   WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
- *   OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
- *   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+${tool.getIndentation(0)} *   All rights reserved.
+${tool.getIndentation(0)} *
+${tool.getIndentation(0)} *   Redistribution and use in source and binary forms, with or without
+${tool.getIndentation(0)} *   modification, are permitted provided that the following conditions
+${tool.getIndentation(0)} *   are met:
+${tool.getIndentation(0)} *
+${tool.getIndentation(0)} *     o Redistributions of source code must retain the above copyright
+${tool.getIndentation(0)} *       notice, this list of conditions and the following disclaimer.
+${tool.getIndentation(0)} *
+${tool.getIndentation(0)} *     o Redistributions in binary form must reproduce the above copyright
+${tool.getIndentation(0)} *       notice, this list of conditions and the following disclaimer in
+${tool.getIndentation(0)} *       the documentation and/or other materials provided with the
+${tool.getIndentation(0)} *       distribution.
+${tool.getIndentation(0)} *
+${tool.getIndentation(0)} *   THIS SOFTWARE IS PROVIDED BY THE JOMC PROJECT AND CONTRIBUTORS "AS IS"
+${tool.getIndentation(0)} *   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+${tool.getIndentation(0)} *   THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+${tool.getIndentation(0)} *   PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE JOMC PROJECT OR
+${tool.getIndentation(0)} *   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+${tool.getIndentation(0)} *   EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+${tool.getIndentation(0)} *   PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+${tool.getIndentation(0)} *   OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+${tool.getIndentation(0)} *   WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+${tool.getIndentation(0)} *   OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+${tool.getIndentation(0)} *   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+${tool.getIndentation(0)} *
 #set($D = "$")
- *   ${D}Id${D}
- *
- */
-// </editor-fold>
+${tool.getIndentation(0)} *   ${D}Id${D}
+${tool.getIndentation(0)} *
+${tool.getIndentation(0)} */
+${tool.getIndentation(0)}// </editor-fold>

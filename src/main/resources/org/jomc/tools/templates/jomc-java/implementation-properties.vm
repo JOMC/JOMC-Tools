@@ -34,34 +34,33 @@
 ## @param tool The builder of the template.
 #set($properties = $modules.getProperties($implementation.getIdentifier()))
 #if($properties)
-    // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
+${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
 #foreach($property in $properties.getProperty())
 
-    /**
-     * Gets the value of the {@code $property.getName()} property.
+${tool.getIndentation(1)}/**
+${tool.getIndentation(1)} * Gets the value of the {@code $property.getName()} property.
 #if($property.getDocumentation())
-     * @return $tool.getJavadocComment($property.getDocumentation().getText("en"), "     * ")
+${tool.getIndentation(1)} * @return $tool.getJavadocComment($property.getDocumentation().getText("en"), 1, " * ")
 #end
 #if(!$property.getDocumentation())
-     * @return The value of the {@code $property.getName()} property.
+${tool.getIndentation(1)} * @return The value of the {@code $property.getName()} property.
 #end
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
+${tool.getIndentation(1)} * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+${tool.getIndentation(1)} */
 #if($property.isDeprecated())
-    @Deprecated
+${tool.getIndentation(1)}@Deprecated
 #end
-    @javax.annotation.Generated( value = "$tool.getClass().getName()",
-                                 comments = "See ${project.url}" )
-    $tool.getJavaModifierName($implementation,$property) $tool.getJavaTypeName($property,false) $tool.getJavaGetterMethodName($property)()
-    {
-        final $tool.getJavaTypeName($property,true) _p = ($tool.getJavaTypeName($property,true)) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "$property.getName()" );
-        assert _p != null : "'$property.getName()' property not found.";
+${tool.getIndentation(1)}@javax.annotation.Generated( value = "$tool.getClass().getName()", comments = "See ${project.url}" )
+${tool.getIndentation(1)}$tool.getJavaModifierName($implementation,$property) $tool.getJavaTypeName($property,false) $tool.getJavaGetterMethodName($property)()
+${tool.getIndentation(1)}{
+${tool.getIndentation(2)}final $tool.getJavaTypeName($property,true) _p = ($tool.getJavaTypeName($property,true)) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "$property.getName()" );
+${tool.getIndentation(2)}assert _p != null : "'$property.getName()' property not found.";
 #if($tool.isJavaPrimitiveType($property))
-        return _p.$tool.getJavaTypeName($property,false)Value();
+${tool.getIndentation(2)}return _p.$tool.getJavaTypeName($property,false)Value();
 #else
-        return _p;
+${tool.getIndentation(2)}return _p;
 #end
-    }
+${tool.getIndentation(1)}}
 #end
-    // </editor-fold>
+${tool.getIndentation(1)}// </editor-fold>
 #end

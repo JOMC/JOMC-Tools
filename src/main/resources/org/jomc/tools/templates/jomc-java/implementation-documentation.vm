@@ -32,59 +32,59 @@
 ## @param modules The modules declaring implementation.
 ## @param implementation The implementation of the template.
 ## @param tool The builder of the template.
-// <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
-/**
+${tool.getIndentation(0)}// <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
+${tool.getIndentation(0)}/**
 #if($implementation.getDocumentation())
- * $tool.getJavadocComment($implementation.getDocumentation().getText("en"), " * ")
+${tool.getIndentation(0)} * $tool.getJavadocComment($implementation.getDocumentation().getText("en"), 0, " * ")
 #end
 #set($specifications = $modules.getSpecifications($implementation.getIdentifier()))
 #if($specifications)
- * <p><b>Specifications</b><ul>
+${tool.getIndentation(0)} * <p><b>Specifications</b><ul>
 #foreach($reference in $specifications.getReference())
 #set($specification = $specifications.getSpecification($reference.getIdentifier()))
- * <li>{@code $reference.getIdentifier()}#if($reference.getVersion()) {@code $reference.getVersion()}#end#if($specification)#if($specification.getScope()) {@code $specification.getScope()}#else {@code Multiton}#end#end</li>
+${tool.getIndentation(0)} * <li>{@code $reference.getIdentifier()}#if($reference.getVersion()) {@code $reference.getVersion()}#end#if($specification)#if($specification.getScope()) {@code $specification.getScope()}#else {@code Multiton}#end#end</li>
 #end
- * </ul></p>
+${tool.getIndentation(0)} * </ul></p>
 #end
 #if($modules.getProperties($implementation.getIdentifier()))
- * <p><b>Properties</b><ul>
+${tool.getIndentation(0)} * <p><b>Properties</b><ul>
 #foreach($property in $modules.getProperties($implementation.getIdentifier()).getProperty())
- * <li>"{@link #$tool.getJavaGetterMethodName($property) $property.getName()}"
- * <blockquote>Property of type {@code $tool.getJavaTypeName($property,false)}.
+${tool.getIndentation(0)} * <li>"{@link #$tool.getJavaGetterMethodName($property) $property.getName()}"
+${tool.getIndentation(0)} * <blockquote>Property of type {@code $tool.getJavaTypeName($property,false)}.
 #if($property.getDocumentation())
- * <p>$tool.getJavadocComment($property.getDocumentation().getText("en"), " * ")</p>
+${tool.getIndentation(0)} * <p>$tool.getJavadocComment($property.getDocumentation().getText("en"), 0, " * ")</p>
 #end
- * </blockquote></li>
+${tool.getIndentation(0)} * </blockquote></li>
 #end
- * </ul></p>
+${tool.getIndentation(0)} * </ul></p>
 #end
 #if($modules.getDependencies($implementation.getIdentifier()))
- * <p><b>Dependencies</b><ul>
+${tool.getIndentation(0)} * <p><b>Dependencies</b><ul>
 #foreach($dependency in $modules.getDependencies($implementation.getIdentifier()).getDependency())
 #set($specification = $modules.getSpecification($dependency.getIdentifier()))
- * <li>"{@link #$tool.getJavaGetterMethodName($dependency) $dependency.getName()}"<blockquote>
- * Dependency on {@code $dependency.getIdentifier()}#if($dependency.getVersion()) at specification level $dependency.getVersion()#end#if($dependency.isBound()) bound to an instance#end.</blockquote></li>
+${tool.getIndentation(0)} * <li>"{@link #$tool.getJavaGetterMethodName($dependency) $dependency.getName()}"<blockquote>
+${tool.getIndentation(0)} * Dependency on {@code $dependency.getIdentifier()}#if($dependency.getVersion()) at specification level $dependency.getVersion()#end#if($dependency.isBound()) bound to an instance#end.</blockquote></li>
 #end
- * </ul></p>
+${tool.getIndentation(0)} * </ul></p>
 #end
 #if($modules.getMessages($implementation.getIdentifier()))
- * <p><b>Messages</b><ul>
+${tool.getIndentation(0)} * <p><b>Messages</b><ul>
 #foreach($message in $modules.getMessages($implementation.getIdentifier()).getMessage())
- * <li>"{@link #$tool.getJavaGetterMethodName($message) $message.getName()}"<table>
+${tool.getIndentation(0)} * <li>"{@link #$tool.getJavaGetterMethodName($message) $message.getName()}"<table>
 #foreach($text in $message.getTemplate().getText())
- * <tr><td valign="top">$tool.getDisplayLanguage($text.getLanguage()):</td><td valign="top"><pre>$tool.getJavadocComment($message.getTemplate().getText($text.getLanguage()), " * ")</pre></td></tr>
+${tool.getIndentation(0)} * <tr><td valign="top">$tool.getDisplayLanguage($text.getLanguage()):</td><td valign="top"><pre>$tool.getJavadocComment($message.getTemplate().getText($text.getLanguage()), 0, " * ")</pre></td></tr>
 #end
- * </table>
+${tool.getIndentation(0)} * </table>
 #end
- * </ul></p>
+${tool.getIndentation(0)} * </ul></p>
 #end
- *
+${tool.getIndentation(0)} *
 #if($implementation.getAuthors())
 #foreach($author in $implementation.getAuthors().getAuthor())
- * @author #if($author.getMail())<a href="mailto:$author.getMail()">#end$author.getName()#if($author.getMail())</a>#end $author.getVersion()
+${tool.getIndentation(0)} * @author #if($author.getMail())<a href="mailto:$author.getMail()">#end$author.getName()#if($author.getMail())</a>#end $author.getVersion()
 #end
 #end
 #set($D = "$")
- * @version ${D}Id${D}
- */
-// </editor-fold>
+${tool.getIndentation(0)} * @version ${D}Id${D}
+${tool.getIndentation(0)} */
+${tool.getIndentation(0)}// </editor-fold>

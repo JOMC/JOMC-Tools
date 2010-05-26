@@ -32,10 +32,9 @@
 ## @param modules The modules declaring implementation.
 ## @param implementation The implementation of the template.
 ## @param tool The builder of the template.
-// <editor-fold defaultstate="collapsed" desc=" Generated Annotations ">
+${tool.getIndentation(0)}// <editor-fold defaultstate="collapsed" desc=" Generated Annotations ">
 #if($implementation.isDeprecated())
-@Deprecated
+${tool.getIndentation(0)}@Deprecated
 #end
-@javax.annotation.Generated( value = "$tool.getClass().getName()",
-                             comments = "See ${project.url}" )
-// </editor-fold>
+${tool.getIndentation(0)}@javax.annotation.Generated( value = "$tool.getClass().getName()", comments = "See ${project.url}" )
+${tool.getIndentation(0)}// </editor-fold>

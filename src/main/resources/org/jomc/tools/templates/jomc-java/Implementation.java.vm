@@ -32,47 +32,47 @@
 ## @param modules The modules declaring implementation.
 ## @param implementation The implementation of the template.
 ## @param tool The builder of the template.
-// SECTION-START[License Header]
-// SECTION-END
+${tool.getIndentation(0)}// SECTION-START[License Header]
+${tool.getIndentation(0)}// SECTION-END
 #if(!$tool.isJavaDefaultPackage($implementation))
-package ${tool.getJavaPackageName($implementation)};
+${tool.getIndentation(0)}package ${tool.getJavaPackageName($implementation)};
 #end
 
-import java.lang.*;
+${tool.getIndentation(0)}import java.lang.*;
 
-// SECTION-START[Documentation]
-// SECTION-END
-// SECTION-START[Annotations]
-// SECTION-END
-public#if($implementation.isAbstract()) abstract#end class ${tool.getJavaTypeName($implementation,false)}
+${tool.getIndentation(0)}// SECTION-START[Documentation]
+${tool.getIndentation(0)}// SECTION-END
+${tool.getIndentation(0)}// SECTION-START[Annotations]
+${tool.getIndentation(0)}// SECTION-END
+${tool.getIndentation(0)}public#if($implementation.isAbstract()) abstract#end class ${tool.getJavaTypeName($implementation,false)}
 #set($interfaces = $tool.getJavaInterfaceNames($implementation,true))
 #if(!$interfaces.isEmpty())
-    implements
+${tool.getIndentation(1)}implements
 #set($i = $interfaces.size())
 #foreach($interface in $interfaces)
 #set($i = $i - 1)
-        $interface#if($i > 0),#end
+${tool.getIndentation(1)}$interface#if($i > 0),#end
 
 #end
 #end
-{
+${tool.getIndentation(0)}{
 #set($interfaces = $tool.getJavaInterfaceNames($implementation,false))
 #if(!$interfaces.isEmpty())
 #foreach($interface in $interfaces)
-    // SECTION-START[$interface]
-    // SECTION-END
+${tool.getIndentation(1)}// SECTION-START[$interface]
+${tool.getIndentation(1)}// SECTION-END
 #end
 #end
-    // SECTION-START[${tool.getJavaTypeName($implementation,false)}]
-    // SECTION-END
-    // SECTION-START[Constructors]
-        // SECTION-START[Default Constructor]
-        // SECTION-END
-    // SECTION-END
-    // SECTION-START[Dependencies]
-    // SECTION-END
-    // SECTION-START[Properties]
-    // SECTION-END
-    // SECTION-START[Messages]
-    // SECTION-END
-}
+${tool.getIndentation(1)}// SECTION-START[${tool.getJavaTypeName($implementation,false)}]
+${tool.getIndentation(1)}// SECTION-END
+${tool.getIndentation(1)}// SECTION-START[Constructors]
+${tool.getIndentation(2)}// SECTION-START[Default Constructor]
+${tool.getIndentation(2)}// SECTION-END
+${tool.getIndentation(1)}// SECTION-END
+${tool.getIndentation(1)}// SECTION-START[Dependencies]
+${tool.getIndentation(1)}// SECTION-END
+${tool.getIndentation(1)}// SECTION-START[Properties]
+${tool.getIndentation(1)}// SECTION-END
+${tool.getIndentation(1)}// SECTION-START[Messages]
+${tool.getIndentation(1)}// SECTION-END
+${tool.getIndentation(0)}}

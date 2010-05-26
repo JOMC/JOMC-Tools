@@ -353,7 +353,7 @@ public abstract class JomcToolTest extends TestCase
 
         try
         {
-            this.getTestTool().getJavadocComment( null, "\n" );
+            this.getTestTool().getJavadocComment( null, 0, "\n" );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -363,12 +363,22 @@ public abstract class JomcToolTest extends TestCase
 
         try
         {
-            this.getTestTool().getJavadocComment( new Text(), null );
+            this.getTestTool().getJavadocComment( new Text(), 0, null );
             Assert.fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
             assertNullPointerException( e );
+        }
+
+        try
+        {
+            this.getTestTool().getJavadocComment( new Text(), Integer.MIN_VALUE, "\n" );
+            Assert.fail( "Expected IllegalArgumentException not thrown." );
+        }
+        catch ( final IllegalArgumentException e )
+        {
+            assertIllegalArgumentException( e );
         }
 
         try
@@ -531,6 +541,8 @@ public abstract class JomcToolTest extends TestCase
         Assert.assertNotNull( this.getTestTool().getOutputEncoding() );
         Assert.assertNotNull( this.getTestTool().getTemplateProfile() );
         Assert.assertNotNull( this.getTestTool().getTemplateEncoding() );
+        Assert.assertNotNull( this.getTestTool().getIndentation() );
+        Assert.assertNotNull( this.getTestTool().getLineSeparator() );
         Assert.assertNotNull( this.getTestTool().getVelocityContext() );
         Assert.assertNotNull( this.getTestTool().getVelocityEngine() );
         Assert.assertNotNull( JomcTool.getDefaultLogLevel() );
@@ -598,7 +610,30 @@ public abstract class JomcToolTest extends TestCase
         JomcTool.setDefaultTemplateProfile( null );
     }
 
+    public void testGetIndentation() throws Exception
+    {
+        Assert.assertEquals( "", this.getTestTool().getIndentation( 0 ) );
+        Assert.assertEquals( this.getTestTool().getIndentation(), this.getTestTool().getIndentation( 1 ) );
+
+        try
+        {
+            this.getTestTool().getIndentation( Integer.MIN_VALUE );
+            Assert.fail( "Expected IllegalArgumentException not thrown." );
+        }
+        catch ( final IllegalArgumentException e )
+        {
+            assertIllegalArgumentException( e );
+        }
+    }
+
     public static void assertNullPointerException( final NullPointerException e )
+    {
+        Assert.assertNotNull( e );
+        Assert.assertNotNull( e.getMessage() );
+        System.out.println( e.toString() );
+    }
+
+    public static void assertIllegalArgumentException( final IllegalArgumentException e )
     {
         Assert.assertNotNull( e );
         Assert.assertNotNull( e.getMessage() );

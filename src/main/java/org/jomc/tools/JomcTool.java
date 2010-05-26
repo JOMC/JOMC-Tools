@@ -146,6 +146,12 @@ public abstract class JomcTool
     /** The template profile of the instance. */
     private String templateProfile;
 
+    /** The indentation string of the instance. */
+    private String indentation;
+
+    /** The line separator of the instance. */
+    private String lineSeparator;
+
     /** The listeners of the instance. */
     private List<Listener> listeners;
 
@@ -180,6 +186,8 @@ public abstract class JomcTool
         this.setOutputEncoding( tool.getOutputEncoding() );
         this.setModules( tool.getModules() );
         this.setTemplateProfile( tool.getTemplateProfile() );
+        this.setIndentation( tool.getIndentation() );
+        this.setLineSeparator( tool.getLineSeparator() );
         this.setVelocityEngine( tool.getVelocityEngine() );
         this.setLogLevel( tool.getLogLevel() );
         this.getListeners().addAll( tool.getListeners() );
@@ -835,21 +843,27 @@ public abstract class JomcTool
      * Formats a text to a Javadoc comment.
      *
      * @param text The text to format to a Javadoc comment.
-     * @param linebreak The text to replace line breaks with.
+     * @param indentationLevel The indentation level of the comment.
+     * @param suffix The text to append to any line breaks.
      *
      * @return {@code text} formatted as a Javadoc comment.
      *
-     * @throws NullPointerException if {@code text} or {@code linebreak} is {@code null}.
+     * @throws NullPointerException if {@code text} or {@code suffix} is {@code null}.
+     * @throws IllegalArgumentException if {@code indentationLevel} is negative.
      */
-    public String getJavadocComment( final Text text, final String linebreak )
+    public String getJavadocComment( final Text text, final int indentationLevel, final String suffix )
     {
         if ( text == null )
         {
             throw new NullPointerException( "text" );
         }
-        if ( linebreak == null )
+        if ( suffix == null )
         {
-            throw new NullPointerException( "linebreak" );
+            throw new NullPointerException( "suffix" );
+        }
+        if ( indentationLevel < 0 )
+        {
+            throw new IllegalArgumentException( Integer.toString( indentationLevel ) );
         }
 
         try
@@ -858,20 +872,20 @@ public abstract class JomcTool
 
             if ( javadoc != null )
             {
-                final String lineSeparator = System.getProperty( "line.separator" );
+                final String indent = this.getIndentation( indentationLevel );
                 final BufferedReader reader = new BufferedReader( new StringReader( javadoc ) );
                 final StringBuilder builder = new StringBuilder( javadoc.length() );
 
                 String line;
                 while ( ( line = reader.readLine() ) != null )
                 {
-                    builder.append( lineSeparator ).append( linebreak ).
+                    builder.append( this.getLineSeparator() ).append( indent ).append( suffix ).
                         append( line.replaceAll( "\\/\\*\\*", "/*" ).replaceAll( "\\*/", "/" ) );
 
                 }
 
                 javadoc = builder.length() == 0 ? "" : StringEscapeUtils.escapeHtml(
-                    builder.substring( lineSeparator.length() + linebreak.length() ) );
+                    builder.substring( this.getLineSeparator().length() + indent.length() + suffix.length() ) );
 
             }
 
@@ -1448,6 +1462,92 @@ public abstract class JomcTool
     public void setTemplateProfile( final String value )
     {
         this.templateProfile = value;
+    }
+
+    /**
+     * Gets the indentation string of the instance.
+     *
+     * @return The indentation string of the instance.
+     */
+    public String getIndentation()
+    {
+        if ( this.indentation == null )
+        {
+            this.indentation = "    ";
+            if ( this.isLoggable( Level.CONFIG ) )
+            {
+                this.log( Level.CONFIG, getMessage( "defaultIndentation", this.indentation ), null );
+            }
+        }
+
+        return this.indentation;
+    }
+
+    /**
+     * Gets an indentation string for a given indentation level.
+     *
+     * @param level The indentation level to get an indentation string for.
+     *
+     * @return The indentation string for {@code level}.
+     *
+     * @throws IllegalArgumentException if {@code level} is negative.
+     *
+     * @see #getIndentation()
+     */
+    public String getIndentation( final int level )
+    {
+        if ( level < 0 )
+        {
+            throw new IllegalArgumentException( Integer.toString( level ) );
+        }
+
+        final StringBuilder b = new StringBuilder( this.getIndentation().length() * level );
+
+        for ( int i = level; i > 0; i-- )
+        {
+            b.append( this.getIndentation() );
+        }
+
+        return b.toString();
+    }
+
+    /**
+     * Sets the indentation string of the instance.
+     *
+     * @param value The new indentation string of the instance or {@code null}.
+     *
+     * @see #getIndentation()
+     */
+    public void setIndentation( final String value )
+    {
+        this.indentation = value;
+    }
+
+    /**
+     * Gets the line separator of the instance.
+     *
+     * @return The line separator of the instance.
+     */
+    public String getLineSeparator()
+    {
+        if ( this.lineSeparator == null )
+        {
+            this.lineSeparator = System.getProperty( "line.separator", "\n" );
+        }
+
+        return this.lineSeparator;
+    }
+
+    /**
+     * Sets the line separator of the instance.
+     *
+     * @param value The new line separator of the instance or {@code null}.
+     *
+     * @see #getLineSeparator()
+     */
+    public void setLineSeparator( final String value )
+    {
+        this.lineSeparator = value;
     }
 
     /**

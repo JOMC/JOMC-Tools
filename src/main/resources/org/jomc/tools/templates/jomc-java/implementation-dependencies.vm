@@ -34,59 +34,58 @@
 ## @param tool The builder of the template.
 #set($dependencies = $modules.getDependencies($implementation.getIdentifier()))
 #if($dependencies)
-    // <editor-fold defaultstate="collapsed" desc=" Generated Dependencies ">
+${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generated Dependencies ">
 #foreach($dependency in $dependencies.getDependency())
 #set($specification = $modules.getSpecification($dependency.getIdentifier()))
 
-    /**
-     * Gets the {@code $dependency.getName()} dependency.
+${tool.getIndentation(1)}/**
+${tool.getIndentation(1)} * Gets the {@code $dependency.getName()} dependency.
 #if($dependency.getImplementationName())
-     * <p>This method returns the "{@code $dependency.getImplementationName()}" object of the {@code $dependency.getIdentifier()} specification#if($dependency.getVersion()) at specification level $dependency.getVersion()#end.</p>
+${tool.getIndentation(1)} * <p>This method returns the "{@code $dependency.getImplementationName()}" object of the {@code $dependency.getIdentifier()} specification#if($dependency.getVersion()) at specification level $dependency.getVersion()#end.</p>
 #else
-     * <p>This method returns any available object of the {@code $dependency.getIdentifier()} specification#if($dependency.getVersion()) at specification level $dependency.getVersion()#end.</p>
+${tool.getIndentation(1)} * <p>This method returns any available object of the {@code $dependency.getIdentifier()} specification#if($dependency.getVersion()) at specification level $dependency.getVersion()#end.</p>
 #end
 #if($specification.getScope())
-     * <p>That specification applies to {@code $specification.getScope()} scope. The $specification.getScope().toLowerCase() object is returned whenever requested#if($dependency.isBound()) and bound to this instance#end.</p>
+${tool.getIndentation(1)} * <p>That specification applies to {@code $specification.getScope()} scope. The $specification.getScope().toLowerCase() object is returned whenever requested#if($dependency.isBound()) and bound to this instance#end.</p>
 #else
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested#if($dependency.isBound()) and bound to this instance#end.</p>
+${tool.getIndentation(1)} * <p>That specification does not apply to any scope. A new object is returned whenever requested#if($dependency.isBound()) and bound to this instance#end.</p>
 #end
 #if($dependency.getProperties())
-     * <p><b>Properties</b><dl>
+${tool.getIndentation(1)} * <p><b>Properties</b><dl>
 #foreach($property in $dependency.getProperties().getProperty())
-     * <dt>"{@code $property.getName()}"</dt>
-     * <dd>Property of type {@code $tool.getJavaTypeName($property,false)}.
+${tool.getIndentation(1)} * <dt>"{@code $property.getName()}"</dt>
+${tool.getIndentation(1)} * <dd>Property of type {@code $tool.getJavaTypeName($property,false)}.
 #if($property.getDocumentation())
-     * <blockquote>$tool.getJavadocComment($property.getDocumentation().getText("en"), "     * ")</blockquote>
+${tool.getIndentation(1)} * <blockquote>$tool.getJavadocComment($property.getDocumentation().getText("en"), 1, " * ")</blockquote>
 #end
-     * </dd>
+${tool.getIndentation(1)} * </dd>
 #end
-     * </dl>
+${tool.getIndentation(1)} * </dl>
 #end
 #if($dependency.getDocumentation())
-     * @return $tool.getJavadocComment($dependency.getDocumentation().getText("en"), "     * ")
+${tool.getIndentation(1)} * @return $tool.getJavadocComment($dependency.getDocumentation().getText("en"), 1, " * ")
 #else
-     * @return The {@code $dependency.getName()} dependency.
+${tool.getIndentation(1)} * @return The {@code $dependency.getName()} dependency.
 #end
 #if($dependency.isOptional())
-     * {@code null} if no object is available.
+${tool.getIndentation(1)} * {@code null} if no object is available.
 #end
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
+${tool.getIndentation(1)} * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+${tool.getIndentation(1)} */
 #if($dependency.isDeprecated())
-    @Deprecated
+${tool.getIndentation(1)}@Deprecated
 #end
-    @javax.annotation.Generated( value = "$tool.getClass().getName()",
-                                 comments = "See ${project.url}" )
-    $tool.getJavaModifierName($implementation,$dependency) $tool.getJavaTypeName($dependency) $tool.getJavaGetterMethodName($dependency)()
-    {
+${tool.getIndentation(1)}@javax.annotation.Generated( value = "$tool.getClass().getName()", comments = "See ${project.url}" )
+${tool.getIndentation(1)}$tool.getJavaModifierName($implementation,$dependency) $tool.getJavaTypeName($dependency) $tool.getJavaGetterMethodName($dependency)()
+${tool.getIndentation(1)}{
 #if($dependency.isOptional())
-        return ($tool.getJavaTypeName($dependency)) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "$dependency.getName()" );
+${tool.getIndentation(2)}return ($tool.getJavaTypeName($dependency)) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "$dependency.getName()" );
 #else
-        final $tool.getJavaTypeName($dependency) _d = ($tool.getJavaTypeName($dependency)) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "$dependency.getName()" );
-        assert _d != null : "'$dependency.getName()' dependency not found.";
-        return _d;
+${tool.getIndentation(2)}final $tool.getJavaTypeName($dependency) _d = ($tool.getJavaTypeName($dependency)) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "$dependency.getName()" );
+${tool.getIndentation(2)}assert _d != null : "'$dependency.getName()' dependency not found.";
+${tool.getIndentation(2)}return _d;
 #end
-    }
+${tool.getIndentation(1)}}
 #end
-    // </editor-fold>
+${tool.getIndentation(1)}// </editor-fold>
 #end

@@ -29,5 +29,5 @@
 ##
 ##   $Id$
 ##
-    }
-    // </editor-fold>
+${tool.getIndentation(1)}}
+${tool.getIndentation(1)}// </editor-fold>

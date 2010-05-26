@@ -32,51 +32,51 @@
 ## @param modules The modules declaring specification.
 ## @param specification The specification of the template.
 ## @param tool The builder of the template.
-// <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
-/**
+${tool.getIndentation(0)}// <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
+${tool.getIndentation(0)}/**
 #if($specification.getDocumentation())
- * $tool.getJavadocComment($specification.getDocumentation().getText("en"), " * ")
+${tool.getIndentation(0)} * $tool.getJavadocComment($specification.getDocumentation().getText("en"), 0, " * ")
 #end
- *
- * <p>
- *   This specification declares a multiplicity of {@code $specification.getMultiplicity().value()}.
+${tool.getIndentation(0)} *
+${tool.getIndentation(0)} * <p>
+${tool.getIndentation(0)} *   This specification declares a multiplicity of {@code $specification.getMultiplicity().value()}.
 #if($specification.getMultiplicity().value() == "One")
- *   An application assembler may provide either no or one implementation of this specification.
+${tool.getIndentation(0)} *   An application assembler may provide either no or one implementation of this specification.
 #end
 #if($specification.getMultiplicity().value() == "Many")
- *   An application assembler may provide multiple implementations of this specification (including none).
+${tool.getIndentation(0)} *   An application assembler may provide multiple implementations of this specification (including none).
 #end
- * </p>
- *
- * <p>
- *   Use of class {@link org.jomc.ObjectManager ObjectManager} is supported for accessing implementations.
- *   <pre>
+${tool.getIndentation(0)} * </p>
+${tool.getIndentation(0)} *
+${tool.getIndentation(0)} * <p>
+${tool.getIndentation(0)} *   Use of class {@link org.jomc.ObjectManager ObjectManager} is supported for accessing implementations.
+${tool.getIndentation(0)} *   <pre>
 #if($specification.getMultiplicity().value() == "One")
- * ${tool.getJavaTypeName($specification,false)} object = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}.class );
- * ${tool.getJavaTypeName($specification,false)} object = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}.class, "<i>implementation name</i>" );
+${tool.getIndentation(0)} * ${tool.getJavaTypeName($specification,false)} object = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}.class );
+${tool.getIndentation(0)} * ${tool.getJavaTypeName($specification,false)} object = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}.class, "<i>implementation name</i>" );
 #end
 #if($specification.getMultiplicity().value() == "Many")
- * ${tool.getJavaTypeName($specification,false)}[] objects = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}[].class );
- * ${tool.getJavaTypeName($specification,false)} object = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}.class, "<i>implementation name</i>" );
+${tool.getIndentation(0)} * ${tool.getJavaTypeName($specification,false)}[] objects = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}[].class );
+${tool.getIndentation(0)} * ${tool.getJavaTypeName($specification,false)} object = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}.class, "<i>implementation name</i>" );
 #end
- *   </pre>
- * </p>
- *
- * <p>
+${tool.getIndentation(0)} *   </pre>
+${tool.getIndentation(0)} * </p>
+${tool.getIndentation(0)} *
+${tool.getIndentation(0)} * <p>
 #if($specification.getScope())
- *   This specification applies to {@code $specification.getScope()} scope.
- *   The same $specification.getScope().toLowerCase() object is returned whenever requested.
+${tool.getIndentation(0)} *   This specification applies to {@code $specification.getScope()} scope.
+${tool.getIndentation(0)} *   The same $specification.getScope().toLowerCase() object is returned whenever requested.
 #else
- *   This specification does not apply to any scope. A new object is returned whenever requested.
+${tool.getIndentation(0)} *   This specification does not apply to any scope. A new object is returned whenever requested.
 #end
- * </p>
- *
+${tool.getIndentation(0)} * </p>
+${tool.getIndentation(0)} *
 #if($specification.getAuthors())
 #foreach($author in $specification.getAuthors().getAuthor())
- * @author #if($author.getMail())<a href="mailto:$author.getMail()">#end$author.getName()#if($author.getMail())</a>#end $author.getVersion()
+${tool.getIndentation(0)} * @author #if($author.getMail())<a href="mailto:$author.getMail()">#end$author.getName()#if($author.getMail())</a>#end $author.getVersion()
 #end
 #end
 #set($D = "$")
- * @version ${D}Id${D}
- */
-// </editor-fold>
+${tool.getIndentation(0)} * @version ${D}Id${D}
+${tool.getIndentation(0)} */
+${tool.getIndentation(0)}// </editor-fold>
