@@ -49,6 +49,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -786,8 +787,12 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         tool.setInputEncoding( this.sourceEncoding );
         tool.setOutputEncoding( this.sourceEncoding );
         tool.setTemplateProfile( this.templateProfile );
-        tool.setIndentation( this.indentation );
         tool.setModules( this.getToolModules( context ) );
+
+        if ( this.indentation != null )
+        {
+            tool.setIndentation( StringEscapeUtils.unescapeJava( this.indentation ) );
+        }
 
         if ( "dos".equalsIgnoreCase( this.lineSeparator ) )
         {
