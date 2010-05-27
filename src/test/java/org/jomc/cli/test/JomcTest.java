@@ -150,7 +150,7 @@ public class JomcTest extends TestCase
         {
             "manage-sources", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-df",
             '"' + this.getTestDocument() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-D",
-            "-ls", "dos", "-idt", "\t"
+            "-ls", "\r\n", "-idt", "\t"
         };
 
         final String[] unsupportedOption = new String[]
