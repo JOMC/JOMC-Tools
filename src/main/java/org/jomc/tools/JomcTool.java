@@ -1248,6 +1248,7 @@ public abstract class JomcTool
                 } );
 
                 engine.init( props );
+                this.getTemplateEncoding(); // Ensures template encoding initialization does not reset the engine.
                 this.velocityEngine = engine;
             }
             catch ( final Exception e )
