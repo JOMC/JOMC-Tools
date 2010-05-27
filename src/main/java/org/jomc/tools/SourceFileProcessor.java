@@ -900,6 +900,19 @@ public class SourceFileProcessor extends JomcTool
 
                 if ( sourceSectionType != null )
                 {
+                    if ( s.getStartingLine() != null )
+                    {
+                        s.setStartingLine( getIndentation( sourceSectionType.getIndentationLevel() )
+                                           + s.getStartingLine().trim() );
+
+                    }
+                    if ( s.getEndingLine() != null )
+                    {
+                        s.setEndingLine( getIndentation( sourceSectionType.getIndentationLevel() )
+                                         + s.getEndingLine().trim() );
+
+                    }
+
                     if ( sourceSectionType.getHeadTemplate() != null
                          && ( !sourceSectionType.isEditable() || s.getHeadContent().toString().trim().length() == 0 ) )
                     {
