@@ -43,6 +43,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.util.JAXBSource;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.jomc.model.ModelContext;
 import org.jomc.model.ModelValidationReport;
 import org.jomc.model.Module;
@@ -124,7 +125,7 @@ import org.jomc.tools.SourceFileProcessor;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-4-SNAPSHOT Build 2010-05-26T15:16:59+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-4-SNAPSHOT Build 2010-05-27T05:46:00+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -301,7 +302,9 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
                 }
                 if ( commandLine.hasOption( this.getIndentationStringOption().getOpt() ) )
                 {
-                    tool.setIndentation( commandLine.getOptionValue( this.getIndentationStringOption().getOpt() ) );
+                    tool.setIndentation( StringEscapeUtils.unescapeJava(
+                        commandLine.getOptionValue( this.getIndentationStringOption().getOpt() ) ) );
+
                 }
                 if ( commandLine.hasOption( this.getLineSeparatorOption().getOpt() ) )
                 {
@@ -772,7 +775,7 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-4-SNAPSHOT Build 2010-05-26T15:16:59+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-4-SNAPSHOT Build 2010-05-27T05:46:00+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
