@@ -309,7 +309,7 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
                 if ( commandLine.hasOption( this.getLineSeparatorOption().getOpt() ) )
                 {
                     tool.setLineSeparator( StringEscapeUtils.unescapeJava(
-                        commandLine.getOptionValue( this.getLineSeparatorOption().getOpt() ) );
+                        commandLine.getOptionValue( this.getLineSeparatorOption().getOpt() ) ) );
 
                 }
 
