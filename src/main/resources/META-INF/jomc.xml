@@ -1120,8 +1120,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Indentation string.</text>
-            <text language="de">Leerraumzeichen.</text>
+            <text language="en">Indentation string (''\t'' for tab).</text>
+            <text language="de">Leerraumzeichen (''\t'' für Tabulator).</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
@@ -1154,8 +1154,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Line separator. The values ''dos'', ''unix'' and ''mac'' will be translated to ''\r\n'', ''\n'' and ''\r''. All other values will be used as is. Defaults to the system''s line separator.</text>
-            <text language="de">Zeilenvorschub. Die Werte ''dos'', ''unix'' und ''mac'' werden entsprechend zu ''\r\n'', ''\n'' und ''\r'' umgesetzt. Alle anderen Werte werden wie angegeben verwendet. Verwendet den System-Zeilenvorschub standardmäßig.</text>
+            <text language="en">Line separator. (''\r\n'' for DOS, ''\r'' for Mac, ''\n'' for Unix). Defaults to the system''s line separator.</text>
+            <text language="de">Zeilenvorschub. (''\r\n'' für DOS, ''\r'' für Mac, ''\n'' für Unix). Verwendet den System-Zeilenvorschub standardmäßig.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">

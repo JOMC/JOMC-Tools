@@ -308,24 +308,9 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
                 }
                 if ( commandLine.hasOption( this.getLineSeparatorOption().getOpt() ) )
                 {
-                    final String lineSeparator = commandLine.getOptionValue( this.getLineSeparatorOption().getOpt() );
+                    tool.setLineSeparator( StringEscapeUtils.unescapeJava(
+                        commandLine.getOptionValue( this.getLineSeparatorOption().getOpt() ) );
 
-                    if ( "dos".equalsIgnoreCase( lineSeparator ) )
-                    {
-                        tool.setLineSeparator( "\r\n" );
-                    }
-                    else if ( "unix".equalsIgnoreCase( lineSeparator ) )
-                    {
-                        tool.setLineSeparator( "\n" );
-                    }
-                    else if ( "mac".equalsIgnoreCase( lineSeparator ) )
-                    {
-                        tool.setLineSeparator( "\r" );
-                    }
-                    else
-                    {
-                        tool.setLineSeparator( lineSeparator );
-                    }
                 }
 
                 final File sourcesDirectory =
