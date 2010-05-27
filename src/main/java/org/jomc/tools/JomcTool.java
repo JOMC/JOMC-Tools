@@ -1676,7 +1676,7 @@ public abstract class JomcTool
             {
                 capitalize = true;
             }
-            else if ( ( i == 0 ? Character.isJavaIdentifierStart( c ) : Character.isJavaIdentifierPart( c ) ) )
+            else if ( i == 0 ? Character.isJavaIdentifierStart( c ) : Character.isJavaIdentifierPart( c ) )
             {
                 builder.append( capitalize ? Character.toUpperCase( c ) : c );
                 capitalize = false;
