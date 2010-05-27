@@ -1476,7 +1476,9 @@ public abstract class JomcTool
             this.indentation = "    ";
             if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.CONFIG, getMessage( "defaultIndentation", this.indentation ), null );
+                this.log( Level.CONFIG, getMessage( "defaultIndentation",
+                                                    StringEscapeUtils.escapeJava( this.indentation ) ), null );
+
             }
         }
 
@@ -1533,6 +1535,12 @@ public abstract class JomcTool
         if ( this.lineSeparator == null )
         {
             this.lineSeparator = System.getProperty( "line.separator", "\n" );
+            if ( this.isLoggable( Level.CONFIG ) )
+            {
+                this.log( Level.CONFIG, getMessage( "defaultLineSeparator",
+                                                    StringEscapeUtils.escapeJava( this.lineSeparator ) ), null );
+
+            }
         }
 
         return this.lineSeparator;
