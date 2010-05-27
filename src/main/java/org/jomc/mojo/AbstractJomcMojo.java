@@ -150,15 +150,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private String transformerLocation;
 
     /**
-     * The indentation string.
+     * The indentation string ('\t' for tab).
      *
      * @parameter default-value="    "
      */
     private String indentation;
 
     /**
-     * The line separator. The values {@code 'dos'}, {@code 'unix'} and {@code 'mac'} will be translated to
-     * {@code '\r\n'}, {@code '\n'} and {@code '\r'}. All other values will be used as is.
+     * The line separator ('\r\n' for DOS, '\r' for Mac, '\n' for Unix).
      *
      * @parameter
      */
@@ -793,22 +792,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         {
             tool.setIndentation( StringEscapeUtils.unescapeJava( this.indentation ) );
         }
-
-        if ( "dos".equalsIgnoreCase( this.lineSeparator ) )
+        if ( this.lineSeparator != null )
         {
-            tool.setLineSeparator( "\r\n" );
-        }
-        else if ( "unix".equalsIgnoreCase( this.lineSeparator ) )
-        {
-            tool.setLineSeparator( "\n" );
-        }
-        else if ( "mac".equalsIgnoreCase( this.lineSeparator ) )
-        {
-            tool.setLineSeparator( "\r" );
-        }
-        else
-        {
-            tool.setLineSeparator( this.lineSeparator );
+            tool.setLineSeparator( StringEscapeUtils.unescapeJava( this.lineSeparator ) );
         }
     }
 
