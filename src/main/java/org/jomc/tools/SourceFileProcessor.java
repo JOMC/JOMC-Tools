@@ -220,7 +220,7 @@ public class SourceFileProcessor extends JomcTool
         {
             sourceFileType = new SourceFileType();
             sourceFileType.setIdentifier( specification.getIdentifier() );
-            sourceFileType.setLocation( specification.getClazz().replaceAll( "\\.", File.separator ) + ".java" );
+            sourceFileType.setLocation( specification.getClazz().replace( '.', '/' ) + ".java" );
             sourceFileType.setTemplate( SPECIFICATION_TEMPLATE );
             sourceFileType.setSourceSections( new SourceSectionsType() );
 
@@ -291,7 +291,7 @@ public class SourceFileProcessor extends JomcTool
 
             sourceFileType = new SourceFileType();
             sourceFileType.setIdentifier( implementation.getIdentifier() );
-            sourceFileType.setLocation( implementation.getClazz().replaceAll( "\\.", File.separator ) + ".java" );
+            sourceFileType.setLocation( implementation.getClazz().replace( '.', '/' ) + ".java" );
             sourceFileType.setTemplate( IMPLEMENTATION_TEMPLATE );
             sourceFileType.setSourceSections( new SourceSectionsType() );
 
