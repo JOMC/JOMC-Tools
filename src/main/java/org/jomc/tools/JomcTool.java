@@ -47,9 +47,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -157,6 +159,9 @@ public abstract class JomcTool
 
     /** Log level of the instance. */
     private Level logLevel;
+
+    /** Cached indentation strings. */
+    private final Map<Integer, String> indentationCache = new HashMap<Integer, String>();
 
     /** Creates a new {@code JomcTool} instance. */
     public JomcTool()
@@ -1502,14 +1507,25 @@ public abstract class JomcTool
             throw new IllegalArgumentException( Integer.toString( level ) );
         }
 
-        final StringBuilder b = new StringBuilder( this.getIndentation().length() * level );
-
-        for ( int i = level; i > 0; i-- )
+        synchronized ( this.indentationCache )
         {
-            b.append( this.getIndentation() );
-        }
+            String idt = this.indentationCache.get( level );
 
-        return b.toString();
+            if ( idt == null )
+            {
+                final StringBuilder b = new StringBuilder( this.getIndentation().length() * level );
+
+                for ( int i = level; i > 0; i-- )
+                {
+                    b.append( this.getIndentation() );
+                }
+
+                idt = b.toString();
+                this.indentationCache.put( level, idt );
+            }
+
+            return idt;
+        }
     }
 
     /**
@@ -1521,7 +1537,11 @@ public abstract class JomcTool
      */
     public void setIndentation( final String value )
     {
-        this.indentation = value;
+        synchronized ( this.indentationCache )
+        {
+            this.indentation = value;
+            this.indentationCache.clear();
+        }
     }
 
     /**
