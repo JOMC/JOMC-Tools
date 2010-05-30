@@ -114,6 +114,11 @@
         <xsd:documentation xml:lang="en">Identifier of the source file.</xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
+    <xsd:attribute name="location" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">Location of the source file.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
     <xsd:attribute name="template" type="xsd:string" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">Identifier of a template to use for creating the file.</xsd:documentation>

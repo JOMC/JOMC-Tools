@@ -220,6 +220,7 @@ public class SourceFileProcessor extends JomcTool
         {
             sourceFileType = new SourceFileType();
             sourceFileType.setIdentifier( specification.getIdentifier() );
+            sourceFileType.setLocation( specification.getClazz().replaceAll( "\\.", File.separator ) + ".java" );
             sourceFileType.setTemplate( SPECIFICATION_TEMPLATE );
             sourceFileType.setSourceSections( new SourceSectionsType() );
 
@@ -290,6 +291,7 @@ public class SourceFileProcessor extends JomcTool
 
             sourceFileType = new SourceFileType();
             sourceFileType.setIdentifier( implementation.getIdentifier() );
+            sourceFileType.setLocation( implementation.getClazz().replaceAll( "\\.", File.separator ) + ".java" );
             sourceFileType.setTemplate( IMPLEMENTATION_TEMPLATE );
             sourceFileType.setSourceSections( new SourceSectionsType() );
 
@@ -464,10 +466,7 @@ public class SourceFileProcessor extends JomcTool
         }
         else if ( specification.isClassDeclaration() )
         {
-            final File sourceFile =
-                new File( sourcesDirectory, specification.getClazz().replace( '.', '/' ) + ".java" );
-
-            this.editSourceFile( sourceFile, this.getSourceFileEditor( specification ) );
+            this.editSourceFile( sourcesDirectory, this.getSourceFileEditor( specification ) );
         }
     }
 
@@ -496,10 +495,7 @@ public class SourceFileProcessor extends JomcTool
 
         if ( implementation.isClassDeclaration() )
         {
-            final File sourceFile =
-                new File( sourcesDirectory, implementation.getClazz().replace( '.', '/' ) + ".java" );
-
-            this.editSourceFile( sourceFile, this.getSourceFileEditor( implementation ) );
+            this.editSourceFile( sourcesDirectory, this.getSourceFileEditor( implementation ) );
         }
     }
 
@@ -562,87 +558,101 @@ public class SourceFileProcessor extends JomcTool
     /**
      * Edits a given file using a given editor.
      *
-     * @param f The file to edit.
+     * @param sourcesDirectory The directory holding the source file to edit.
      * @param editor The editor to edit {@code f} with.
      *
-     * @throws NullPointerException if {@code f} or {@code editor} is {@code null}.
+     * @throws NullPointerException if {@code sourcesDirectory} or {@code editor} is {@code null}.
      * @throws IOException if editing fails.
      */
-    private void editSourceFile( final File f, final SourceFileEditor editor ) throws IOException
+    private void editSourceFile( final File sourcesDirectory, final SourceFileEditor editor ) throws IOException
     {
-        if ( f == null )
+        if ( sourcesDirectory == null )
         {
-            throw new NullPointerException( "f" );
+            throw new NullPointerException( "sourcesDirectory" );
         }
         if ( editor == null )
         {
             throw new NullPointerException( "editor" );
         }
 
-        String content = "";
-
-        if ( !f.exists() )
+        final SourceFileType sourceFileType = editor.getSourceFileType();
+        if ( sourceFileType != null )
         {
-            final SourceFileType sourceFileType = editor.getSourceFileType();
+            String content = "";
+            String edited = null;
+            final File f = new File( sourcesDirectory, sourceFileType.getLocation() );
 
-            if ( sourceFileType != null && sourceFileType.getTemplate() != null )
+            if ( !f.exists() )
             {
-                final StringWriter writer = new StringWriter();
-                final Template template = this.getVelocityTemplate( sourceFileType.getTemplate() );
-                final VelocityContext ctx = editor.getVelocityContext();
-                ctx.put( "template", template );
-                template.merge( ctx, writer );
-                writer.close();
-                content = writer.toString();
+                if ( sourceFileType.getTemplate() != null )
+                {
+                    if ( this.isLoggable( Level.FINE ) )
+                    {
+                        this.log( Level.FINE, getMessage( "creating", f.getAbsolutePath() ), null );
+                    }
+
+                    final StringWriter writer = new StringWriter();
+                    final Template template = this.getVelocityTemplate( sourceFileType.getTemplate() );
+                    final VelocityContext ctx = editor.getVelocityContext();
+                    ctx.put( "template", template );
+                    template.merge( ctx, writer );
+                    writer.close();
+                    content = writer.toString();
+                }
             }
-        }
-        else
-        {
-            content = FileUtils.readFileToString( f, this.getInputEncoding() );
-        }
-
-        String edited = null;
-
-        try
-        {
-            edited = editor.edit( content );
-        }
-        catch ( final IOException e )
-        {
-            throw (IOException) new IOException( getMessage(
-                "failedEditing", f.getCanonicalPath(), e.getMessage() ) ).initCause( e );
-
-        }
-
-        if ( this.isLoggable( Level.FINE ) )
-        {
-            for ( Section s : editor.getAddedSections() )
+            else
             {
-                this.log( Level.FINE, getMessage( "addedSection", f.getCanonicalPath(), s.getName() ), null );
-            }
-        }
+                if ( this.isLoggable( Level.FINE ) )
+                {
+                    this.log( Level.FINE, getMessage( "reading", f.getAbsolutePath() ), null );
+                }
 
-        if ( this.isLoggable( Level.WARNING ) )
-        {
-            for ( Section s : editor.getUnknownSections() )
-            {
-                this.log( Level.WARNING, getMessage( "unknownSection", f.getCanonicalPath(), s.getName() ), null );
-            }
-        }
-
-        if ( !edited.equals( content ) || edited.length() == 0 )
-        {
-            if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
-            {
-                throw new IOException( getMessage( "failedCreatingDirectory", f.getParentFile().getAbsolutePath() ) );
+                content = FileUtils.readFileToString( f, this.getInputEncoding() );
             }
 
-            if ( this.isLoggable( Level.INFO ) )
+            try
             {
-                this.log( Level.INFO, getMessage( "editing", f.getCanonicalPath() ), null );
+                edited = editor.edit( content );
+            }
+            catch ( final IOException e )
+            {
+                throw (IOException) new IOException( getMessage(
+                    "failedEditing", f.getAbsolutePath(), e.getMessage() ) ).initCause( e );
+
             }
 
-            FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
+            if ( this.isLoggable( Level.FINE ) )
+            {
+                for ( Section s : editor.getAddedSections() )
+                {
+                    this.log( Level.FINE, getMessage( "addedSection", f.getAbsolutePath(), s.getName() ), null );
+                }
+            }
+
+            if ( this.isLoggable( Level.WARNING ) )
+            {
+                for ( Section s : editor.getUnknownSections() )
+                {
+                    this.log( Level.WARNING, getMessage( "unknownSection", f.getAbsolutePath(), s.getName() ), null );
+                }
+            }
+
+            if ( !edited.equals( content ) || edited.length() == 0 )
+            {
+                if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
+                {
+                    throw new IOException( getMessage(
+                        "failedCreatingDirectory", f.getParentFile().getAbsolutePath() ) );
+
+                }
+
+                if ( this.isLoggable( Level.INFO ) )
+                {
+                    this.log( Level.INFO, getMessage( "editing", f.getAbsolutePath() ), null );
+                }
+
+                FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
+            }
         }
     }
 
