@@ -96,7 +96,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * The template profile to use when accessing templates.
      *
-     * @parameter default-value="jomc-java"
+     * @parameter
      */
     private String templateProfile;
 
@@ -152,7 +152,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * The indentation string ('\t' for tab).
      *
-     * @parameter default-value="    "
+     * @parameter
      */
     private String indentation;
 
