@@ -653,6 +653,10 @@ public class SourceFileProcessor extends JomcTool
 
                 FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
             }
+            else if ( this.isLoggable( Level.FINE ) )
+            {
+                this.log( Level.FINE, getMessage( "unchanged", f.getAbsolutePath() ), null );
+            }
         }
     }
 
