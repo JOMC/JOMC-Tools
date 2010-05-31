@@ -44,6 +44,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
@@ -164,14 +165,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private String lineSeparator;
 
     /**
-     * The Maven project of the instance.
-     * @parameter expression="${project}"
-     * @required
-     * @readonly
-     */
-    private MavenProject mavenProject;
-
-    /**
      * Controls verbosity of the plugin.
      *
      * @parameter expression="${jomc.verbose}" default-value="false"
@@ -233,6 +226,23 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @parameter default-value="${project.build.testOutputDirectory}"
      */
     private String testClassesDirectory;
+
+    /**
+     * The Maven project of the instance.
+     * @parameter expression="${project}"
+     * @required
+     * @readonly
+     */
+    private MavenProject mavenProject;
+
+    /**
+     * List of plugin artifacts.
+     *
+     * @parameter expression="${plugin.artifacts}"
+     * @required
+     * @readonly
+     */
+    private List pluginArtifacts;
 
     public void execute() throws MojoExecutionException, MojoFailureException
     {
@@ -465,6 +475,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         for ( final Iterator it = this.getMavenProject().getRuntimeArtifacts().iterator(); it.hasNext(); )
         {
             final Artifact a = (Artifact) it.next();
+            final Artifact pluginArtifact = this.getPluginArtifact( a );
 
             if ( a.getFile() == null )
             {
@@ -472,10 +483,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 continue;
             }
 
-            if ( a.getGroupId().equals( "org.jomc" )
-                 && ( a.getArtifactId().equals( "jomc-util" ) || a.getArtifactId().equals( "jomc-model" )
-                      || a.getArtifactId().equals( "jomc-tools" ) ) )
+            if ( pluginArtifact != null )
             {
+                this.log( Level.FINE, getMessage(
+                    "ignoredPluginArtifact", a.toString(), pluginArtifact.toString() ), null );
+
                 continue;
             }
 
@@ -487,6 +499,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         for ( final Iterator it = this.getMavenProject().getCompileArtifacts().iterator(); it.hasNext(); )
         {
             final Artifact a = (Artifact) it.next();
+            final Artifact pluginArtifact = this.getPluginArtifact( a );
 
             if ( a.getFile() == null )
             {
@@ -494,10 +507,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 continue;
             }
 
-            if ( a.getGroupId().equals( "org.jomc" )
-                 && ( a.getArtifactId().equals( "jomc-util" ) || a.getArtifactId().equals( "jomc-model" )
-                      || a.getArtifactId().equals( "jomc-tools" ) ) )
+            if ( pluginArtifact != null )
             {
+                this.log( Level.FINE, getMessage(
+                    "ignoredPluginArtifact", a.toString(), pluginArtifact.toString() ), null );
+
                 continue;
             }
 
@@ -537,6 +551,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         for ( final Iterator it = this.getMavenProject().getTestArtifacts().iterator(); it.hasNext(); )
         {
             final Artifact a = (Artifact) it.next();
+            final Artifact pluginArtifact = this.getPluginArtifact( a );
 
             if ( a.getFile() == null )
             {
@@ -544,10 +559,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 continue;
             }
 
-            if ( a.getGroupId().equals( "org.jomc" )
-                 && ( a.getArtifactId().equals( "jomc-util" ) || a.getArtifactId().equals( "jomc-model" )
-                      || a.getArtifactId().equals( "jomc-tools" ) ) )
+            if ( pluginArtifact != null )
             {
+                this.log( Level.FINE, getMessage(
+                    "ignoredPluginArtifact", a.toString(), pluginArtifact.toString() ), null );
+
                 continue;
             }
 
@@ -814,6 +830,25 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
 
         } );
+    }
+
+    private Artifact getPluginArtifact( final Artifact a )
+    {
+        for ( final Iterator it = this.pluginArtifacts.iterator(); it.hasNext(); )
+        {
+            final Artifact pluginArtifact = (Artifact) it.next();
+
+            if ( pluginArtifact.getGroupId().equals( a.getGroupId() )
+                 && pluginArtifact.getArtifactId().equals( a.getArtifactId() )
+                 && ( pluginArtifact.hasClassifier()
+                      ? pluginArtifact.getClassifier().equals( a.getClassifier() )
+                      : !a.hasClassifier() ) )
+            {
+                return pluginArtifact;
+            }
+        }
+
+        return null;
     }
 
     private static String getMessage( final String key, final Object... args )
