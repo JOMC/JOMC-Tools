@@ -70,8 +70,6 @@ piwikTracker.enableLinkTracking();
         </p>
       </noscript>
     </head>
-    <menu ref="parent" />
-    <menu ref="modules" />
     <menu name="Overview">
       <item name="Introduction" href="index.html"/>
       <item name="Goals" href="plugin-info.html"/>
@@ -85,13 +83,5 @@ piwikTracker.enableLinkTracking();
       <item name="Customizing code generation" href="examples/customize-templates.html"/>
       <item name="Dumping instances" href="examples/dump-instances.html"/>
     </menu>
-    <menu name="Sourceforge">
-      <item name="Project Summary" href="http://sourceforge.net/projects/jomc/"/>
-      <item name="Support" href="http://sourceforge.net/projects/jomc/support/"/>
-      <item name="Files" href="http://sourceforge.net/projects/jomc/files/"/>
-      <item name="Issues" href="http://sourceforge.net/apps/mantisbt/jomc/"/>
-      <item name="Stats" href="http://sourceforge.net/project/stats/?group_id=257507&amp;ugn=jomc"/>
-    </menu>
-    <menu ref="reports" />
   </body>
 </project>
