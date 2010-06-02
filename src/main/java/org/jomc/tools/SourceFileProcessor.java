@@ -99,12 +99,6 @@ public class SourceFileProcessor extends JomcTool
     /** Constant for the name of the implementation annotations source code section. */
     private static final String ANNOTATIONS_SECTION_NAME = "Annotations";
 
-    /** Name of the generator. */
-    private static final String GENERATOR_NAME = SourceFileProcessor.class.getName();
-
-    /** Constant for the version of the generator. */
-    private static final String GENERATOR_VERSION = "1.0";
-
     /** Name of the {@code implementation-constructors-head.vm} template. */
     private static final String CONSTRUCTORS_HEAD_TEMPLATE = "implementation-constructors-head.vm";
 
@@ -168,7 +162,7 @@ public class SourceFileProcessor extends JomcTool
     public SourceFileProcessor( final SourceFileProcessor tool ) throws IOException
     {
         super( tool );
-        this.sourceFilesType = new SourceFilesType( tool.getSourceFilesType() );
+        this.sourceFilesType = tool.sourceFilesType != null ? new SourceFilesType( tool.sourceFilesType ) : null;
     }
 
     /**
@@ -539,20 +533,6 @@ public class SourceFileProcessor extends JomcTool
         return new SourceFileEditor( implementation, new TrailingWhitespaceEditor( this.getLineSeparator() ),
                                      this.getLineSeparator() );
 
-    }
-
-    /**
-     * Gets the velocity context used for merging templates.
-     *
-     * @return The velocity context used for merging templates.
-     */
-    @Override
-    public VelocityContext getVelocityContext()
-    {
-        final VelocityContext ctx = super.getVelocityContext();
-        ctx.put( "generatorName", GENERATOR_NAME );
-        ctx.put( "generatorVersion", GENERATOR_VERSION );
-        return ctx;
     }
 
     /**

@@ -186,16 +186,16 @@ public abstract class JomcTool
             throw new NullPointerException( "tool" );
         }
 
-        this.setTemplateEncoding( tool.getTemplateEncoding() );
-        this.setInputEncoding( tool.getInputEncoding() );
-        this.setOutputEncoding( tool.getOutputEncoding() );
-        this.setModules( tool.getModules() );
-        this.setTemplateProfile( tool.getTemplateProfile() );
-        this.setIndentation( tool.getIndentation() );
-        this.setLineSeparator( tool.getLineSeparator() );
-        this.setVelocityEngine( tool.getVelocityEngine() );
-        this.setLogLevel( tool.getLogLevel() );
-        this.getListeners().addAll( tool.getListeners() );
+        this.indentation = tool.indentation;
+        this.inputEncoding = tool.inputEncoding;
+        this.lineSeparator = tool.lineSeparator;
+        this.listeners = tool.listeners != null ? new LinkedList<Listener>( tool.listeners ) : null;
+        this.logLevel = tool.logLevel;
+        this.modules = tool.modules != null ? new Modules( tool.modules ) : null;
+        this.outputEncoding = tool.outputEncoding;
+        this.templateEncoding = tool.templateEncoding;
+        this.templateProfile = tool.templateProfile;
+        this.velocityEngine = tool.velocityEngine;
     }
 
     /**
@@ -1287,6 +1287,9 @@ public abstract class JomcTool
         final VelocityContext ctx = new VelocityContext();
         ctx.put( "modules", this.getModules() );
         ctx.put( "tool", this );
+        ctx.put( "toolName", this.getClass().getName() );
+        ctx.put( "toolVersion", getMessage( "projectVersion" ) );
+        ctx.put( "toolUrl", getMessage( "projectUrl" ) );
         ctx.put( "calendar", Calendar.getInstance() );
         ctx.put( "now", new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSZ" ).format( now ) );
         ctx.put( "year", new SimpleDateFormat( "yyyy" ).format( now ) );

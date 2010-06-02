@@ -29,5 +29,20 @@
 ##
 ##   $Id$
 ##
+## @param tool The tool merging the template.
+## @param toolName The name of the tool merging the template.
+## @param toolVersion The version of the tool merging the template.
+## @param toolUrl The URL to the site of the tool merging the template.
+## @param calendar A java.util.Calendar instance.
+## @param now The current timestamp formatted using the pattern "yyyy-MM-dd'T'HH:mm:ss.SSSZ".
+## @param year The current year formatted using the pattern "yyyy".
+## @param month The current month formatted using the pattern "MM".
+## @param day The current day formatted using the pattern "dd".
+## @param hour The current hour formatted using the pattern "HH".
+## @param minute The current minute formatted using the pattern "mm".
+## @param second The current second formatted using the pattern "ss".
+## @param timezone The current timezone formatted using the pattern "Z".
+## @param modules The modules declaring the implementation to render.
+## @param implementation The implementation to render.
 ${tool.getIndentation(1)}}
 ${tool.getIndentation(1)}// </editor-fold>

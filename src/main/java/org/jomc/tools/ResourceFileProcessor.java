@@ -43,6 +43,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+import org.apache.velocity.VelocityContext;
 import org.jomc.model.Implementation;
 import org.jomc.model.Message;
 import org.jomc.model.Messages;
@@ -68,12 +69,6 @@ import org.jomc.model.Text;
 public class ResourceFileProcessor extends JomcTool
 {
 
-    /** Name of the generator. */
-    private static final String GENERATOR_NAME = ResourceFileProcessor.class.getName();
-
-    /** Constant for the version of the generator. */
-    private static final String GENERATOR_VERSION = "1.0";
-
     /** The language of the default language properties file of generated resource bundle resources. */
     private Locale resourceBundleDefaultLocale;
 
@@ -95,7 +90,7 @@ public class ResourceFileProcessor extends JomcTool
     public ResourceFileProcessor( final ResourceFileProcessor tool ) throws IOException
     {
         super( tool );
-        this.setResourceBundleDefaultLocale( tool.getResourceBundleDefaultLocale() );
+        this.resourceBundleDefaultLocale = tool.resourceBundleDefaultLocale;
     }
 
     /**
@@ -358,6 +353,11 @@ public class ResourceFileProcessor extends JomcTool
         Properties defProperties = null;
         Properties fallbackProperties = null;
 
+        final VelocityContext ctx = this.getVelocityContext();
+        final String toolName = ctx.get( "toolName" ).toString();
+        final String toolVersion = ctx.get( "toolVersion" ).toString();
+        final String toolUrl = ctx.get( "toolUrl" ).toString();
+
         for ( Map.Entry<Locale, Properties> e : resources.entrySet() )
         {
             final String language = e.getKey().getLanguage().toLowerCase();
@@ -380,7 +380,7 @@ public class ResourceFileProcessor extends JomcTool
             try
             {
                 out = new FileOutputStream( file );
-                p.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
+                p.store( out, toolName + ' ' + toolVersion + " - See " + toolUrl );
             }
             finally
             {
@@ -422,7 +422,7 @@ public class ResourceFileProcessor extends JomcTool
             try
             {
                 out = new FileOutputStream( file );
-                defProperties.store( out, GENERATOR_NAME + ' ' + GENERATOR_VERSION );
+                defProperties.store( out, toolName + ' ' + toolVersion + " - See " + toolUrl );
             }
             finally
             {
