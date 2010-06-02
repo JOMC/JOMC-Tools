@@ -58,7 +58,7 @@ public final class TestClassesCommitMojo extends AbstractClassesCommitMojo
     @Override
     protected String getClassesModuleName() throws MojoExecutionException
     {
-        return this.getJomcTestModuleName();
+        return this.getTestModuleName();
     }
 
     @Override

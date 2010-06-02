@@ -52,7 +52,7 @@ public final class TestResourcesWriteMojo extends AbstractResourcesMojo
     @Override
     protected String getResourcesModuleName() throws MojoExecutionException
     {
-        return this.getJomcTestModuleName();
+        return this.getTestModuleName();
     }
 
     @Override

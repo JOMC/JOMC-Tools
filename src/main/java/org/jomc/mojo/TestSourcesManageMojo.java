@@ -58,7 +58,7 @@ public final class TestSourcesManageMojo extends AbstractSourcesMojo
     @Override
     protected String getSourcesModuleName() throws MojoExecutionException
     {
-        return this.getJomcTestModuleName();
+        return this.getTestModuleName();
     }
 
     @Override

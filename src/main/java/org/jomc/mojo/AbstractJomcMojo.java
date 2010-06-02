@@ -200,18 +200,18 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private boolean modelProcessingEnabled;
 
     /**
-     * Name of the JOMC module to process.
+     * Name of the module to process.
      *
      * @parameter default-value="${project.name}"
      */
-    private String jomcModuleName;
+    private String moduleName;
 
     /**
-     * Name of the JOMC test module to process.
+     * Name of the test module to process.
      *
      * @parameter default-value="${project.name} Tests"
      */
-    private String jomcTestModuleName;
+    private String testModuleName;
 
     /**
      * Directory holding compiled class files of the project.
@@ -616,27 +616,27 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
-     * Gets the name of the JOMC module to process.
+     * Gets the name of the module to process.
      *
-     * @return The name of the JOMC module to process.
+     * @return The name of the module to process.
      *
-     * @throws MojoExecutionException if getting the name of the JOMC module fails.
+     * @throws MojoExecutionException if getting the name of the module fails.
      */
-    protected String getJomcModuleName() throws MojoExecutionException
+    protected String getModuleName() throws MojoExecutionException
     {
-        return this.jomcModuleName;
+        return this.moduleName;
     }
 
     /**
-     * Gets the name of the JOMC test module to process.
+     * Gets the name of the test module to process.
      *
-     * @return The name of the JOMC test module to process.
+     * @return The name of the test module to process.
      *
-     * @throws MojoExecutionException if getting the name of the JOMC test module fails.
+     * @throws MojoExecutionException if getting the name of the test module fails.
      */
-    protected String getJomcTestModuleName() throws MojoExecutionException
+    protected String getTestModuleName() throws MojoExecutionException
     {
-        return this.jomcTestModuleName;
+        return this.testModuleName;
     }
 
     protected Modules getToolModules( final ModelContext context ) throws MojoExecutionException

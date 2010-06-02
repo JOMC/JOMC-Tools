@@ -58,7 +58,7 @@ public final class MainSourcesManageMojo extends AbstractSourcesMojo
     @Override
     protected String getSourcesModuleName() throws MojoExecutionException
     {
-        return this.getJomcModuleName();
+        return this.getModuleName();
     }
 
     @Override

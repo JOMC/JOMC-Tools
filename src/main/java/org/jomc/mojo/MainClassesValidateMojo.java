@@ -58,7 +58,7 @@ public final class MainClassesValidateMojo extends AbstractClassesValidateMojo
     @Override
     protected String getClassesModuleName() throws MojoExecutionException
     {
-        return this.getJomcModuleName();
+        return this.getModuleName();
     }
 
     @Override
