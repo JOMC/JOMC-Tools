@@ -303,8 +303,7 @@ public class ClassFileProcessor extends JomcTool
 
             for ( SpecificationReference r : specifications.getReference() )
             {
-                if ( specifications.getSpecification( r.getIdentifier() ) == null &&
-                     this.isLoggable( Level.WARNING ) )
+                if ( specifications.getSpecification( r.getIdentifier() ) == null && this.isLoggable( Level.WARNING ) )
                 {
                     this.log( Level.WARNING, getMessage( "unresolvedSpecification", r.getIdentifier(),
                                                          implementation.getIdentifier() ), null );
@@ -781,8 +780,8 @@ public class ClassFileProcessor extends JomcTool
                             new ObjectFactory().createImplementation( implementation ) ) );
 
                     }
-                    else if ( decodedDependency.getImplementationName() != null &&
-                              dependency.getImplementationName() == null )
+                    else if ( decodedDependency.getImplementationName() != null
+                              && dependency.getImplementationName() == null )
                     {
                         report.getDetails().add( new ModelValidationReport.Detail(
                             "CLASS_MISSING_DEPENDENCY_IMPLEMENTATION_NAME", Level.SEVERE, getMessage(
@@ -792,8 +791,8 @@ public class ClassFileProcessor extends JomcTool
 
                     }
 
-                    if ( s != null && s.getVersion() != null && decodedDependency.getVersion() != null &&
-                         VersionParser.compare( decodedDependency.getVersion(), s.getVersion() ) > 0 )
+                    if ( s != null && s.getVersion() != null && decodedDependency.getVersion() != null
+                         && VersionParser.compare( decodedDependency.getVersion(), s.getVersion() ) > 0 )
                     {
                         final Module moduleOfSpecification =
                             this.getModules().getModuleOfSpecification( s.getIdentifier() );
@@ -948,8 +947,9 @@ public class ClassFileProcessor extends JomcTool
                             new ObjectFactory().createImplementation( implementation ) ) );
 
                     }
-                    else if ( decodedReference.getVersion() != null && specification.getVersion() != null &&
-                              VersionParser.compare( decodedReference.getVersion(), specification.getVersion() ) != 0 )
+                    else if ( decodedReference.getVersion() != null && specification.getVersion() != null
+                              && VersionParser.compare( decodedReference.getVersion(),
+                                                        specification.getVersion() ) != 0 )
                     {
                         final Module moduleOfSpecification =
                             this.getModules().getModuleOfSpecification( decodedReference.getIdentifier() );
