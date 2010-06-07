@@ -116,8 +116,8 @@ public class OptionFactory
         option.setOptionalArg( this.isOptionalArg() );
         option.setRequired( this.isRequired() );
 
-        if ( ( option.getArgs() > 0 || option.getArgs() == Option.UNLIMITED_VALUES ) &&
-             this.getArgumentDescription( this.getLocale() ).trim().length() > 0 )
+        if ( ( option.getArgs() > 0 || option.getArgs() == Option.UNLIMITED_VALUES )
+             && this.getArgumentDescription( this.getLocale() ).trim().length() > 0 )
         {
             option.setArgName( this.getArgumentDescription( this.getLocale() ) );
         }

@@ -276,8 +276,8 @@ public class Jomc
 
             for ( Command c : this.getCommands() )
             {
-                if ( cmd == null && args != null && args.length > 0 &&
-                     ( args[0].equals( c.getName() ) || args[0].equals( c.getAbbreviatedName() ) ) )
+                if ( cmd == null && args != null && args.length > 0
+                     && ( args[0].equals( c.getName() ) || args[0].equals( c.getAbbreviatedName() ) ) )
                 {
                     cmd = c;
                 }
@@ -381,8 +381,8 @@ public class Jomc
             final boolean failOnWarnings = commandLine.hasOption( this.getFailOnWarningsOption().getOpt() );
 
             final int status = cmd.execute( commandLine );
-            if ( status == Command.STATUS_SUCCESS && failOnWarnings &&
-                 this.severity.intValue() >= Level.WARNING.intValue() )
+            if ( status == Command.STATUS_SUCCESS && failOnWarnings
+                 && this.severity.intValue() >= Level.WARNING.intValue() )
             {
                 return Command.STATUS_FAILURE;
             }
