@@ -327,8 +327,8 @@ public class JomcResourceTransformer implements ResourceTransformer
 
     public boolean hasTransformedResource()
     {
-        return !( this.modules.getModule().isEmpty() && this.schemas.getSchema().isEmpty() &&
-                  this.services.getService().isEmpty() );
+        return !( this.modules.getModule().isEmpty() && this.schemas.getSchema().isEmpty()
+                  && this.services.getService().isEmpty() );
 
     }
 
