@@ -921,7 +921,8 @@ public class ClassFileProcessor extends JomcTool
 
                         }
 
-                        if ( decodedSpecification.getClazz() == null ? specification.getClazz() != null
+                        if ( decodedSpecification.getClazz() == null
+                             ? specification.getClazz() != null
                              : !decodedSpecification.getClazz().equals( specification.getClazz() ) )
                         {
                             report.getDetails().add( new ModelValidationReport.Detail(
