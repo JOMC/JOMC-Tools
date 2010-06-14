@@ -53,7 +53,7 @@ Validating a projects' modules
         <version>${project.version}</version>
         <executions>
           <execution>
-            <id>validate</id>
+            <id>main-default</id>
             <goals>
               <goal>validate-main-modules</goal>
             </goals>

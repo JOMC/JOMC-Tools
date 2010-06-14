@@ -57,11 +57,17 @@ Usage
         <version>${project.version}</version>
         <executions>
           <execution>
+            <id>main-default</id>
             <goals>
               <goal>attach-main-module</goal>
               <goal>manage-main-sources</goal>
               <goal>commit-main-classes</goal>
               <goal>validate-main-classes</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>test-default</id>
+            <goals>
               <goal>attach-test-module</goal>
               <goal>manage-test-sources</goal>
               <goal>commit-test-classes</goal>
@@ -93,12 +99,21 @@ Usage
         <version>${project.version}</version>
         <executions>
           <execution>
+            <id>main-default</id>
             <goals>
               <goal>attach-main-module</goal>
               <goal>write-main-resources</goal>
               <goal>manage-main-sources</goal>
               <goal>commit-main-classes</goal>
               <goal>validate-main-classes</goal>
+            </goals>
+            <configuration>
+              <templateProfile>jomc-java-bundles</templateProfile>
+            </configuration>
+          </execution>
+          <execution>
+            <id>test-default</id>
+            <goals>
               <goal>attach-test-module</goal>
               <goal>write-test-resources</goal>
               <goal>manage-test-sources</goal>
@@ -106,11 +121,11 @@ Usage
               <goal>validate-test-classes</goal>
               <goal>validate-test-modules</goal>
             </goals>
+            <configuration>
+              <templateProfile>jomc-java-bundles</templateProfile>
+            </configuration>
           </execution>
         </executions>
-        <configuration>
-          <templateProfile>jomc-java-bundles</templateProfile>
-        </configuration>
       </plugin>
       ...
     </plugins>
