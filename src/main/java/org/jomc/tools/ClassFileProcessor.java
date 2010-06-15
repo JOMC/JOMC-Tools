@@ -833,19 +833,17 @@ public class ClassFileProcessor extends JomcTool
                             new ObjectFactory().createImplementation( implementation ) ) );
 
                     }
-                    else
+                    else if ( decodedProperty.getType() == null
+                              ? property.getType() != null
+                              : !decodedProperty.getType().equals( property.getType() ) )
                     {
-                        if ( decodedProperty.getType() == null ? property.getType() != null
-                             : !decodedProperty.getType().equals( property.getType() ) )
-                        {
-                            report.getDetails().add( new ModelValidationReport.Detail(
-                                "CLASS_ILLEGAL_IMPLEMENTATION_PROPERTY", Level.SEVERE, getMessage(
-                                "illegalPropertyType", implementation.getIdentifier(), decodedProperty.getName(),
-                                property.getType() == null ? "default" : property.getType(),
-                                decodedProperty.getType() == null ? "default" : decodedProperty.getType() ),
-                                new ObjectFactory().createImplementation( implementation ) ) );
+                        report.getDetails().add( new ModelValidationReport.Detail(
+                            "CLASS_ILLEGAL_IMPLEMENTATION_PROPERTY", Level.SEVERE, getMessage(
+                            "illegalPropertyType", implementation.getIdentifier(), decodedProperty.getName(),
+                            property.getType() == null ? "<>" : property.getType(),
+                            decodedProperty.getType() == null ? "<>" : decodedProperty.getType() ),
+                            new ObjectFactory().createImplementation( implementation ) ) );
 
-                        }
                     }
                 }
             }
