@@ -57,16 +57,13 @@ import org.jomc.model.ModelException;
 import org.jomc.model.ModelObject;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
-import org.jomc.model.bootstrap.BootstrapContext;
-import org.jomc.model.bootstrap.BootstrapException;
-import org.jomc.model.bootstrap.BootstrapObject;
-import org.jomc.model.bootstrap.DefaultBootstrapContext;
-import org.jomc.model.bootstrap.DefaultSchemaProvider;
-import org.jomc.model.bootstrap.DefaultServiceProvider;
-import org.jomc.model.bootstrap.Schema;
-import org.jomc.model.bootstrap.Schemas;
-import org.jomc.model.bootstrap.Service;
-import org.jomc.model.bootstrap.Services;
+import org.jomc.model.modlet.DefaultModletContext;
+import org.jomc.model.modlet.DefaultModletProvider;
+import org.jomc.model.modlet.Modlet;
+import org.jomc.model.modlet.ModletContext;
+import org.jomc.model.modlet.ModletException;
+import org.jomc.model.modlet.ModletObject;
+import org.jomc.model.modlet.Modlets;
 
 /**
  * Maven Shade Plugin {@code ResourceTransformer} implementation for assembling JOMC resources.
@@ -85,21 +82,16 @@ import org.jomc.model.bootstrap.Services;
  *   &lt;moduleExcludes&gt;
  *     &lt;moduleExclude&gt;module name&lt;/moduleExclude&gt;
  *   &lt;/moduleExcludes&gt;
- *   &lt;schemasResource&gt;META-INF/custom-jomc-schemas.xml&lt;/schemasResource&gt;
- *   &lt;schemaResources&gt;
- *     &lt;schemaResource&gt;META-INF/jomc-schemas.xml&lt;/schemaResource&gt;
- *   &lt;/schemaResources&gt;
- *   &lt;servicesResource&gt;META-INF/custom-jomc-services.xml&lt;/servicesResource&gt;
- *   &lt;serviceResources&gt;
- *     &lt;serviceResource&gt;META-INF/jomc-services.xml&lt;/serviceResource&gt;
- *   &lt;/serviceResources&gt;
+ *   &lt;modletResource&gt;META-INF/custom-jomc-modlet.xml&lt;/modletResource&gt;
+ *   &lt;modletResources&gt;
+ *     &lt;modletResource&gt;META-INF/jomc-modlet.xml&lt;/modletResource&gt;
+ *   &lt;/modletResources&gt;
  *   &lt;modelObjectStylesheet&gt;Filename of a style sheet to use for transforming the merged model document.&lt;/modelObjectStylesheet&gt;
- *   &lt;bootstrapObjectStylesheet&gt;Filename of a style sheet to use for transforming the merged bootstrap document.&lt;/bootstrapObjectStylesheet&gt;
+ *   &lt;modletObjectStylesheet&gt;Filename of a style sheet to use for transforming the merged modlet document.&lt;/modletObjectStylesheet&gt;
  *   &lt;providerLocation&gt;META-INF/custom-services&lt;/providerLocation&gt;
  *   &lt;platformProviderLocation&gt;${java.home}/jre/lib/custom-jomc.properties&lt;/platformProviderLocation&gt;
- *   &lt;serviceLocation&gt;META-INF/custom-jomc-services.xml&lt;/serviceLocation&gt;
- *   &lt;schemaLocation&gt;META-INF/custom-jomc-schemas.xml&lt;/schemaLocation&gt;
- *   &lt;bootstrapSchemaSystemId&gt;http://custom.host.tld/custom/path/jomc-bootstrap-1.0.xsd&lt;/bootstrapSchemaSystemId&gt;
+ *   &lt;modletLocation&gt;META-INF/custom-jomc-modlet.xml&lt;/modletLocation&gt;
+ *   &lt;modletSchemaSystemId&gt;http://custom.host.tld/custom/path/jomc-modlet-1.0.xsd&lt;/modletSchemaSystemId&gt;
  * &lt;/transformer&gt;
  * </pre></p>
  *
@@ -114,7 +106,7 @@ public class JomcResourceTransformer implements ResourceTransformer
     {
 
         MODEL_OBJECT_RESOURCE,
-        BOOTSTRAP_OBJECT_RESOURCE,
+        MODLET_OBJECT_RESOURCE,
         UNKNOWN_RESOURCE
 
     }
@@ -137,29 +129,20 @@ public class JomcResourceTransformer implements ResourceTransformer
         "META-INF/jomc.xml"
     };
 
-    /** The resource name of the assembled schema resources. */
-    private String schemasResource = "META-INF/jomc-schemas.xml";
+    /** The resource name of the assembled modlet resources. */
+    private String modletResource = "META-INF/jomc-modlet.xml";
 
-    /** Names of schema resources to process. */
-    private String[] schemaResources =
+    /** Names of modet resources to process. */
+    private String[] modletResources =
     {
-        "META-INF/jomc-schemas.xml"
-    };
-
-    /** The resource name of the assembled service resources. */
-    private String servicesResource = "META-INF/jomc-services.xml";
-
-    /** Names of service resources to process. */
-    private String[] serviceResources =
-    {
-        "META-INF/jomc-services.xml"
+        "META-INF/jomc-modlet.xml"
     };
 
     /** Model object style sheet to apply. */
     private File modelObjectStylesheet;
 
     /** Bootstrap object style sheet to apply. */
-    private File bootstrapObjectStylesheet;
+    private File modletObjectStylesheet;
 
     /** Included modules. */
     private List<String> moduleIncludes;
@@ -173,20 +156,14 @@ public class JomcResourceTransformer implements ResourceTransformer
     /** The location to search for platform providers. */
     private String platformProviderLocation;
 
-    /** The system id of the bootstrap schema. */
-    private String bootstrapSchemaSystemId;
+    /** The system id of the modlet schema. */
+    private String modletSchemaSystemId;
 
-    /** The location to search for services. */
-    private String serviceLocation;
+    /** The location to search for modlets. */
+    private String modletLocation;
 
-    /** The location to search for schemas. */
-    private String schemaLocation;
-
-    /** Schemas resources. */
-    private final Schemas schemas = new Schemas();
-
-    /** Services resources. */
-    private final Services services = new Services();
+    /** Modlet resources. */
+    private final Modlets modlets = new Modlets();
 
     /** Model resources. */
     private final Modules modules = new Modules();
@@ -200,11 +177,11 @@ public class JomcResourceTransformer implements ResourceTransformer
     /** The JOMC JAXB unmarshaller of the instance. */
     private Unmarshaller jomcUnmarshaller;
 
-    /** The bootstrap JAXB marshaller of the instance. */
-    private Marshaller bootstrapMarshaller;
+    /** The modlet JAXB marshaller of the instance. */
+    private Marshaller modletMarshaller;
 
-    /** The bootstrap JAXB unmarshaller of the instance. */
-    private Unmarshaller bootstrapUnmarshaller;
+    /** The modlet JAXB unmarshaller of the instance. */
+    private Unmarshaller modletUnmarshaller;
 
     /** Creates a new {@code JomcResourceTransformer} instance. */
     public JomcResourceTransformer()
@@ -225,24 +202,13 @@ public class JomcResourceTransformer implements ResourceTransformer
                 }
             }
         }
-        if ( this.schemaResources != null )
+        if ( this.modletResources != null )
         {
-            for ( String r : this.schemaResources )
+            for ( String r : this.modletResources )
             {
                 if ( arg.endsWith( r ) )
                 {
-                    this.currentResourceType = ResourceType.BOOTSTRAP_OBJECT_RESOURCE;
-                    return true;
-                }
-            }
-        }
-        if ( this.serviceResources != null )
-        {
-            for ( String r : this.serviceResources )
-            {
-                if ( arg.endsWith( r ) )
-                {
-                    this.currentResourceType = ResourceType.BOOTSTRAP_OBJECT_RESOURCE;
+                    this.currentResourceType = ResourceType.MODLET_OBJECT_RESOURCE;
                     return true;
                 }
             }
@@ -275,28 +241,20 @@ public class JomcResourceTransformer implements ResourceTransformer
                     }
                     break;
 
-                case BOOTSTRAP_OBJECT_RESOURCE:
-                    Object bootstrapObject = this.unmarshalBootstrapObject( in );
+                case MODLET_OBJECT_RESOURCE:
+                    Object modletObject = this.unmarshalModletObject( in );
 
-                    if ( bootstrapObject instanceof JAXBElement )
+                    if ( modletObject instanceof JAXBElement )
                     {
-                        bootstrapObject = ( (JAXBElement) bootstrapObject ).getValue();
+                        modletObject = ( (JAXBElement) modletObject ).getValue();
                     }
-                    if ( bootstrapObject instanceof Schemas )
+                    if ( modletObject instanceof Modlets )
                     {
-                        this.schemas.getSchema().addAll( ( (Schemas) bootstrapObject ).getSchema() );
+                        this.modlets.getModlet().addAll( ( (Modlets) modletObject ).getModlet() );
                     }
-                    if ( bootstrapObject instanceof Schema )
+                    if ( modletObject instanceof Modlet )
                     {
-                        this.schemas.getSchema().add( (Schema) bootstrapObject );
-                    }
-                    if ( bootstrapObject instanceof Services )
-                    {
-                        this.services.getService().addAll( ( (Services) bootstrapObject ).getService() );
-                    }
-                    if ( bootstrapObject instanceof Service )
-                    {
-                        this.services.getService().add( (Service) bootstrapObject );
+                        this.modlets.getModlet().add( (Modlet) modletObject );
                     }
 
                     break;
@@ -310,7 +268,7 @@ public class JomcResourceTransformer implements ResourceTransformer
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-        catch ( final BootstrapException e )
+        catch ( final ModletException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
@@ -327,9 +285,7 @@ public class JomcResourceTransformer implements ResourceTransformer
 
     public boolean hasTransformedResource()
     {
-        return !( this.modules.getModule().isEmpty() && this.schemas.getSchema().isEmpty()
-                  && this.services.getService().isEmpty() );
-
+        return !( this.modules.getModule().isEmpty() && this.modlets.getModlet().isEmpty() );
     }
 
     public void modifyOutputStream( final JarOutputStream out ) throws IOException
@@ -373,22 +329,13 @@ public class JomcResourceTransformer implements ResourceTransformer
                 this.marshalModelObject( transformedModule, out );
             }
 
-            if ( !this.schemas.getSchema().isEmpty() )
+            if ( !this.modlets.getModlet().isEmpty() )
             {
-                final JAXBElement<Schemas> transformedSchemas = this.transformBootstrapObject(
-                    new org.jomc.model.bootstrap.ObjectFactory().createSchemas( new Schemas( this.schemas ) ) );
+                final JAXBElement<Modlets> transformedModlets = this.transformModletObject(
+                    new org.jomc.model.modlet.ObjectFactory().createModlets( new Modlets( this.modlets ) ) );
 
-                out.putNextEntry( new JarEntry( this.schemasResource ) );
-                this.marshalBootstrapObject( transformedSchemas, out );
-            }
-
-            if ( !this.services.getService().isEmpty() )
-            {
-                final JAXBElement<Services> transformedServices = this.transformBootstrapObject(
-                    new org.jomc.model.bootstrap.ObjectFactory().createServices( new Services( this.services ) ) );
-
-                out.putNextEntry( new JarEntry( this.servicesResource ) );
-                this.marshalBootstrapObject( transformedServices, out );
+                out.putNextEntry( new JarEntry( this.modletResource ) );
+                this.marshalModletObject( transformedModlets, out );
             }
         }
         catch ( final TransformerConfigurationException e )
@@ -403,7 +350,7 @@ public class JomcResourceTransformer implements ResourceTransformer
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-        catch ( final BootstrapException e )
+        catch ( final ModletException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
@@ -415,20 +362,18 @@ public class JomcResourceTransformer implements ResourceTransformer
 
     private void setupJomc()
     {
-        DefaultBootstrapContext.setDefaultBootstrapSchemaSystemId( this.bootstrapSchemaSystemId );
-        DefaultBootstrapContext.setDefaultPlatformProviderLocation( this.platformProviderLocation );
-        DefaultBootstrapContext.setDefaultProviderLocation( this.providerLocation );
-        DefaultSchemaProvider.setDefaultSchemaLocation( this.schemaLocation );
-        DefaultServiceProvider.setDefaultServiceLocation( this.serviceLocation );
+        DefaultModletContext.setDefaultModletSchemaSystemId( this.modletSchemaSystemId );
+        DefaultModletContext.setDefaultPlatformProviderLocation( this.platformProviderLocation );
+        DefaultModletContext.setDefaultProviderLocation( this.providerLocation );
+        DefaultModletProvider.setDefaultModletLocation( this.modletLocation );
     }
 
     private void resetJomc()
     {
-        DefaultBootstrapContext.setDefaultBootstrapSchemaSystemId( null );
-        DefaultBootstrapContext.setDefaultPlatformProviderLocation( null );
-        DefaultBootstrapContext.setDefaultProviderLocation( null );
-        DefaultSchemaProvider.setDefaultSchemaLocation( null );
-        DefaultServiceProvider.setDefaultServiceLocation( null );
+        DefaultModletContext.setDefaultModletSchemaSystemId( null );
+        DefaultModletContext.setDefaultPlatformProviderLocation( null );
+        DefaultModletContext.setDefaultProviderLocation( null );
+        DefaultModletProvider.setDefaultModletLocation( null );
     }
 
     private Object unmarshalModelObject( final InputStream in ) throws ModelException, JAXBException
@@ -527,24 +472,24 @@ public class JomcResourceTransformer implements ResourceTransformer
         return transformed;
     }
 
-    private Object unmarshalBootstrapObject( final InputStream in ) throws BootstrapException, JAXBException
+    private Object unmarshalModletObject( final InputStream in ) throws ModletException, JAXBException
     {
         if ( in == null )
         {
             throw new NullPointerException( "in" );
         }
 
-        if ( this.bootstrapUnmarshaller == null )
+        if ( this.modletUnmarshaller == null )
         {
             try
             {
                 this.setupJomc();
 
-                final BootstrapContext bootstrapContext =
-                    BootstrapContext.createBootstrapContext( this.getClass().getClassLoader() );
+                final ModletContext modletContext =
+                    ModletContext.createModletContext( this.getClass().getClassLoader() );
 
-                this.bootstrapUnmarshaller = bootstrapContext.createUnmarshaller();
-                this.bootstrapUnmarshaller.setSchema( bootstrapContext.createSchema() );
+                this.modletUnmarshaller = modletContext.createUnmarshaller();
+                this.modletUnmarshaller.setSchema( modletContext.createSchema() );
             }
             finally
             {
@@ -552,11 +497,11 @@ public class JomcResourceTransformer implements ResourceTransformer
             }
         }
 
-        return this.bootstrapUnmarshaller.unmarshal( in );
+        return this.modletUnmarshaller.unmarshal( in );
     }
 
-    private void marshalBootstrapObject( final JAXBElement<? extends BootstrapObject> element, final OutputStream out )
-        throws BootstrapException, JAXBException
+    private void marshalModletObject( final JAXBElement<? extends ModletObject> element, final OutputStream out )
+        throws ModletException, JAXBException
     {
         if ( element == null )
         {
@@ -567,18 +512,18 @@ public class JomcResourceTransformer implements ResourceTransformer
             throw new NullPointerException( "out" );
         }
 
-        if ( this.bootstrapMarshaller == null )
+        if ( this.modletMarshaller == null )
         {
             try
             {
                 this.setupJomc();
 
-                final BootstrapContext bootstrapContext =
-                    BootstrapContext.createBootstrapContext( this.getClass().getClassLoader() );
+                final ModletContext modletContext =
+                    ModletContext.createModletContext( this.getClass().getClassLoader() );
 
-                this.bootstrapMarshaller = bootstrapContext.createMarshaller();
-                this.bootstrapMarshaller.setSchema( bootstrapContext.createSchema() );
-                this.bootstrapMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
+                this.modletMarshaller = modletContext.createMarshaller();
+                this.modletMarshaller.setSchema( modletContext.createSchema() );
+                this.modletMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
             }
             finally
             {
@@ -586,11 +531,11 @@ public class JomcResourceTransformer implements ResourceTransformer
             }
         }
 
-        this.bootstrapMarshaller.marshal( element, out );
+        this.modletMarshaller.marshal( element, out );
     }
 
-    private <T> JAXBElement<T> transformBootstrapObject( final JAXBElement<T> element )
-        throws TransformerException, JAXBException, BootstrapException
+    private <T> JAXBElement<T> transformModletObject( final JAXBElement<T> element )
+        throws TransformerException, JAXBException, ModletException
     {
         if ( element == null )
         {
@@ -599,20 +544,20 @@ public class JomcResourceTransformer implements ResourceTransformer
 
         JAXBElement<T> transformed = element;
 
-        if ( this.bootstrapObjectStylesheet != null )
+        if ( this.modletObjectStylesheet != null )
         {
             try
             {
                 this.setupJomc();
                 final Transformer transformer = TransformerFactory.newInstance().newTransformer(
-                    new StreamSource( this.bootstrapObjectStylesheet ) );
+                    new StreamSource( this.modletObjectStylesheet ) );
 
-                final BootstrapContext bootstrapContext =
-                    BootstrapContext.createBootstrapContext( this.getClass().getClassLoader() );
+                final ModletContext modletContext =
+                    ModletContext.createModletContext( this.getClass().getClassLoader() );
 
-                final Marshaller marshaller = bootstrapContext.createMarshaller();
-                final Unmarshaller unmarshaller = bootstrapContext.createUnmarshaller();
-                final javax.xml.validation.Schema schema = bootstrapContext.createSchema();
+                final Marshaller marshaller = modletContext.createMarshaller();
+                final Unmarshaller unmarshaller = modletContext.createUnmarshaller();
+                final javax.xml.validation.Schema schema = modletContext.createSchema();
                 marshaller.setSchema( schema );
                 marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
                 unmarshaller.setSchema( schema );

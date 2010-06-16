@@ -63,9 +63,8 @@ import org.jomc.model.ModelException;
 import org.jomc.model.ModelValidationReport;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
-import org.jomc.model.bootstrap.DefaultBootstrapContext;
-import org.jomc.model.bootstrap.DefaultSchemaProvider;
-import org.jomc.model.bootstrap.DefaultServiceProvider;
+import org.jomc.model.modlet.DefaultModletContext;
+import org.jomc.model.modlet.DefaultModletProvider;
 import org.jomc.tools.ClassFileProcessor;
 import org.jomc.tools.SourceFileProcessor;
 import org.jomc.tools.JomcTool;
@@ -123,18 +122,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private String platformProviderLocation;
 
     /**
-     * The location to search for services.
+     * The location to search for modlets.
      *
      * @parameter
      */
-    private String serviceLocation;
-
-    /**
-     * The location to search for schemas.
-     *
-     * @parameter
-     */
-    private String schemaLocation;
+    private String modletLocation;
 
     /**
      * The location to search for modules.
@@ -248,10 +240,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         try
         {
-            DefaultBootstrapContext.setDefaultProviderLocation( this.providerLocation );
-            DefaultBootstrapContext.setDefaultPlatformProviderLocation( this.platformProviderLocation );
-            DefaultSchemaProvider.setDefaultSchemaLocation( this.schemaLocation );
-            DefaultServiceProvider.setDefaultServiceLocation( this.serviceLocation );
+            DefaultModletContext.setDefaultProviderLocation( this.providerLocation );
+            DefaultModletContext.setDefaultPlatformProviderLocation( this.platformProviderLocation );
+            DefaultModletProvider.setDefaultModletLocation( this.modletLocation );
             DefaultModelProvider.setDefaultModuleLocation( this.moduleLocation );
             DefaultModelProcessor.setDefaultTransformerLocation( this.transformerLocation );
             JomcTool.setDefaultTemplateProfile( this.defaultTemplateProfile );
@@ -267,10 +258,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         finally
         {
-            DefaultBootstrapContext.setDefaultProviderLocation( null );
-            DefaultBootstrapContext.setDefaultPlatformProviderLocation( null );
-            DefaultSchemaProvider.setDefaultSchemaLocation( null );
-            DefaultServiceProvider.setDefaultServiceLocation( null );
+            DefaultModletContext.setDefaultProviderLocation( null );
+            DefaultModletContext.setDefaultPlatformProviderLocation( null );
+            DefaultModletProvider.setDefaultModletLocation( null );
             DefaultModelProvider.setDefaultModuleLocation( null );
             DefaultModelProcessor.setDefaultTransformerLocation( null );
             JomcTool.setDefaultTemplateProfile( null );

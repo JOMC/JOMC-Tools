@@ -50,7 +50,7 @@ Shading artifacts
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>1.3.2</version>
+        <version>1.3.3</version>
         <dependencies>
           <dependency>
             <groupId>org.jomc</groupId>
@@ -69,16 +69,12 @@ Shading artifacts
               <moduleResources>
                 <moduleResource>META-INF/jomc.xml</moduleResource>
               </moduleResources>
-              <schemasResource>META-INF/jomc-schemas-shaded.xml</schemasResource>
-              <schemaResources>
-                <schemaResource>META-INF/jomc-schemas.xml</schemaResource>
-              </schemaResources>
-              <servicesResource>META-INF/jomc-services-shaded.xml</servicesResource>
-              <serviceResources>
-                <serviceResource>META-INF/jomc-services.xml</serviceResource>
-              </serviceResources>
+              <modletResource>META-INF/jomc-modlet-shaded.xml</modletResource>
+              <modletResources>
+                <modletResource>META-INF/jomc-modlet.xml</modletResource>
+              </modletResources>
               <modelObjectStylesheet>src/main/jomc/model-relocations.xsl</modelObjectStylesheet>
-              <bootstrapObjectStylesheet>src/main/jomc/bootstrap-relocations.xsl</bootstrapObjectStylesheet>
+              <modletObjectStylesheet>src/main/jomc/modlet-relocations.xsl</modletObjectStylesheet>
             </transformer>
           </transformers>
         ...
