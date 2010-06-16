@@ -329,7 +329,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="${project.name} Schema Location Option" name="${project.name} Schema Location Option"
+    <implementation identifier="${project.name} Modlet Location Option" name="${project.name} Modlet Location Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
                     vendor="${project.organization.name}">
 
@@ -342,48 +342,15 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="scl" override="true"/>
-        <property name="longOpt" value="schema-location" override="true"/>
+        <property name="opt" value="mll" override="true"/>
+        <property name="longOpt" value="modlet-location" override="true"/>
         <property name="numberOfArgs" type="int" value="1" override="true"/>
       </properties>
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Location of classpath schemas.</text>
-            <text language="de">Ort der Klassenpfad-Schemata.</text>
-          </template>
-        </message>
-        <message name="argumentDescription" override="true">
-          <template defaultLanguage="en">
-            <text language="en">location</text>
-            <text language="de">Ort</text>
-          </template>
-        </message>
-      </messages>
-    </implementation>
-    <!-- *********************************************************************************************************** -->
-    <implementation identifier="${project.name} Service Location Option" name="${project.name} Service Location Option"
-                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
-
-      <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
-                createDate="2005-07-25T19:56:45Z"/>
-
-      </authors>
-      <implementations>
-        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
-      </implementations>
-      <properties>
-        <property name="opt" value="sel" override="true"/>
-        <property name="longOpt" value="service-location" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
-      </properties>
-      <messages>
-        <message name="description" override="true">
-          <template defaultLanguage="en">
-            <text language="en">Location of classpath services.</text>
-            <text language="de">Ort der Klassenpfad-Services.</text>
+            <text language="en">Location of classpath modlets.</text>
+            <text language="de">Ort der Klassenpfad-Modlets.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
@@ -1283,11 +1250,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <dependency name="ModuleLocationOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Module Location Option"/>
 
-        <dependency name="SchemaLocationOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Schema Location Option"/>
-
-        <dependency name="ServiceLocationOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Service Location Option"/>
+        <dependency name="ModletLocationOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Modlet Location Option"/>
 
         <dependency name="TransformerLocationOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Transformer Location Option"/>
@@ -1319,19 +1283,24 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
-        <property name="providerExcludes" value="org.jomc.model.bootstrap.DefaultSchemaProvider:org.jomc.model.bootstrap.DefaultServiceProvider">
+        <property name="providerExcludes" value="org.jomc.model.modlet.DefaultModletProvider">
           <documentation defaultLanguage="en">
             <text language="en">List of providers to exclude from any {@code META-INF/services} file separated by {@code :}.</text>
           </documentation>
         </property>
         <property name="schemaExcludes" value="org.jomc.model:org.jomc.tools.model">
           <documentation defaultLanguage="en">
-            <text language="en">List of schema context-ids to exclude from any {@code META-INF/jomc-schemas.xml} file separated by {@code :}.</text>
+            <text language="en">List of schema context-ids to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</text>
           </documentation>
         </property>
         <property name="serviceExcludes" value="org.jomc.model.DefaultModelProcessor:org.jomc.model.DefaultModelProvider:org.jomc.model.DefaultModelValidator">
           <documentation defaultLanguage="en">
-            <text language="en">List of service classes to exclude from any {@code META-INF/jomc-services.xml} file separated by {@code :}.</text>
+            <text language="en">List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</text>
+          </documentation>
+        </property>
+        <property name="modletExcludes" value="JOMC Model:JOMC Tools">
+          <documentation defaultLanguage="en">
+            <text language="en">List of modlet identifiers to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</text>
           </documentation>
         </property>
       </properties>
@@ -1470,6 +1439,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
           <arguments>
             <argument index="0" name="resourceName"/>
             <argument index="1" name="contextId"/>
+          </arguments>
+        </message>
+        <message name="excludedModletInfo" final="true">
+          <template defaultLanguage="en">
+            <text language="en">Modlet ''{1}'' from class path resource ''{0}'' ignored.</text>
+            <text language="de">Modlet ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="resourceName"/>
+            <argument index="1" name="modletIdentifier"/>
           </arguments>
         </message>
         <message name="excludedModuleFromClasspathInfo" final="true">

@@ -34,7 +34,7 @@
 -->
 <xsl:stylesheet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:bootstrap="http://jomc.org/model/bootstrap"
+                xmlns:modlet="http://jomc.org/model/modlet"
                 version="1.0">
 
   <xsl:output method="xml" indent="yes" omit-xml-declaration="no"
@@ -46,27 +46,27 @@
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="bootstrap:schemas/bootstrap:schema/@public-id">
+  <xsl:template match="modlet:modlet/modlet:schemas/modlet:schema/@public-id">
     <xsl:call-template name="relocate-public-id"/>
   </xsl:template>
 
-  <xsl:template match="bootstrap:schemas/bootstrap:schema/@system-id">
+  <xsl:template match="modlet:modlet/modlet:schemas/modlet:schema/@system-id">
     <xsl:call-template name="relocate-system-id"/>
   </xsl:template>
 
-  <xsl:template match="bootstrap:schemas/bootstrap:schema/@context-id">
+  <xsl:template match="modlet:modlet/modlet:schemas/modlet:schema/@context-id">
     <xsl:call-template name="relocate-context-id"/>
   </xsl:template>
 
-  <xsl:template match="bootstrap:schemas/bootstrap:schema/@classpath-id">
+  <xsl:template match="modlet:modlet/modlet:schemas/modlet:schema/@classpath-id">
     <xsl:call-template name="relocate-classpath-id"/>
   </xsl:template>
 
-  <xsl:template match="bootstrap:services/bootstrap:service/@identifier">
+  <xsl:template match="modlet:modlet/modlet:services/modlet:service/@identifier">
     <xsl:call-template name="relocate-classname"/>
   </xsl:template>
 
-  <xsl:template match="bootstrap:services/bootstrap:service/@class">
+  <xsl:template match="modlet:modlet/modlet:services/modlet:service/@class">
     <xsl:call-template name="relocate-classname"/>
   </xsl:template>
 

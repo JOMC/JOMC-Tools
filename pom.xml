@@ -143,14 +143,10 @@
                     <moduleResources>
                       <moduleResource>META-INF/jomc.xml</moduleResource>
                     </moduleResources>
-                    <schemasResource>META-INF/jomc-schemas.xml</schemasResource>
-                    <schemaResources>
-                      <schemaResource>META-INF/jomc-schemas.xml</schemaResource>
-                    </schemaResources>
-                    <servicesResource>META-INF/jomc-services.xml</servicesResource>
-                    <serviceResources>
-                      <serviceResource>META-INF/jomc-services.xml</serviceResource>
-                    </serviceResources>
+                    <modletResource>META-INF/jomc-modlet.xml</modletResource>
+                    <modletResources>
+                      <modletResource>META-INF/jomc-modlet.xml</modletResource>
+                    </modletResources>
                   </transformer>
                   <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
                     <file>${project.build.directory}/maven-shared-archive-resources/META-INF/LIZENZ.txt</file>

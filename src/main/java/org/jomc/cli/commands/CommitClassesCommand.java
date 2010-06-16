@@ -66,17 +66,21 @@ import org.jomc.tools.ClassFileProcessor;
  * <blockquote>Property of type {@code java.lang.String}.
  * <p>Name of the command.</p>
  * </blockquote></li>
+ * <li>"{@link #getModletExcludes modletExcludes}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>List of modlet identifiers to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</p>
+ * </blockquote></li>
  * <li>"{@link #getProviderExcludes providerExcludes}"
  * <blockquote>Property of type {@code java.lang.String}.
  * <p>List of providers to exclude from any {@code META-INF/services} file separated by {@code :}.</p>
  * </blockquote></li>
  * <li>"{@link #getSchemaExcludes schemaExcludes}"
  * <blockquote>Property of type {@code java.lang.String}.
- * <p>List of schema context-ids to exclude from any {@code META-INF/jomc-schemas.xml} file separated by {@code :}.</p>
+ * <p>List of schema context-ids to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</p>
  * </blockquote></li>
  * <li>"{@link #getServiceExcludes serviceExcludes}"
  * <blockquote>Property of type {@code java.lang.String}.
- * <p>List of service classes to exclude from any {@code META-INF/jomc-services.xml} file separated by {@code :}.</p>
+ * <p>List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</p>
  * </blockquote></li>
  * </ul></p>
  * <p><b>Dependencies</b><ul>
@@ -88,6 +92,8 @@ import org.jomc.tools.ClassFileProcessor;
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getLocale Locale}"<blockquote>
  * Dependency on {@code java.util.Locale} at specification level 1.1 bound to an instance.</blockquote></li>
+ * <li>"{@link #getModletLocationOption ModletLocationOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getModuleLocationOption ModuleLocationOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getModuleNameOption ModuleNameOption}"<blockquote>
@@ -100,16 +106,12 @@ import org.jomc.tools.ClassFileProcessor;
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getProviderLocationOption ProviderLocationOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
- * <li>"{@link #getSchemaLocationOption SchemaLocationOption}"<blockquote>
- * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
- * <li>"{@link #getServiceLocationOption ServiceLocationOption}"<blockquote>
- * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getTransformerLocationOption TransformerLocationOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-16T16:44:08+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-17T00:42:19+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -134,6 +136,10 @@ import org.jomc.tools.ClassFileProcessor;
  * <li>"{@link #getDocumentFileNotFoundWarning documentFileNotFoundWarning}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Document file ''{0}'' ignored. File not found.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Dokument-Datei ''{0}'' ignoriert. Datei nicht gefunden.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getExcludedModletInfo excludedModletInfo}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Modlet ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modlet ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
  * </table>
  * <li>"{@link #getExcludedModuleFromClasspathInfo excludedModuleFromClasspathInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' from class path ignored. Module with identical name already loaded.</pre></td></tr>
@@ -375,6 +381,21 @@ public final class CommitClassesCommand extends AbstractJomcCommand
     }
 
     /**
+     * Gets the {@code ModletLocationOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Modlet Location Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code ModletLocationOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getModletLocationOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModletLocationOption" );
+        assert _d != null : "'ModletLocationOption' dependency not found.";
+        return _d;
+    }
+
+    /**
      * Gets the {@code ModuleLocationOption} dependency.
      * <p>This method returns the "{@code JOMC CLI Module Location Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
@@ -465,36 +486,6 @@ public final class CommitClassesCommand extends AbstractJomcCommand
     }
 
     /**
-     * Gets the {@code SchemaLocationOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Schema Location Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code SchemaLocationOption} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private org.apache.commons.cli.Option getSchemaLocationOption()
-    {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "SchemaLocationOption" );
-        assert _d != null : "'SchemaLocationOption' dependency not found.";
-        return _d;
-    }
-
-    /**
-     * Gets the {@code ServiceLocationOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Service Location Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code ServiceLocationOption} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private org.apache.commons.cli.Option getServiceLocationOption()
-    {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ServiceLocationOption" );
-        assert _d != null : "'ServiceLocationOption' dependency not found.";
-        return _d;
-    }
-
-    /**
      * Gets the {@code TransformerLocationOption} dependency.
      * <p>This method returns the "{@code JOMC CLI Transformer Location Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
@@ -540,6 +531,19 @@ public final class CommitClassesCommand extends AbstractJomcCommand
     }
 
     /**
+     * Gets the value of the {@code modletExcludes} property.
+     * @return List of modlet identifiers to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private java.lang.String getModletExcludes()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "modletExcludes" );
+        assert _p != null : "'modletExcludes' property not found.";
+        return _p;
+    }
+
+    /**
      * Gets the value of the {@code providerExcludes} property.
      * @return List of providers to exclude from any {@code META-INF/services} file separated by {@code :}.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
@@ -554,7 +558,7 @@ public final class CommitClassesCommand extends AbstractJomcCommand
 
     /**
      * Gets the value of the {@code schemaExcludes} property.
-     * @return List of schema context-ids to exclude from any {@code META-INF/jomc-schemas.xml} file separated by {@code :}.
+     * @return List of schema context-ids to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
@@ -567,7 +571,7 @@ public final class CommitClassesCommand extends AbstractJomcCommand
 
     /**
      * Gets the value of the {@code serviceExcludes} property.
-     * @return List of service classes to exclude from any {@code META-INF/jomc-services.xml} file separated by {@code :}.
+     * @return List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
@@ -585,7 +589,7 @@ public final class CommitClassesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-16T16:44:08+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-17T00:42:19+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -718,6 +722,27 @@ public final class CommitClassesCommand extends AbstractJomcCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentFileNotFoundWarning", locale, fileName );
         assert _m != null : "'documentFileNotFoundWarning' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code excludedModletInfo} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Modlet ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modlet ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param resourceName Format argument.
+     * @param modletIdentifier Format argument.
+     * @return The text of the {@code excludedModletInfo} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private String getExcludedModletInfo( final java.util.Locale locale, final java.lang.String resourceName, final java.lang.String modletIdentifier )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "excludedModletInfo", locale, resourceName, modletIdentifier );
+        assert _m != null : "'excludedModletInfo' message not found.";
         return _m;
     }
 
