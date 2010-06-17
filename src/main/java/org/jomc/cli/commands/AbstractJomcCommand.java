@@ -57,7 +57,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.UUID;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
