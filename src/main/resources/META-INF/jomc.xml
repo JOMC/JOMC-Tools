@@ -1283,7 +1283,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
-        <property name="providerExcludes" value="org.jomc.model.modlet.DefaultModletProvider">
+        <property name="providerExcludes" value="org.jomc.modlet.DefaultModletProvider">
           <documentation defaultLanguage="en">
             <text language="en">List of providers to exclude from any {@code META-INF/services} file separated by {@code :}.</text>
           </documentation>
@@ -1298,9 +1298,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <text language="en">List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</text>
           </documentation>
         </property>
-        <property name="modletExcludes" value="JOMC Model:JOMC Tools">
+        <property name="modletExcludes" value="JOMC Model:JOMC Tools:JOMC CLI">
           <documentation defaultLanguage="en">
-            <text language="en">List of modlet identifiers to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</text>
+            <text language="en">List of modlet names to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</text>
           </documentation>
         </property>
       </properties>

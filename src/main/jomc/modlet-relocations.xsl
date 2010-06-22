@@ -34,7 +34,7 @@
 -->
 <xsl:stylesheet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:modlet="http://jomc.org/model/modlet"
+                xmlns:modlet="http://jomc.org/modlet"
                 version="1.0">
 
   <xsl:output method="xml" indent="yes" omit-xml-declaration="no"

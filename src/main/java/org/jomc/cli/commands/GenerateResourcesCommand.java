@@ -42,13 +42,14 @@ import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.util.JAXBSource;
+import javax.xml.transform.Source;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
-import org.jomc.model.ModelContext;
-import org.jomc.model.ModelValidationReport;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.ObjectFactory;
+import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelValidationReport;
 import org.jomc.tools.ResourceFileProcessor;
 
 // SECTION-START[Documentation]
@@ -69,7 +70,7 @@ import org.jomc.tools.ResourceFileProcessor;
  * </blockquote></li>
  * <li>"{@link #getModletExcludes modletExcludes}"
  * <blockquote>Property of type {@code java.lang.String}.
- * <p>List of modlet identifiers to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</p>
+ * <p>List of modlet names to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</p>
  * </blockquote></li>
  * <li>"{@link #getProviderExcludes providerExcludes}"
  * <blockquote>Property of type {@code java.lang.String}.
@@ -114,7 +115,7 @@ import org.jomc.tools.ResourceFileProcessor;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-17T01:51:47+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-23T00:58:28+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -259,10 +260,10 @@ public final class GenerateResourcesCommand extends AbstractJomcCommand
         final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
         final ModelContext context = this.createModelContext( classLoader );
         final Modules modules = this.getModules( context, commandLine );
-        final JAXBContext jaxbContext = context.createContext();
-        final Marshaller marshaller = context.createMarshaller();
-        final ModelValidationReport validationReport =
-            context.validateModel( new JAXBSource( jaxbContext, new ObjectFactory().createModules( modules ) ) );
+        final JAXBContext jaxbContext = context.createContext( Modules.MODEL_PUBLIC_ID );
+        final Marshaller marshaller = context.createMarshaller( Modules.MODEL_PUBLIC_ID );
+        final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModules( modules ) );
+        final ModelValidationReport validationReport = context.validateModel( Modules.MODEL_PUBLIC_ID, source );
 
         this.log( validationReport, marshaller );
 
@@ -571,7 +572,7 @@ public final class GenerateResourcesCommand extends AbstractJomcCommand
 
     /**
      * Gets the value of the {@code modletExcludes} property.
-     * @return List of modlet identifiers to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.
+     * @return List of modlet names to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
@@ -628,7 +629,7 @@ public final class GenerateResourcesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-17T01:51:47+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-23T00:58:28+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

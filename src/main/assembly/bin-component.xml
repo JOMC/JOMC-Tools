@@ -197,6 +197,7 @@
         <include>org.jomc:jomc-api</include>
         <include>org.jomc:jomc-spi</include>
         <include>org.jomc:jomc-util</include>
+        <include>org.jomc:jomc-modlet</include>
         <include>org.jomc:jomc-model</include>
         <include>org.jomc:jomc-ri</include>
       </includes>

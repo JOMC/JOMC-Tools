@@ -69,23 +69,22 @@ import org.apache.commons.io.IOUtils;
 import org.jomc.cli.Command;
 import org.jomc.model.DefaultModelProcessor;
 import org.jomc.model.DefaultModelProvider;
-import org.jomc.model.ModelContext;
-import org.jomc.model.ModelException;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
+import org.jomc.modlet.DefaultModelContext;
+import org.jomc.modlet.DefaultModletProvider;
+import org.jomc.modlet.Model;
+import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelException;
+import org.jomc.modlet.ModelValidationReport;
+import org.jomc.modlet.Modlet;
+import org.jomc.modlet.Modlets;
+import org.jomc.modlet.ObjectFactory;
+import org.jomc.modlet.Schema;
+import org.jomc.modlet.Schemas;
+import org.jomc.modlet.Service;
+import org.jomc.modlet.Services;
 import org.jomc.tools.JomcTool;
-import org.jomc.model.ModelValidationReport;
-import org.jomc.model.modlet.DefaultModletContext;
-import org.jomc.model.modlet.DefaultModletProvider;
-import org.jomc.model.modlet.Modlet;
-import org.jomc.model.modlet.ModletContext;
-import org.jomc.model.modlet.ModletException;
-import org.jomc.model.modlet.Modlets;
-import org.jomc.model.modlet.ObjectFactory;
-import org.jomc.model.modlet.Schema;
-import org.jomc.model.modlet.Schemas;
-import org.jomc.model.modlet.Service;
-import org.jomc.model.modlet.Services;
 import org.jomc.tools.ResourceFileProcessor;
 import org.jomc.tools.ClassFileProcessor;
 import org.jomc.tools.SourceFileProcessor;
@@ -109,7 +108,7 @@ import org.xml.sax.SAXException;
  * </blockquote></li>
  * <li>"{@link #getModletExcludes modletExcludes}"
  * <blockquote>Property of type {@code java.lang.String}.
- * <p>List of modlet identifiers to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</p>
+ * <p>List of modlet names to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</p>
  * </blockquote></li>
  * <li>"{@link #getProviderExcludes providerExcludes}"
  * <blockquote>Property of type {@code java.lang.String}.
@@ -150,7 +149,7 @@ import org.xml.sax.SAXException;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-17T01:51:47+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-23T00:58:28+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -346,24 +345,24 @@ public abstract class AbstractJomcCommand implements Command
         {
             if ( commandLine.hasOption( this.getProviderLocationOption().getOpt() ) )
             {
-                DefaultModletContext.setDefaultProviderLocation(
+                DefaultModelContext.setDefaultProviderLocation(
                     commandLine.getOptionValue( this.getProviderLocationOption().getOpt() ) );
 
             }
             else
             {
-                DefaultModletContext.setDefaultProviderLocation( null );
+                DefaultModelContext.setDefaultProviderLocation( null );
             }
 
             if ( commandLine.hasOption( this.getPlatformProviderLocationOption().getOpt() ) )
             {
-                DefaultModletContext.setDefaultPlatformProviderLocation(
+                DefaultModelContext.setDefaultPlatformProviderLocation(
                     commandLine.getOptionValue( this.getPlatformProviderLocationOption().getOpt() ) );
 
             }
             else
             {
-                DefaultModletContext.setDefaultPlatformProviderLocation( null );
+                DefaultModelContext.setDefaultPlatformProviderLocation( null );
             }
 
             if ( commandLine.hasOption( this.getModletLocationOption().getOpt() ) )
@@ -432,9 +431,9 @@ public abstract class AbstractJomcCommand implements Command
         }
         finally
         {
-            DefaultModletContext.setDefaultModletSchemaSystemId( null );
-            DefaultModletContext.setDefaultPlatformProviderLocation( null );
-            DefaultModletContext.setDefaultProviderLocation( null );
+            ModelContext.setDefaultModletSchemaSystemId( null );
+            DefaultModelContext.setDefaultPlatformProviderLocation( null );
+            DefaultModelContext.setDefaultProviderLocation( null );
             DefaultModletProvider.setDefaultModletLocation( null );
             DefaultModelProcessor.setDefaultTransformerLocation( null );
             DefaultModelProvider.setDefaultModuleLocation( null );
@@ -726,11 +725,13 @@ public abstract class AbstractJomcCommand implements Command
     protected Modules getModules( final ModelContext context, final CommandLine commandLine )
         throws IOException, SAXException, JAXBException, ModelException
     {
+        Model model = null;
+        JAXBElement<Modules> e = null;
         Modules modules = new Modules();
 
         if ( commandLine.hasOption( this.getDocumentsOption().getOpt() ) )
         {
-            final Unmarshaller u = context.createUnmarshaller();
+            final Unmarshaller u = context.createUnmarshaller( Modules.MODEL_PUBLIC_ID );
             for ( File f : this.getDocumentFiles( commandLine ) )
             {
                 final InputStream in = new FileInputStream( f );
@@ -761,18 +762,23 @@ public abstract class AbstractJomcCommand implements Command
 
         if ( commandLine.hasOption( this.getClasspathOption().getOpt() ) )
         {
-            final Modules classpathModules = context.findModules();
-            for ( Module m : classpathModules.getModule() )
-            {
-                if ( modules.getModule( m.getName() ) == null )
-                {
-                    modules.getModule().add( m );
-                }
-                else if ( this.isLoggable( Level.FINE ) )
-                {
-                    this.log( Level.FINE, this.getExcludedModuleFromClasspathInfo(
-                        this.getLocale(), m.getName() ), null );
+            model = context.findModel( Modules.MODEL_PUBLIC_ID );
+            e = model.getAnyElement( Modules.MODEL_PUBLIC_ID, "modules" );
 
+            if ( e != null )
+            {
+                for ( Module m : e.getValue().getModule() )
+                {
+                    if ( modules.getModule( m.getName() ) == null )
+                    {
+                        modules.getModule().add( m );
+                    }
+                    else if ( this.isLoggable( Level.FINE ) )
+                    {
+                        this.log( Level.FINE, this.getExcludedModuleFromClasspathInfo(
+                            this.getLocale(), m.getName() ), null );
+
+                    }
                 }
             }
         }
@@ -790,7 +796,15 @@ public abstract class AbstractJomcCommand implements Command
 
         if ( !commandLine.hasOption( this.getNoModelProcessingOption().getOpt() ) )
         {
-            modules = context.processModules( modules );
+            model = new Model();
+            model.setIdentifier( Modules.MODEL_PUBLIC_ID );
+            model.getAny().add( new org.jomc.model.ObjectFactory().createModules( modules ) );
+            model = context.processModel( model );
+            e = model.getAnyElement( Modules.MODEL_PUBLIC_ID, "modules" );
+            if ( e != null )
+            {
+                modules = e.getValue();
+            }
         }
 
         if ( this.isLoggable( Level.FINE ) )
@@ -918,7 +932,7 @@ public abstract class AbstractJomcCommand implements Command
 
                 if ( resource != null )
                 {
-                    if ( name.contains( DefaultModletContext.getDefaultProviderLocation() ) )
+                    if ( name.contains( DefaultModelContext.getDefaultProviderLocation() ) )
                     {
                         resource = this.filterProviders( resource );
                     }
@@ -940,7 +954,7 @@ public abstract class AbstractJomcCommand implements Command
                 log( Level.SEVERE, e.getMessage(), e );
                 return null;
             }
-            catch ( final ModletException e )
+            catch ( final ModelException e )
             {
                 log( Level.SEVERE, e.getMessage(), e );
                 return null;
@@ -964,7 +978,7 @@ public abstract class AbstractJomcCommand implements Command
 
             Enumeration<URL> enumeration = allResources;
 
-            if ( name.contains( DefaultModletContext.getDefaultProviderLocation() ) )
+            if ( name.contains( DefaultModelContext.getDefaultProviderLocation() ) )
             {
                 enumeration = new Enumeration<URL>()
                 {
@@ -1015,7 +1029,7 @@ public abstract class AbstractJomcCommand implements Command
                             log( Level.SEVERE, e.getMessage(), e );
                             return null;
                         }
-                        catch ( final ModletException e )
+                        catch ( final ModelException e )
                         {
                             log( Level.SEVERE, e.getMessage(), e );
                             return null;
@@ -1076,15 +1090,15 @@ public abstract class AbstractJomcCommand implements Command
             return filteredResource;
         }
 
-        private URL filterModlets( final URL resource ) throws ModletException, IOException, JAXBException
+        private URL filterModlets( final URL resource ) throws ModelException, IOException, JAXBException
         {
             URL filteredResource = resource;
             final List<String> excludedModlets = Arrays.asList( getModletExcludes().split( ":" ) );
-            final ModletContext modletContext =
-                ModletContext.createModletContext( this.getClass().getClassLoader() );
-
+            final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
             final InputStream in = resource.openStream();
-            final JAXBElement e = (JAXBElement) modletContext.createUnmarshaller().unmarshal( in );
+            final JAXBElement e =
+                (JAXBElement) modelContext.createUnmarshaller( ModelContext.MODLET_PUBLIC_ID ).unmarshal( in );
+
             final Object o = e.getValue();
             Modlets modlets = null;
             boolean filtered = false;
@@ -1105,12 +1119,12 @@ public abstract class AbstractJomcCommand implements Command
                 {
                     final Modlet m = it.next();
 
-                    if ( excludedModlets.contains( m.getIdentifier() ) )
+                    if ( excludedModlets.contains( m.getName() ) )
                     {
                         it.remove();
                         filtered = true;
                         log( Level.FINE, getExcludedModletInfo( getLocale(), resource.toExternalForm(),
-                                                                m.getIdentifier() ), null );
+                                                                m.getName() ), null );
 
                         continue;
                     }
@@ -1125,7 +1139,7 @@ public abstract class AbstractJomcCommand implements Command
                 {
                     final File tmpResource = File.createTempFile( this.getClass().getName(), ".rsrc" );
                     tmpResource.deleteOnExit();
-                    modletContext.createMarshaller().marshal(
+                    modelContext.createMarshaller( ModelContext.MODLET_PUBLIC_ID ).marshal(
                         new ObjectFactory().createModlets( modlets ), tmpResource );
 
                     filteredResource = tmpResource.toURI().toURL();
@@ -1407,7 +1421,7 @@ public abstract class AbstractJomcCommand implements Command
 
     /**
      * Gets the value of the {@code modletExcludes} property.
-     * @return List of modlet identifiers to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.
+     * @return List of modlet names to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
@@ -1464,7 +1478,7 @@ public abstract class AbstractJomcCommand implements Command
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-17T01:51:47+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-23T00:58:28+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

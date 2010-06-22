@@ -61,6 +61,7 @@
                     <include>org.jomc:jomc-api</include>
                     <include>org.jomc:jomc-spi</include>
                     <include>org.jomc:jomc-util</include>
+                    <include>org.jomc:jomc-modlet</include>
                     <include>org.jomc:jomc-model</include>
                     <include>org.jomc:jomc-ri</include>
                     <include>org.jomc:jomc-tools</include>
@@ -143,6 +144,9 @@
                     <moduleResources>
                       <moduleResource>META-INF/jomc.xml</moduleResource>
                     </moduleResources>
+                    <modletName>${project.name}</modletName>
+                    <modletVendor>${project.organization.name}</modletVendor>
+                    <modletVersion>${project.version}</modletVersion>
                     <modletResource>META-INF/jomc-modlet.xml</modletResource>
                     <modletResources>
                       <modletResource>META-INF/jomc-modlet.xml</modletResource>
@@ -210,6 +214,14 @@
                 <artifactItem>
                   <groupId>org.jomc</groupId>
                   <artifactId>jomc-tools</artifactId>
+                  <classifier>schemas</classifier>
+                  <version>${project.version}</version>
+                  <type>jar</type>
+                  <outputDirectory>${project.build.directory}/jomc-schemas</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.jomc</groupId>
+                  <artifactId>jomc-modlet</artifactId>
                   <classifier>schemas</classifier>
                   <version>${project.version}</version>
                   <type>jar</type>
@@ -330,6 +342,11 @@
     <dependency>
       <groupId>org.jomc</groupId>
       <artifactId>jomc-api</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jomc</groupId>
+      <artifactId>jomc-modlet</artifactId>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -476,6 +493,14 @@
                     <artifactItem>
                       <groupId>org.jomc</groupId>
                       <artifactId>jomc-util</artifactId>
+                      <version>${project.version}</version>
+                      <type>jar</type>
+                      <classifier>javadoc</classifier>
+                      <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.jomc</groupId>
+                      <artifactId>jomc-modlet</artifactId>
                       <version>${project.version}</version>
                       <type>jar</type>
                       <classifier>javadoc</classifier>

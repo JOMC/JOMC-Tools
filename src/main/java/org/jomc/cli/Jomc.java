@@ -50,7 +50,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang.StringUtils;
 import org.jomc.model.DefaultModelProcessor;
 import org.jomc.model.DefaultModelProvider;
-import org.jomc.model.modlet.DefaultModletProvider;
+import org.jomc.modlet.DefaultModletProvider;
 
 // SECTION-START[Documentation]
 // <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">

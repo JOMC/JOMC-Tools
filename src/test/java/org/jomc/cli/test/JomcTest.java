@@ -36,19 +36,21 @@
 // SECTION-END
 package org.jomc.cli.test;
 
+import org.jomc.model.Modules;
+import org.jomc.modlet.ModelContext;
 import java.io.File;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
-import junit.framework.Assert;
 import junit.framework.TestCase;
 import org.apache.commons.io.FileUtils;
 import org.jomc.ObjectManagerFactory;
 import org.jomc.cli.Command;
 import org.jomc.cli.Jomc;
-import org.jomc.model.ModelContext;
 import org.jomc.model.Module;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
 
 // SECTION-START[Documentation]
 // <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
@@ -106,7 +108,7 @@ public class JomcTest extends TestCase
 
     public void testNoArguments() throws Exception
     {
-        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( new String[ 0 ] ) );
+        assertEquals( Command.STATUS_FAILURE, Jomc.run( new String[ 0 ] ) );
     }
 
     public void testGenerateJavaBundles() throws Exception
@@ -133,10 +135,10 @@ public class JomcTest extends TestCase
             '"' + this.getTestDocument() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
         };
 
-        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
-        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
-        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
-        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( failOnWarnings ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
+        assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
+        assertEquals( Command.STATUS_FAILURE, Jomc.run( failOnWarnings ) );
     }
 
     public void testManageJavaSources() throws Exception
@@ -164,10 +166,10 @@ public class JomcTest extends TestCase
             '"' + this.getTestDocument() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
         };
 
-        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
-        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
-        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
-        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( failOnWarnings ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
+        assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
+        assertEquals( Command.STATUS_FAILURE, Jomc.run( failOnWarnings ) );
     }
 
     public void testCommitValidateJavaClasses() throws Exception
@@ -218,21 +220,21 @@ public class JomcTest extends TestCase
 
         FileUtils.copyDirectory( new File( this.getClassesDirectory() ), new File( this.getTestClassesDirectory() ) );
 
-        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( commitHelp ) );
-        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( validateHelp ) );
-        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( commitArgs ) );
-        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( validateArgs ) );
-        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( commitUnsupportedOption ) );
-        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( validateUnsupportedOption ) );
-        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( commitFailOnWarnings ) );
-        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( validateFailOnWarnings ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( commitHelp ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( validateHelp ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( commitArgs ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( validateArgs ) );
+        assertEquals( Command.STATUS_FAILURE, Jomc.run( commitUnsupportedOption ) );
+        assertEquals( Command.STATUS_FAILURE, Jomc.run( validateUnsupportedOption ) );
+        assertEquals( Command.STATUS_FAILURE, Jomc.run( commitFailOnWarnings ) );
+        assertEquals( Command.STATUS_FAILURE, Jomc.run( validateFailOnWarnings ) );
     }
 
     public void testMergeModules() throws Exception
     {
         final ModelContext context = ModelContext.createModelContext( this.getClass().getClassLoader() );
-        final Unmarshaller unmarshaller = context.createUnmarshaller();
-        final Schema schema = context.createSchema();
+        final Unmarshaller unmarshaller = context.createUnmarshaller( Modules.MODEL_PUBLIC_ID );
+        final Schema schema = context.createSchema( Modules.MODEL_PUBLIC_ID );
         unmarshaller.setSchema( schema );
 
         final String[] help = new String[]
@@ -272,32 +274,32 @@ public class JomcTest extends TestCase
             '"' + this.getTestOutputDocument() + '"', "-D"
         };
 
-        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
-        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
 
         unmarshaller.unmarshal( new StreamSource( new File( this.getTestOutputDocument() ) ), Module.class );
 
-        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( includesArg ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( includesArg ) );
 
         final JAXBElement<Module> includedModule =
             unmarshaller.unmarshal( new StreamSource( new File( this.getTestOutputDocument() ) ), Module.class );
 
-        Assert.assertNotNull( "Merged module does not contain any included specifications.",
-                              includedModule.getValue().getSpecifications() );
+        assertNotNull( "Merged module does not contain any included specifications.",
+                       includedModule.getValue().getSpecifications() );
 
-        Assert.assertNotNull( "Merged module does not contain included 'org.jomc.cli.Command' specification.",
-                              includedModule.getValue().getSpecifications().getSpecification( Command.class ) );
+        assertNotNull( "Merged module does not contain included 'org.jomc.cli.Command' specification.",
+                       includedModule.getValue().getSpecifications().getSpecification( Command.class ) );
 
-        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( excludesArg ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( excludesArg ) );
 
         final JAXBElement<Module> excludedModule =
             unmarshaller.unmarshal( new StreamSource( new File( this.getTestOutputDocument() ) ), Module.class );
 
-        Assert.assertNull( "Merged module contains excluded specifications.",
-                           excludedModule.getValue().getSpecifications() );
+        assertNull( "Merged module contains excluded specifications.",
+                    excludedModule.getValue().getSpecifications() );
 
-        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
-        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( illegalDoc ) );
+        assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
+        assertEquals( Command.STATUS_FAILURE, Jomc.run( illegalDoc ) );
     }
 
     public void testValidateModules() throws Exception
@@ -322,10 +324,10 @@ public class JomcTest extends TestCase
             "validate-modules", "-df", '"' + this.getTestDocumentIllegal() + '"', "-D"
         };
 
-        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
-        Assert.assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
-        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
-        Assert.assertEquals( Command.STATUS_FAILURE, Jomc.run( illegalDoc ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
+        assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
+        assertEquals( Command.STATUS_FAILURE, Jomc.run( illegalDoc ) );
     }
 
     @Override
