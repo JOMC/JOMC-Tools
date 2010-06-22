@@ -37,7 +37,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.jomc.model.Implementation;
@@ -45,6 +44,8 @@ import org.jomc.model.Module;
 import org.jomc.model.Specification;
 import org.jomc.tools.SourceFileProcessor;
 import org.jomc.util.SectionEditor;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.fail;
 
 /**
  * Test cases for class {@code org.jomc.tools.SourceFileProcessor} implementations.
@@ -111,7 +112,7 @@ public class SourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().getSourceFileType( (Specification) null );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
@@ -121,7 +122,7 @@ public class SourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().getSourceFileType( (Implementation) null );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
@@ -131,7 +132,7 @@ public class SourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().getSourceFileEditor( (Specification) null );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
@@ -141,7 +142,7 @@ public class SourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().getSourceFileEditor( (Implementation) null );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
@@ -151,7 +152,7 @@ public class SourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().manageSourceFiles( null );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
@@ -161,7 +162,7 @@ public class SourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().manageSourceFiles( (Implementation) null, new File( "/" ) );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
@@ -171,7 +172,7 @@ public class SourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().manageSourceFiles( new Implementation(), null );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
@@ -181,7 +182,7 @@ public class SourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().manageSourceFiles( (Module) null, new File( "/" ) );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
@@ -192,7 +193,7 @@ public class SourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().manageSourceFiles( new Module(), null );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
@@ -202,7 +203,7 @@ public class SourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().manageSourceFiles( (Specification) null, new File( "/" ) );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
@@ -212,7 +213,7 @@ public class SourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().manageSourceFiles( new Specification(), null );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
@@ -233,10 +234,10 @@ public class SourceFileProcessorTest extends JomcToolTest
         s.setIdentifier( "TEST" );
         s.setClazz( "TEST" );
 
-        Assert.assertNotNull( this.getTestTool().getSourceFileType( i ) );
-        Assert.assertNotNull( this.getTestTool().getSourceFileType( s ) );
-        Assert.assertNotNull( this.getTestTool().getSourceFileEditor( i ) );
-        Assert.assertNotNull( this.getTestTool().getSourceFileEditor( s ) );
+        assertNotNull( this.getTestTool().getSourceFileType( i ) );
+        assertNotNull( this.getTestTool().getSourceFileType( s ) );
+        assertNotNull( this.getTestTool().getSourceFileEditor( i ) );
+        assertNotNull( this.getTestTool().getSourceFileEditor( s ) );
     }
 
     public void testManageSources() throws Exception
@@ -270,11 +271,11 @@ public class SourceFileProcessorTest extends JomcToolTest
             this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
                                                   implementationDirectory );
 
-            Assert.fail( "Expected IOException not thrown." );
+            fail( "Expected IOException not thrown." );
         }
         catch ( final IOException e )
         {
-            Assert.assertNotNull( e.getMessage() );
+            assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
 
@@ -283,11 +284,11 @@ public class SourceFileProcessorTest extends JomcToolTest
             this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getSpecification( "Specification" ),
                                                   specificationDirectory );
 
-            Assert.fail( "Expected IOException not thrown." );
+            fail( "Expected IOException not thrown." );
         }
         catch ( final IOException e )
         {
-            Assert.assertNotNull( e.getMessage() );
+            assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
 
@@ -320,7 +321,7 @@ public class SourceFileProcessorTest extends JomcToolTest
 
         String edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
-        Assert.assertTrue( editor.isSectionPresent( "Annotations" ) );
+        assertTrue( editor.isSectionPresent( "Annotations" ) );
 
         f = new File( implementationDirectory, "Implementation.java" );
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutDependenciesSection.java.txt" ),
@@ -331,7 +332,7 @@ public class SourceFileProcessorTest extends JomcToolTest
 
         edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
-        Assert.assertTrue( editor.isSectionPresent( "Dependencies" ) );
+        assertTrue( editor.isSectionPresent( "Dependencies" ) );
 
         f = new File( implementationDirectory, "Implementation.java" );
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutMessagesSection.java.txt" ),
@@ -342,7 +343,7 @@ public class SourceFileProcessorTest extends JomcToolTest
 
         edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
-        Assert.assertTrue( editor.isSectionPresent( "Messages" ) );
+        assertTrue( editor.isSectionPresent( "Messages" ) );
 
         f = new File( implementationDirectory, "Implementation.java" );
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutPropertiesSection.java.txt" ),
@@ -353,7 +354,7 @@ public class SourceFileProcessorTest extends JomcToolTest
 
         edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
-        Assert.assertTrue( editor.isSectionPresent( "Properties" ) );
+        assertTrue( editor.isSectionPresent( "Properties" ) );
 
         f = new File( implementationDirectory, "ImplementationOfSpecification.java" );
         IOUtils.copy(
@@ -366,7 +367,7 @@ public class SourceFileProcessorTest extends JomcToolTest
 
         edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
-        Assert.assertTrue( editor.isSectionPresent( "Constructors" ) );
+        assertTrue( editor.isSectionPresent( "Constructors" ) );
 
         f = new File( specificationDirectory, "Specification.java" );
         IOUtils.copy( this.getClass().getResourceAsStream( "SpecificationWithoutAnnotationsSection.java.txt" ),
@@ -377,7 +378,7 @@ public class SourceFileProcessorTest extends JomcToolTest
 
         edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
-        Assert.assertTrue( editor.isSectionPresent( "Annotations" ) );
+        assertTrue( editor.isSectionPresent( "Annotations" ) );
     }
 
     public void testOptionalSections() throws Exception
@@ -395,7 +396,7 @@ public class SourceFileProcessorTest extends JomcToolTest
 
         String edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
-        Assert.assertFalse( editor.isSectionPresent( "Constructors" ) );
+        assertFalse( editor.isSectionPresent( "Constructors" ) );
 
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutDefaultConstructorSection.java.txt" ),
                       new FileOutputStream( f ) );
@@ -405,8 +406,8 @@ public class SourceFileProcessorTest extends JomcToolTest
 
         edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
-        Assert.assertTrue( editor.isSectionPresent( "Constructors" ) );
-        Assert.assertTrue( editor.isSectionPresent( "Default Constructor" ) );
+        assertTrue( editor.isSectionPresent( "Constructors" ) );
+        assertTrue( editor.isSectionPresent( "Default Constructor" ) );
 
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutDocumentationSection.java.txt" ),
                       new FileOutputStream( f ) );
@@ -416,7 +417,7 @@ public class SourceFileProcessorTest extends JomcToolTest
 
         edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
-        Assert.assertFalse( editor.isSectionPresent( "Documentation" ) );
+        assertFalse( editor.isSectionPresent( "Documentation" ) );
 
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutLicenseSection.java.txt" ),
                       new FileOutputStream( f ) );
@@ -426,7 +427,7 @@ public class SourceFileProcessorTest extends JomcToolTest
 
         edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
-        Assert.assertFalse( editor.isSectionPresent( "License Header" ) );
+        assertFalse( editor.isSectionPresent( "License Header" ) );
 
         f = new File( specificationDirectory, "Specification.java" );
         IOUtils.copy( this.getClass().getResourceAsStream( "SpecificationWithoutDocumentationSection.java.txt" ),
@@ -437,7 +438,7 @@ public class SourceFileProcessorTest extends JomcToolTest
 
         edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
-        Assert.assertFalse( editor.isSectionPresent( "Documentation" ) );
+        assertFalse( editor.isSectionPresent( "Documentation" ) );
 
         IOUtils.copy( this.getClass().getResourceAsStream( "SpecificationWithoutLicenseSection.java.txt" ),
                       new FileOutputStream( f ) );
@@ -447,7 +448,7 @@ public class SourceFileProcessorTest extends JomcToolTest
 
         edited = IOUtils.toString( new FileInputStream( f ) );
         editor.edit( edited );
-        Assert.assertFalse( editor.isSectionPresent( "License Header" ) );
+        assertFalse( editor.isSectionPresent( "License Header" ) );
     }
 
     public void testCopyConstructor() throws Exception
@@ -455,11 +456,11 @@ public class SourceFileProcessorTest extends JomcToolTest
         try
         {
             new SourceFileProcessor( null );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
-            Assert.assertNotNull( e.getMessage() );
+            assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
 

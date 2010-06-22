@@ -65,7 +65,6 @@ import org.jomc.model.Implementation;
 import org.jomc.model.Message;
 import org.jomc.model.Messages;
 import org.jomc.model.ModelObject;
-import org.jomc.model.ModelValidationReport;
 import org.jomc.model.Module;
 import org.jomc.model.ObjectFactory;
 import org.jomc.model.Properties;
@@ -73,6 +72,7 @@ import org.jomc.model.Property;
 import org.jomc.model.Specification;
 import org.jomc.model.SpecificationReference;
 import org.jomc.model.Specifications;
+import org.jomc.modlet.ModelValidationReport;
 import org.jomc.util.ParseException;
 import org.jomc.util.TokenMgrError;
 import org.jomc.util.VersionParser;
@@ -135,7 +135,8 @@ public class ClassFileProcessor extends JomcTool
      * @throws IOException if committing model objects fails.
      *
      * @see #commitModelObjects(org.jomc.model.Module, javax.xml.bind.Marshaller, java.io.File)
-     * @see org.jomc.model.ModelContext#createMarshaller()
+     * @see org.jomc.modlet.ModelContext#createMarshaller(java.lang.String)
+     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
      */
     public void commitModelObjects( final Marshaller marshaller, final File classesDirectory ) throws IOException
     {
@@ -166,7 +167,8 @@ public class ClassFileProcessor extends JomcTool
      *
      * @see #commitModelObjects(org.jomc.model.Specification, javax.xml.bind.Marshaller, java.io.File)
      * @see #commitModelObjects(org.jomc.model.Implementation, javax.xml.bind.Marshaller, java.io.File)
-     * @see org.jomc.model.ModelContext#createMarshaller()
+     * @see org.jomc.modlet.ModelContext#createMarshaller(java.lang.String)
+     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
      */
     public void commitModelObjects( final Module module, final Marshaller marshaller, final File classesDirectory )
         throws IOException
@@ -211,7 +213,8 @@ public class ClassFileProcessor extends JomcTool
      * {@code null}.
      * @throws IOException if committing model objects fails.
      *
-     * @see org.jomc.model.ModelContext#createMarshaller()
+     * @see org.jomc.modlet.ModelContext#createMarshaller(java.lang.String)
+     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
      */
     public void commitModelObjects( final Specification specification, final Marshaller marshaller,
                                     final File classesDirectory ) throws IOException
@@ -257,7 +260,8 @@ public class ClassFileProcessor extends JomcTool
      * {@code null}.
      * @throws IOException if committing model objects fails.
      *
-     * @see org.jomc.model.ModelContext#createMarshaller()
+     * @see org.jomc.modlet.ModelContext#createMarshaller(java.lang.String)
+     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
      */
     public void commitModelObjects( final Implementation implementation, final Marshaller marshaller,
                                     final File classesDirectory ) throws IOException
@@ -369,7 +373,8 @@ public class ClassFileProcessor extends JomcTool
      * @throws IOException if validating model objects fails.
      *
      * @see #validateModelObjects(org.jomc.model.Module, javax.xml.bind.Unmarshaller, java.io.File)
-     * @see org.jomc.model.ModelContext#createUnmarshaller()
+     * @see org.jomc.modlet.ModelContext#createUnmarshaller(java.lang.String)
+     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
      */
     public ModelValidationReport validateModelObjects( final Unmarshaller unmarshaller, final File classesDirectory )
         throws IOException
@@ -406,7 +411,8 @@ public class ClassFileProcessor extends JomcTool
      * @throws IOException if validating model objects fails.
      *
      * @see #validateModelObjects(org.jomc.model.Module, javax.xml.bind.Unmarshaller, java.lang.ClassLoader)
-     * @see org.jomc.model.ModelContext#createUnmarshaller()
+     * @see org.jomc.modlet.ModelContext#createUnmarshaller(java.lang.String)
+     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
      */
     public ModelValidationReport validateModelObjects( final Unmarshaller unmarshaller, final ClassLoader classLoader )
         throws IOException
@@ -445,7 +451,8 @@ public class ClassFileProcessor extends JomcTool
      *
      * @see #validateModelObjects(org.jomc.model.Specification, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
      * @see #validateModelObjects(org.jomc.model.Implementation, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
-     * @see org.jomc.model.ModelContext#createUnmarshaller()
+     * @see org.jomc.modlet.ModelContext#createUnmarshaller(java.lang.String)
+     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
      */
     public ModelValidationReport validateModelObjects( final Module module, final Unmarshaller unmarshaller,
                                                        final File classesDirectory ) throws IOException
@@ -515,7 +522,8 @@ public class ClassFileProcessor extends JomcTool
      *
      * @see #validateModelObjects(org.jomc.model.Specification, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
      * @see #validateModelObjects(org.jomc.model.Implementation, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
-     * @see org.jomc.model.ModelContext#createUnmarshaller()
+     * @see org.jomc.modlet.ModelContext#createUnmarshaller(java.lang.String)
+     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
      */
     public ModelValidationReport validateModelObjects( final Module module, final Unmarshaller unmarshaller,
                                                        final ClassLoader classLoader ) throws IOException
@@ -594,7 +602,8 @@ public class ClassFileProcessor extends JomcTool
      * @throws NullPointerException if {@code specification}, {@code unmarshaller} or {@code classFile} is {@code null}.
      * @throws IOException if validating model objects fails.
      *
-     * @see org.jomc.model.ModelContext#createUnmarshaller()
+     * @see org.jomc.modlet.ModelContext#createUnmarshaller(java.lang.String)
+     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
      */
     public ModelValidationReport validateModelObjects( final Specification specification,
                                                        final Unmarshaller unmarshaller, final JavaClass classFile )
@@ -685,7 +694,8 @@ public class ClassFileProcessor extends JomcTool
      * @throws NullPointerException if {@code implementation}, {@code unmarshaller} or {@code classFile} is {@code null}.
      * @throws IOException if validating model objects fails.
      *
-     * @see org.jomc.model.ModelContext#createUnmarshaller()
+     * @see org.jomc.modlet.ModelContext#createUnmarshaller(java.lang.String)
+     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
      */
     public ModelValidationReport validateModelObjects( final Implementation implementation,
                                                        final Unmarshaller unmarshaller, final JavaClass classFile )
@@ -1000,8 +1010,9 @@ public class ClassFileProcessor extends JomcTool
      * @throws IOException if transforming model objects fails.
      *
      * @see #transformModelObjects(org.jomc.model.Module, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, java.io.File, java.util.List)
-     * @see org.jomc.model.ModelContext#createMarshaller()
-     * @see org.jomc.model.ModelContext#createUnmarshaller()
+     * @see org.jomc.modlet.ModelContext#createMarshaller(java.lang.String)
+     * @see org.jomc.modlet.ModelContext#createUnmarshaller(java.lang.String)
+     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
      */
     public void transformModelObjects( final Marshaller marshaller, final Unmarshaller unmarshaller,
                                        final File classesDirectory, final List<Transformer> transformers )
@@ -1045,8 +1056,9 @@ public class ClassFileProcessor extends JomcTool
      *
      * @see #transformModelObjects(org.jomc.model.Specification, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass, java.util.List)
      * @see #transformModelObjects(org.jomc.model.Implementation, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass, java.util.List)
-     * @see org.jomc.model.ModelContext#createMarshaller()
-     * @see org.jomc.model.ModelContext#createUnmarshaller()
+     * @see org.jomc.modlet.ModelContext#createMarshaller(java.lang.String)
+     * @see org.jomc.modlet.ModelContext#createUnmarshaller(java.lang.String)
+     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
      */
     public void transformModelObjects( final Module module, final Marshaller marshaller, final Unmarshaller unmarshaller,
                                        final File classesDirectory, final List<Transformer> transformers )
@@ -1129,8 +1141,9 @@ public class ClassFileProcessor extends JomcTool
      * {@code classFile} or {@code transformers} is {@code null}.
      * @throws IOException if transforming model objects fails.
      *
-     * @see org.jomc.model.ModelContext#createMarshaller()
-     * @see org.jomc.model.ModelContext#createUnmarshaller()
+     * @see org.jomc.modlet.ModelContext#createMarshaller(java.lang.String)
+     * @see org.jomc.modlet.ModelContext#createUnmarshaller(java.lang.String)
+     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
      */
     public void transformModelObjects( final Specification specification, final Marshaller marshaller,
                                        final Unmarshaller unmarshaller, final JavaClass classFile,
@@ -1207,8 +1220,9 @@ public class ClassFileProcessor extends JomcTool
      * {@code classFile} or {@code transformers} is {@code null}.
      * @throws IOException if transforming model objects fails.
      *
-     * @see org.jomc.model.ModelContext#createMarshaller()
-     * @see org.jomc.model.ModelContext#createUnmarshaller()
+     * @see org.jomc.modlet.ModelContext#createMarshaller(java.lang.String)
+     * @see org.jomc.modlet.ModelContext#createUnmarshaller(java.lang.String)
+     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
      */
     public void transformModelObjects( final Implementation implementation, final Marshaller marshaller,
                                        final Unmarshaller unmarshaller, final JavaClass classFile,

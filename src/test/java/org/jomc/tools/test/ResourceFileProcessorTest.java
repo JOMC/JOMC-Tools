@@ -35,12 +35,13 @@ package org.jomc.tools.test;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
 import org.jomc.model.Implementation;
 import org.jomc.model.Module;
 import org.jomc.model.Specification;
 import org.jomc.tools.ResourceFileProcessor;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.fail;
 
 /**
  * Test cases for class {@code org.jomc.tools.ResourceFileProcessor}.
@@ -107,7 +108,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().getResourceBundleResources( (Specification) null );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
@@ -117,7 +118,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().getResourceBundleResources( (Implementation) null );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
@@ -127,7 +128,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().writeResourceBundleResourceFiles( null );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
@@ -137,7 +138,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().writeResourceBundleResourceFiles( (Module) null, new File( "/" ) );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
@@ -147,7 +148,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().writeResourceBundleResourceFiles( new Module(), null );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
@@ -157,7 +158,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().writeResourceBundleResourceFiles( (Specification) null, new File( "/" ) );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
@@ -167,7 +168,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().writeResourceBundleResourceFiles( new Specification(), null );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
@@ -177,7 +178,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().writeResourceBundleResourceFiles( (Implementation) null, new File( "/" ) );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
@@ -187,7 +188,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().writeResourceBundleResourceFiles( new Implementation(), null );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
@@ -208,9 +209,9 @@ public class ResourceFileProcessorTest extends JomcToolTest
         i.setIdentifier( "TEST" );
         i.setClazz( "TEST" );
 
-        Assert.assertNotNull( this.getTestTool().getResourceBundleDefaultLocale() );
-        Assert.assertNotNull( this.getTestTool().getResourceBundleResources( s ) );
-        Assert.assertNotNull( this.getTestTool().getResourceBundleResources( i ) );
+        assertNotNull( this.getTestTool().getResourceBundleDefaultLocale() );
+        assertNotNull( this.getTestTool().getResourceBundleResources( s ) );
+        assertNotNull( this.getTestTool().getResourceBundleResources( i ) );
     }
 
     public void testWriteResourceBundleResourceFiles() throws Exception
@@ -233,11 +234,11 @@ public class ResourceFileProcessorTest extends JomcToolTest
         try
         {
             new ResourceFileProcessor( null );
-            Assert.fail( "Expected NullPointerException not thrown." );
+            fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
-            Assert.assertNotNull( e.getMessage() );
+            assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
         }
 
