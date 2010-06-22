@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -58,13 +59,14 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.jomc.model.DefaultModelProcessor;
 import org.jomc.model.DefaultModelProvider;
-import org.jomc.model.ModelContext;
-import org.jomc.model.ModelException;
-import org.jomc.model.ModelValidationReport;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
-import org.jomc.model.modlet.DefaultModletContext;
-import org.jomc.model.modlet.DefaultModletProvider;
+import org.jomc.modlet.DefaultModelContext;
+import org.jomc.modlet.DefaultModletProvider;
+import org.jomc.modlet.Model;
+import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelException;
+import org.jomc.modlet.ModelValidationReport;
 import org.jomc.tools.ClassFileProcessor;
 import org.jomc.tools.SourceFileProcessor;
 import org.jomc.tools.JomcTool;
@@ -192,6 +194,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private boolean modelProcessingEnabled;
 
     /**
+     * Controls model object classpath resolution.
+     *
+     * @parameter expression="${jomc.modelObjectClasspathResolution}" default-value="true"
+     */
+    private boolean modelObjectClasspathResolutionEnabled;
+
+    /**
      * Name of the module to process.
      *
      * @parameter default-value="${project.name}"
@@ -240,9 +249,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         try
         {
-            DefaultModletContext.setDefaultProviderLocation( this.providerLocation );
-            DefaultModletContext.setDefaultPlatformProviderLocation( this.platformProviderLocation );
             DefaultModletProvider.setDefaultModletLocation( this.modletLocation );
+            DefaultModelContext.setDefaultProviderLocation( this.providerLocation );
+            DefaultModelContext.setDefaultPlatformProviderLocation( this.platformProviderLocation );
             DefaultModelProvider.setDefaultModuleLocation( this.moduleLocation );
             DefaultModelProcessor.setDefaultTransformerLocation( this.transformerLocation );
             JomcTool.setDefaultTemplateProfile( this.defaultTemplateProfile );
@@ -258,9 +267,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         finally
         {
-            DefaultModletContext.setDefaultProviderLocation( null );
-            DefaultModletContext.setDefaultPlatformProviderLocation( null );
             DefaultModletProvider.setDefaultModletLocation( null );
+            DefaultModelContext.setDefaultProviderLocation( null );
+            DefaultModelContext.setDefaultPlatformProviderLocation( null );
             DefaultModelProvider.setDefaultModuleLocation( null );
             DefaultModelProcessor.setDefaultTransformerLocation( null );
             JomcTool.setDefaultTemplateProfile( null );
@@ -606,6 +615,16 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
+     * Gets a flag indicating model object classpath resolution is enabled.
+     *
+     * @return {@code true} if model object classpath resolution is enabled; {@code false} else.
+     */
+    protected boolean isModelObjectClasspathResolutionEnabled()
+    {
+        return this.modelObjectClasspathResolutionEnabled;
+    }
+
+    /**
      * Gets the name of the module to process.
      *
      * @return The name of the module to process.
@@ -629,30 +648,42 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         return this.testModuleName;
     }
 
-    protected Modules getToolModules( final ModelContext context ) throws MojoExecutionException
+    protected Model getModel( final ModelContext context ) throws MojoExecutionException
     {
         try
         {
-            Modules modules = context.findModules();
-            final Module classpathModule =
-                modules.getClasspathModule( Modules.getDefaultClasspathModuleName(), context.getClassLoader() );
+            Model model = context.findModel( Modules.MODEL_PUBLIC_ID );
+            JAXBElement<Modules> modules = model.getAnyElement( Modules.MODEL_PUBLIC_ID, "modules" );
 
-            if ( classpathModule != null )
+            if ( modules != null && this.isModelObjectClasspathResolutionEnabled() )
             {
-                modules.getModule().add( classpathModule );
+                final Module classpathModule = modules.getValue().getClasspathModule(
+                    Modules.getDefaultClasspathModuleName(), context.getClassLoader() );
+
+                if ( classpathModule != null )
+                {
+                    modules.getValue().getModule().add( classpathModule );
+                }
             }
 
             if ( this.isModelProcessingEnabled() )
             {
-                modules = context.processModules( modules );
+                model = context.processModel( model );
             }
 
-            return modules;
+            return model;
         }
         catch ( final ModelException e )
         {
             throw new MojoExecutionException( e.getMessage(), e );
         }
+    }
+
+    protected Modules getToolModules( final ModelContext context ) throws MojoExecutionException
+    {
+        final Model model = this.getModel( context );
+        final JAXBElement<Modules> modules = model.getAnyElement( Modules.MODEL_PUBLIC_ID, "modules" );
+        return modules != null ? modules.getValue() : new Modules();
     }
 
     protected void logSeparator( final Level level ) throws MojoExecutionException
@@ -692,7 +723,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( !report.getDetails().isEmpty() )
             {
-                final Marshaller marshaller = context.createMarshaller();
+                final Marshaller marshaller = context.createMarshaller( Modules.MODEL_PUBLIC_ID );
                 marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
 
                 for ( ModelValidationReport.Detail detail : report.getDetails() )

@@ -35,8 +35,8 @@ package org.jomc.mojo;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.jomc.model.ModelContext;
-import org.jomc.model.ModelValidationReport;
+import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelValidationReport;
 
 /**
  * Validates a projects' main modules.
@@ -65,7 +65,7 @@ public final class MainModulesValidateMojo extends AbstractJomcMojo
     protected void executeTool() throws Exception
     {
         final ModelContext context = this.createModelContext( this.getMainClassLoader() );
-        final ModelValidationReport validationReport = context.validateModel( this.getToolModules( context ) );
+        final ModelValidationReport validationReport = context.validateModel( this.getModel( context ) );
 
         this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 

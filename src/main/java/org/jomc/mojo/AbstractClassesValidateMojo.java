@@ -39,12 +39,14 @@ import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.util.JAXBSource;
+import javax.xml.transform.Source;
 import javax.xml.validation.Schema;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.jomc.model.ModelContext;
-import org.jomc.model.ModelValidationReport;
 import org.jomc.model.Module;
+import org.jomc.model.Modules;
 import org.jomc.model.ObjectFactory;
+import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelValidationReport;
 import org.jomc.tools.ClassFileProcessor;
 
 /**
@@ -66,14 +68,14 @@ public abstract class AbstractClassesValidateMojo extends AbstractJomcMojo
         {
             final ModelContext context = this.createModelContext( this.getClassesClassLoader() );
             final ClassFileProcessor tool = this.createClassFileProcessor( context );
-            final JAXBContext jaxbContext = context.createContext();
-            final Unmarshaller unmarshaller = context.createUnmarshaller();
-            final Schema schema = context.createSchema();
+            final JAXBContext jaxbContext = context.createContext( Modules.MODEL_PUBLIC_ID );
+            final Unmarshaller unmarshaller = context.createUnmarshaller( Modules.MODEL_PUBLIC_ID );
+            final Schema schema = context.createSchema( Modules.MODEL_PUBLIC_ID );
 
             unmarshaller.setSchema( schema );
 
-            final ModelValidationReport validationReport = context.validateModel(
-                new JAXBSource( jaxbContext, new ObjectFactory().createModules( tool.getModules() ) ) );
+            final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModules( tool.getModules() ) );
+            final ModelValidationReport validationReport = context.validateModel( Modules.MODEL_PUBLIC_ID, source );
 
             this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 

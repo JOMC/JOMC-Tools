@@ -42,9 +42,9 @@ import javax.xml.bind.Marshaller;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.jomc.model.Instance;
-import org.jomc.model.ModelContext;
 import org.jomc.model.Modules;
 import org.jomc.model.ObjectFactory;
+import org.jomc.modlet.ModelContext;
 
 /**
  * Dumps a project's test instance.
@@ -88,8 +88,8 @@ public final class TestInstanceDumpMojo extends AbstractJomcMojo
 
         if ( instance != null )
         {
-            final Marshaller m = modelContext.createMarshaller();
-            m.setSchema( modelContext.createSchema() );
+            final Marshaller m = modelContext.createMarshaller( Modules.MODEL_PUBLIC_ID );
+            m.setSchema( modelContext.createSchema( Modules.MODEL_PUBLIC_ID ) );
             m.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
 
             if ( this.dumpFile != null )

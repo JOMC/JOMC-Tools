@@ -52,18 +52,16 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.maven.plugins.shade.resource.ResourceTransformer;
-import org.jomc.model.ModelContext;
-import org.jomc.model.ModelException;
 import org.jomc.model.ModelObject;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
-import org.jomc.model.modlet.DefaultModletContext;
-import org.jomc.model.modlet.DefaultModletProvider;
-import org.jomc.model.modlet.Modlet;
-import org.jomc.model.modlet.ModletContext;
-import org.jomc.model.modlet.ModletException;
-import org.jomc.model.modlet.ModletObject;
-import org.jomc.model.modlet.Modlets;
+import org.jomc.modlet.DefaultModelContext;
+import org.jomc.modlet.DefaultModletProvider;
+import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelException;
+import org.jomc.modlet.Modlet;
+import org.jomc.modlet.ModletObject;
+import org.jomc.modlet.Modlets;
 
 /**
  * Maven Shade Plugin {@code ResourceTransformer} implementation for assembling JOMC resources.
@@ -82,10 +80,19 @@ import org.jomc.model.modlet.Modlets;
  *   &lt;moduleExcludes&gt;
  *     &lt;moduleExclude&gt;module name&lt;/moduleExclude&gt;
  *   &lt;/moduleExcludes&gt;
+ *   &lt;modletName&gt;${project.name}&lt;/modletName&gt;
+ *   &lt;modletVersion&gt;${project.version}&lt;/modletVersion&gt;
+ *   &lt;modletVendor&gt;${project.organization.name}&lt;/modletVendor&gt;
  *   &lt;modletResource&gt;META-INF/custom-jomc-modlet.xml&lt;/modletResource&gt;
  *   &lt;modletResources&gt;
  *     &lt;modletResource&gt;META-INF/jomc-modlet.xml&lt;/modletResource&gt;
  *   &lt;/modletResources&gt;
+ *   &lt;modletIncludes&gt;
+ *     &lt;modletInclude&gt;modlet name&lt;/modletInclude&gt;
+ *   &lt;/modletIncludes&gt;
+ *   &lt;modletExcludes&gt;
+ *     &lt;modletExclude&gt;modlet name&lt;/modletExclude&gt;
+ *   &lt;/modletExcludes&gt;
  *   &lt;modelObjectStylesheet&gt;Filename of a style sheet to use for transforming the merged model document.&lt;/modelObjectStylesheet&gt;
  *   &lt;modletObjectStylesheet&gt;Filename of a style sheet to use for transforming the merged modlet document.&lt;/modletObjectStylesheet&gt;
  *   &lt;providerLocation&gt;META-INF/custom-services&lt;/providerLocation&gt;
@@ -129,6 +136,21 @@ public class JomcResourceTransformer implements ResourceTransformer
         "META-INF/jomc.xml"
     };
 
+    /** Included modules. */
+    private List<String> moduleIncludes;
+
+    /** Excluded modules. */
+    private List<String> moduleExcludes;
+
+    /** The name of the assembled modlet. */
+    private String modletName;
+
+    /** The version of the assembled modlet. */
+    private String modletVersion;
+
+    /** The vendor of the assembled modlet. */
+    private String modletVendor;
+
     /** The resource name of the assembled modlet resources. */
     private String modletResource = "META-INF/jomc-modlet.xml";
 
@@ -138,17 +160,17 @@ public class JomcResourceTransformer implements ResourceTransformer
         "META-INF/jomc-modlet.xml"
     };
 
+    /** Included modlets. */
+    private List<String> modletIncludes;
+
+    /** Excluded modlets. */
+    private List<String> modletExcludes;
+
     /** Model object style sheet to apply. */
     private File modelObjectStylesheet;
 
     /** Bootstrap object style sheet to apply. */
     private File modletObjectStylesheet;
-
-    /** Included modules. */
-    private List<String> moduleIncludes;
-
-    /** Excluded modules. */
-    private List<String> moduleExcludes;
 
     /** The location to search for providers. */
     private String providerLocation;
@@ -268,10 +290,6 @@ public class JomcResourceTransformer implements ResourceTransformer
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-        catch ( final ModletException e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
         catch ( final ModelException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
@@ -317,8 +335,7 @@ public class JomcResourceTransformer implements ResourceTransformer
                     }
                 }
 
-                final Module mergedModule = this.modules.getMergedModule();
-                mergedModule.setName( this.moduleName );
+                final Module mergedModule = this.modules.getMergedModule( this.moduleName );
                 mergedModule.setVersion( this.moduleVersion );
                 mergedModule.setVendor( this.moduleVendor );
 
@@ -331,11 +348,38 @@ public class JomcResourceTransformer implements ResourceTransformer
 
             if ( !this.modlets.getModlet().isEmpty() )
             {
-                final JAXBElement<Modlets> transformedModlets = this.transformModletObject(
-                    new org.jomc.model.modlet.ObjectFactory().createModlets( new Modlets( this.modlets ) ) );
+                if ( this.modletIncludes != null )
+                {
+                    for ( final Iterator<Modlet> it = this.modlets.getModlet().iterator(); it.hasNext(); )
+                    {
+                        if ( !this.modletIncludes.contains( it.next().getName() ) )
+                        {
+                            it.remove();
+                        }
+                    }
+                }
+
+                if ( this.modletExcludes != null )
+                {
+                    for ( String exclude : this.modletExcludes )
+                    {
+                        final Modlet excluded = this.modlets.getModlet( exclude );
+                        if ( excluded != null )
+                        {
+                            this.modlets.getModlet().remove( excluded );
+                        }
+                    }
+                }
+
+                final Modlet mergedModlet = this.modlets.getMergedModlet( this.modletName, Modules.MODEL_PUBLIC_ID );
+                mergedModlet.setVendor( this.modletVendor );
+                mergedModlet.setVersion( this.modletVersion );
+
+                final JAXBElement<Modlet> transformedModlet = this.transformModletObject(
+                    new org.jomc.modlet.ObjectFactory().createModlet( mergedModlet ) );
 
                 out.putNextEntry( new JarEntry( this.modletResource ) );
-                this.marshalModletObject( transformedModlets, out );
+                this.marshalModletObject( transformedModlet, out );
             }
         }
         catch ( final TransformerConfigurationException e )
@@ -350,10 +394,6 @@ public class JomcResourceTransformer implements ResourceTransformer
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-        catch ( final ModletException e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
         catch ( final ModelException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
@@ -362,17 +402,17 @@ public class JomcResourceTransformer implements ResourceTransformer
 
     private void setupJomc()
     {
-        DefaultModletContext.setDefaultModletSchemaSystemId( this.modletSchemaSystemId );
-        DefaultModletContext.setDefaultPlatformProviderLocation( this.platformProviderLocation );
-        DefaultModletContext.setDefaultProviderLocation( this.providerLocation );
+        DefaultModelContext.setDefaultModletSchemaSystemId( this.modletSchemaSystemId );
+        DefaultModelContext.setDefaultPlatformProviderLocation( this.platformProviderLocation );
+        DefaultModelContext.setDefaultProviderLocation( this.providerLocation );
         DefaultModletProvider.setDefaultModletLocation( this.modletLocation );
     }
 
     private void resetJomc()
     {
-        DefaultModletContext.setDefaultModletSchemaSystemId( null );
-        DefaultModletContext.setDefaultPlatformProviderLocation( null );
-        DefaultModletContext.setDefaultProviderLocation( null );
+        DefaultModelContext.setDefaultModletSchemaSystemId( null );
+        DefaultModelContext.setDefaultPlatformProviderLocation( null );
+        DefaultModelContext.setDefaultProviderLocation( null );
         DefaultModletProvider.setDefaultModletLocation( null );
     }
 
@@ -389,8 +429,8 @@ public class JomcResourceTransformer implements ResourceTransformer
             {
                 this.setupJomc();
                 final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
-                this.jomcUnmarshaller = modelContext.createUnmarshaller();
-                this.jomcUnmarshaller.setSchema( modelContext.createSchema() );
+                this.jomcUnmarshaller = modelContext.createUnmarshaller( Modules.MODEL_PUBLIC_ID );
+                this.jomcUnmarshaller.setSchema( modelContext.createSchema( Modules.MODEL_PUBLIC_ID ) );
             }
             finally
             {
@@ -419,8 +459,8 @@ public class JomcResourceTransformer implements ResourceTransformer
             {
                 this.setupJomc();
                 final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
-                this.jomcMarshaller = modelContext.createMarshaller();
-                this.jomcMarshaller.setSchema( modelContext.createSchema() );
+                this.jomcMarshaller = modelContext.createMarshaller( Modules.MODEL_PUBLIC_ID );
+                this.jomcMarshaller.setSchema( modelContext.createSchema( Modules.MODEL_PUBLIC_ID ) );
                 this.jomcMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
             }
             finally
@@ -433,7 +473,7 @@ public class JomcResourceTransformer implements ResourceTransformer
     }
 
     private <T> JAXBElement<T> transformModelObject( final JAXBElement<T> element )
-        throws TransformerException, JAXBException, ModelException
+        throws ModelException, TransformerException, JAXBException
     {
         if ( element == null )
         {
@@ -451,9 +491,9 @@ public class JomcResourceTransformer implements ResourceTransformer
                     new StreamSource( this.modelObjectStylesheet ) );
 
                 final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
-                final Marshaller marshaller = modelContext.createMarshaller();
-                final Unmarshaller unmarshaller = modelContext.createUnmarshaller();
-                final javax.xml.validation.Schema schema = modelContext.createSchema();
+                final Marshaller marshaller = modelContext.createMarshaller( Modules.MODEL_PUBLIC_ID );
+                final Unmarshaller unmarshaller = modelContext.createUnmarshaller( Modules.MODEL_PUBLIC_ID );
+                final javax.xml.validation.Schema schema = modelContext.createSchema( Modules.MODEL_PUBLIC_ID );
                 marshaller.setSchema( schema );
                 marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
                 unmarshaller.setSchema( schema );
@@ -472,7 +512,7 @@ public class JomcResourceTransformer implements ResourceTransformer
         return transformed;
     }
 
-    private Object unmarshalModletObject( final InputStream in ) throws ModletException, JAXBException
+    private Object unmarshalModletObject( final InputStream in ) throws ModelException, JAXBException
     {
         if ( in == null )
         {
@@ -485,11 +525,11 @@ public class JomcResourceTransformer implements ResourceTransformer
             {
                 this.setupJomc();
 
-                final ModletContext modletContext =
-                    ModletContext.createModletContext( this.getClass().getClassLoader() );
+                final ModelContext modletContext =
+                    ModelContext.createModelContext( this.getClass().getClassLoader() );
 
-                this.modletUnmarshaller = modletContext.createUnmarshaller();
-                this.modletUnmarshaller.setSchema( modletContext.createSchema() );
+                this.modletUnmarshaller = modletContext.createUnmarshaller( ModelContext.MODLET_PUBLIC_ID );
+                this.modletUnmarshaller.setSchema( modletContext.createSchema( ModelContext.MODLET_PUBLIC_ID ) );
             }
             finally
             {
@@ -501,7 +541,7 @@ public class JomcResourceTransformer implements ResourceTransformer
     }
 
     private void marshalModletObject( final JAXBElement<? extends ModletObject> element, final OutputStream out )
-        throws ModletException, JAXBException
+        throws ModelException, JAXBException
     {
         if ( element == null )
         {
@@ -518,11 +558,11 @@ public class JomcResourceTransformer implements ResourceTransformer
             {
                 this.setupJomc();
 
-                final ModletContext modletContext =
-                    ModletContext.createModletContext( this.getClass().getClassLoader() );
+                final ModelContext modletContext =
+                    ModelContext.createModelContext( this.getClass().getClassLoader() );
 
-                this.modletMarshaller = modletContext.createMarshaller();
-                this.modletMarshaller.setSchema( modletContext.createSchema() );
+                this.modletMarshaller = modletContext.createMarshaller( ModelContext.MODLET_PUBLIC_ID );
+                this.modletMarshaller.setSchema( modletContext.createSchema( ModelContext.MODLET_PUBLIC_ID ) );
                 this.modletMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
             }
             finally
@@ -535,7 +575,7 @@ public class JomcResourceTransformer implements ResourceTransformer
     }
 
     private <T> JAXBElement<T> transformModletObject( final JAXBElement<T> element )
-        throws TransformerException, JAXBException, ModletException
+        throws ModelException, TransformerException, JAXBException
     {
         if ( element == null )
         {
@@ -552,12 +592,12 @@ public class JomcResourceTransformer implements ResourceTransformer
                 final Transformer transformer = TransformerFactory.newInstance().newTransformer(
                     new StreamSource( this.modletObjectStylesheet ) );
 
-                final ModletContext modletContext =
-                    ModletContext.createModletContext( this.getClass().getClassLoader() );
+                final ModelContext modletContext =
+                    ModelContext.createModelContext( this.getClass().getClassLoader() );
 
-                final Marshaller marshaller = modletContext.createMarshaller();
-                final Unmarshaller unmarshaller = modletContext.createUnmarshaller();
-                final javax.xml.validation.Schema schema = modletContext.createSchema();
+                final Marshaller marshaller = modletContext.createMarshaller( ModelContext.MODLET_PUBLIC_ID );
+                final Unmarshaller unmarshaller = modletContext.createUnmarshaller( ModelContext.MODLET_PUBLIC_ID );
+                final javax.xml.validation.Schema schema = modletContext.createSchema( ModelContext.MODLET_PUBLIC_ID );
                 marshaller.setSchema( schema );
                 marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
                 unmarshaller.setSchema( schema );

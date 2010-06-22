@@ -60,6 +60,11 @@
   <dependencies>
     <dependency>
       <groupId>org.jomc</groupId>
+      <artifactId>jomc-modlet</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jomc</groupId>
       <artifactId>jomc-model</artifactId>
       <scope>compile</scope>
     </dependency>
