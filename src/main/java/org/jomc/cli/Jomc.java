@@ -48,8 +48,8 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang.StringUtils;
-import org.jomc.model.DefaultModelProcessor;
-import org.jomc.model.DefaultModelProvider;
+import org.jomc.model.modlet.DefaultModelProcessor;
+import org.jomc.model.modlet.DefaultModelProvider;
 import org.jomc.modlet.DefaultModletProvider;
 
 // SECTION-START[Documentation]
