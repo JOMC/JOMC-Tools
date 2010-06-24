@@ -877,8 +877,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Name of the file to write the merged module to.</text>
-            <text language="de">Name der Datei, in die das zusammengefügte Modul geschrieben werden soll.</text>
+            <text language="en">Name of the file to write the merged document to.</text>
+            <text language="de">Name der Datei, in die das zusammengefügte Dokument geschrieben werden soll.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
@@ -911,8 +911,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Name of a XSLT file to use for transforming the merged module.</text>
-            <text language="de">Name einer XSLT Datei, mit der das zusammengefügte Modul transformiert werden soll.</text>
+            <text language="en">Name of a XSLT file to use for transforming the merged document.</text>
+            <text language="de">Name einer XSLT Datei, mit der das zusammengefügte Dokument transformiert werden soll.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
@@ -1134,11 +1134,186 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Modlet Name Option" name="${project.name} Modlet Name Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="mdn" override="true"/>
+        <property name="longOpt" value="modlet-name" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Name of the modlet to create.</text>
+            <text language="de">Name des zu erstellenden Modlets.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">name</text>
+            <text language="de">Name</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Modlet Version Option"
+                    name="${project.name} Modlet Version Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="mdv" override="true"/>
+        <property name="longOpt" value="modlet-version" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Version of the merged modlet.</text>
+            <text language="de">Version des Ergebnis-Modlets.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">version</text>
+            <text language="de">Version</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Modlet Vendor Option"
+                    name="${project.name} Modlet Vendor Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="mdve" override="true"/>
+        <property name="longOpt" value="modlet-vendor" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Vendor of the merged modlet.</text>
+            <text language="de">Hersteller des Ergebnis-Modlets.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">vendor</text>
+            <text language="de">Hersteller</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Modlet Includes Option"
+                    name="${project.name} Modlet Includes Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="mdinc" override="true"/>
+        <property name="longOpt" value="modlet-includes" override="true"/>
+        <property name="numberOfArgs" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Modlet names separated by ''{0}'' of modlets to include.</text>
+            <text language="de">Modlet-Namen einzuschließender Modlets mit ''{0}'' getrennt.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="valueSeparator"/>
+          </arguments>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">names</text>
+            <text language="de">Namen</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Modlet Excludes Option"
+                    name="${project.name} Modlet Excludes Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.model.OptionFactory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="mdexc" override="true"/>
+        <property name="longOpt" value="modlet-excludes" override="true"/>
+        <property name="numberOfArgs" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Modlet names separated by ''{0}'' of modlets to exclude.</text>
+            <text language="de">Modlet-Namen auszuschließender Modlets mit ''{0}'' getrennt.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="valueSeparator"/>
+          </arguments>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">names</text>
+            <text language="de">Namen</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
     <!--                                                                                                             -->
     <!-- Application                                                                                                 -->
     <!--                                                                                                             -->
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.cli.Jomc" class="org.jomc.cli.Jomc" classDeclaration="true"
+    <implementation identifier="${project.name} Jomc" class="org.jomc.cli.Jomc" classDeclaration="true"
                     name="${project.name}" version="${project.version}" vendor="${project.organization.name}"
                     final="true">
 
@@ -1261,9 +1436,6 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
         <dependency name="PlatformProviderLocationOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Platform Provider Location Option"/>
-
-        <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Module Name Option"/>
 
         <dependency name="NoClasspathResolutionOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} No Classpath Resolution Option"/>
@@ -1482,7 +1654,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.cli.commands.GenerateResourcesCommand"
+    <implementation identifier="${project.name} generate-resources Command"
                     class="org.jomc.cli.commands.GenerateResourcesCommand" classDeclaration="true"
                     name="default-generate-resources" version="${project.version}" vendor="${project.organization.name}">
       <documentation defaultLanguage="en">
@@ -1497,6 +1669,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
+        <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Module Name Option"/>
+
         <dependency name="LanguageOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Language Option"/>
 
@@ -1560,7 +1735,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.cli.commands.ManageSourcesCommand"
+    <implementation identifier="${project.name} manage-sources Command"
                     class="org.jomc.cli.commands.ManageSourcesCommand" classDeclaration="true"
                     name="default-manage-java-sources" version="${project.version}" vendor="${project.organization.name}">
 
@@ -1576,6 +1751,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
+        <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Module Name Option"/>
+
         <dependency name="SourceDirectoryOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Source Directory Option">
 
@@ -1643,9 +1821,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.cli.commands.CommitClassesCommand"
+    <implementation identifier="${project.name} commit-classes Command"
                     class="org.jomc.cli.commands.CommitClassesCommand" classDeclaration="true"
-                    name="default-commit-java-classes" version="${project.version}" vendor="${project.organization.name}">
+                    name="default-commit-classes" version="${project.version}" vendor="${project.organization.name}">
 
       <documentation defaultLanguage="en">
         <text language="en">Command line interface for committing model objects to class files with the {@code org.jomc.tools.ClassFileProcessor} tool.</text>
@@ -1659,6 +1837,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
+        <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Module Name Option"/>
+
         <dependency name="ClassesDirectoryOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Classes Directory Option">
 
@@ -1705,9 +1886,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.cli.commands.ValidateClassesCommand"
+    <implementation identifier="${project.name} validate-classes Command"
                     class="org.jomc.cli.commands.ValidateClassesCommand" classDeclaration="true"
-                    name="default-validate-java-classes" version="${project.version}" vendor="${project.organization.name}">
+                    name="default-validate-classes" version="${project.version}" vendor="${project.organization.name}">
 
       <documentation defaultLanguage="en">
         <text language="en">Command line interface for validating model objects of class files with the {@code org.jomc.tools.ClassFileProcessor} tool.</text>
@@ -1720,6 +1901,11 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <implementations>
         <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}" final="true"/>
       </implementations>
+      <dependencies>
+        <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Module Name Option"/>
+
+      </dependencies>
       <properties>
         <property name="commandName" value="validate-classes" override="true">
           <documentation defaultLanguage="en">
@@ -1754,7 +1940,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.cli.commands.ValidateModulesCommand"
+    <implementation identifier="${project.name} validate-modules Command"
                     class="org.jomc.cli.commands.ValidateModulesCommand" classDeclaration="true"
                     name="default-validate-modules" version="${project.version}" vendor="${project.organization.name}">
 
@@ -1803,7 +1989,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.cli.commands.MergeModulesCommand"
+    <implementation identifier="${project.name} merge-modules Command"
                     class="org.jomc.cli.commands.MergeModulesCommand" classDeclaration="true"
                     name="default-merge-modules" version="${project.version}" vendor="${project.organization.name}">
 
@@ -1903,6 +2089,110 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
           </template>
           <arguments>
             <argument index="0" name="moduleName"/>
+          </arguments>
+        </message>
+        <reference name="writeInfo"/>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} merge-modlets Command"
+                    class="org.jomc.cli.commands.MergeModletsCommand" classDeclaration="true"
+                    name="default-merge-modlets" version="${project.version}" vendor="${project.organization.name}">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Command line interface for merging modlets.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <implementations>
+        <reference identifier="org.jomc.cli.commands.AbstractJomcCommand" version="${project.version}" final="true"/>
+      </implementations>
+      <dependencies>
+        <dependency name="DocumentOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Document Option">
+
+          <properties>
+            <property name="required" type="boolean" value="true" override="true"/>
+          </properties>
+        </dependency>
+        <dependency name="StylesheetOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Stylesheet Option"/>
+
+        <dependency name="ModletNameOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Modlet Name Option">
+
+          <properties>
+            <property name="required" type="boolean" value="true"/>
+          </properties>
+        </dependency>
+        <dependency name="ModletVersionOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Modlet Version Option"/>
+
+        <dependency name="ModletVendorOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Modlet Vendor Option"/>
+
+        <dependency name="ModletIncludesOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Modlet Includes Option"/>
+
+        <dependency name="ModletExcludesOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Modlet Excludes Option"/>
+
+      </dependencies>
+
+      <properties>
+        <property name="commandName" value="merge-modlets" override="true">
+          <documentation defaultLanguage="en">
+            <text language="en">Name of the command.</text>
+          </documentation>
+        </property>
+        <property name="abbreviatedCommandName" value="mmd" override="true">
+          <documentation defaultLanguage="en">
+            <text language="en">Abbreviated name of the command.</text>
+          </documentation>
+        </property>
+      </properties>
+      <messages>
+        <message name="shortDescriptionMessage" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Merges modlets.</text>
+            <text language="de">Fügt Modlets zusammen.</text>
+          </template>
+        </message>
+        <message name="longDescriptionMessage" override="true">
+          <template defaultLanguage="en">
+            <text language="en"><![CDATA[Example:
+  jomc merge-modlets -cp examples/lib/commons-cli-1.2.jar \
+                     -xs examples/xslt/modlet-relocations.xsl \
+                     -mn "Merged Name" \
+                     -d /tmp/jomc-modlet.xml \
+                     -v]]></text>
+            <text language="de"><![CDATA[Beispiel:
+  jomc merge-modlets -cp examples/lib/commons-cli-1.2.jar \
+                     -xs examples/xslt/modlet-relocations.xsl \
+                     -mn "Merged Name" \
+                     -d /tmp/jomc-modlet.xml \
+                     -v]]></text>
+          </template>
+        </message>
+        <message name="includingModletInfo" final="true">
+          <template defaultLanguage="en">
+            <text language="en">Including modlet ''{0}''.</text>
+            <text language="de">Schließt Modlet ''{0}'' ein.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="modletName"/>
+          </arguments>
+        </message>
+        <message name="excludingModletInfo" final="true">
+          <template defaultLanguage="en">
+            <text language="en">Excluding modlet ''{0}''.</text>
+            <text language="de">Schließt Modlet ''{0}'' aus.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="modletName"/>
           </arguments>
         </message>
         <reference name="writeInfo"/>

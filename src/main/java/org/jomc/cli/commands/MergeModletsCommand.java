@@ -37,24 +37,31 @@
 package org.jomc.cli.commands;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
-import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.util.JAXBResult;
 import javax.xml.bind.util.JAXBSource;
-import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
-import org.jomc.model.Module;
+import org.jomc.cli.Command;
 import org.jomc.model.Modules;
-import org.jomc.model.ObjectFactory;
 import org.jomc.modlet.ModelContext;
-import org.jomc.modlet.ModelValidationReport;
-import org.jomc.tools.ClassFileProcessor;
+import org.jomc.modlet.Modlet;
+import org.jomc.modlet.Modlets;
+import org.jomc.modlet.ObjectFactory;
 
 // SECTION-START[Documentation]
 // <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 /**
- * Command line interface for committing model objects to class files with the {@code org.jomc.tools.ClassFileProcessor} tool.
+ * Command line interface for merging modlets.
  * <p><b>Specifications</b><ul>
  * <li>{@code org.jomc.cli.Command} {@code 1.0} {@code Multiton}</li>
  * </ul></p>
@@ -85,19 +92,27 @@ import org.jomc.tools.ClassFileProcessor;
  * </blockquote></li>
  * </ul></p>
  * <p><b>Dependencies</b><ul>
- * <li>"{@link #getClassesDirectoryOption ClassesDirectoryOption}"<blockquote>
- * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getClasspathOption ClasspathOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getDocumentOption DocumentOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getDocumentsOption DocumentsOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getLocale Locale}"<blockquote>
  * Dependency on {@code java.util.Locale} at specification level 1.1 bound to an instance.</blockquote></li>
+ * <li>"{@link #getModletExcludesOption ModletExcludesOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getModletIncludesOption ModletIncludesOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getModletLocationOption ModletLocationOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
- * <li>"{@link #getModuleLocationOption ModuleLocationOption}"<blockquote>
+ * <li>"{@link #getModletNameOption ModletNameOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
- * <li>"{@link #getModuleNameOption ModuleNameOption}"<blockquote>
+ * <li>"{@link #getModletVendorOption ModletVendorOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getModletVersionOption ModletVersionOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getModuleLocationOption ModuleLocationOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getNoClasspathResolutionOption NoClasspathResolutionOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
@@ -106,6 +121,8 @@ import org.jomc.tools.ClassFileProcessor;
  * <li>"{@link #getPlatformProviderLocationOption PlatformProviderLocationOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getProviderLocationOption ProviderLocationOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
+ * <li>"{@link #getStylesheetOption StylesheetOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getTransformerLocationOption TransformerLocationOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
@@ -158,23 +175,31 @@ import org.jomc.tools.ClassFileProcessor;
  * <tr><td valign="top">English:</td><td valign="top"><pre>Service ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Service ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
  * </table>
+ * <li>"{@link #getExcludingModletInfo excludingModletInfo}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Excluding modlet ''{0}''.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Schlie&szlig;t Modlet ''{0}'' aus.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getIncludingModletInfo includingModletInfo}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Including modlet ''{0}''.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Schlie&szlig;t Modlet ''{0}'' ein.</pre></td></tr>
+ * </table>
  * <li>"{@link #getInvalidModelMessage invalidModelMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Invalid model.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ung&uuml;ltiges Modell.</pre></td></tr>
  * </table>
  * <li>"{@link #getLongDescriptionMessage longDescriptionMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
- *   jomc commit-classes -cp examples/lib/commons-cli-1.2.jar \
- *                       -df examples/xml/jomc-cli.xml \
- *                       -cd target/classes \
- *                       -mn &quot;JOMC CLI&quot; \
- *                       -v</pre></td></tr>
+ *   jomc merge-modlets -cp examples/lib/commons-cli-1.2.jar \
+ *                      -xs examples/xslt/modlet-relocations.xsl \
+ *                      -mn &quot;Merged Name&quot; \
+ *                      -d /tmp/jomc-modlet.xml \
+ *                      -v</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
- *   jomc commit-classes -cp examples/lib/commons-cli-1.2.jar \
- *                       -df examples/xml/jomc-cli.xml \
- *                       -cd target/classes \
- *                       -mn &quot;JOMC CLI&quot; \
- *                       -v</pre></td></tr>
+ *   jomc merge-modlets -cp examples/lib/commons-cli-1.2.jar \
+ *                      -xs examples/xslt/modlet-relocations.xsl \
+ *                      -mn &quot;Merged Name&quot; \
+ *                      -d /tmp/jomc-modlet.xml \
+ *                      -v</pre></td></tr>
  * </table>
  * <li>"{@link #getMissingModuleMessage missingModuleMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
@@ -188,8 +213,8 @@ import org.jomc.tools.ClassFileProcessor;
  * <tr><td valign="top">English:</td><td valign="top"><pre>--------------------------------------------------------------------------------</pre></td></tr>
  * </table>
  * <li>"{@link #getShortDescriptionMessage shortDescriptionMessage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Commits model objects to class files.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Schreibt Klassendateien fest.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Merges modlets.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>F&uuml;gt Modlets zusammen.</pre></td></tr>
  * </table>
  * <li>"{@link #getStartingModuleProcessingMessage startingModuleProcessingMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} with module ''{1}'' ...</pre></td></tr>
@@ -207,6 +232,10 @@ import org.jomc.tools.ClassFileProcessor;
  * <tr><td valign="top">English:</td><td valign="top"><pre>{0} successful.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} erfolgreich.</pre></td></tr>
  * </table>
+ * <li>"{@link #getWriteInfo writeInfo}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Writing ''{0}''.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Schreibt ''{0}''.</pre></td></tr>
+ * </table>
  * </ul></p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
@@ -219,7 +248,7 @@ import org.jomc.tools.ClassFileProcessor;
 @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
 // </editor-fold>
 // SECTION-END
-public final class CommitClassesCommand extends AbstractJomcCommand
+public class MergeModletsCommand extends AbstractJomcCommand implements Command
 {
     // SECTION-START[Command]
 
@@ -232,8 +261,13 @@ public final class CommitClassesCommand extends AbstractJomcCommand
         if ( this.options == null )
         {
             this.options = super.getOptions();
-            this.options.addOption( this.getModuleNameOption() );
-            this.options.addOption( this.getClassesDirectoryOption() );
+            this.options.addOption( this.getDocumentOption() );
+            this.options.addOption( this.getStylesheetOption() );
+            this.options.addOption( this.getModletNameOption() );
+            this.options.addOption( this.getModletVendorOption() );
+            this.options.addOption( this.getModletVersionOption() );
+            this.options.addOption( this.getModletIncludesOption() );
+            this.options.addOption( this.getModletExcludesOption() );
         }
 
         return this.options;
@@ -241,72 +275,119 @@ public final class CommitClassesCommand extends AbstractJomcCommand
 
     public int executeCommand( final CommandLine commandLine ) throws Exception
     {
-        final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
-        final ModelContext context = this.createModelContext( classLoader );
-        final Modules modules = this.getModules( context, commandLine );
-        final JAXBContext jaxbContext = context.createContext( Modules.MODEL_PUBLIC_ID );
-        final Marshaller marshaller = context.createMarshaller( Modules.MODEL_PUBLIC_ID );
-        final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModules( modules ) );
-        final ModelValidationReport validationReport = context.validateModel( Modules.MODEL_PUBLIC_ID, source );
-
-        this.log( validationReport, marshaller );
-
-        if ( validationReport.isModelValid() )
+        if ( this.isLoggable( Level.INFO ) )
         {
-            final ClassFileProcessor tool = this.createClassFileProcessor();
-            tool.setModules( modules );
-
-            final File classesDirectory = new File( commandLine.getOptionValue(
-                this.getClassesDirectoryOption().getOpt() ) );
-
-            if ( commandLine.hasOption( this.getModuleNameOption().getOpt() ) )
-            {
-                final String moduleName = commandLine.getOptionValue( this.getModuleNameOption().getOpt() );
-                final Module module = tool.getModules().getModule( moduleName );
-
-                if ( module != null )
-                {
-                    if ( this.isLoggable( Level.INFO ) )
-                    {
-                        this.log( Level.INFO, this.getStartingModuleProcessingMessage(
-                            this.getLocale(), this.getCommandName(), module.getName() ), null );
-
-                    }
-
-                    tool.commitModelObjects( module, marshaller, classesDirectory );
-                }
-                else if ( this.isLoggable( Level.WARNING ) )
-                {
-                    this.log( Level.WARNING, this.getMissingModuleMessage( this.getLocale(), moduleName ), null );
-                }
-            }
-            else
-            {
-                if ( this.isLoggable( Level.INFO ) )
-                {
-                    this.log( Level.INFO, this.getStartingProcessingMessage(
-                        this.getLocale(), this.getCommandName() ), null );
-
-                }
-
-                tool.commitModelObjects( marshaller, classesDirectory );
-            }
-
-            return STATUS_SUCCESS;
+            this.log( Level.INFO, this.getStartingProcessingMessage( this.getLocale(), this.getCommandName() ), null );
         }
 
-        return STATUS_FAILURE;
+        final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
+        final ModelContext context = this.createModelContext( classLoader );
+        final Modlets modlets = new Modlets( context.getModlets() );
+        final Marshaller marshaller = context.createMarshaller( ModelContext.MODLET_PUBLIC_ID );
+        final Unmarshaller unmarshaller = context.createUnmarshaller( ModelContext.MODLET_PUBLIC_ID );
+
+        File stylesheetFile = null;
+        if ( commandLine.hasOption( this.getStylesheetOption().getOpt() ) )
+        {
+            stylesheetFile = new File( commandLine.getOptionValue( this.getStylesheetOption().getOpt() ) );
+        }
+
+        String modletVersion = null;
+        if ( commandLine.hasOption( this.getModletVersionOption().getOpt() ) )
+        {
+            modletVersion = commandLine.getOptionValue( this.getModletVersionOption().getOpt() );
+        }
+
+        String modletVendor = null;
+        if ( commandLine.hasOption( this.getModletVendorOption().getOpt() ) )
+        {
+            modletVendor = commandLine.getOptionValue( this.getModletVendorOption().getOpt() );
+        }
+
+        if ( commandLine.hasOption( this.getModletIncludesOption().getOpt() ) )
+        {
+            final String[] values = commandLine.getOptionValues( this.getModletIncludesOption().getOpt() );
+
+            if ( values != null )
+            {
+                final List<String> includes = Arrays.asList( values );
+
+                for ( final Iterator<Modlet> it = modlets.getModlet().iterator(); it.hasNext(); )
+                {
+                    final Modlet m = it.next();
+                    if ( !includes.contains( m.getName() ) )
+                    {
+                        this.log( Level.INFO, this.getExcludingModletInfo( this.getLocale(), m.getName() ), null );
+                        it.remove();
+                    }
+                    else
+                    {
+                        this.log( Level.INFO, this.getIncludingModletInfo( this.getLocale(), m.getName() ), null );
+                    }
+                }
+            }
+        }
+
+        if ( commandLine.hasOption( this.getModletExcludesOption().getOpt() ) )
+        {
+            final String[] values = commandLine.getOptionValues( this.getModletExcludesOption().getOpt() );
+
+            if ( values != null )
+            {
+                for ( String exclude : values )
+                {
+                    final Modlet m = modlets.getModlet( exclude );
+
+                    if ( m != null )
+                    {
+                        this.log( Level.INFO, this.getExcludingModletInfo( this.getLocale(), m.getName() ), null );
+                        modlets.getModlet().remove( m );
+                    }
+                }
+            }
+        }
+
+        Modlet mergedModlet = modlets.getMergedModlet(
+            commandLine.getOptionValue( this.getModletNameOption().getOpt() ), Modules.MODEL_PUBLIC_ID );
+
+        mergedModlet.setVersion( modletVersion );
+        mergedModlet.setVendor( modletVendor );
+
+        final File modletFile = new File( commandLine.getOptionValue( this.getDocumentOption().getOpt() ) );
+
+        if ( stylesheetFile != null )
+        {
+            final Transformer transformer =
+                TransformerFactory.newInstance().newTransformer( new StreamSource( stylesheetFile ) );
+
+            final JAXBSource source =
+                new JAXBSource( marshaller, new ObjectFactory().createModlet( mergedModlet ) );
+
+            final JAXBResult result = new JAXBResult( unmarshaller );
+            transformer.transform( source, result );
+            mergedModlet = ( (JAXBElement<Modlet>) result.getResult() ).getValue();
+        }
+
+        marshaller.setSchema( context.createSchema( ModelContext.MODLET_PUBLIC_ID ) );
+        marshaller.marshal( new ObjectFactory().createModlet( mergedModlet ), modletFile );
+
+        if ( this.isLoggable( Level.INFO ) )
+        {
+            this.log( Level.INFO, this.getWriteInfo( this.getLocale(), modletFile.getAbsolutePath() ), null );
+        }
+
+        return STATUS_SUCCESS;
     }
 
     // SECTION-END
-    // SECTION-START[CommitClassesCommand]
+    // SECTION-START[MergeModletsCommand]
     // SECTION-END
     // SECTION-START[Constructors]
     // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
 
-    /** Creates a new {@code CommitClassesCommand} instance. */
+    /** Creates a new {@code MergeModletsCommand} instance. */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    public CommitClassesCommand()
+    public MergeModletsCommand()
     {
         // SECTION-START[Default Constructor]
         super();
@@ -316,26 +397,6 @@ public final class CommitClassesCommand extends AbstractJomcCommand
     // SECTION-END
     // SECTION-START[Dependencies]
     // <editor-fold defaultstate="collapsed" desc=" Generated Dependencies ">
-
-    /**
-     * Gets the {@code ClassesDirectoryOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Classes Directory Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * <p><b>Properties</b><dl>
-     * <dt>"{@code required}"</dt>
-     * <dd>Property of type {@code boolean}.
-     * </dd>
-     * </dl>
-     * @return The {@code ClassesDirectoryOption} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private org.apache.commons.cli.Option getClassesDirectoryOption()
-    {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ClassesDirectoryOption" );
-        assert _d != null : "'ClassesDirectoryOption' dependency not found.";
-        return _d;
-    }
 
     /**
      * Gets the {@code ClasspathOption} dependency.
@@ -349,6 +410,26 @@ public final class CommitClassesCommand extends AbstractJomcCommand
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ClasspathOption" );
         assert _d != null : "'ClasspathOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code DocumentOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Document Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * <p><b>Properties</b><dl>
+     * <dt>"{@code required}"</dt>
+     * <dd>Property of type {@code boolean}.
+     * </dd>
+     * </dl>
+     * @return The {@code DocumentOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getDocumentOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "DocumentOption" );
+        assert _d != null : "'DocumentOption' dependency not found.";
         return _d;
     }
 
@@ -383,6 +464,36 @@ public final class CommitClassesCommand extends AbstractJomcCommand
     }
 
     /**
+     * Gets the {@code ModletExcludesOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Modlet Excludes Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code ModletExcludesOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getModletExcludesOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModletExcludesOption" );
+        assert _d != null : "'ModletExcludesOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code ModletIncludesOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Modlet Includes Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code ModletIncludesOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getModletIncludesOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModletIncludesOption" );
+        assert _d != null : "'ModletIncludesOption' dependency not found.";
+        return _d;
+    }
+
+    /**
      * Gets the {@code ModletLocationOption} dependency.
      * <p>This method returns the "{@code JOMC CLI Modlet Location Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
@@ -398,6 +509,56 @@ public final class CommitClassesCommand extends AbstractJomcCommand
     }
 
     /**
+     * Gets the {@code ModletNameOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Modlet Name Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * <p><b>Properties</b><dl>
+     * <dt>"{@code required}"</dt>
+     * <dd>Property of type {@code boolean}.
+     * </dd>
+     * </dl>
+     * @return The {@code ModletNameOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getModletNameOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModletNameOption" );
+        assert _d != null : "'ModletNameOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code ModletVendorOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Modlet Vendor Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code ModletVendorOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getModletVendorOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModletVendorOption" );
+        assert _d != null : "'ModletVendorOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code ModletVersionOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Modlet Version Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code ModletVersionOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getModletVersionOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModletVersionOption" );
+        assert _d != null : "'ModletVersionOption' dependency not found.";
+        return _d;
+    }
+
+    /**
      * Gets the {@code ModuleLocationOption} dependency.
      * <p>This method returns the "{@code JOMC CLI Module Location Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
@@ -409,21 +570,6 @@ public final class CommitClassesCommand extends AbstractJomcCommand
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModuleLocationOption" );
         assert _d != null : "'ModuleLocationOption' dependency not found.";
-        return _d;
-    }
-
-    /**
-     * Gets the {@code ModuleNameOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Module Name Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code ModuleNameOption} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private org.apache.commons.cli.Option getModuleNameOption()
-    {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModuleNameOption" );
-        assert _d != null : "'ModuleNameOption' dependency not found.";
         return _d;
     }
 
@@ -484,6 +630,21 @@ public final class CommitClassesCommand extends AbstractJomcCommand
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ProviderLocationOption" );
         assert _d != null : "'ProviderLocationOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code StylesheetOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Stylesheet Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code StylesheetOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getStylesheetOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "StylesheetOption" );
+        assert _d != null : "'StylesheetOption' dependency not found.";
         return _d;
     }
 
@@ -832,6 +993,46 @@ public final class CommitClassesCommand extends AbstractJomcCommand
     }
 
     /**
+     * Gets the text of the {@code excludingModletInfo} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Excluding modlet ''{0}''.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Schlie&szlig;t Modlet ''{0}'' aus.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param modletName Format argument.
+     * @return The text of the {@code excludingModletInfo} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private String getExcludingModletInfo( final java.util.Locale locale, final java.lang.String modletName )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "excludingModletInfo", locale, modletName );
+        assert _m != null : "'excludingModletInfo' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code includingModletInfo} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Including modlet ''{0}''.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Schlie&szlig;t Modlet ''{0}'' ein.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param modletName Format argument.
+     * @return The text of the {@code includingModletInfo} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private String getIncludingModletInfo( final java.util.Locale locale, final java.lang.String modletName )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "includingModletInfo", locale, modletName );
+        assert _m != null : "'includingModletInfo' message not found.";
+        return _m;
+    }
+
+    /**
      * Gets the text of the {@code invalidModelMessage} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Invalid model.</pre></td></tr>
@@ -854,17 +1055,17 @@ public final class CommitClassesCommand extends AbstractJomcCommand
      * Gets the text of the {@code longDescriptionMessage} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
-     *   jomc commit-classes -cp examples/lib/commons-cli-1.2.jar \
-     *                       -df examples/xml/jomc-cli.xml \
-     *                       -cd target/classes \
-     *                       -mn &quot;JOMC CLI&quot; \
-     *                       -v</pre></td></tr>
+     *   jomc merge-modlets -cp examples/lib/commons-cli-1.2.jar \
+     *                      -xs examples/xslt/modlet-relocations.xsl \
+     *                      -mn &quot;Merged Name&quot; \
+     *                      -d /tmp/jomc-modlet.xml \
+     *                      -v</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
-     *   jomc commit-classes -cp examples/lib/commons-cli-1.2.jar \
-     *                       -df examples/xml/jomc-cli.xml \
-     *                       -cd target/classes \
-     *                       -mn &quot;JOMC CLI&quot; \
-     *                       -v</pre></td></tr>
+     *   jomc merge-modlets -cp examples/lib/commons-cli-1.2.jar \
+     *                      -xs examples/xslt/modlet-relocations.xsl \
+     *                      -mn &quot;Merged Name&quot; \
+     *                      -d /tmp/jomc-modlet.xml \
+     *                      -v</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code longDescriptionMessage} message.
@@ -939,8 +1140,8 @@ public final class CommitClassesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code shortDescriptionMessage} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Commits model objects to class files.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Schreibt Klassendateien fest.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Merges modlets.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>F&uuml;gt Modlets zusammen.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code shortDescriptionMessage} message.
@@ -1033,6 +1234,26 @@ public final class CommitClassesCommand extends AbstractJomcCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "toolSuccessMessage", locale, toolName );
         assert _m != null : "'toolSuccessMessage' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code writeInfo} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Writing ''{0}''.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Schreibt ''{0}''.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param fileName Format argument.
+     * @return The text of the {@code writeInfo} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private String getWriteInfo( final java.util.Locale locale, final java.lang.String fileName )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "writeInfo", locale, fileName );
+        assert _m != null : "'writeInfo' message not found.";
         return _m;
     }
     // </editor-fold>

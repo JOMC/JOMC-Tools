@@ -128,7 +128,7 @@ import org.jomc.tools.SourceFileProcessor;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-24T02:34:05+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-24T05:09:28+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -248,6 +248,7 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
         if ( this.options == null )
         {
             this.options = super.getOptions();
+            this.options.addOption( this.getModuleNameOption() );
             this.options.addOption( this.getSourceDirectoryOption() );
             this.options.addOption( this.getTemplateProfileOption() );
             this.options.addOption( this.getDefaultTemplateProfileOption() );
@@ -765,7 +766,7 @@ public final class ManageSourcesCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-24T02:34:05+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-24T05:09:28+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

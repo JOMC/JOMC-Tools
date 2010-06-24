@@ -36,6 +36,7 @@
 // SECTION-END
 package org.jomc.cli.test;
 
+import org.jomc.modlet.Modlet;
 import org.jomc.model.Modules;
 import org.jomc.modlet.ModelContext;
 import java.io.File;
@@ -63,31 +64,40 @@ import static junit.framework.Assert.assertNull;
  * <li>"{@link #getTestClassesDirectory testClassesDirectory}"
  * <blockquote>Property of type {@code java.lang.String}.
  * </blockquote></li>
- * <li>"{@link #getTestDocument testDocument}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
- * <li>"{@link #getTestDocumentIllegal testDocumentIllegal}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
  * <li>"{@link #getTestIllegalSourceFilesModel testIllegalSourceFilesModel}"
  * <blockquote>Property of type {@code java.lang.String}.
  * </blockquote></li>
  * <li>"{@link #getTestLegalSourceFilesModel testLegalSourceFilesModel}"
  * <blockquote>Property of type {@code java.lang.String}.
  * </blockquote></li>
- * <li>"{@link #getTestModuleName testModuleName}"
+ * <li>"{@link #getTestModelDocument testModelDocument}"
  * <blockquote>Property of type {@code java.lang.String}.
  * </blockquote></li>
- * <li>"{@link #getTestOutputDocument testOutputDocument}"
+ * <li>"{@link #getTestModelDocumentIllegal testModelDocumentIllegal}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
+ * <li>"{@link #getTestModelOutputDocument testModelOutputDocument}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
+ * <li>"{@link #getTestModelStylesheet testModelStylesheet}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
+ * <li>"{@link #getTestModletName testModletName}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
+ * <li>"{@link #getTestModletOutputDocument testModletOutputDocument}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
+ * <li>"{@link #getTestModletStylesheet testModletStylesheet}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
+ * <li>"{@link #getTestModuleName testModuleName}"
  * <blockquote>Property of type {@code java.lang.String}.
  * </blockquote></li>
  * <li>"{@link #getTestResourcesDirectory testResourcesDirectory}"
  * <blockquote>Property of type {@code java.lang.String}.
  * </blockquote></li>
  * <li>"{@link #getTestSourcesDirectory testSourcesDirectory}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
- * <li>"{@link #getTestStylesheet testStylesheet}"
  * <blockquote>Property of type {@code java.lang.String}.
  * </blockquote></li>
  * </ul></p>
@@ -111,7 +121,7 @@ public class JomcTest extends TestCase
         assertEquals( Command.STATUS_FAILURE, Jomc.run( new String[ 0 ] ) );
     }
 
-    public void testGenerateJavaBundles() throws Exception
+    public void testGenerateResources() throws Exception
     {
         final String[] help = new String[]
         {
@@ -121,7 +131,7 @@ public class JomcTest extends TestCase
         final String[] args = new String[]
         {
             "generate-resources", "-rd", '"' + this.getTestResourcesDirectory() + '"', "-df",
-            '"' + this.getTestDocument() + '"', "-D"
+            '"' + this.getTestModelDocument() + '"', "-D"
         };
 
         final String[] unsupportedOption = new String[]
@@ -132,7 +142,7 @@ public class JomcTest extends TestCase
         final String[] failOnWarnings = new String[]
         {
             "generate-resources", "-rd", '"' + this.getTestResourcesDirectory() + '"', "-df",
-            '"' + this.getTestDocument() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
+            '"' + this.getTestModelDocument() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
         };
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
@@ -141,7 +151,7 @@ public class JomcTest extends TestCase
         assertEquals( Command.STATUS_FAILURE, Jomc.run( failOnWarnings ) );
     }
 
-    public void testManageJavaSources() throws Exception
+    public void testManageSources() throws Exception
     {
         final String[] help = new String[]
         {
@@ -151,7 +161,7 @@ public class JomcTest extends TestCase
         final String[] args = new String[]
         {
             "manage-sources", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-df",
-            '"' + this.getTestDocument() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-D",
+            '"' + this.getTestModelDocument() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-D",
             "-ls", "\r\n", "-idt", "\t"
         };
 
@@ -163,7 +173,7 @@ public class JomcTest extends TestCase
         final String[] failOnWarnings = new String[]
         {
             "manage-sources", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-df",
-            '"' + this.getTestDocument() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
+            '"' + this.getTestModelDocument() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
         };
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
@@ -172,7 +182,7 @@ public class JomcTest extends TestCase
         assertEquals( Command.STATUS_FAILURE, Jomc.run( failOnWarnings ) );
     }
 
-    public void testCommitValidateJavaClasses() throws Exception
+    public void testCommitValidateClasses() throws Exception
     {
         final String[] commitHelp = new String[]
         {
@@ -186,13 +196,13 @@ public class JomcTest extends TestCase
 
         final String[] commitArgs = new String[]
         {
-            "commit-classes", "-df", '"' + this.getTestDocument() + '"', "-cd",
+            "commit-classes", "-df", '"' + this.getTestModelDocument() + '"', "-cd",
             '"' + this.getTestClassesDirectory() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-D"
         };
 
         final String[] validateArgs = new String[]
         {
-            "validate-classes", "-df", '"' + this.getTestDocument() + '"', "-cp",
+            "validate-classes", "-df", '"' + this.getTestModelDocument() + '"', "-cp",
             '"' + this.getTestClassesDirectory() + '"', "-D"
         };
 
@@ -208,13 +218,13 @@ public class JomcTest extends TestCase
 
         final String[] commitFailOnWarnings = new String[]
         {
-            "commit-classes", "-df", '"' + this.getTestDocument() + '"', "-cd",
+            "commit-classes", "-df", '"' + this.getTestModelDocument() + '"', "-cd",
             '"' + this.getTestClassesDirectory() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
         };
 
         final String[] validateFailOnWarnings = new String[]
         {
-            "validate-classes", "-df", '"' + this.getTestDocument() + '"', "-cp",
+            "validate-classes", "-df", '"' + this.getTestModelDocument() + '"', "-cp",
             '"' + this.getTestClassesDirectory() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
         };
 
@@ -244,22 +254,23 @@ public class JomcTest extends TestCase
 
         final String[] args = new String[]
         {
-            "merge-modules", "-df", '"' + this.getTestDocument() + '"', "-xs", '"' + this.getTestStylesheet() + '"',
-            "-mn", '"' + this.getTestModuleName() + '"', "-d", '"' + this.getTestOutputDocument() + '"', "-D"
+            "merge-modules", "-df", '"' + this.getTestModelDocument() + '"', "-xs",
+            '"' + this.getTestModelStylesheet() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-d",
+            '"' + this.getTestModelOutputDocument() + '"', "-D"
         };
 
         final String[] includesArg = new String[]
         {
-            "merge-modules", "-df", '"' + this.getTestDocument() + '"', "-xs", '"' + this.getTestStylesheet() + '"',
-            "-mn", '"' + this.getTestModuleName() + '"', "-d", '"' + this.getTestOutputDocument() + '"',
-            "-minc", "\"JOMC CLI\"", "-D"
+            "merge-modules", "-df", '"' + this.getTestModelDocument() + '"', "-xs",
+            '"' + this.getTestModelStylesheet() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-d",
+            '"' + this.getTestModelOutputDocument() + '"', "-minc", "\"JOMC CLI\"", "-D"
         };
 
         final String[] excludesArg = new String[]
         {
-            "merge-modules", "-df", '"' + this.getTestDocument() + '"', "-xs", '"' + this.getTestStylesheet() + '"',
-            "-mn", '"' + this.getTestModuleName() + '"', "-d", '"' + this.getTestOutputDocument() + '"',
-            "-mexc", "\"JOMC CLI\"", "-D"
+            "merge-modules", "-df", '"' + this.getTestModelDocument() + '"', "-xs",
+            '"' + this.getTestModelStylesheet() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-d",
+            '"' + this.getTestModelOutputDocument() + '"', "-mexc", "\"JOMC CLI\"", "-D"
         };
 
         final String[] unsupportedOption = new String[]
@@ -269,20 +280,20 @@ public class JomcTest extends TestCase
 
         final String[] illegalDoc = new String[]
         {
-            "merge-modules", "-df", '"' + this.getTestDocumentIllegal() + '"', "-xs",
-            '"' + this.getTestStylesheet() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-d",
-            '"' + this.getTestOutputDocument() + '"', "-D"
+            "merge-modules", "-df", '"' + this.getTestModelDocumentIllegal() + '"', "-xs",
+            '"' + this.getTestModelStylesheet() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-d",
+            '"' + this.getTestModelOutputDocument() + '"', "-D"
         };
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
 
-        unmarshaller.unmarshal( new StreamSource( new File( this.getTestOutputDocument() ) ), Module.class );
+        unmarshaller.unmarshal( new StreamSource( new File( this.getTestModelOutputDocument() ) ), Module.class );
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( includesArg ) );
 
         final JAXBElement<Module> includedModule =
-            unmarshaller.unmarshal( new StreamSource( new File( this.getTestOutputDocument() ) ), Module.class );
+            unmarshaller.unmarshal( new StreamSource( new File( this.getTestModelOutputDocument() ) ), Module.class );
 
         assertNotNull( "Merged module does not contain any included specifications.",
                        includedModule.getValue().getSpecifications() );
@@ -293,7 +304,7 @@ public class JomcTest extends TestCase
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( excludesArg ) );
 
         final JAXBElement<Module> excludedModule =
-            unmarshaller.unmarshal( new StreamSource( new File( this.getTestOutputDocument() ) ), Module.class );
+            unmarshaller.unmarshal( new StreamSource( new File( this.getTestModelOutputDocument() ) ), Module.class );
 
         assertNull( "Merged module contains excluded specifications.",
                     excludedModule.getValue().getSpecifications() );
@@ -311,7 +322,7 @@ public class JomcTest extends TestCase
 
         final String[] args = new String[]
         {
-            "validate-modules", "-df", '"' + this.getTestDocument() + '"', "-D"
+            "validate-modules", "-df", '"' + this.getTestModelDocument() + '"', "-D"
         };
 
         final String[] unsupportedOption = new String[]
@@ -321,13 +332,85 @@ public class JomcTest extends TestCase
 
         final String[] illegalDoc = new String[]
         {
-            "validate-modules", "-df", '"' + this.getTestDocumentIllegal() + '"', "-D"
+            "validate-modules", "-df", '"' + this.getTestModelDocumentIllegal() + '"', "-D"
         };
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
         assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
         assertEquals( Command.STATUS_FAILURE, Jomc.run( illegalDoc ) );
+    }
+
+    public void testMergeModlets() throws Exception
+    {
+        final ModelContext context = ModelContext.createModelContext( this.getClass().getClassLoader() );
+        final Unmarshaller unmarshaller = context.createUnmarshaller( ModelContext.MODLET_PUBLIC_ID );
+        final Schema schema = context.createSchema( ModelContext.MODLET_PUBLIC_ID );
+        unmarshaller.setSchema( schema );
+
+        final String[] help = new String[]
+        {
+            "merge-modlets", "help"
+        };
+
+        final String[] args = new String[]
+        {
+            "merge-modlets", "-xs", '"' + this.getTestModletStylesheet() + '"', "-mdn",
+            '"' + this.getTestModletName() + '"', "-d", '"' + this.getTestModletOutputDocument() + '"'
+        };
+
+        final String[] includeArgs = new String[]
+        {
+            "merge-modlets", "-xs", '"' + this.getTestModletStylesheet() + '"', "-mdn",
+            '"' + this.getTestModletName() + '"', "-d", '"' + this.getTestModletOutputDocument() + '"',
+            "-mdinc", "JOMC Model"
+        };
+
+        final String[] excludeArgs = new String[]
+        {
+            "merge-modlets", "-xs", '"' + this.getTestModletStylesheet() + '"', "-mdn",
+            '"' + this.getTestModletName() + '"', "-d", '"' + this.getTestModletOutputDocument() + '"',
+            "-mdexc", "JOMC Model:JOMC Tools:JOMC Modlet"
+        };
+
+        final String[] unsupportedOption = new String[]
+        {
+            "merge-modlets", "--unsupported-option"
+        };
+
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
+        assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
+
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
+        Modlet merged = unmarshaller.unmarshal(
+            new StreamSource( new File( this.getTestModletOutputDocument() ) ), Modlet.class ).getValue();
+
+        assertNotNull( merged );
+        assertEquals( this.getTestModletName(), merged.getName() );
+        assertNotNull( merged.getSchemas() );
+        assertNotNull( merged.getServices() );
+        assertFalse( merged.getSchemas().getSchema().isEmpty() );
+        assertFalse( merged.getServices().getService().isEmpty() );
+
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( includeArgs ) );
+        merged = unmarshaller.unmarshal(
+            new StreamSource( new File( this.getTestModletOutputDocument() ) ), Modlet.class ).getValue();
+
+        assertNotNull( merged );
+        assertEquals( this.getTestModletName(), merged.getName() );
+        assertNotNull( merged.getSchemas() );
+        assertNotNull( merged.getServices() );
+        assertFalse( merged.getSchemas().getSchema().isEmpty() );
+        assertFalse( merged.getServices().getService().isEmpty() );
+
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( excludeArgs ) );
+        merged = unmarshaller.unmarshal(
+            new StreamSource( new File( this.getTestModletOutputDocument() ) ), Modlet.class ).getValue();
+
+        assertNotNull( merged );
+        assertEquals( this.getTestModletName(), merged.getName() );
+        assertNull( merged.getSchemas() );
+        assertNull( merged.getServices() );
     }
 
     @Override
@@ -383,32 +466,6 @@ public class JomcTest extends TestCase
     }
 
     /**
-     * Gets the value of the {@code testDocument} property.
-     * @return The value of the {@code testDocument} property.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private java.lang.String getTestDocument()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testDocument" );
-        assert _p != null : "'testDocument' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code testDocumentIllegal} property.
-     * @return The value of the {@code testDocumentIllegal} property.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private java.lang.String getTestDocumentIllegal()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testDocumentIllegal" );
-        assert _p != null : "'testDocumentIllegal' property not found.";
-        return _p;
-    }
-
-    /**
      * Gets the value of the {@code testIllegalSourceFilesModel} property.
      * @return The value of the {@code testIllegalSourceFilesModel} property.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
@@ -435,6 +492,97 @@ public class JomcTest extends TestCase
     }
 
     /**
+     * Gets the value of the {@code testModelDocument} property.
+     * @return The value of the {@code testModelDocument} property.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private java.lang.String getTestModelDocument()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocument" );
+        assert _p != null : "'testModelDocument' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code testModelDocumentIllegal} property.
+     * @return The value of the {@code testModelDocumentIllegal} property.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private java.lang.String getTestModelDocumentIllegal()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocumentIllegal" );
+        assert _p != null : "'testModelDocumentIllegal' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code testModelOutputDocument} property.
+     * @return The value of the {@code testModelOutputDocument} property.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private java.lang.String getTestModelOutputDocument()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelOutputDocument" );
+        assert _p != null : "'testModelOutputDocument' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code testModelStylesheet} property.
+     * @return The value of the {@code testModelStylesheet} property.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private java.lang.String getTestModelStylesheet()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelStylesheet" );
+        assert _p != null : "'testModelStylesheet' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code testModletName} property.
+     * @return The value of the {@code testModletName} property.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private java.lang.String getTestModletName()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModletName" );
+        assert _p != null : "'testModletName' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code testModletOutputDocument} property.
+     * @return The value of the {@code testModletOutputDocument} property.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private java.lang.String getTestModletOutputDocument()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModletOutputDocument" );
+        assert _p != null : "'testModletOutputDocument' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code testModletStylesheet} property.
+     * @return The value of the {@code testModletStylesheet} property.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private java.lang.String getTestModletStylesheet()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModletStylesheet" );
+        assert _p != null : "'testModletStylesheet' property not found.";
+        return _p;
+    }
+
+    /**
      * Gets the value of the {@code testModuleName} property.
      * @return The value of the {@code testModuleName} property.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
@@ -444,19 +592,6 @@ public class JomcTest extends TestCase
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModuleName" );
         assert _p != null : "'testModuleName' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code testOutputDocument} property.
-     * @return The value of the {@code testOutputDocument} property.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private java.lang.String getTestOutputDocument()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testOutputDocument" );
-        assert _p != null : "'testOutputDocument' property not found.";
         return _p;
     }
 
@@ -483,19 +618,6 @@ public class JomcTest extends TestCase
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testSourcesDirectory" );
         assert _p != null : "'testSourcesDirectory' property not found.";
-        return _p;
-    }
-
-    /**
-     * Gets the value of the {@code testStylesheet} property.
-     * @return The value of the {@code testStylesheet} property.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private java.lang.String getTestStylesheet()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testStylesheet" );
-        assert _p != null : "'testStylesheet' property not found.";
         return _p;
     }
     // </editor-fold>

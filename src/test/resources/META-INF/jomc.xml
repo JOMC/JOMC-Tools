@@ -56,11 +56,14 @@
       </authors>
       <properties>
         <property name="classesDirectory" value="${project.build.outputDirectory}"/>
-        <property name="testDocument" value="${project.build.outputDirectory}/META-INF/jomc.xml"/>
-        <property name="testDocumentIllegal" value="${project.build.testOutputDirectory}/org/jomc/cli/test/illegal-module.xml"/>
+        <property name="testModelDocument" value="${project.build.outputDirectory}/META-INF/jomc.xml"/>
+        <property name="testModelDocumentIllegal" value="${project.build.testOutputDirectory}/org/jomc/cli/test/illegal-module.xml"/>
         <property name="testModuleName" value="${project.name}"/>
-        <property name="testStylesheet" value="${basedir}/src/main/jomc/model-relocations.xsl"/>
-        <property name="testOutputDocument" value="${project.build.directory}/jomc-test/transformed.xml"/>
+        <property name="testModelStylesheet" value="${basedir}/src/main/jomc/model-relocations.xsl"/>
+        <property name="testModelOutputDocument" value="${project.build.directory}/jomc-test/transformed.xml"/>
+        <property name="testModletName" value="${project.name}"/>
+        <property name="testModletStylesheet" value="${basedir}/src/main/jomc/modlet-relocations.xsl"/>
+        <property name="testModletOutputDocument" value="${project.build.directory}/jomc-test/transformed-modlet.xml"/>
         <property name="testSourcesDirectory" value="${project.build.directory}/jomc-test/src"/>
         <property name="testResourcesDirectory" value="${project.build.directory}/jomc-test/rsrc"/>
         <property name="testClassesDirectory" value="${project.build.directory}/jomc-test/classes"/>
