@@ -437,14 +437,14 @@
                 </goals>
               </execution>
               <execution>
-                <id>main-java-sources</id>
+                <id>main-sources</id>
                 <phase>process-resources</phase>
                 <goals>
                   <goal>checkin</goal>
                 </goals>
               </execution>
               <execution>
-                <id>test-java-sources</id>
+                <id>test-sources</id>
                 <phase>process-test-resources</phase>
                 <goals>
                   <goal>checkin</goal>
