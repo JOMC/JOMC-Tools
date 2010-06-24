@@ -36,27 +36,40 @@
 // SECTION-END
 package org.jomc.cli.commands;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
-import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.util.JAXBSource;
-import javax.xml.transform.Source;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Options;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
-import org.jomc.model.ObjectFactory;
+import org.jomc.model.modlet.DefaultModelProcessor;
+import org.jomc.model.modlet.DefaultModelProvider;
+import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelException;
 import org.jomc.modlet.ModelValidationReport;
+import org.jomc.tools.ClassFileProcessor;
 import org.jomc.tools.JomcTool;
+import org.jomc.tools.ResourceFileProcessor;
 import org.jomc.tools.SourceFileProcessor;
+import org.xml.sax.SAXException;
 
 // SECTION-START[Documentation]
 // <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 /**
- * Command line interface for the {@code JavaSources} tool.
+ * Base JOMC {@code Command} implementation for processing modules.
  * <p><b>Specifications</b><ul>
  * <li>{@code JOMC CLI Command} {@code 1.0} {@code Multiton}</li>
  * </ul></p>
@@ -89,15 +102,7 @@ import org.jomc.tools.SourceFileProcessor;
  * <p><b>Dependencies</b><ul>
  * <li>"{@link #getClasspathOption ClasspathOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
- * <li>"{@link #getDefaultTemplateProfileOption DefaultTemplateProfileOption}"<blockquote>
- * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getDocumentsOption DocumentsOption}"<blockquote>
- * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
- * <li>"{@link #getIndentationStringOption IndentationStringOption}"<blockquote>
- * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
- * <li>"{@link #getInputEncodingOption InputEncodingOption}"<blockquote>
- * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
- * <li>"{@link #getLineSeparatorOption LineSeparatorOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getLocale Locale}"<blockquote>
  * Dependency on {@code java.util.Locale} at specification level 1.1 bound to an instance.</blockquote></li>
@@ -105,23 +110,13 @@ import org.jomc.tools.SourceFileProcessor;
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getModuleLocationOption ModuleLocationOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
- * <li>"{@link #getModuleNameOption ModuleNameOption}"<blockquote>
- * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getNoClasspathResolutionOption NoClasspathResolutionOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getNoModelProcessingOption NoModelProcessingOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
- * <li>"{@link #getOutputEncodingOption OutputEncodingOption}"<blockquote>
- * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getPlatformProviderLocationOption PlatformProviderLocationOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getProviderLocationOption ProviderLocationOption}"<blockquote>
- * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
- * <li>"{@link #getSourceDirectoryOption SourceDirectoryOption}"<blockquote>
- * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
- * <li>"{@link #getTemplateEncodingOption TemplateEncodingOption}"<blockquote>
- * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
- * <li>"{@link #getTemplateProfileOption TemplateProfileOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getTransformerLocationOption TransformerLocationOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
@@ -191,22 +186,7 @@ import org.jomc.tools.SourceFileProcessor;
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ung&uuml;ltiges Modell.</pre></td></tr>
  * </table>
  * <li>"{@link #getLongDescriptionMessage longDescriptionMessage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
- *   jomc manage-sources -cp examples/lib/commons-cli-1.2.jar \
- *                       -sd /tmp/src \
- *                       -df examples/xml/jomc-cli.xml \
- *                       -mn &quot;JOMC CLI&quot; \
- *                       -v</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
- *   jomc manage-sources -cp examples/lib/commons-cli-1.2.jar \
- *                       -sd /tmp/src \
- *                       -df examples/xml/jomc-cli.xml \
- *                       -mn &quot;JOMC CLI&quot; \
- *                       -v</pre></td></tr>
- * </table>
- * <li>"{@link #getMissingModuleMessage missingModuleMessage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul ''{0}'' nicht gefunden.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre></pre></td></tr>
  * </table>
  * <li>"{@link #getModulesReport modulesReport}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Modules</pre></td></tr>
@@ -216,8 +196,7 @@ import org.jomc.tools.SourceFileProcessor;
  * <tr><td valign="top">English:</td><td valign="top"><pre>--------------------------------------------------------------------------------</pre></td></tr>
  * </table>
  * <li>"{@link #getShortDescriptionMessage shortDescriptionMessage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Manages source files.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verwaltet Quelltext-Dateien.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre></pre></td></tr>
  * </table>
  * </ul></p>
  *
@@ -231,142 +210,314 @@ import org.jomc.tools.SourceFileProcessor;
 @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
 // </editor-fold>
 // SECTION-END
-public final class ManageSourcesCommand extends AbstractJomcToolCommand
+public abstract class AbstractJomcToolCommand extends AbstractJomcCommand
 {
     // SECTION-START[Command]
+    // SECTION-END
+    // SECTION-START[AbstractJomcToolCommand]
 
-    /** Options of the instance. */
-    private Options options;
-
-    public Options getOptions()
+    protected ResourceFileProcessor createResourceFileProcessor()
     {
-        if ( this.options == null )
+        final ResourceFileProcessor tool = new ResourceFileProcessor();
+        tool.setLogLevel( this.getLogLevel() );
+        tool.getListeners().add( new JomcTool.Listener()
         {
-            this.options = new Options();
-            this.options.addOption( this.getClasspathOption() );
-            this.options.addOption( this.getDocumentsOption() );
-            this.options.addOption( this.getModuleLocationOption() );
-            this.options.addOption( this.getModletLocationOption() );
-            this.options.addOption( this.getTransformerLocationOption() );
-            this.options.addOption( this.getProviderLocationOption() );
-            this.options.addOption( this.getPlatformProviderLocationOption() );
-            this.options.addOption( this.getNoClasspathResolutionOption() );
-            this.options.addOption( this.getNoModelProcessingOption() );
-            this.options.addOption( this.getModuleNameOption() );
-            this.options.addOption( this.getSourceDirectoryOption() );
-            this.options.addOption( this.getTemplateProfileOption() );
-            this.options.addOption( this.getDefaultTemplateProfileOption() );
-            this.options.addOption( this.getTemplateEncodingOption() );
-            this.options.addOption( this.getInputEncodingOption() );
-            this.options.addOption( this.getOutputEncodingOption() );
-            this.options.addOption( this.getIndentationStringOption() );
-            this.options.addOption( this.getLineSeparatorOption() );
-        }
 
-        return this.options;
+            public void onLog( final Level level, final String message, final Throwable throwable )
+            {
+                log( level, message, throwable );
+            }
+
+        } );
+
+        return tool;
     }
 
-    public int executeJomcToolCommand( final CommandLine commandLine ) throws Exception
+    protected ClassFileProcessor createClassFileProcessor()
+    {
+        final ClassFileProcessor tool = new ClassFileProcessor();
+        tool.setLogLevel( this.getLogLevel() );
+        tool.getListeners().add( new JomcTool.Listener()
+        {
+
+            public void onLog( final Level level, final String message, final Throwable throwable )
+            {
+                log( level, message, throwable );
+            }
+
+        } );
+
+        return tool;
+    }
+
+    protected SourceFileProcessor createSourceFileProcessor()
+    {
+        final SourceFileProcessor tool = new SourceFileProcessor();
+        tool.setLogLevel( this.getLogLevel() );
+        tool.getListeners().add( new JomcTool.Listener()
+        {
+
+            public void onLog( final Level level, final String message, final Throwable throwable )
+            {
+                log( level, message, throwable );
+            }
+
+        } );
+
+        return tool;
+    }
+
+    protected Set<File> getDocumentFiles( final CommandLine commandLine ) throws IOException
+    {
+        final Set<File> files = new HashSet<File>();
+
+        if ( commandLine.hasOption( this.getDocumentsOption().getOpt() ) )
+        {
+            final String[] elements = commandLine.getOptionValues( this.getDocumentsOption().getOpt() );
+            if ( elements != null )
+            {
+                for ( String e : elements )
+                {
+                    if ( e.startsWith( "@" ) )
+                    {
+                        String line = null;
+                        final File file = new File( e.substring( 1 ) );
+                        BufferedReader reader = null;
+
+                        try
+                        {
+                            reader = new BufferedReader( new FileReader( file ) );
+                            while ( ( line = reader.readLine() ) != null )
+                            {
+                                line = line.trim();
+                                if ( !line.startsWith( "#" ) )
+                                {
+                                    final File f = new File( line );
+
+                                    if ( f.exists() )
+                                    {
+                                        if ( this.isLoggable( Level.FINE ) )
+                                        {
+                                            this.log( Level.FINE, this.getDocumentFileInfo(
+                                                this.getLocale(), f.getAbsolutePath() ), null );
+
+                                        }
+
+                                        files.add( f );
+                                    }
+                                    else if ( this.isLoggable( Level.WARNING ) )
+                                    {
+                                        this.log( Level.WARNING, this.getDocumentFileNotFoundWarning(
+                                            this.getLocale(), f.getAbsolutePath() ), null );
+
+                                    }
+                                }
+                            }
+                        }
+                        finally
+                        {
+                            if ( reader != null )
+                            {
+                                reader.close();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        final File file = new File( e );
+
+                        if ( file.exists() )
+                        {
+                            if ( this.isLoggable( Level.FINE ) )
+                            {
+                                this.log( Level.FINE, this.getDocumentFileInfo(
+                                    this.getLocale(), file.getAbsolutePath() ), null );
+
+                            }
+
+                            files.add( file );
+                        }
+                        else if ( this.isLoggable( Level.WARNING ) )
+                        {
+                            this.log( Level.WARNING, this.getDocumentFileNotFoundWarning(
+                                this.getLocale(), file.getAbsolutePath() ), null );
+
+                        }
+                    }
+                }
+            }
+        }
+
+        return files;
+    }
+
+    protected Modules getModules( final ModelContext context, final CommandLine commandLine )
+        throws IOException, SAXException, JAXBException, ModelException
+    {
+        Model model = null;
+        JAXBElement<Modules> e = null;
+        Modules modules = new Modules();
+
+        if ( commandLine.hasOption( this.getDocumentsOption().getOpt() ) )
+        {
+            final Unmarshaller u = context.createUnmarshaller( Modules.MODEL_PUBLIC_ID );
+            for ( File f : this.getDocumentFiles( commandLine ) )
+            {
+                final InputStream in = new FileInputStream( f );
+                Object o = u.unmarshal( new StreamSource( in ) );
+                if ( o instanceof JAXBElement )
+                {
+                    o = ( (JAXBElement) o ).getValue();
+                }
+
+                in.close();
+
+                if ( o instanceof Module )
+                {
+                    modules.getModule().add( (Module) o );
+                }
+                else if ( o instanceof Modules )
+                {
+                    modules.getModule().addAll( ( (Modules) o ).getModule() );
+                }
+                else if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, this.getCannotProcessMessage(
+                        this.getLocale(), f.getAbsolutePath(), o.toString() ), null );
+
+                }
+            }
+        }
+
+        if ( commandLine.hasOption( this.getClasspathOption().getOpt() ) )
+        {
+            model = context.findModel( Modules.MODEL_PUBLIC_ID );
+            e = model.getAnyElement( Modules.MODEL_PUBLIC_ID, "modules" );
+
+            if ( e != null )
+            {
+                for ( Module m : e.getValue().getModule() )
+                {
+                    if ( modules.getModule( m.getName() ) == null )
+                    {
+                        modules.getModule().add( m );
+                    }
+                    else if ( this.isLoggable( Level.FINE ) )
+                    {
+                        this.log( Level.FINE, this.getExcludedModuleFromClasspathInfo(
+                            this.getLocale(), m.getName() ), null );
+
+                    }
+                }
+            }
+        }
+
+        if ( !commandLine.hasOption( this.getNoClasspathResolutionOption().getOpt() ) )
+        {
+            final Module classpathModule = modules.getClasspathModule(
+                Modules.getDefaultClasspathModuleName(), context.getClassLoader() );
+
+            if ( classpathModule != null )
+            {
+                modules.getModule().add( classpathModule );
+            }
+        }
+
+        if ( !commandLine.hasOption( this.getNoModelProcessingOption().getOpt() ) )
+        {
+            model = new Model();
+            model.setIdentifier( Modules.MODEL_PUBLIC_ID );
+            model.getAny().add( new org.jomc.model.ObjectFactory().createModules( modules ) );
+            model = context.processModel( model );
+            e = model.getAnyElement( Modules.MODEL_PUBLIC_ID, "modules" );
+            if ( e != null )
+            {
+                modules = e.getValue();
+            }
+        }
+
+        if ( this.isLoggable( Level.FINE ) )
+        {
+            this.log( Level.FINE, this.getModulesReport( this.getLocale() ), null );
+            for ( Module m : modules.getModule() )
+            {
+                this.log( Level.FINE, "\t" + m.getName(), null );
+            }
+        }
+
+        return modules;
+    }
+
+    protected final int executeCommand( final CommandLine commandLine ) throws Exception
     {
         try
         {
-            if ( commandLine.hasOption( this.getDefaultTemplateProfileOption().getOpt() ) )
+            if ( commandLine.hasOption( this.getTransformerLocationOption().getOpt() ) )
             {
-                JomcTool.setDefaultTemplateProfile(
-                    commandLine.getOptionValue( this.getDefaultTemplateProfileOption().getOpt() ) );
+                DefaultModelProcessor.setDefaultTransformerLocation(
+                    commandLine.getOptionValue( this.getTransformerLocationOption().getOpt() ) );
 
             }
             else
             {
-                JomcTool.setDefaultTemplateProfile( null );
+                DefaultModelProcessor.setDefaultTransformerLocation( null );
             }
 
-            final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
-            final ModelContext context = this.createModelContext( classLoader );
-            final Modules modules = this.getModules( context, commandLine );
-            final JAXBContext jaxbContext = context.createContext( Modules.MODEL_PUBLIC_ID );
-            final Marshaller marshaller = context.createMarshaller( Modules.MODEL_PUBLIC_ID );
-            final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModules( modules ) );
-            final ModelValidationReport validationReport = context.validateModel( Modules.MODEL_PUBLIC_ID, source );
-
-            this.log( validationReport, marshaller );
-
-            if ( validationReport.isModelValid() )
+            if ( commandLine.hasOption( this.getModuleLocationOption().getOpt() ) )
             {
-                final SourceFileProcessor tool = this.createSourceFileProcessor();
-                tool.setModules( modules );
+                DefaultModelProvider.setDefaultModuleLocation(
+                    commandLine.getOptionValue( this.getModuleLocationOption().getOpt() ) );
 
-                if ( commandLine.hasOption( this.getTemplateProfileOption().getOpt() ) )
-                {
-                    tool.setTemplateProfile( commandLine.getOptionValue( this.getTemplateProfileOption().getOpt() ) );
-                }
-                if ( commandLine.hasOption( this.getTemplateEncodingOption().getOpt() ) )
-                {
-                    tool.setTemplateEncoding( commandLine.getOptionValue( this.getTemplateEncodingOption().getOpt() ) );
-                }
-                if ( commandLine.hasOption( this.getInputEncodingOption().getOpt() ) )
-                {
-                    tool.setInputEncoding( commandLine.getOptionValue( this.getInputEncodingOption().getOpt() ) );
-                }
-                if ( commandLine.hasOption( this.getOutputEncodingOption().getOpt() ) )
-                {
-                    tool.setOutputEncoding( commandLine.getOptionValue( this.getOutputEncodingOption().getOpt() ) );
-                }
-                if ( commandLine.hasOption( this.getIndentationStringOption().getOpt() ) )
-                {
-                    tool.setIndentation( StringEscapeUtils.unescapeJava(
-                        commandLine.getOptionValue( this.getIndentationStringOption().getOpt() ) ) );
-
-                }
-                if ( commandLine.hasOption( this.getLineSeparatorOption().getOpt() ) )
-                {
-                    tool.setLineSeparator( StringEscapeUtils.unescapeJava(
-                        commandLine.getOptionValue( this.getLineSeparatorOption().getOpt() ) ) );
-
-                }
-
-                final File sourcesDirectory =
-                    new File( commandLine.getOptionValue( this.getSourceDirectoryOption().getOpt() ) );
-
-                if ( commandLine.hasOption( this.getModuleNameOption().getOpt() ) )
-                {
-                    final String moduleName = commandLine.getOptionValue( this.getModuleNameOption().getOpt() );
-                    final Module module = tool.getModules().getModule( moduleName );
-
-                    if ( module != null )
-                    {
-                        tool.manageSourceFiles( module, sourcesDirectory );
-                    }
-                    else if ( this.isLoggable( Level.WARNING ) )
-                    {
-                        this.log( Level.WARNING, this.getMissingModuleMessage( this.getLocale(), moduleName ), null );
-                    }
-                }
-                else
-                {
-                    tool.manageSourceFiles( sourcesDirectory );
-                }
-
-                return STATUS_SUCCESS;
+            }
+            else
+            {
+                DefaultModelProvider.setDefaultModuleLocation( null );
             }
 
-            return STATUS_FAILURE;
+
+            return this.executeJomcToolCommand( commandLine );
         }
         finally
         {
-            JomcTool.setDefaultTemplateProfile( null );
+            DefaultModelProcessor.setDefaultTransformerLocation( null );
+            DefaultModelProvider.setDefaultModuleLocation( null );
         }
     }
 
-    // SECTION-END
-    // SECTION-START[ManageSourcesCommand]
+    protected void log( final ModelValidationReport validationReport, final Marshaller marshaller )
+        throws JAXBException
+    {
+        if ( !validationReport.isModelValid() && this.isLoggable( Level.SEVERE ) )
+        {
+            this.log( Level.SEVERE, this.getInvalidModelMessage( this.getLocale() ), null );
+        }
+
+        marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
+        for ( ModelValidationReport.Detail d : validationReport.getDetails() )
+        {
+            if ( this.isLoggable( d.getLevel() ) )
+            {
+                this.log( d.getLevel(), d.getMessage(), null );
+
+                if ( d.getElement() != null && this.getLogLevel().intValue() < Level.INFO.intValue() )
+                {
+                    final StringWriter stringWriter = new StringWriter();
+                    marshaller.marshal( d.getElement(), stringWriter );
+                    this.log( d.getLevel(), stringWriter.toString(), null );
+                }
+            }
+        }
+    }
+
+    protected abstract int executeJomcToolCommand( final CommandLine commandLine ) throws Exception;
+
     // SECTION-END
     // SECTION-START[Constructors]
     // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
 
-    /** Creates a new {@code ManageSourcesCommand} instance. */
+    /** Creates a new {@code AbstractJomcToolCommand} instance. */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    public ManageSourcesCommand()
+    public AbstractJomcToolCommand()
     {
         // SECTION-START[Default Constructor]
         super();
@@ -393,21 +544,6 @@ public final class ManageSourcesCommand extends AbstractJomcToolCommand
     }
 
     /**
-     * Gets the {@code DefaultTemplateProfileOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Default Template Profile Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code DefaultTemplateProfileOption} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private org.apache.commons.cli.Option getDefaultTemplateProfileOption()
-    {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "DefaultTemplateProfileOption" );
-        assert _d != null : "'DefaultTemplateProfileOption' dependency not found.";
-        return _d;
-    }
-
-    /**
      * Gets the {@code DocumentsOption} dependency.
      * <p>This method returns the "{@code JOMC CLI Documents Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
@@ -419,51 +555,6 @@ public final class ManageSourcesCommand extends AbstractJomcToolCommand
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "DocumentsOption" );
         assert _d != null : "'DocumentsOption' dependency not found.";
-        return _d;
-    }
-
-    /**
-     * Gets the {@code IndentationStringOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Indentation String Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code IndentationStringOption} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private org.apache.commons.cli.Option getIndentationStringOption()
-    {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "IndentationStringOption" );
-        assert _d != null : "'IndentationStringOption' dependency not found.";
-        return _d;
-    }
-
-    /**
-     * Gets the {@code InputEncodingOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Input Encoding Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code InputEncodingOption} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private org.apache.commons.cli.Option getInputEncodingOption()
-    {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "InputEncodingOption" );
-        assert _d != null : "'InputEncodingOption' dependency not found.";
-        return _d;
-    }
-
-    /**
-     * Gets the {@code LineSeparatorOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Line Separator Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code LineSeparatorOption} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private org.apache.commons.cli.Option getLineSeparatorOption()
-    {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "LineSeparatorOption" );
-        assert _d != null : "'LineSeparatorOption' dependency not found.";
         return _d;
     }
 
@@ -513,21 +604,6 @@ public final class ManageSourcesCommand extends AbstractJomcToolCommand
     }
 
     /**
-     * Gets the {@code ModuleNameOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Module Name Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code ModuleNameOption} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private org.apache.commons.cli.Option getModuleNameOption()
-    {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModuleNameOption" );
-        assert _d != null : "'ModuleNameOption' dependency not found.";
-        return _d;
-    }
-
-    /**
      * Gets the {@code NoClasspathResolutionOption} dependency.
      * <p>This method returns the "{@code JOMC CLI No Classpath Resolution Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
@@ -558,21 +634,6 @@ public final class ManageSourcesCommand extends AbstractJomcToolCommand
     }
 
     /**
-     * Gets the {@code OutputEncodingOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Output Encoding Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code OutputEncodingOption} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private org.apache.commons.cli.Option getOutputEncodingOption()
-    {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "OutputEncodingOption" );
-        assert _d != null : "'OutputEncodingOption' dependency not found.";
-        return _d;
-    }
-
-    /**
      * Gets the {@code PlatformProviderLocationOption} dependency.
      * <p>This method returns the "{@code JOMC CLI Platform Provider Location Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
@@ -599,56 +660,6 @@ public final class ManageSourcesCommand extends AbstractJomcToolCommand
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ProviderLocationOption" );
         assert _d != null : "'ProviderLocationOption' dependency not found.";
-        return _d;
-    }
-
-    /**
-     * Gets the {@code SourceDirectoryOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Source Directory Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * <p><b>Properties</b><dl>
-     * <dt>"{@code required}"</dt>
-     * <dd>Property of type {@code boolean}.
-     * </dd>
-     * </dl>
-     * @return The {@code SourceDirectoryOption} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private org.apache.commons.cli.Option getSourceDirectoryOption()
-    {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "SourceDirectoryOption" );
-        assert _d != null : "'SourceDirectoryOption' dependency not found.";
-        return _d;
-    }
-
-    /**
-     * Gets the {@code TemplateEncodingOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Template Encoding Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code TemplateEncodingOption} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private org.apache.commons.cli.Option getTemplateEncodingOption()
-    {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "TemplateEncodingOption" );
-        assert _d != null : "'TemplateEncodingOption' dependency not found.";
-        return _d;
-    }
-
-    /**
-     * Gets the {@code TemplateProfileOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Template Profile Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code TemplateProfileOption} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private org.apache.commons.cli.Option getTemplateProfileOption()
-    {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "TemplateProfileOption" );
-        assert _d != null : "'TemplateProfileOption' dependency not found.";
         return _d;
     }
 
@@ -1078,18 +1089,7 @@ public final class ManageSourcesCommand extends AbstractJomcToolCommand
     /**
      * Gets the text of the {@code longDescriptionMessage} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
-     *   jomc manage-sources -cp examples/lib/commons-cli-1.2.jar \
-     *                       -sd /tmp/src \
-     *                       -df examples/xml/jomc-cli.xml \
-     *                       -mn &quot;JOMC CLI&quot; \
-     *                       -v</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
-     *   jomc manage-sources -cp examples/lib/commons-cli-1.2.jar \
-     *                       -sd /tmp/src \
-     *                       -df examples/xml/jomc-cli.xml \
-     *                       -mn &quot;JOMC CLI&quot; \
-     *                       -v</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre></pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code longDescriptionMessage} message.
@@ -1101,26 +1101,6 @@ public final class ManageSourcesCommand extends AbstractJomcToolCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "longDescriptionMessage", locale );
         assert _m != null : "'longDescriptionMessage' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code missingModuleMessage} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul ''{0}'' nicht gefunden.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @param moduleName Format argument.
-     * @return The text of the {@code missingModuleMessage} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private String getMissingModuleMessage( final java.util.Locale locale, final java.lang.String moduleName )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "missingModuleMessage", locale, moduleName );
-        assert _m != null : "'missingModuleMessage' message not found.";
         return _m;
     }
 
@@ -1164,8 +1144,7 @@ public final class ManageSourcesCommand extends AbstractJomcToolCommand
     /**
      * Gets the text of the {@code shortDescriptionMessage} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Manages source files.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Verwaltet Quelltext-Dateien.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre></pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code shortDescriptionMessage} message.

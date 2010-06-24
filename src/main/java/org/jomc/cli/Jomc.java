@@ -76,7 +76,7 @@ import org.jomc.modlet.DefaultModletProvider;
  * </ul></p>
  * <p><b>Dependencies</b><ul>
  * <li>"{@link #getCommands Commands}"<blockquote>
- * Dependency on {@code org.jomc.cli.Command} at specification level 1.0-beta-5-SNAPSHOT.</blockquote></li>
+ * Dependency on {@code JOMC CLI Command} at specification level 1.0-beta-5-SNAPSHOT.</blockquote></li>
  * <li>"{@link #getDebugOption DebugOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getFailOnWarningsOption FailOnWarningsOption}"<blockquote>
@@ -545,7 +545,7 @@ public class Jomc
 
     /**
      * Gets the {@code Commands} dependency.
-     * <p>This method returns any available object of the {@code org.jomc.cli.Command} specification at specification level 1.0-beta-5-SNAPSHOT.</p>
+     * <p>This method returns any available object of the {@code JOMC CLI Command} specification at specification level 1.0-beta-5-SNAPSHOT.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested.</p>
      * @return The {@code Commands} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.

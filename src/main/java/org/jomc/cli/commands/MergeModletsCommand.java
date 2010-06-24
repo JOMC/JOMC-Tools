@@ -63,7 +63,7 @@ import org.jomc.modlet.ObjectFactory;
 /**
  * Command line interface for merging modlets.
  * <p><b>Specifications</b><ul>
- * <li>{@code org.jomc.cli.Command} {@code 1.0} {@code Multiton}</li>
+ * <li>{@code JOMC CLI Command} {@code 1.0} {@code Multiton}</li>
  * </ul></p>
  * <p><b>Properties</b><ul>
  * <li>"{@link #getAbbreviatedCommandName abbreviatedCommandName}"
@@ -129,7 +129,7 @@ import org.jomc.modlet.ObjectFactory;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-24T06:46:00+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-24T10:57:21+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -142,6 +142,18 @@ import org.jomc.modlet.ObjectFactory;
  * <li>"{@link #getClasspathElementNotFoundWarning classpathElementNotFoundWarning}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath element ''{0}'' ignored. File not found.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Klassenpfad-Element ''{0}'' ignoriert. Datei nicht gefunden.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getCommandFailureMessage commandFailureMessage}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>{0} failure.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} fehlgeschlagen.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getCommandInfoMessage commandInfoMessage}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} ...</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>F&uuml;hrt Befehl {0} aus ... </pre></td></tr>
+ * </table>
+ * <li>"{@link #getCommandSuccessMessage commandSuccessMessage}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>{0} successful.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} erfolgreich.</pre></td></tr>
  * </table>
  * <li>"{@link #getDefaultLogLevelInfo defaultLogLevelInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Default log level: ''{0}''</pre></td></tr>
@@ -191,19 +203,15 @@ import org.jomc.modlet.ObjectFactory;
  * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
  *   jomc merge-modlets -cp examples/lib/commons-cli-1.2.jar \
  *                      -xs examples/xslt/modlet-relocations.xsl \
- *                      -mn &quot;Merged Name&quot; \
+ *                      -mdn &quot;Merged Name&quot; \
  *                      -d /tmp/jomc-modlet.xml \
  *                      -v</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
  *   jomc merge-modlets -cp examples/lib/commons-cli-1.2.jar \
  *                      -xs examples/xslt/modlet-relocations.xsl \
- *                      -mn &quot;Merged Name&quot; \
+ *                      -mdn &quot;Merged Name&quot; \
  *                      -d /tmp/jomc-modlet.xml \
  *                      -v</pre></td></tr>
- * </table>
- * <li>"{@link #getMissingModuleMessage missingModuleMessage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul ''{0}'' nicht gefunden.</pre></td></tr>
  * </table>
  * <li>"{@link #getModulesReport modulesReport}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Modules</pre></td></tr>
@@ -215,22 +223,6 @@ import org.jomc.modlet.ObjectFactory;
  * <li>"{@link #getShortDescriptionMessage shortDescriptionMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Merges modlets.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>F&uuml;gt Modlets zusammen.</pre></td></tr>
- * </table>
- * <li>"{@link #getStartingModuleProcessingMessage startingModuleProcessingMessage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} with module ''{1}'' ...</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>F&uuml;hrt Befehl {0} mit Modul ''{1}'' aus ... </pre></td></tr>
- * </table>
- * <li>"{@link #getStartingProcessingMessage startingProcessingMessage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} ...</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>F&uuml;hrt Befehl {0} aus ... </pre></td></tr>
- * </table>
- * <li>"{@link #getToolFailureMessage toolFailureMessage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>{0} failure.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} fehlgeschlagen.</pre></td></tr>
- * </table>
- * <li>"{@link #getToolSuccessMessage toolSuccessMessage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>{0} successful.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} erfolgreich.</pre></td></tr>
  * </table>
  * <li>"{@link #getWriteInfo writeInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Writing ''{0}''.</pre></td></tr>
@@ -248,19 +240,22 @@ import org.jomc.modlet.ObjectFactory;
 @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
 // </editor-fold>
 // SECTION-END
-public class MergeModletsCommand extends AbstractJomcCommand implements Command
+public final class MergeModletsCommand extends AbstractJomcCommand implements Command
 {
     // SECTION-START[Command]
 
     /** Options of the instance. */
     private Options options;
 
-    @Override
     public Options getOptions()
     {
         if ( this.options == null )
         {
-            this.options = super.getOptions();
+            this.options = new Options();
+            this.options.addOption( this.getClasspathOption() );
+            this.options.addOption( this.getModletLocationOption() );
+            this.options.addOption( this.getProviderLocationOption() );
+            this.options.addOption( this.getPlatformProviderLocationOption() );
             this.options.addOption( this.getDocumentOption() );
             this.options.addOption( this.getStylesheetOption() );
             this.options.addOption( this.getModletNameOption() );
@@ -275,11 +270,6 @@ public class MergeModletsCommand extends AbstractJomcCommand implements Command
 
     public int executeCommand( final CommandLine commandLine ) throws Exception
     {
-        if ( this.isLoggable( Level.INFO ) )
-        {
-            this.log( Level.INFO, this.getStartingProcessingMessage( this.getLocale(), this.getCommandName() ), null );
-        }
-
         final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
         final ModelContext context = this.createModelContext( classLoader );
         final Modlets modlets = new Modlets( context.getModlets() );
@@ -752,7 +742,7 @@ public class MergeModletsCommand extends AbstractJomcCommand implements Command
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-24T06:46:00+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-24T10:57:21+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -825,6 +815,66 @@ public class MergeModletsCommand extends AbstractJomcCommand implements Command
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "classpathElementNotFoundWarning", locale, fileName );
         assert _m != null : "'classpathElementNotFoundWarning' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code commandFailureMessage} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>{0} failure.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} fehlgeschlagen.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param toolName Format argument.
+     * @return The text of the {@code commandFailureMessage} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private String getCommandFailureMessage( final java.util.Locale locale, final java.lang.String toolName )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "commandFailureMessage", locale, toolName );
+        assert _m != null : "'commandFailureMessage' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code commandInfoMessage} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} ...</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>F&uuml;hrt Befehl {0} aus ... </pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param toolName Format argument.
+     * @return The text of the {@code commandInfoMessage} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private String getCommandInfoMessage( final java.util.Locale locale, final java.lang.String toolName )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "commandInfoMessage", locale, toolName );
+        assert _m != null : "'commandInfoMessage' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code commandSuccessMessage} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>{0} successful.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} erfolgreich.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param toolName Format argument.
+     * @return The text of the {@code commandSuccessMessage} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private String getCommandSuccessMessage( final java.util.Locale locale, final java.lang.String toolName )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "commandSuccessMessage", locale, toolName );
+        assert _m != null : "'commandSuccessMessage' message not found.";
         return _m;
     }
 
@@ -1057,13 +1107,13 @@ public class MergeModletsCommand extends AbstractJomcCommand implements Command
      * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
      *   jomc merge-modlets -cp examples/lib/commons-cli-1.2.jar \
      *                      -xs examples/xslt/modlet-relocations.xsl \
-     *                      -mn &quot;Merged Name&quot; \
+     *                      -mdn &quot;Merged Name&quot; \
      *                      -d /tmp/jomc-modlet.xml \
      *                      -v</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
      *   jomc merge-modlets -cp examples/lib/commons-cli-1.2.jar \
      *                      -xs examples/xslt/modlet-relocations.xsl \
-     *                      -mn &quot;Merged Name&quot; \
+     *                      -mdn &quot;Merged Name&quot; \
      *                      -d /tmp/jomc-modlet.xml \
      *                      -v</pre></td></tr>
      * </table></p>
@@ -1077,26 +1127,6 @@ public class MergeModletsCommand extends AbstractJomcCommand implements Command
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "longDescriptionMessage", locale );
         assert _m != null : "'longDescriptionMessage' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code missingModuleMessage} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul ''{0}'' nicht gefunden.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @param moduleName Format argument.
-     * @return The text of the {@code missingModuleMessage} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private String getMissingModuleMessage( final java.util.Locale locale, final java.lang.String moduleName )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "missingModuleMessage", locale, moduleName );
-        assert _m != null : "'missingModuleMessage' message not found.";
         return _m;
     }
 
@@ -1153,87 +1183,6 @@ public class MergeModletsCommand extends AbstractJomcCommand implements Command
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "shortDescriptionMessage", locale );
         assert _m != null : "'shortDescriptionMessage' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code startingModuleProcessingMessage} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} with module ''{1}'' ...</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>F&uuml;hrt Befehl {0} mit Modul ''{1}'' aus ... </pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @param toolName Format argument.
-     * @param moduleName Format argument.
-     * @return The text of the {@code startingModuleProcessingMessage} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private String getStartingModuleProcessingMessage( final java.util.Locale locale, final java.lang.String toolName, final java.lang.String moduleName )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "startingModuleProcessingMessage", locale, toolName, moduleName );
-        assert _m != null : "'startingModuleProcessingMessage' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code startingProcessingMessage} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} ...</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>F&uuml;hrt Befehl {0} aus ... </pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @param toolName Format argument.
-     * @return The text of the {@code startingProcessingMessage} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private String getStartingProcessingMessage( final java.util.Locale locale, final java.lang.String toolName )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "startingProcessingMessage", locale, toolName );
-        assert _m != null : "'startingProcessingMessage' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code toolFailureMessage} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>{0} failure.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} fehlgeschlagen.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @param toolName Format argument.
-     * @return The text of the {@code toolFailureMessage} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private String getToolFailureMessage( final java.util.Locale locale, final java.lang.String toolName )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "toolFailureMessage", locale, toolName );
-        assert _m != null : "'toolFailureMessage' message not found.";
-        return _m;
-    }
-
-    /**
-     * Gets the text of the {@code toolSuccessMessage} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>{0} successful.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} erfolgreich.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @param toolName Format argument.
-     * @return The text of the {@code toolSuccessMessage} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private String getToolSuccessMessage( final java.util.Locale locale, final java.lang.String toolName )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "toolSuccessMessage", locale, toolName );
-        assert _m != null : "'toolSuccessMessage' message not found.";
         return _m;
     }
 
