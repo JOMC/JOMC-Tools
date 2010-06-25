@@ -41,7 +41,6 @@ import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.Source;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.jomc.model.Module;
-import org.jomc.model.Modules;
 import org.jomc.model.ObjectFactory;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelValidationReport;
@@ -73,9 +72,9 @@ public abstract class AbstractResourcesMojo extends AbstractJomcMojo
         {
             final ModelContext context = this.createModelContext( this.getResourcesClassLoader() );
             final ResourceFileProcessor tool = this.createResourceFileProcessor( context );
-            final JAXBContext jaxbContext = context.createContext( Modules.MODEL_PUBLIC_ID );
+            final JAXBContext jaxbContext = context.createContext( this.getModel() );
             final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModules( tool.getModules() ) );
-            final ModelValidationReport validationReport = context.validateModel( Modules.MODEL_PUBLIC_ID, source );
+            final ModelValidationReport validationReport = context.validateModel( this.getModel(), source );
 
             this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 

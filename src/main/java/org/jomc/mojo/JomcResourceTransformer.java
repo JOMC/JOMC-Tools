@@ -67,6 +67,7 @@ import org.jomc.modlet.Modlets;
  * Maven Shade Plugin {@code ResourceTransformer} implementation for assembling JOMC resources.
  * <p><b>Usage</b><pre>
  * &lt;transformer implementation="org.jomc.mojo.JomcResourceTransformer"&gt;
+ *   &lt;model&gt;http://jomc.org/model&lt;/model&gt;
  *   &lt;moduleName&gt;${project.name}&lt;/moduleName&gt;
  *   &lt;moduleVersion&gt;${project.version}&lt;/moduleVersion&gt;
  *   &lt;moduleVendor&gt;${project.organization.name}&lt;/moduleVendor&gt;
@@ -117,6 +118,9 @@ public class JomcResourceTransformer implements ResourceTransformer
         UNKNOWN_RESOURCE
 
     }
+
+    /** The identifier of the model to process. */
+    private String model = ModelObject.MODEL_PUBLIC_ID;
 
     /** The name of the assembled module. */
     private String moduleName;
@@ -371,7 +375,7 @@ public class JomcResourceTransformer implements ResourceTransformer
                     }
                 }
 
-                final Modlet mergedModlet = this.modlets.getMergedModlet( this.modletName, Modules.MODEL_PUBLIC_ID );
+                final Modlet mergedModlet = this.modlets.getMergedModlet( this.modletName, this.model );
                 mergedModlet.setVendor( this.modletVendor );
                 mergedModlet.setVersion( this.modletVersion );
 
@@ -429,8 +433,8 @@ public class JomcResourceTransformer implements ResourceTransformer
             {
                 this.setupJomc();
                 final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
-                this.jomcUnmarshaller = modelContext.createUnmarshaller( Modules.MODEL_PUBLIC_ID );
-                this.jomcUnmarshaller.setSchema( modelContext.createSchema( Modules.MODEL_PUBLIC_ID ) );
+                this.jomcUnmarshaller = modelContext.createUnmarshaller( this.model );
+                this.jomcUnmarshaller.setSchema( modelContext.createSchema( this.model ) );
             }
             finally
             {
@@ -459,8 +463,8 @@ public class JomcResourceTransformer implements ResourceTransformer
             {
                 this.setupJomc();
                 final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
-                this.jomcMarshaller = modelContext.createMarshaller( Modules.MODEL_PUBLIC_ID );
-                this.jomcMarshaller.setSchema( modelContext.createSchema( Modules.MODEL_PUBLIC_ID ) );
+                this.jomcMarshaller = modelContext.createMarshaller( this.model );
+                this.jomcMarshaller.setSchema( modelContext.createSchema( this.model ) );
                 this.jomcMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
             }
             finally
@@ -491,9 +495,9 @@ public class JomcResourceTransformer implements ResourceTransformer
                     new StreamSource( this.modelObjectStylesheet ) );
 
                 final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
-                final Marshaller marshaller = modelContext.createMarshaller( Modules.MODEL_PUBLIC_ID );
-                final Unmarshaller unmarshaller = modelContext.createUnmarshaller( Modules.MODEL_PUBLIC_ID );
-                final javax.xml.validation.Schema schema = modelContext.createSchema( Modules.MODEL_PUBLIC_ID );
+                final Marshaller marshaller = modelContext.createMarshaller( this.model );
+                final Unmarshaller unmarshaller = modelContext.createUnmarshaller( this.model );
+                final javax.xml.validation.Schema schema = modelContext.createSchema( this.model );
                 marshaller.setSchema( schema );
                 marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
                 unmarshaller.setSchema( schema );

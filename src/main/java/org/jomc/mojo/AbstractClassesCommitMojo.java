@@ -54,7 +54,6 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.jomc.model.Module;
-import org.jomc.model.Modules;
 import org.jomc.model.ObjectFactory;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelValidationReport;
@@ -188,17 +187,17 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
             final ClassLoader classLoader = this.getClassesClassLoader();
             final ModelContext context = this.createModelContext( classLoader );
             final ClassFileProcessor tool = this.createClassFileProcessor( context );
-            final JAXBContext jaxbContext = context.createContext( Modules.MODEL_PUBLIC_ID );
-            final Marshaller marshaller = context.createMarshaller( Modules.MODEL_PUBLIC_ID );
-            final Unmarshaller unmarshaller = context.createUnmarshaller( Modules.MODEL_PUBLIC_ID );
-            final Schema schema = context.createSchema( Modules.MODEL_PUBLIC_ID );
+            final JAXBContext jaxbContext = context.createContext( this.getModel() );
+            final Marshaller marshaller = context.createMarshaller( this.getModel() );
+            final Unmarshaller unmarshaller = context.createUnmarshaller( this.getModel() );
+            final Schema schema = context.createSchema( this.getModel() );
             final List<Transformer> transformers = this.getTransformers( classLoader );
 
             marshaller.setSchema( schema );
             unmarshaller.setSchema( schema );
 
             final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModules( tool.getModules() ) );
-            final ModelValidationReport validationReport = context.validateModel( Modules.MODEL_PUBLIC_ID, source );
+            final ModelValidationReport validationReport = context.validateModel( this.getModel(), source );
 
             this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 

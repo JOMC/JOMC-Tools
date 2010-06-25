@@ -57,6 +57,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.jomc.model.ModelObject;
 import org.jomc.model.modlet.DefaultModelProcessor;
 import org.jomc.model.modlet.DefaultModelProvider;
 import org.jomc.model.Module;
@@ -122,6 +123,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @parameter
      */
     private String platformProviderLocation;
+
+    /**
+     * The identifier of the model to process.
+     *
+     * @parameter default-value="http://jomc.org/model"
+     */
+    private String model;
 
     /**
      * The location to search for modlets.
@@ -625,6 +633,16 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
+     * Gets the identifier of the model to process.
+     *
+     * @return The identifier of the model to process.
+     */
+    protected String getModel()
+    {
+        return this.model;
+    }
+
+    /**
      * Gets the name of the module to process.
      *
      * @return The name of the module to process.
@@ -652,8 +670,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         try
         {
-            Model model = context.findModel( Modules.MODEL_PUBLIC_ID );
-            JAXBElement<Modules> modules = model.getAnyElement( Modules.MODEL_PUBLIC_ID, "modules" );
+            Model m = context.findModel( this.getModel() );
+            JAXBElement<Modules> modules = m.getAnyElement( ModelObject.MODEL_PUBLIC_ID, "modules" );
 
             if ( modules != null && this.isModelObjectClasspathResolutionEnabled() )
             {
@@ -668,10 +686,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( this.isModelProcessingEnabled() )
             {
-                model = context.processModel( model );
+                m = context.processModel( m );
             }
 
-            return model;
+            return m;
         }
         catch ( final ModelException e )
         {
@@ -682,7 +700,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     protected Modules getToolModules( final ModelContext context ) throws MojoExecutionException
     {
         final Model model = this.getModel( context );
-        final JAXBElement<Modules> modules = model.getAnyElement( Modules.MODEL_PUBLIC_ID, "modules" );
+        final JAXBElement<Modules> modules = model.getAnyElement( ModelObject.MODEL_PUBLIC_ID, "modules" );
         return modules != null ? modules.getValue() : new Modules();
     }
 
@@ -723,7 +741,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( !report.getDetails().isEmpty() )
             {
-                final Marshaller marshaller = context.createMarshaller( Modules.MODEL_PUBLIC_ID );
+                final Marshaller marshaller = context.createMarshaller( this.getModel() );
                 marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
 
                 for ( ModelValidationReport.Detail detail : report.getDetails() )
