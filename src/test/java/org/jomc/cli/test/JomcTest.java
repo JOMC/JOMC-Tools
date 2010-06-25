@@ -36,8 +36,9 @@
 // SECTION-END
 package org.jomc.cli.test;
 
+import org.jomc.model.ModelObject;
+import org.jomc.modlet.ModletObject;
 import org.jomc.modlet.Modlet;
-import org.jomc.model.Modules;
 import org.jomc.modlet.ModelContext;
 import java.io.File;
 import javax.xml.bind.JAXBElement;
@@ -243,8 +244,8 @@ public class JomcTest extends TestCase
     public void testMergeModules() throws Exception
     {
         final ModelContext context = ModelContext.createModelContext( this.getClass().getClassLoader() );
-        final Unmarshaller unmarshaller = context.createUnmarshaller( Modules.MODEL_PUBLIC_ID );
-        final Schema schema = context.createSchema( Modules.MODEL_PUBLIC_ID );
+        final Unmarshaller unmarshaller = context.createUnmarshaller( ModelObject.MODEL_PUBLIC_ID );
+        final Schema schema = context.createSchema( ModelObject.MODEL_PUBLIC_ID );
         unmarshaller.setSchema( schema );
 
         final String[] help = new String[]
@@ -344,8 +345,8 @@ public class JomcTest extends TestCase
     public void testMergeModlets() throws Exception
     {
         final ModelContext context = ModelContext.createModelContext( this.getClass().getClassLoader() );
-        final Unmarshaller unmarshaller = context.createUnmarshaller( ModelContext.MODLET_PUBLIC_ID );
-        final Schema schema = context.createSchema( ModelContext.MODLET_PUBLIC_ID );
+        final Unmarshaller unmarshaller = context.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
+        final Schema schema = context.createSchema( ModletObject.MODEL_PUBLIC_ID );
         unmarshaller.setSchema( schema );
 
         final String[] help = new String[]

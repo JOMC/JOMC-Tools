@@ -138,6 +138,40 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Model Option"
+                    name="${project.name} Model Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <implementations>
+        <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="model" override="true"/>
+        <property name="longOpt" value="model" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Identifier of the model to process.</text>
+            <text language="de">Bezeichner des zu verarbeitenden Modells.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">identifier</text>
+            <text language="de">Bezeichner</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} Verbose Option" name="${project.name} Verbose Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
                     vendor="${project.organization.name}">
@@ -1418,6 +1452,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <dependency name="Locale" identifier="java.util.Locale" version="1.1" implementationName="default" final="true"/>
         <dependency name="ClasspathOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Classpath Option"/>
+
+        <dependency name="ModelOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Model Option"/>
 
         <dependency name="ModletLocationOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Modlet Location Option"/>

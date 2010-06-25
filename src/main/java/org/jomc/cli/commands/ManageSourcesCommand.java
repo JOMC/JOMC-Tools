@@ -101,6 +101,8 @@ import org.jomc.tools.SourceFileProcessor;
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getLocale Locale}"<blockquote>
  * Dependency on {@code java.util.Locale} at specification level 1.1 bound to an instance.</blockquote></li>
+ * <li>"{@link #getModelOption ModelOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getModletLocationOption ModletLocationOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getModuleLocationOption ModuleLocationOption}"<blockquote>
@@ -128,7 +130,7 @@ import org.jomc.tools.SourceFileProcessor;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-25T03:43:48+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-25T05:15:59+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -245,6 +247,7 @@ public final class ManageSourcesCommand extends AbstractJomcToolCommand
             this.options = new Options();
             this.options.addOption( this.getClasspathOption() );
             this.options.addOption( this.getDocumentsOption() );
+            this.options.addOption( this.getModelOption() );
             this.options.addOption( this.getModuleLocationOption() );
             this.options.addOption( this.getModletLocationOption() );
             this.options.addOption( this.getTransformerLocationOption() );
@@ -284,11 +287,10 @@ public final class ManageSourcesCommand extends AbstractJomcToolCommand
             final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
             final ModelContext context = this.createModelContext( classLoader );
             final Modules modules = this.getModules( context, commandLine );
-            final JAXBContext jaxbContext = context.createContext( Modules.MODEL_PUBLIC_ID );
-            final Marshaller marshaller = context.createMarshaller( Modules.MODEL_PUBLIC_ID );
+            final JAXBContext jaxbContext = context.createContext( this.getModel( commandLine ) );
+            final Marshaller marshaller = context.createMarshaller( this.getModel( commandLine ) );
             final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModules( modules ) );
-            final ModelValidationReport validationReport = context.validateModel( Modules.MODEL_PUBLIC_ID, source );
-
+            final ModelValidationReport validationReport = context.validateModel( this.getModel( commandLine ), source );
             this.log( validationReport, marshaller );
 
             if ( validationReport.isModelValid() )
@@ -479,6 +481,21 @@ public final class ManageSourcesCommand extends AbstractJomcToolCommand
     {
         final java.util.Locale _d = (java.util.Locale) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "Locale" );
         assert _d != null : "'Locale' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code ModelOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Model Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code ModelOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getModelOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModelOption" );
+        assert _d != null : "'ModelOption' dependency not found.";
         return _d;
     }
 
@@ -756,7 +773,7 @@ public final class ManageSourcesCommand extends AbstractJomcToolCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-25T03:43:48+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-25T05:15:59+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

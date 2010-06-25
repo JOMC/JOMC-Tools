@@ -61,6 +61,7 @@ import javax.xml.bind.JAXBException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.io.IOUtils;
 import org.jomc.cli.Command;
+import org.jomc.model.ModelObject;
 import org.jomc.modlet.DefaultModelContext;
 import org.jomc.modlet.DefaultModletProvider;
 import org.jomc.modlet.ModelContext;
@@ -112,6 +113,8 @@ import org.jomc.modlet.Services;
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getLocale Locale}"<blockquote>
  * Dependency on {@code java.util.Locale} at specification level 1.1 bound to an instance.</blockquote></li>
+ * <li>"{@link #getModelOption ModelOption}"<blockquote>
+ * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getModletLocationOption ModletLocationOption}"<blockquote>
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * <li>"{@link #getPlatformProviderLocationOption PlatformProviderLocationOption}"<blockquote>
@@ -121,7 +124,7 @@ import org.jomc.modlet.Services;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-25T03:43:48+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-25T05:15:59+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getClasspathElementInfo classpathElementInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath element: ''{0}''</pre></td></tr>
@@ -464,6 +467,28 @@ public abstract class AbstractJomcCommand implements Command
         } );
 
         return modelContext;
+    }
+
+    /**
+     * Gets the identifier of the model to process.
+     *
+     * @param commandLine The command line to get the model identifier of the model to process from.
+     *
+     * @return The identifier of the model to process.
+     *
+     * @throws NullPointerException if {@code commandLine} is {@code null}.
+     */
+    protected String getModel( final CommandLine commandLine )
+    {
+        if ( commandLine == null )
+        {
+            throw new NullPointerException( "commandLine" );
+        }
+
+        return commandLine.hasOption( this.getModelOption().getOpt() )
+               ? commandLine.getOptionValue( this.getModelOption().getOpt() )
+               : ModelObject.MODEL_PUBLIC_ID;
+
     }
 
     /**
@@ -902,6 +927,21 @@ public abstract class AbstractJomcCommand implements Command
     }
 
     /**
+     * Gets the {@code ModelOption} dependency.
+     * <p>This method returns the "{@code JOMC CLI Model Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code ModelOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
+    private org.apache.commons.cli.Option getModelOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModelOption" );
+        assert _d != null : "'ModelOption' dependency not found.";
+        return _d;
+    }
+
+    /**
      * Gets the {@code ModletLocationOption} dependency.
      * <p>This method returns the "{@code JOMC CLI Modlet Location Option}" object of the {@code org.apache.commons.cli.Option} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
@@ -1035,7 +1075,7 @@ public abstract class AbstractJomcCommand implements Command
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-25T03:43:48+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-25T05:15:59+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
