@@ -528,8 +528,8 @@ public class JomcResourceTransformer implements ResourceTransformer
                 final ModelContext modletContext =
                     ModelContext.createModelContext( this.getClass().getClassLoader() );
 
-                this.modletUnmarshaller = modletContext.createUnmarshaller( ModelContext.MODLET_PUBLIC_ID );
-                this.modletUnmarshaller.setSchema( modletContext.createSchema( ModelContext.MODLET_PUBLIC_ID ) );
+                this.modletUnmarshaller = modletContext.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
+                this.modletUnmarshaller.setSchema( modletContext.createSchema( ModletObject.MODEL_PUBLIC_ID ) );
             }
             finally
             {
@@ -561,8 +561,8 @@ public class JomcResourceTransformer implements ResourceTransformer
                 final ModelContext modletContext =
                     ModelContext.createModelContext( this.getClass().getClassLoader() );
 
-                this.modletMarshaller = modletContext.createMarshaller( ModelContext.MODLET_PUBLIC_ID );
-                this.modletMarshaller.setSchema( modletContext.createSchema( ModelContext.MODLET_PUBLIC_ID ) );
+                this.modletMarshaller = modletContext.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
+                this.modletMarshaller.setSchema( modletContext.createSchema( ModletObject.MODEL_PUBLIC_ID ) );
                 this.modletMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
             }
             finally
@@ -595,9 +595,9 @@ public class JomcResourceTransformer implements ResourceTransformer
                 final ModelContext modletContext =
                     ModelContext.createModelContext( this.getClass().getClassLoader() );
 
-                final Marshaller marshaller = modletContext.createMarshaller( ModelContext.MODLET_PUBLIC_ID );
-                final Unmarshaller unmarshaller = modletContext.createUnmarshaller( ModelContext.MODLET_PUBLIC_ID );
-                final javax.xml.validation.Schema schema = modletContext.createSchema( ModelContext.MODLET_PUBLIC_ID );
+                final Marshaller marshaller = modletContext.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
+                final Unmarshaller unmarshaller = modletContext.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
+                final javax.xml.validation.Schema schema = modletContext.createSchema( ModletObject.MODEL_PUBLIC_ID );
                 marshaller.setSchema( schema );
                 marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
                 unmarshaller.setSchema( schema );
