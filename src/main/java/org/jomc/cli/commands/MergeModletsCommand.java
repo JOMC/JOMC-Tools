@@ -55,6 +55,7 @@ import org.jomc.cli.Command;
 import org.jomc.model.Modules;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.Modlet;
+import org.jomc.modlet.ModletObject;
 import org.jomc.modlet.Modlets;
 import org.jomc.modlet.ObjectFactory;
 
@@ -129,7 +130,7 @@ import org.jomc.modlet.ObjectFactory;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-25T00:37:40+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-25T03:43:48+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -273,8 +274,8 @@ public final class MergeModletsCommand extends AbstractJomcCommand implements Co
         final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
         final ModelContext context = this.createModelContext( classLoader );
         final Modlets modlets = new Modlets( context.getModlets() );
-        final Marshaller marshaller = context.createMarshaller( ModelContext.MODLET_PUBLIC_ID );
-        final Unmarshaller unmarshaller = context.createUnmarshaller( ModelContext.MODLET_PUBLIC_ID );
+        final Marshaller marshaller = context.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
+        final Unmarshaller unmarshaller = context.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
 
         File stylesheetFile = null;
         if ( commandLine.hasOption( this.getStylesheetOption().getOpt() ) )
@@ -358,7 +359,7 @@ public final class MergeModletsCommand extends AbstractJomcCommand implements Co
             mergedModlet = ( (JAXBElement<Modlet>) result.getResult() ).getValue();
         }
 
-        marshaller.setSchema( context.createSchema( ModelContext.MODLET_PUBLIC_ID ) );
+        marshaller.setSchema( context.createSchema( ModletObject.MODEL_PUBLIC_ID ) );
         marshaller.marshal( new ObjectFactory().createModlet( mergedModlet ), modletFile );
 
         if ( this.isLoggable( Level.INFO ) )
@@ -742,7 +743,7 @@ public final class MergeModletsCommand extends AbstractJomcCommand implements Co
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-25T00:37:40+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-25T03:43:48+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

@@ -66,6 +66,7 @@ import org.jomc.modlet.DefaultModletProvider;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelException;
 import org.jomc.modlet.Modlet;
+import org.jomc.modlet.ModletObject;
 import org.jomc.modlet.Modlets;
 import org.jomc.modlet.ObjectFactory;
 import org.jomc.modlet.Schema;
@@ -120,7 +121,7 @@ import org.jomc.modlet.Services;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-25T00:37:40+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-25T03:43:48+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getClasspathElementInfo classpathElementInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath element: ''{0}''</pre></td></tr>
@@ -743,7 +744,7 @@ public abstract class AbstractJomcCommand implements Command
             final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
             final InputStream in = resource.openStream();
             final JAXBElement e =
-                (JAXBElement) modelContext.createUnmarshaller( ModelContext.MODLET_PUBLIC_ID ).unmarshal( in );
+                (JAXBElement) modelContext.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID ).unmarshal( in );
 
             final Object o = e.getValue();
             Modlets modlets = null;
@@ -785,7 +786,7 @@ public abstract class AbstractJomcCommand implements Command
                 {
                     final File tmpResource = File.createTempFile( this.getClass().getName(), ".rsrc" );
                     tmpResource.deleteOnExit();
-                    modelContext.createMarshaller( ModelContext.MODLET_PUBLIC_ID ).marshal(
+                    modelContext.createMarshaller( ModletObject.MODEL_PUBLIC_ID ).marshal(
                         new ObjectFactory().createModlets( modlets ), tmpResource );
 
                     filteredResource = tmpResource.toURI().toURL();
@@ -1034,7 +1035,7 @@ public abstract class AbstractJomcCommand implements Command
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-25T00:37:40+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-25T03:43:48+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
