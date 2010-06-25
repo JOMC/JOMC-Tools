@@ -52,11 +52,11 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.cli.CommandLine;
-import org.jomc.model.ModelObject;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.modlet.DefaultModelProcessor;
 import org.jomc.model.modlet.DefaultModelProvider;
+import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelException;
@@ -126,7 +126,7 @@ import org.xml.sax.SAXException;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-25T06:17:07+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-25T23:59:19+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -358,7 +358,6 @@ public abstract class AbstractJomcToolCommand extends AbstractJomcCommand
         throws IOException, SAXException, JAXBException, ModelException
     {
         Model model = null;
-        JAXBElement<Modules> e = null;
         Modules modules = new Modules();
 
         if ( commandLine.hasOption( this.getDocumentsOption().getOpt() ) )
@@ -395,11 +394,11 @@ public abstract class AbstractJomcToolCommand extends AbstractJomcCommand
         if ( commandLine.hasOption( this.getClasspathOption().getOpt() ) )
         {
             model = context.findModel( this.getModel( commandLine ) );
-            e = model.getAnyElement( ModelObject.MODEL_PUBLIC_ID, "modules" );
+            final Modules modelModules = ModelHelper.getModules( model );
 
-            if ( e != null )
+            if ( modelModules != null )
             {
-                for ( Module m : e.getValue().getModule() )
+                for ( Module m : modelModules.getModule() )
                 {
                     if ( modules.getModule( m.getName() ) == null )
                     {
@@ -430,13 +429,9 @@ public abstract class AbstractJomcToolCommand extends AbstractJomcCommand
         {
             model = new Model();
             model.setIdentifier( this.getModel( commandLine ) );
-            model.getAny().add( new org.jomc.model.ObjectFactory().createModules( modules ) );
+            ModelHelper.setModules( model, modules );
             model = context.processModel( model );
-            e = model.getAnyElement( ModelObject.MODEL_PUBLIC_ID, "modules" );
-            if ( e != null )
-            {
-                modules = e.getValue();
-            }
+            modules = ModelHelper.getModules( model );
         }
 
         if ( this.isLoggable( Level.FINE ) )
@@ -785,7 +780,7 @@ public abstract class AbstractJomcToolCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-25T06:17:07+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-25T23:59:19+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

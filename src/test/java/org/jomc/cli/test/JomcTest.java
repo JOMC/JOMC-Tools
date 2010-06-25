@@ -36,10 +36,6 @@
 // SECTION-END
 package org.jomc.cli.test;
 
-import org.jomc.model.ModelObject;
-import org.jomc.modlet.ModletObject;
-import org.jomc.modlet.Modlet;
-import org.jomc.modlet.ModelContext;
 import java.io.File;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Unmarshaller;
@@ -50,7 +46,11 @@ import org.apache.commons.io.FileUtils;
 import org.jomc.ObjectManagerFactory;
 import org.jomc.cli.Command;
 import org.jomc.cli.Jomc;
+import org.jomc.model.ModelObject;
 import org.jomc.model.Module;
+import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.Modlet;
+import org.jomc.modlet.ModletObject;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 
