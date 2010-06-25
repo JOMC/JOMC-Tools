@@ -568,7 +568,9 @@ public class SourceFileProcessor extends JomcTool
                 {
                     if ( this.isLoggable( Level.FINE ) )
                     {
-                        this.log( Level.FINE, getMessage( "creating", f.getAbsolutePath() ), null );
+                        this.log( Level.FINE, getMessage( "creating", this.getClass().getName(),
+                                                          f.getAbsolutePath() ), null );
+
                     }
 
                     final StringWriter writer = new StringWriter();
@@ -584,7 +586,9 @@ public class SourceFileProcessor extends JomcTool
             {
                 if ( this.isLoggable( Level.FINE ) )
                 {
-                    this.log( Level.FINE, getMessage( "reading", f.getAbsolutePath() ), null );
+                    this.log( Level.FINE, getMessage( "reading", this.getClass().getName(),
+                                                      f.getAbsolutePath() ), null );
+
                 }
 
                 content = FileUtils.readFileToString( f, this.getInputEncoding() );
@@ -605,7 +609,9 @@ public class SourceFileProcessor extends JomcTool
             {
                 for ( Section s : editor.getAddedSections() )
                 {
-                    this.log( Level.FINE, getMessage( "addedSection", f.getAbsolutePath(), s.getName() ), null );
+                    this.log( Level.FINE, getMessage( "addedSection", this.getClass().getName(), f.getAbsolutePath(),
+                                                      s.getName() ), null );
+
                 }
             }
 

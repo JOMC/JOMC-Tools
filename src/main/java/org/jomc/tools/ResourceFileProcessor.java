@@ -108,8 +108,8 @@ public class ResourceFileProcessor extends JomcTool
 
             if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.CONFIG, getMessage( "resourceBundleDefaultLocale", this.resourceBundleDefaultLocale ),
-                          null );
+                this.log( Level.CONFIG, getMessage( "resourceBundleDefaultLocale", this.getClass().getName(),
+                                                    this.resourceBundleDefaultLocale ), null );
 
             }
         }
