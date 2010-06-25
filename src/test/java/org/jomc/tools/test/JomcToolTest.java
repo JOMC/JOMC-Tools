@@ -44,6 +44,7 @@ import org.jomc.model.Argument;
 import org.jomc.model.Dependency;
 import org.jomc.model.Implementation;
 import org.jomc.model.Message;
+import org.jomc.model.ModelObject;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.Property;
@@ -150,8 +151,8 @@ public abstract class JomcToolTest extends TestCase
         {
             if ( this.testModules == null )
             {
-                final Unmarshaller u = this.getModelContext().createUnmarshaller( Modules.MODEL_PUBLIC_ID );
-                u.setSchema( this.getModelContext().createSchema( Modules.MODEL_PUBLIC_ID ) );
+                final Unmarshaller u = this.getModelContext().createUnmarshaller( ModelObject.MODEL_PUBLIC_ID );
+                u.setSchema( this.getModelContext().createSchema( ModelObject.MODEL_PUBLIC_ID ) );
 
                 final JAXBElement<Module> m =
                     (JAXBElement<Module>) u.unmarshal( this.getClass().getResource( "jomc.xml" ) );

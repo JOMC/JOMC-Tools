@@ -50,6 +50,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.commons.io.FileUtils;
 import org.jomc.model.Implementation;
+import org.jomc.model.ModelObject;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.Specification;
@@ -90,8 +91,8 @@ public class ClassFileProcessorTest extends JomcToolTest
         {
             if ( this.testModules == null )
             {
-                final Unmarshaller u = this.getModelContext().createUnmarshaller( Modules.MODEL_PUBLIC_ID );
-                u.setSchema( this.getModelContext().createSchema( Modules.MODEL_PUBLIC_ID ) );
+                final Unmarshaller u = this.getModelContext().createUnmarshaller( ModelObject.MODEL_PUBLIC_ID );
+                u.setSchema( this.getModelContext().createSchema( ModelObject.MODEL_PUBLIC_ID ) );
 
                 final JAXBElement<Module> m =
                     (JAXBElement<Module>) u.unmarshal( this.getClass().getResource( "jomc-tools.xml" ) );
@@ -169,8 +170,8 @@ public class ClassFileProcessorTest extends JomcToolTest
     {
         super.testNullPointerException();
 
-        final Marshaller marshaller = this.getModelContext().createMarshaller( Modules.MODEL_PUBLIC_ID );
-        final Unmarshaller unmarshaller = this.getModelContext().createUnmarshaller( Modules.MODEL_PUBLIC_ID );
+        final Marshaller marshaller = this.getModelContext().createMarshaller( ModelObject.MODEL_PUBLIC_ID );
+        final Unmarshaller unmarshaller = this.getModelContext().createUnmarshaller( ModelObject.MODEL_PUBLIC_ID );
 
         try
         {
@@ -760,8 +761,8 @@ public class ClassFileProcessorTest extends JomcToolTest
 
     public void testCommitTransformValidateClasses() throws Exception
     {
-        final Marshaller marshaller = this.getModelContext().createMarshaller( Modules.MODEL_PUBLIC_ID );
-        final Unmarshaller unmarshaller = this.getModelContext().createUnmarshaller( Modules.MODEL_PUBLIC_ID );
+        final Marshaller marshaller = this.getModelContext().createMarshaller( ModelObject.MODEL_PUBLIC_ID );
+        final Unmarshaller unmarshaller = this.getModelContext().createUnmarshaller( ModelObject.MODEL_PUBLIC_ID );
         final File allClasses = this.getTestClassesDirectory();
         final ClassLoader allClassesLoader = new URLClassLoader( new URL[]
             {
