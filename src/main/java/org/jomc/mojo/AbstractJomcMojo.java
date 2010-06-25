@@ -48,7 +48,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -57,11 +56,11 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
-import org.jomc.model.ModelObject;
-import org.jomc.model.modlet.DefaultModelProcessor;
-import org.jomc.model.modlet.DefaultModelProvider;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
+import org.jomc.model.modlet.DefaultModelProcessor;
+import org.jomc.model.modlet.DefaultModelProvider;
+import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.DefaultModelContext;
 import org.jomc.modlet.DefaultModletProvider;
 import org.jomc.modlet.Model;
@@ -69,9 +68,9 @@ import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelException;
 import org.jomc.modlet.ModelValidationReport;
 import org.jomc.tools.ClassFileProcessor;
-import org.jomc.tools.SourceFileProcessor;
 import org.jomc.tools.JomcTool;
 import org.jomc.tools.ResourceFileProcessor;
+import org.jomc.tools.SourceFileProcessor;
 
 /**
  * Base class for executing {@code JomcTool}s.
@@ -671,16 +670,16 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         try
         {
             Model m = context.findModel( this.getModel() );
-            JAXBElement<Modules> modules = m.getAnyElement( ModelObject.MODEL_PUBLIC_ID, "modules" );
+            Modules modules = ModelHelper.getModules( m );
 
             if ( modules != null && this.isModelObjectClasspathResolutionEnabled() )
             {
-                final Module classpathModule = modules.getValue().getClasspathModule(
-                    Modules.getDefaultClasspathModuleName(), context.getClassLoader() );
+                final Module classpathModule =
+                    modules.getClasspathModule( Modules.getDefaultClasspathModuleName(), context.getClassLoader() );
 
                 if ( classpathModule != null )
                 {
-                    modules.getValue().getModule().add( classpathModule );
+                    modules.getModule().add( classpathModule );
                 }
             }
 
@@ -699,9 +698,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     protected Modules getToolModules( final ModelContext context ) throws MojoExecutionException
     {
-        final Model model = this.getModel( context );
-        final JAXBElement<Modules> modules = model.getAnyElement( ModelObject.MODEL_PUBLIC_ID, "modules" );
-        return modules != null ? modules.getValue() : new Modules();
+        final Modules modules = ModelHelper.getModules( this.getModel( context ) );
+        return modules != null ? modules : new Modules();
     }
 
     protected void logSeparator( final Level level ) throws MojoExecutionException
