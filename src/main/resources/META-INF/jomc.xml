@@ -1414,15 +1414,14 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="1" name="helpCommandName"/>
           </arguments>
         </message>
-        <message name="commandLineInfo">
+        <message name="defaultLogLevelInfo">
           <template defaultLanguage="en">
-            <text language="en">Command line:
-{0}</text>
-            <text language="de">Kommandozeile:
-{0}</text>
+            <text language="en">{0}: Default log level: ''{1}''</text>
+            <text language="de">{0}: Standard Protokollierungsstufe: ''{1}''</text>
           </template>
           <arguments>
-            <argument index="0" name="commandLine"/>
+            <argument index="0" name="className"/>
+            <argument index="1" name="logLevel"/>
           </arguments>
         </message>
       </messages>
@@ -1499,6 +1498,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         </property>
       </properties>
       <messages>
+        <message name="defaultLogLevelInfo">
+          <template defaultLanguage="en">
+            <text language="en">{0}: Default log level: ''{1}''</text>
+            <text language="de">{0}: Standard-Protokollierungsstufe: ''{1}''</text>
+          </template>
+          <arguments>
+            <argument index="0" name="className"/>
+            <argument index="1" name="defaultLogLevel"/>
+          </arguments>
+        </message>
         <message name="shortDescriptionMessage">
           <template defaultLanguage="en">
             <text language="en"/>
@@ -1521,11 +1530,12 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         </message>
         <message name="classpathElementInfo" final="true">
           <template defaultLanguage="en">
-            <text language="en">Classpath element: ''{0}''</text>
-            <text language="de">Klassenpfad-Element: ''{0}''</text>
+            <text language="en">{0}: Classpath element: ''{1}''</text>
+            <text language="de">{0}: Klassenpfad-Element: ''{1}''</text>
           </template>
           <arguments>
-            <argument index="0" name="classpathElement"/>
+            <argument index="0" name="className"/>
+            <argument index="1" name="classpathElement"/>
           </arguments>
         </message>
         <message name="commandInfoMessage" final="true">
@@ -1557,42 +1567,46 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         </message>
         <message name="excludedProviderInfo" final="true">
           <template defaultLanguage="en">
-            <text language="en">Provider ''{1}'' from class path resource ''{0}'' ignored.</text>
-            <text language="de">Provider ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</text>
+            <text language="en">{0}: Provider ''{2}'' from class path resource ''{1}'' ignored.</text>
+            <text language="de">{0}: Provider ''{2}'' aus Klassenpfad-Ressource ''{1}'' ignoriert.</text>
           </template>
           <arguments>
-            <argument index="0" name="resourceName"/>
-            <argument index="1" name="providerName"/>
+            <argument index="0" name="className"/>
+            <argument index="1" name="resourceName"/>
+            <argument index="2" name="providerName"/>
           </arguments>
         </message>
         <message name="excludedServiceInfo" final="true">
           <template defaultLanguage="en">
-            <text language="en">Service ''{1}'' from class path resource ''{0}'' ignored.</text>
-            <text language="de">Service ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</text>
+            <text language="en">{0}: Service ''{2}'' from class path resource ''{1}'' ignored.</text>
+            <text language="de">{0}: Service ''{2}'' aus Klassenpfad-Ressource ''{1}'' ignoriert.</text>
           </template>
           <arguments>
-            <argument index="0" name="resourceName"/>
-            <argument index="1" name="serviceName"/>
+            <argument index="0" name="className"/>
+            <argument index="1" name="resourceName"/>
+            <argument index="2" name="serviceName"/>
           </arguments>
         </message>
         <message name="excludedSchemaInfo" final="true">
           <template defaultLanguage="en">
-            <text language="en">Context ''{1}'' from class path resource ''{0}'' ignored.</text>
-            <text language="de">Kontext ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</text>
+            <text language="en">{0}: Context ''{2}'' from class path resource ''{1}'' ignored.</text>
+            <text language="de">{0}: Kontext ''{2}'' aus Klassenpfad-Ressource ''{1}'' ignoriert.</text>
           </template>
           <arguments>
-            <argument index="0" name="resourceName"/>
-            <argument index="1" name="contextId"/>
+            <argument index="0" name="className"/>
+            <argument index="1" name="resourceName"/>
+            <argument index="2" name="contextId"/>
           </arguments>
         </message>
         <message name="excludedModletInfo" final="true">
           <template defaultLanguage="en">
-            <text language="en">Modlet ''{1}'' from class path resource ''{0}'' ignored.</text>
-            <text language="de">Modlet ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</text>
+            <text language="en">{0}: Modlet ''{2}'' from class path resource ''{1}'' ignored.</text>
+            <text language="de">{0}: Modlet ''{2}'' aus Klassenpfad-Ressource ''{1}'' ignoriert.</text>
           </template>
           <arguments>
-            <argument index="0" name="resourceName"/>
-            <argument index="1" name="modletIdentifier"/>
+            <argument index="0" name="className"/>
+            <argument index="1" name="resourceName"/>
+            <argument index="2" name="modletIdentifier"/>
           </arguments>
         </message>
         <message name="classpathElementNotFoundWarning" final="true">
@@ -1604,7 +1618,6 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="0" name="fileName"/>
           </arguments>
         </message>
-        <reference name="defaultLogLevelInfo" final="true"/>
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
@@ -1644,11 +1657,12 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="documentFileInfo" final="true">
           <template defaultLanguage="en">
-            <text language="en">Document file: ''{0}''</text>
-            <text language="de">Dokument-Datei: ''{0}''</text>
+            <text language="en">{0}: Document file: ''{1}''</text>
+            <text language="de">{0}: Dokument-Datei: ''{1}''</text>
           </template>
           <arguments>
-            <argument index="0" name="documentFile"/>
+            <argument index="0" name="className"/>
+            <argument index="1" name="documentFile"/>
           </arguments>
         </message>
         <message name="documentFileNotFoundWarning" final="true">
@@ -1662,18 +1676,22 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         </message>
         <message name="excludedModuleFromClasspathInfo" final="true">
           <template defaultLanguage="en">
-            <text language="en">Module ''{0}'' from class path ignored. Module with identical name already loaded.</text>
-            <text language="de">Modul ''{0}'' aus Klassenpfad ignoriert. Modul mit identischem Namen bereits geladen.</text>
+            <text language="en">{0}: Module ''{1}'' from class path ignored. Module with identical name already loaded.</text>
+            <text language="de">{0}: Modul ''{1}'' aus Klassenpfad ignoriert. Modul mit identischem Namen bereits geladen.</text>
           </template>
           <arguments>
-            <argument index="0" name="moduleName"/>
+            <argument index="0" name="className"/>
+            <argument index="1" name="moduleName"/>
           </arguments>
         </message>
         <message name="modulesReport" final="true">
           <template defaultLanguage="en">
-            <text language="en">Modules</text>
-            <text language="de">Module</text>
+            <text language="en">{0}: Modules</text>
+            <text language="de">{0}: Module</text>
           </template>
+          <arguments>
+            <argument index="0" name="className"/>
+          </arguments>
         </message>
         <message name="invalidModelMessage" final="true">
           <template defaultLanguage="en">
@@ -2252,16 +2270,6 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </template>
       <arguments>
         <argument index="0" name="fileName"/>
-      </arguments>
-    </message>
-    <!-- *********************************************************************************************************** -->
-    <message name="defaultLogLevelInfo">
-      <template defaultLanguage="en">
-        <text language="en">Default log level: ''{0}''</text>
-        <text language="de">Standard-Protokollierungsstufe: ''{0}''</text>
-      </template>
-      <arguments>
-        <argument index="0" name="defaultLogLevel"/>
       </arguments>
     </message>
     <!-- *********************************************************************************************************** -->

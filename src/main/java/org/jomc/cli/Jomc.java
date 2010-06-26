@@ -87,11 +87,9 @@ import org.jomc.modlet.DefaultModletProvider;
  * Dependency on {@code org.apache.commons.cli.Option} bound to an instance.</blockquote></li>
  * </ul></p>
  * <p><b>Messages</b><ul>
- * <li>"{@link #getCommandLineInfo commandLineInfo}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Command line:
- * {0}</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kommandozeile:
- * {0}</pre></td></tr>
+ * <li>"{@link #getDefaultLogLevelInfo defaultLogLevelInfo}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>{0}: Default log level: ''{1}''</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0}: Standard Protokollierungsstufe: ''{1}''</pre></td></tr>
  * </table>
  * <li>"{@link #getIllegalArgumentsInfo illegalArgumentsInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal arguments. Type &raquo;jomc {0} {1}&laquo; for further information.</pre></td></tr>
@@ -208,6 +206,12 @@ public class Jomc
         if ( this.logLevel == null )
         {
             this.logLevel = getDefaultLogLevel();
+            if ( this.isLoggable( Level.CONFIG ) )
+            {
+                this.log( Level.CONFIG, this.getDefaultLogLevelInfo( this.getLocale(), this.getClass().getName(),
+                                                                     this.logLevel.getLocalizedName() ), null );
+
+            }
         }
 
         return this.logLevel;
@@ -363,16 +367,13 @@ public class Jomc
 
             if ( this.isLoggable( Level.FINE ) )
             {
-                final StringBuilder argumentInfo = new StringBuilder();
-
                 for ( int i = 0; i < args.length; i++ )
                 {
-                    argumentInfo.append( "\t[" ).append( i ).append( "]='" ).append( args[i] ).append( "'" ).
-                        append( System.getProperty( "line.separator" ) );
+                    this.log( Level.FINE, new StringBuilder().append( this.getClass().getName() ).append( ": [" ).
+                        append( i ).append( "] '" ).append( args[i] ).append( "'" ).
+                        append( System.getProperty( "line.separator" ) ).toString(), null );
 
                 }
-
-                this.log( Level.FINE, this.getCommandLineInfo( this.getLocale(), argumentInfo.toString() ), null );
             }
 
             final boolean failOnWarnings = commandLine.hasOption( this.getFailOnWarningsOption().getOpt() );
@@ -679,24 +680,23 @@ public class Jomc
     // <editor-fold defaultstate="collapsed" desc=" Generated Messages ">
 
     /**
-     * Gets the text of the {@code commandLineInfo} message.
+     * Gets the text of the {@code defaultLogLevelInfo} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Command line:
-     * {0}</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kommandozeile:
-     * {0}</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>{0}: Default log level: ''{1}''</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0}: Standard Protokollierungsstufe: ''{1}''</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
-     * @param commandLine Format argument.
-     * @return The text of the {@code commandLineInfo} message.
+     * @param className Format argument.
+     * @param logLevel Format argument.
+     * @return The text of the {@code defaultLogLevelInfo} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    private String getCommandLineInfo( final java.util.Locale locale, final java.lang.String commandLine )
+    private String getDefaultLogLevelInfo( final java.util.Locale locale, final java.lang.String className, final java.lang.String logLevel )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "commandLineInfo", locale, commandLine );
-        assert _m != null : "'commandLineInfo' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "defaultLogLevelInfo", locale, className, logLevel );
+        assert _m != null : "'defaultLogLevelInfo' message not found.";
         return _m;
     }
 
