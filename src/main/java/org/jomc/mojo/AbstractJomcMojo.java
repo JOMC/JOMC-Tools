@@ -674,7 +674,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         try
         {
             Model m = context.findModel( this.getModel() );
-            Modules modules = ModelHelper.getModules( m );
+            final Modules modules = ModelHelper.getModules( m );
 
             if ( modules != null && this.isModelObjectClasspathResolutionEnabled() )
             {
@@ -711,14 +711,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         this.log( level, getMessage( "separator" ), null );
     }
 
-    protected void logProcessingModule( final String toolName, final String moduleName ) throws MojoExecutionException
+    protected void logProcessingModule( final String toolName, final String module ) throws MojoExecutionException
     {
-        this.log( Level.INFO, getMessage( "processingModule", toolName, moduleName ), null );
+        this.log( Level.INFO, getMessage( "processingModule", toolName, module ), null );
     }
 
-    protected void logMissingModule( final String moduleName ) throws MojoExecutionException
+    protected void logMissingModule( final String module ) throws MojoExecutionException
     {
-        this.log( Level.WARNING, getMessage( "missingModule", moduleName ), null );
+        this.log( Level.WARNING, getMessage( "missingModule", module ), null );
     }
 
     protected void logToolSuccess( final String toolName ) throws MojoExecutionException
