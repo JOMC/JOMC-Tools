@@ -364,6 +364,13 @@ public class ResourceFileProcessor extends JomcTool
             final Properties p = e.getValue();
             final File file = new File( resourcesDirectory, bundlePath + "_" + language + ".properties" );
 
+            if ( this.getResourceBundleDefaultLocale().getLanguage().equalsIgnoreCase( language ) )
+            {
+                defProperties = p;
+            }
+
+            fallbackProperties = p;
+
             if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
             {
                 throw new IOException( getMessage( "failedCreatingDirectory",
@@ -389,13 +396,6 @@ public class ResourceFileProcessor extends JomcTool
                     out.close();
                 }
             }
-
-            if ( this.getResourceBundleDefaultLocale().getLanguage().equalsIgnoreCase( language ) )
-            {
-                defProperties = p;
-            }
-
-            fallbackProperties = p;
         }
 
         if ( defProperties == null )

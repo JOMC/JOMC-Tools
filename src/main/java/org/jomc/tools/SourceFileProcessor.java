@@ -641,7 +641,7 @@ public class SourceFileProcessor extends JomcTool
             }
             else if ( this.isLoggable( Level.FINE ) )
             {
-                this.log( Level.FINE, getMessage( "unchanged", f.getAbsolutePath() ), null );
+                this.log( Level.FINE, getMessage( "unchanged", this.getClass().getName(), f.getAbsolutePath() ), null );
             }
         }
     }

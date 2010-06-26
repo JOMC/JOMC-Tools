@@ -1193,6 +1193,7 @@ public abstract class JomcTool
         {
             try
             {
+                final String logPrefix = this.getClass().getName();
                 final java.util.Properties props = new java.util.Properties();
                 props.put( "resource.loader", "class" );
                 props.put( "class.resource.loader.class", VELOCITY_RESOURCE_LOADER );
@@ -1216,11 +1217,8 @@ public abstract class JomcTool
                     public void log( final int level, final String message, final Throwable throwable )
                     {
                         final StringBuilder b = new StringBuilder();
-                        b.append( this.getClass().getEnclosingClass().getName() ).
-                            append( this.getLogChutePrefix( level ) ).
-                            append( message );
-
-                        log( Level.FINE, b.toString(), throwable );
+                        b.append( logPrefix ).append( this.getLogChutePrefix( level ) ).append( message );
+                        JomcTool.this.log( Level.FINE, b.toString(), throwable );
                     }
 
                     public boolean isLevelEnabled( final int level )
@@ -1619,10 +1617,10 @@ public abstract class JomcTool
             final Template template = this.getVelocityEngine().getTemplate(
                 TEMPLATE_PREFIX + this.getTemplateProfile() + "/" + templateName, this.getTemplateEncoding() );
 
-            if ( this.isLoggable( Level.CONFIG ) )
+            if ( this.isLoggable( Level.FINE ) )
             {
-                this.log( Level.CONFIG, getMessage( "templateInfo", this.getClass().getName(), templateName,
-                                                    this.getTemplateProfile() ), null );
+                this.log( Level.FINE, getMessage( "templateInfo", this.getClass().getName(), templateName,
+                                                  this.getTemplateProfile() ), null );
 
             }
 
@@ -1642,10 +1640,10 @@ public abstract class JomcTool
                 final Template template = this.getVelocityEngine().getTemplate(
                     TEMPLATE_PREFIX + getDefaultTemplateProfile() + "/" + templateName, this.getTemplateEncoding() );
 
-                if ( this.isLoggable( Level.CONFIG ) )
+                if ( this.isLoggable( Level.FINE ) )
                 {
-                    this.log( Level.CONFIG, getMessage( "templateInfo", this.getClass().getName(), templateName,
-                                                        getDefaultTemplateProfile() ), null );
+                    this.log( Level.FINE, getMessage( "templateInfo", this.getClass().getName(), templateName,
+                                                      getDefaultTemplateProfile() ), null );
 
                 }
 
