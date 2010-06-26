@@ -152,7 +152,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="model" override="true"/>
+        <property name="opt" value="m" override="true"/>
         <property name="longOpt" value="model" override="true"/>
         <property name="numberOfArgs" type="int" value="1" override="true"/>
       </properties>
