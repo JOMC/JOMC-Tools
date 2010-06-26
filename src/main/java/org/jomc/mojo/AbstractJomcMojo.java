@@ -412,7 +412,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 if ( !urls.contains( url ) )
                 {
                     urls.add( url );
-                    this.log( Level.FINE, getMessage( "classpathElement", url.toExternalForm() ), null );
+                    this.log( Level.FINE, getMessage( "classpathElement", this.getClass().getName(),
+                                                      url.toExternalForm() ), null );
+
                 }
             }
 
@@ -446,7 +448,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 if ( !urls.contains( url ) )
                 {
                     urls.add( url );
-                    this.log( Level.FINE, getMessage( "classpathElement", url.toExternalForm() ), null );
+                    this.log( Level.FINE, getMessage( "classpathElement", this.getClass().getName(),
+                                                      url.toExternalForm() ), null );
+
                 }
             }
 
@@ -491,14 +495,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( pluginArtifact != null )
             {
-                this.log( Level.FINE, getMessage(
-                    "ignoredPluginArtifact", a.toString(), pluginArtifact.toString() ), null );
+                this.log( Level.FINE, getMessage( "ignoringPluginArtifact", this.getClass().getName(), a.toString(),
+                                                  pluginArtifact.toString() ), null );
 
                 continue;
             }
 
             final String element = a.getFile().getAbsolutePath();
-            this.log( Level.FINE, getMessage( "runtimeElement", element ), null );
+            this.log( Level.FINE, getMessage( "runtimeElement", this.getClass().getName(), element ), null );
             elements.add( element );
         }
 
@@ -515,14 +519,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( pluginArtifact != null )
             {
-                this.log( Level.FINE, getMessage(
-                    "ignoredPluginArtifact", a.toString(), pluginArtifact.toString() ), null );
+                this.log( Level.FINE, getMessage( "ignoringPluginArtifact", this.getClass().getName(), a.toString(),
+                                                  pluginArtifact.toString() ), null );
 
                 continue;
             }
 
             final String element = a.getFile().getAbsolutePath();
-            this.log( Level.FINE, getMessage( "compiletimeElement", element ), null );
+            this.log( Level.FINE, getMessage( "compiletimeElement", this.getClass().getName(), element ), null );
             elements.add( element );
         }
 
@@ -567,14 +571,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( pluginArtifact != null )
             {
-                this.log( Level.FINE, getMessage(
-                    "ignoredPluginArtifact", a.toString(), pluginArtifact.toString() ), null );
+                this.log( Level.FINE, getMessage( "ignoringPluginArtifact", this.getClass().getName(), a.toString(),
+                                                  pluginArtifact.toString() ), null );
 
                 continue;
             }
 
             final String element = a.getFile().getAbsolutePath();
-            this.log( Level.FINE, getMessage( "testElement", element ), null );
+            this.log( Level.FINE, getMessage( "testElement", this.getClass().getName(), element ), null );
             elements.add( element );
         }
 
