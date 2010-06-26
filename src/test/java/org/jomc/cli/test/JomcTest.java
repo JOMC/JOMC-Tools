@@ -371,7 +371,7 @@ public class JomcTest extends TestCase
         {
             "merge-modlets", "-xs", '"' + this.getTestModletStylesheet() + '"', "-mdn",
             '"' + this.getTestModletName() + '"', "-d", '"' + this.getTestModletOutputDocument() + '"',
-            "-mdexc", "JOMC Model:JOMC Tools:JOMC Modlet"
+            "-mdexc", "JOMC Model" + File.pathSeparatorChar + "JOMC Tools" + File.pathSeparatorChar + "JOMC Modlet"
         };
 
         final String[] unsupportedOption = new String[]
