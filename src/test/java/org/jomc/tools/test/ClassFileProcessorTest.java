@@ -113,7 +113,13 @@ public class ClassFileProcessorTest extends JomcToolTest
         }
         catch ( final JAXBException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            String message = e.getMessage();
+            if ( message == null && e.getLinkedException() != null )
+            {
+                message = e.getLinkedException().getMessage();
+            }
+
+            throw (IOException) new IOException( message ).initCause( e );
         }
         catch ( final ModelException e )
         {
