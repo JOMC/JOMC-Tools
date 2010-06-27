@@ -1236,38 +1236,13 @@ public abstract class JomcTool
                     public void log( final int level, final String message, final Throwable throwable )
                     {
                         final StringBuilder b = new StringBuilder();
-                        b.append( logPrefix ).append( this.getLogChutePrefix( level ) ).append( message );
+                        b.append( logPrefix ).append( ": " ).append( message );
                         JomcTool.this.log( Level.FINE, b.toString(), throwable );
                     }
 
                     public boolean isLevelEnabled( final int level )
                     {
                         return isLoggable( Level.FINE );
-                    }
-
-                    private String getLogChutePrefix( final int logChuteLevel )
-                    {
-                        switch ( logChuteLevel )
-                        {
-                            case LogChute.DEBUG_ID:
-                                return LogChute.DEBUG_PREFIX;
-
-                            case LogChute.ERROR_ID:
-                                return LogChute.ERROR_PREFIX;
-
-                            case LogChute.INFO_ID:
-                                return LogChute.INFO_PREFIX;
-
-                            case LogChute.TRACE_ID:
-                                return LogChute.TRACE_PREFIX;
-
-                            case LogChute.WARN_ID:
-                                return LogChute.WARN_PREFIX;
-
-                            default:
-                                return LogChute.TRACE_PREFIX;
-
-                        }
                     }
 
                 } );
