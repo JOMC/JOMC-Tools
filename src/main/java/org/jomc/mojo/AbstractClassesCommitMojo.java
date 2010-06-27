@@ -126,7 +126,13 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
         }
         catch ( final TransformerConfigurationException e )
         {
-            throw new MojoExecutionException( e.getMessage(), e );
+            String message = e.getMessage();
+            if ( message == null && e.getException() != null )
+            {
+                message = e.getException().getMessage();
+            }
+
+            throw new MojoExecutionException( message, e );
         }
         catch ( final IOException e )
         {

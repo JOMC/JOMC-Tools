@@ -770,7 +770,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         catch ( final JAXBException e )
         {
-            throw new MojoExecutionException( e.getMessage(), e );
+            String message = e.getMessage();
+            if ( message == null && e.getLinkedException() != null )
+            {
+                message = e.getLinkedException().getMessage();
+            }
+
+            throw new MojoExecutionException( message, e );
         }
     }
 
