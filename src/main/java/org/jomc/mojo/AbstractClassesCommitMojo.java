@@ -41,8 +41,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Source;
@@ -51,12 +49,11 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.jomc.model.Module;
-import org.jomc.model.ObjectFactory;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelValidationReport;
+import org.jomc.modlet.ObjectFactory;
 import org.jomc.tools.ClassFileProcessor;
 
 /**
@@ -194,15 +191,8 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
             final ModelContext context = this.createModelContext( classLoader );
             final ClassFileProcessor tool = this.createClassFileProcessor( context );
             final JAXBContext jaxbContext = context.createContext( this.getModel() );
-            final Marshaller marshaller = context.createMarshaller( this.getModel() );
-            final Unmarshaller unmarshaller = context.createUnmarshaller( this.getModel() );
-            final Schema schema = context.createSchema( this.getModel() );
             final List<Transformer> transformers = this.getTransformers( classLoader );
-
-            marshaller.setSchema( schema );
-            unmarshaller.setSchema( schema );
-
-            final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModules( tool.getModules() ) );
+            final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModel( tool.getModel() ) );
             final ModelValidationReport validationReport = context.validateModel( this.getModel(), source );
 
             this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
@@ -215,13 +205,11 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
                 if ( module != null )
                 {
                     this.logProcessingModule( TOOLNAME, module.getName() );
-                    tool.commitModelObjects( module, marshaller, this.getClassesDirectory() );
+                    tool.commitModelObjects( module, context, this.getClassesDirectory() );
 
                     if ( !transformers.isEmpty() )
                     {
-                        tool.transformModelObjects(
-                            module, marshaller, unmarshaller, this.getClassesDirectory(), transformers );
-
+                        tool.transformModelObjects( module, context, this.getClassesDirectory(), transformers );
                     }
 
                     this.logToolSuccess( TOOLNAME );

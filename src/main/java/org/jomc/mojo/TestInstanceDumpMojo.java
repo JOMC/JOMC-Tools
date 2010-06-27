@@ -44,6 +44,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.jomc.model.Instance;
 import org.jomc.model.Modules;
 import org.jomc.model.ObjectFactory;
+import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.ModelContext;
 
 /**
@@ -83,8 +84,8 @@ public final class TestInstanceDumpMojo extends AbstractJomcMojo
 
         final ClassLoader classLoader = this.getTestClassLoader();
         final ModelContext modelContext = this.createModelContext( classLoader );
-        final Modules modules = this.getToolModules( modelContext );
-        final Instance instance = modules.getInstance( this.identifier );
+        final Modules modules = ModelHelper.getModules( this.getModel( modelContext ) );
+        final Instance instance = modules != null ? modules.getInstance( this.identifier ) : null;
 
         if ( instance != null )
         {

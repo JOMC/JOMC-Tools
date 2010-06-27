@@ -37,15 +37,13 @@ import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.Source;
-import javax.xml.validation.Schema;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.jomc.model.Module;
-import org.jomc.model.ObjectFactory;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelValidationReport;
+import org.jomc.modlet.ObjectFactory;
 import org.jomc.tools.ClassFileProcessor;
 
 /**
@@ -68,12 +66,7 @@ public abstract class AbstractClassesValidateMojo extends AbstractJomcMojo
             final ModelContext context = this.createModelContext( this.getClassesClassLoader() );
             final ClassFileProcessor tool = this.createClassFileProcessor( context );
             final JAXBContext jaxbContext = context.createContext( this.getModel() );
-            final Unmarshaller unmarshaller = context.createUnmarshaller( this.getModel() );
-            final Schema schema = context.createSchema( this.getModel() );
-
-            unmarshaller.setSchema( schema );
-
-            final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModules( tool.getModules() ) );
+            final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModel( tool.getModel() ) );
             final ModelValidationReport validationReport = context.validateModel( this.getModel(), source );
 
             this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
@@ -86,7 +79,7 @@ public abstract class AbstractClassesValidateMojo extends AbstractJomcMojo
                 if ( module != null )
                 {
                     this.logProcessingModule( TOOLNAME, module.getName() );
-                    tool.validateModelObjects( module, unmarshaller, this.getClassesDirectory() );
+                    tool.validateModelObjects( module, context, this.getClassesDirectory() );
                     this.logToolSuccess( TOOLNAME );
                 }
                 else

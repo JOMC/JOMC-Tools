@@ -700,12 +700,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
     }
 
-    protected Modules getToolModules( final ModelContext context ) throws MojoExecutionException
-    {
-        final Modules modules = ModelHelper.getModules( this.getModel( context ) );
-        return modules != null ? modules : new Modules();
-    }
-
     protected void logSeparator( final Level level ) throws MojoExecutionException
     {
         this.log( level, getMessage( "separator" ), null );
@@ -849,7 +843,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         tool.setInputEncoding( this.sourceEncoding );
         tool.setOutputEncoding( this.sourceEncoding );
         tool.setTemplateProfile( this.templateProfile );
-        tool.setModules( this.getToolModules( context ) );
+        tool.setModel( this.getModel( context ) );
 
         if ( this.indentation != null )
         {
