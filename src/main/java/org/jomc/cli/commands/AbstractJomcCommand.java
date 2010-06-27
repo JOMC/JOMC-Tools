@@ -124,7 +124,7 @@ import org.jomc.modlet.Services;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-26T14:40:23+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-27T09:01:30+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getClasspathElementInfo classpathElementInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>{0}: Classpath element: ''{1}''</pre></td></tr>
@@ -627,7 +627,13 @@ public abstract class AbstractJomcCommand implements Command
             }
             catch ( final JAXBException e )
             {
-                log( Level.SEVERE, e.getMessage(), e );
+                String message = e.getMessage();
+                if ( message == null && e.getLinkedException() != null )
+                {
+                    message = e.getLinkedException().getMessage();
+                }
+
+                log( Level.SEVERE, message, e );
                 return null;
             }
             catch ( final ModelException e )
@@ -702,7 +708,13 @@ public abstract class AbstractJomcCommand implements Command
                         }
                         catch ( final JAXBException e )
                         {
-                            log( Level.SEVERE, e.getMessage(), e );
+                            String message = e.getMessage();
+                            if ( message == null && e.getLinkedException() != null )
+                            {
+                                message = e.getLinkedException().getMessage();
+                            }
+
+                            log( Level.SEVERE, message, e );
                             return null;
                         }
                         catch ( final ModelException e )
@@ -1083,7 +1095,7 @@ public abstract class AbstractJomcCommand implements Command
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-26T14:40:23+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-27T09:01:30+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
