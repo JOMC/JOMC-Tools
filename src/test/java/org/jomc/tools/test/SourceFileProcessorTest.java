@@ -68,7 +68,7 @@ public class SourceFileProcessorTest extends JomcToolTest
         if ( this.testTool == null )
         {
             this.testTool = new SourceFileProcessor();
-            this.testTool.setModules( this.getTestModules() );
+            this.testTool.setModel( this.getTestModel() );
         }
 
         return this.testTool;
@@ -234,10 +234,18 @@ public class SourceFileProcessorTest extends JomcToolTest
         s.setIdentifier( "TEST" );
         s.setClazz( "TEST" );
 
-        assertNotNull( this.getTestTool().getSourceFileType( i ) );
-        assertNotNull( this.getTestTool().getSourceFileType( s ) );
-        assertNotNull( this.getTestTool().getSourceFileEditor( i ) );
-        assertNotNull( this.getTestTool().getSourceFileEditor( s ) );
+        assertNotNull( this.getTestTool().getSourceFileType(
+            this.getTestTool().getModules().getImplementation( "Implementation" ) ) );
+
+        assertNotNull( this.getTestTool().getSourceFileType(
+            this.getTestTool().getModules().getSpecification( "Specification" ) ) );
+
+        assertNotNull( this.getTestTool().getSourceFileEditor(
+            this.getTestTool().getModules().getImplementation( "Implementation" ) ) );
+
+        assertNotNull( this.getTestTool().getSourceFileEditor(
+            this.getTestTool().getModules().getSpecification( "Specification" ) ) );
+
     }
 
     public void testManageSources() throws Exception

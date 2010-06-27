@@ -64,7 +64,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
         if ( this.testTool == null )
         {
             this.testTool = new ResourceFileProcessor();
-            this.testTool.setModules( this.getTestModules() );
+            this.testTool.setModel( this.getTestModel() );
         }
 
         return this.testTool;
@@ -201,17 +201,13 @@ public class ResourceFileProcessorTest extends JomcToolTest
     {
         super.testNotNull();
 
-        final Specification s = new Specification();
-        s.setIdentifier( "TEST" );
-        s.setClazz( "TEST" );
-
-        final Implementation i = new Implementation();
-        i.setIdentifier( "TEST" );
-        i.setClazz( "TEST" );
-
         assertNotNull( this.getTestTool().getResourceBundleDefaultLocale() );
-        assertNotNull( this.getTestTool().getResourceBundleResources( s ) );
-        assertNotNull( this.getTestTool().getResourceBundleResources( i ) );
+        assertNotNull( this.getTestTool().getResourceBundleResources(
+            this.getTestTool().getModules().getSpecification( "Specification" ) ) );
+
+        assertNotNull( this.getTestTool().getResourceBundleResources(
+            this.getTestTool().getModules().getImplementation( "Implementation" ) ) );
+
     }
 
     public void testWriteResourceBundleResourceFiles() throws Exception

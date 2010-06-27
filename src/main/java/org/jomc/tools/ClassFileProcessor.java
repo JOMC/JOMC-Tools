@@ -52,6 +52,7 @@ import javax.xml.bind.util.JAXBResult;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
+import javax.xml.validation.Schema;
 import org.apache.bcel.classfile.Attribute;
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.Constant;
@@ -62,6 +63,7 @@ import org.apache.bcel.classfile.Unknown;
 import org.jomc.model.Dependencies;
 import org.jomc.model.Dependency;
 import org.jomc.model.Implementation;
+import org.jomc.model.Implementations;
 import org.jomc.model.Message;
 import org.jomc.model.Messages;
 import org.jomc.model.ModelObject;
@@ -72,6 +74,8 @@ import org.jomc.model.Property;
 import org.jomc.model.Specification;
 import org.jomc.model.SpecificationReference;
 import org.jomc.model.Specifications;
+import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelException;
 import org.jomc.modlet.ModelValidationReport;
 import org.jomc.util.ParseException;
 import org.jomc.util.TokenMgrError;
@@ -81,26 +85,29 @@ import org.jomc.util.VersionParser;
  * Processes class files.
  *
  * <p><b>Use cases</b><br/><ul>
- * <li>{@link #commitModelObjects(Marshaller, File) }</li>
- * <li>{@link #commitModelObjects(Module, Marshaller, File) }</li>
- * <li>{@link #commitModelObjects(Specification, Marshaller, File) }</li>
- * <li>{@link #commitModelObjects(Implementation, Marshaller, File) }</li>
- * <li>{@link #validateModelObjects(Unmarshaller, File) }</li>
- * <li>{@link #validateModelObjects(Unmarshaller, ClassLoader) }</li>
- * <li>{@link #validateModelObjects(Module, Unmarshaller, File) }</li>
- * <li>{@link #validateModelObjects(Module, Unmarshaller, ClassLoader) }</li>
- * <li>{@link #validateModelObjects(Specification, Unmarshaller, JavaClass) }</li>
- * <li>{@link #validateModelObjects(Implementation, Unmarshaller, JavaClass) }</li>
- * <li>{@link #transformModelObjects(Marshaller, Unmarshaller, File, List) }</li>
- * <li>{@link #transformModelObjects(Module, Marshaller, Unmarshaller, File, List) }</li>
- * <li>{@link #transformModelObjects(Specification, Marshaller, Unmarshaller, JavaClass, List) }</li>
- * <li>{@link #transformModelObjects(Implementation, Marshaller, Unmarshaller, JavaClass, List) }</li>
+ * <li>{@link #commitModelObjects(org.jomc.modlet.ModelContext, java.io.File) }</li>
+ * <li>{@link #commitModelObjects(org.jomc.model.Module, org.jomc.modlet.ModelContext, java.io.File) }</li>
+ * <li>{@link #commitModelObjects(org.jomc.model.Specification, org.jomc.modlet.ModelContext, java.io.File) }</li>
+ * <li>{@link #commitModelObjects(org.jomc.model.Implementation, org.jomc.modlet.ModelContext, java.io.File) }</li>
+ * <li>{@link #validateModelObjects(org.jomc.modlet.ModelContext) }</li>
+ * <li>{@link #validateModelObjects(org.jomc.model.Module, org.jomc.modlet.ModelContext) }</li>
+ * <li>{@link #validateModelObjects(org.jomc.model.Specification, org.jomc.modlet.ModelContext) }</li>
+ * <li>{@link #validateModelObjects(org.jomc.model.Implementation, org.jomc.modlet.ModelContext) }</li>
+ * <li>{@link #validateModelObjects(org.jomc.modlet.ModelContext, java.io.File) }</li>
+ * <li>{@link #validateModelObjects(org.jomc.model.Module, org.jomc.modlet.ModelContext, java.io.File) }</li>
+ * <li>{@link #validateModelObjects(org.jomc.model.Specification, org.jomc.modlet.ModelContext, java.io.File) }</li>
+ * <li>{@link #validateModelObjects(org.jomc.model.Implementation, org.jomc.modlet.ModelContext, java.io.File) }</li>
+ * <li>{@link #transformModelObjects(org.jomc.modlet.ModelContext, java.io.File, java.util.List) }</li>
+ * <li>{@link #transformModelObjects(org.jomc.model.Module, org.jomc.modlet.ModelContext, java.io.File, java.util.List) }</li>
+ * <li>{@link #transformModelObjects(org.jomc.model.Specification, org.jomc.modlet.ModelContext, java.io.File, java.util.List) }</li>
+ * <li>{@link #transformModelObjects(org.jomc.model.Specification, org.jomc.modlet.ModelContext, java.io.File, java.util.List) }</li>
  * </ul></p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  *
  * @see #getModules()
+ * @see ModelContext#createModelContext(java.lang.ClassLoader)
  */
 public class ClassFileProcessor extends JomcTool
 {
@@ -128,30 +135,37 @@ public class ClassFileProcessor extends JomcTool
     /**
      * Commits model objects of the modules of the instance to class files.
      *
-     * @param marshaller The marshaller to use for committing the model objects.
+     * @param context The model context to use for committing the model objects.
      * @param classesDirectory The directory holding the class files.
      *
-     * @throws NullPointerException if {@code marshaller} or {@code classesDirectory} is {@code null}.
+     * @throws NullPointerException if {@code context} or {@code classesDirectory} is {@code null}.
      * @throws IOException if committing model objects fails.
      *
-     * @see #commitModelObjects(org.jomc.model.Module, javax.xml.bind.Marshaller, java.io.File)
-     * @see org.jomc.modlet.ModelContext#createMarshaller(java.lang.String)
-     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
+     * @see #commitModelObjects(org.jomc.model.Module, org.jomc.modlet.ModelContext, java.io.File)
      */
-    public void commitModelObjects( final Marshaller marshaller, final File classesDirectory ) throws IOException
+    public void commitModelObjects( final ModelContext context, final File classesDirectory ) throws IOException
     {
-        if ( marshaller == null )
+        if ( context == null )
         {
-            throw new NullPointerException( "marshaller" );
+            throw new NullPointerException( "context" );
         }
         if ( classesDirectory == null )
         {
             throw new NullPointerException( "classesDirectory" );
         }
 
-        for ( Module m : this.getModules().getModule() )
+        try
         {
-            this.commitModelObjects( m, marshaller, classesDirectory );
+            final Marshaller m = context.createMarshaller( this.getModel().getIdentifier() );
+            m.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+
+            this.commitModelObjects( this.getModules().getSpecifications(), this.getModules().getImplementations(), m,
+                                     classesDirectory );
+
+        }
+        catch ( final ModelException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
     }
 
@@ -159,46 +173,43 @@ public class ClassFileProcessor extends JomcTool
      * Commits model objects of a given module of the modules of the instance to class files.
      *
      * @param module The module to process.
-     * @param marshaller The marshaller to use for committing the model objects.
+     * @param context The model context to use for committing the model objects.
      * @param classesDirectory The directory holding the class files.
      *
-     * @throws NullPointerException if {@code module}, {@code marshaller} or {@code classesDirectory} is {@code null}.
+     * @throws NullPointerException if {@code module}, {@code context} or {@code classesDirectory} is {@code null}.
      * @throws IOException if committing model objects fails.
      *
-     * @see #commitModelObjects(org.jomc.model.Specification, javax.xml.bind.Marshaller, java.io.File)
-     * @see #commitModelObjects(org.jomc.model.Implementation, javax.xml.bind.Marshaller, java.io.File)
-     * @see org.jomc.modlet.ModelContext#createMarshaller(java.lang.String)
-     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
+     * @see #commitModelObjects(org.jomc.model.Specification, org.jomc.modlet.ModelContext, java.io.File)
+     * @see #commitModelObjects(org.jomc.model.Implementation, org.jomc.modlet.ModelContext, java.io.File)
      */
-    public void commitModelObjects( final Module module, final Marshaller marshaller, final File classesDirectory )
+    public void commitModelObjects( final Module module, final ModelContext context, final File classesDirectory )
         throws IOException
     {
         if ( module == null )
         {
             throw new NullPointerException( "module" );
         }
-        if ( marshaller == null )
+        if ( context == null )
         {
-            throw new NullPointerException( "marshaller" );
+            throw new NullPointerException( "context" );
         }
         if ( classesDirectory == null )
         {
             throw new NullPointerException( "classesDirectory" );
         }
 
-        if ( module.getSpecifications() != null )
+        assert this.getModules().getModule( module.getName() ) != null : "Module '" + module.getName() + "' not found.";
+
+        try
         {
-            for ( Specification s : module.getSpecifications().getSpecification() )
-            {
-                this.commitModelObjects( s, marshaller, classesDirectory );
-            }
+            final Marshaller m = context.createMarshaller( this.getModel().getIdentifier() );
+            m.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+
+            this.commitModelObjects( module.getSpecifications(), module.getImplementations(), m, classesDirectory );
         }
-        if ( module.getImplementations() != null )
+        catch ( final ModelException e )
         {
-            for ( Implementation i : module.getImplementations().getImplementation() )
-            {
-                this.commitModelObjects( i, marshaller, classesDirectory );
-            }
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
     }
 
@@ -206,46 +217,42 @@ public class ClassFileProcessor extends JomcTool
      * Commits model objects of a given specification of the modules of the instance to class files.
      *
      * @param specification The specification to process.
-     * @param marshaller The marshaller to use for committing the model objects.
+     * @param context The model context to use for committing the model objects.
      * @param classesDirectory The directory holding the class files.
      *
-     * @throws NullPointerException if {@code specification}, {@code marshaller} or {@code classesDirectory} is
+     * @throws NullPointerException if {@code specification}, {@code context} or {@code classesDirectory} is
      * {@code null}.
      * @throws IOException if committing model objects fails.
-     *
-     * @see org.jomc.modlet.ModelContext#createMarshaller(java.lang.String)
-     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
      */
-    public void commitModelObjects( final Specification specification, final Marshaller marshaller,
+    public void commitModelObjects( final Specification specification, final ModelContext context,
                                     final File classesDirectory ) throws IOException
     {
         if ( specification == null )
         {
             throw new NullPointerException( "specification" );
         }
-        if ( marshaller == null )
+        if ( context == null )
         {
-            throw new NullPointerException( "marshaller" );
+            throw new NullPointerException( "context" );
         }
         if ( classesDirectory == null )
         {
             throw new NullPointerException( "classesDirectory" );
         }
 
-        if ( specification.isClassDeclaration() )
+        assert this.getModules().getSpecification( specification.getIdentifier() ) != null :
+            "Specification '" + specification.getIdentifier() + "' not found.";
+
+        try
         {
-            final String classLocation = specification.getClazz().replace( '.', File.separatorChar ) + ".class";
-            final File classFile = new File( classesDirectory, classLocation );
-            if ( this.isLoggable( Level.INFO ) )
-            {
-                this.log( Level.INFO, getMessage( "committing", classFile.getAbsolutePath() ), null );
-            }
+            final Marshaller m = context.createMarshaller( this.getModel().getIdentifier() );
+            m.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
 
-            final JavaClass javaClass = this.getJavaClass( classFile );
-            this.setClassfileAttribute( javaClass, Specification.class.getName(), this.encodeModelObject(
-                marshaller, new ObjectFactory().createSpecification( specification ) ) );
-
-            javaClass.dump( classFile );
+            this.commitModelObjects( specification, m, classesDirectory );
+        }
+        catch ( final ModelException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
     }
 
@@ -253,745 +260,372 @@ public class ClassFileProcessor extends JomcTool
      * Commits model objects of a given implementation of the modules of the instance to class files.
      *
      * @param implementation The implementation to process.
-     * @param marshaller The marshaller to use for committing the model objects.
+     * @param context The model context to use for committing the model objects.
      * @param classesDirectory The directory holding the class files.
      *
-     * @throws NullPointerException if {@code implementation}, {@code marshaller} or {@code classesDirectory} is
+     * @throws NullPointerException if {@code implementation}, {@code context} or {@code classesDirectory} is
      * {@code null}.
      * @throws IOException if committing model objects fails.
-     *
-     * @see org.jomc.modlet.ModelContext#createMarshaller(java.lang.String)
-     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
      */
-    public void commitModelObjects( final Implementation implementation, final Marshaller marshaller,
+    public void commitModelObjects( final Implementation implementation, final ModelContext context,
                                     final File classesDirectory ) throws IOException
     {
         if ( implementation == null )
         {
             throw new NullPointerException( "implementation" );
         }
-        if ( marshaller == null )
+        if ( context == null )
         {
-            throw new NullPointerException( "marshaller" );
+            throw new NullPointerException( "context" );
         }
         if ( classesDirectory == null )
         {
             throw new NullPointerException( "classesDirectory" );
         }
 
-        if ( implementation.isClassDeclaration() )
+        assert this.getModules().getImplementation( implementation.getIdentifier() ) != null :
+            "Implementation '" + implementation.getIdentifier() + "' not found.";
+
+        try
         {
-            Dependencies dependencies = this.getModules().getDependencies( implementation.getIdentifier() );
-            if ( dependencies == null )
-            {
-                dependencies = new Dependencies();
-            }
+            final Marshaller m = context.createMarshaller( this.getModel().getIdentifier() );
+            m.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
 
-            Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
-            if ( properties == null )
-            {
-                properties = new Properties();
-            }
-
-            Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
-            if ( messages == null )
-            {
-                messages = new Messages();
-            }
-
-            Specifications specifications = this.getModules().getSpecifications( implementation.getIdentifier() );
-            if ( specifications == null )
-            {
-                specifications = new Specifications();
-            }
-
-            for ( SpecificationReference r : specifications.getReference() )
-            {
-                if ( specifications.getSpecification( r.getIdentifier() ) == null && this.isLoggable( Level.WARNING ) )
-                {
-                    this.log( Level.WARNING, getMessage( "unresolvedSpecification", r.getIdentifier(),
-                                                         implementation.getIdentifier() ), null );
-
-                }
-            }
-
-            for ( Dependency d : dependencies.getDependency() )
-            {
-                final Specification s = this.getModules().getSpecification( d.getIdentifier() );
-
-                if ( s != null )
-                {
-                    if ( specifications.getSpecification( s.getIdentifier() ) == null )
-                    {
-                        specifications.getSpecification().add( s );
-                    }
-                }
-                else if ( this.isLoggable( Level.WARNING ) )
-                {
-                    this.log( Level.WARNING, getMessage( "unresolvedDependencySpecification", d.getIdentifier(),
-                                                         d.getName(), implementation.getIdentifier() ), null );
-
-                }
-            }
-
-            final String classLocation = implementation.getClazz().replace( '.', File.separatorChar ) + ".class";
-            final File classFile = new File( classesDirectory, classLocation );
-
-            if ( this.isLoggable( Level.INFO ) )
-            {
-                this.log( Level.INFO, getMessage( "committing", classFile.getAbsolutePath() ), null );
-            }
-
-            final JavaClass javaClass = this.getJavaClass( classFile );
-            final ObjectFactory of = new ObjectFactory();
-
-            this.setClassfileAttribute( javaClass, Dependencies.class.getName(), this.encodeModelObject(
-                marshaller, of.createDependencies( dependencies ) ) );
-
-            this.setClassfileAttribute( javaClass, Properties.class.getName(), this.encodeModelObject(
-                marshaller, of.createProperties( properties ) ) );
-
-            this.setClassfileAttribute( javaClass, Messages.class.getName(), this.encodeModelObject(
-                marshaller, of.createMessages( messages ) ) );
-
-            this.setClassfileAttribute( javaClass, Specifications.class.getName(), this.encodeModelObject(
-                marshaller, of.createSpecifications( specifications ) ) );
-
-            javaClass.dump( classFile );
+            this.commitModelObjects( implementation, m, classesDirectory );
+        }
+        catch ( final ModelException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
     }
 
     /**
      * Validates model objects of class files.
      *
-     * @param unmarshaller The unmarshaller to use for validating model objects.
-     * @param classesDirectory The directory holding the class files.
+     * @param context The model context to use for validating model objects.
      *
      * @return The report of the validation.
      *
-     * @throws NullPointerException if {@code unmarshaller} or {@code classesDirectory} is {@code null}.
+     * @throws NullPointerException if {@code context} is {@code null}.
      * @throws IOException if validating model objects fails.
      *
-     * @see #validateModelObjects(org.jomc.model.Module, javax.xml.bind.Unmarshaller, java.io.File)
-     * @see org.jomc.modlet.ModelContext#createUnmarshaller(java.lang.String)
-     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
+     * @see #validateModelObjects(org.jomc.model.Module, org.jomc.modlet.ModelContext)
      */
-    public ModelValidationReport validateModelObjects( final Unmarshaller unmarshaller, final File classesDirectory )
-        throws IOException
+    public ModelValidationReport validateModelObjects( final ModelContext context ) throws IOException
     {
-        if ( unmarshaller == null )
+        if ( context == null )
         {
-            throw new NullPointerException( "unmarshaller" );
-        }
-        if ( classesDirectory == null )
-        {
-            throw new NullPointerException( "classesDirectory" );
+            throw new NullPointerException( "context" );
         }
 
-        final ModelValidationReport report = new ModelValidationReport();
-
-        for ( Module m : this.getModules().getModule() )
+        try
         {
-            final ModelValidationReport current = this.validateModelObjects( m, unmarshaller, classesDirectory );
-            report.getDetails().addAll( current.getDetails() );
+            final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
+            u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+            return this.validateModelObjects(
+                this.getModules().getSpecifications(), this.getModules().getImplementations(), u,
+                context.getClassLoader() );
+
         }
-
-        return report;
-    }
-
-    /**
-     * Validates model objects of class files.
-     *
-     * @param unmarshaller The unmarshaller to use for validating model objects.
-     * @param classLoader The class loader to search for class files.
-     *
-     * @return The report of the validation.
-     *
-     * @throws NullPointerException if {@code unmarshaller} or {@code classLoader} is {@code null}.
-     * @throws IOException if validating model objects fails.
-     *
-     * @see #validateModelObjects(org.jomc.model.Module, javax.xml.bind.Unmarshaller, java.lang.ClassLoader)
-     * @see org.jomc.modlet.ModelContext#createUnmarshaller(java.lang.String)
-     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
-     */
-    public ModelValidationReport validateModelObjects( final Unmarshaller unmarshaller, final ClassLoader classLoader )
-        throws IOException
-    {
-        if ( unmarshaller == null )
+        catch ( final ModelException e )
         {
-            throw new NullPointerException( "unmarshaller" );
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-        if ( classLoader == null )
-        {
-            throw new NullPointerException( "classLoader" );
-        }
-
-        final ModelValidationReport report = new ModelValidationReport();
-
-        for ( Module m : this.getModules().getModule() )
-        {
-            final ModelValidationReport current = this.validateModelObjects( m, unmarshaller, classLoader );
-            report.getDetails().addAll( current.getDetails() );
-        }
-
-        return report;
     }
 
     /**
      * Validates model objects of class files.
      *
      * @param module The module to process.
-     * @param unmarshaller The unmarshaller to use for validating model objects.
+     * @param context The model context to use for validating model objects.
+     *
+     * @return The report of the validation.
+     *
+     * @throws NullPointerException if {@code module} or {@code context} is {@code null}.
+     * @throws IOException if validating model objects fails.
+     *
+     * @see #validateModelObjects(org.jomc.model.Specification, org.jomc.modlet.ModelContext)
+     * @see #validateModelObjects(org.jomc.model.Implementation, org.jomc.modlet.ModelContext)
+     */
+    public ModelValidationReport validateModelObjects( final Module module, final ModelContext context )
+        throws IOException
+    {
+        if ( module == null )
+        {
+            throw new NullPointerException( "module" );
+        }
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+
+        assert this.getModules().getModule( module.getName() ) != null : "Module '" + module.getName() + "' not found.";
+
+        try
+        {
+            final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
+            u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+            return this.validateModelObjects(
+                module.getSpecifications(), module.getImplementations(), u, context.getClassLoader() );
+
+        }
+        catch ( final ModelException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+    }
+
+    /**
+     * Validates model objects of class files.
+     *
+     * @param specification The specification to process.
+     * @param context The model context to use for validating model objects.
+     *
+     * @return The report of the validation.
+     *
+     * @throws NullPointerException if {@code specification} or {@code context} is {@code null}.
+     *
+     * @throws IOException if validating model objects fails.
+     */
+    public ModelValidationReport validateModelObjects( final Specification specification, final ModelContext context )
+        throws IOException
+    {
+        if ( specification == null )
+        {
+            throw new NullPointerException( "specification" );
+        }
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+
+        assert this.getModules().getSpecification( specification.getIdentifier() ) != null :
+            "Specification '" + specification.getIdentifier() + "' not found.";
+
+        try
+        {
+            final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
+            u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+            return this.validateModelObjects( specification, u, context.getClassLoader() );
+        }
+        catch ( final ModelException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+    }
+
+    /**
+     * Validates model objects of class files.
+     *
+     * @param implementation The implementation to process.
+     * @param context The model context to use for validating model objects.
+     *
+     * @return The report of the validation.
+     *
+     * @throws NullPointerException if {@code implementation} or {@code context} is {@code null}.
+     *
+     * @throws IOException if validating model objects fails.
+     */
+    public ModelValidationReport validateModelObjects( final Implementation implementation, final ModelContext context )
+        throws IOException
+    {
+        if ( implementation == null )
+        {
+            throw new NullPointerException( "implementation" );
+        }
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+
+        assert this.getModules().getImplementation( implementation.getIdentifier() ) != null :
+            "Implementation '" + implementation.getIdentifier() + "' not found.";
+
+        try
+        {
+            final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
+            u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+            return this.validateModelObjects( implementation, u, context.getClassLoader() );
+        }
+        catch ( final ModelException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+    }
+
+    /**
+     * Validates model objects of class files.
+     *
+     * @param context The model context to use for validating model objects.
      * @param classesDirectory The directory holding the class files.
      *
      * @return The report of the validation.
      *
-     * @throws NullPointerException if {@code module}, {@code unmarshaller} or {@code classesDirectory} is {@code null}.
+     * @throws NullPointerException if {@code context} or {@code classesDirectory} is {@code null}.
      * @throws IOException if validating model objects fails.
      *
-     * @see #validateModelObjects(org.jomc.model.Specification, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
-     * @see #validateModelObjects(org.jomc.model.Implementation, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
-     * @see org.jomc.modlet.ModelContext#createUnmarshaller(java.lang.String)
-     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
+     * @see #validateModelObjects(org.jomc.model.Module, org.jomc.modlet.ModelContext, java.io.File)
      */
-    public ModelValidationReport validateModelObjects( final Module module, final Unmarshaller unmarshaller,
+    public ModelValidationReport validateModelObjects( final ModelContext context, final File classesDirectory )
+        throws IOException
+    {
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+        if ( classesDirectory == null )
+        {
+            throw new NullPointerException( "classesDirectory" );
+        }
+
+        try
+        {
+            final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
+            u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+            return this.validateModelObjects(
+                this.getModules().getSpecifications(), this.getModules().getImplementations(), u, classesDirectory );
+
+        }
+        catch ( final ModelException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+    }
+
+    /**
+     * Validates model objects of class files.
+     *
+     * @param module The module to process.
+     * @param context The model context to use for validating model objects.
+     * @param classesDirectory The directory holding the class files.
+     *
+     * @return The report of the validation.
+     *
+     * @throws NullPointerException if {@code module}, {@code context} or {@code classesDirectory} is {@code null}.
+     * @throws IOException if validating model objects fails.
+     *
+     * @see #validateModelObjects(org.jomc.model.Specification, org.jomc.modlet.ModelContext, java.io.File)
+     * @see #validateModelObjects(org.jomc.model.Implementation, org.jomc.modlet.ModelContext, java.io.File)
+     */
+    public ModelValidationReport validateModelObjects( final Module module, final ModelContext context,
                                                        final File classesDirectory ) throws IOException
     {
         if ( module == null )
         {
             throw new NullPointerException( "module" );
         }
-        if ( unmarshaller == null )
+        if ( context == null )
         {
-            throw new NullPointerException( "unmarshaller" );
+            throw new NullPointerException( "context" );
         }
         if ( classesDirectory == null )
         {
             throw new NullPointerException( "classesDirectory" );
         }
 
-        final ModelValidationReport report = new ModelValidationReport();
+        assert this.getModules().getModule( module.getName() ) != null : "Module '" + module.getName() + "' not found.";
 
-        if ( module.getSpecifications() != null )
+        try
         {
-            for ( Specification s : module.getSpecifications().getSpecification() )
-            {
-                if ( s.isClassDeclaration() )
-                {
-                    final String classLocation = s.getClazz().replace( '.', File.separatorChar ) + ".class";
-                    final File classFile = new File( classesDirectory, classLocation );
-                    final ModelValidationReport current =
-                        this.validateModelObjects( s, unmarshaller, this.getJavaClass( classFile ) );
+            final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
+            u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+            return this.validateModelObjects( module.getSpecifications(), module.getImplementations(), u,
+                                              classesDirectory );
 
-                    report.getDetails().addAll( current.getDetails() );
-                }
-            }
         }
-
-        if ( module.getImplementations() != null )
+        catch ( final ModelException e )
         {
-            for ( Implementation i : module.getImplementations().getImplementation() )
-            {
-                if ( i.isClassDeclaration() )
-                {
-                    final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
-                    final File classFile = new File( classesDirectory, classLocation );
-                    final JavaClass javaClass = this.getJavaClass( classFile );
-                    final ModelValidationReport current =
-                        this.validateModelObjects( i, unmarshaller, javaClass );
-
-                    report.getDetails().addAll( current.getDetails() );
-                }
-            }
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-
-        return report;
-    }
-
-    /**
-     * Validates model objects of class files.
-     *
-     * @param module The module to process.
-     * @param unmarshaller The unmarshaller to use for validating model objects.
-     * @param classLoader The class loader to search for class files.
-     *
-     * @return The report of the validation.
-     *
-     * @throws NullPointerException if {@code module}, {@code unmarshaller} or {@code classLoader} is {@code null}.
-     * @throws IOException if validating model objects fails.
-     *
-     * @see #validateModelObjects(org.jomc.model.Specification, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
-     * @see #validateModelObjects(org.jomc.model.Implementation, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
-     * @see org.jomc.modlet.ModelContext#createUnmarshaller(java.lang.String)
-     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
-     */
-    public ModelValidationReport validateModelObjects( final Module module, final Unmarshaller unmarshaller,
-                                                       final ClassLoader classLoader ) throws IOException
-    {
-        if ( module == null )
-        {
-            throw new NullPointerException( "module" );
-        }
-        if ( unmarshaller == null )
-        {
-            throw new NullPointerException( "unmarshaller" );
-        }
-        if ( classLoader == null )
-        {
-            throw new NullPointerException( "classLoader" );
-        }
-
-        final ModelValidationReport report = new ModelValidationReport();
-
-        if ( module.getSpecifications() != null )
-        {
-            for ( Specification s : module.getSpecifications().getSpecification() )
-            {
-                if ( s.isClassDeclaration() )
-                {
-                    final String classLocation = s.getClazz().replace( '.', '/' ) + ".class";
-                    final URL classUrl = classLoader.getResource( classLocation );
-
-                    if ( classUrl == null )
-                    {
-                        throw new IOException( getMessage( "resourceNotFound", classLocation ) );
-                    }
-
-                    final JavaClass javaClass = this.getJavaClass( classUrl, classLocation );
-                    final ModelValidationReport current =
-                        this.validateModelObjects( s, unmarshaller, javaClass );
-
-                    report.getDetails().addAll( current.getDetails() );
-                }
-            }
-        }
-
-        if ( module.getImplementations() != null )
-        {
-            for ( Implementation i : module.getImplementations().getImplementation() )
-            {
-                if ( i.isClassDeclaration() )
-                {
-                    final String classLocation = i.getClazz().replace( '.', '/' ) + ".class";
-                    final URL classUrl = classLoader.getResource( classLocation );
-
-                    if ( classUrl == null )
-                    {
-                        throw new IOException( getMessage( "resourceNotFound", classLocation ) );
-                    }
-
-                    final JavaClass javaClass = this.getJavaClass( classUrl, classLocation );
-                    final ModelValidationReport current = this.validateModelObjects( i, unmarshaller, javaClass );
-                    report.getDetails().addAll( current.getDetails() );
-                }
-            }
-        }
-
-        return report;
     }
 
     /**
      * Validates model objects of class files.
      *
      * @param specification The specification to process.
-     * @param unmarshaller The unmarshaller to use for validating model objects.
-     * @param classFile The class file to validate model objects of.
+     * @param context The model context to use for validating model objects.
+     * @param classesDirectory The directory holding the class files.
      *
      * @return The report of the validation.
      *
-     * @throws NullPointerException if {@code specification}, {@code unmarshaller} or {@code classFile} is {@code null}.
+     * @throws NullPointerException if {@code specification}, {@code context} or {@code classesDirectory} is
+     * {@code null}.
+     * 
      * @throws IOException if validating model objects fails.
-     *
-     * @see org.jomc.modlet.ModelContext#createUnmarshaller(java.lang.String)
-     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
      */
-    public ModelValidationReport validateModelObjects( final Specification specification,
-                                                       final Unmarshaller unmarshaller, final JavaClass classFile )
+    public ModelValidationReport validateModelObjects( final Specification specification, final ModelContext context,
+                                                       final File classesDirectory )
         throws IOException
     {
         if ( specification == null )
         {
             throw new NullPointerException( "specification" );
         }
-        if ( unmarshaller == null )
+        if ( context == null )
         {
-            throw new NullPointerException( "unmarshaller" );
+            throw new NullPointerException( "context" );
         }
-        if ( classFile == null )
+        if ( classesDirectory == null )
         {
-            throw new NullPointerException( "classFile" );
-        }
-
-        if ( this.isLoggable( Level.INFO ) )
-        {
-            this.log( Level.INFO, getMessage( "validatingSpecification", specification.getIdentifier() ), null );
+            throw new NullPointerException( "classesDirectory" );
         }
 
-        final ModelValidationReport report = new ModelValidationReport();
+        assert this.getModules().getSpecification( specification.getIdentifier() ) != null :
+            "Specification '" + specification.getIdentifier() + "' not found.";
 
-        Specification decoded = null;
-        final byte[] bytes = this.getClassfileAttribute( classFile, Specification.class.getName() );
-        if ( bytes != null )
+        try
         {
-            decoded = this.decodeModelObject( unmarshaller, bytes, Specification.class );
+            final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
+            u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+            return this.validateModelObjects( specification, u, classesDirectory );
         }
-
-        if ( decoded != null )
+        catch ( final ModelException e )
         {
-            if ( decoded.getMultiplicity() != specification.getMultiplicity() )
-            {
-                report.getDetails().add( new ModelValidationReport.Detail(
-                    "CLASS_ILLEGAL_SPECIFICATION_MULTIPLICITY", Level.SEVERE, getMessage(
-                    "illegalMultiplicity", specification.getIdentifier(), specification.getMultiplicity().value(),
-                    decoded.getMultiplicity().value() ), new ObjectFactory().createSpecification( specification ) ) );
-
-            }
-
-            if ( decoded.getScope() == null
-                 ? specification.getScope() != null
-                 : !decoded.getScope().equals( specification.getScope() ) )
-            {
-                report.getDetails().add( new ModelValidationReport.Detail(
-                    "CLASS_ILLEGAL_SPECIFICATION_SCOPE", Level.SEVERE, getMessage(
-                    "illegalScope", specification.getIdentifier(),
-                    specification.getScope() == null ? "Multiton" : specification.getScope(),
-                    decoded.getScope() == null ? "Multiton" : decoded.getScope() ),
-                    new ObjectFactory().createSpecification( specification ) ) );
-
-            }
-
-            if ( decoded.getClazz() == null
-                 ? specification.getClazz() != null
-                 : !decoded.getClazz().equals( specification.getClazz() ) )
-            {
-                report.getDetails().add( new ModelValidationReport.Detail(
-                    "CLASS_ILLEGAL_SPECIFICATION_CLASS", Level.SEVERE, getMessage(
-                    "illegalSpecificationClass", decoded.getIdentifier(),
-                    specification.getClazz(), decoded.getClazz() ),
-                    new ObjectFactory().createSpecification( specification ) ) );
-
-            }
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
-        else if ( this.isLoggable( Level.WARNING ) )
-        {
-            this.log( Level.WARNING, getMessage( "cannotValidateSpecification", specification.getIdentifier(),
-                                                 Specification.class.getName() ), null );
-
-        }
-
-        return report;
     }
 
     /**
      * Validates model objects of class files.
      *
      * @param implementation The implementation to process.
-     * @param unmarshaller The unmarshaller to use for validating model objects.
-     * @param classFile The class file to validate model objects of.
+     * @param context The model context to use for validating model objects.
+     * @param classesDirectory The directory holding the class files.
      *
      * @return The report of the validation.
      *
-     * @throws NullPointerException if {@code implementation}, {@code unmarshaller} or {@code classFile} is {@code null}.
-     * @throws IOException if validating model objects fails.
+     * @throws NullPointerException if {@code implementation}, {@code context} or {@code classesDirectory} is
+     * {@code null}.
      *
-     * @see org.jomc.modlet.ModelContext#createUnmarshaller(java.lang.String)
-     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
+     * @throws IOException if validating model objects fails.
      */
     public ModelValidationReport validateModelObjects( final Implementation implementation,
-                                                       final Unmarshaller unmarshaller, final JavaClass classFile )
+                                                       final ModelContext context, final File classesDirectory )
         throws IOException
     {
         if ( implementation == null )
         {
             throw new NullPointerException( "implementation" );
         }
-        if ( unmarshaller == null )
+        if ( context == null )
         {
-            throw new NullPointerException( "unmarshaller" );
+            throw new NullPointerException( "context" );
         }
-        if ( classFile == null )
+        if ( classesDirectory == null )
         {
-            throw new NullPointerException( "classFile" );
-        }
-
-        if ( this.isLoggable( Level.INFO ) )
-        {
-            this.log( Level.INFO, getMessage( "validatingImplementation", implementation.getIdentifier() ), null );
+            throw new NullPointerException( "classesDirectory" );
         }
 
-        final ModelValidationReport report = new ModelValidationReport();
+        assert this.getModules().getImplementation( implementation.getIdentifier() ) != null :
+            "Implementation '" + implementation.getIdentifier() + "' not found.";
 
         try
         {
-            Dependencies dependencies = this.getModules().getDependencies( implementation.getIdentifier() );
-            if ( dependencies == null )
-            {
-                dependencies = new Dependencies();
-            }
-
-            Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
-            if ( properties == null )
-            {
-                properties = new Properties();
-            }
-
-            Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
-            if ( messages == null )
-            {
-                messages = new Messages();
-            }
-
-            Specifications specifications = this.getModules().getSpecifications( implementation.getIdentifier() );
-            if ( specifications == null )
-            {
-                specifications = new Specifications();
-            }
-
-            Dependencies decodedDependencies = null;
-            byte[] bytes = this.getClassfileAttribute( classFile, Dependencies.class.getName() );
-            if ( bytes != null )
-            {
-                decodedDependencies = this.decodeModelObject( unmarshaller, bytes, Dependencies.class );
-            }
-
-            Properties decodedProperties = null;
-            bytes = this.getClassfileAttribute( classFile, Properties.class.getName() );
-            if ( bytes != null )
-            {
-                decodedProperties = this.decodeModelObject( unmarshaller, bytes, Properties.class );
-            }
-
-            Messages decodedMessages = null;
-            bytes = this.getClassfileAttribute( classFile, Messages.class.getName() );
-            if ( bytes != null )
-            {
-                decodedMessages = this.decodeModelObject( unmarshaller, bytes, Messages.class );
-            }
-
-            Specifications decodedSpecifications = null;
-            bytes = this.getClassfileAttribute( classFile, Specifications.class.getName() );
-            if ( bytes != null )
-            {
-                decodedSpecifications = this.decodeModelObject( unmarshaller, bytes, Specifications.class );
-            }
-
-            if ( decodedDependencies != null )
-            {
-                for ( Dependency decodedDependency : decodedDependencies.getDependency() )
-                {
-                    final Dependency dependency = dependencies.getDependency( decodedDependency.getName() );
-                    final Specification s = this.getModules().getSpecification( decodedDependency.getIdentifier() );
-
-                    if ( dependency == null )
-                    {
-                        report.getDetails().add( new ModelValidationReport.Detail(
-                            "CLASS_MISSING_IMPLEMENTATION_DEPENDENCY", Level.SEVERE, getMessage(
-                            "missingDependency", implementation.getIdentifier(), decodedDependency.getName() ),
-                            new ObjectFactory().createImplementation( implementation ) ) );
-
-                    }
-                    else if ( decodedDependency.getImplementationName() != null
-                              && dependency.getImplementationName() == null )
-                    {
-                        report.getDetails().add( new ModelValidationReport.Detail(
-                            "CLASS_MISSING_DEPENDENCY_IMPLEMENTATION_NAME", Level.SEVERE, getMessage(
-                            "missingDependencyImplementationName", implementation.getIdentifier(),
-                            decodedDependency.getName() ),
-                            new ObjectFactory().createImplementation( implementation ) ) );
-
-                    }
-
-                    if ( s != null && s.getVersion() != null && decodedDependency.getVersion() != null
-                         && VersionParser.compare( decodedDependency.getVersion(), s.getVersion() ) > 0 )
-                    {
-                        final Module moduleOfSpecification =
-                            this.getModules().getModuleOfSpecification( s.getIdentifier() );
-
-                        final Module moduleOfImplementation =
-                            this.getModules().getModuleOfImplementation( implementation.getIdentifier() );
-
-                        report.getDetails().add( new ModelValidationReport.Detail(
-                            "CLASS_INCOMPATIBLE_IMPLEMENTATION_DEPENDENCY", Level.SEVERE, getMessage(
-                            "incompatibleDependency", classFile.getClassName(),
-                            moduleOfImplementation == null ? "<>" : moduleOfImplementation.getName(),
-                            s.getIdentifier(),
-                            moduleOfSpecification == null ? "<>" : moduleOfSpecification.getName(),
-                            decodedDependency.getVersion(), s.getVersion() ),
-                            new ObjectFactory().createImplementation( implementation ) ) );
-
-                    }
-                }
-            }
-            else if ( this.isLoggable( Level.WARNING ) )
-            {
-                this.log( Level.WARNING, getMessage( "cannotValidateImplementation", implementation.getIdentifier(),
-                                                     Dependencies.class.getName() ), null );
-
-            }
-
-            if ( decodedProperties != null )
-            {
-                for ( Property decodedProperty : decodedProperties.getProperty() )
-                {
-                    final Property property = properties.getProperty( decodedProperty.getName() );
-
-                    if ( property == null )
-                    {
-                        report.getDetails().add( new ModelValidationReport.Detail(
-                            "CLASS_MISSING_IMPLEMENTATION_PROPERTY", Level.SEVERE, getMessage(
-                            "missingProperty", implementation.getIdentifier(), decodedProperty.getName() ),
-                            new ObjectFactory().createImplementation( implementation ) ) );
-
-                    }
-                    else if ( decodedProperty.getType() == null
-                              ? property.getType() != null
-                              : !decodedProperty.getType().equals( property.getType() ) )
-                    {
-                        report.getDetails().add( new ModelValidationReport.Detail(
-                            "CLASS_ILLEGAL_IMPLEMENTATION_PROPERTY", Level.SEVERE, getMessage(
-                            "illegalPropertyType", implementation.getIdentifier(), decodedProperty.getName(),
-                            property.getType() == null ? "<>" : property.getType(),
-                            decodedProperty.getType() == null ? "<>" : decodedProperty.getType() ),
-                            new ObjectFactory().createImplementation( implementation ) ) );
-
-                    }
-                }
-            }
-            else if ( this.isLoggable( Level.WARNING ) )
-            {
-                this.log( Level.WARNING, getMessage( "cannotValidateImplementation", implementation.getIdentifier(),
-                                                     Properties.class.getName() ), null );
-
-            }
-
-            if ( decodedMessages != null )
-            {
-                for ( Message decodedMessage : decodedMessages.getMessage() )
-                {
-                    final Message message = messages.getMessage( decodedMessage.getName() );
-
-                    if ( message == null )
-                    {
-                        report.getDetails().add( new ModelValidationReport.Detail(
-                            "CLASS_MISSING_IMPLEMENTATION_MESSAGE", Level.SEVERE, getMessage(
-                            "missingMessage", implementation.getIdentifier(), decodedMessage.getName() ),
-                            new ObjectFactory().createImplementation( implementation ) ) );
-
-                    }
-                }
-            }
-            else if ( this.isLoggable( Level.WARNING ) )
-            {
-                this.log( Level.WARNING, getMessage( "cannotValidateImplementation",
-                                                     implementation.getIdentifier(), Messages.class.getName() ), null );
-
-            }
-
-            if ( decodedSpecifications != null )
-            {
-                for ( Specification decodedSpecification : decodedSpecifications.getSpecification() )
-                {
-                    final Specification specification =
-                        this.getModules().getSpecification( decodedSpecification.getIdentifier() );
-
-                    if ( specification == null )
-                    {
-                        report.getDetails().add( new ModelValidationReport.Detail(
-                            "CLASS_MISSING_SPECIFICATION", Level.SEVERE, getMessage(
-                            "missingSpecification", implementation.getIdentifier(),
-                            decodedSpecification.getIdentifier() ),
-                            new ObjectFactory().createImplementation( implementation ) ) );
-
-                    }
-                    else
-                    {
-                        if ( decodedSpecification.getMultiplicity() != specification.getMultiplicity() )
-                        {
-                            report.getDetails().add( new ModelValidationReport.Detail(
-                                "CLASS_ILLEGAL_SPECIFICATION_MULTIPLICITY", Level.SEVERE, getMessage(
-                                "illegalMultiplicity", specification.getIdentifier(),
-                                specification.getMultiplicity().value(),
-                                decodedSpecification.getMultiplicity().value() ),
-                                new ObjectFactory().createImplementation( implementation ) ) );
-
-                        }
-
-                        if ( decodedSpecification.getScope() == null
-                             ? specification.getScope() != null
-                             : !decodedSpecification.getScope().equals( specification.getScope() ) )
-                        {
-                            report.getDetails().add( new ModelValidationReport.Detail(
-                                "CLASS_ILLEGAL_SPECIFICATION_SCOPE", Level.SEVERE, getMessage(
-                                "illegalScope", decodedSpecification.getIdentifier(),
-                                specification.getScope() == null ? "Multiton" : specification.getScope(),
-                                decodedSpecification.getScope() == null ? "Multiton" : decodedSpecification.getScope() ),
-                                new ObjectFactory().createImplementation( implementation ) ) );
-
-                        }
-
-                        if ( decodedSpecification.getClazz() == null
-                             ? specification.getClazz() != null
-                             : !decodedSpecification.getClazz().equals( specification.getClazz() ) )
-                        {
-                            report.getDetails().add( new ModelValidationReport.Detail(
-                                "CLASS_ILLEGAL_SPECIFICATION_CLASS", Level.SEVERE, getMessage(
-                                "illegalSpecificationClass", decodedSpecification.getIdentifier(),
-                                specification.getClazz(), decodedSpecification.getClazz() ),
-                                new ObjectFactory().createImplementation( implementation ) ) );
-
-                        }
-                    }
-                }
-
-                for ( SpecificationReference decodedReference : decodedSpecifications.getReference() )
-                {
-                    final Specification specification =
-                        specifications.getSpecification( decodedReference.getIdentifier() );
-
-                    if ( specification == null )
-                    {
-                        report.getDetails().add( new ModelValidationReport.Detail(
-                            "CLASS_MISSING_SPECIFICATION", Level.SEVERE, getMessage(
-                            "missingSpecification", implementation.getIdentifier(), decodedReference.getIdentifier() ),
-                            new ObjectFactory().createImplementation( implementation ) ) );
-
-                    }
-                    else if ( decodedReference.getVersion() != null && specification.getVersion() != null
-                              && VersionParser.compare( decodedReference.getVersion(),
-                                                        specification.getVersion() ) != 0 )
-                    {
-                        final Module moduleOfSpecification =
-                            this.getModules().getModuleOfSpecification( decodedReference.getIdentifier() );
-
-                        final Module moduleOfImplementation =
-                            this.getModules().getModuleOfImplementation( implementation.getIdentifier() );
-
-                        report.getDetails().add( new ModelValidationReport.Detail(
-                            "CLASS_INCOMPATIBLE_IMPLEMENTATION", Level.SEVERE, getMessage(
-                            "incompatibleImplementation", classFile.getClassName(),
-                            moduleOfImplementation == null ? "<>" : moduleOfImplementation.getName(),
-                            specification.getIdentifier(),
-                            moduleOfSpecification == null ? "<>" : moduleOfSpecification.getName(),
-                            decodedReference.getVersion(), specification.getVersion() ),
-                            new ObjectFactory().createImplementation( implementation ) ) );
-
-                    }
-                }
-            }
-            else if ( this.isLoggable( Level.WARNING ) )
-            {
-                this.log( Level.WARNING, getMessage( "cannotValidateImplementation", implementation.getIdentifier(),
-                                                     Specifications.class.getName() ), null );
-
-            }
-
-            return report;
+            final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
+            u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+            return this.validateModelObjects( implementation, u, classesDirectory );
         }
-        catch ( final ParseException e )
-        {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
-        }
-        catch ( final TokenMgrError e )
+        catch ( final ModelException e )
         {
             throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
@@ -1000,44 +634,47 @@ public class ClassFileProcessor extends JomcTool
     /**
      * Transforms model objects of class files.
      *
-     * @param marshaller The marshaller to use for transforming model objects.
-     * @param unmarshaller The unmarshaller to use for transforming model objects.
+     * @param context The model context to use for transforming model objects.
      * @param classesDirectory The directory holding the class files.
      * @param transformers The transformers to use for transforming model objects.
      *
-     * @throws NullPointerException if {@code marshaller}, {@code unmarshaller}, {@code classesDirectory} or
-     * {@code transformers} is {@code null}.
+     * @throws NullPointerException if {@code context}, {@code classesDirectory} or {@code transformers} is
+     * {@code null}.
      * @throws IOException if transforming model objects fails.
      *
-     * @see #transformModelObjects(org.jomc.model.Module, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, java.io.File, java.util.List)
-     * @see org.jomc.modlet.ModelContext#createMarshaller(java.lang.String)
-     * @see org.jomc.modlet.ModelContext#createUnmarshaller(java.lang.String)
-     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
+     * @see #transformModelObjects(org.jomc.model.Module, org.jomc.modlet.ModelContext, java.io.File, java.util.List)
      */
-    public void transformModelObjects( final Marshaller marshaller, final Unmarshaller unmarshaller,
-                                       final File classesDirectory, final List<Transformer> transformers )
-        throws IOException
+    public void transformModelObjects( final ModelContext context, final File classesDirectory,
+                                       final List<Transformer> transformers ) throws IOException
     {
-        if ( marshaller == null )
+        if ( context == null )
         {
-            throw new NullPointerException( "marshaller" );
-        }
-        if ( unmarshaller == null )
-        {
-            throw new NullPointerException( "unmarshaller" );
-        }
-        if ( transformers == null )
-        {
-            throw new NullPointerException( "transformers" );
+            throw new NullPointerException( "context" );
         }
         if ( classesDirectory == null )
         {
             throw new NullPointerException( "classesDirectory" );
         }
-
-        for ( Module m : this.getModules().getModule() )
+        if ( transformers == null )
         {
-            this.transformModelObjects( m, marshaller, unmarshaller, classesDirectory, transformers );
+            throw new NullPointerException( "transformers" );
+        }
+
+        try
+        {
+            final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
+            final Marshaller m = context.createMarshaller( this.getModel().getIdentifier() );
+            final Schema s = context.createSchema( this.getModel().getIdentifier() );
+            u.setSchema( s );
+            m.setSchema( s );
+
+            this.transformModelObjects( this.getModules().getSpecifications(), this.getModules().getImplementations(),
+                                        u, m, classesDirectory, transformers );
+
+        }
+        catch ( final ModelException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
     }
 
@@ -1045,86 +682,55 @@ public class ClassFileProcessor extends JomcTool
      * Transforms model objects of class files.
      *
      * @param module The module to process.
-     * @param marshaller The marshaller to use for transforming model objects.
-     * @param unmarshaller The unmarshaller to use for transforming model objects.
+     * @param context The model context to use for transforming model objects.
      * @param classesDirectory The directory holding the class files.
      * @param transformers The transformers to use for transforming the model objects.
      *
-     * @throws NullPointerException if {@code module}, {@code marshaller}, {@code unmarshaller},
-     * {@code classesDirectory} or {@code transformers} is {@code null}.
+     * @throws NullPointerException if {@code module}, {@code context}, {@code classesDirectory} or {@code transformers}
+     * is {@code null}.
      * @throws IOException if transforming model objects fails.
      *
-     * @see #transformModelObjects(org.jomc.model.Specification, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass, java.util.List)
-     * @see #transformModelObjects(org.jomc.model.Implementation, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass, java.util.List)
-     * @see org.jomc.modlet.ModelContext#createMarshaller(java.lang.String)
-     * @see org.jomc.modlet.ModelContext#createUnmarshaller(java.lang.String)
-     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
+     * @see #transformModelObjects(org.jomc.model.Specification, org.jomc.modlet.ModelContext, java.io.File, java.util.List)
+     * @see #transformModelObjects(org.jomc.model.Implementation, org.jomc.modlet.ModelContext, java.io.File, java.util.List)
      */
-    public void transformModelObjects( final Module module, final Marshaller marshaller, final Unmarshaller unmarshaller,
-                                       final File classesDirectory, final List<Transformer> transformers )
+    public void transformModelObjects( final Module module, final ModelContext context, final File classesDirectory,
+                                       final List<Transformer> transformers )
         throws IOException
     {
         if ( module == null )
         {
             throw new NullPointerException( "module" );
         }
-        if ( marshaller == null )
+        if ( context == null )
         {
-            throw new NullPointerException( "marshaller" );
-        }
-        if ( unmarshaller == null )
-        {
-            throw new NullPointerException( "unmarshaller" );
-        }
-        if ( transformers == null )
-        {
-            throw new NullPointerException( "transformers" );
+            throw new NullPointerException( "context" );
         }
         if ( classesDirectory == null )
         {
             throw new NullPointerException( "classesDirectory" );
         }
-
-        if ( module.getSpecifications() != null )
+        if ( transformers == null )
         {
-            for ( Specification s : module.getSpecifications().getSpecification() )
-            {
-                if ( s.isClassDeclaration() )
-                {
-                    final String classLocation = s.getIdentifier().replace( '.', File.separatorChar ) + ".class";
-                    final File classFile = new File( classesDirectory, classLocation );
-
-                    if ( this.isLoggable( Level.INFO ) )
-                    {
-                        this.log( Level.INFO, getMessage( "transforming", classFile.getAbsolutePath() ), null );
-                    }
-
-                    final JavaClass javaClass = this.getJavaClass( classFile );
-                    this.transformModelObjects( s, marshaller, unmarshaller, javaClass, transformers );
-                    javaClass.dump( classFile );
-                }
-            }
+            throw new NullPointerException( "transformers" );
         }
 
-        if ( module.getImplementations() != null )
+        assert this.getModules().getModule( module.getName() ) != null : "Module '" + module.getName() + "' not found.";
+
+        try
         {
-            for ( Implementation i : module.getImplementations().getImplementation() )
-            {
-                if ( i.isClassDeclaration() )
-                {
-                    final String classLocation = i.getClazz().replace( '.', File.separatorChar ) + ".class";
-                    final File classFile = new File( classesDirectory, classLocation );
+            final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
+            final Marshaller m = context.createMarshaller( this.getModel().getIdentifier() );
+            final Schema s = context.createSchema( this.getModel().getIdentifier() );
+            u.setSchema( s );
+            m.setSchema( s );
 
-                    if ( this.isLoggable( Level.INFO ) )
-                    {
-                        this.log( Level.INFO, getMessage( "transforming", classFile.getAbsolutePath() ), null );
-                    }
+            this.transformModelObjects( module.getSpecifications(), module.getImplementations(), u, m, classesDirectory,
+                                        transformers );
 
-                    final JavaClass javaClass = this.getJavaClass( classFile );
-                    this.transformModelObjects( i, marshaller, unmarshaller, javaClass, transformers );
-                    javaClass.dump( classFile );
-                }
-            }
+        }
+        catch ( final ModelException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
     }
 
@@ -1132,90 +738,51 @@ public class ClassFileProcessor extends JomcTool
      * Transforms model objects of class files.
      *
      * @param specification The specification to process.
-     * @param marshaller The marshaller to use for transforming model objects.
-     * @param unmarshaller The unmarshaller to use for transforming model objects.
-     * @param classFile The class file to transform model objects of.
+     * @param context The model context to use for transforming model objects.
+     * @param classesDirectory The directory holding the class files.
      * @param transformers The transformers to use for transforming the model objects.
      *
-     * @throws NullPointerException if {@code specification}, {@code marshaller}, {@code unmarshaller},
-     * {@code classFile} or {@code transformers} is {@code null}.
+     * @throws NullPointerException if {@code specification}, {@code context}, {@code classesDirectory} or
+     * {@code transformers} is {@code null}.
      * @throws IOException if transforming model objects fails.
-     *
-     * @see org.jomc.modlet.ModelContext#createMarshaller(java.lang.String)
-     * @see org.jomc.modlet.ModelContext#createUnmarshaller(java.lang.String)
-     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
      */
-    public void transformModelObjects( final Specification specification, final Marshaller marshaller,
-                                       final Unmarshaller unmarshaller, final JavaClass classFile,
-                                       final List<Transformer> transformers ) throws IOException
+    public void transformModelObjects( final Specification specification, final ModelContext context,
+                                       final File classesDirectory, final List<Transformer> transformers )
+        throws IOException
     {
         if ( specification == null )
         {
             throw new NullPointerException( "specification" );
         }
-        if ( marshaller == null )
+        if ( context == null )
         {
-            throw new NullPointerException( "marshaller" );
+            throw new NullPointerException( "context" );
         }
-        if ( unmarshaller == null )
+        if ( classesDirectory == null )
         {
-            throw new NullPointerException( "unmarshaller" );
-        }
-        if ( classFile == null )
-        {
-            throw new NullPointerException( "classFile" );
+            throw new NullPointerException( "classesDirectory" );
         }
         if ( transformers == null )
         {
             throw new NullPointerException( "transformers" );
         }
 
+        assert this.getModules().getSpecification( specification.getIdentifier() ) != null :
+            "Specification '" + specification.getIdentifier() + "' not found.";
+
         try
         {
-            Specification decodedSpecification = null;
-            final ObjectFactory objectFactory = new ObjectFactory();
-            final byte[] bytes = this.getClassfileAttribute( classFile, Specification.class.getName() );
-            if ( bytes != null )
-            {
-                decodedSpecification = this.decodeModelObject( unmarshaller, bytes, Specification.class );
-            }
+            final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
+            final Marshaller m = context.createMarshaller( this.getModel().getIdentifier() );
+            final Schema s = context.createSchema( this.getModel().getIdentifier() );
+            u.setSchema( s );
+            m.setSchema( s );
 
-            if ( decodedSpecification != null )
-            {
-                for ( Transformer transformer : transformers )
-                {
-                    final JAXBSource source =
-                        new JAXBSource( marshaller, objectFactory.createSpecification( decodedSpecification ) );
-
-                    final JAXBResult result = new JAXBResult( unmarshaller );
-                    transformer.transform( source, result );
-                    decodedSpecification = ( (JAXBElement<Specification>) result.getResult() ).getValue();
-                }
-
-                this.setClassfileAttribute( classFile, Specification.class.getName(), this.encodeModelObject(
-                    marshaller, objectFactory.createSpecification( decodedSpecification ) ) );
-
-            }
+            this.transformModelObjects( specification, m, u, classesDirectory, transformers );
         }
-        catch ( final JAXBException e )
+        catch ( final ModelException e )
         {
-            String message = e.getMessage();
-            if ( message == null && e.getLinkedException() != null )
-            {
-                message = e.getLinkedException().getMessage();
-            }
-
-            throw (IOException) new IOException( message ).initCause( e );
-        }
-        catch ( final TransformerException e )
-        {
-            String message = e.getMessage();
-            if ( message == null && e.getException() != null )
-            {
-                message = e.getException().getMessage();
-            }
-
-            throw (IOException) new IOException( message ).initCause( e );
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
     }
 
@@ -1223,159 +790,51 @@ public class ClassFileProcessor extends JomcTool
      * Transforms model objects of class files.
      *
      * @param implementation The implementation to process.
-     * @param marshaller The marshaller to use for transforming model objects.
-     * @param unmarshaller The unmarshaller to use for transforming model objects.
-     * @param classFile The class file to transform model objects of.
+     * @param context The model context to use for transforming model objects.
+     * @param classesDirectory The directory holding the class files.
      * @param transformers The transformers to use for transforming the model objects.
      *
-     * @throws NullPointerException if {@code implementation}, {@code marshaller}, {@code unmarshaller},
-     * {@code classFile} or {@code transformers} is {@code null}.
+     * @throws NullPointerException if {@code implementation}, {@code context}, {@code classesDirectory} or
+     * {@code transformers} is {@code null}.
      * @throws IOException if transforming model objects fails.
-     *
-     * @see org.jomc.modlet.ModelContext#createMarshaller(java.lang.String)
-     * @see org.jomc.modlet.ModelContext#createUnmarshaller(java.lang.String)
-     * @see org.jomc.model.Modules#MODEL_PUBLIC_ID
      */
-    public void transformModelObjects( final Implementation implementation, final Marshaller marshaller,
-                                       final Unmarshaller unmarshaller, final JavaClass classFile,
-                                       final List<Transformer> transformers ) throws IOException
+    public void transformModelObjects( final Implementation implementation, final ModelContext context,
+                                       final File classesDirectory, final List<Transformer> transformers )
+        throws IOException
     {
         if ( implementation == null )
         {
             throw new NullPointerException( "implementation" );
         }
-        if ( marshaller == null )
+        if ( context == null )
         {
-            throw new NullPointerException( "marshaller" );
+            throw new NullPointerException( "context" );
         }
-        if ( unmarshaller == null )
+        if ( classesDirectory == null )
         {
-            throw new NullPointerException( "unmarshaller" );
-        }
-        if ( classFile == null )
-        {
-            throw new NullPointerException( "classFile" );
+            throw new NullPointerException( "classesDirectory" );
         }
         if ( transformers == null )
         {
             throw new NullPointerException( "transformers" );
         }
 
+        assert this.getModules().getImplementation( implementation.getIdentifier() ) != null :
+            "Implementation '" + implementation.getIdentifier() + "' not found.";
+
         try
         {
-            Dependencies decodedDependencies = null;
-            byte[] bytes = this.getClassfileAttribute( classFile, Dependencies.class.getName() );
-            if ( bytes != null )
-            {
-                decodedDependencies = this.decodeModelObject( unmarshaller, bytes, Dependencies.class );
-            }
+            final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
+            final Marshaller m = context.createMarshaller( this.getModel().getIdentifier() );
+            final Schema s = context.createSchema( this.getModel().getIdentifier() );
+            u.setSchema( s );
+            m.setSchema( s );
 
-            Messages decodedMessages = null;
-            bytes = this.getClassfileAttribute( classFile, Messages.class.getName() );
-            if ( bytes != null )
-            {
-                decodedMessages = this.decodeModelObject( unmarshaller, bytes, Messages.class );
-            }
-
-            Properties decodedProperties = null;
-            bytes = this.getClassfileAttribute( classFile, Properties.class.getName() );
-            if ( bytes != null )
-            {
-                decodedProperties = this.decodeModelObject( unmarshaller, bytes, Properties.class );
-            }
-
-            Specifications decodedSpecifications = null;
-            bytes = this.getClassfileAttribute( classFile, Specifications.class.getName() );
-            if ( bytes != null )
-            {
-                decodedSpecifications = this.decodeModelObject( unmarshaller, bytes, Specifications.class );
-            }
-
-            final ObjectFactory of = new ObjectFactory();
-            for ( Transformer transformer : transformers )
-            {
-                if ( decodedDependencies != null )
-                {
-                    final JAXBSource source = new JAXBSource( marshaller, of.createDependencies( decodedDependencies ) );
-                    final JAXBResult result = new JAXBResult( unmarshaller );
-                    transformer.transform( source, result );
-                    decodedDependencies = ( (JAXBElement<Dependencies>) result.getResult() ).getValue();
-                }
-
-                if ( decodedMessages != null )
-                {
-                    final JAXBSource source = new JAXBSource( marshaller, of.createMessages( decodedMessages ) );
-                    final JAXBResult result = new JAXBResult( unmarshaller );
-                    transformer.transform( source, result );
-                    decodedMessages = ( (JAXBElement<Messages>) result.getResult() ).getValue();
-                }
-
-                if ( decodedProperties != null )
-                {
-                    final JAXBSource source = new JAXBSource( marshaller, of.createProperties( decodedProperties ) );
-                    final JAXBResult result = new JAXBResult( unmarshaller );
-                    transformer.transform( source, result );
-                    decodedProperties = ( (JAXBElement<Properties>) result.getResult() ).getValue();
-                }
-
-                if ( decodedSpecifications != null )
-                {
-                    final JAXBSource source =
-                        new JAXBSource( marshaller, of.createSpecifications( decodedSpecifications ) );
-
-                    final JAXBResult result = new JAXBResult( unmarshaller );
-                    transformer.transform( source, result );
-                    decodedSpecifications = ( (JAXBElement<Specifications>) result.getResult() ).getValue();
-                }
-            }
-
-            if ( decodedDependencies != null )
-            {
-                this.setClassfileAttribute( classFile, Dependencies.class.getName(), this.encodeModelObject(
-                    marshaller, of.createDependencies( decodedDependencies ) ) );
-
-            }
-
-            if ( decodedMessages != null )
-            {
-                this.setClassfileAttribute( classFile, Messages.class.getName(), this.encodeModelObject(
-                    marshaller, of.createMessages( decodedMessages ) ) );
-
-            }
-
-            if ( decodedProperties != null )
-            {
-                this.setClassfileAttribute( classFile, Properties.class.getName(), this.encodeModelObject(
-                    marshaller, of.createProperties( decodedProperties ) ) );
-
-            }
-
-            if ( decodedSpecifications != null )
-            {
-                this.setClassfileAttribute( classFile, Specifications.class.getName(), this.encodeModelObject(
-                    marshaller, of.createSpecifications( decodedSpecifications ) ) );
-
-            }
+            this.transformModelObjects( implementation, m, u, classesDirectory, transformers );
         }
-        catch ( final JAXBException e )
+        catch ( final ModelException e )
         {
-            String message = e.getMessage();
-            if ( message == null && e.getLinkedException() != null )
-            {
-                message = e.getLinkedException().getMessage();
-            }
-
-            throw (IOException) new IOException( message ).initCause( e );
-        }
-        catch ( final TransformerException e )
-        {
-            String message = e.getMessage();
-            if ( message == null && e.getException() != null )
-            {
-                message = e.getException().getMessage();
-            }
-
-            throw (IOException) new IOException( message ).initCause( e );
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
         }
     }
 
@@ -1661,6 +1120,846 @@ public class ClassFileProcessor extends JomcTool
             if ( message == null && e.getLinkedException() != null )
             {
                 message = e.getLinkedException().getMessage();
+            }
+
+            throw (IOException) new IOException( message ).initCause( e );
+        }
+    }
+
+    private void commitModelObjects( final Specifications specifications, final Implementations implementations,
+                                     final Marshaller marshaller, final File classesDirectory ) throws IOException
+    {
+        if ( specifications != null )
+        {
+            for ( Specification s : specifications.getSpecification() )
+            {
+                this.commitModelObjects( s, marshaller, classesDirectory );
+            }
+        }
+
+        if ( implementations != null )
+        {
+            for ( Implementation i : implementations.getImplementation() )
+            {
+                this.commitModelObjects( i, marshaller, classesDirectory );
+            }
+        }
+    }
+
+    private void commitModelObjects( final Specification specification, final Marshaller marshaller,
+                                     final File classesDirectory ) throws IOException
+    {
+        if ( specification.isClassDeclaration() )
+        {
+            final String classLocation = specification.getClazz().replace( '.', File.separatorChar ) + ".class";
+            final File classFile = new File( classesDirectory, classLocation );
+
+            if ( this.isLoggable( Level.INFO ) )
+            {
+                this.log( Level.INFO, getMessage( "committing", classFile.getAbsolutePath() ), null );
+            }
+
+            final JavaClass javaClass = this.getJavaClass( classFile );
+            this.setClassfileAttribute( javaClass, Specification.class.getName(), this.encodeModelObject(
+                marshaller, new ObjectFactory().createSpecification( specification ) ) );
+
+            javaClass.dump( classFile );
+        }
+    }
+
+    private void commitModelObjects( final Implementation implementation, final Marshaller marshaller,
+                                     final File classesDirectory ) throws IOException
+    {
+        if ( implementation.isClassDeclaration() )
+        {
+            final String classLocation = implementation.getClazz().replace( '.', File.separatorChar ) + ".class";
+            final File classFile = new File( classesDirectory, classLocation );
+
+            if ( this.isLoggable( Level.INFO ) )
+            {
+                this.log( Level.INFO, getMessage( "committing", classFile.getAbsolutePath() ), null );
+            }
+
+            final JavaClass javaClass = this.getJavaClass( classFile );
+            final ObjectFactory of = new ObjectFactory();
+
+            Dependencies dependencies = this.getModules().getDependencies( implementation.getIdentifier() );
+            if ( dependencies == null )
+            {
+                dependencies = new Dependencies();
+            }
+
+            Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
+            if ( properties == null )
+            {
+                properties = new Properties();
+            }
+
+            Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
+            if ( messages == null )
+            {
+                messages = new Messages();
+            }
+
+            Specifications specifications = this.getModules().getSpecifications( implementation.getIdentifier() );
+            if ( specifications == null )
+            {
+                specifications = new Specifications();
+            }
+
+            for ( SpecificationReference r : specifications.getReference() )
+            {
+                if ( specifications.getSpecification( r.getIdentifier() ) == null && this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, getMessage( "unresolvedSpecification", r.getIdentifier(),
+                                                         implementation.getIdentifier() ), null );
+
+                }
+            }
+
+            for ( Dependency d : dependencies.getDependency() )
+            {
+                final Specification s = this.getModules().getSpecification( d.getIdentifier() );
+
+                if ( s != null )
+                {
+                    if ( specifications.getSpecification( s.getIdentifier() ) == null )
+                    {
+                        specifications.getSpecification().add( s );
+                    }
+                }
+                else if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, getMessage( "unresolvedDependencySpecification", d.getIdentifier(),
+                                                         d.getName(), implementation.getIdentifier() ), null );
+
+                }
+            }
+
+            this.setClassfileAttribute( javaClass, Dependencies.class.getName(), this.encodeModelObject(
+                marshaller, of.createDependencies( dependencies ) ) );
+
+            this.setClassfileAttribute( javaClass, Properties.class.getName(), this.encodeModelObject(
+                marshaller, of.createProperties( properties ) ) );
+
+            this.setClassfileAttribute( javaClass, Messages.class.getName(), this.encodeModelObject(
+                marshaller, of.createMessages( messages ) ) );
+
+            this.setClassfileAttribute( javaClass, Specifications.class.getName(), this.encodeModelObject(
+                marshaller, of.createSpecifications( specifications ) ) );
+
+            javaClass.dump( classFile );
+        }
+    }
+
+    private ModelValidationReport validateModelObjects( final Specifications specifications,
+                                                        final Implementations implementations,
+                                                        final Unmarshaller unmarshaller, final File classesDirectory )
+        throws IOException
+    {
+        final ModelValidationReport report = new ModelValidationReport();
+
+        if ( specifications != null )
+        {
+            for ( Specification s : specifications.getSpecification() )
+            {
+                final ModelValidationReport current = this.validateModelObjects( s, unmarshaller, classesDirectory );
+                report.getDetails().addAll( current.getDetails() );
+            }
+        }
+
+        if ( implementations != null )
+        {
+            for ( Implementation i : implementations.getImplementation() )
+            {
+                final ModelValidationReport current = this.validateModelObjects( i, unmarshaller, classesDirectory );
+                report.getDetails().addAll( current.getDetails() );
+            }
+        }
+
+        return report;
+    }
+
+    private ModelValidationReport validateModelObjects( final Specification specification,
+                                                        final Unmarshaller unmarshaller,
+                                                        final File classesDirectory ) throws IOException
+    {
+        final ModelValidationReport report = new ModelValidationReport();
+
+        if ( specification.isClassDeclaration() )
+        {
+            final String classLocation = specification.getClazz().replace( '.', File.separatorChar ) + ".class";
+            final File classFile = new File( classesDirectory, classLocation );
+            final JavaClass javaClass = this.getJavaClass( classFile );
+            final ModelValidationReport current = this.validateModelObjects( specification, unmarshaller, javaClass );
+            report.getDetails().addAll( current.getDetails() );
+        }
+
+        return report;
+    }
+
+    private ModelValidationReport validateModelObjects( final Implementation implementation,
+                                                        final Unmarshaller unmarshaller,
+                                                        final File classesDirectory ) throws IOException
+    {
+        final ModelValidationReport report = new ModelValidationReport();
+
+        if ( implementation.isClassDeclaration() )
+        {
+            final String classLocation = implementation.getClazz().replace( '.', File.separatorChar ) + ".class";
+            final File classFile = new File( classesDirectory, classLocation );
+            final JavaClass javaClass = this.getJavaClass( classFile );
+            final ModelValidationReport current = this.validateModelObjects( implementation, unmarshaller, javaClass );
+            report.getDetails().addAll( current.getDetails() );
+        }
+
+        return report;
+    }
+
+    private ModelValidationReport validateModelObjects( final Specifications specifications,
+                                                        final Implementations implementations,
+                                                        final Unmarshaller unmarshaller, final ClassLoader classLoader )
+        throws IOException
+    {
+        final ModelValidationReport report = new ModelValidationReport();
+
+        if ( specifications != null )
+        {
+            for ( Specification s : specifications.getSpecification() )
+            {
+                final ModelValidationReport current = this.validateModelObjects( s, unmarshaller, classLoader );
+                report.getDetails().addAll( current.getDetails() );
+            }
+        }
+
+        if ( implementations != null )
+        {
+            for ( Implementation i : implementations.getImplementation() )
+            {
+                final ModelValidationReport current = this.validateModelObjects( i, unmarshaller, classLoader );
+                report.getDetails().addAll( current.getDetails() );
+            }
+        }
+
+        return report;
+    }
+
+    private ModelValidationReport validateModelObjects( final Specification specification,
+                                                        final Unmarshaller unmarshaller,
+                                                        final ClassLoader classLoader ) throws IOException
+    {
+        final ModelValidationReport report = new ModelValidationReport();
+
+        if ( specification.isClassDeclaration() )
+        {
+            final String classLocation = specification.getClazz().replace( '.', '/' ) + ".class";
+            final URL classUrl = classLoader.getResource( classLocation );
+
+            if ( classUrl == null )
+            {
+                throw new IOException( getMessage( "resourceNotFound", classLocation ) );
+            }
+
+            final JavaClass javaClass = this.getJavaClass( classUrl, classLocation );
+            final ModelValidationReport current = this.validateModelObjects( specification, unmarshaller, javaClass );
+            report.getDetails().addAll( current.getDetails() );
+        }
+
+        return report;
+    }
+
+    private ModelValidationReport validateModelObjects( final Implementation implementation,
+                                                        final Unmarshaller unmarshaller,
+                                                        final ClassLoader classLoader ) throws IOException
+    {
+        final ModelValidationReport report = new ModelValidationReport();
+
+        if ( implementation.isClassDeclaration() )
+        {
+            final String classLocation = implementation.getClazz().replace( '.', '/' ) + ".class";
+            final URL classUrl = classLoader.getResource( classLocation );
+
+            if ( classUrl == null )
+            {
+                throw new IOException( getMessage( "resourceNotFound", classLocation ) );
+            }
+
+            final JavaClass javaClass = this.getJavaClass( classUrl, classLocation );
+            final ModelValidationReport current = this.validateModelObjects( implementation, unmarshaller, javaClass );
+            report.getDetails().addAll( current.getDetails() );
+        }
+
+        return report;
+    }
+
+    private ModelValidationReport validateModelObjects( final Specification specification,
+                                                        final Unmarshaller unmarshaller, final JavaClass classFile )
+        throws IOException
+    {
+        if ( this.isLoggable( Level.INFO ) )
+        {
+            this.log( Level.INFO, getMessage( "validatingSpecification", specification.getIdentifier() ), null );
+        }
+
+        final ModelValidationReport report = new ModelValidationReport();
+
+        Specification decoded = null;
+        final byte[] bytes = this.getClassfileAttribute( classFile, Specification.class.getName() );
+        if ( bytes != null )
+        {
+            decoded = this.decodeModelObject( unmarshaller, bytes, Specification.class );
+        }
+
+        if ( decoded != null )
+        {
+            if ( decoded.getMultiplicity() != specification.getMultiplicity() )
+            {
+                report.getDetails().add( new ModelValidationReport.Detail(
+                    "CLASS_ILLEGAL_SPECIFICATION_MULTIPLICITY", Level.SEVERE, getMessage(
+                    "illegalMultiplicity", specification.getIdentifier(), specification.getMultiplicity().value(),
+                    decoded.getMultiplicity().value() ), new ObjectFactory().createSpecification( specification ) ) );
+
+            }
+
+            if ( decoded.getScope() == null
+                 ? specification.getScope() != null
+                 : !decoded.getScope().equals( specification.getScope() ) )
+            {
+                report.getDetails().add( new ModelValidationReport.Detail(
+                    "CLASS_ILLEGAL_SPECIFICATION_SCOPE", Level.SEVERE, getMessage(
+                    "illegalScope", specification.getIdentifier(),
+                    specification.getScope() == null ? "Multiton" : specification.getScope(),
+                    decoded.getScope() == null ? "Multiton" : decoded.getScope() ),
+                    new ObjectFactory().createSpecification( specification ) ) );
+
+            }
+
+            if ( decoded.getClazz() == null
+                 ? specification.getClazz() != null
+                 : !decoded.getClazz().equals( specification.getClazz() ) )
+            {
+                report.getDetails().add( new ModelValidationReport.Detail(
+                    "CLASS_ILLEGAL_SPECIFICATION_CLASS", Level.SEVERE, getMessage(
+                    "illegalSpecificationClass", decoded.getIdentifier(),
+                    specification.getClazz(), decoded.getClazz() ),
+                    new ObjectFactory().createSpecification( specification ) ) );
+
+            }
+        }
+        else if ( this.isLoggable( Level.WARNING ) )
+        {
+            this.log( Level.WARNING, getMessage( "cannotValidateSpecification", specification.getIdentifier(),
+                                                 Specification.class.getName() ), null );
+
+        }
+
+        return report;
+    }
+
+    private ModelValidationReport validateModelObjects( final Implementation implementation,
+                                                        final Unmarshaller unmarshaller, final JavaClass classFile )
+        throws IOException
+    {
+        if ( this.isLoggable( Level.INFO ) )
+        {
+            this.log( Level.INFO, getMessage( "validatingImplementation", implementation.getIdentifier() ), null );
+        }
+
+        try
+        {
+            final ModelValidationReport report = new ModelValidationReport();
+            Dependencies dependencies = this.getModules().getDependencies( implementation.getIdentifier() );
+            if ( dependencies == null )
+            {
+                dependencies = new Dependencies();
+            }
+
+            Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
+            if ( properties == null )
+            {
+                properties = new Properties();
+            }
+
+            Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
+            if ( messages == null )
+            {
+                messages = new Messages();
+            }
+
+            Specifications specifications = this.getModules().getSpecifications( implementation.getIdentifier() );
+            if ( specifications == null )
+            {
+                specifications = new Specifications();
+            }
+
+            Dependencies decodedDependencies = null;
+            byte[] bytes = this.getClassfileAttribute( classFile, Dependencies.class.getName() );
+            if ( bytes != null )
+            {
+                decodedDependencies = this.decodeModelObject( unmarshaller, bytes, Dependencies.class );
+            }
+
+            Properties decodedProperties = null;
+            bytes = this.getClassfileAttribute( classFile, Properties.class.getName() );
+            if ( bytes != null )
+            {
+                decodedProperties = this.decodeModelObject( unmarshaller, bytes, Properties.class );
+            }
+
+            Messages decodedMessages = null;
+            bytes = this.getClassfileAttribute( classFile, Messages.class.getName() );
+            if ( bytes != null )
+            {
+                decodedMessages = this.decodeModelObject( unmarshaller, bytes, Messages.class );
+            }
+
+            Specifications decodedSpecifications = null;
+            bytes = this.getClassfileAttribute( classFile, Specifications.class.getName() );
+            if ( bytes != null )
+            {
+                decodedSpecifications = this.decodeModelObject( unmarshaller, bytes, Specifications.class );
+            }
+
+            if ( decodedDependencies != null )
+            {
+                for ( Dependency decodedDependency : decodedDependencies.getDependency() )
+                {
+                    final Dependency dependency = dependencies.getDependency( decodedDependency.getName() );
+                    final Specification s = this.getModules().getSpecification( decodedDependency.getIdentifier() );
+
+                    if ( dependency == null )
+                    {
+                        report.getDetails().add( new ModelValidationReport.Detail(
+                            "CLASS_MISSING_IMPLEMENTATION_DEPENDENCY", Level.SEVERE, getMessage(
+                            "missingDependency", implementation.getIdentifier(), decodedDependency.getName() ),
+                            new ObjectFactory().createImplementation( implementation ) ) );
+
+                    }
+                    else if ( decodedDependency.getImplementationName() != null
+                              && dependency.getImplementationName() == null )
+                    {
+                        report.getDetails().add( new ModelValidationReport.Detail(
+                            "CLASS_MISSING_DEPENDENCY_IMPLEMENTATION_NAME", Level.SEVERE, getMessage(
+                            "missingDependencyImplementationName", implementation.getIdentifier(),
+                            decodedDependency.getName() ),
+                            new ObjectFactory().createImplementation( implementation ) ) );
+
+                    }
+
+                    if ( s != null && s.getVersion() != null && decodedDependency.getVersion() != null
+                         && VersionParser.compare( decodedDependency.getVersion(), s.getVersion() ) > 0 )
+                    {
+                        final Module moduleOfSpecification =
+                            this.getModules().getModuleOfSpecification( s.getIdentifier() );
+
+                        final Module moduleOfImplementation =
+                            this.getModules().getModuleOfImplementation( implementation.getIdentifier() );
+
+                        report.getDetails().add( new ModelValidationReport.Detail(
+                            "CLASS_INCOMPATIBLE_IMPLEMENTATION_DEPENDENCY", Level.SEVERE, getMessage(
+                            "incompatibleDependency", classFile.getClassName(),
+                            moduleOfImplementation == null ? "<>" : moduleOfImplementation.getName(),
+                            s.getIdentifier(),
+                            moduleOfSpecification == null ? "<>" : moduleOfSpecification.getName(),
+                            decodedDependency.getVersion(), s.getVersion() ),
+                            new ObjectFactory().createImplementation( implementation ) ) );
+
+                    }
+                }
+            }
+            else if ( this.isLoggable( Level.WARNING ) )
+            {
+                this.log( Level.WARNING, getMessage( "cannotValidateImplementation", implementation.getIdentifier(),
+                                                     Dependencies.class.getName() ), null );
+
+            }
+
+            if ( decodedProperties != null )
+            {
+                for ( Property decodedProperty : decodedProperties.getProperty() )
+                {
+                    final Property property = properties.getProperty( decodedProperty.getName() );
+
+                    if ( property == null )
+                    {
+                        report.getDetails().add( new ModelValidationReport.Detail(
+                            "CLASS_MISSING_IMPLEMENTATION_PROPERTY", Level.SEVERE, getMessage(
+                            "missingProperty", implementation.getIdentifier(), decodedProperty.getName() ),
+                            new ObjectFactory().createImplementation( implementation ) ) );
+
+                    }
+                    else if ( decodedProperty.getType() == null
+                              ? property.getType() != null
+                              : !decodedProperty.getType().equals( property.getType() ) )
+                    {
+                        report.getDetails().add( new ModelValidationReport.Detail(
+                            "CLASS_ILLEGAL_IMPLEMENTATION_PROPERTY", Level.SEVERE, getMessage(
+                            "illegalPropertyType", implementation.getIdentifier(), decodedProperty.getName(),
+                            property.getType() == null ? "<>" : property.getType(),
+                            decodedProperty.getType() == null ? "<>" : decodedProperty.getType() ),
+                            new ObjectFactory().createImplementation( implementation ) ) );
+
+                    }
+                }
+            }
+            else if ( this.isLoggable( Level.WARNING ) )
+            {
+                this.log( Level.WARNING, getMessage( "cannotValidateImplementation", implementation.getIdentifier(),
+                                                     Properties.class.getName() ), null );
+
+            }
+
+            if ( decodedMessages != null )
+            {
+                for ( Message decodedMessage : decodedMessages.getMessage() )
+                {
+                    final Message message = messages.getMessage( decodedMessage.getName() );
+
+                    if ( message == null )
+                    {
+                        report.getDetails().add( new ModelValidationReport.Detail(
+                            "CLASS_MISSING_IMPLEMENTATION_MESSAGE", Level.SEVERE, getMessage(
+                            "missingMessage", implementation.getIdentifier(), decodedMessage.getName() ),
+                            new ObjectFactory().createImplementation( implementation ) ) );
+
+                    }
+                }
+            }
+            else if ( this.isLoggable( Level.WARNING ) )
+            {
+                this.log( Level.WARNING, getMessage( "cannotValidateImplementation",
+                                                     implementation.getIdentifier(), Messages.class.getName() ), null );
+
+            }
+
+            if ( decodedSpecifications != null )
+            {
+                for ( Specification decodedSpecification : decodedSpecifications.getSpecification() )
+                {
+                    final Specification specification =
+                        this.getModules().getSpecification( decodedSpecification.getIdentifier() );
+
+                    if ( specification == null )
+                    {
+                        report.getDetails().add( new ModelValidationReport.Detail(
+                            "CLASS_MISSING_SPECIFICATION", Level.SEVERE, getMessage(
+                            "missingSpecification", implementation.getIdentifier(),
+                            decodedSpecification.getIdentifier() ),
+                            new ObjectFactory().createImplementation( implementation ) ) );
+
+                    }
+                    else
+                    {
+                        if ( decodedSpecification.getMultiplicity() != specification.getMultiplicity() )
+                        {
+                            report.getDetails().add( new ModelValidationReport.Detail(
+                                "CLASS_ILLEGAL_SPECIFICATION_MULTIPLICITY", Level.SEVERE, getMessage(
+                                "illegalMultiplicity", specification.getIdentifier(),
+                                specification.getMultiplicity().value(),
+                                decodedSpecification.getMultiplicity().value() ),
+                                new ObjectFactory().createImplementation( implementation ) ) );
+
+                        }
+
+                        if ( decodedSpecification.getScope() == null
+                             ? specification.getScope() != null
+                             : !decodedSpecification.getScope().equals( specification.getScope() ) )
+                        {
+                            report.getDetails().add( new ModelValidationReport.Detail(
+                                "CLASS_ILLEGAL_SPECIFICATION_SCOPE", Level.SEVERE, getMessage(
+                                "illegalScope", decodedSpecification.getIdentifier(),
+                                specification.getScope() == null ? "Multiton" : specification.getScope(),
+                                decodedSpecification.getScope() == null ? "Multiton" : decodedSpecification.getScope() ),
+                                new ObjectFactory().createImplementation( implementation ) ) );
+
+                        }
+
+                        if ( decodedSpecification.getClazz() == null
+                             ? specification.getClazz() != null
+                             : !decodedSpecification.getClazz().equals( specification.getClazz() ) )
+                        {
+                            report.getDetails().add( new ModelValidationReport.Detail(
+                                "CLASS_ILLEGAL_SPECIFICATION_CLASS", Level.SEVERE, getMessage(
+                                "illegalSpecificationClass", decodedSpecification.getIdentifier(),
+                                specification.getClazz(), decodedSpecification.getClazz() ),
+                                new ObjectFactory().createImplementation( implementation ) ) );
+
+                        }
+                    }
+                }
+
+                for ( SpecificationReference decodedReference : decodedSpecifications.getReference() )
+                {
+                    final Specification specification =
+                        specifications.getSpecification( decodedReference.getIdentifier() );
+
+                    if ( specification == null )
+                    {
+                        report.getDetails().add( new ModelValidationReport.Detail(
+                            "CLASS_MISSING_SPECIFICATION", Level.SEVERE, getMessage(
+                            "missingSpecification", implementation.getIdentifier(), decodedReference.getIdentifier() ),
+                            new ObjectFactory().createImplementation( implementation ) ) );
+
+                    }
+                    else if ( decodedReference.getVersion() != null && specification.getVersion() != null
+                              && VersionParser.compare( decodedReference.getVersion(),
+                                                        specification.getVersion() ) != 0 )
+                    {
+                        final Module moduleOfSpecification =
+                            this.getModules().getModuleOfSpecification( decodedReference.getIdentifier() );
+
+                        final Module moduleOfImplementation =
+                            this.getModules().getModuleOfImplementation( implementation.getIdentifier() );
+
+                        report.getDetails().add( new ModelValidationReport.Detail(
+                            "CLASS_INCOMPATIBLE_IMPLEMENTATION", Level.SEVERE, getMessage(
+                            "incompatibleImplementation", classFile.getClassName(),
+                            moduleOfImplementation == null ? "<>" : moduleOfImplementation.getName(),
+                            specification.getIdentifier(),
+                            moduleOfSpecification == null ? "<>" : moduleOfSpecification.getName(),
+                            decodedReference.getVersion(), specification.getVersion() ),
+                            new ObjectFactory().createImplementation( implementation ) ) );
+
+                    }
+                }
+            }
+            else if ( this.isLoggable( Level.WARNING ) )
+            {
+                this.log( Level.WARNING, getMessage( "cannotValidateImplementation", implementation.getIdentifier(),
+                                                     Specifications.class.getName() ), null );
+
+            }
+
+            return report;
+        }
+        catch ( final ParseException e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+        catch ( final TokenMgrError e )
+        {
+            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+        }
+    }
+
+    private void transformModelObjects( final Specifications specifications, final Implementations implementations,
+                                        final Unmarshaller unmarshaller, final Marshaller marshaller,
+                                        final File classesDirectory, final List<Transformer> transformers )
+        throws IOException
+    {
+        if ( specifications != null )
+        {
+            for ( Specification s : specifications.getSpecification() )
+            {
+                this.transformModelObjects( s, marshaller, unmarshaller, classesDirectory, transformers );
+            }
+        }
+
+        if ( implementations != null )
+        {
+            for ( Implementation i : implementations.getImplementation() )
+            {
+                this.transformModelObjects( i, marshaller, unmarshaller, classesDirectory, transformers );
+            }
+        }
+    }
+
+    private void transformModelObjects( final Specification specification, final Marshaller marshaller,
+                                        final Unmarshaller unmarshaller, final File classesDirectory,
+                                        final List<Transformer> transformers ) throws IOException
+    {
+        try
+        {
+            if ( specification.isClassDeclaration() )
+            {
+                final String classLocation = specification.getClazz().replace( '.', File.separatorChar ) + ".class";
+                final File classFile = new File( classesDirectory, classLocation );
+
+                if ( this.isLoggable( Level.INFO ) )
+                {
+                    this.log( Level.INFO, getMessage( "transforming", classFile.getAbsolutePath() ), null );
+                }
+
+                final JavaClass javaClass = this.getJavaClass( classFile );
+
+                Specification decodedSpecification = null;
+                final ObjectFactory objectFactory = new ObjectFactory();
+                final byte[] bytes = this.getClassfileAttribute( javaClass, Specification.class.getName() );
+                if ( bytes != null )
+                {
+                    decodedSpecification = this.decodeModelObject( unmarshaller, bytes, Specification.class );
+                }
+
+                if ( decodedSpecification != null )
+                {
+                    for ( Transformer transformer : transformers )
+                    {
+                        final JAXBSource source =
+                            new JAXBSource( marshaller, objectFactory.createSpecification( decodedSpecification ) );
+
+                        final JAXBResult result = new JAXBResult( unmarshaller );
+                        transformer.transform( source, result );
+                        decodedSpecification = ( (JAXBElement<Specification>) result.getResult() ).getValue();
+                    }
+
+                    this.setClassfileAttribute( javaClass, Specification.class.getName(), this.encodeModelObject(
+                        marshaller, objectFactory.createSpecification( decodedSpecification ) ) );
+
+                }
+            }
+        }
+        catch ( final JAXBException e )
+        {
+            String message = e.getMessage();
+            if ( message == null && e.getLinkedException() != null )
+            {
+                message = e.getLinkedException().getMessage();
+            }
+
+            throw (IOException) new IOException( message ).initCause( e );
+        }
+        catch ( final TransformerException e )
+        {
+            String message = e.getMessage();
+            if ( message == null && e.getException() != null )
+            {
+                message = e.getException().getMessage();
+            }
+
+            throw (IOException) new IOException( message ).initCause( e );
+        }
+    }
+
+    private void transformModelObjects( final Implementation implementation, final Marshaller marshaller,
+                                        final Unmarshaller unmarshaller, final File classesDirectory,
+                                        final List<Transformer> transformers ) throws IOException
+    {
+        try
+        {
+            if ( implementation.isClassDeclaration() )
+            {
+                final String classLocation = implementation.getClazz().replace( '.', File.separatorChar ) + ".class";
+                final File classFile = new File( classesDirectory, classLocation );
+
+                if ( this.isLoggable( Level.INFO ) )
+                {
+                    this.log( Level.INFO, getMessage( "transforming", classFile.getAbsolutePath() ), null );
+                }
+
+                final JavaClass javaClass = this.getJavaClass( classFile );
+
+                Dependencies decodedDependencies = null;
+                byte[] bytes = this.getClassfileAttribute( javaClass, Dependencies.class.getName() );
+                if ( bytes != null )
+                {
+                    decodedDependencies = this.decodeModelObject( unmarshaller, bytes, Dependencies.class );
+                }
+
+                Messages decodedMessages = null;
+                bytes = this.getClassfileAttribute( javaClass, Messages.class.getName() );
+                if ( bytes != null )
+                {
+                    decodedMessages = this.decodeModelObject( unmarshaller, bytes, Messages.class );
+                }
+
+                Properties decodedProperties = null;
+                bytes = this.getClassfileAttribute( javaClass, Properties.class.getName() );
+                if ( bytes != null )
+                {
+                    decodedProperties = this.decodeModelObject( unmarshaller, bytes, Properties.class );
+                }
+
+                Specifications decodedSpecifications = null;
+                bytes = this.getClassfileAttribute( javaClass, Specifications.class.getName() );
+                if ( bytes != null )
+                {
+                    decodedSpecifications = this.decodeModelObject( unmarshaller, bytes, Specifications.class );
+                }
+
+                final ObjectFactory of = new ObjectFactory();
+                for ( Transformer transformer : transformers )
+                {
+                    if ( decodedDependencies != null )
+                    {
+                        final JAXBSource source = new JAXBSource( marshaller,
+                                                                  of.createDependencies( decodedDependencies ) );
+                        final JAXBResult result = new JAXBResult( unmarshaller );
+                        transformer.transform( source, result );
+                        decodedDependencies = ( (JAXBElement<Dependencies>) result.getResult() ).getValue();
+                    }
+
+                    if ( decodedMessages != null )
+                    {
+                        final JAXBSource source = new JAXBSource( marshaller, of.createMessages( decodedMessages ) );
+                        final JAXBResult result = new JAXBResult( unmarshaller );
+                        transformer.transform( source, result );
+                        decodedMessages = ( (JAXBElement<Messages>) result.getResult() ).getValue();
+                    }
+
+                    if ( decodedProperties != null )
+                    {
+                        final JAXBSource source = new JAXBSource( marshaller, of.createProperties( decodedProperties ) );
+                        final JAXBResult result = new JAXBResult( unmarshaller );
+                        transformer.transform( source, result );
+                        decodedProperties = ( (JAXBElement<Properties>) result.getResult() ).getValue();
+                    }
+
+                    if ( decodedSpecifications != null )
+                    {
+                        final JAXBSource source =
+                            new JAXBSource( marshaller, of.createSpecifications( decodedSpecifications ) );
+
+                        final JAXBResult result = new JAXBResult( unmarshaller );
+                        transformer.transform( source, result );
+                        decodedSpecifications = ( (JAXBElement<Specifications>) result.getResult() ).getValue();
+                    }
+                }
+
+                if ( decodedDependencies != null )
+                {
+                    this.setClassfileAttribute( javaClass, Dependencies.class.getName(), this.encodeModelObject(
+                        marshaller, of.createDependencies( decodedDependencies ) ) );
+
+                }
+
+                if ( decodedMessages != null )
+                {
+                    this.setClassfileAttribute( javaClass, Messages.class.getName(), this.encodeModelObject(
+                        marshaller, of.createMessages( decodedMessages ) ) );
+
+                }
+
+                if ( decodedProperties != null )
+                {
+                    this.setClassfileAttribute( javaClass, Properties.class.getName(), this.encodeModelObject(
+                        marshaller, of.createProperties( decodedProperties ) ) );
+
+                }
+
+                if ( decodedSpecifications != null )
+                {
+                    this.setClassfileAttribute( javaClass, Specifications.class.getName(), this.encodeModelObject(
+                        marshaller, of.createSpecifications( decodedSpecifications ) ) );
+
+                }
+            }
+        }
+        catch ( final JAXBException e )
+        {
+            String message = e.getMessage();
+            if ( message == null && e.getLinkedException() != null )
+            {
+                message = e.getLinkedException().getMessage();
+            }
+
+            throw (IOException) new IOException( message ).initCause( e );
+        }
+        catch ( final TransformerException e )
+        {
+            String message = e.getMessage();
+            if ( message == null && e.getException() != null )
+            {
+                message = e.getException().getMessage();
             }
 
             throw (IOException) new IOException( message ).initCause( e );

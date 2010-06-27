@@ -68,6 +68,7 @@ import org.jomc.model.ArgumentType;
 import org.jomc.model.Dependency;
 import org.jomc.model.Implementation;
 import org.jomc.model.Message;
+import org.jomc.model.ModelObject;
 import org.jomc.model.Modules;
 import org.jomc.model.Multiplicity;
 import org.jomc.model.Properties;
@@ -76,6 +77,8 @@ import org.jomc.model.Specification;
 import org.jomc.model.SpecificationReference;
 import org.jomc.model.Specifications;
 import org.jomc.model.Text;
+import org.jomc.model.modlet.ModelHelper;
+import org.jomc.modlet.Model;
 
 /**
  * Base tool class.
@@ -130,8 +133,8 @@ public abstract class JomcTool
     /** Default log level. */
     private static volatile Level defaultLogLevel;
 
-    /** The modules of the instance. */
-    private Modules modules;
+    /** The model of the instance. */
+    private Model model;
 
     /** {@code VelocityEngine} of the generator. */
     private VelocityEngine velocityEngine;
@@ -191,7 +194,7 @@ public abstract class JomcTool
         this.lineSeparator = tool.lineSeparator;
         this.listeners = tool.listeners != null ? new LinkedList<Listener>( tool.listeners ) : null;
         this.logLevel = tool.logLevel;
-        this.modules = tool.modules != null ? new Modules( tool.modules ) : null;
+        this.model = tool.model != null ? new Model( tool.model ) : null;
         this.outputEncoding = tool.outputEncoding;
         this.templateEncoding = tool.templateEncoding;
         this.templateProfile = tool.templateProfile;
@@ -1150,32 +1153,48 @@ public abstract class JomcTool
     }
 
     /**
+     * Gets the model of the instance.
+     *
+     * @return The model of the instance.
+     *
+     * @see #getModules()
+     * @see #setModel(org.jomc.modlet.Model)
+     */
+    public Model getModel()
+    {
+        if ( this.model == null )
+        {
+            this.model = new Model();
+            this.model.setIdentifier( ModelObject.MODEL_PUBLIC_ID );
+        }
+
+        return this.model;
+    }
+
+    /**
+     * Sets the model of the instance.
+     *
+     * @param value The new model of the instance.
+     *
+     * @see #getModel()
+     */
+    public void setModel( final Model value )
+    {
+        this.model = value;
+    }
+
+    /**
      * Gets the modules of the instance.
      *
      * @return The modules of the instance.
      *
-     * @see #setModules(org.jomc.model.Modules)
+     * @see #getModel()
+     * @see #setModel(org.jomc.modlet.Model)
      */
     public Modules getModules()
     {
-        if ( this.modules == null )
-        {
-            this.modules = new Modules();
-        }
-
-        return this.modules;
-    }
-
-    /**
-     * Sets the modules of the instance.
-     *
-     * @param value The new modules of the instance.
-     *
-     * @see #getModules()
-     */
-    public void setModules( final Modules value )
-    {
-        this.modules = value;
+        final Modules modules = ModelHelper.getModules( this.getModel() );
+        return modules != null ? modules : new Modules();
     }
 
     /**
@@ -1286,6 +1305,7 @@ public abstract class JomcTool
     {
         final Date now = new Date();
         final VelocityContext ctx = new VelocityContext();
+        ctx.put( "model", this.getModel() );
         ctx.put( "modules", this.getModules() );
         ctx.put( "tool", this );
         ctx.put( "toolName", this.getClass().getName() );

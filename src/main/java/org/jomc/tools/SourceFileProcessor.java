@@ -203,6 +203,9 @@ public class SourceFileProcessor extends JomcTool
             throw new NullPointerException( "specification" );
         }
 
+        assert this.getModules().getSpecification( specification.getIdentifier() ) != null :
+            "Specification '" + specification.getIdentifier() + "' not found.";
+
         SourceFileType sourceFileType = this.getSourceFilesType().getSourceFile( specification.getIdentifier() );
 
         if ( sourceFileType == null )
@@ -268,6 +271,9 @@ public class SourceFileProcessor extends JomcTool
         {
             throw new NullPointerException( "implementation" );
         }
+
+        assert this.getModules().getImplementation( implementation.getIdentifier() ) != null :
+            "Implementation '" + implementation.getIdentifier() + "' not found.";
 
         SourceFileType sourceFileType = this.getSourceFilesType().getSourceFile( implementation.getIdentifier() );
 
@@ -414,6 +420,8 @@ public class SourceFileProcessor extends JomcTool
             throw new NullPointerException( "sourcesDirectory" );
         }
 
+        assert this.getModules().getModule( module.getName() ) != null : "Module '" + module.getName() + "' not found.";
+
         if ( module.getSpecifications() != null )
         {
             for ( Specification s : module.getSpecifications().getSpecification() )
@@ -452,6 +460,9 @@ public class SourceFileProcessor extends JomcTool
             throw new NullPointerException( "sourcesDirectory" );
         }
 
+        assert this.getModules().getSpecification( specification.getIdentifier() ) != null :
+            "Specification '" + specification.getIdentifier() + "' not found.";
+
         final Implementation i = this.getModules().getImplementation( specification.getIdentifier() );
 
         if ( i != null && i.isClassDeclaration() )
@@ -487,6 +498,9 @@ public class SourceFileProcessor extends JomcTool
             throw new NullPointerException( "sourcesDirectory" );
         }
 
+        assert this.getModules().getImplementation( implementation.getIdentifier() ) != null :
+            "Implementation '" + implementation.getIdentifier() + "' not found.";
+
         if ( implementation.isClassDeclaration() )
         {
             this.editSourceFile( sourcesDirectory, this.getSourceFileEditor( implementation ) );
@@ -509,6 +523,9 @@ public class SourceFileProcessor extends JomcTool
             throw new NullPointerException( "specification" );
         }
 
+        assert this.getModules().getSpecification( specification.getIdentifier() ) != null :
+            "Specification '" + specification.getIdentifier() + "' not found.";
+
         return new SourceFileEditor( specification, new TrailingWhitespaceEditor( this.getLineSeparator() ),
                                      this.getLineSeparator() );
 
@@ -529,6 +546,9 @@ public class SourceFileProcessor extends JomcTool
         {
             throw new NullPointerException( "implementation" );
         }
+
+        assert this.getModules().getImplementation( implementation.getIdentifier() ) != null :
+            "Implementation '" + implementation.getIdentifier() + "' not found.";
 
         return new SourceFileEditor( implementation, new TrailingWhitespaceEditor( this.getLineSeparator() ),
                                      this.getLineSeparator() );
@@ -727,6 +747,10 @@ public class SourceFileProcessor extends JomcTool
             super( lineEditor, lineSeparator );
             this.specification = specification;
             this.implementation = null;
+
+            assert getModules().getSpecification( specification.getIdentifier() ) != null :
+                "Specification '" + specification.getIdentifier() + "' not found.";
+
         }
 
         /**
@@ -777,6 +801,10 @@ public class SourceFileProcessor extends JomcTool
             super( lineEditor, lineSeparator );
             this.implementation = implementation;
             this.specification = null;
+
+            assert getModules().getImplementation( implementation.getIdentifier() ) != null :
+                "Implementation '" + implementation.getIdentifier() + "' not found.";
+
         }
 
         /**

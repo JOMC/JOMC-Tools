@@ -176,6 +176,8 @@ public class ResourceFileProcessor extends JomcTool
             throw new NullPointerException( "resourcesDirectory" );
         }
 
+        assert this.getModules().getModule( module.getName() ) != null : "Module '" + module.getName() + "' not found.";
+
         if ( module.getSpecifications() != null )
         {
             for ( Specification s : module.getSpecifications().getSpecification() )
@@ -216,6 +218,9 @@ public class ResourceFileProcessor extends JomcTool
             throw new NullPointerException( "resourcesDirectory" );
         }
 
+        assert this.getModules().getSpecification( specification.getIdentifier() ) != null :
+            "Specification '" + specification.getIdentifier() + "' not found.";
+
         if ( specification.isClassDeclaration() )
         {
             this.assertValidTemplates( specification );
@@ -252,6 +257,9 @@ public class ResourceFileProcessor extends JomcTool
             throw new NullPointerException( "resourcesDirectory" );
         }
 
+        assert this.getModules().getImplementation( implementation.getIdentifier() ) != null :
+            "Implementation '" + implementation.getIdentifier() + "' not found.";
+
         if ( implementation.isClassDeclaration() )
         {
             this.assertValidTemplates( implementation );
@@ -283,6 +291,9 @@ public class ResourceFileProcessor extends JomcTool
             throw new NullPointerException( "specification" );
         }
 
+        assert this.getModules().getSpecification( specification.getIdentifier() ) != null :
+            "Specification '" + specification.getIdentifier() + "' not found.";
+
         return new HashMap<Locale, java.util.Properties>();
     }
 
@@ -303,6 +314,9 @@ public class ResourceFileProcessor extends JomcTool
         {
             throw new NullPointerException( "implementation" );
         }
+
+        assert this.getModules().getImplementation( implementation.getIdentifier() ) != null :
+            "Implementation '" + implementation.getIdentifier() + "' not found.";
 
         final Map<Locale, java.util.Properties> properties = new HashMap<Locale, java.util.Properties>( 10 );
         final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );

@@ -51,6 +51,8 @@ import org.jomc.model.Property;
 import org.jomc.model.Specification;
 import org.jomc.model.SpecificationReference;
 import org.jomc.model.Text;
+import org.jomc.model.modlet.ModelHelper;
+import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelException;
 import org.jomc.tools.JomcTool;
@@ -91,8 +93,8 @@ public abstract class JomcToolTest extends TestCase
     /** The {@code ModelContext} of the instance. */
     private ModelContext modelContext;
 
-    /** The test {@code Modules} of the instance. */
-    private Modules testModules;
+    /** The test {@code Model} of the instance. */
+    private Model testModel;
 
     /**
      * Gets the tool tests are performed with.
@@ -108,7 +110,7 @@ public abstract class JomcToolTest extends TestCase
      *
      * @return The {@code ModelContext} of the instance.
      *
-     * @throws ModelException if creatig a new {@code ModelContext} instance fails.
+     * @throws ModelException if creating a new {@code ModelContext} instance fails.
      */
     public ModelContext getModelContext() throws ModelException
     {
@@ -139,17 +141,17 @@ public abstract class JomcToolTest extends TestCase
     }
 
     /**
-     * Gets the {@code Modules} tests are performed with.
+     * Gets the {@code Model} tests are performed with.
      *
-     * @return The {@code Modules} tests are performed with.
+     * @return The {@code Model} tests are performed with.
      *
-     * @throws IOException if getting the modules fails.
+     * @throws IOException if getting the model fails.
      */
-    public Modules getTestModules() throws IOException
+    public Model getTestModel() throws IOException
     {
         try
         {
-            if ( this.testModules == null )
+            if ( this.testModel == null )
             {
                 final Unmarshaller u = this.getModelContext().createUnmarshaller( ModelObject.MODEL_PUBLIC_ID );
                 u.setSchema( this.getModelContext().createSchema( ModelObject.MODEL_PUBLIC_ID ) );
@@ -157,19 +159,23 @@ public abstract class JomcToolTest extends TestCase
                 final JAXBElement<Module> m =
                     (JAXBElement<Module>) u.unmarshal( this.getClass().getResource( "jomc.xml" ) );
 
-                this.testModules = new Modules();
-                this.testModules.getModule().add( m.getValue() );
+                final Modules modules = new Modules();
+                modules.getModule().add( m.getValue() );
 
-                final Module cp = this.testModules.getClasspathModule(
+                final Module cp = modules.getClasspathModule(
                     Modules.getDefaultClasspathModuleName(), this.getClass().getClassLoader() );
 
                 if ( cp != null )
                 {
-                    this.testModules.getModule().add( cp );
+                    modules.getModule().add( cp );
                 }
+
+                this.testModel = new Model();
+                this.testModel.setIdentifier( ModelObject.MODEL_PUBLIC_ID );
+                ModelHelper.setModules( this.testModel, modules );
             }
 
-            return this.testModules;
+            return this.testModel;
         }
         catch ( final JAXBException e )
         {
@@ -583,6 +589,7 @@ public abstract class JomcToolTest extends TestCase
 
         assertNotNull( this.getTestTool().getListeners() );
         assertNotNull( this.getTestTool().getInputEncoding() );
+        assertNotNull( this.getTestTool().getModel() );
         assertNotNull( this.getTestTool().getModules() );
         assertNotNull( this.getTestTool().getOutputEncoding() );
         assertNotNull( this.getTestTool().getTemplateProfile() );
