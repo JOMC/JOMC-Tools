@@ -210,6 +210,13 @@ public class ResourceFileProcessorTest extends JomcToolTest
 
     }
 
+    public void testResourceBundleDefaultLocale() throws Exception
+    {
+        this.getTestTool().setResourceBundleDefaultLocale( null );
+        assertNotNull( this.getTestTool().getResourceBundleDefaultLocale() );
+        this.getTestTool().setResourceBundleDefaultLocale( null );
+    }
+
     public void testWriteResourceBundleResourceFiles() throws Exception
     {
         this.getTestTool().writeResourceBundleResourceFiles( this.getTestResourcesDirectory() );

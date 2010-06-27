@@ -32,6 +32,12 @@
  */
 package org.jomc.tools.test;
 
+import org.jomc.model.Dependency;
+import org.jomc.model.Message;
+import org.jomc.model.Property;
+import org.jomc.model.Multiplicity;
+import org.jomc.tools.SourceFileProcessor;
+import org.jomc.tools.ResourceFileProcessor;
 import org.jomc.modlet.ModelContext;
 import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.Model;
@@ -347,7 +353,7 @@ public class ClassFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().getClassfileAttribute( this.getTestTool().getJavaClass(
-                this.getClass().getResource( "java/lang/Object.class" ), "java.lang.Object" ), null );
+                this.getClass().getResource( "/java/lang/Object.class" ), "java.lang.Object" ), null );
 
             fail( "Expected NullPointerException not thrown." );
         }
@@ -418,7 +424,7 @@ public class ClassFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().setClassfileAttribute( this.getTestTool().getJavaClass(
-                this.getClass().getResource( "java/lang/Object.class" ), "java.lang.Object" ), null, null );
+                this.getClass().getResource( "/java/lang/Object.class" ), "java.lang.Object" ), null, null );
 
             fail( "Expected NullPointerException not thrown." );
         }
@@ -469,6 +475,15 @@ public class ClassFileProcessorTest extends JomcToolTest
         try
         {
             this.getTestTool().transformModelObjects( (Module) null, null, null, null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().transformModelObjects( new Module(), null, null, null );
             fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -813,6 +828,124 @@ public class ClassFileProcessorTest extends JomcToolTest
 
         this.getTestTool().validateModelObjects( ModelContext.createModelContext( uncommittedClassesLoader ) );
         this.getTestTool().validateModelObjects( this.getModelContext(), uncommittedClasses );
+
+        final Model model = this.getTestTool().getModel();
+        final Model copy = new Model( model );
+        final Modules modules = ModelHelper.getModules( copy );
+        final Module testModule = modules.getModule( this.getTestProperty( "projectName" ) );
+        assertNotNull( testModule );
+
+        final Specification classFileProcessor =
+            testModule.getSpecifications().getSpecification( ClassFileProcessor.class.getName() );
+
+        final Specification resourceFileProcessor =
+            testModule.getSpecifications().getSpecification( ResourceFileProcessor.class.getName() );
+
+        final Specification sourceFileProcessor =
+            testModule.getSpecifications().getSpecification( SourceFileProcessor.class.getName() );
+
+        final Implementation classFileProcessorImpl =
+            testModule.getImplementations().getImplementation( ClassFileProcessor.class.getName() );
+
+        final Implementation resourceFileProcessorImpl =
+            testModule.getImplementations().getImplementation( ResourceFileProcessor.class.getName() );
+
+        final Implementation sourceFileProcessorImpl =
+            testModule.getImplementations().getImplementation( SourceFileProcessor.class.getName() );
+
+        assertNotNull( classFileProcessor );
+        assertNotNull( resourceFileProcessor );
+        assertNotNull( sourceFileProcessor );
+        assertNotNull( classFileProcessorImpl );
+        assertNotNull( resourceFileProcessorImpl );
+        assertNotNull( sourceFileProcessorImpl );
+
+        classFileProcessor.setMultiplicity( Multiplicity.ONE );
+        classFileProcessor.setScope( "TEST" );
+        resourceFileProcessor.setMultiplicity( Multiplicity.ONE );
+        resourceFileProcessor.setScope( "TEST" );
+        sourceFileProcessor.setMultiplicity( Multiplicity.ONE );
+        sourceFileProcessor.setScope( "TEST" );
+
+        Property p = classFileProcessorImpl.getProperties().getProperty( "TestStringProperty" );
+        assertNotNull( p );
+        assertNotNull( classFileProcessorImpl.getProperties().getProperty().remove( p ) );
+
+        p = classFileProcessorImpl.getProperties().getProperty( "TestPrimitiveProperty" );
+        assertNotNull( p );
+        p.setType( null );
+
+        p = resourceFileProcessorImpl.getProperties().getProperty( "TestStringProperty" );
+        assertNotNull( p );
+        assertNotNull( resourceFileProcessorImpl.getProperties().getProperty().remove( p ) );
+
+        p = resourceFileProcessorImpl.getProperties().getProperty( "TestPrimitiveProperty" );
+        assertNotNull( p );
+        p.setType( null );
+
+        p = sourceFileProcessorImpl.getProperties().getProperty( "TestStringProperty" );
+        assertNotNull( p );
+        assertNotNull( sourceFileProcessorImpl.getProperties().getProperty().remove( p ) );
+
+        p = sourceFileProcessorImpl.getProperties().getProperty( "TestPrimitiveProperty" );
+        assertNotNull( p );
+        p.setType( null );
+
+        Message message = classFileProcessorImpl.getMessages().getMessage( "TestMessage" );
+        assertNotNull( message );
+        assertNotNull( classFileProcessorImpl.getMessages().getMessage().remove( message ) );
+
+        message = resourceFileProcessorImpl.getMessages().getMessage( "TestMessage" );
+        assertNotNull( message );
+        assertNotNull( resourceFileProcessorImpl.getMessages().getMessage().remove( message ) );
+
+        message = sourceFileProcessorImpl.getMessages().getMessage( "TestMessage" );
+        assertNotNull( message );
+        assertNotNull( sourceFileProcessorImpl.getMessages().getMessage().remove( message ) );
+
+        Dependency dependency = classFileProcessorImpl.getDependencies().getDependency( "Locale" );
+        assertNotNull( dependency );
+        dependency.setImplementationName( null );
+        dependency.setVersion( Integer.toString( Integer.MAX_VALUE ) );
+
+        dependency = classFileProcessorImpl.getDependencies().getDependency( "JavaClasses" );
+        assertNotNull( dependency );
+        assertNotNull( classFileProcessorImpl.getDependencies().getDependency().remove( dependency ) );
+
+        dependency = resourceFileProcessorImpl.getDependencies().getDependency( "Locale" );
+        assertNotNull( dependency );
+        dependency.setImplementationName( null );
+        dependency.setVersion( Integer.toString( Integer.MAX_VALUE ) );
+
+        dependency = resourceFileProcessorImpl.getDependencies().getDependency( "JavaBundles" );
+        assertNotNull( dependency );
+        assertNotNull( resourceFileProcessorImpl.getDependencies().getDependency().remove( dependency ) );
+
+        dependency = sourceFileProcessorImpl.getDependencies().getDependency( "Locale" );
+        assertNotNull( dependency );
+        dependency.setImplementationName( null );
+        dependency.setVersion( Integer.toString( Integer.MAX_VALUE ) );
+
+        dependency = sourceFileProcessorImpl.getDependencies().getDependency( "JavaSources" );
+        assertNotNull( dependency );
+        assertNotNull( sourceFileProcessorImpl.getDependencies().getDependency().remove( dependency ) );
+
+        this.getTestTool().setModel( copy );
+
+        this.getTestTool().validateModelObjects( ModelContext.createModelContext( allClassesLoader ) );
+        this.getTestTool().validateModelObjects( m, ModelContext.createModelContext( moduleClassesLoader ) );
+        this.getTestTool().validateModelObjects( s, ModelContext.createModelContext( specificationClassesLoader ) );
+        this.getTestTool().validateModelObjects( i, ModelContext.createModelContext( implementationClassesLoader ) );
+
+        this.getTestTool().validateModelObjects( this.getModelContext(), allClasses );
+        this.getTestTool().validateModelObjects( m, this.getModelContext(), moduleClasses );
+        this.getTestTool().validateModelObjects( s, this.getModelContext(), specificationClasses );
+        this.getTestTool().validateModelObjects( i, this.getModelContext(), implementationClasses );
+
+        this.getTestTool().validateModelObjects( ModelContext.createModelContext( uncommittedClassesLoader ) );
+        this.getTestTool().validateModelObjects( this.getModelContext(), uncommittedClasses );
+
+        this.getTestTool().setModel( model );
     }
 
     public void testCopyConstructor() throws Exception

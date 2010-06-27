@@ -292,6 +292,15 @@ public abstract class JomcToolTest extends TestCase
         {
             assertNullPointerException( e );
         }
+        try
+        {
+            this.getTestTool().getJavaModifierName( new Implementation(), (Dependency) null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
 
         try
         {
@@ -302,10 +311,28 @@ public abstract class JomcToolTest extends TestCase
         {
             assertNullPointerException( e );
         }
+        try
+        {
+            this.getTestTool().getJavaModifierName( new Implementation(), (Message) null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
 
         try
         {
             this.getTestTool().getJavaModifierName( null, (Property) null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getTestTool().getJavaModifierName( new Implementation(), (Property) null );
             fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -412,7 +439,6 @@ public abstract class JomcToolTest extends TestCase
         {
             assertNullPointerException( e );
         }
-
         try
         {
             this.getTestTool().getJavadocComment( new Text(), 0, null );
@@ -422,7 +448,6 @@ public abstract class JomcToolTest extends TestCase
         {
             assertNullPointerException( e );
         }
-
         try
         {
             this.getTestTool().getJavadocComment( new Text(), Integer.MIN_VALUE, "\n" );
@@ -552,6 +577,16 @@ public abstract class JomcToolTest extends TestCase
         {
             assertNullPointerException( e );
         }
+
+        try
+        {
+            this.getTestTool().isLoggable( null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
     }
 
     /** Tests that method declaring not to return {@code null} do not return {@code null}. */
@@ -587,6 +622,10 @@ public abstract class JomcToolTest extends TestCase
         final Message m = new Message();
         m.setName( "message" );
 
+        final Calendar now = Calendar.getInstance();
+        final Calendar nextYear = Calendar.getInstance();
+        nextYear.set( Calendar.YEAR, nextYear.get( Calendar.YEAR ) + 1 );
+
         assertNotNull( this.getTestTool().getListeners() );
         assertNotNull( this.getTestTool().getInputEncoding() );
         assertNotNull( this.getTestTool().getModel() );
@@ -599,6 +638,17 @@ public abstract class JomcToolTest extends TestCase
         assertNotNull( this.getTestTool().getVelocityContext() );
         assertNotNull( this.getTestTool().getVelocityEngine() );
         assertNotNull( JomcTool.getDefaultLogLevel() );
+        assertNotNull( this.getTestTool().getLongDate( now ) );
+        assertNotNull( this.getTestTool().getLongDateTime( now ) );
+        assertNotNull( this.getTestTool().getLongTime( now ) );
+        assertNotNull( this.getTestTool().getShortDate( now ) );
+        assertNotNull( this.getTestTool().getShortDateTime( now ) );
+        assertNotNull( this.getTestTool().getShortTime( now ) );
+        assertNotNull( this.getTestTool().getYears( now, now ) );
+        assertNotNull( this.getTestTool().getYears( now, nextYear ) );
+        assertNotNull( this.getTestTool().getYears( nextYear, now ) );
+        assertNotNull( this.getTestTool().getDisplayLanguage( "en" ) );
+        assertEquals( this.getTestTool().getYears( now, nextYear ), this.getTestTool().getYears( nextYear, now ) );
         assertEquals( Locale.getDefault().getDisplayLanguage(),
                       this.getTestTool().getDisplayLanguage( Locale.getDefault().getLanguage() ) );
 
@@ -619,6 +669,7 @@ public abstract class JomcToolTest extends TestCase
         assertEquals( "", this.getTestTool().getJavaPackageName( defaultPackageSpecification ) );
         assertEquals( "java.util", this.getTestTool().getJavaPackageName( d ) );
         assertEquals( "", this.getTestTool().getJavaString( "" ) );
+        assertEquals( this.getTestTool().getIndentation(), this.getTestTool().getIndentation( 1 ) );
     }
 
     /** Tests the {@code getVelocityTemplate} method. */
@@ -653,7 +704,42 @@ public abstract class JomcToolTest extends TestCase
         }
     }
 
-    public void testDefaultProfile() throws Exception
+    public void testDefaultLogLevel() throws Exception
+    {
+        final String testLogLevel = System.getProperty( "org.jomc.tools.JomcTool.defaultLogLevel" );
+
+        assertNotNull( JomcTool.getDefaultLogLevel() );
+        JomcTool.setDefaultLogLevel( null );
+        System.setProperty( "org.jomc.tools.JomcTool.defaultLogLevel", "OFF" );
+        assertEquals( Level.OFF, JomcTool.getDefaultLogLevel() );
+
+        if ( testLogLevel != null )
+        {
+            System.setProperty( "org.jomc.tools.JomcTool.defaultLogLevel", testLogLevel );
+        }
+        else
+        {
+            System.clearProperty( "org.jomc.tools.JomcTool.defaultLogLevel" );
+        }
+
+        JomcTool.setDefaultLogLevel( null );
+    }
+
+    public void testLogLevel() throws Exception
+    {
+        JomcTool.setDefaultLogLevel( null );
+        this.getTestTool().setLogLevel( null );
+        assertNotNull( this.getTestTool().getLogLevel() );
+
+        JomcTool.setDefaultLogLevel( Level.OFF );
+        this.getTestTool().setLogLevel( null );
+        assertEquals( Level.OFF, this.getTestTool().getLogLevel() );
+
+        JomcTool.setDefaultLogLevel( null );
+        this.getTestTool().setLogLevel( null );
+    }
+
+    public void testDefaultTemplateProfile() throws Exception
     {
         assertNotNull( JomcTool.getDefaultTemplateProfile() );
         System.setProperty( "org.jomc.tools.JomcTool.defaultTemplateProfile", "TEST" );
@@ -663,7 +749,21 @@ public abstract class JomcToolTest extends TestCase
         JomcTool.setDefaultTemplateProfile( null );
     }
 
-    public void testGetIndentation() throws Exception
+    public void testTemplateProfile() throws Exception
+    {
+        JomcTool.setDefaultTemplateProfile( null );
+        this.getTestTool().setTemplateProfile( null );
+        assertNotNull( this.getTestTool().getTemplateProfile() );
+
+        JomcTool.setDefaultTemplateProfile( "TEST" );
+        this.getTestTool().setTemplateProfile( null );
+        assertEquals( "TEST", this.getTestTool().getTemplateProfile() );
+
+        JomcTool.setDefaultTemplateProfile( null );
+        this.getTestTool().setTemplateProfile( null );
+    }
+
+    public void testIndentation() throws Exception
     {
         assertEquals( "", this.getTestTool().getIndentation( 0 ) );
         assertEquals( this.getTestTool().getIndentation(), this.getTestTool().getIndentation( 1 ) );
@@ -677,6 +777,54 @@ public abstract class JomcToolTest extends TestCase
         {
             assertIllegalArgumentException( e );
         }
+
+        this.getTestTool().setIndentation( "    TEST    " );
+        assertEquals( "    TEST    ", this.getTestTool().getIndentation() );
+        assertEquals( "    TEST    ", this.getTestTool().getIndentation( 1 ) );
+        this.getTestTool().setIndentation( null );
+    }
+
+    public void testModel() throws Exception
+    {
+        final Model model = this.getTestTool().getModel();
+        this.getTestTool().setModel( null );
+        assertNotNull( this.getTestTool().getModel() );
+        this.getTestTool().setModel( model );
+    }
+
+    public void testVelocityEngine() throws Exception
+    {
+        this.getTestTool().setVelocityEngine( null );
+        assertNotNull( this.getTestTool().getVelocityEngine() );
+        this.getTestTool().setVelocityEngine( null );
+    }
+
+    public void testTemplateEncoding() throws Exception
+    {
+        this.getTestTool().setTemplateEncoding( null );
+        assertNotNull( this.getTestTool().getTemplateEncoding() );
+        this.getTestTool().setTemplateEncoding( null );
+    }
+
+    public void testInputEncoding() throws Exception
+    {
+        this.getTestTool().setInputEncoding( null );
+        assertNotNull( this.getTestTool().getInputEncoding() );
+        this.getTestTool().setInputEncoding( null );
+    }
+
+    public void testOutputEncoding() throws Exception
+    {
+        this.getTestTool().setOutputEncoding( null );
+        assertNotNull( this.getTestTool().getOutputEncoding() );
+        this.getTestTool().setOutputEncoding( null );
+    }
+
+    public void testLineSeparator() throws Exception
+    {
+        this.getTestTool().setLineSeparator( null );
+        assertNotNull( this.getTestTool().getLineSeparator() );
+        this.getTestTool().setLineSeparator( null );
     }
 
     public static void assertNullPointerException( final NullPointerException e )
