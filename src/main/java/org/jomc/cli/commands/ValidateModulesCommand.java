@@ -38,7 +38,6 @@ package org.jomc.cli.commands;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
-import org.jomc.model.ObjectFactory;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelValidationReport;
@@ -102,7 +101,7 @@ import org.jomc.modlet.ModelValidationReport;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-27T09:16:58+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-27T14:22:11+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -229,12 +228,9 @@ public final class ValidateModulesCommand extends AbstractJomcToolCommand
     {
         final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
         final ModelContext context = this.createModelContext( classLoader );
-        final Model model = new Model();
-        model.setIdentifier( this.getModel( commandLine ) );
-        model.getAny().add( new ObjectFactory().createModules( this.getModules( context, commandLine ) ) );
-
+        final Model model = this.getModel( context, commandLine );
         final ModelValidationReport validationReport = context.validateModel( model );
-        this.log( validationReport, context.createMarshaller( this.getModel( commandLine ) ) );
+        this.log( validationReport, context.createMarshaller( model.getIdentifier() ) );
         return validationReport.isModelValid() ? STATUS_SUCCESS : STATUS_FAILURE;
     }
 
@@ -511,7 +507,7 @@ public final class ValidateModulesCommand extends AbstractJomcToolCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-27T09:16:58+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-27T14:22:11+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

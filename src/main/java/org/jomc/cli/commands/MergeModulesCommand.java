@@ -54,6 +54,7 @@ import org.apache.commons.cli.Options;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.ObjectFactory;
+import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelValidationReport;
@@ -131,7 +132,7 @@ import org.jomc.modlet.ModelValidationReport;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-27T09:16:58+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-27T14:22:11+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -282,19 +283,21 @@ public final class MergeModulesCommand extends AbstractJomcToolCommand
     {
         final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
         final ModelContext context = this.createModelContext( classLoader );
-        final Modules modules = this.getModules( context, commandLine );
-        final Marshaller marshaller = context.createMarshaller( this.getModel( commandLine ) );
-        final Unmarshaller unmarshaller = context.createUnmarshaller( this.getModel( commandLine ) );
-        final Model model = new Model();
-        model.setIdentifier( this.getModel( commandLine ) );
-        model.getAny().add( new ObjectFactory().createModules( modules ) );
-
+        final Model model = this.getModel( context, commandLine );
+        final Marshaller marshaller = context.createMarshaller( model.getIdentifier() );
+        final Unmarshaller unmarshaller = context.createUnmarshaller( model.getIdentifier() );
         final ModelValidationReport validationReport = context.validateModel( model );
         this.log( validationReport, marshaller );
 
         if ( validationReport.isModelValid() )
         {
-            modules.getModule().remove( modules.getModule( Modules.getDefaultClasspathModuleName() ) );
+            final Modules modules = ModelHelper.getModules( model );
+            final Module classpathModule = modules.getModule( Modules.getDefaultClasspathModuleName() );
+
+            if ( classpathModule != null )
+            {
+                modules.getModule().remove( classpathModule );
+            }
 
             File stylesheetFile = null;
             if ( commandLine.hasOption( this.getStylesheetOption().getOpt() ) )
@@ -384,7 +387,7 @@ public final class MergeModulesCommand extends AbstractJomcToolCommand
                 mergedModule = ( (JAXBElement<Module>) result.getResult() ).getValue();
             }
 
-            marshaller.setSchema( context.createSchema( this.getModel( commandLine ) ) );
+            marshaller.setSchema( context.createSchema( model.getIdentifier() ) );
             marshaller.marshal( new ObjectFactory().createModule( mergedModule ), moduleFile );
 
             if ( this.isLoggable( Level.INFO ) )
@@ -786,7 +789,7 @@ public final class MergeModulesCommand extends AbstractJomcToolCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-27T09:16:58+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-27T14:22:11+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

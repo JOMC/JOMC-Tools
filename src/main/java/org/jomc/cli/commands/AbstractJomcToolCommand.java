@@ -126,7 +126,7 @@ import org.xml.sax.SAXException;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-27T09:16:58+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-27T14:22:11+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -357,15 +357,16 @@ public abstract class AbstractJomcToolCommand extends AbstractJomcCommand
         return files;
     }
 
-    protected Modules getModules( final ModelContext context, final CommandLine commandLine )
+    protected Model getModel( final ModelContext context, final CommandLine commandLine )
         throws IOException, SAXException, JAXBException, ModelException
     {
-        Model model = null;
+        Model model = new Model();
+        model.setIdentifier( this.getModel( commandLine ) );
         Modules modules = new Modules();
 
         if ( commandLine.hasOption( this.getDocumentsOption().getOpt() ) )
         {
-            final Unmarshaller u = context.createUnmarshaller( this.getModel( commandLine ) );
+            final Unmarshaller u = context.createUnmarshaller( model.getIdentifier() );
             for ( File f : this.getDocumentFiles( commandLine ) )
             {
                 final InputStream in = new FileInputStream( f );
@@ -396,8 +397,8 @@ public abstract class AbstractJomcToolCommand extends AbstractJomcCommand
 
         if ( commandLine.hasOption( this.getClasspathOption().getOpt() ) )
         {
-            model = context.findModel( this.getModel( commandLine ) );
-            final Modules modelModules = ModelHelper.getModules( model );
+            final Model foundModel = context.findModel( model.getIdentifier() );
+            final Modules modelModules = ModelHelper.getModules( foundModel );
 
             if ( modelModules != null )
             {
@@ -429,14 +430,15 @@ public abstract class AbstractJomcToolCommand extends AbstractJomcCommand
             }
         }
 
+        ModelHelper.setModules( model, modules );
+
         if ( !commandLine.hasOption( this.getNoModelProcessingOption().getOpt() ) )
         {
-            model = new Model();
-            model.setIdentifier( this.getModel( commandLine ) );
-            ModelHelper.setModules( model, modules );
             model = context.processModel( model );
             modules = ModelHelper.getModules( model );
         }
+
+        assert modules != null : "Modules '" + this.getModel( commandLine ) + "' not found.";
 
         if ( this.isLoggable( Level.FINE ) )
         {
@@ -447,7 +449,7 @@ public abstract class AbstractJomcToolCommand extends AbstractJomcCommand
             }
         }
 
-        return modules;
+        return model;
     }
 
     protected final int executeCommand( final CommandLine commandLine ) throws Exception
@@ -784,7 +786,7 @@ public abstract class AbstractJomcToolCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-27T09:16:58+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-27T14:22:11+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

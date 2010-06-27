@@ -45,10 +45,10 @@ import javax.xml.transform.Source;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 import org.jomc.model.Module;
-import org.jomc.model.Modules;
-import org.jomc.model.ObjectFactory;
+import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelValidationReport;
+import org.jomc.modlet.ObjectFactory;
 import org.jomc.tools.ClassFileProcessor;
 
 // SECTION-START[Documentation]
@@ -112,7 +112,7 @@ import org.jomc.tools.ClassFileProcessor;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-27T09:16:58+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-27T14:22:11+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -243,18 +243,18 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
     {
         final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
         final ModelContext context = this.createModelContext( classLoader );
-        final Modules modules = this.getModules( context, commandLine );
-        final JAXBContext jaxbContext = context.createContext( this.getModel( commandLine ) );
-        final Marshaller marshaller = context.createMarshaller( this.getModel( commandLine ) );
-        final Unmarshaller unmarshaller = context.createUnmarshaller( this.getModel( commandLine ) );
-        final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModules( modules ) );
-        final ModelValidationReport validationReport = context.validateModel( this.getModel( commandLine ), source );
+        final Model model = this.getModel( context, commandLine );
+        final JAXBContext jaxbContext = context.createContext( model.getIdentifier() );
+        final Marshaller marshaller = context.createMarshaller( model.getIdentifier() );
+        final Unmarshaller unmarshaller = context.createUnmarshaller( model.getIdentifier() );
+        final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModel( model ) );
+        final ModelValidationReport validationReport = context.validateModel( model.getIdentifier(), source );
         this.log( validationReport, marshaller );
 
         if ( validationReport.isModelValid() )
         {
             final ClassFileProcessor tool = this.createClassFileProcessor();
-            tool.setModules( modules );
+            tool.setModel( model );
 
             if ( commandLine.hasOption( this.getModuleNameOption().getOpt() ) )
             {
@@ -263,7 +263,7 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
 
                 if ( module != null )
                 {
-                    tool.validateModelObjects( module, unmarshaller, classLoader );
+                    tool.validateModelObjects( module, context );
                 }
                 else if ( this.isLoggable( Level.WARNING ) )
                 {
@@ -272,7 +272,7 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
             }
             else
             {
-                tool.validateModelObjects( unmarshaller, classLoader );
+                tool.validateModelObjects( context );
             }
 
             return STATUS_SUCCESS;
@@ -569,7 +569,7 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-27T09:16:58+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-27T14:22:11+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
