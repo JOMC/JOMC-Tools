@@ -147,7 +147,7 @@ public class ClassFileProcessor extends JomcTool
      *
      * @see #commitModelObjects(org.jomc.model.Module, org.jomc.modlet.ModelContext, java.io.File)
      */
-    public void commitModelObjects( final ModelContext context, final File classesDirectory ) throws IOException
+    public final void commitModelObjects( final ModelContext context, final File classesDirectory ) throws IOException
     {
         if ( context == null )
         {
@@ -186,7 +186,7 @@ public class ClassFileProcessor extends JomcTool
      * @see #commitModelObjects(org.jomc.model.Specification, org.jomc.modlet.ModelContext, java.io.File)
      * @see #commitModelObjects(org.jomc.model.Implementation, org.jomc.modlet.ModelContext, java.io.File)
      */
-    public void commitModelObjects( final Module module, final ModelContext context, final File classesDirectory )
+    public final void commitModelObjects( final Module module, final ModelContext context, final File classesDirectory )
         throws IOException
     {
         if ( module == null )
@@ -230,8 +230,8 @@ public class ClassFileProcessor extends JomcTool
      *
      * @see #commitModelObjects(org.jomc.model.Specification, javax.xml.bind.Marshaller, org.apache.bcel.classfile.JavaClass)
      */
-    public void commitModelObjects( final Specification specification, final ModelContext context,
-                                    final File classesDirectory ) throws IOException
+    public final void commitModelObjects( final Specification specification, final ModelContext context,
+                                          final File classesDirectory ) throws IOException
     {
         if ( specification == null )
         {
@@ -275,8 +275,8 @@ public class ClassFileProcessor extends JomcTool
      *
      * @see #commitModelObjects(org.jomc.model.Implementation, javax.xml.bind.Marshaller, org.apache.bcel.classfile.JavaClass)
      */
-    public void commitModelObjects( final Implementation implementation, final ModelContext context,
-                                    final File classesDirectory ) throws IOException
+    public final void commitModelObjects( final Implementation implementation, final ModelContext context,
+                                          final File classesDirectory ) throws IOException
     {
         if ( implementation == null )
         {
@@ -451,7 +451,7 @@ public class ClassFileProcessor extends JomcTool
      *
      * @see #validateModelObjects(org.jomc.model.Module, org.jomc.modlet.ModelContext)
      */
-    public ModelValidationReport validateModelObjects( final ModelContext context ) throws IOException
+    public final ModelValidationReport validateModelObjects( final ModelContext context ) throws IOException
     {
         if ( context == null )
         {
@@ -487,7 +487,7 @@ public class ClassFileProcessor extends JomcTool
      * @see #validateModelObjects(org.jomc.model.Specification, org.jomc.modlet.ModelContext)
      * @see #validateModelObjects(org.jomc.model.Implementation, org.jomc.modlet.ModelContext)
      */
-    public ModelValidationReport validateModelObjects( final Module module, final ModelContext context )
+    public final ModelValidationReport validateModelObjects( final Module module, final ModelContext context )
         throws IOException
     {
         if ( module == null )
@@ -529,8 +529,8 @@ public class ClassFileProcessor extends JomcTool
      *
      * @see #validateModelObjects(org.jomc.model.Specification, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
      */
-    public ModelValidationReport validateModelObjects( final Specification specification, final ModelContext context )
-        throws IOException
+    public final ModelValidationReport validateModelObjects( final Specification specification,
+                                                             final ModelContext context ) throws IOException
     {
         if ( specification == null )
         {
@@ -570,8 +570,8 @@ public class ClassFileProcessor extends JomcTool
      *
      * @see #validateModelObjects(org.jomc.model.Implementation, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
      */
-    public ModelValidationReport validateModelObjects( final Implementation implementation, final ModelContext context )
-        throws IOException
+    public final ModelValidationReport validateModelObjects( final Implementation implementation,
+                                                             final ModelContext context ) throws IOException
     {
         if ( implementation == null )
         {
@@ -610,7 +610,7 @@ public class ClassFileProcessor extends JomcTool
      *
      * @see #validateModelObjects(org.jomc.model.Module, org.jomc.modlet.ModelContext, java.io.File)
      */
-    public ModelValidationReport validateModelObjects( final ModelContext context, final File classesDirectory )
+    public final ModelValidationReport validateModelObjects( final ModelContext context, final File classesDirectory )
         throws IOException
     {
         if ( context == null )
@@ -651,8 +651,8 @@ public class ClassFileProcessor extends JomcTool
      * @see #validateModelObjects(org.jomc.model.Specification, org.jomc.modlet.ModelContext, java.io.File)
      * @see #validateModelObjects(org.jomc.model.Implementation, org.jomc.modlet.ModelContext, java.io.File)
      */
-    public ModelValidationReport validateModelObjects( final Module module, final ModelContext context,
-                                                       final File classesDirectory ) throws IOException
+    public final ModelValidationReport validateModelObjects( final Module module, final ModelContext context,
+                                                             final File classesDirectory ) throws IOException
     {
         if ( module == null )
         {
@@ -699,8 +699,8 @@ public class ClassFileProcessor extends JomcTool
      *
      * @see #validateModelObjects(org.jomc.model.Specification, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
      */
-    public ModelValidationReport validateModelObjects( final Specification specification, final ModelContext context,
-                                                       final File classesDirectory )
+    public final ModelValidationReport validateModelObjects( final Specification specification,
+                                                             final ModelContext context, final File classesDirectory )
         throws IOException
     {
         if ( specification == null )
@@ -747,8 +747,8 @@ public class ClassFileProcessor extends JomcTool
      *
      * @see #validateModelObjects(org.jomc.model.Implementation, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass)
      */
-    public ModelValidationReport validateModelObjects( final Implementation implementation,
-                                                       final ModelContext context, final File classesDirectory )
+    public final ModelValidationReport validateModelObjects( final Implementation implementation,
+                                                             final ModelContext context, final File classesDirectory )
         throws IOException
     {
         if ( implementation == null )
@@ -1188,8 +1188,8 @@ public class ClassFileProcessor extends JomcTool
      *
      * @see #transformModelObjects(org.jomc.model.Module, org.jomc.modlet.ModelContext, java.io.File, java.util.List)
      */
-    public void transformModelObjects( final ModelContext context, final File classesDirectory,
-                                       final List<Transformer> transformers ) throws IOException
+    public final void transformModelObjects( final ModelContext context, final File classesDirectory,
+                                             final List<Transformer> transformers ) throws IOException
     {
         if ( context == null )
         {
@@ -1237,8 +1237,8 @@ public class ClassFileProcessor extends JomcTool
      * @see #transformModelObjects(org.jomc.model.Specification, org.jomc.modlet.ModelContext, java.io.File, java.util.List)
      * @see #transformModelObjects(org.jomc.model.Implementation, org.jomc.modlet.ModelContext, java.io.File, java.util.List)
      */
-    public void transformModelObjects( final Module module, final ModelContext context, final File classesDirectory,
-                                       final List<Transformer> transformers )
+    public final void transformModelObjects( final Module module, final ModelContext context,
+                                             final File classesDirectory, final List<Transformer> transformers )
         throws IOException
     {
         if ( module == null )
@@ -1292,8 +1292,8 @@ public class ClassFileProcessor extends JomcTool
      *
      * @see #transformModelObjects(org.jomc.model.Specification, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass, java.util.List)
      */
-    public void transformModelObjects( final Specification specification, final ModelContext context,
-                                       final File classesDirectory, final List<Transformer> transformers )
+    public final void transformModelObjects( final Specification specification, final ModelContext context,
+                                             final File classesDirectory, final List<Transformer> transformers )
         throws IOException
     {
         if ( specification == null )
@@ -1346,8 +1346,8 @@ public class ClassFileProcessor extends JomcTool
      *
      * @see #transformModelObjects(org.jomc.model.Implementation, javax.xml.bind.Marshaller, javax.xml.bind.Unmarshaller, org.apache.bcel.classfile.JavaClass, java.util.List)
      */
-    public void transformModelObjects( final Implementation implementation, final ModelContext context,
-                                       final File classesDirectory, final List<Transformer> transformers )
+    public final void transformModelObjects( final Implementation implementation, final ModelContext context,
+                                             final File classesDirectory, final List<Transformer> transformers )
         throws IOException
     {
         if ( implementation == null )
