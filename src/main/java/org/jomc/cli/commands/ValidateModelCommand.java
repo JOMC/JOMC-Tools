@@ -45,7 +45,7 @@ import org.jomc.modlet.ModelValidationReport;
 // SECTION-START[Documentation]
 // <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 /**
- * Command line interface for validating modules.
+ * Command line interface for validating models.
  * <p><b>Specifications</b><ul>
  * <li>{@code JOMC CLI Command} {@code 1.0} {@code Multiton}</li>
  * </ul></p>
@@ -101,7 +101,7 @@ import org.jomc.modlet.ModelValidationReport;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-28T05:46:40+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-28T17:08:37+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -165,13 +165,13 @@ import org.jomc.modlet.ModelValidationReport;
  * </table>
  * <li>"{@link #getLongDescriptionMessage longDescriptionMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
- *   jomc validate-modules -cp examples/lib/commons-cli-1.2.jar \
- *                         -df examples/xml/jomc-cli.xml \
- *                         -v</pre></td></tr>
+ *   jomc validate-model -cp examples/lib/commons-cli-1.2.jar \
+ *                       -df examples/xml/jomc-cli.xml \
+ *                       -v</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
- *   jomc validate-modules -cp examples/lib/commons-cli-1.2.jar \
- *                         -df examples/xml/jomc-cli.xml \
- *                         -v</pre></td></tr>
+ *   jomc validate-model -cp examples/lib/commons-cli-1.2.jar \
+ *                       -df examples/xml/jomc-cli.xml \
+ *                       -v</pre></td></tr>
  * </table>
  * <li>"{@link #getModulesReport modulesReport}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>{0}: Modules</pre></td></tr>
@@ -181,8 +181,8 @@ import org.jomc.modlet.ModelValidationReport;
  * <tr><td valign="top">English:</td><td valign="top"><pre>--------------------------------------------------------------------------------</pre></td></tr>
  * </table>
  * <li>"{@link #getShortDescriptionMessage shortDescriptionMessage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Validates modules.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Pr&uuml;ft Module.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Validates a model.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Pr&uuml;ft ein Modell.</pre></td></tr>
  * </table>
  * </ul></p>
  *
@@ -240,7 +240,7 @@ public final class ValidateModelCommand extends AbstractJomcToolCommand
     // SECTION-START[Constructors]
     // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
 
-    /** Creates a new {@code ValidateModulesCommand} instance. */
+    /** Creates a new {@code ValidateModelCommand} instance. */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
     public ValidateModelCommand()
     {
@@ -507,7 +507,7 @@ public final class ValidateModelCommand extends AbstractJomcToolCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-28T05:46:40+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-28T17:08:37+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -838,13 +838,13 @@ public final class ValidateModelCommand extends AbstractJomcToolCommand
      * Gets the text of the {@code longDescriptionMessage} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
-     *   jomc validate-modules -cp examples/lib/commons-cli-1.2.jar \
-     *                         -df examples/xml/jomc-cli.xml \
-     *                         -v</pre></td></tr>
+     *   jomc validate-model -cp examples/lib/commons-cli-1.2.jar \
+     *                       -df examples/xml/jomc-cli.xml \
+     *                       -v</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Beispiel:
-     *   jomc validate-modules -cp examples/lib/commons-cli-1.2.jar \
-     *                         -df examples/xml/jomc-cli.xml \
-     *                         -v</pre></td></tr>
+     *   jomc validate-model -cp examples/lib/commons-cli-1.2.jar \
+     *                       -df examples/xml/jomc-cli.xml \
+     *                       -v</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code longDescriptionMessage} message.
@@ -900,8 +900,8 @@ public final class ValidateModelCommand extends AbstractJomcToolCommand
     /**
      * Gets the text of the {@code shortDescriptionMessage} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Validates modules.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Pr&uuml;ft Module.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Validates a model.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Pr&uuml;ft ein Modell.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code shortDescriptionMessage} message.
@@ -916,5 +916,7 @@ public final class ValidateModelCommand extends AbstractJomcToolCommand
         return _m;
     }
     // </editor-fold>
+    // SECTION-END
+    // SECTION-START[ValidateModelCommand]
     // SECTION-END
 }
