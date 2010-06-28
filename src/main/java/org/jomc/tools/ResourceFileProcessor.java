@@ -100,7 +100,7 @@ public class ResourceFileProcessor extends JomcTool
      *
      * @see #setResourceBundleDefaultLocale(java.util.Locale)
      */
-    public Locale getResourceBundleDefaultLocale()
+    public final Locale getResourceBundleDefaultLocale()
     {
         if ( this.resourceBundleDefaultLocale == null )
         {
@@ -124,7 +124,7 @@ public class ResourceFileProcessor extends JomcTool
      *
      * @see #getResourceBundleDefaultLocale()
      */
-    public void setResourceBundleDefaultLocale( final Locale value )
+    public final void setResourceBundleDefaultLocale( final Locale value )
     {
         this.resourceBundleDefaultLocale = value;
     }

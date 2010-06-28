@@ -265,7 +265,7 @@ public abstract class JomcTool
      * @see #setLogLevel(java.util.logging.Level)
      * @see #isLoggable(java.util.logging.Level)
      */
-    public Level getLogLevel()
+    public final Level getLogLevel()
     {
         if ( this.logLevel == null )
         {
@@ -286,7 +286,7 @@ public abstract class JomcTool
      * @see #getLogLevel()
      * @see #isLoggable(java.util.logging.Level)
      */
-    public void setLogLevel( final Level value )
+    public final void setLogLevel( final Level value )
     {
         this.logLevel = value;
     }
@@ -1305,7 +1305,7 @@ public abstract class JomcTool
      *
      * @see #setTemplateEncoding(java.lang.String)
      */
-    public String getTemplateEncoding()
+    public final String getTemplateEncoding()
     {
         if ( this.templateEncoding == null )
         {
@@ -1329,7 +1329,7 @@ public abstract class JomcTool
      *
      * @see #getTemplateEncoding()
      */
-    public void setTemplateEncoding( final String value )
+    public final void setTemplateEncoding( final String value )
     {
         this.templateEncoding = value;
         this.velocityEngine = null;
@@ -1342,7 +1342,7 @@ public abstract class JomcTool
      *
      * @see #setInputEncoding(java.lang.String)
      */
-    public String getInputEncoding()
+    public final String getInputEncoding()
     {
         if ( this.inputEncoding == null )
         {
@@ -1365,7 +1365,7 @@ public abstract class JomcTool
      *
      * @see #getInputEncoding()
      */
-    public void setInputEncoding( final String value )
+    public final void setInputEncoding( final String value )
     {
         this.inputEncoding = value;
     }
@@ -1377,7 +1377,7 @@ public abstract class JomcTool
      *
      * @see #setOutputEncoding(java.lang.String)
      */
-    public String getOutputEncoding()
+    public final String getOutputEncoding()
     {
         if ( this.outputEncoding == null )
         {
@@ -1400,7 +1400,7 @@ public abstract class JomcTool
      *
      * @see #getOutputEncoding()
      */
-    public void setOutputEncoding( final String value )
+    public final void setOutputEncoding( final String value )
     {
         this.outputEncoding = value;
     }
@@ -1447,7 +1447,7 @@ public abstract class JomcTool
      * @see #getDefaultTemplateProfile()
      * @see #setTemplateProfile(java.lang.String)
      */
-    public String getTemplateProfile()
+    public final String getTemplateProfile()
     {
         if ( this.templateProfile == null )
         {
@@ -1470,7 +1470,7 @@ public abstract class JomcTool
      *
      * @see #getTemplateProfile()
      */
-    public void setTemplateProfile( final String value )
+    public final void setTemplateProfile( final String value )
     {
         this.templateProfile = value;
     }
@@ -1480,7 +1480,7 @@ public abstract class JomcTool
      *
      * @return The indentation string of the instance.
      */
-    public String getIndentation()
+    public final String getIndentation()
     {
         if ( this.indentation == null )
         {
@@ -1507,7 +1507,7 @@ public abstract class JomcTool
      *
      * @see #getIndentation()
      */
-    public String getIndentation( final int level )
+    public final String getIndentation( final int level )
     {
         if ( level < 0 )
         {
@@ -1542,7 +1542,7 @@ public abstract class JomcTool
      *
      * @see #getIndentation()
      */
-    public void setIndentation( final String value )
+    public final void setIndentation( final String value )
     {
         synchronized ( this.indentationCache )
         {
@@ -1556,7 +1556,7 @@ public abstract class JomcTool
      *
      * @return The line separator of the instance.
      */
-    public String getLineSeparator()
+    public final String getLineSeparator()
     {
         if ( this.lineSeparator == null )
         {
@@ -1579,7 +1579,7 @@ public abstract class JomcTool
      *
      * @see #getLineSeparator()
      */
-    public void setLineSeparator( final String value )
+    public final void setLineSeparator( final String value )
     {
         this.lineSeparator = value;
     }
@@ -1720,11 +1720,6 @@ public abstract class JomcTool
 
     private static String getMessage( final String key, final Object... arguments )
     {
-        if ( key == null )
-        {
-            throw new NullPointerException( "key" );
-        }
-
         return MessageFormat.format( ResourceBundle.getBundle( JomcTool.class.getName().replace( '.', '/' ) ).
             getString( key ), arguments );
 
