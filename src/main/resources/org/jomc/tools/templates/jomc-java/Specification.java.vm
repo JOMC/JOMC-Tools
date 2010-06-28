@@ -42,6 +42,7 @@
 ## @param minute The current minute formatted using the pattern "mm".
 ## @param second The current second formatted using the pattern "ss".
 ## @param timezone The current timezone formatted using the pattern "Z".
+## @param model The model declaring the modules of the specification to render.
 ## @param modules The modules declaring the specification to render.
 ## @param specification The specification to render.
 ${tool.getIndentation(0)}// SECTION-START[License Header]

@@ -42,6 +42,7 @@
 ## @param minute The current minute formatted using the pattern "mm".
 ## @param second The current second formatted using the pattern "ss".
 ## @param timezone The current timezone formatted using the pattern "Z".
+## @param model The model declaring the modules of the implementation to render.
 ## @param modules The modules declaring the implementation to render.
 ## @param implementation The implementation to render.
 ${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
