@@ -47,7 +47,7 @@ import org.apache.commons.cli.Option;
  * short-name, the long-name, a flag indicating if an argument is required, and a self-documenting description.
  *
  * <p><b>Specifications</b><ul>
- * <li>{@code 'org.apache.commons.cli.Option'} ({@code org.apache.commons.cli.Option}) {@code Multiton}</li>
+ * <li>{@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} {@code Multiton}</li>
  * </ul></p>
  * <p><b>Properties</b><ul>
  * <li>"{@link #getLongOpt longOpt}"
@@ -77,7 +77,7 @@ import org.apache.commons.cli.Option;
  * </ul></p>
  * <p><b>Dependencies</b><ul>
  * <li>"{@link #getLocale Locale}"<blockquote>
- * Dependency on {@code 'java.util.Locale'} ({@code java.util.Locale}) at specification level 1.1 bound to an instance.</blockquote></li>
+ * Dependency on {@code 'java.util.Locale'} {@code (java.util.Locale)} at specification level 1.1 bound to an instance.</blockquote></li>
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getArgumentDescription argumentDescription}"<table>
@@ -149,7 +149,7 @@ public final class OptionFactory
 
     /**
      * Gets the {@code Locale} dependency.
-     * <p>This method returns the {@code 'default'} object of the {@code 'java.util.Locale'} ({@code java.util.Locale}) specification at specification level 1.1.</p>
+     * <p>This method returns the {@code 'default'} object of the {@code 'java.util.Locale'} {@code (java.util.Locale)} specification at specification level 1.1.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code Locale} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
