@@ -72,7 +72,7 @@ Usage
               <goal>manage-test-sources</goal>
               <goal>commit-test-classes</goal>
               <goal>validate-test-classes</goal>
-              <goal>validate-test-modules</goal>
+              <goal>validate-test-model</goal>
             </goals>
           </execution>
         </executions>
@@ -119,7 +119,7 @@ Usage
               <goal>manage-test-sources</goal>
               <goal>commit-test-classes</goal>
               <goal>validate-test-classes</goal>
-              <goal>validate-test-modules</goal>
+              <goal>validate-test-model</goal>
             </goals>
             <configuration>
               <templateProfile>jomc-java-bundles</templateProfile>

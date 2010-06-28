@@ -39,24 +39,24 @@ import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelValidationReport;
 
 /**
- * Validates a projects' test modules.
+ * Validates a project's test model.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  *
  * @phase process-test-classes
- * @goal validate-test-modules
+ * @goal validate-test-model
  * @threadSafe
  * @requiresDependencyResolution test
  */
-public final class TestModulesValidateMojo extends AbstractJomcMojo
+public final class TestModelValidateMojo extends AbstractJomcMojo
 {
 
     /** Constant for the name of the tool backing the mojo. */
     private static final String TOOLNAME = "ModelValidator";
 
     /** Creates a new {@code ValidateTestModulesMojo} instance. */
-    public TestModulesValidateMojo()
+    public TestModelValidateMojo()
     {
         super();
     }
@@ -81,7 +81,7 @@ public final class TestModulesValidateMojo extends AbstractJomcMojo
 
     private static String getMessage( final String key )
     {
-        return ResourceBundle.getBundle( TestModulesValidateMojo.class.getName().replace( '.', '/' ) ).getString( key );
+        return ResourceBundle.getBundle( TestModelValidateMojo.class.getName().replace( '.', '/' ) ).getString( key );
     }
 
 }

@@ -62,9 +62,9 @@ Maven JOMC Plugin
 
   * {{{./validate-test-classes-mojo.html}jomc:validate-test-classes}} Validates a projects' test class file model objects.
 
-  * {{{./validate-main-modules-mojo.html}jomc:validate-main-modules}} Validates a projects' main modules.
+  * {{{./validate-main-model-mojo.html}jomc:validate-main-model}} Validates a project's main model.
 
-  * {{{./validate-test-modules-mojo.html}jomc:validate-test-modules}} Validates a projects' test modules.
+  * {{{./validate-test-model-mojo.html}jomc:validate-test-model}} Validates a project's test model.
 
   * {{{./dump-main-instance-mojo.html}jomc:dump-main-instance}} Dumps a project's main instance.
 
@@ -93,7 +93,7 @@ Maven JOMC Plugin
   To provide you with better understanding of some usages of the JOMC Plugin, you can take a look at the following
   examples:
 
-  * {{{./examples/validate-modules.html}Validating a projects' main modules using the JOMC Plugin.}}
+  * {{{./examples/validate-models.html}Validating project models using the JOMC Plugin.}}
 
   * {{{./examples/release-project.html}Performing a release of a project using the JOMC Plugin.}}
 

@@ -1,5 +1,5 @@
  ------
- Validating modules
+ Validating models
  ------
  Christian Schulte
  ------
@@ -36,9 +36,9 @@
  ~~
  ~~ $Id$
 
-Validating a projects' modules
+Validating a project's main model
 
-  If you need to validate a projects' main modules, just add the <<<validate-main-modules>>> goal to the
+  If you need to validate a project's main model, just add the <<<validate-main-model>>> goal to the
   <<<pom.xml>>>.
 
 +-----------------+
@@ -55,7 +55,38 @@ Validating a projects' modules
           <execution>
             <id>main-default</id>
             <goals>
-              <goal>validate-main-modules</goal>
+              <goal>validate-main-model</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      ...
+    </plugins>
+  </build>
+  ...
+</project>
++-----------------+
+
+Validating a project's test model
+
+  If you need to validate a project's test model, just add the <<<validate-test-model>>> goal to the
+  <<<pom.xml>>>.
+
++-----------------+
+<project>
+  ...
+  <build>
+    <plugins>
+      ...
+      <plugin>
+        <groupId>org.jomc</groupId>
+        <artifactId>maven-jomc-plugin</artifactId>
+        <version>${project.version}</version>
+        <executions>
+          <execution>
+            <id>test-default</id>
+            <goals>
+              <goal>validate-test-model</goal>
             </goals>
           </execution>
         </executions>
