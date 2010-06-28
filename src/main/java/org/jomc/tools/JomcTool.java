@@ -1198,9 +1198,9 @@ public abstract class JomcTool
     }
 
     /**
-     * Gets the {@code VelocityEngine} used for generating source code.
+     * Gets the {@code VelocityEngine} of the instance.
      *
-     * @return The {@code VelocityEngine} used for generating source code.
+     * @return The {@code VelocityEngine} of the instance.
      *
      * @throws IOException if initializing a new velocity engine fails.
      *
@@ -1325,7 +1325,7 @@ public abstract class JomcTool
     /**
      * Sets the encoding to use for reading templates.
      *
-     * @param value The encoding to use for reading templates.
+     * @param value The new encoding to use for reading templates or {@code null}.
      *
      * @see #getTemplateEncoding()
      */
@@ -1361,7 +1361,7 @@ public abstract class JomcTool
     /**
      * Sets the encoding to use for reading files.
      *
-     * @param value The encoding to use for reading files.
+     * @param value The new encoding to use for reading files or {@code null}.
      *
      * @see #getInputEncoding()
      */
@@ -1396,7 +1396,7 @@ public abstract class JomcTool
     /**
      * Sets the encoding to use for writing files.
      *
-     * @param value The encoding to use for writing files.
+     * @param value The encoding to use for writing files or {@code null}.
      *
      * @see #getOutputEncoding()
      */

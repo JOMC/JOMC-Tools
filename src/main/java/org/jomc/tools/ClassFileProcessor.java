@@ -107,7 +107,6 @@ import org.jomc.util.VersionParser;
  * @version $Id$
  *
  * @see #getModules()
- * @see ModelContext#createModelContext(java.lang.ClassLoader)
  */
 public class ClassFileProcessor extends JomcTool
 {
@@ -300,7 +299,7 @@ public class ClassFileProcessor extends JomcTool
     }
 
     /**
-     * Validates model objects of class files.
+     * Validates model objects of class files of the modules of the instance.
      *
      * @param context The model context to use for validating model objects.
      *
@@ -334,7 +333,7 @@ public class ClassFileProcessor extends JomcTool
     }
 
     /**
-     * Validates model objects of class files.
+     * Validates model objects of class files of a given module of the modules of the instance.
      *
      * @param module The module to process.
      * @param context The model context to use for validating model objects.
@@ -376,7 +375,7 @@ public class ClassFileProcessor extends JomcTool
     }
 
     /**
-     * Validates model objects of class files.
+     * Validates model objects of class files of a given specification of the modules of the instance.
      *
      * @param specification The specification to process.
      * @param context The model context to use for validating model objects.
@@ -415,7 +414,7 @@ public class ClassFileProcessor extends JomcTool
     }
 
     /**
-     * Validates model objects of class files.
+     * Validates model objects of class files of a given implementation of the modules of the instance.
      *
      * @param implementation The implementation to process.
      * @param context The model context to use for validating model objects.
@@ -454,7 +453,7 @@ public class ClassFileProcessor extends JomcTool
     }
 
     /**
-     * Validates model objects of class files.
+     * Validates model objects of class files of the modules of the instance.
      *
      * @param context The model context to use for validating model objects.
      * @param classesDirectory The directory holding the class files.
@@ -493,7 +492,7 @@ public class ClassFileProcessor extends JomcTool
     }
 
     /**
-     * Validates model objects of class files.
+     * Validates model objects of class files of a given module of the modules of the instance.
      *
      * @param module The module to process.
      * @param context The model context to use for validating model objects.
@@ -540,7 +539,7 @@ public class ClassFileProcessor extends JomcTool
     }
 
     /**
-     * Validates model objects of class files.
+     * Validates model objects of class files of a given specification of the modules of the instance.
      *
      * @param specification The specification to process.
      * @param context The model context to use for validating model objects.
@@ -550,7 +549,7 @@ public class ClassFileProcessor extends JomcTool
      *
      * @throws NullPointerException if {@code specification}, {@code context} or {@code classesDirectory} is
      * {@code null}.
-     * 
+     *
      * @throws IOException if validating model objects fails.
      */
     public ModelValidationReport validateModelObjects( final Specification specification, final ModelContext context,
@@ -586,7 +585,7 @@ public class ClassFileProcessor extends JomcTool
     }
 
     /**
-     * Validates model objects of class files.
+     * Validates model objects of class files of a given implementation of the modules of the instance.
      *
      * @param implementation The implementation to process.
      * @param context The model context to use for validating model objects.
@@ -632,7 +631,7 @@ public class ClassFileProcessor extends JomcTool
     }
 
     /**
-     * Transforms model objects of class files.
+     * Transforms model objects of class files of the modules of the instance.
      *
      * @param context The model context to use for transforming model objects.
      * @param classesDirectory The directory holding the class files.
@@ -679,7 +678,7 @@ public class ClassFileProcessor extends JomcTool
     }
 
     /**
-     * Transforms model objects of class files.
+     * Transforms model objects of class files of a given module of the modules of the instance.
      *
      * @param module The module to process.
      * @param context The model context to use for transforming model objects.
@@ -735,7 +734,7 @@ public class ClassFileProcessor extends JomcTool
     }
 
     /**
-     * Transforms model objects of class files.
+     * Transforms model objects of class files of a given specification of the modules of the instance.
      *
      * @param specification The specification to process.
      * @param context The model context to use for transforming model objects.
@@ -787,7 +786,7 @@ public class ClassFileProcessor extends JomcTool
     }
 
     /**
-     * Transforms model objects of class files.
+     * Transforms model objects of class files of a given implementation of the modules of the instance.
      *
      * @param implementation The implementation to process.
      * @param context The model context to use for transforming model objects.

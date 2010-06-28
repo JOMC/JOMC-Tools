@@ -186,7 +186,7 @@ public class SourceFileProcessor extends JomcTool
     }
 
     /**
-     * Gets the model of a specification source file.
+     * Gets the model of a specification source file of the modules of the instance.
      *
      * @param specification The specification to get a source file model for.
      *
@@ -255,7 +255,7 @@ public class SourceFileProcessor extends JomcTool
     }
 
     /**
-     * Gets the model of an implementation source file.
+     * Gets the model of an implementation source file of the modules of the instance.
      *
      * @param implementation The implementation to get a source file model for.
      *
@@ -508,7 +508,7 @@ public class SourceFileProcessor extends JomcTool
     }
 
     /**
-     * Gets a new editor for editing the source file of a given specification.
+     * Gets a new editor for editing the source file of a given specification of the modules of the instance.
      *
      * @param specification The specification whose source file to edit.
      *
@@ -532,7 +532,7 @@ public class SourceFileProcessor extends JomcTool
     }
 
     /**
-     * Gets a new editor for editing the source file of a given implementation.
+     * Gets a new editor for editing the source file of a given implementation of the modules of the instance.
      *
      * @param implementation The implementation whose source file to edit.
      *
