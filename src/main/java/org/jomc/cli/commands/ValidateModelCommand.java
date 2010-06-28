@@ -235,7 +235,7 @@ public final class ValidateModelCommand extends AbstractJomcToolCommand
     }
 
     // SECTION-END
-    // SECTION-START[ValidateModulesCommand]
+    // SECTION-START[ValidateModelCommand]
     // SECTION-END
     // SECTION-START[Constructors]
     // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
@@ -916,7 +916,5 @@ public final class ValidateModelCommand extends AbstractJomcToolCommand
         return _m;
     }
     // </editor-fold>
-    // SECTION-END
-    // SECTION-START[ValidateModelCommand]
     // SECTION-END
 }
