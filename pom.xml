@@ -308,7 +308,7 @@
           <execution>
             <id>main-default</id>
             <goals>
-              <goal>validate-main-modules</goal>
+              <goal>validate-main-model</goal>
             </goals>
           </execution>
         </executions>
