@@ -55,7 +55,7 @@ ${tool.getIndentation(0)} * $tool.getJavadocComment($implementation.getDocumenta
 ${tool.getIndentation(0)} * <p><b>Specifications</b><ul>
 #foreach($reference in $specifications.getReference())
 #set($specification = $specifications.getSpecification($reference.getIdentifier()))
-${tool.getIndentation(0)} * <li>{@code '$reference.getIdentifier()'}#if($specification && $specification.getClazz()) ({@code $specification.getClazz()})#end#if($reference.getVersion()) {@code $reference.getVersion()}#end#if($specification)#if($specification.getScope()) {@code $specification.getScope()}#else {@code Multiton}#end#end</li>
+${tool.getIndentation(0)} * <li>{@code '$reference.getIdentifier()'}#if($specification && $specification.getClazz()) {@code ($specification.getClazz())}#end#if($reference.getVersion()) {@code $reference.getVersion()}#end#if($specification)#if($specification.getScope()) {@code $specification.getScope()}#else {@code Multiton}#end#end</li>
 #end
 ${tool.getIndentation(0)} * </ul></p>
 #end
@@ -76,7 +76,7 @@ ${tool.getIndentation(0)} * <p><b>Dependencies</b><ul>
 #foreach($dependency in $modules.getDependencies($implementation.getIdentifier()).getDependency())
 #set($specification = $modules.getSpecification($dependency.getIdentifier()))
 ${tool.getIndentation(0)} * <li>"{@link #$tool.getJavaGetterMethodName($dependency) $dependency.getName()}"<blockquote>
-${tool.getIndentation(0)} * Dependency on {@code '$dependency.getIdentifier()'}#if($specification && $specification.getClazz()) ({@code $specification.getClazz()})#end#if($dependency.getVersion()) at specification level $dependency.getVersion()#end#if($dependency.isBound()) bound to an instance#end.</blockquote></li>
+${tool.getIndentation(0)} * Dependency on {@code '$dependency.getIdentifier()'}#if($specification && $specification.getClazz()) {@code ($specification.getClazz())}#end#if($dependency.getVersion()) at specification level $dependency.getVersion()#end#if($dependency.isBound()) bound to an instance#end.</blockquote></li>
 #end
 ${tool.getIndentation(0)} * </ul></p>
 #end
