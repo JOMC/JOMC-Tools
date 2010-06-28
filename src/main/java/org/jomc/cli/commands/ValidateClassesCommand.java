@@ -111,7 +111,7 @@ import org.jomc.tools.ClassFileProcessor;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-28T21:20:00+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-29T00:04:08+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -300,7 +300,7 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
 
     /**
      * Gets the {@code ClasspathOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Classpath Option}" object of the {@code 'org.apache.commons.cli.Option'} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Classpath Option'} object of the {@code 'org.apache.commons.cli.Option'} ({@code org.apache.commons.cli.Option}) specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ClasspathOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -315,7 +315,7 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
 
     /**
      * Gets the {@code DocumentsOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Documents Option}" object of the {@code 'org.apache.commons.cli.Option'} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Documents Option'} object of the {@code 'org.apache.commons.cli.Option'} ({@code org.apache.commons.cli.Option}) specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code DocumentsOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -330,7 +330,7 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
 
     /**
      * Gets the {@code Locale} dependency.
-     * <p>This method returns the "{@code default}" object of the {@code 'java.util.Locale'} specification at specification level 1.1.</p>
+     * <p>This method returns the {@code 'default'} object of the {@code 'java.util.Locale'} ({@code java.util.Locale}) specification at specification level 1.1.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code Locale} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -345,7 +345,7 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
 
     /**
      * Gets the {@code ModelOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Model Option}" object of the {@code 'org.apache.commons.cli.Option'} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Model Option'} object of the {@code 'org.apache.commons.cli.Option'} ({@code org.apache.commons.cli.Option}) specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ModelOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -360,7 +360,7 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
 
     /**
      * Gets the {@code ModletLocationOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Modlet Location Option}" object of the {@code 'org.apache.commons.cli.Option'} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Modlet Location Option'} object of the {@code 'org.apache.commons.cli.Option'} ({@code org.apache.commons.cli.Option}) specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ModletLocationOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -375,7 +375,7 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
 
     /**
      * Gets the {@code ModuleLocationOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Module Location Option}" object of the {@code 'org.apache.commons.cli.Option'} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Module Location Option'} object of the {@code 'org.apache.commons.cli.Option'} ({@code org.apache.commons.cli.Option}) specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ModuleLocationOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -390,7 +390,7 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
 
     /**
      * Gets the {@code ModuleNameOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Module Name Option}" object of the {@code 'org.apache.commons.cli.Option'} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Module Name Option'} object of the {@code 'org.apache.commons.cli.Option'} ({@code org.apache.commons.cli.Option}) specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ModuleNameOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -405,7 +405,7 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
 
     /**
      * Gets the {@code NoClasspathResolutionOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI No Classpath Resolution Option}" object of the {@code 'org.apache.commons.cli.Option'} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI No Classpath Resolution Option'} object of the {@code 'org.apache.commons.cli.Option'} ({@code org.apache.commons.cli.Option}) specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code NoClasspathResolutionOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -420,7 +420,7 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
 
     /**
      * Gets the {@code NoModelProcessingOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI No Model Processing Option}" object of the {@code 'org.apache.commons.cli.Option'} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI No Model Processing Option'} object of the {@code 'org.apache.commons.cli.Option'} ({@code org.apache.commons.cli.Option}) specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code NoModelProcessingOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -435,7 +435,7 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
 
     /**
      * Gets the {@code PlatformProviderLocationOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Platform Provider Location Option}" object of the {@code 'org.apache.commons.cli.Option'} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Platform Provider Location Option'} object of the {@code 'org.apache.commons.cli.Option'} ({@code org.apache.commons.cli.Option}) specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code PlatformProviderLocationOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -450,7 +450,7 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
 
     /**
      * Gets the {@code ProviderLocationOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Provider Location Option}" object of the {@code 'org.apache.commons.cli.Option'} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Provider Location Option'} object of the {@code 'org.apache.commons.cli.Option'} ({@code org.apache.commons.cli.Option}) specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ProviderLocationOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -465,7 +465,7 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
 
     /**
      * Gets the {@code TransformerLocationOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Transformer Location Option}" object of the {@code 'org.apache.commons.cli.Option'} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Transformer Location Option'} object of the {@code 'org.apache.commons.cli.Option'} ({@code org.apache.commons.cli.Option}) specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code TransformerLocationOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -567,7 +567,7 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-28T21:20:00+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.0-beta-5-SNAPSHOT Build 2010-06-29T00:04:08+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

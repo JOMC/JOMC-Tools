@@ -546,7 +546,7 @@ public final class Jomc
 
     /**
      * Gets the {@code Commands} dependency.
-     * <p>This method returns any available object of the {@code 'JOMC CLI Command'} specification at specification level 1.0-beta-5-SNAPSHOT.</p>
+     * <p>This method returns any available object of the {@code 'JOMC CLI Command'} ({@code org.jomc.cli.Command}) specification at specification level 1.0-beta-5-SNAPSHOT.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested.</p>
      * @return The {@code Commands} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -561,7 +561,7 @@ public final class Jomc
 
     /**
      * Gets the {@code DebugOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Debug Option}" object of the {@code 'org.apache.commons.cli.Option'} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Debug Option'} object of the {@code 'org.apache.commons.cli.Option'} ({@code org.apache.commons.cli.Option}) specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code DebugOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -576,7 +576,7 @@ public final class Jomc
 
     /**
      * Gets the {@code FailOnWarningsOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Fail-On-Warnings Option}" object of the {@code 'org.apache.commons.cli.Option'} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Fail-On-Warnings Option'} object of the {@code 'org.apache.commons.cli.Option'} ({@code org.apache.commons.cli.Option}) specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code FailOnWarningsOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -591,7 +591,7 @@ public final class Jomc
 
     /**
      * Gets the {@code Locale} dependency.
-     * <p>This method returns the "{@code default}" object of the {@code 'java.util.Locale'} specification at specification level 1.1.</p>
+     * <p>This method returns the {@code 'default'} object of the {@code 'java.util.Locale'} ({@code java.util.Locale}) specification at specification level 1.1.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code Locale} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -606,7 +606,7 @@ public final class Jomc
 
     /**
      * Gets the {@code VerboseOption} dependency.
-     * <p>This method returns the "{@code JOMC CLI Verbose Option}" object of the {@code 'org.apache.commons.cli.Option'} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Verbose Option'} object of the {@code 'org.apache.commons.cli.Option'} ({@code org.apache.commons.cli.Option}) specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code VerboseOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
