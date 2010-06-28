@@ -54,9 +54,9 @@ ${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generat
 ${tool.getIndentation(1)}/**
 ${tool.getIndentation(1)} * Gets the {@code $dependency.getName()} dependency.
 #if($dependency.getImplementationName())
-${tool.getIndentation(1)} * <p>This method returns the "{@code $dependency.getImplementationName()}" object of the {@code '$dependency.getIdentifier()'} specification#if($dependency.getVersion()) at specification level $dependency.getVersion()#end.</p>
+${tool.getIndentation(1)} * <p>This method returns the {@code "$dependency.getImplementationName()"} object of the {@code '$dependency.getIdentifier()'}#if($specification && $specification.getClazz()) ({@code $specification.getClazz()})#end specification#if($dependency.getVersion()) at specification level $dependency.getVersion()#end.</p>
 #else
-${tool.getIndentation(1)} * <p>This method returns any available object of the {@code '$dependency.getIdentifier()'} specification#if($dependency.getVersion()) at specification level $dependency.getVersion()#end.</p>
+${tool.getIndentation(1)} * <p>This method returns any available object of the {@code '$dependency.getIdentifier()'}#if($specification && $specification.getClazz()) ({@code $specification.getClazz()})#end specification#if($dependency.getVersion()) at specification level $dependency.getVersion()#end.</p>
 #end
 #if($specification.getScope())
 ${tool.getIndentation(1)} * <p>That specification applies to {@code $specification.getScope()} scope. The $specification.getScope().toLowerCase() object is returned whenever requested#if($dependency.isBound()) and bound to this instance#end.</p>
