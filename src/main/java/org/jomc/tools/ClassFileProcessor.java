@@ -2034,14 +2034,12 @@ public class ClassFileProcessor extends JomcTool
             }
 
             InputStream in = null;
+            JavaClass javaClass = null;
 
             try
             {
                 in = classUrl.openStream();
-                final ModelValidationReport current = this.validateModelObjects(
-                    specification, unmarshaller, new ClassParser( in, classUrl.toExternalForm() ).parse() );
-
-                report.getDetails().addAll( current.getDetails() );
+                javaClass = new ClassParser( in, classUrl.toExternalForm() ).parse();
             }
             finally
             {
@@ -2050,6 +2048,9 @@ public class ClassFileProcessor extends JomcTool
                     in.close();
                 }
             }
+
+            final ModelValidationReport current = this.validateModelObjects( specification, unmarshaller, javaClass );
+            report.getDetails().addAll( current.getDetails() );
         }
 
         return report;
@@ -2078,14 +2079,12 @@ public class ClassFileProcessor extends JomcTool
             }
 
             InputStream in = null;
+            JavaClass javaClass = null;
 
             try
             {
                 in = classUrl.openStream();
-                final ModelValidationReport current = this.validateModelObjects(
-                    implementation, unmarshaller, new ClassParser( in, classUrl.toExternalForm() ).parse() );
-
-                report.getDetails().addAll( current.getDetails() );
+                javaClass = new ClassParser( in, classUrl.toExternalForm() ).parse();
             }
             finally
             {
@@ -2094,6 +2093,9 @@ public class ClassFileProcessor extends JomcTool
                     in.close();
                 }
             }
+
+            final ModelValidationReport current = this.validateModelObjects( implementation, unmarshaller, javaClass );
+            report.getDetails().addAll( current.getDetails() );
         }
 
         return report;
