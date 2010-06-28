@@ -314,26 +314,26 @@ public class JomcTest extends TestCase
         assertEquals( Command.STATUS_FAILURE, Jomc.run( illegalDoc ) );
     }
 
-    public void testValidateModules() throws Exception
+    public void testValidateModel() throws Exception
     {
         final String[] help = new String[]
         {
-            "validate-modules", "help"
+            "validate-model", "help"
         };
 
         final String[] args = new String[]
         {
-            "validate-modules", "-df", '"' + this.getTestModelDocument() + '"', "-D"
+            "validate-model", "-df", '"' + this.getTestModelDocument() + '"', "-D"
         };
 
         final String[] unsupportedOption = new String[]
         {
-            "validate-modules", "--unsupported-option"
+            "validate-model", "--unsupported-option"
         };
 
         final String[] illegalDoc = new String[]
         {
-            "validate-modules", "-df", '"' + this.getTestModelDocumentIllegal() + '"', "-D"
+            "validate-model", "-df", '"' + this.getTestModelDocumentIllegal() + '"', "-D"
         };
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );

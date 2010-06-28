@@ -2002,12 +2002,12 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="${project.name} validate-modules Command"
-                    class="org.jomc.cli.commands.ValidateModulesCommand" classDeclaration="true"
-                    name="default-validate-modules" version="${project.version}" vendor="${project.organization.name}">
+    <implementation identifier="${project.name} validate-model Command"
+                    class="org.jomc.cli.commands.ValidateModelCommand" classDeclaration="true"
+                    name="default-validate-model" version="${project.version}" vendor="${project.organization.name}">
 
       <documentation defaultLanguage="en">
-        <text language="en">Command line interface for validating modules.</text>
+        <text language="en">Command line interface for validating models.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -2018,7 +2018,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="${project.name} JOMC Tool Command" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="commandName" value="validate-modules" override="true">
+        <property name="commandName" value="validate-model" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
@@ -2032,20 +2032,20 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="shortDescriptionMessage" override="true">
           <template defaultLanguage="en">
-            <text language="en">Validates modules.</text>
-            <text language="de">Prüft Module.</text>
+            <text language="en">Validates a model.</text>
+            <text language="de">Prüft ein Modell.</text>
           </template>
         </message>
         <message name="longDescriptionMessage" override="true">
           <template defaultLanguage="en">
             <text language="en"><![CDATA[Example:
-  jomc validate-modules -cp examples/lib/commons-cli-1.2.jar \
-                        -df examples/xml/jomc-cli.xml \
-                        -v]]></text>
+  jomc validate-model -cp examples/lib/commons-cli-1.2.jar \
+                      -df examples/xml/jomc-cli.xml \
+                      -v]]></text>
             <text language="de"><![CDATA[Beispiel:
-  jomc validate-modules -cp examples/lib/commons-cli-1.2.jar \
-                        -df examples/xml/jomc-cli.xml \
-                        -v]]></text>
+  jomc validate-model -cp examples/lib/commons-cli-1.2.jar \
+                      -df examples/xml/jomc-cli.xml \
+                      -v]]></text>
           </template>
         </message>
       </messages>

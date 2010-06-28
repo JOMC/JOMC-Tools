@@ -196,7 +196,7 @@ import org.jomc.modlet.ModelValidationReport;
 @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
 // </editor-fold>
 // SECTION-END
-public final class ValidateModulesCommand extends AbstractJomcToolCommand
+public final class ValidateModelCommand extends AbstractJomcToolCommand
 {
     // SECTION-START[Command]
 
@@ -242,7 +242,7 @@ public final class ValidateModulesCommand extends AbstractJomcToolCommand
 
     /** Creates a new {@code ValidateModulesCommand} instance. */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0-beta-5-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.0-beta-5-SNAPSHOT/jomc-tools" )
-    public ValidateModulesCommand()
+    public ValidateModelCommand()
     {
         // SECTION-START[Default Constructor]
         super();
