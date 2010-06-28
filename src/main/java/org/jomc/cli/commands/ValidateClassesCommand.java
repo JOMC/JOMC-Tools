@@ -39,7 +39,6 @@ package org.jomc.cli.commands;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.Source;
 import org.apache.commons.cli.CommandLine;
@@ -246,7 +245,6 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
         final Model model = this.getModel( context, commandLine );
         final JAXBContext jaxbContext = context.createContext( model.getIdentifier() );
         final Marshaller marshaller = context.createMarshaller( model.getIdentifier() );
-        final Unmarshaller unmarshaller = context.createUnmarshaller( model.getIdentifier() );
         final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModel( model ) );
         final ModelValidationReport validationReport = context.validateModel( model.getIdentifier(), source );
         this.log( validationReport, marshaller );
