@@ -1360,7 +1360,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <dependencies>
-        <dependency name="Commands" identifier="${project.name} Command" version="${project.version}" bound="false"/>
+        <dependency name="Commands" identifier="${project.name} Command" version="1.0" bound="false"/>
         <dependency name="Locale" identifier="java.util.Locale" version="1.1" implementationName="default"/>
         <dependency name="DebugOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Debug Option"/>
