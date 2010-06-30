@@ -1392,7 +1392,7 @@ public class ClassFileProcessor extends JomcTool
      * @param specification The specification to process.
      * @param marshaller The marshaller to use for transforming model objects.
      * @param unmarshaller The unmarshaller to use for transforming model objects.
-     * @param javaClass The the class file to transform.
+     * @param javaClass The java class to transform.
      * @param transformers The transformers to use for transforming the model objects.
      *
      * @throws NullPointerException if {@code specification}, {@code marshaller}, {@code unmarshaller},
@@ -1482,7 +1482,7 @@ public class ClassFileProcessor extends JomcTool
      * @param implementation The implementation to process.
      * @param marshaller The marshaller to use for transforming model objects.
      * @param unmarshaller The unmarshaller to use for transforming model objects.
-     * @param javaClass The the class file to transform.
+     * @param javaClass The java class to transform.
      * @param transformers The transformers to use for transforming the model objects.
      *
      * @throws NullPointerException if {@code implementation}, {@code marshaller}, {@code unmarshaller},
