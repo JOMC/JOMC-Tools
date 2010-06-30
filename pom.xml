@@ -430,16 +430,10 @@
             <artifactId>maven-scm-plugin</artifactId>
             <executions>
               <execution>
-                <id>update-workdir</id>
-                <phase>validate</phase>
-                <goals>
-                  <goal>update</goal>
-                </goals>
-              </execution>
-              <execution>
                 <id>main-sources</id>
                 <phase>process-resources</phase>
                 <goals>
+                  <goal>update</goal>
                   <goal>checkin</goal>
                 </goals>
               </execution>
@@ -447,6 +441,7 @@
                 <id>test-sources</id>
                 <phase>process-test-resources</phase>
                 <goals>
+                  <goal>update</goal>
                   <goal>checkin</goal>
                 </goals>
               </execution>
