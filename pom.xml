@@ -430,6 +430,13 @@
             <artifactId>maven-scm-plugin</artifactId>
             <executions>
               <execution>
+                <id>initialize</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>update</goal>
+                </goals>
+              </execution>
+              <execution>
                 <id>main-sources</id>
                 <phase>process-resources</phase>
                 <goals>
