@@ -246,7 +246,7 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
         final JAXBContext jaxbContext = context.createContext( model.getIdentifier() );
         final Marshaller marshaller = context.createMarshaller( model.getIdentifier() );
         final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModel( model ) );
-        final ModelValidationReport validationReport = context.validateModel( model.getIdentifier(), source );
+        ModelValidationReport validationReport = context.validateModel( model.getIdentifier(), source );
         this.log( validationReport, marshaller );
 
         if ( validationReport.isModelValid() )
@@ -261,7 +261,9 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
 
                 if ( module != null )
                 {
-                    tool.validateModelObjects( module, context );
+                    validationReport = tool.validateModelObjects( module, context );
+                    this.log( validationReport, marshaller );
+                    return validationReport.isModelValid() ? STATUS_SUCCESS : STATUS_FAILURE;
                 }
                 else if ( this.isLoggable( Level.WARNING ) )
                 {
@@ -270,7 +272,9 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
             }
             else
             {
-                tool.validateModelObjects( context );
+                validationReport = tool.validateModelObjects( context );
+                this.log( validationReport, marshaller );
+                return validationReport.isModelValid() ? STATUS_SUCCESS : STATUS_FAILURE;
             }
 
             return STATUS_SUCCESS;
