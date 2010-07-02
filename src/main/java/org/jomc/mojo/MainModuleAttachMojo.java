@@ -40,7 +40,7 @@ import java.io.File;
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  *
- * @phase process-resources
+ * @phase package
  * @goal attach-main-module
  */
 public final class MainModuleAttachMojo extends AbstractAttachMojo
