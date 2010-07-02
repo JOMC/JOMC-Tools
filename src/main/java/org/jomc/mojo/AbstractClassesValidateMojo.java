@@ -67,27 +67,33 @@ public abstract class AbstractClassesValidateMojo extends AbstractJomcMojo
             final ClassFileProcessor tool = this.createClassFileProcessor( context );
             final JAXBContext jaxbContext = context.createContext( this.getModel() );
             final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModel( tool.getModel() ) );
-            final ModelValidationReport validationReport = context.validateModel( this.getModel(), source );
+            ModelValidationReport validationReport = context.validateModel( this.getModel(), source );
 
             this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 
             if ( validationReport.isModelValid() )
             {
-                this.logSeparator( Level.INFO );
                 final Module module = tool.getModules().getModule( this.getClassesModuleName() );
 
                 if ( module != null )
                 {
+                    this.logSeparator( Level.INFO );
                     this.logProcessingModule( TOOLNAME, module.getName() );
-                    tool.validateModelObjects( module, context, this.getClassesDirectory() );
+                    validationReport = tool.validateModelObjects( module, context, this.getClassesDirectory() );
+                    this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
+
+                    if ( !validationReport.isModelValid() )
+                    {
+                        throw new MojoExecutionException( getMessage( "failed" ) );
+                    }
+
                     this.logToolSuccess( TOOLNAME );
+                    this.logSeparator( Level.INFO );
                 }
                 else
                 {
                     this.logMissingModule( this.getClassesModuleName() );
                 }
-
-                this.logSeparator( Level.INFO );
             }
             else
             {
