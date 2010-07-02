@@ -205,14 +205,14 @@
             <configuration>
               <artifactItems>
                 <artifactItem>
-                  <groupId>org.jomc</groupId>
+                  <groupId>${project.groupId}</groupId>
                   <artifactId>jomc-tools</artifactId>
                   <version>${project.version}</version>
                   <type>jar</type>
                   <outputDirectory>${project.build.directory}/jomc-tools</outputDirectory>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.jomc</groupId>
+                  <groupId>${project.groupId}</groupId>
                   <artifactId>jomc-tools</artifactId>
                   <classifier>schemas</classifier>
                   <version>${project.version}</version>
@@ -220,7 +220,7 @@
                   <outputDirectory>${project.build.directory}/jomc-schemas</outputDirectory>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.jomc</groupId>
+                  <groupId>${project.groupId}</groupId>
                   <artifactId>jomc-modlet</artifactId>
                   <classifier>schemas</classifier>
                   <version>${project.version}</version>
@@ -228,7 +228,7 @@
                   <outputDirectory>${project.build.directory}/jomc-schemas</outputDirectory>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.jomc</groupId>
+                  <groupId>${project.groupId}</groupId>
                   <artifactId>jomc-model</artifactId>
                   <classifier>schemas</classifier>
                   <version>${project.version}</version>
@@ -477,7 +477,7 @@
                 <configuration>
                   <artifactItems>
                     <artifactItem>
-                      <groupId>org.jomc</groupId>
+                      <groupId>${project.groupId}</groupId>
                       <artifactId>jomc-api</artifactId>
                       <version>${project.version}</version>
                       <type>jar</type>
@@ -485,7 +485,7 @@
                       <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                     </artifactItem>
                     <artifactItem>
-                      <groupId>org.jomc</groupId>
+                      <groupId>${project.groupId}</groupId>
                       <artifactId>jomc-spi</artifactId>
                       <version>${project.version}</version>
                       <type>jar</type>
@@ -493,7 +493,7 @@
                       <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                     </artifactItem>
                     <artifactItem>
-                      <groupId>org.jomc</groupId>
+                      <groupId>${project.groupId}</groupId>
                       <artifactId>jomc-util</artifactId>
                       <version>${project.version}</version>
                       <type>jar</type>
@@ -501,7 +501,7 @@
                       <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                     </artifactItem>
                     <artifactItem>
-                      <groupId>org.jomc</groupId>
+                      <groupId>${project.groupId}</groupId>
                       <artifactId>jomc-modlet</artifactId>
                       <version>${project.version}</version>
                       <type>jar</type>
@@ -509,7 +509,7 @@
                       <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                     </artifactItem>
                     <artifactItem>
-                      <groupId>org.jomc</groupId>
+                      <groupId>${project.groupId}</groupId>
                       <artifactId>jomc-model</artifactId>
                       <version>${project.version}</version>
                       <type>jar</type>
@@ -517,7 +517,7 @@
                       <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                     </artifactItem>
                     <artifactItem>
-                      <groupId>org.jomc</groupId>
+                      <groupId>${project.groupId}</groupId>
                       <artifactId>jomc-ri</artifactId>
                       <version>${project.version}</version>
                       <type>jar</type>
@@ -525,7 +525,7 @@
                       <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                     </artifactItem>
                     <artifactItem>
-                      <groupId>org.jomc</groupId>
+                      <groupId>${project.groupId}</groupId>
                       <artifactId>jomc-tools</artifactId>
                       <version>${project.version}</version>
                       <type>jar</type>
@@ -551,7 +551,7 @@
               <execution>
                 <id>attach-sources</id>
                 <goals>
-                  <goal>jar</goal>
+                  <goal>jar-no-fork</goal>
                 </goals>
               </execution>
             </executions>
@@ -567,6 +567,10 @@
                 </goals>
               </execution>
             </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
