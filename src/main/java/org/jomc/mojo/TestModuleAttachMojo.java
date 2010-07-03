@@ -71,9 +71,9 @@ public final class TestModuleAttachMojo extends AbstractAttachMojo
     /**
      * Number of milliseconds the attached module artifact is cached.
      *
-     * @parameter default-value="500000"
+     * @parameter default-value="600000"
      */
-    private long testModuleTimeoutMillis = 500000;
+    private long testModuleTimeoutMillis = 600000;
 
     protected File getArtifactFile()
     {
