@@ -33,8 +33,11 @@
 package org.jomc.mojo;
 
 import java.io.File;
+import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -63,6 +66,7 @@ public abstract class AbstractAttachMojo extends AbstractMojo
      * Maven ProjectHelper.
      *
      * @component
+     * @required
      * @readonly
      */
     private MavenProjectHelper projectHelper;
@@ -73,17 +77,53 @@ public abstract class AbstractAttachMojo extends AbstractMojo
 
     protected abstract String getArtifactType();
 
+    protected abstract long getArtifactTimeoutMillis();
+
     public void execute() throws MojoExecutionException, MojoFailureException
     {
-        if ( this.getArtifactFile().exists() )
+        File outputDirectory = new File( this.mavenProject.getBuild().getDirectory() );
+        if ( !outputDirectory.isAbsolute() )
         {
-            this.projectHelper.attachArtifact( this.mavenProject, this.getArtifactType(), this.getArtifactClassifier(),
-                                               this.getArtifactFile() );
-
+            outputDirectory = new File( this.mavenProject.getBasedir(), this.mavenProject.getBuild().getDirectory() );
         }
-        else if ( this.getLog().isWarnEnabled() )
+
+        final File attachment = new File( outputDirectory, this.getArtifactClassifier() + "-"
+                                                           + ManagementFactory.getRuntimeMXBean().getStartTime() + "."
+                                                           + this.getArtifactType() );
+
+        try
         {
-            this.getLog().warn( getMessage( "artifactFileNotFound", this.getArtifactFile().getAbsolutePath() ) );
+            if ( this.getArtifactFile().exists() )
+            {
+                if ( !attachment.exists()
+                     || attachment.lastModified() + this.getArtifactTimeoutMillis() < System.currentTimeMillis() )
+                {
+                    if ( attachment.exists() && !attachment.delete() )
+                    {
+                        this.getLog().warn( getMessage( "failedDeletingFile", attachment.getAbsolutePath() ) );
+                    }
+
+                    FileUtils.copyFile( this.getArtifactFile(), attachment, false );
+                    this.projectHelper.attachArtifact( this.mavenProject, this.getArtifactType(),
+                                                       this.getArtifactClassifier(), attachment );
+
+                }
+                else if ( this.getLog().isInfoEnabled() )
+                {
+                    this.getLog().info( getMessage( "alreadyAttached", getArtifactFile().getAbsolutePath() ) );
+                }
+            }
+            else if ( this.getLog().isWarnEnabled() )
+            {
+                this.getLog().warn( getMessage( "artifactFileNotFound", this.getArtifactFile().getAbsolutePath() ) );
+            }
+        }
+        catch ( final IOException e )
+        {
+            throw new MojoExecutionException( getMessage( "failedCopying", this.getArtifactFile().getAbsolutePath(),
+                                                          attachment.getAbsolutePath(),
+                                                          e.getMessage() != null ? e.getMessage() : "" ), e );
+
         }
     }
 

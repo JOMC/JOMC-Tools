@@ -40,7 +40,7 @@ import java.io.File;
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  *
- * @phase package
+ * @phase process-test-resources
  * @goal attach-test-module
  */
 public final class TestModuleAttachMojo extends AbstractAttachMojo
@@ -68,6 +68,13 @@ public final class TestModuleAttachMojo extends AbstractAttachMojo
      */
     private String testModuleArtifactType;
 
+    /**
+     * Number of milliseconds the attached module artifact is cached.
+     *
+     * @parameter default-value="500000"
+     */
+    private long testModuleTimeoutMillis = 500000;
+
     protected File getArtifactFile()
     {
         return this.testModuleArtifactFile;
@@ -81,6 +88,11 @@ public final class TestModuleAttachMojo extends AbstractAttachMojo
     protected String getArtifactType()
     {
         return this.testModuleArtifactType;
+    }
+
+    protected long getArtifactTimeoutMillis()
+    {
+        return this.testModuleTimeoutMillis;
     }
 
 }

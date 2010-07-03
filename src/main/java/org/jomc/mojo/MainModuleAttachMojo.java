@@ -40,7 +40,7 @@ import java.io.File;
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  *
- * @phase package
+ * @phase process-resources
  * @goal attach-main-module
  */
 public final class MainModuleAttachMojo extends AbstractAttachMojo
@@ -68,6 +68,13 @@ public final class MainModuleAttachMojo extends AbstractAttachMojo
      */
     private String mainModuleArtifactType;
 
+    /**
+     * Number of milliseconds the attached module artifact is cached.
+     *
+     * @parameter default-value="1000000"
+     */
+    private long mainModuleTimeoutMillis = 1000000;
+
     protected File getArtifactFile()
     {
         return this.mainModuleArtifactFile;
@@ -81,6 +88,11 @@ public final class MainModuleAttachMojo extends AbstractAttachMojo
     protected String getArtifactType()
     {
         return this.mainModuleArtifactType;
+    }
+
+    protected long getArtifactTimeoutMillis()
+    {
+        return this.mainModuleTimeoutMillis;
     }
 
 }
