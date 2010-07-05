@@ -408,14 +408,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
                 }
 
-                if ( !flagFile.exists() )
-                {
-                    flagFile.createNewFile();
-                }
-                else
-                {
-                    permitted = false;
-                }
+                permitted = flagFile.createNewFile();
             }
 
             return permitted;
