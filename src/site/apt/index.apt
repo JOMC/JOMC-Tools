@@ -62,6 +62,10 @@ Maven JOMC Plugin
 
   * {{{./validate-test-classes-mojo.html}jomc:validate-test-classes}} Validates a projects' test class file model objects.
 
+  * {{{./validate-main-classpath-mojo.html}jomc:validate-main-classpath}} Validates a projects' main classpath class file model objects.
+
+  * {{{./validate-test-classpath-mojo.html}jomc:validate-test-classpath}} Validates a projects' test classpath class file model objects.
+
   * {{{./validate-main-model-mojo.html}jomc:validate-main-model}} Validates a project's main model.
 
   * {{{./validate-test-model-mojo.html}jomc:validate-test-model}} Validates a project's test model.
@@ -94,6 +98,8 @@ Maven JOMC Plugin
   examples:
 
   * {{{./examples/validate-models.html}Validating project models using the JOMC Plugin.}}
+
+  * {{{./examples/validate-classpaths.html}Validating project classpaths using the JOMC Plugin.}}
 
   * {{{./examples/release-project.html}Performing a release of a project using the JOMC Plugin.}}
 

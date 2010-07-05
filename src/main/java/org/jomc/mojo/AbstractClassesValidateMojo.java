@@ -58,6 +58,12 @@ public abstract class AbstractClassesValidateMojo extends AbstractJomcMojo
     /** Constant for the name of the tool backing the mojo. */
     private static final String TOOLNAME = "ClassFileProcessor";
 
+    /** Creates a new {@code AbstractClassesValidateMojo} instance. */
+    public AbstractClassesValidateMojo()
+    {
+        super();
+    }
+
     @Override
     protected final void executeTool() throws Exception
     {

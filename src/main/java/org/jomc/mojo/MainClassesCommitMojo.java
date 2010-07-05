@@ -49,6 +49,14 @@ import org.apache.maven.plugin.MojoExecutionException;
 public final class MainClassesCommitMojo extends AbstractClassesCommitMojo
 {
 
+    /**
+     * Execution strategy of the goal ({@code always} or {@code once-per-session}).
+     *
+     * @parameter default-value="once-per-session" expression="${jomc.commitMainClassesExecutionStrategy}"
+     * @since 1.1
+     */
+    private String commitMainClassesExecutionStrategy;
+
     /** Creates a new {@code MainClassesCommitMojo} instance. */
     public MainClassesCommitMojo()
     {
@@ -80,6 +88,18 @@ public final class MainClassesCommitMojo extends AbstractClassesCommitMojo
         }
 
         return classesDirectory;
+    }
+
+    @Override
+    protected String getGoal()
+    {
+        return "commit-main-classes";
+    }
+
+    @Override
+    protected String getExecutionStrategy()
+    {
+        return this.commitMainClassesExecutionStrategy;
     }
 
 }

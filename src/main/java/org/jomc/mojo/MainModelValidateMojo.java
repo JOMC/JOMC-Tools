@@ -55,7 +55,15 @@ public final class MainModelValidateMojo extends AbstractJomcMojo
     /** Constant for the name of the tool backing the mojo. */
     private static final String TOOLNAME = "ModelValidator";
 
-    /** Creates a new {@code ValidateMainModulesMojo} instance. */
+    /**
+     * Execution strategy of the goal ({@code always} or {@code once-per-session}).
+     *
+     * @parameter default-value="once-per-session" expression="${jomc.validateMainModelExecutionStrategy}"
+     * @since 1.1
+     */
+    private String validateMainModelExecutionStrategy;
+
+    /** Creates a new {@code MainModelValidateMojo} instance. */
     public MainModelValidateMojo()
     {
         super();
@@ -82,6 +90,18 @@ public final class MainModelValidateMojo extends AbstractJomcMojo
     private static String getMessage( final String key )
     {
         return ResourceBundle.getBundle( MainModelValidateMojo.class.getName().replace( '.', '/' ) ).getString( key );
+    }
+
+    @Override
+    protected String getGoal() throws MojoExecutionException
+    {
+        return "validate-main-model";
+    }
+
+    @Override
+    protected String getExecutionStrategy() throws MojoExecutionException
+    {
+        return this.validateMainModelExecutionStrategy;
     }
 
 }

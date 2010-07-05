@@ -49,6 +49,14 @@ import org.apache.maven.plugin.MojoExecutionException;
 public final class TestClassesValidateMojo extends AbstractClassesValidateMojo
 {
 
+    /**
+     * Execution strategy of the goal ({@code always} or {@code once-per-session}).
+     *
+     * @parameter default-value="once-per-session" expression="${jomc.validateTestClassesExecutionStrategy}"
+     * @since 1.1
+     */
+    private String validateTestClassesExecutionStrategy;
+
     /** Creates a new {@code TestClassesValidateMojo} instance. */
     public TestClassesValidateMojo()
     {
@@ -79,6 +87,18 @@ public final class TestClassesValidateMojo extends AbstractClassesValidateMojo
         }
 
         return classesDirectory;
+    }
+
+    @Override
+    protected String getGoal() throws MojoExecutionException
+    {
+        return "validate-test-classes";
+    }
+
+    @Override
+    protected String getExecutionStrategy() throws MojoExecutionException
+    {
+        return this.validateTestClassesExecutionStrategy;
     }
 
 }

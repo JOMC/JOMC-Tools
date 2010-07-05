@@ -32,76 +32,76 @@
  */
 package org.jomc.mojo;
 
+import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.util.JAXBSource;
+import javax.xml.transform.Source;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelValidationReport;
+import org.jomc.modlet.ObjectFactory;
+import org.jomc.tools.ClassFileProcessor;
 
 /**
- * Validates a project's test model.
+ * Base class for validating classpath class file model objects.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
- *
- * @phase process-test-classes
- * @goal validate-test-model
- * @threadSafe
- * @requiresDependencyResolution test
+ * @since 1.1
  */
-public final class TestModelValidateMojo extends AbstractJomcMojo
+public abstract class AbstractClasspathValidateMojo extends AbstractJomcMojo
 {
 
     /** Constant for the name of the tool backing the mojo. */
-    private static final String TOOLNAME = "ModelValidator";
+    private static final String TOOLNAME = "ClassFileProcessor";
 
-    /**
-     * Execution strategy of the goal ({@code always} or {@code once-per-session}).
-     *
-     * @parameter default-value="once-per-session" expression="${jomc.validateTestModelExecutionStrategy}"
-     * @since 1.1
-     */
-    private String validateTestModelExecutionStrategy;
-
-    /** Creates a new {@code TestModelValidateMojo} instance. */
-    public TestModelValidateMojo()
+    /** Creates a new {@code AbstractClasspathValidateMojo} instance. */
+    public AbstractClasspathValidateMojo()
     {
         super();
     }
 
     @Override
-    protected void executeTool() throws Exception
+    protected final void executeTool() throws Exception
     {
-        final ModelContext context = this.createModelContext( this.getTestClassLoader() );
-        final ModelValidationReport validationReport = context.validateModel( this.getModel( context ) );
+        final ModelContext context = this.createModelContext( this.getClasspathClassLoader() );
+        final ClassFileProcessor tool = this.createClassFileProcessor( context );
+        final JAXBContext jaxbContext = context.createContext( this.getModel() );
+        final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModel( tool.getModel() ) );
+        ModelValidationReport validationReport = context.validateModel( this.getModel(), source );
 
         this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 
-        if ( !validationReport.isModelValid() )
+        if ( validationReport.isModelValid() )
+        {
+            this.logSeparator( Level.INFO );
+            this.log( Level.INFO, getMessage( "processingClasspath", TOOLNAME ), null );
+            validationReport = tool.validateModelObjects( context );
+            this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
+
+            if ( !validationReport.isModelValid() )
+            {
+                throw new MojoExecutionException( getMessage( "failed" ) );
+            }
+
+            this.logToolSuccess( TOOLNAME );
+            this.logSeparator( Level.INFO );
+        }
+        else
         {
             throw new MojoExecutionException( getMessage( "failed" ) );
         }
-
-        this.logSeparator( Level.INFO );
-        this.logToolSuccess( TOOLNAME );
-        this.logSeparator( Level.INFO );
     }
 
-    private static String getMessage( final String key )
-    {
-        return ResourceBundle.getBundle( TestModelValidateMojo.class.getName().replace( '.', '/' ) ).getString( key );
-    }
+    protected abstract ClassLoader getClasspathClassLoader() throws MojoExecutionException;
 
-    @Override
-    protected String getGoal() throws MojoExecutionException
+    private static String getMessage( final String key, final Object... args )
     {
-        return "validate-test-model";
-    }
+        return MessageFormat.format( ResourceBundle.getBundle(
+            AbstractClasspathValidateMojo.class.getName().replace( '.', '/' ) ).getString( key ), args );
 
-    @Override
-    protected String getExecutionStrategy() throws MojoExecutionException
-    {
-        return this.validateTestModelExecutionStrategy;
     }
 
 }

@@ -75,6 +75,21 @@ public final class TestInstanceDumpMojo extends AbstractJomcMojo
      */
     private String identifier;
 
+    /**
+     * Execution strategy of the goal ({@code always} or {@code once-per-session}).
+     *
+     * @parameter default-value="once-per-session" expression="${jomc.dumpTestInstanceExecutionStrategy}"
+     * @since 1.1
+     */
+    private String dumpTestInstanceExecutionStrategy;
+
+    /** Creates a new {@code TestInstanceDumpMojo} instance. */
+    public TestInstanceDumpMojo()
+    {
+        super();
+    }
+
+    @Override
     protected void executeTool() throws Exception
     {
         if ( this.identifier == null )
@@ -131,6 +146,18 @@ public final class TestInstanceDumpMojo extends AbstractJomcMojo
         return MessageFormat.format( ResourceBundle.getBundle(
             TestInstanceDumpMojo.class.getName().replace( '.', '/' ) ).getString( key ), args );
 
+    }
+
+    @Override
+    protected String getGoal() throws MojoExecutionException
+    {
+        return "dump-test-instance";
+    }
+
+    @Override
+    protected String getExecutionStrategy() throws MojoExecutionException
+    {
+        return this.dumpTestInstanceExecutionStrategy;
     }
 
 }

@@ -78,6 +78,7 @@ piwikTracker.enableLinkTracking();
     </menu>
     <menu name="Examples">
       <item name="Validating models" href="examples/validate-models.html"/>
+      <item name="Validating classpaths" href="examples/validate-classpaths.html"/>
       <item name="Performing a release" href="examples/release-project.html"/>
       <item name="Shading artifacts" href="examples/shade-artifacts.html"/>
       <item name="Customizing code generation" href="examples/customize-templates.html"/>

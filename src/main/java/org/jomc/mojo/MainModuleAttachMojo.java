@@ -69,30 +69,41 @@ public final class MainModuleAttachMojo extends AbstractAttachMojo
     private String mainModuleArtifactType;
 
     /**
-     * Number of milliseconds the attached module artifact is cached.
+     * Execution strategy of the goal ({@code always} or {@code once-per-session}).
      *
-     * @parameter default-value="600000"
+     * @parameter default-value="once-per-session" expression="${jomc.attachMainModuleExecutionStrategy}"
+     * @since 1.1
      */
-    private long mainModuleTimeoutMillis = 600000;
+    private String attachMainModuleExecutionStrategy;
 
+    /** Creates a new {@code MainModuleAttachMojo} instance. */
+    public MainModuleAttachMojo()
+    {
+        super();
+    }
+
+    @Override
     protected File getArtifactFile()
     {
         return this.mainModuleArtifactFile;
     }
 
+    @Override
     protected String getArtifactClassifier()
     {
         return this.mainModuleArtifactClassifier;
     }
 
+    @Override
     protected String getArtifactType()
     {
         return this.mainModuleArtifactType;
     }
 
-    protected long getArtifactTimeoutMillis()
+    @Override
+    protected String getExecutionStrategy()
     {
-        return this.mainModuleTimeoutMillis;
+        return this.attachMainModuleExecutionStrategy;
     }
 
 }

@@ -57,6 +57,12 @@ public abstract class AbstractSourcesMojo extends AbstractJomcMojo
     /** Constant for the name of the tool backing the class. */
     private static final String TOOLNAME = "SourceFileProcessor";
 
+    /** Creates a new {@code AbstractSourcesMojo} instance. */
+    public AbstractSourcesMojo()
+    {
+        super();
+    }
+
     @Override
     protected final void executeTool() throws Exception
     {

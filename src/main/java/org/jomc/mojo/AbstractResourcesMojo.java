@@ -65,6 +65,12 @@ public abstract class AbstractResourcesMojo extends AbstractJomcMojo
      */
     private String resourceBundleDefaultLanguage;
 
+    /** Creates a new {@code AbstractResourcesMojo} instance. */
+    public AbstractResourcesMojo()
+    {
+        super();
+    }
+
     @Override
     protected final void executeTool() throws Exception
     {

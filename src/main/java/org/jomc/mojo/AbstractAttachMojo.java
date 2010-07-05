@@ -34,13 +34,14 @@ package org.jomc.mojo;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.management.ManagementFactory;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import org.apache.commons.io.FileUtils;
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.descriptor.MojoDescriptor;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
 
@@ -71,46 +72,86 @@ public abstract class AbstractAttachMojo extends AbstractMojo
      */
     private MavenProjectHelper projectHelper;
 
+    /**
+     * The Maven session of the instance.
+     *
+     * @parameter expression="${session}"
+     * @required
+     * @readonly
+     * @since 1.1
+     */
+    private MavenSession mavenSession;
+
+    /**
+     * Directory holding session related files.
+     *
+     * @parameter default-value="${project.build.directory}/jomc-sessions" expression="${jomc.sessionDirectory}"
+     * @since 1.1
+     */
+    private File sessionDirectory;
+
+    /** Creates a new {@code AbstractAttachMojo} instance. */
+    public AbstractAttachMojo()
+    {
+        super();
+    }
+
+    /**
+     * Gets the file of the artifact to attach.
+     *
+     * @return The file of the artifact to attach.
+     */
     protected abstract File getArtifactFile();
 
+    /**
+     * Gets the classifier of the artifact to attach.
+     *
+     * @return The classifier of the artifact to attach.
+     */
     protected abstract String getArtifactClassifier();
 
+    /**
+     * Gets the type of the artifact to attach.
+     *
+     * @return The type of the artifact to attach.
+     */
     protected abstract String getArtifactType();
 
-    protected abstract long getArtifactTimeoutMillis();
+    /**
+     * Gets the execution strategy of the instance.
+     *
+     * @return The execution strategy of the instance.
+     *
+     * @since 1.1
+     */
+    protected abstract String getExecutionStrategy();
 
     public void execute() throws MojoExecutionException, MojoFailureException
     {
-        File outputDirectory = new File( this.mavenProject.getBuild().getDirectory() );
-        if ( !outputDirectory.isAbsolute() )
-        {
-            outputDirectory = new File( this.mavenProject.getBasedir(), this.mavenProject.getBuild().getDirectory() );
-        }
-
-        final File attachment = new File( outputDirectory, this.getArtifactClassifier() + "-"
-                                                           + ManagementFactory.getRuntimeMXBean().getStartTime() + "."
-                                                           + this.getArtifactType() );
+        final File attachment = new File( this.sessionDirectory, this.getArtifactClassifier() + "-"
+                                                                 + this.mavenSession.getStartTime().getTime() + "."
+                                                                 + this.getArtifactType() );
 
         try
         {
             if ( this.getArtifactFile().exists() )
             {
-                if ( !attachment.exists()
-                     || attachment.lastModified() + this.getArtifactTimeoutMillis() < System.currentTimeMillis() )
+                if ( MojoDescriptor.MULTI_PASS_EXEC_STRATEGY.equals( this.getExecutionStrategy() )
+                     || !attachment.exists() )
                 {
                     if ( attachment.exists() && !attachment.delete() )
                     {
                         this.getLog().warn( getMessage( "failedDeletingFile", attachment.getAbsolutePath() ) );
                     }
 
-                    FileUtils.copyFile( this.getArtifactFile(), attachment, false );
+                    FileUtils.copyFile( this.getArtifactFile(), attachment );
                     this.projectHelper.attachArtifact( this.mavenProject, this.getArtifactType(),
                                                        this.getArtifactClassifier(), attachment );
 
                 }
                 else if ( this.getLog().isInfoEnabled() )
                 {
-                    this.getLog().info( getMessage( "alreadyAttached", getArtifactFile().getAbsolutePath() ) );
+                    this.getLog().info( getMessage( "executionSuppressed" ) );
                 }
             }
             else if ( this.getLog().isWarnEnabled() )

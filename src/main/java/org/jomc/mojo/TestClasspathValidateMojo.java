@@ -32,74 +32,52 @@
  */
 package org.jomc.mojo;
 
-import java.io.File;
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
- * Commits model objects to a projects' test classes.
+ * Validates a projects' test classpath class file model objects.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  *
- * @phase process-test-classes
- * @goal commit-test-classes
+ * @phase verify
+ * @goal validate-test-classpath
  * @threadSafe
  * @requiresDependencyResolution test
+ * @since 1.1
  */
-public final class TestClassesCommitMojo extends AbstractClassesCommitMojo
+public final class TestClasspathValidateMojo extends AbstractClasspathValidateMojo
 {
 
     /**
      * Execution strategy of the goal ({@code always} or {@code once-per-session}).
      *
-     * @parameter default-value="once-per-session" expression="${jomc.commitTestClassesExecutionStrategy}"
-     * @since 1.1
+     * @parameter default-value="once-per-session" expression="${jomc.validateTestClasspathExecutionStrategy}"
      */
-    private String commitTestClassesExecutionStrategy;
+    private String validateTestClasspathExecutionStrategy;
 
-    /** Creates a new {@code TestClassesCommitMojo} instance. */
-    public TestClassesCommitMojo()
+    /** Creates a new {@code TestClasspathValidateMojo} instance. */
+    public TestClasspathValidateMojo()
     {
         super();
     }
 
     @Override
-    protected String getClassesModuleName() throws MojoExecutionException
-    {
-        return this.getTestModuleName();
-    }
-
-    @Override
-    protected ClassLoader getClassesClassLoader() throws MojoExecutionException
+    protected ClassLoader getClasspathClassLoader() throws MojoExecutionException
     {
         return this.getTestClassLoader();
     }
 
     @Override
-    protected File getClassesDirectory() throws MojoExecutionException
-    {
-        File classesDirectory = new File( this.getMavenProject().getBuild().getTestOutputDirectory() );
-
-        if ( !classesDirectory.isAbsolute() )
-        {
-            classesDirectory = new File( this.getMavenProject().getBasedir(),
-                                         this.getMavenProject().getBuild().getTestOutputDirectory() );
-
-        }
-
-        return classesDirectory;
-    }
-
-    @Override
     protected String getGoal() throws MojoExecutionException
     {
-        return "commit-test-classes";
+        return "validate-test-classpath";
     }
 
     @Override
     protected String getExecutionStrategy() throws MojoExecutionException
     {
-        return this.commitTestClassesExecutionStrategy;
+        return this.validateTestClasspathExecutionStrategy;
     }
 
 }

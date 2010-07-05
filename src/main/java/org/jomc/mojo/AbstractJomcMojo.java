@@ -52,9 +52,11 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.descriptor.MojoDescriptor;
 import org.apache.maven.project.MavenProject;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
@@ -224,19 +226,28 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Directory holding compiled class files of the project.
      *
-     * @parameter default-value="${project.build.outputDirectory}"
+     * @parameter default-value="${project.build.outputDirectory}" expression="${jomc.classesDirectory}"
      */
     private String classesDirectory;
 
     /**
      * Directory holding compiled test class files of the project.
      *
-     * @parameter default-value="${project.build.testOutputDirectory}"
+     * @parameter default-value="${project.build.testOutputDirectory}" expression="${jomc.testClassesDirectory}"
      */
     private String testClassesDirectory;
 
     /**
+     * Directory holding session related files.
+     *
+     * @parameter default-value="${project.build.directory}/jomc-sessions" expression="${jomc.sessionDirectory}"
+     * @since 1.1
+     */
+    private File sessionDirectory;
+
+    /**
      * The Maven project of the instance.
+     *
      * @parameter expression="${project}"
      * @required
      * @readonly
@@ -252,6 +263,22 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     private List pluginArtifacts;
 
+    /**
+     * The Maven session of the instance.
+     *
+     * @parameter expression="${session}"
+     * @required
+     * @readonly
+     * @since 1.1
+     */
+    private MavenSession mavenSession;
+
+    /** Creates a new {@code AbstractJomcMojo} instance. */
+    public AbstractJomcMojo()
+    {
+        super();
+    }
+
     public void execute() throws MojoExecutionException, MojoFailureException
     {
         try
@@ -263,10 +290,17 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             DefaultModelProcessor.setDefaultTransformerLocation( this.transformerLocation );
             JomcTool.setDefaultTemplateProfile( this.defaultTemplateProfile );
 
-            this.logSeparator( Level.INFO );
-            this.log( Level.INFO, getMessage( "title" ), null );
-            this.logSeparator( Level.INFO );
-            this.executeTool();
+            if ( this.isExecutionPermitted() )
+            {
+                this.logSeparator( Level.INFO );
+                this.log( Level.INFO, getMessage( "title" ), null );
+                this.logSeparator( Level.INFO );
+                this.executeTool();
+            }
+            else
+            {
+                this.getLog().info( getMessage( "executionSuppressed" ) );
+            }
         }
         catch ( final Exception e )
         {
@@ -291,15 +325,97 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     protected abstract void executeTool() throws Exception;
 
     /**
+     * Gets the goal of the instance.
+     *
+     * @return The goal of the instance.
+     *
+     * @throws MojoExecutionException if getting the goal of the instance fails.
+     * @since 1.1
+     */
+    protected abstract String getGoal() throws MojoExecutionException;
+
+    /**
+     * Gets the execution strategy of the instance.
+     *
+     * @return The execution strategy of the instance.
+     *
+     * @throws MojoExecutionException if getting the execution strategy of the instance fails.
+     * @since 1.1
+     */
+    protected abstract String getExecutionStrategy() throws MojoExecutionException;
+
+    /**
+     * Gets a flag indicating the current execution is permitted.
+     *
+     * @return {@code true} if the current execution is permitted; {@code false} if the current execution is suppressed.
+     *
+     * @throws MojoExecutionException if getting the flag fails.
+     *
+     * @since 1.1
+     * @see #getGoal()
+     * @see #getExecutionStrategy()
+     */
+    protected boolean isExecutionPermitted() throws MojoExecutionException
+    {
+        try
+        {
+            boolean permitted = true;
+
+            if ( MojoDescriptor.SINGLE_PASS_EXEC_STRATEGY.equals( this.getExecutionStrategy() ) )
+            {
+                final File flagFile =
+                    new File( this.sessionDirectory, this.getGoal() + "-"
+                                                     + this.getMavenSession().getStartTime().getTime() + ".flag" );
+
+                if ( !this.sessionDirectory.exists() && !this.sessionDirectory.mkdirs() )
+                {
+                    throw new MojoExecutionException( getMessage( "failedCreatingDirectory",
+                                                                  this.sessionDirectory.getAbsolutePath() ) );
+
+                }
+
+                if ( !flagFile.exists() )
+                {
+                    flagFile.createNewFile();
+                }
+                else
+                {
+                    permitted = false;
+                }
+            }
+
+            return permitted;
+        }
+        catch ( final IOException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
+    }
+
+    /**
      * Gets the Maven project of the instance.
      *
      * @return The Maven project of the instance.
      *
-     * @throws MojoExecutionException if getting the maven project of the instance fails.
+     * @throws MojoExecutionException if getting the Maven project of the instance fails.
      */
     protected MavenProject getMavenProject() throws MojoExecutionException
     {
         return this.mavenProject;
+    }
+
+    /**
+     * Gets the Maven session of the instance.
+     *
+     * @return The Maven session of the instance.
+     *
+     * @throws MojoExecutionException if getting the Maven session of the instance fails.
+     *
+     * @since 1.1
+     */
+    protected MavenSession getMavenSession() throws MojoExecutionException
+    {
+        return this.mavenSession;
     }
 
     /**

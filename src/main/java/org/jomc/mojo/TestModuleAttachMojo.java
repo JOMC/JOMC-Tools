@@ -69,30 +69,41 @@ public final class TestModuleAttachMojo extends AbstractAttachMojo
     private String testModuleArtifactType;
 
     /**
-     * Number of milliseconds the attached module artifact is cached.
+     * Execution strategy of the goal ({@code always} or {@code once-per-session}).
      *
-     * @parameter default-value="600000"
+     * @parameter default-value="once-per-session" expression="${jomc.attachTestModuleExecutionStrategy}"
+     * @since 1.1
      */
-    private long testModuleTimeoutMillis = 600000;
+    private String attachTestModuleExecutionStrategy;
 
+    /** Creates a new {@code TestModuleAttachMojo} instance. */
+    public TestModuleAttachMojo()
+    {
+        super();
+    }
+
+    @Override
     protected File getArtifactFile()
     {
         return this.testModuleArtifactFile;
     }
 
+    @Override
     protected String getArtifactClassifier()
     {
         return this.testModuleArtifactClassifier;
     }
 
+    @Override
     protected String getArtifactType()
     {
         return this.testModuleArtifactType;
     }
 
-    protected long getArtifactTimeoutMillis()
+    @Override
+    protected String getExecutionStrategy()
     {
-        return this.testModuleTimeoutMillis;
+        return this.attachTestModuleExecutionStrategy;
     }
 
 }

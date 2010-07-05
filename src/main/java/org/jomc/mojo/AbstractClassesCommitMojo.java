@@ -75,6 +75,12 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
      */
     private String modelObjectStylesheet;
 
+    /** Creates a new {@code AbstractClassesCommitMojo} instance. */
+    public AbstractClassesCommitMojo()
+    {
+        super();
+    }
+
     /**
      * Gets transformers to use for transforming model objects.
      *

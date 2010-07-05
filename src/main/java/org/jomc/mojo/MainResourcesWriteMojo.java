@@ -49,6 +49,20 @@ import org.apache.maven.plugin.MojoExecutionException;
 public final class MainResourcesWriteMojo extends AbstractResourcesMojo
 {
 
+    /**
+     * Execution strategy of the goal ({@code always} or {@code once-per-session}).
+     *
+     * @parameter default-value="once-per-session" expression="${jomc.writeMainResourcesExecutionStrategy}"
+     * @since 1.1
+     */
+    private String writeMainResourcesExecutionStrategy;
+
+    /** Creates a new {@code MainResourcesWriteMojo} instance. */
+    public MainResourcesWriteMojo()
+    {
+        super();
+    }
+
     @Override
     protected String getResourcesModuleName() throws MojoExecutionException
     {
@@ -74,6 +88,18 @@ public final class MainResourcesWriteMojo extends AbstractResourcesMojo
         }
 
         return resourcesDirectory;
+    }
+
+    @Override
+    protected String getGoal() throws MojoExecutionException
+    {
+        return "write-main-resources";
+    }
+
+    @Override
+    protected String getExecutionStrategy() throws MojoExecutionException
+    {
+        return this.writeMainResourcesExecutionStrategy;
     }
 
 }

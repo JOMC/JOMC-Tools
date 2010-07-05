@@ -49,7 +49,15 @@ import org.apache.maven.plugin.MojoExecutionException;
 public final class MainSourcesManageMojo extends AbstractSourcesMojo
 {
 
-    /** Creates a new {@code MainSourcesMojo} instance. */
+    /**
+     * Execution strategy of the goal ({@code always} or {@code once-per-session}).
+     *
+     * @parameter default-value="once-per-session" expression="${jomc.manageMainSourcesExecutionStrategy}"
+     * @since 1.1
+     */
+    private String manageMainSourcesExecutionStrategy;
+
+    /** Creates a new {@code MainSourcesManageMojo} instance. */
     public MainSourcesManageMojo()
     {
         super();
@@ -80,6 +88,18 @@ public final class MainSourcesManageMojo extends AbstractSourcesMojo
         }
 
         return sourcesDirectory;
+    }
+
+    @Override
+    protected String getGoal() throws MojoExecutionException
+    {
+        return "manage-main-sources";
+    }
+
+    @Override
+    protected String getExecutionStrategy() throws MojoExecutionException
+    {
+        return this.manageMainSourcesExecutionStrategy;
     }
 
 }
