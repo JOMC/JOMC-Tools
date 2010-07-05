@@ -151,7 +151,7 @@ public abstract class AbstractAttachMojo extends AbstractMojo
                 }
                 else if ( this.getLog().isInfoEnabled() )
                 {
-                    this.getLog().info( getMessage( "executionSuppressed" ) );
+                    this.getLog().info( getMessage( "executionSuppressed", this.getExecutionStrategy() ) );
                 }
             }
             else if ( this.getLog().isWarnEnabled() )
