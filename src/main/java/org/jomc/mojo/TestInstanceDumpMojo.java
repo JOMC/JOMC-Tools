@@ -110,9 +110,9 @@ public final class TestInstanceDumpMojo extends AbstractJomcMojo
 
             if ( this.dumpFile != null )
             {
-                if ( this.dumpFile.exists() )
+                if ( this.dumpFile.exists() && !this.dumpFile.delete() )
                 {
-                    this.dumpFile.delete();
+                    throw new MojoExecutionException( getMessage( "failedDeleting", this.dumpFile.getAbsolutePath() ) );
                 }
 
                 final OutputStream out = new FileOutputStream( this.dumpFile );
