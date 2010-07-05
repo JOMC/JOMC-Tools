@@ -333,7 +333,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
             else
             {
-                this.getLog().info( getMessage( "executionSuppressed" ) );
+                this.getLog().info( getMessage( "executionSuppressed", this.getExecutionStrategy() ) );
             }
         }
         catch ( final Exception e )
