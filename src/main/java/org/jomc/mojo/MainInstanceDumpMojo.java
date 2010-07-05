@@ -141,13 +141,6 @@ public final class MainInstanceDumpMojo extends AbstractJomcMojo
         }
     }
 
-    private static String getMessage( final String key, final Object... args )
-    {
-        return MessageFormat.format( ResourceBundle.getBundle(
-            MainInstanceDumpMojo.class.getName().replace( '.', '/' ) ).getString( key ), args );
-
-    }
-
     @Override
     protected String getGoal() throws MojoExecutionException
     {
@@ -158,6 +151,13 @@ public final class MainInstanceDumpMojo extends AbstractJomcMojo
     protected String getExecutionStrategy() throws MojoExecutionException
     {
         return this.dumpMainInstanceExecutionStrategy;
+    }
+
+    private static String getMessage( final String key, final Object... args )
+    {
+        return MessageFormat.format( ResourceBundle.getBundle(
+            MainInstanceDumpMojo.class.getName().replace( '.', '/' ) ).getString( key ), args );
+
     }
 
 }

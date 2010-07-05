@@ -78,15 +78,7 @@ public final class TestClassesValidateMojo extends AbstractClassesValidateMojo
     @Override
     protected File getClassesDirectory() throws MojoExecutionException
     {
-        File classesDirectory = new File( this.getMavenProject().getBuild().getTestOutputDirectory() );
-        if ( !classesDirectory.isAbsolute() )
-        {
-            classesDirectory = new File( this.getMavenProject().getBasedir(),
-                                         this.getMavenProject().getBuild().getTestOutputDirectory() );
-
-        }
-
-        return classesDirectory;
+        return this.getTestOutputDirectory();
     }
 
     @Override

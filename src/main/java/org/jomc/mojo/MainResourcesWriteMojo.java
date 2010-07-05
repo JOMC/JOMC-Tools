@@ -78,16 +78,7 @@ public final class MainResourcesWriteMojo extends AbstractResourcesMojo
     @Override
     protected File getResourcesDirectory() throws MojoExecutionException
     {
-        File resourcesDirectory = new File( this.getMavenProject().getBuild().getOutputDirectory() );
-
-        if ( !resourcesDirectory.isAbsolute() )
-        {
-            resourcesDirectory = new File( this.getMavenProject().getBasedir(),
-                                           this.getMavenProject().getBuild().getOutputDirectory() );
-
-        }
-
-        return resourcesDirectory;
+        return this.getOutputDirectory();
     }
 
     @Override

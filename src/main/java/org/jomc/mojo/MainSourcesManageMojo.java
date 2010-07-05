@@ -78,16 +78,7 @@ public final class MainSourcesManageMojo extends AbstractSourcesMojo
     @Override
     protected File getSourcesDirectory() throws MojoExecutionException
     {
-        File sourcesDirectory = new File( this.getMavenProject().getBuild().getSourceDirectory() );
-
-        if ( !sourcesDirectory.isAbsolute() )
-        {
-            sourcesDirectory = new File( this.getMavenProject().getBasedir(),
-                                         this.getMavenProject().getBuild().getSourceDirectory() );
-
-        }
-
-        return sourcesDirectory;
+        return this.getSourceDirectory();
     }
 
     @Override

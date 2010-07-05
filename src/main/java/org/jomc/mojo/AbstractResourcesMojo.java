@@ -61,7 +61,7 @@ public abstract class AbstractResourcesMojo extends AbstractJomcMojo
     /**
      * The language of the default language properties file of generated resource bundle resources.
      *
-     * @parameter
+     * @parameter expression="${jomc.resourceBundleDefaultLanguage}"
      */
     private String resourceBundleDefaultLanguage;
 

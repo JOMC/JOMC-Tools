@@ -87,11 +87,6 @@ public final class MainModelValidateMojo extends AbstractJomcMojo
         this.logSeparator( Level.INFO );
     }
 
-    private static String getMessage( final String key )
-    {
-        return ResourceBundle.getBundle( MainModelValidateMojo.class.getName().replace( '.', '/' ) ).getString( key );
-    }
-
     @Override
     protected String getGoal() throws MojoExecutionException
     {
@@ -102,6 +97,11 @@ public final class MainModelValidateMojo extends AbstractJomcMojo
     protected String getExecutionStrategy() throws MojoExecutionException
     {
         return this.validateMainModelExecutionStrategy;
+    }
+
+    private static String getMessage( final String key )
+    {
+        return ResourceBundle.getBundle( MainModelValidateMojo.class.getName().replace( '.', '/' ) ).getString( key );
     }
 
 }

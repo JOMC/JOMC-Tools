@@ -224,26 +224,60 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private String testModuleName;
 
     /**
-     * Directory holding compiled class files of the project.
+     * Directory holding the compiled class files of the project.
      *
-     * @parameter default-value="${project.build.outputDirectory}" expression="${jomc.classesDirectory}"
+     * @parameter
+     * @deprecated Replaced by {@link #outputDirectory}.
      */
     private String classesDirectory;
 
     /**
-     * Directory holding compiled test class files of the project.
+     * Directory holding the compiled test class files of the project.
      *
-     * @parameter default-value="${project.build.testOutputDirectory}" expression="${jomc.testClassesDirectory}"
+     * @parameter
+     * @deprecated Replaced by {@link #testOutputDirectory}.
      */
     private String testClassesDirectory;
 
     /**
-     * Directory holding session related files.
+     * Output directory of the project.
+     *
+     * @parameter default-value="${project.build.outputDirectory}" expression="${jomc.outputDirectory}"
+     * @since 1.1
+     */
+    private String outputDirectory;
+
+    /**
+     * Test output directory of the project.
+     *
+     * @parameter default-value="${project.build.testOutputDirectory}" expression="${jomc.testOutputDirectory}"
+     * @since 1.1
+     */
+    private String testOutputDirectory;
+
+    /**
+     * Directory holding the source files of the project.
+     *
+     * @parameter default-value="${project.build.sourceDirectory}" expression="${jomc.sourceDirectory}"
+     * @since 1.1
+     */
+    private String sourceDirectory;
+
+    /**
+     * Directory holding the test source files of the project.
+     *
+     * @parameter default-value="${project.build.testSourceDirectory}" expression="${jomc.testSourceDirectory}"
+     * @since 1.1
+     */
+    private String testSourceDirectory;
+
+    /**
+     * Directory holding the session related files of the project.
      *
      * @parameter default-value="${project.build.directory}/jomc-sessions" expression="${jomc.sessionDirectory}"
      * @since 1.1
      */
-    private File sessionDirectory;
+    private String sessionDirectory;
 
     /**
      * The Maven project of the instance.
@@ -364,13 +398,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             if ( MojoDescriptor.SINGLE_PASS_EXEC_STRATEGY.equals( this.getExecutionStrategy() ) )
             {
                 final File flagFile =
-                    new File( this.sessionDirectory, this.getGoal() + "-"
-                                                     + this.getMavenSession().getStartTime().getTime() + ".flag" );
+                    new File( this.getSessionDirectory(),
+                              this.getGoal() + "-" + this.getMavenSession().getStartTime().getTime() + ".flag" );
 
-                if ( !this.sessionDirectory.exists() && !this.sessionDirectory.mkdirs() )
+                if ( !this.getSessionDirectory().exists() && !this.getSessionDirectory().mkdirs() )
                 {
                     throw new MojoExecutionException( getMessage( "failedCreatingDirectory",
-                                                                  this.sessionDirectory.getAbsolutePath() ) );
+                                                                  this.getSessionDirectory().getAbsolutePath() ) );
 
                 }
 
@@ -416,6 +450,117 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     protected MavenSession getMavenSession() throws MojoExecutionException
     {
         return this.mavenSession;
+    }
+
+    /**
+     * Gets the directory holding the compiled class files of the project.
+     *
+     * @return The directory holding the compiled class files of the project.
+     *
+     * @throws MojoExecutionException if getting the directory fails.
+     *
+     * @since 1.1
+     */
+    protected File getOutputDirectory() throws MojoExecutionException
+    {
+        File directory = new File( this.classesDirectory != null ? this.classesDirectory : this.outputDirectory );
+
+        if ( !directory.isAbsolute() )
+        {
+            directory = new File( this.getMavenProject().getBasedir(),
+                                  this.classesDirectory != null ? this.classesDirectory : this.outputDirectory );
+
+        }
+
+        return directory;
+    }
+
+    /**
+     * Gets the directory holding the compiled test class files of the project.
+     *
+     * @return The directory holding the compiled test class files of the project.
+     *
+     * @throws MojoExecutionException if getting the directory fails.
+     *
+     * @since 1.1
+     */
+    protected File getTestOutputDirectory() throws MojoExecutionException
+    {
+        File directory =
+            new File( this.testClassesDirectory != null ? this.testClassesDirectory : this.testOutputDirectory );
+
+        if ( !directory.isAbsolute() )
+        {
+            directory = new File( this.getMavenProject().getBasedir(), this.testClassesDirectory != null
+                                                                       ? this.testClassesDirectory
+                                                                       : this.testOutputDirectory );
+
+        }
+
+        return directory;
+    }
+
+    /**
+     * Gets the directory holding the source files of the project.
+     *
+     * @return The directory holding the source files of the project.
+     *
+     * @throws MojoExecutionException if getting the directory fails.
+     *
+     * @since 1.1
+     */
+    protected File getSourceDirectory() throws MojoExecutionException
+    {
+        File directory = new File( this.sourceDirectory );
+
+        if ( !directory.isAbsolute() )
+        {
+            directory = new File( this.getMavenProject().getBasedir(), this.sourceDirectory );
+        }
+
+        return directory;
+    }
+
+    /**
+     * Gets the directory holding the test source files of the project.
+     *
+     * @return The directory holding the test source files of the project.
+     *
+     * @throws MojoExecutionException if getting the directory fails.
+     *
+     * @since 1.1
+     */
+    protected File getTestSourceDirectory() throws MojoExecutionException
+    {
+        File directory = new File( this.testSourceDirectory );
+
+        if ( !directory.isAbsolute() )
+        {
+            directory = new File( this.getMavenProject().getBasedir(), this.testSourceDirectory );
+        }
+
+        return directory;
+    }
+
+    /**
+     * Gets the directory holding the session related files of the project.
+     *
+     * @return The directory holding the session related files of the project.
+     *
+     * @throws MojoExecutionException if getting the directory fails.
+     *
+     * @since 1.1
+     */
+    protected File getSessionDirectory() throws MojoExecutionException
+    {
+        File directory = new File( this.sessionDirectory );
+
+        if ( !directory.isAbsolute() )
+        {
+            directory = new File( this.getMavenProject().getBasedir(), this.sessionDirectory );
+        }
+
+        return directory;
     }
 
     /**
@@ -590,13 +735,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     protected Set<String> getMainClasspathElements() throws MojoExecutionException
     {
         final Set<String> elements = new HashSet<String>();
-
-        File f = new File( this.classesDirectory );
-        if ( !f.isAbsolute() )
-        {
-            f = new File( this.getMavenProject().getBasedir(), this.classesDirectory );
-        }
-        elements.add( f.getAbsolutePath() );
+        elements.add( this.getOutputDirectory().getAbsolutePath() );
 
         for ( final Iterator it = this.getMavenProject().getRuntimeArtifacts().iterator(); it.hasNext(); )
         {
@@ -659,20 +798,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     protected Set<String> getTestClasspathElements() throws MojoExecutionException
     {
         final Set<String> elements = new HashSet<String>();
-
-        File f = new File( this.classesDirectory );
-        if ( !f.isAbsolute() )
-        {
-            f = new File( this.getMavenProject().getBasedir(), this.classesDirectory );
-        }
-        elements.add( f.getAbsolutePath() );
-
-        f = new File( this.testClassesDirectory );
-        if ( !f.isAbsolute() )
-        {
-            f = new File( this.getMavenProject().getBasedir(), this.testClassesDirectory );
-        }
-        elements.add( f.getAbsolutePath() );
+        elements.add( this.getOutputDirectory().getAbsolutePath() );
+        elements.add( this.getTestOutputDirectory().getAbsolutePath() );
 
         for ( final Iterator it = this.getMavenProject().getTestArtifacts().iterator(); it.hasNext(); )
         {

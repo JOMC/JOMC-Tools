@@ -78,16 +78,7 @@ public final class MainClassesCommitMojo extends AbstractClassesCommitMojo
     @Override
     protected File getClassesDirectory() throws MojoExecutionException
     {
-        File classesDirectory = new File( this.getMavenProject().getBuild().getOutputDirectory() );
-
-        if ( !classesDirectory.isAbsolute() )
-        {
-            classesDirectory = new File( this.getMavenProject().getBasedir(),
-                                         this.getMavenProject().getBuild().getOutputDirectory() );
-
-        }
-
-        return classesDirectory;
+        return this.getOutputDirectory();
     }
 
     @Override
