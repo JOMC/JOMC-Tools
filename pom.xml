@@ -309,6 +309,7 @@
             <id>main-default</id>
             <goals>
               <goal>validate-main-model</goal>
+              <goal>validate-main-classpath</goal>
             </goals>
           </execution>
         </executions>
