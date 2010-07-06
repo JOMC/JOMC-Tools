@@ -61,6 +61,13 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
      */
     private File document;
 
+    /**
+     * Encoding of the document to write.
+     *
+     * @parameter default-value="UTF-8" expression="${jomc.documentEncoding}"
+     */
+    private String documentEncoding;
+
     /** Creates a new {@code AbstractModelShowMojo} instance. */
     public AbstractModelShowMojo()
     {
@@ -99,6 +106,7 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
                 this.getLog().info( getMessage( "writing", this.document.getAbsolutePath() ) );
 
                 final OutputStream out = new FileOutputStream( this.document );
+                m.setProperty( Marshaller.JAXB_ENCODING, this.documentEncoding );
                 m.marshal( new ObjectFactory().createModel( displayModel ), out );
                 out.close();
             }
