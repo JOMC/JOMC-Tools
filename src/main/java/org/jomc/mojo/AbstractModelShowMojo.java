@@ -64,7 +64,7 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
     /**
      * Encoding of the document to write.
      *
-     * @parameter default-value="UTF-8" expression="${jomc.documentEncoding}"
+     * @parameter default-value="${project.build.sourceEncoding}" expression="${jomc.documentEncoding}"
      */
     private String documentEncoding;
 
