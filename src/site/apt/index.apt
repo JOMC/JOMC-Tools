@@ -105,16 +105,18 @@ Maven JOMC Plugin
   To provide you with better understanding of some usages of the JOMC Plugin, you can take a look at the following
   examples:
 
-  * {{{./examples/validate-models.html}Validating project models using the JOMC Plugin.}}
+  * {{{./examples/customize-templates.html}Customizing JOMC code generation.}}
 
-  * {{{./examples/validate-classpaths.html}Validating project classpaths using the JOMC Plugin.}}
+  * {{{./examples/show-model.html}Displaying model information.}}
+
+  * {{{./examples/manage-artifacts.html}Managing JOMC artifacts.}}
 
   * {{{./examples/release-project.html}Performing a release of a project using the JOMC Plugin.}}
 
   * {{{./examples/shade-artifacts.html}'Shading' JOMC artifacts.}}
 
-  * {{{./examples/customize-templates.html}Customizing JOMC code generation.}}
+  * {{{./examples/validate-classpaths.html}Validating project classpaths using the JOMC Plugin.}}
 
-  * {{{./examples/show-model.html}Displaying model information.}}
+  * {{{./examples/validate-models.html}Validating project models using the JOMC Plugin.}}
 
   []
