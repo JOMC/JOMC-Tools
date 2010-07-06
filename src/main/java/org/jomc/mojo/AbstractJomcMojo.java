@@ -280,6 +280,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private String sessionDirectory;
 
     /**
+     * Directory holding the reports of the project.
+     *
+     * @parameter default-value="${project.reporting.outputDirectory}" expression="${jomc.reportOutputDirectory}"
+     * @since 1.1
+     */
+    private String reportOutputDirectory;
+
+    /**
      * The Maven project of the instance.
      *
      * @parameter expression="${project}"
@@ -551,6 +559,27 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         if ( !directory.isAbsolute() )
         {
             directory = new File( this.getMavenProject().getBasedir(), this.sessionDirectory );
+        }
+
+        return directory;
+    }
+
+    /**
+     * Gets the directory holding the reports of the project.
+     *
+     * @return The directory holding the reports of the project.
+     *
+     * @throws MojoExecutionException if getting the directory fails.
+     *
+     * @since 1.1
+     */
+    protected File getReportOutputDirectory() throws MojoExecutionException
+    {
+        File directory = new File( this.reportOutputDirectory );
+
+        if ( !directory.isAbsolute() )
+        {
+            directory = new File( this.getMavenProject().getBasedir(), this.reportOutputDirectory );
         }
 
         return directory;
