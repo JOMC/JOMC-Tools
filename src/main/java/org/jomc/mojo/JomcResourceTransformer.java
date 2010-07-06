@@ -68,6 +68,7 @@ import org.jomc.modlet.Modlets;
  * <p><b>Usage</b><pre>
  * &lt;transformer implementation="org.jomc.mojo.JomcResourceTransformer"&gt;
  *   &lt;model&gt;http://jomc.org/model&lt;/model&gt;
+ *   &lt;moduleEncoding&gt;${project.build.sourceEncoding}&lt;/moduleEncoding&gt;
  *   &lt;moduleName&gt;${project.name}&lt;/moduleName&gt;
  *   &lt;moduleVersion&gt;${project.version}&lt;/moduleVersion&gt;
  *   &lt;moduleVendor&gt;${project.organization.name}&lt;/moduleVendor&gt;
@@ -81,6 +82,7 @@ import org.jomc.modlet.Modlets;
  *   &lt;moduleExcludes&gt;
  *     &lt;moduleExclude&gt;module name&lt;/moduleExclude&gt;
  *   &lt;/moduleExcludes&gt;
+ *   &lt;modletEncoding&gt;${project.build.sourceEncoding}&lt;/modletEncoding&gt;
  *   &lt;modletName&gt;${project.name}&lt;/modletName&gt;
  *   &lt;modletVersion&gt;${project.version}&lt;/modletVersion&gt;
  *   &lt;modletVendor&gt;${project.organization.name}&lt;/modletVendor&gt;
@@ -122,6 +124,9 @@ public class JomcResourceTransformer implements ResourceTransformer
     /** The identifier of the model to process. */
     private String model = ModelObject.MODEL_PUBLIC_ID;
 
+    /** The encoding of the assembled module. */
+    private String moduleEncoding;
+
     /** The name of the assembled module. */
     private String moduleName;
 
@@ -145,6 +150,9 @@ public class JomcResourceTransformer implements ResourceTransformer
 
     /** Excluded modules. */
     private List<String> moduleExcludes;
+
+    /** The encoding of the assembled modlet. */
+    private String modletEncoding;
 
     /** The name of the assembled modlet. */
     private String modletName;
@@ -490,6 +498,11 @@ public class JomcResourceTransformer implements ResourceTransformer
                 this.jomcMarshaller = modelContext.createMarshaller( this.model );
                 this.jomcMarshaller.setSchema( modelContext.createSchema( this.model ) );
                 this.jomcMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
+
+                if ( this.moduleEncoding != null )
+                {
+                    this.jomcMarshaller.setProperty( Marshaller.JAXB_ENCODING, this.moduleEncoding );
+                }
             }
             finally
             {
@@ -592,6 +605,11 @@ public class JomcResourceTransformer implements ResourceTransformer
                 this.modletMarshaller = modletContext.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
                 this.modletMarshaller.setSchema( modletContext.createSchema( ModletObject.MODEL_PUBLIC_ID ) );
                 this.modletMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
+
+                if ( this.modletEncoding != null )
+                {
+                    this.modletMarshaller.setProperty( Marshaller.JAXB_ENCODING, this.modletEncoding );
+                }
             }
             finally
             {
