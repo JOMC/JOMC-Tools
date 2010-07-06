@@ -93,9 +93,9 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
                 stringWriter.append( System.getProperty( "line.separator" ) );
                 m.marshal( new ObjectFactory().createModel( displayModel ), stringWriter );
 
-                this.getLog().info( "" );
-                this.getLog().info( stringWriter.toString() );
-                this.getLog().info( "" );
+                this.log( Level.INFO, "", null );
+                this.log( Level.INFO, stringWriter.toString(), null );
+                this.log( Level.INFO, "", null );
             }
             else
             {
