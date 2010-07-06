@@ -38,6 +38,7 @@ import java.io.OutputStream;
 import java.io.StringWriter;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import javax.xml.bind.Marshaller;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.jomc.modlet.Model;
@@ -100,10 +101,10 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
             {
                 if ( this.document.exists() && !this.document.delete() )
                 {
-                    throw new MojoExecutionException( getMessage( "failedDeleting", this.document.getAbsolutePath() ) );
+                    this.log( Level.WARNING, getMessage( "failedDeleting", this.document.getAbsolutePath() ), null );
                 }
 
-                this.getLog().info( getMessage( "writing", this.document.getAbsolutePath() ) );
+                this.log( Level.INFO, getMessage( "writing", this.document.getAbsolutePath() ), null );
 
                 final OutputStream out = new FileOutputStream( this.document );
                 m.setProperty( Marshaller.JAXB_ENCODING, this.documentEncoding );
