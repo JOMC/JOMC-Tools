@@ -207,6 +207,12 @@ public abstract class AbstractAttachMojo extends AbstractMojo
                     {
                         this.getLog().warn( getMessage( "failedDeletingFile", attachment.getAbsolutePath() ) );
                     }
+                    if ( !attachment.getParentFile().exists() && !attachment.getParentFile().mkdirs() )
+                    {
+                        throw new MojoExecutionException( getMessage( "failedCreatingDirectory",
+                                                                      attachment.getParentFile().getAbsolutePath() ) );
+
+                    }
 
                     FileUtils.copyFile( this.getArtifactFile(), attachment );
                     this.getMavenProjectHelper().attachArtifact( this.getMavenProject(), this.getArtifactType(),
