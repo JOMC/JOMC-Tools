@@ -70,9 +70,17 @@ Maven JOMC Plugin
 
   * {{{./validate-test-model-mojo.html}jomc:validate-test-model}} Validates a project's test model.
 
-  * {{{./dump-main-instance-mojo.html}jomc:dump-main-instance}} Dumps a project's main instance.
+  * {{{./show-main-model-mojo.html}jomc:show-main-model}} Displays a project's main model.
 
-  * {{{./dump-test-instance-mojo.html}jomc:dump-test-instance}} Dumps a project's test instance.
+  * {{{./show-test-model-mojo.html}jomc:show-test-model}} Displays a project's test model.
+
+  * {{{./show-main-instance-mojo.html}jomc:show-main-instance}} Displays a project's main instance.
+
+  * {{{./show-test-instance-mojo.html}jomc:show-test-instance}} Displays a project's test instance.
+
+  * {{{./show-main-specification-mojo.html}jomc:show-main-specification}} Displays a project's main specification.
+
+  * {{{./show-test-specification-mojo.html}jomc:show-test-specification}} Displays a project's test specification.
 
   []
 
@@ -107,6 +115,6 @@ Maven JOMC Plugin
 
   * {{{./examples/customize-templates.html}Customizing JOMC code generation.}}
 
-  * {{{./examples/dump-instances.html}Dumping instances.}}
+  * {{{./examples/show-model.html}Displaying model information.}}
 
   []

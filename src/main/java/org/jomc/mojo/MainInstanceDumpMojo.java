@@ -56,6 +56,7 @@ import org.jomc.modlet.ModelContext;
  * @goal dump-main-instance
  * @threadSafe
  * @requiresDependencyResolution test
+ * @deprecated Replaced by the 'show-main-instance' goal.
  */
 public final class MainInstanceDumpMojo extends AbstractJomcMojo
 {

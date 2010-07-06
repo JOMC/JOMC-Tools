@@ -82,7 +82,7 @@ piwikTracker.enableLinkTracking();
       <item name="Performing a release" href="examples/release-project.html"/>
       <item name="Shading artifacts" href="examples/shade-artifacts.html"/>
       <item name="Customizing code generation" href="examples/customize-templates.html"/>
-      <item name="Dumping instances" href="examples/dump-instances.html"/>
+      <item name="Displaying model information" href="examples/show-model.html"/>
     </menu>
   </body>
 </project>
