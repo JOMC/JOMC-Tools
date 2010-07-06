@@ -95,6 +95,8 @@ import org.jomc.modlet.ModelValidationReport;
  * <p><b>Dependencies</b><ul>
  * <li>"{@link #getClasspathOption ClasspathOption}"<blockquote>
  * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
+ * <li>"{@link #getDocumentEncodingOption DocumentEncodingOption}"<blockquote>
+ * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
  * <li>"{@link #getDocumentOption DocumentOption}"<blockquote>
  * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
  * <li>"{@link #getDocumentsOption DocumentsOption}"<blockquote>
@@ -132,7 +134,7 @@ import org.jomc.modlet.ModelValidationReport;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.1-SNAPSHOT Build 2010-07-06T02:12:00+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.1-SNAPSHOT Build 2010-07-06T05:47:11+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -268,6 +270,7 @@ public final class MergeModulesCommand extends AbstractJomcToolCommand
             this.options.addOption( this.getNoClasspathResolutionOption() );
             this.options.addOption( this.getNoModelProcessingOption() );
             this.options.addOption( this.getDocumentOption() );
+            this.options.addOption( this.getDocumentEncodingOption() );
             this.options.addOption( this.getStylesheetOption() );
             this.options.addOption( this.getModuleNameOption() );
             this.options.addOption( this.getModuleVendorOption() );
@@ -388,6 +391,14 @@ public final class MergeModulesCommand extends AbstractJomcToolCommand
             }
 
             marshaller.setSchema( context.createSchema( model.getIdentifier() ) );
+
+            if ( commandLine.hasOption( this.getDocumentEncodingOption().getOpt() ) )
+            {
+                marshaller.setProperty( Marshaller.JAXB_ENCODING,
+                                        commandLine.getOptionValue( this.getDocumentEncodingOption().getOpt() ) );
+
+            }
+
             marshaller.marshal( new ObjectFactory().createModule( mergedModule ), moduleFile );
 
             if ( this.isLoggable( Level.INFO ) )
@@ -432,6 +443,21 @@ public final class MergeModulesCommand extends AbstractJomcToolCommand
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ClasspathOption" );
         assert _d != null : "'ClasspathOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code DocumentEncodingOption} dependency.
+     * <p>This method returns the {@code 'JOMC CLI Document Encoding Option'} object of the {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code DocumentEncodingOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.1/jomc-tools" )
+    private org.apache.commons.cli.Option getDocumentEncodingOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "DocumentEncodingOption" );
+        assert _d != null : "'DocumentEncodingOption' dependency not found.";
         return _d;
     }
 
@@ -789,7 +815,7 @@ public final class MergeModulesCommand extends AbstractJomcToolCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.1-SNAPSHOT Build 2010-07-06T02:12:00+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.1-SNAPSHOT Build 2010-07-06T05:47:11+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

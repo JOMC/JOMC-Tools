@@ -98,6 +98,18 @@ import static junit.framework.Assert.assertNull;
  * <li>"{@link #getTestResourcesDirectory testResourcesDirectory}"
  * <blockquote>Property of type {@code java.lang.String}.
  * </blockquote></li>
+ * <li>"{@link #getTestShowInstanceOutputDocument testShowInstanceOutputDocument}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
+ * <li>"{@link #getTestShowModelOutputDocument testShowModelOutputDocument}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
+ * <li>"{@link #getTestShowSpecificationAndInstanceOutputDocument testShowSpecificationAndInstanceOutputDocument}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
+ * <li>"{@link #getTestShowSpecificationOutputDocument testShowSpecificationOutputDocument}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
  * <li>"{@link #getTestSourcesDirectory testSourcesDirectory}"
  * <blockquote>Property of type {@code java.lang.String}.
  * </blockquote></li>
@@ -414,6 +426,75 @@ public class JomcTest extends TestCase
         assertNull( merged.getServices() );
     }
 
+    public void testShowModel() throws Exception
+    {
+        final String[] help = new String[]
+        {
+            "show-model", "help"
+        };
+
+        final String[] showModel = new String[]
+        {
+            "show-model", "-cp", '"' + this.getClassesDirectory() + '"'
+        };
+
+        final String[] writeModel = new String[]
+        {
+            "show-model", "-cp", '"' + this.getClassesDirectory() + '"', "-d",
+            '"' + this.getTestShowModelOutputDocument() + '"'
+        };
+
+        final String[] showSpecification = new String[]
+        {
+            "show-model", "-cp", '"' + this.getClassesDirectory() + '"', "-spec", "JOMC CLI Command"
+        };
+
+        final String[] writeSpecification = new String[]
+        {
+            "show-model", "-cp", '"' + this.getClassesDirectory() + '"', "-spec", "JOMC CLI Command", "-d",
+            '"' + this.getTestShowSpecificationOutputDocument() + '"'
+        };
+
+        final String[] showInstance = new String[]
+        {
+            "show-model", "-cp", '"' + this.getClassesDirectory() + '"', "-inst", "JOMC CLI show-model Command"
+        };
+
+        final String[] writeInstance = new String[]
+        {
+            "show-model", "-cp", '"' + this.getClassesDirectory() + '"', "-inst", "JOMC CLI show-model Command", "-d",
+            '"' + this.getTestShowInstanceOutputDocument() + '"'
+        };
+
+        final String[] showSpecificationAndInstance = new String[]
+        {
+            "show-model", "-cp", '"' + this.getClassesDirectory() + '"', "-spec", "JOMC CLI Command", "-inst",
+            "JOMC CLI show-model Command"
+        };
+
+        final String[] writeSpecificationAndInstance = new String[]
+        {
+            "show-model", "-cp", '"' + this.getClassesDirectory() + '"', "-spec", "JOMC CLI Command", "-inst",
+            "JOMC CLI show-model Command", "-d", '"' + this.getTestShowSpecificationAndInstanceOutputDocument() + '"'
+        };
+
+        final String[] unsupportedOption = new String[]
+        {
+            "show-model", "--unsupported-option"
+        };
+
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( showModel ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( writeModel ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( showInstance ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( writeInstance ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( showSpecification ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( writeSpecification ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( showSpecificationAndInstance ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( writeSpecificationAndInstance ) );
+        assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
+    }
+
     @Override
     protected void setUp()
     {
@@ -606,6 +687,58 @@ public class JomcTest extends TestCase
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testResourcesDirectory" );
         assert _p != null : "'testResourcesDirectory' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code testShowInstanceOutputDocument} property.
+     * @return The value of the {@code testShowInstanceOutputDocument} property.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.1/jomc-tools" )
+    private java.lang.String getTestShowInstanceOutputDocument()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testShowInstanceOutputDocument" );
+        assert _p != null : "'testShowInstanceOutputDocument' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code testShowModelOutputDocument} property.
+     * @return The value of the {@code testShowModelOutputDocument} property.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.1/jomc-tools" )
+    private java.lang.String getTestShowModelOutputDocument()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testShowModelOutputDocument" );
+        assert _p != null : "'testShowModelOutputDocument' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code testShowSpecificationAndInstanceOutputDocument} property.
+     * @return The value of the {@code testShowSpecificationAndInstanceOutputDocument} property.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.1/jomc-tools" )
+    private java.lang.String getTestShowSpecificationAndInstanceOutputDocument()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testShowSpecificationAndInstanceOutputDocument" );
+        assert _p != null : "'testShowSpecificationAndInstanceOutputDocument' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code testShowSpecificationOutputDocument} property.
+     * @return The value of the {@code testShowSpecificationOutputDocument} property.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.1/jomc-tools" )
+    private java.lang.String getTestShowSpecificationOutputDocument()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testShowSpecificationOutputDocument" );
+        assert _p != null : "'testShowSpecificationOutputDocument' property not found.";
         return _p;
     }
 

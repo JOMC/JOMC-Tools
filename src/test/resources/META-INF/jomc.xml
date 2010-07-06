@@ -69,6 +69,10 @@
         <property name="testClassesDirectory" value="${project.build.directory}/jomc-test/classes"/>
         <property name="testIllegalSourceFilesModel" value="${project.build.testOutputDirectory}/org/jomc/cli/test/illegal-test-source-files-model.xml"/>
         <property name="testLegalSourceFilesModel" value="${project.build.testOutputDirectory}/org/jomc/cli/test/legal-test-source-files-model.xml"/>
+        <property name="testShowModelOutputDocument" value="${project.build.directory}/jomc-test/show-model.xml"/>
+        <property name="testShowSpecificationOutputDocument" value="${project.build.directory}/jomc-test/show-specification.xml"/>
+        <property name="testShowInstanceOutputDocument" value="${project.build.directory}/jomc-test/show-instance.xml"/>
+        <property name="testShowSpecificationAndInstanceOutputDocument" value="${project.build.directory}/jomc-test/show-specification-and-instance.xml"/>
       </properties>
     </implementation>
   </implementations>

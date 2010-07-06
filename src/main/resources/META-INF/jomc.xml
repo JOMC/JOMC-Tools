@@ -911,14 +911,48 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Name of the file to write the merged document to.</text>
-            <text language="de">Name der Datei, in die das zusammengefügte Dokument geschrieben werden soll.</text>
+            <text language="en">Name of the file to write the document to.</text>
+            <text language="de">Name der Datei, in die das Dokument geschrieben werden soll.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
           <template defaultLanguage="en">
             <text language="en">filename</text>
             <text language="de">Dateiname</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Document Encoding Option"
+                    name="${project.name} Document Encoding Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}" final="true">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <implementations>
+        <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="de" override="true"/>
+        <property name="longOpt" value="document-encoding" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Encoding of the document to write.</text>
+            <text language="de">Kodierung des zu schreibenden Dokuments.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">encoding</text>
+            <text language="de">Kodierung</text>
           </template>
         </message>
       </messages>
@@ -1338,6 +1372,74 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
           <template defaultLanguage="en">
             <text language="en">names</text>
             <text language="de">Namen</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Instance Option"
+                    name="${project.name} Instance Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <implementations>
+        <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="inst" override="true"/>
+        <property name="longOpt" value="instance" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Identifier of the instance to display.</text>
+            <text language="de">Bezeichner der anzuzeigenden Instanz.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">identifier</text>
+            <text language="de">Bezeichner</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Specification Option"
+                    name="${project.name} Specification Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <implementations>
+        <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="spec" override="true"/>
+        <property name="longOpt" value="specification" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Identifier of the specification to display.</text>
+            <text language="de">Bezeichner der anzuzeigenden Spezifikation.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">identifier</text>
+            <text language="de">Bezeichner</text>
           </template>
         </message>
       </messages>
@@ -1796,7 +1898,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} manage-sources Command"
                     class="org.jomc.cli.commands.ManageSourcesCommand" classDeclaration="true"
-                    name="default-manage-java-sources" version="${project.version}" vendor="${project.organization.name}">
+                    name="default-manage-sources" version="${project.version}" vendor="${project.organization.name}">
 
       <documentation defaultLanguage="en">
         <text language="en">Command line interface for the {@code JavaSources} tool.</text>
@@ -2074,6 +2176,10 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <property name="required" type="boolean" value="true" override="true"/>
           </properties>
         </dependency>
+
+        <dependency name="DocumentEncodingOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Document Encoding Option"/>
+
         <dependency name="StylesheetOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Stylesheet Option"/>
 
@@ -2180,6 +2286,10 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <property name="required" type="boolean" value="true" override="true"/>
           </properties>
         </dependency>
+
+        <dependency name="DocumentEncodingOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Document Encoding Option"/>
+
         <dependency name="StylesheetOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Stylesheet Option"/>
 
@@ -2255,6 +2365,88 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
           </template>
           <arguments>
             <argument index="0" name="modletName"/>
+          </arguments>
+        </message>
+        <reference name="writeInfo"/>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} show-model Command"
+                    class="org.jomc.cli.commands.ShowModelCommand" classDeclaration="true"
+                    name="default-show-model" version="${project.version}" vendor="${project.organization.name}">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Command line interface for displaying model objects.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <implementations>
+        <reference identifier="${project.name} JOMC Tool Command" version="${project.version}" final="true"/>
+      </implementations>
+      <dependencies>
+        <dependency name="DocumentOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Document Option"/>
+
+        <dependency name="DocumentEncodingOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Document Encoding Option"/>
+
+        <dependency name="InstanceOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Instance Option"/>
+
+        <dependency name="SpecificationOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Specification Option"/>
+
+      </dependencies>
+      <properties>
+        <property name="commandName" value="show-model" override="true">
+          <documentation defaultLanguage="en">
+            <text language="en">Name of the command.</text>
+          </documentation>
+        </property>
+        <property name="abbreviatedCommandName" value="sm" override="true">
+          <documentation defaultLanguage="en">
+            <text language="en">Abbreviated name of the command.</text>
+          </documentation>
+        </property>
+      </properties>
+      <messages>
+        <message name="shortDescriptionMessage" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Displays model information.</text>
+            <text language="de">Zeigt Modell-Informationen.</text>
+          </template>
+        </message>
+        <message name="longDescriptionMessage" override="true">
+          <template defaultLanguage="en">
+            <text language="en"><![CDATA[Example:
+  jomc show-model -cp examples/lib/commons-cli-1.2.jar \
+                  -df examples/xml/jomc-cli.xml \
+                  -v]]></text>
+            <text language="de"><![CDATA[Beispiel:
+  jomc show-model -cp examples/lib/commons-cli-1.2.jar \
+                  -df examples/xml/jomc-cli.xml \
+                  -v]]></text>
+          </template>
+        </message>
+        <message name="specificationNotFoundWarning" final="true">
+          <template defaultLanguage="en">
+            <text language="en">Specification ''{0}'' not found.</text>
+            <text language="de">Spezifikation ''{0}'' nicht gefunden.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="specificationIdentifier"/>
+          </arguments>
+        </message>
+        <message name="instanceNotFoundWarning" final="true">
+          <template defaultLanguage="en">
+            <text language="en">Instance ''{0}'' not found.</text>
+            <text language="de">Instanz ''{0}'' nicht gefunden.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="instanceIdentifier"/>
           </arguments>
         </message>
         <reference name="writeInfo"/>
