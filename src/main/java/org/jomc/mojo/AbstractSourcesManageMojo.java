@@ -33,7 +33,6 @@
 package org.jomc.mojo;
 
 import java.io.File;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
@@ -44,29 +43,22 @@ import org.jomc.model.Module;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelValidationReport;
 import org.jomc.modlet.ObjectFactory;
-import org.jomc.tools.ResourceFileProcessor;
+import org.jomc.tools.SourceFileProcessor;
 
 /**
- * Base class for managing resource files.
+ * Base class for managing source code files.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public abstract class AbstractResourcesMojo extends AbstractJomcMojo
+public abstract class AbstractSourcesManageMojo extends AbstractJomcMojo
 {
 
     /** Constant for the name of the tool backing the class. */
-    private static final String TOOLNAME = "ResourceFileProcessor";
+    private static final String TOOLNAME = "SourceFileProcessor";
 
-    /**
-     * The language of the default language properties file of generated resource bundle resources.
-     *
-     * @parameter expression="${jomc.resourceBundleDefaultLanguage}"
-     */
-    private String resourceBundleDefaultLanguage;
-
-    /** Creates a new {@code AbstractResourcesMojo} instance. */
-    public AbstractResourcesMojo()
+    /** Creates a new {@code AbstractSourcesMojo} instance. */
+    public AbstractSourcesManageMojo()
     {
         super();
     }
@@ -74,37 +66,30 @@ public abstract class AbstractResourcesMojo extends AbstractJomcMojo
     @Override
     protected final void executeTool() throws Exception
     {
-        if ( this.isResourceProcessingEnabled() )
+        if ( this.isSourceProcessingEnabled() )
         {
-            final ModelContext context = this.createModelContext( this.getResourcesClassLoader() );
-            final ResourceFileProcessor tool = this.createResourceFileProcessor( context );
+            final ModelContext context = this.createModelContext( this.getSourcesClassLoader() );
+            final SourceFileProcessor tool = this.createSourceFileProcessor( context );
             final JAXBContext jaxbContext = context.createContext( this.getModel() );
             final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModel( tool.getModel() ) );
             final ModelValidationReport validationReport = context.validateModel( this.getModel(), source );
 
             this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 
-            if ( this.resourceBundleDefaultLanguage != null )
-            {
-                tool.setResourceBundleDefaultLocale(
-                    new Locale( this.resourceBundleDefaultLanguage.toLowerCase( Locale.ENGLISH ) ) );
-
-            }
-
             if ( validationReport.isModelValid() )
             {
                 this.logSeparator( Level.INFO );
-                final Module module = tool.getModules().getModule( this.getResourcesModuleName() );
+                final Module module = tool.getModules().getModule( this.getSourcesModuleName() );
 
                 if ( module != null )
                 {
                     this.logProcessingModule( TOOLNAME, module.getName() );
-                    tool.writeResourceBundleResourceFiles( module, this.getResourcesDirectory() );
+                    tool.manageSourceFiles( module, this.getSourcesDirectory() );
                     this.logToolSuccess( TOOLNAME );
                 }
                 else
                 {
-                    this.logMissingModule( this.getResourcesModuleName() );
+                    this.logMissingModule( this.getSourcesModuleName() );
                 }
 
                 this.logSeparator( Level.INFO );
@@ -122,15 +107,15 @@ public abstract class AbstractResourcesMojo extends AbstractJomcMojo
         }
     }
 
-    protected abstract String getResourcesModuleName() throws MojoExecutionException;
+    protected abstract String getSourcesModuleName() throws MojoExecutionException;
 
-    protected abstract ClassLoader getResourcesClassLoader() throws MojoExecutionException;
+    protected abstract ClassLoader getSourcesClassLoader() throws MojoExecutionException;
 
-    protected abstract File getResourcesDirectory() throws MojoExecutionException;
+    protected abstract File getSourcesDirectory() throws MojoExecutionException;
 
     private static String getMessage( final String key )
     {
-        return ResourceBundle.getBundle( AbstractResourcesMojo.class.getName().replace( '.', '/' ) ).getString( key );
+        return ResourceBundle.getBundle( AbstractSourcesManageMojo.class.getName().replace( '.', '/' ) ).getString( key );
     }
 
 }

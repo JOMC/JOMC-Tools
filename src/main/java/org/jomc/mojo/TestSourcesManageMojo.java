@@ -46,7 +46,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  * @threadSafe
  * @requiresDependencyResolution test
  */
-public final class TestSourcesManageMojo extends AbstractSourcesMojo
+public final class TestSourcesManageMojo extends AbstractSourcesManageMojo
 {
 
     /**

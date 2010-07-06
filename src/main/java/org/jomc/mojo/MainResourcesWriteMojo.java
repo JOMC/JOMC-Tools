@@ -46,7 +46,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  * @threadSafe
  * @requiresDependencyResolution test
  */
-public final class MainResourcesWriteMojo extends AbstractResourcesMojo
+public final class MainResourcesWriteMojo extends AbstractResourcesWriteMojo
 {
 
     /**
