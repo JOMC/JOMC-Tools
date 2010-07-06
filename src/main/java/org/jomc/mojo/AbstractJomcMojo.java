@@ -586,96 +586,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
-     * Creates a new model context instance for a given class loader.
-     *
-     * @param classLoader The class loader to use for creating the context.
-     *
-     * @return A new model context instance for {@code classLoader}.
-     *
-     * @throws MojoExecutionException if creating the model context fails.
-     */
-    protected ModelContext createModelContext( final ClassLoader classLoader ) throws MojoExecutionException
-    {
-        try
-        {
-            final ModelContext context = ModelContext.createModelContext( classLoader );
-            this.setupModelContext( context );
-            return context;
-        }
-        catch ( final ModelException e )
-        {
-            throw new MojoExecutionException( e.getMessage(), e );
-        }
-    }
-
-    /**
-     * Creates a new tool instance for managing source files.
-     *
-     * @param context The context of the tool.
-     *
-     * @return A new tool instance for managing source files.
-     *
-     * @throws NullPointerException if {@code context} is {@code null}.
-     * @throws MojoExecutionException if getting the tool of the instance fails.
-     */
-    protected SourceFileProcessor createSourceFileProcessor( final ModelContext context ) throws MojoExecutionException
-    {
-        if ( context == null )
-        {
-            throw new NullPointerException( "context" );
-        }
-
-        final SourceFileProcessor tool = new SourceFileProcessor();
-        this.setupJomcTool( context, tool );
-        return tool;
-    }
-
-    /**
-     * Creates a new tool instance for managing resource files.
-     *
-     * @param context The context of the tool.
-     *
-     * @return A new tool instance for managing resource files.
-     *
-     * @throws NullPointerException if {@code context} is {@code null}.
-     * @throws MojoExecutionException if getting the tool of the instance fails.
-     */
-    protected ResourceFileProcessor createResourceFileProcessor( final ModelContext context )
-        throws MojoExecutionException
-    {
-        if ( context == null )
-        {
-            throw new NullPointerException( "context" );
-        }
-
-        final ResourceFileProcessor tool = new ResourceFileProcessor();
-        this.setupJomcTool( context, tool );
-        return tool;
-    }
-
-    /**
-     * Creates a new tool instance for managing class files.
-     *
-     * @param context The context of the tool.
-     *
-     * @return A new tool instance for managing class files.
-     *
-     * @throws NullPointerException if {@code context} is {@code null}.
-     * @throws MojoExecutionException if getting the tool of the instance fails.
-     */
-    protected ClassFileProcessor createClassFileProcessor( final ModelContext context ) throws MojoExecutionException
-    {
-        if ( context == null )
-        {
-            throw new NullPointerException( "context" );
-        }
-
-        final ClassFileProcessor tool = new ClassFileProcessor();
-        this.setupJomcTool( context, tool );
-        return tool;
-    }
-
-    /**
      * Gets the project's runtime class loader of the instance.
      *
      * @return The project's runtime class loader of the instance.
@@ -851,61 +761,172 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
+     * Gets a flag indicating verbose output is enabled.
+     *
+     * @return {@code true} if verbose output is enabled; {@code false} if information messages are suppressed.
+     *
+     * @throws MojoExecutionException if getting the flag fails.
+     *
+     * @since 1.1
+     */
+    protected final boolean isVerbose() throws MojoExecutionException
+    {
+        return this.verbose;
+    }
+
+    /**
+     * Gets a flag indicating verbose output is enabled.
+     *
+     * @param value {@code true} if verbose output is enabled; {@code false} if information messages are suppressed.
+     *
+     * @throws MojoExecutionException if setting the flag fails.
+     *
+     * @since 1.1
+     */
+    protected final void setVerbose( final boolean value ) throws MojoExecutionException
+    {
+        this.verbose = value;
+    }
+
+    /**
      * Gets a flag indicating the processing of sources is enabled.
      *
      * @return {@code true} if processing of sources is enabled; {@code false} else.
+     *
+     * @throws MojoExecutionException if getting the flag fails.
      */
-    protected boolean isSourceProcessingEnabled()
+    protected final boolean isSourceProcessingEnabled() throws MojoExecutionException
     {
         return this.sourceProcessingEnabled;
+    }
+
+    /**
+     * Sets the flag indicating the processing of sources is enabled.
+     *
+     * @param value {@code true} to enable processing of sources; {@code false} to disable processing of sources.
+     *
+     * @throws MojoExecutionException if setting the flag fails.
+     *
+     * @since 1.1
+     */
+    protected final void setSourceProcessingEnabled( final boolean value ) throws MojoExecutionException
+    {
+        this.sourceProcessingEnabled = value;
     }
 
     /**
      * Gets a flag indicating the processing of resources is enabled.
      *
      * @return {@code true} if processing of resources is enabled; {@code false} else.
+     *
+     * @throws MojoExecutionException if getting the flag fails.
      */
-    protected boolean isResourceProcessingEnabled()
+    protected final boolean isResourceProcessingEnabled() throws MojoExecutionException
     {
         return this.resourceProcessingEnabled;
+    }
+
+    /**
+     * Sets the flag indicating the processing of resources is enabled.
+     *
+     * @param value {@code true} to enable processing of resources; {@code false} to disable processing of resources.
+     *
+     * @throws MojoExecutionException if setting the flag fails.
+     *
+     * @since 1.1
+     */
+    protected final void setResourceProcessingEnabled( final boolean value ) throws MojoExecutionException
+    {
+        this.resourceProcessingEnabled = value;
     }
 
     /**
      * Gets a flag indicating the processing of classes is enabled.
      *
      * @return {@code true} if processing of classes is enabled; {@code false} else.
+     *
+     * @throws MojoExecutionException if getting the flag fails.
      */
-    protected boolean isClassProcessingEnabled()
+    protected final boolean isClassProcessingEnabled() throws MojoExecutionException
     {
         return this.classProcessingEnabled;
+    }
+
+    /**
+     * Sets the flag indicating the processing of classes is enabled.
+     *
+     * @param value {@code true} to enable processing of classes; {@code false} to disable processing of classes.
+     *
+     * @throws MojoExecutionException if setting the flag fails.
+     *
+     * @since 1.1
+     */
+    protected final void setClassProcessingEnabled( final boolean value ) throws MojoExecutionException
+    {
+        this.classProcessingEnabled = value;
     }
 
     /**
      * Gets a flag indicating the processing of models is enabled.
      *
      * @return {@code true} if processing of models is enabled; {@code false} else.
+     *
+     * @throws MojoExecutionException if getting the flag fails.
      */
-    protected boolean isModelProcessingEnabled()
+    protected final boolean isModelProcessingEnabled() throws MojoExecutionException
     {
         return this.modelProcessingEnabled;
+    }
+
+    /**
+     * Sets the flag indicating the processing of models is enabled.
+     *
+     * @param value {@code true} to enable processing of models; {@code false} to disable processing of models.
+     *
+     * @throws MojoExecutionException if setting the flag fails.
+     *
+     * @since 1.1
+     */
+    protected final void setModelProcessingEnabled( final boolean value ) throws MojoExecutionException
+    {
+        this.modelProcessingEnabled = value;
     }
 
     /**
      * Gets a flag indicating model object classpath resolution is enabled.
      *
      * @return {@code true} if model object classpath resolution is enabled; {@code false} else.
+     *
+     * @throws MojoExecutionException if getting the flag fails.
      */
-    protected boolean isModelObjectClasspathResolutionEnabled()
+    protected final boolean isModelObjectClasspathResolutionEnabled() throws MojoExecutionException
     {
         return this.modelObjectClasspathResolutionEnabled;
+    }
+
+    /**
+     * Sets the flag indicating model object classpath resolution is enabled.
+     *
+     * @param value {@code true} to enable model object classpath resolution; {@code false} to disable model object
+     * classpath resolution.
+     *
+     * @throws MojoExecutionException if setting the flag fails.
+     *
+     * @since 1.1
+     */
+    protected final void setModelObjectClasspathResolutionEnabled( final boolean value ) throws MojoExecutionException
+    {
+        this.modelObjectClasspathResolutionEnabled = value;
     }
 
     /**
      * Gets the identifier of the model to process.
      *
      * @return The identifier of the model to process.
+     *
+     * @throws MojoExecutionException if getting the identifier fails.
      */
-    protected String getModel()
+    protected String getModel() throws MojoExecutionException
     {
         return this.model;
     }
@@ -934,8 +955,23 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         return this.testModuleName;
     }
 
+    /**
+     * Gets the model to process.
+     *
+     * @param context The model context to get the model to process with.
+     *
+     * @return The model to process.
+     *
+     * @throws NullPointerException if {@code context} is {@code null}.
+     * @throws MojoExecutionException if getting the model fails.
+     */
     protected Model getModel( final ModelContext context ) throws MojoExecutionException
     {
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+
         try
         {
             Model m = context.findModel( this.getModel() );
@@ -963,6 +999,104 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         {
             throw new MojoExecutionException( e.getMessage(), e );
         }
+    }
+
+    /**
+     * Creates a new model context instance for a given class loader.
+     *
+     * @param classLoader The class loader to use for creating the context.
+     *
+     * @return A new model context instance for {@code classLoader}.
+     *
+     * @throws MojoExecutionException if creating the model context fails.
+     *
+     * @see #setupModelContext(org.jomc.modlet.ModelContext)
+     */
+    protected ModelContext createModelContext( final ClassLoader classLoader ) throws MojoExecutionException
+    {
+        try
+        {
+            final ModelContext context = ModelContext.createModelContext( classLoader );
+            this.setupModelContext( context );
+            return context;
+        }
+        catch ( final ModelException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
+    }
+
+    /**
+     * Creates a new tool instance for managing source files.
+     *
+     * @param context The context of the tool.
+     *
+     * @return A new tool instance for managing source files.
+     *
+     * @throws NullPointerException if {@code context} is {@code null}.
+     * @throws MojoExecutionException if getting the tool of the instance fails.
+     *
+     * @see #setupJomcTool(org.jomc.modlet.ModelContext, org.jomc.tools.JomcTool)
+     */
+    protected SourceFileProcessor createSourceFileProcessor( final ModelContext context ) throws MojoExecutionException
+    {
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+
+        final SourceFileProcessor tool = new SourceFileProcessor();
+        this.setupJomcTool( context, tool );
+        return tool;
+    }
+
+    /**
+     * Creates a new tool instance for managing resource files.
+     *
+     * @param context The context of the tool.
+     *
+     * @return A new tool instance for managing resource files.
+     *
+     * @throws NullPointerException if {@code context} is {@code null}.
+     * @throws MojoExecutionException if getting the tool of the instance fails.
+     *
+     * @see #setupJomcTool(org.jomc.modlet.ModelContext, org.jomc.tools.JomcTool)
+     */
+    protected ResourceFileProcessor createResourceFileProcessor( final ModelContext context )
+        throws MojoExecutionException
+    {
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+
+        final ResourceFileProcessor tool = new ResourceFileProcessor();
+        this.setupJomcTool( context, tool );
+        return tool;
+    }
+
+    /**
+     * Creates a new tool instance for managing class files.
+     *
+     * @param context The context of the tool.
+     *
+     * @return A new tool instance for managing class files.
+     *
+     * @throws NullPointerException if {@code context} is {@code null}.
+     * @throws MojoExecutionException if getting the tool of the instance fails.
+     *
+     * @see #setupJomcTool(org.jomc.modlet.ModelContext, org.jomc.tools.JomcTool)
+     */
+    protected ClassFileProcessor createClassFileProcessor( final ModelContext context ) throws MojoExecutionException
+    {
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+
+        final ClassFileProcessor tool = new ClassFileProcessor();
+        this.setupJomcTool( context, tool );
+        return tool;
     }
 
     protected void logSeparator( final Level level ) throws MojoExecutionException
@@ -1040,11 +1174,12 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     protected void log( final Level level, final String message, final Throwable throwable )
+        throws MojoExecutionException
     {
         try
         {
             if ( level.intValue() < Level.INFO.intValue() || level.intValue() >= Level.WARNING.intValue()
-                 || this.verbose )
+                 || this.isVerbose() )
             {
                 String line;
                 final BufferedReader reader = new BufferedReader( new StringReader( message == null ? "" : message ) );
@@ -1087,9 +1222,65 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
     }
 
+    /**
+     * Configures a {@code ModelContext} instance.
+     *
+     * @param context The model context to configure.
+     *
+     * @throws NullPointerException if {@code context} is {@code null}.
+     * @throws MojoExecutionException if configuring {@code context} fails.
+     */
+    protected void setupModelContext( final ModelContext context ) throws MojoExecutionException
+    {
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+
+        if ( this.isVerbose() || this.getLog().isDebugEnabled() )
+        {
+            context.setLogLevel( this.getLog().isDebugEnabled() ? Level.ALL : Level.INFO );
+        }
+
+        context.getListeners().add( new ModelContext.Listener()
+        {
+
+            public void onLog( final Level level, final String message, final Throwable t )
+            {
+                try
+                {
+                    log( level, message, t );
+                }
+                catch ( final MojoExecutionException e )
+                {
+                    getLog().error( e );
+                }
+            }
+
+        } );
+    }
+
+    /**
+     * Configures a {@code JomcTool} instance.
+     *
+     * @param context The model context to use for configuring {@code tool}.
+     * @param tool The tool to configure.
+     *
+     * @throws NullPointerException if {@code context} of {@code tool} is {@code null}.
+     * @throws MojoExecutionException if configuring {@code tool} fails.
+     */
     protected void setupJomcTool( final ModelContext context, final JomcTool tool ) throws MojoExecutionException
     {
-        if ( this.verbose || this.getLog().isDebugEnabled() )
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+        if ( tool == null )
+        {
+            throw new NullPointerException( "tool" );
+        }
+
+        if ( this.isVerbose() || this.getLog().isDebugEnabled() )
         {
             tool.setLogLevel( this.getLog().isDebugEnabled() ? Level.ALL : Level.INFO );
         }
@@ -1099,7 +1290,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             public void onLog( final Level level, final String message, final Throwable t )
             {
-                log( level, message, t );
+                try
+                {
+                    log( level, message, t );
+                }
+                catch ( final MojoExecutionException e )
+                {
+                    getLog().error( e );
+                }
             }
 
         } );
@@ -1118,24 +1316,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         {
             tool.setLineSeparator( StringEscapeUtils.unescapeJava( this.lineSeparator ) );
         }
-    }
-
-    protected void setupModelContext( final ModelContext modelContext )
-    {
-        if ( this.verbose || this.getLog().isDebugEnabled() )
-        {
-            modelContext.setLogLevel( this.getLog().isDebugEnabled() ? Level.ALL : Level.INFO );
-        }
-
-        modelContext.getListeners().add( new ModelContext.Listener()
-        {
-
-            public void onLog( final Level level, final String message, final Throwable t )
-            {
-                log( level, message, t );
-            }
-
-        } );
     }
 
     private Artifact getPluginArtifact( final Artifact a )

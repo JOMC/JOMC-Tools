@@ -89,13 +89,20 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
             if ( this.document == null )
             {
                 final StringWriter stringWriter = new StringWriter();
-                stringWriter.append( System.getProperty( "line.separator" ) );
-                stringWriter.append( System.getProperty( "line.separator" ) );
                 m.marshal( new ObjectFactory().createModel( displayModel ), stringWriter );
 
-                this.log( Level.INFO, "", null );
-                this.log( Level.INFO, stringWriter.toString(), null );
-                this.log( Level.INFO, "", null );
+                final boolean verbose = this.isVerbose();
+                try
+                {
+                    this.setVerbose( true );
+                    this.log( Level.INFO, "", null );
+                    this.log( Level.INFO, stringWriter.toString(), null );
+                    this.log( Level.INFO, "", null );
+                }
+                finally
+                {
+                    this.setVerbose( verbose );
+                }
             }
             else
             {

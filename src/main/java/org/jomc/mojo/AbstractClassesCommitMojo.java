@@ -168,18 +168,41 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
 
             public void warning( final TransformerException exception ) throws TransformerException
             {
-                log( Level.WARNING, exception.getMessage(), exception );
+                try
+                {
+                    log( Level.WARNING, exception.getMessage(), exception );
+                }
+                catch ( final MojoExecutionException e )
+                {
+                    getLog().error( e );
+                }
             }
 
             public void error( final TransformerException exception ) throws TransformerException
             {
-                log( Level.SEVERE, exception.getMessage(), exception );
+                try
+                {
+                    log( Level.SEVERE, exception.getMessage(), exception );
+                }
+                catch ( final MojoExecutionException e )
+                {
+                    getLog().error( e );
+                }
+
                 throw exception;
             }
 
             public void fatalError( final TransformerException exception ) throws TransformerException
             {
-                log( Level.SEVERE, exception.getMessage(), exception );
+                try
+                {
+                    log( Level.SEVERE, exception.getMessage(), exception );
+                }
+                catch ( final MojoExecutionException e )
+                {
+                    getLog().error( e );
+                }
+
                 throw exception;
             }
 
