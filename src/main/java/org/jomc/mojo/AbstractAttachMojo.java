@@ -70,7 +70,7 @@ public abstract class AbstractAttachMojo extends AbstractMojo
      * @required
      * @readonly
      */
-    private MavenProjectHelper projectHelper;
+    private MavenProjectHelper mavenProjectHelper;
 
     /**
      * The Maven session of the instance.
@@ -83,17 +83,80 @@ public abstract class AbstractAttachMojo extends AbstractMojo
     private MavenSession mavenSession;
 
     /**
-     * Directory holding session related files.
+     * Directory holding the session related files of the project.
      *
      * @parameter default-value="${project.build.directory}/jomc-sessions" expression="${jomc.sessionDirectory}"
      * @since 1.1
      */
-    private File sessionDirectory;
+    private String sessionDirectory;
 
     /** Creates a new {@code AbstractAttachMojo} instance. */
     public AbstractAttachMojo()
     {
         super();
+    }
+
+    /**
+     * Gets the Maven project of the instance.
+     *
+     * @return The Maven project of the instance.
+     *
+     * @throws MojoExecutionException if getting the Maven project of the instance fails.
+     *
+     * @since 1.1
+     */
+    protected MavenProject getMavenProject() throws MojoExecutionException
+    {
+        return this.mavenProject;
+    }
+
+    /**
+     * Gets the Maven session of the instance.
+     *
+     * @return The Maven session of the instance.
+     *
+     * @throws MojoExecutionException if getting the Maven session of the instance fails.
+     *
+     * @since 1.1
+     */
+    protected MavenSession getMavenSession() throws MojoExecutionException
+    {
+        return this.mavenSession;
+    }
+
+    /**
+     * Gets the Maven project helper of the instance.
+     *
+     * @return The Maven project helper of the instance.
+     *
+     * @throws MojoExecutionException if getting the Maven project helper of the instance fails.
+     *
+     * @since 1.1
+     */
+    protected MavenProjectHelper getMavenProjectHelper() throws MojoExecutionException
+    {
+        return this.mavenProjectHelper;
+    }
+
+    /**
+     * Gets the directory holding the session related files of the project.
+     *
+     * @return The directory holding the session related files of the project.
+     *
+     * @throws MojoExecutionException if getting the directory fails.
+     *
+     * @since 1.1
+     */
+    protected File getSessionDirectory() throws MojoExecutionException
+    {
+        File directory = new File( this.sessionDirectory );
+
+        if ( !directory.isAbsolute() )
+        {
+            directory = new File( this.getMavenProject().getBasedir(), this.sessionDirectory );
+        }
+
+        return directory;
     }
 
     /**
@@ -128,9 +191,10 @@ public abstract class AbstractAttachMojo extends AbstractMojo
 
     public void execute() throws MojoExecutionException, MojoFailureException
     {
-        final File attachment = new File( this.sessionDirectory, this.getArtifactClassifier() + "-"
-                                                                 + this.mavenSession.getStartTime().getTime() + "."
-                                                                 + this.getArtifactType() );
+        final File attachment =
+            new File( this.getSessionDirectory(),
+                      this.getArtifactClassifier() + "-" + this.getMavenSession().getStartTime().getTime() + "."
+                      + this.getArtifactType() );
 
         try
         {
@@ -145,8 +209,8 @@ public abstract class AbstractAttachMojo extends AbstractMojo
                     }
 
                     FileUtils.copyFile( this.getArtifactFile(), attachment );
-                    this.projectHelper.attachArtifact( this.mavenProject, this.getArtifactType(),
-                                                       this.getArtifactClassifier(), attachment );
+                    this.getMavenProjectHelper().attachArtifact( this.getMavenProject(), this.getArtifactType(),
+                                                                 this.getArtifactClassifier(), attachment );
 
                 }
                 else if ( this.getLog().isInfoEnabled() )
