@@ -122,7 +122,7 @@ import org.jomc.modlet.ObjectFactory;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.1-SNAPSHOT Build 2010-07-07T04:21:04+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.1-SNAPSHOT Build 2010-07-07T04:40:30+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -184,10 +184,6 @@ import org.jomc.modlet.ObjectFactory;
  * <tr><td valign="top">English:</td><td valign="top"><pre>Instance ''{0}'' not found.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Instanz ''{0}'' nicht gefunden.</pre></td></tr>
  * </table>
- * <li>"{@link #getInvalidModelMessage invalidModelMessage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Invalid model.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ung&uuml;ltiges Modell.</pre></td></tr>
- * </table>
  * <li>"{@link #getLongDescriptionMessage longDescriptionMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
  *   jomc show-model -cp examples/lib/commons-cli-1.2.jar \
@@ -197,6 +193,10 @@ import org.jomc.modlet.ObjectFactory;
  *   jomc show-model -cp examples/lib/commons-cli-1.2.jar \
  *                   -df examples/xml/jomc-cli.xml \
  *                   -v</pre></td></tr>
+ * </table>
+ * <li>"{@link #getModelValidationReportTitle modelValidationReportTitle}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Model validation report</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modellpr&uuml;fungsbericht</pre></td></tr>
  * </table>
  * <li>"{@link #getModulesReport modulesReport}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>{0}: Modules</pre></td></tr>
@@ -679,7 +679,7 @@ public final class ShowModelCommand extends AbstractJomcToolCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.1-SNAPSHOT Build 2010-07-07T04:21:04+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC Version 1.1-SNAPSHOT Build 2010-07-07T04:40:30+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -1008,25 +1008,6 @@ public final class ShowModelCommand extends AbstractJomcToolCommand
     }
 
     /**
-     * Gets the text of the {@code invalidModelMessage} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Invalid model.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ung&uuml;ltiges Modell.</pre></td></tr>
-     * </table></p>
-     * @param locale The locale of the message to return.
-     * @return The text of the {@code invalidModelMessage} message.
-     *
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.1/jomc-tools" )
-    private String getInvalidModelMessage( final java.util.Locale locale )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "invalidModelMessage", locale );
-        assert _m != null : "'invalidModelMessage' message not found.";
-        return _m;
-    }
-
-    /**
      * Gets the text of the {@code longDescriptionMessage} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
@@ -1048,6 +1029,25 @@ public final class ShowModelCommand extends AbstractJomcToolCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "longDescriptionMessage", locale );
         assert _m != null : "'longDescriptionMessage' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code modelValidationReportTitle} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Model validation report</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modellpr&uuml;fungsbericht</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code modelValidationReportTitle} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.1/jomc-tools" )
+    private String getModelValidationReportTitle( final java.util.Locale locale )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "modelValidationReportTitle", locale );
+        assert _m != null : "'modelValidationReportTitle' message not found.";
         return _m;
     }
 
