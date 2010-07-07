@@ -438,7 +438,7 @@ public class JomcResourceTransformer implements ResourceTransformer
 
     private void setupJomc()
     {
-        DefaultModelContext.setDefaultModletSchemaSystemId( this.modletSchemaSystemId );
+        ModelContext.setDefaultModletSchemaSystemId( this.modletSchemaSystemId );
         DefaultModelContext.setDefaultPlatformProviderLocation( this.platformProviderLocation );
         DefaultModelContext.setDefaultProviderLocation( this.providerLocation );
         DefaultModletProvider.setDefaultModletLocation( this.modletLocation );
@@ -446,7 +446,7 @@ public class JomcResourceTransformer implements ResourceTransformer
 
     private void resetJomc()
     {
-        DefaultModelContext.setDefaultModletSchemaSystemId( null );
+        ModelContext.setDefaultModletSchemaSystemId( null );
         DefaultModelContext.setDefaultPlatformProviderLocation( null );
         DefaultModelContext.setDefaultProviderLocation( null );
         DefaultModletProvider.setDefaultModletLocation( null );
