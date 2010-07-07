@@ -294,7 +294,7 @@ public class ResourceFileProcessor extends JomcTool
         assert this.getModules().getSpecification( specification.getIdentifier() ) != null :
             "Specification '" + specification.getIdentifier() + "' not found.";
 
-        return new HashMap<Locale, java.util.Properties>();
+        return new HashMap<Locale, Properties>();
     }
 
     /**

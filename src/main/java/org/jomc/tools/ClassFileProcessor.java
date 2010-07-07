@@ -1552,8 +1552,9 @@ public class ClassFileProcessor extends JomcTool
             {
                 if ( decodedDependencies != null )
                 {
-                    final JAXBSource source = new JAXBSource( marshaller,
-                                                              of.createDependencies( decodedDependencies ) );
+                    final JAXBSource source =
+                        new JAXBSource( marshaller, of.createDependencies( decodedDependencies ) );
+
                     final JAXBResult result = new JAXBResult( unmarshaller );
                     transformer.transform( source, result );
                     decodedDependencies = ( (JAXBElement<Dependencies>) result.getResult() ).getValue();
