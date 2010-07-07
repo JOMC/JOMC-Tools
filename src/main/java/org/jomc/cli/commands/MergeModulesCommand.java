@@ -333,16 +333,12 @@ public final class MergeModulesCommand extends AbstractJomcToolCommand
                         final Module m = it.next();
                         if ( !includes.contains( m.getName() ) )
                         {
-                            this.log( Level.INFO, this.getExcludingModuleInfo(
-                                this.getLocale(), m.getName() ), null );
-
+                            this.log( Level.INFO, this.getExcludingModuleInfo( this.getLocale(), m.getName() ), null );
                             it.remove();
                         }
                         else
                         {
-                            this.log( Level.INFO, this.getIncludingModuleInfo(
-                                this.getLocale(), m.getName() ), null );
-
+                            this.log( Level.INFO, this.getIncludingModuleInfo( this.getLocale(), m.getName() ), null );
                         }
                     }
                 }
@@ -360,9 +356,7 @@ public final class MergeModulesCommand extends AbstractJomcToolCommand
 
                         if ( m != null )
                         {
-                            this.log( Level.INFO, this.getExcludingModuleInfo(
-                                this.getLocale(), m.getName() ), null );
-
+                            this.log( Level.INFO, this.getExcludingModuleInfo( this.getLocale(), m.getName() ), null );
                             modules.getModule().remove( m );
                         }
                     }

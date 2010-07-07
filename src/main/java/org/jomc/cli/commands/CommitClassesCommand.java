@@ -263,8 +263,8 @@ public final class CommitClassesCommand extends AbstractJomcToolCommand
             final ClassFileProcessor tool = this.createClassFileProcessor();
             tool.setModel( model );
 
-            final File classesDirectory = new File( commandLine.getOptionValue(
-                this.getClassesDirectoryOption().getOpt() ) );
+            final File classesDirectory =
+                new File( commandLine.getOptionValue( this.getClassesDirectoryOption().getOpt() ) );
 
             if ( commandLine.hasOption( this.getModuleNameOption().getOpt() ) )
             {

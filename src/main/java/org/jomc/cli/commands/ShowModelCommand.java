@@ -304,8 +304,8 @@ public final class ShowModelCommand extends AbstractJomcToolCommand
                 }
                 else if ( this.isLoggable( Level.WARNING ) )
                 {
-                    this.log( Level.WARNING, this.getSpecificationNotFoundWarning( this.getLocale(), identifier ),
-                              null );
+                    this.log( Level.WARNING,
+                              this.getSpecificationNotFoundWarning( this.getLocale(), identifier ), null );
 
                 }
             }
@@ -327,14 +327,17 @@ public final class ShowModelCommand extends AbstractJomcToolCommand
             if ( commandLine.hasOption( this.getDocumentOption().getOpt() ) )
             {
                 final File documentFile = new File( commandLine.getOptionValue( this.getDocumentOption().getOpt() ) );
-                this.log( Level.INFO, this.getWriteInfo( this.getLocale(), documentFile.getAbsolutePath() ), null );
+
+                if ( this.isLoggable( Level.INFO ) )
+                {
+                    this.log( Level.INFO, this.getWriteInfo( this.getLocale(), documentFile.getAbsolutePath() ), null );
+                }
+
                 marshaller.marshal( new ObjectFactory().createModel( displayModel ), documentFile );
             }
-            else
+            else if ( this.isLoggable( Level.INFO ) )
             {
                 final StringWriter stringWriter = new StringWriter();
-                stringWriter.write( System.getProperty( "line.separator", "\n" ) );
-                stringWriter.write( System.getProperty( "line.separator", "\n" ) );
                 marshaller.marshal( new ObjectFactory().createModel( displayModel ), stringWriter );
                 this.log( Level.INFO, stringWriter.toString(), null );
             }
