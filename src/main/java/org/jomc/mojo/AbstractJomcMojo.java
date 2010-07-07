@@ -225,18 +225,18 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     /**
      * Directory holding the compiled class files of the project.
+     * <p><strong>Replaced by 'outputDirectory' parameter.</strong></p>
      *
      * @parameter
-     * @deprecated Replaced by 'outputDirectory' parameter.
      */
     @Deprecated
     private String classesDirectory;
 
     /**
      * Directory holding the compiled test class files of the project.
-     *
+     * <p><strong>Replaced by 'testOutputDirectory' parameter.</strong></p>
+     * 
      * @parameter
-     * @deprecated Replaced by 'testOutputDirectory' parameter.
      */
     @Deprecated
     private String testClassesDirectory;
@@ -466,13 +466,25 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected File getOutputDirectory() throws MojoExecutionException
     {
-        File directory = new File( this.classesDirectory != null ? this.classesDirectory : this.outputDirectory );
+        File directory;
 
-        if ( !directory.isAbsolute() )
+        if ( this.classesDirectory != null )
         {
-            directory = new File( this.getMavenProject().getBasedir(),
-                                  this.classesDirectory != null ? this.classesDirectory : this.outputDirectory );
+            this.log( Level.WARNING, getMessage( "deprecationWarning", "classesDirectory", "outputDirectory" ), null );
 
+            directory = new File( this.classesDirectory );
+            if ( !directory.isAbsolute() )
+            {
+                directory = new File( this.getMavenProject().getBasedir(), this.classesDirectory );
+            }
+        }
+        else
+        {
+            directory = new File( this.outputDirectory );
+            if ( !directory.isAbsolute() )
+            {
+                directory = new File( this.getMavenProject().getBasedir(), this.outputDirectory );
+            }
         }
 
         return directory;
@@ -489,15 +501,26 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected File getTestOutputDirectory() throws MojoExecutionException
     {
-        File directory =
-            new File( this.testClassesDirectory != null ? this.testClassesDirectory : this.testOutputDirectory );
+        File directory;
 
-        if ( !directory.isAbsolute() )
+        if ( this.testClassesDirectory != null )
         {
-            directory = new File( this.getMavenProject().getBasedir(), this.testClassesDirectory != null
-                                                                       ? this.testClassesDirectory
-                                                                       : this.testOutputDirectory );
+            this.log( Level.WARNING, getMessage( "deprecationWarning", "testClassesDirectory",
+                                                 "testOutputDirectory" ), null );
 
+            directory = new File( this.testClassesDirectory );
+            if ( !directory.isAbsolute() )
+            {
+                directory = new File( this.getMavenProject().getBasedir(), this.testClassesDirectory );
+            }
+        }
+        else
+        {
+            directory = new File( this.testOutputDirectory );
+            if ( !directory.isAbsolute() )
+            {
+                directory = new File( this.getMavenProject().getBasedir(), this.testOutputDirectory );
+            }
         }
 
         return directory;
