@@ -47,16 +47,10 @@
       <resource>
         <filtering>true</filtering>
         <directory>src/main/resources</directory>
-        <excludes>
-          <exclude>**/*.vm</exclude>
-        </excludes>
       </resource>
       <resource>
         <filtering>false</filtering>
-        <directory>src/main/resources</directory>
-        <includes>
-          <include>**/*.vm</include>
-        </includes>
+        <directory>src/main/templates</directory>
       </resource>
       <resource>
         <filtering>false</filtering>
@@ -71,16 +65,6 @@
       <testResource>
         <filtering>true</filtering>
         <directory>src/test/resources</directory>
-        <excludes>
-          <exclude>**/*.ser</exclude>
-        </excludes>
-      </testResource>
-      <testResource>
-        <filtering>false</filtering>
-        <directory>src/test/resources</directory>
-        <includes>
-          <include>**/*.ser</include>
-        </includes>
       </testResource>
     </testResources>
     <plugins>
