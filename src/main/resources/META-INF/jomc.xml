@@ -1377,8 +1377,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="${project.name} Instance Option"
-                    name="${project.name} Instance Option"
+    <implementation identifier="${project.name} Implementation Option"
+                    name="${project.name} Implementation Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
                     vendor="${project.organization.name}">
 
@@ -1391,15 +1391,15 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="inst" override="true"/>
-        <property name="longOpt" value="instance" override="true"/>
+        <property name="opt" value="impl" override="true"/>
+        <property name="longOpt" value="implementation" override="true"/>
         <property name="numberOfArgs" type="int" value="1" override="true"/>
       </properties>
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Identifier of the instance to display.</text>
-            <text language="de">Bezeichner der anzuzeigenden Instanz.</text>
+            <text language="en">Identifier of the implementation to process.</text>
+            <text language="de">Bezeichner der zu verarbeitenden Implementierung.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
@@ -1432,8 +1432,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Identifier of the specification to display.</text>
-            <text language="de">Bezeichner der anzuzeigenden Spezifikation.</text>
+            <text language="en">Identifier of the specification to process.</text>
+            <text language="de">Bezeichner der zu verarbeitenden Spezifikation.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
@@ -1823,8 +1823,14 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="${project.name} JOMC Tool Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
+        <dependency name="ImplementationOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Implementation Option"/>
+
         <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Module Name Option"/>
+
+        <dependency name="SpecificationOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Specification Option"/>
 
         <dependency name="LanguageOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Language Option"/>
@@ -1886,7 +1892,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                       -v]]></text>
           </template>
         </message>
-        <reference name="missingModuleMessage" final="true"/>
+        <reference name="moduleNotFoundWarning" final="true"/>
+        <reference name="implementationNotFoundWarning" final="true"/>
+        <reference name="specificationNotFoundWarning" final="true"/>
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
@@ -1906,8 +1914,14 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="${project.name} JOMC Tool Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
+        <dependency name="ImplementationOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Implementation Option"/>
+
         <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Module Name Option"/>
+
+        <dependency name="SpecificationOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Specification Option"/>
 
         <dependency name="SourceDirectoryOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Source Directory Option">
@@ -1973,7 +1987,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                       -v]]></text>
           </template>
         </message>
-        <reference name="missingModuleMessage" final="true"/>
+        <reference name="moduleNotFoundWarning" final="true"/>
+        <reference name="implementationNotFoundWarning" final="true"/>
+        <reference name="specificationNotFoundWarning" final="true"/>
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
@@ -1993,8 +2009,14 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="${project.name} JOMC Tool Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
+        <dependency name="ImplementationOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Implementation Option"/>
+
         <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Module Name Option"/>
+
+        <dependency name="SpecificationOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Specification Option"/>
 
         <dependency name="ClassesDirectoryOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Classes Directory Option">
@@ -2039,7 +2061,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                       -v]]></text>
           </template>
         </message>
-        <reference name="missingModuleMessage" final="true"/>
+        <reference name="moduleNotFoundWarning" final="true"/>
+        <reference name="implementationNotFoundWarning" final="true"/>
+        <reference name="specificationNotFoundWarning" final="true"/>
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
@@ -2059,8 +2083,14 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="${project.name} JOMC Tool Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
+        <dependency name="ImplementationOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Implementation Option"/>
+
         <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Module Name Option"/>
+
+        <dependency name="SpecificationOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Specification Option"/>
 
       </dependencies>
       <properties>
@@ -2094,7 +2124,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                         -v]]></text>
           </template>
         </message>
-        <reference name="missingModuleMessage" final="true"/>
+        <reference name="moduleNotFoundWarning" final="true"/>
+        <reference name="implementationNotFoundWarning" final="true"/>
+        <reference name="specificationNotFoundWarning" final="true"/>
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
@@ -2387,8 +2419,11 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <dependency name="DocumentEncodingOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Document Encoding Option"/>
 
-        <dependency name="InstanceOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Instance Option"/>
+        <dependency name="ImplementationOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Implementation Option"/>
+
+        <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Module Name Option"/>
 
         <dependency name="SpecificationOption" identifier="org.apache.commons.cli.Option"
                     implementationName="${project.name} Specification Option"/>
@@ -2425,24 +2460,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                   -v]]></text>
           </template>
         </message>
-        <message name="specificationNotFoundWarning" final="true">
-          <template defaultLanguage="en">
-            <text language="en">Specification ''{0}'' not found.</text>
-            <text language="de">Spezifikation ''{0}'' nicht gefunden.</text>
-          </template>
-          <arguments>
-            <argument index="0" name="specificationIdentifier"/>
-          </arguments>
-        </message>
-        <message name="instanceNotFoundWarning" final="true">
-          <template defaultLanguage="en">
-            <text language="en">Instance ''{0}'' not found.</text>
-            <text language="de">Instanz ''{0}'' nicht gefunden.</text>
-          </template>
-          <arguments>
-            <argument index="0" name="instanceIdentifier"/>
-          </arguments>
-        </message>
+        <reference name="moduleNotFoundWarning" final="true"/>
+        <reference name="implementationNotFoundWarning" final="true"/>
+        <reference name="specificationNotFoundWarning" final="true"/>
         <reference name="writeInfo"/>
       </messages>
     </implementation>
@@ -2459,13 +2479,33 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </arguments>
     </message>
     <!-- *********************************************************************************************************** -->
-    <message name="missingModuleMessage">
+    <message name="moduleNotFoundWarning">
       <template defaultLanguage="en">
         <text language="en">Module ''{0}'' not found.</text>
         <text language="de">Modul ''{0}'' nicht gefunden.</text>
       </template>
       <arguments>
         <argument index="0" name="moduleName"/>
+      </arguments>
+    </message>
+    <!-- *********************************************************************************************************** -->
+    <message name="specificationNotFoundWarning">
+      <template defaultLanguage="en">
+        <text language="en">Specification ''{0}'' not found.</text>
+        <text language="de">Spezifikation ''{0}'' nicht gefunden.</text>
+      </template>
+      <arguments>
+        <argument index="0" name="specificationIdentifier"/>
+      </arguments>
+    </message>
+    <!-- *********************************************************************************************************** -->
+    <message name="implementationNotFoundWarning">
+      <template defaultLanguage="en">
+        <text language="en">Implementation ''{0}'' not found.</text>
+        <text language="de">Implementierung ''{0}'' nicht gefunden.</text>
+      </template>
+      <arguments>
+        <argument index="0" name="implementationIdentifier"/>
       </arguments>
     </message>
   </messages>

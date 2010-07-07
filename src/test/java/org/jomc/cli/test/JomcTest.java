@@ -457,24 +457,24 @@ public class JomcTest extends TestCase
 
         final String[] showInstance = new String[]
         {
-            "show-model", "-cp", '"' + this.getClassesDirectory() + '"', "-inst", "JOMC CLI show-model Command"
+            "show-model", "-cp", '"' + this.getClassesDirectory() + '"', "-impl", "JOMC CLI show-model Command"
         };
 
         final String[] writeInstance = new String[]
         {
-            "show-model", "-cp", '"' + this.getClassesDirectory() + '"', "-inst", "JOMC CLI show-model Command", "-d",
+            "show-model", "-cp", '"' + this.getClassesDirectory() + '"', "-impl", "JOMC CLI show-model Command", "-d",
             '"' + this.getTestShowInstanceOutputDocument() + '"'
         };
 
         final String[] showSpecificationAndInstance = new String[]
         {
-            "show-model", "-cp", '"' + this.getClassesDirectory() + '"', "-spec", "JOMC CLI Command", "-inst",
+            "show-model", "-cp", '"' + this.getClassesDirectory() + '"', "-spec", "JOMC CLI Command", "-impl",
             "JOMC CLI show-model Command"
         };
 
         final String[] writeSpecificationAndInstance = new String[]
         {
-            "show-model", "-cp", '"' + this.getClassesDirectory() + '"', "-spec", "JOMC CLI Command", "-inst",
+            "show-model", "-cp", '"' + this.getClassesDirectory() + '"', "-spec", "JOMC CLI Command", "-impl",
             "JOMC CLI show-model Command", "-d", '"' + this.getTestShowSpecificationAndInstanceOutputDocument() + '"'
         };
 

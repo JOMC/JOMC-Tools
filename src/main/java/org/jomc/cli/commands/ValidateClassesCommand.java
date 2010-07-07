@@ -43,7 +43,9 @@ import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.Source;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
+import org.jomc.model.Implementation;
 import org.jomc.model.Module;
+import org.jomc.model.Specification;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelValidationReport;
@@ -88,6 +90,8 @@ import org.jomc.tools.ClassFileProcessor;
  * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
  * <li>"{@link #getDocumentsOption DocumentsOption}"<blockquote>
  * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
+ * <li>"{@link #getImplementationOption ImplementationOption}"<blockquote>
+ * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
  * <li>"{@link #getLocale Locale}"<blockquote>
  * Dependency on {@code 'java.util.Locale'} {@code (java.util.Locale)} at specification level 1.1 bound to an instance.</blockquote></li>
  * <li>"{@link #getModelOption ModelOption}"<blockquote>
@@ -106,12 +110,14 @@ import org.jomc.tools.ClassFileProcessor;
  * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
  * <li>"{@link #getProviderLocationOption ProviderLocationOption}"<blockquote>
  * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
+ * <li>"{@link #getSpecificationOption SpecificationOption}"<blockquote>
+ * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
  * <li>"{@link #getTransformerLocationOption TransformerLocationOption}"<blockquote>
  * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-07T18:51:24+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-07T20:12:46+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -169,6 +175,10 @@ import org.jomc.tools.ClassFileProcessor;
  * <tr><td valign="top">English:</td><td valign="top"><pre>{0}: Service ''{2}'' from class path resource ''{1}'' ignored.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0}: Service ''{2}'' aus Klassenpfad-Ressource ''{1}'' ignoriert.</pre></td></tr>
  * </table>
+ * <li>"{@link #getImplementationNotFoundWarning implementationNotFoundWarning}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Implementation ''{0}'' not found.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Implementierung ''{0}'' nicht gefunden.</pre></td></tr>
+ * </table>
  * <li>"{@link #getLongDescriptionMessage longDescriptionMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
  *   jomc validate-classes -cp examples/lib/commons-cli-1.2.jar:target/classes \
@@ -179,7 +189,7 @@ import org.jomc.tools.ClassFileProcessor;
  *                         -df examples/xml/jomc-cli.xml \
  *                         -v</pre></td></tr>
  * </table>
- * <li>"{@link #getMissingModuleMessage missingModuleMessage}"<table>
+ * <li>"{@link #getModuleNotFoundWarning moduleNotFoundWarning}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul ''{0}'' nicht gefunden.</pre></td></tr>
  * </table>
@@ -193,6 +203,10 @@ import org.jomc.tools.ClassFileProcessor;
  * <li>"{@link #getShortDescriptionMessage shortDescriptionMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Validates model objects of class files.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Pr&uuml;ft Klassendateien.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getSpecificationNotFoundWarning specificationNotFoundWarning}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Specification ''{0}'' not found.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Spezifikation ''{0}'' nicht gefunden.</pre></td></tr>
  * </table>
  * </ul></p>
  *
@@ -229,6 +243,8 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
             this.options.addOption( this.getNoClasspathResolutionOption() );
             this.options.addOption( this.getNoModelProcessingOption() );
             this.options.addOption( this.getModuleNameOption() );
+            this.options.addOption( this.getImplementationOption() );
+            this.options.addOption( this.getSpecificationOption() );
         }
 
         return this.options;
@@ -250,30 +266,68 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
             final ClassFileProcessor tool = this.createClassFileProcessor();
             tool.setModel( model );
 
+            boolean validateModules = true;
+            validationReport = new ModelValidationReport();
+
+            if ( commandLine.hasOption( this.getSpecificationOption().getOpt() ) )
+            {
+                final String identifier = commandLine.getOptionValue( this.getSpecificationOption().getOpt() );
+                final Specification s = tool.getModules().getSpecification( identifier );
+                validateModules = false;
+
+                if ( s != null )
+                {
+                    validationReport.getDetails().addAll( tool.validateModelObjects( s, context ).getDetails() );
+                }
+                else if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING,
+                              this.getSpecificationNotFoundWarning( this.getLocale(), identifier ), null );
+
+                }
+            }
+
+            if ( commandLine.hasOption( this.getImplementationOption().getOpt() ) )
+            {
+                final String identifier = commandLine.getOptionValue( this.getImplementationOption().getOpt() );
+                final Implementation i = tool.getModules().getImplementation( identifier );
+                validateModules = false;
+
+                if ( i != null )
+                {
+                    validationReport.getDetails().addAll( tool.validateModelObjects( i, context ).getDetails() );
+                }
+                else if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING,
+                              this.getImplementationNotFoundWarning( this.getLocale(), identifier ), null );
+
+                }
+            }
+
             if ( commandLine.hasOption( this.getModuleNameOption().getOpt() ) )
             {
                 final String moduleName = commandLine.getOptionValue( this.getModuleNameOption().getOpt() );
                 final Module module = tool.getModules().getModule( moduleName );
+                validateModules = false;
 
                 if ( module != null )
                 {
-                    validationReport = tool.validateModelObjects( module, context );
-                    this.log( validationReport, marshaller );
-                    return validationReport.isModelValid() ? STATUS_SUCCESS : STATUS_FAILURE;
+                    validationReport.getDetails().addAll( tool.validateModelObjects( module, context ).getDetails() );
                 }
                 else if ( this.isLoggable( Level.WARNING ) )
                 {
-                    this.log( Level.WARNING, this.getMissingModuleMessage( this.getLocale(), moduleName ), null );
+                    this.log( Level.WARNING, this.getModuleNotFoundWarning( this.getLocale(), moduleName ), null );
                 }
             }
-            else
+
+            if ( validateModules )
             {
-                validationReport = tool.validateModelObjects( context );
-                this.log( validationReport, marshaller );
-                return validationReport.isModelValid() ? STATUS_SUCCESS : STATUS_FAILURE;
+                validationReport.getDetails().addAll( tool.validateModelObjects( context ).getDetails() );
             }
 
-            return STATUS_SUCCESS;
+            this.log( validationReport, marshaller );
+            return validationReport.isModelValid() ? STATUS_SUCCESS : STATUS_FAILURE;
         }
 
         return STATUS_FAILURE;
@@ -325,6 +379,21 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "DocumentsOption" );
         assert _d != null : "'DocumentsOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code ImplementationOption} dependency.
+     * <p>This method returns the {@code 'JOMC CLI Implementation Option'} object of the {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code ImplementationOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.1.x/jomc-tools" )
+    private org.apache.commons.cli.Option getImplementationOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ImplementationOption" );
+        assert _d != null : "'ImplementationOption' dependency not found.";
         return _d;
     }
 
@@ -464,6 +533,21 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
     }
 
     /**
+     * Gets the {@code SpecificationOption} dependency.
+     * <p>This method returns the {@code 'JOMC CLI Specification Option'} object of the {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code SpecificationOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.1.x/jomc-tools" )
+    private org.apache.commons.cli.Option getSpecificationOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "SpecificationOption" );
+        assert _d != null : "'SpecificationOption' dependency not found.";
+        return _d;
+    }
+
+    /**
      * Gets the {@code TransformerLocationOption} dependency.
      * <p>This method returns the {@code 'JOMC CLI Transformer Location Option'} object of the {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
@@ -567,7 +651,7 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-07T18:51:24+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-07T20:12:46+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -876,6 +960,26 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
     }
 
     /**
+     * Gets the text of the {@code implementationNotFoundWarning} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Implementation ''{0}'' not found.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Implementierung ''{0}'' nicht gefunden.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param implementationIdentifier Format argument.
+     * @return The text of the {@code implementationNotFoundWarning} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.1.x/jomc-tools" )
+    private String getImplementationNotFoundWarning( final java.util.Locale locale, final java.lang.String implementationIdentifier )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "implementationNotFoundWarning", locale, implementationIdentifier );
+        assert _m != null : "'implementationNotFoundWarning' message not found.";
+        return _m;
+    }
+
+    /**
      * Gets the text of the {@code longDescriptionMessage} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Example:
@@ -901,22 +1005,22 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
     }
 
     /**
-     * Gets the text of the {@code missingModuleMessage} message.
+     * Gets the text of the {@code moduleNotFoundWarning} message.
      * <p><b>Templates</b><br/><table>
      * <tr><td valign="top">English:</td><td valign="top"><pre>Module ''{0}'' not found.</pre></td></tr>
      * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modul ''{0}'' nicht gefunden.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @param moduleName Format argument.
-     * @return The text of the {@code missingModuleMessage} message.
+     * @return The text of the {@code moduleNotFoundWarning} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.1.x/jomc-tools" )
-    private String getMissingModuleMessage( final java.util.Locale locale, final java.lang.String moduleName )
+    private String getModuleNotFoundWarning( final java.util.Locale locale, final java.lang.String moduleName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "missingModuleMessage", locale, moduleName );
-        assert _m != null : "'missingModuleMessage' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleNotFoundWarning", locale, moduleName );
+        assert _m != null : "'moduleNotFoundWarning' message not found.";
         return _m;
     }
 
@@ -974,6 +1078,26 @@ public final class ValidateClassesCommand extends AbstractJomcToolCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "shortDescriptionMessage", locale );
         assert _m != null : "'shortDescriptionMessage' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code specificationNotFoundWarning} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Specification ''{0}'' not found.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Spezifikation ''{0}'' nicht gefunden.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param specificationIdentifier Format argument.
+     * @return The text of the {@code specificationNotFoundWarning} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.1.x/jomc-tools" )
+    private String getSpecificationNotFoundWarning( final java.util.Locale locale, final java.lang.String specificationIdentifier )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "specificationNotFoundWarning", locale, specificationIdentifier );
+        assert _m != null : "'specificationNotFoundWarning' message not found.";
         return _m;
     }
     // </editor-fold>
