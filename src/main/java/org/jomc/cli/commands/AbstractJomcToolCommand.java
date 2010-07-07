@@ -44,7 +44,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
