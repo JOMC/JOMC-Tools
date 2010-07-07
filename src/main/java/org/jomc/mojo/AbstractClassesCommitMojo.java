@@ -263,10 +263,31 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
         }
     }
 
+    /**
+     * Gets the name of the module to commit class file model objects of.
+     *
+     * @return The name of the module to commit class file model objects of.
+     *
+     * @throws MojoExecutionException if getting the name fails.
+     */
     protected abstract String getClassesModuleName() throws MojoExecutionException;
 
+    /**
+     * Gets the class loader to use for committing class file model objects.
+     *
+     * @return The class loader to use for committing class file model objects.
+     *
+     * @throws MojoExecutionException if getting the class loader fails.
+     */
     protected abstract ClassLoader getClassesClassLoader() throws MojoExecutionException;
 
+    /**
+     * Gets the directory holding the class files to commit model objects to.
+     *
+     * @return The directory holding the class files to commit model objects to.
+     *
+     * @throws MojoExecutionException if getting the directory fails.
+     */
     protected abstract File getClassesDirectory() throws MojoExecutionException;
 
     private static String getMessage( final String key, final Object... args )

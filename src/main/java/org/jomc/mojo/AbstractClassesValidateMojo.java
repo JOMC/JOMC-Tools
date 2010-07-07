@@ -79,11 +79,11 @@ public abstract class AbstractClassesValidateMojo extends AbstractJomcMojo
 
             if ( validationReport.isModelValid() )
             {
+                this.logSeparator( Level.INFO );
                 final Module module = tool.getModules().getModule( this.getClassesModuleName() );
 
                 if ( module != null )
                 {
-                    this.logSeparator( Level.INFO );
                     this.logProcessingModule( TOOLNAME, module.getName() );
                     validationReport = tool.validateModelObjects( module, context, this.getClassesDirectory() );
                     this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
@@ -94,12 +94,13 @@ public abstract class AbstractClassesValidateMojo extends AbstractJomcMojo
                     }
 
                     this.logToolSuccess( TOOLNAME );
-                    this.logSeparator( Level.INFO );
                 }
                 else
                 {
                     this.logMissingModule( this.getClassesModuleName() );
                 }
+
+                this.logSeparator( Level.INFO );
             }
             else
             {
@@ -114,10 +115,31 @@ public abstract class AbstractClassesValidateMojo extends AbstractJomcMojo
         }
     }
 
+    /**
+     * Gets the name of the module to validate class file model objects of.
+     *
+     * @return The name of the module to validate class file model objects of.
+     *
+     * @throws MojoExecutionException if getting the name fails.
+     */
     protected abstract String getClassesModuleName() throws MojoExecutionException;
 
+    /**
+     * Gets the class loader to use for validating class file model objects.
+     *
+     * @return The class loader to use for validating class file model objects.
+     *
+     * @throws MojoExecutionException if getting the class loader fails.
+     */
     protected abstract ClassLoader getClassesClassLoader() throws MojoExecutionException;
 
+    /**
+     * Gets the directory holding the class files to validate model objects of.
+     *
+     * @return The directory holding the class files to validate model objects of.
+     *
+     * @throws MojoExecutionException if getting the directory fails.
+     */
     protected abstract File getClassesDirectory() throws MojoExecutionException;
 
     private static String getMessage( final String key, final Object... args )

@@ -47,7 +47,7 @@ import org.jomc.modlet.ObjectFactory;
 import org.jomc.tools.ResourceFileProcessor;
 
 /**
- * Base class for managing resource files.
+ * Base class for writing resource files.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
@@ -65,7 +65,7 @@ public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo
      */
     private String resourceBundleDefaultLanguage;
 
-    /** Creates a new {@code AbstractResourcesMojo} instance. */
+    /** Creates a new {@code AbstractResourcesWriteMojo} instance. */
     public AbstractResourcesWriteMojo()
     {
         super();
@@ -122,10 +122,31 @@ public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo
         }
     }
 
+    /**
+     * Gets the name of the module to write resource files of.
+     *
+     * @return The name of the module to write resource files of.
+     *
+     * @throws MojoExecutionException if getting the name fails.
+     */
     protected abstract String getResourcesModuleName() throws MojoExecutionException;
 
+    /**
+     * Gets the class loader to use for writing resource files.
+     *
+     * @return The class loader to use for writing resource files.
+     *
+     * @throws MojoExecutionException if getting the class loader fails.
+     */
     protected abstract ClassLoader getResourcesClassLoader() throws MojoExecutionException;
 
+    /**
+     * Gets the directory to write the resource files to.
+     *
+     * @return The directory to write the resource files to.
+     *
+     * @throws MojoExecutionException if getting the directory fails.
+     */
     protected abstract File getResourcesDirectory() throws MojoExecutionException;
 
     private static String getMessage( final String key )

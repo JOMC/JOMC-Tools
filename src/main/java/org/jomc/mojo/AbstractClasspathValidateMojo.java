@@ -95,6 +95,13 @@ public abstract class AbstractClasspathValidateMojo extends AbstractJomcMojo
         }
     }
 
+    /**
+     * Gets the class loader to validate classpath model objects of.
+     *
+     * @return The class loader to validate classpath model objects of.
+     *
+     * @throws MojoExecutionException if getting the class loader fails.
+     */
     protected abstract ClassLoader getClasspathClassLoader() throws MojoExecutionException;
 
     private static String getMessage( final String key, final Object... args )

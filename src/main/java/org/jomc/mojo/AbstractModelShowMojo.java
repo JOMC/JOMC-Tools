@@ -119,14 +119,30 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
                 out.close();
             }
         }
-        else if ( this.getLog().isWarnEnabled() )
+        else
         {
-            this.getLog().warn( getMessage( "modelObjectNotFound" ) );
+            this.log( Level.WARNING, getMessage( "modelObjectNotFound" ), null );
         }
     }
 
+    /**
+     * Gets the model to display or dump.
+     *
+     * @param modelContext The model context to use for getting the model.
+     *
+     * @return The model to display or dump.
+     *
+     * @throws MojoExecutionException if getting the model fails.
+     */
     protected abstract Model getDisplayModel( ModelContext modelContext ) throws MojoExecutionException;
 
+    /**
+     * Gets the class loader to use for displaying or dumping model objects.
+     *
+     * @return The class loader to use for displaying or dumping model objects.
+     *
+     * @throws MojoExecutionException if getting the class loader fails.
+     */
     protected abstract ClassLoader getDisplayClassLoader() throws MojoExecutionException;
 
     private static String getMessage( final String key, final Object... args )

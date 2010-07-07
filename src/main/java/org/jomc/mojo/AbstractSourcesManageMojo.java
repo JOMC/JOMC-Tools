@@ -57,7 +57,7 @@ public abstract class AbstractSourcesManageMojo extends AbstractJomcMojo
     /** Constant for the name of the tool backing the class. */
     private static final String TOOLNAME = "SourceFileProcessor";
 
-    /** Creates a new {@code AbstractSourcesMojo} instance. */
+    /** Creates a new {@code AbstractSourcesManageMojo} instance. */
     public AbstractSourcesManageMojo()
     {
         super();
@@ -107,15 +107,38 @@ public abstract class AbstractSourcesManageMojo extends AbstractJomcMojo
         }
     }
 
+    /**
+     * Gets the name of the module to manage source code files of.
+     *
+     * @return The name of the module to manage source code files of.
+     *
+     * @throws MojoExecutionException if getting the name fails.
+     */
     protected abstract String getSourcesModuleName() throws MojoExecutionException;
 
+    /**
+     * Gets the class loader to use for managing source code files.
+     *
+     * @return The class loader to use for managing source code files.
+     *
+     * @throws MojoExecutionException if getting the class loader fails.
+     */
     protected abstract ClassLoader getSourcesClassLoader() throws MojoExecutionException;
 
+    /**
+     * Gets the directory holding the source code files to manage.
+     *
+     * @return The directory holding the source code files to manage.
+     *
+     * @throws MojoExecutionException if getting the directory fails.
+     */
     protected abstract File getSourcesDirectory() throws MojoExecutionException;
 
     private static String getMessage( final String key )
     {
-        return ResourceBundle.getBundle( AbstractSourcesManageMojo.class.getName().replace( '.', '/' ) ).getString( key );
+        return ResourceBundle.getBundle(
+            AbstractSourcesManageMojo.class.getName().replace( '.', '/' ) ).getString( key );
+
     }
 
 }

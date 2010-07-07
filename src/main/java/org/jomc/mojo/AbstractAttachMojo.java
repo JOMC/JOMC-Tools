@@ -189,7 +189,7 @@ public abstract class AbstractAttachMojo extends AbstractMojo
      */
     protected abstract String getExecutionStrategy();
 
-    public void execute() throws MojoExecutionException, MojoFailureException
+    public final void execute() throws MojoExecutionException, MojoFailureException
     {
         final File attachment =
             new File( this.getSessionDirectory(),
