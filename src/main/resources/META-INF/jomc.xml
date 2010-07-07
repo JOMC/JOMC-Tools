@@ -1627,7 +1627,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         </message>
         <message name="applicationTitle" final="true">
           <template defaultLanguage="en">
-            <text language="en">JOMC Version ${jomc.api.version}.${project.version} Build ${buildNumber}</text>
+            <text language="en">JOMC Version ${jomc.product.version} Build ${buildNumber}</text>
           </template>
         </message>
         <message name="classpathElementInfo" final="true">
