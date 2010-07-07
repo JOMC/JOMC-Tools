@@ -1129,10 +1129,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 this.logSeparator( level );
             }
 
-            if ( !report.isModelValid() )
-            {
-                this.log( level, getMessage( "invalidModel" ), null );
-            }
+            this.log( level, getMessage( "modelValidationReportTitle" ), null );
 
             if ( !report.getDetails().isEmpty() )
             {
