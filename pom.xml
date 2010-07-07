@@ -74,6 +74,12 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
+      <groupId>org.jomc</groupId>
+      <artifactId>jomc-tools</artifactId>
+      <classifier>templates</classifier>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
       <scope>compile</scope>
