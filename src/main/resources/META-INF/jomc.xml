@@ -1795,12 +1795,6 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="0" name="className"/>
           </arguments>
         </message>
-        <message name="modelValidationReportTitle" final="true">
-          <template defaultLanguage="en">
-            <text language="en">Model validation report</text>
-            <text language="de">Modellprüfungsbericht</text>
-          </template>
-        </message>
         <message name="cannotProcessMessage" final="true">
           <template defaultLanguage="en">
             <text language="en">Cannot process ''{0}'': {1}</text>
