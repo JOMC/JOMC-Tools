@@ -229,6 +229,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @parameter
      * @deprecated Replaced by 'outputDirectory' parameter.
      */
+    @Deprecated
     private String classesDirectory;
 
     /**
@@ -237,6 +238,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @parameter
      * @deprecated Replaced by 'testOutputDirectory' parameter.
      */
+    @Deprecated
     private String testClassesDirectory;
 
     /**
