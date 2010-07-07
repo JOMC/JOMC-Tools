@@ -329,7 +329,7 @@
               <goal>single</goal>
             </goals>
             <configuration>
-              <finalName>jomc-${project.version}</finalName>
+              <finalName>jomc-${jomc.branch.version}.${project.version}</finalName>
               <descriptors>
                 <descriptor>src/main/assembly/bin-snapshot.xml</descriptor>
               </descriptors>
@@ -612,7 +612,7 @@
                   <goal>single</goal>
                 </goals>
                 <configuration>
-                  <finalName>jomc-${project.version}</finalName>
+                  <finalName>jomc-${jomc.branch.version}.${project.version}</finalName>
                   <descriptors>
                     <descriptor>src/main/assembly/bin-release.xml</descriptor>
                   </descriptors>
