@@ -261,9 +261,9 @@ public class JomcResourceTransformer implements ResourceTransformer
                 case MODEL_OBJECT_RESOURCE:
                     Object modelObject = this.unmarshalModelObject( in );
 
-                    if ( modelObject instanceof JAXBElement )
+                    if ( modelObject instanceof JAXBElement<?> )
                     {
-                        modelObject = ( (JAXBElement) modelObject ).getValue();
+                        modelObject = ( (JAXBElement<?>) modelObject ).getValue();
                     }
                     if ( modelObject instanceof Modules )
                     {
@@ -278,9 +278,9 @@ public class JomcResourceTransformer implements ResourceTransformer
                 case MODLET_OBJECT_RESOURCE:
                     Object modletObject = this.unmarshalModletObject( in );
 
-                    if ( modletObject instanceof JAXBElement )
+                    if ( modletObject instanceof JAXBElement<?> )
                     {
-                        modletObject = ( (JAXBElement) modletObject ).getValue();
+                        modletObject = ( (JAXBElement<?>) modletObject ).getValue();
                     }
                     if ( modletObject instanceof Modlets )
                     {
