@@ -442,7 +442,7 @@ public final class Jomc
      *
      * @throws NullPointerException if {@code level} is {@code null}.
      */
-    protected void log( final Level level, final String message, final Throwable throwable )
+    private void log( final Level level, final String message, final Throwable throwable )
     {
         if ( level == null )
         {
