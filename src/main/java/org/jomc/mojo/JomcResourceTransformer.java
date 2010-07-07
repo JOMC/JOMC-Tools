@@ -112,7 +112,7 @@ public class JomcResourceTransformer implements ResourceTransformer
 {
 
     /** Type of a resource. */
-    enum ResourceType
+    private enum ResourceType
     {
 
         MODEL_OBJECT_RESOURCE,
