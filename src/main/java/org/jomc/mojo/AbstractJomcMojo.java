@@ -1124,15 +1124,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         try
         {
-            if ( !report.isModelValid() || !report.getDetails().isEmpty() )
-            {
-                this.logSeparator( level );
-            }
-
-            this.log( level, getMessage( "modelValidationReportTitle" ), null );
-
             if ( !report.getDetails().isEmpty() )
             {
+                this.logSeparator( level );
                 final Marshaller marshaller = context.createMarshaller( this.getModel() );
                 marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
 
@@ -1147,10 +1141,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                         this.log( Level.FINE, stringWriter.toString(), null );
                     }
                 }
-            }
-
-            if ( !report.isModelValid() || !report.getDetails().isEmpty() )
-            {
                 this.logSeparator( level );
             }
         }
