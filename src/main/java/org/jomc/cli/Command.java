@@ -71,7 +71,7 @@ import org.apache.commons.cli.Options;
 // SECTION-END
 // SECTION-START[Annotations]
 // <editor-fold defaultstate="collapsed" desc=" Generated Annotations ">
-@javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1", comments = "See http://jomc.sourceforge.net/jomc/1.1/jomc-tools" )
+@javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.0.10.188", comments = "See http://jomc.sourceforge.net/jomc/1.1/jomc-tools" )
 // </editor-fold>
 // SECTION-END
 public interface Command
