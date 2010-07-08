@@ -67,8 +67,12 @@ public abstract class AbstractClassesValidateMojo extends AbstractJomcMojo
     @Override
     protected final void executeTool() throws Exception
     {
+        this.logSeparator();
+
         if ( this.isClassProcessingEnabled() )
         {
+            this.logProcessingModule( TOOLNAME, this.getClassesModuleName() );
+
             final ModelContext context = this.createModelContext( this.getClassesClassLoader() );
             final ClassFileProcessor tool = this.createClassFileProcessor( context );
             final JAXBContext jaxbContext = context.createContext( this.getModel() );
@@ -79,12 +83,10 @@ public abstract class AbstractClassesValidateMojo extends AbstractJomcMojo
 
             if ( validationReport.isModelValid() )
             {
-                this.logSeparator( Level.INFO );
                 final Module module = tool.getModules().getModule( this.getClassesModuleName() );
 
                 if ( module != null )
                 {
-                    this.logProcessingModule( TOOLNAME, module.getName() );
                     validationReport = tool.validateModelObjects( module, context, this.getClassesDirectory() );
                     this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 
@@ -99,8 +101,6 @@ public abstract class AbstractClassesValidateMojo extends AbstractJomcMojo
                 {
                     this.logMissingModule( this.getClassesModuleName() );
                 }
-
-                this.logSeparator( Level.INFO );
             }
             else
             {
@@ -109,9 +109,7 @@ public abstract class AbstractClassesValidateMojo extends AbstractJomcMojo
         }
         else
         {
-            this.logSeparator( Level.INFO );
             this.log( Level.INFO, getMessage( "disabled" ), null );
-            this.logSeparator( Level.INFO );
         }
     }
 

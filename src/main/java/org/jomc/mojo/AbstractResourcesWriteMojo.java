@@ -74,15 +74,17 @@ public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo
     @Override
     protected final void executeTool() throws Exception
     {
+        this.logSeparator();
+
         if ( this.isResourceProcessingEnabled() )
         {
+            this.logProcessingModule( TOOLNAME, this.getResourcesModuleName() );
+
             final ModelContext context = this.createModelContext( this.getResourcesClassLoader() );
             final ResourceFileProcessor tool = this.createResourceFileProcessor( context );
             final JAXBContext jaxbContext = context.createContext( this.getModel() );
             final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModel( tool.getModel() ) );
             final ModelValidationReport validationReport = context.validateModel( this.getModel(), source );
-
-            this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 
             if ( this.resourceBundleDefaultLanguage != null )
             {
@@ -91,14 +93,14 @@ public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo
 
             }
 
+            this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
+
             if ( validationReport.isModelValid() )
             {
-                this.logSeparator( Level.INFO );
                 final Module module = tool.getModules().getModule( this.getResourcesModuleName() );
 
                 if ( module != null )
                 {
-                    this.logProcessingModule( TOOLNAME, module.getName() );
                     tool.writeResourceBundleResourceFiles( module, this.getResourcesDirectory() );
                     this.logToolSuccess( TOOLNAME );
                 }
@@ -106,8 +108,6 @@ public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo
                 {
                     this.logMissingModule( this.getResourcesModuleName() );
                 }
-
-                this.logSeparator( Level.INFO );
             }
             else
             {
@@ -116,9 +116,7 @@ public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo
         }
         else
         {
-            this.logSeparator( Level.INFO );
             this.log( Level.INFO, getMessage( "disabled" ), null );
-            this.logSeparator( Level.INFO );
         }
     }
 

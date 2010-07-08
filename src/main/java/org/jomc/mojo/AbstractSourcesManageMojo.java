@@ -66,8 +66,12 @@ public abstract class AbstractSourcesManageMojo extends AbstractJomcMojo
     @Override
     protected final void executeTool() throws Exception
     {
+        this.logSeparator();
+
         if ( this.isSourceProcessingEnabled() )
         {
+            this.logProcessingModule( TOOLNAME, this.getSourcesModuleName() );
+
             final ModelContext context = this.createModelContext( this.getSourcesClassLoader() );
             final SourceFileProcessor tool = this.createSourceFileProcessor( context );
             final JAXBContext jaxbContext = context.createContext( this.getModel() );
@@ -78,12 +82,10 @@ public abstract class AbstractSourcesManageMojo extends AbstractJomcMojo
 
             if ( validationReport.isModelValid() )
             {
-                this.logSeparator( Level.INFO );
                 final Module module = tool.getModules().getModule( this.getSourcesModuleName() );
 
                 if ( module != null )
                 {
-                    this.logProcessingModule( TOOLNAME, module.getName() );
                     tool.manageSourceFiles( module, this.getSourcesDirectory() );
                     this.logToolSuccess( TOOLNAME );
                 }
@@ -91,8 +93,6 @@ public abstract class AbstractSourcesManageMojo extends AbstractJomcMojo
                 {
                     this.logMissingModule( this.getSourcesModuleName() );
                 }
-
-                this.logSeparator( Level.INFO );
             }
             else
             {
@@ -101,9 +101,7 @@ public abstract class AbstractSourcesManageMojo extends AbstractJomcMojo
         }
         else
         {
-            this.logSeparator( Level.INFO );
             this.log( Level.INFO, getMessage( "disabled" ), null );
-            this.logSeparator( Level.INFO );
         }
     }
 

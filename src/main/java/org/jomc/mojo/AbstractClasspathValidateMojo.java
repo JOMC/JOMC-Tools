@@ -66,6 +66,9 @@ public abstract class AbstractClasspathValidateMojo extends AbstractJomcMojo
     @Override
     protected final void executeTool() throws Exception
     {
+        this.logSeparator();
+        this.logProcessingModel( TOOLNAME, this.getModel() );
+
         final ModelContext context = this.createModelContext( this.getClasspathClassLoader() );
         final ClassFileProcessor tool = this.createClassFileProcessor( context );
         final JAXBContext jaxbContext = context.createContext( this.getModel() );
@@ -76,8 +79,6 @@ public abstract class AbstractClasspathValidateMojo extends AbstractJomcMojo
 
         if ( validationReport.isModelValid() )
         {
-            this.logSeparator( Level.INFO );
-            this.log( Level.INFO, getMessage( "processingClasspath", TOOLNAME ), null );
             validationReport = tool.validateModelObjects( context );
             this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 
@@ -87,7 +88,6 @@ public abstract class AbstractClasspathValidateMojo extends AbstractJomcMojo
             }
 
             this.logToolSuccess( TOOLNAME );
-            this.logSeparator( Level.INFO );
         }
         else
         {

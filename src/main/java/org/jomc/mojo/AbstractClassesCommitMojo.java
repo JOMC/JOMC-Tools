@@ -214,8 +214,12 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
     @Override
     protected final void executeTool() throws Exception
     {
+        this.logSeparator();
+
         if ( this.isClassProcessingEnabled() )
         {
+            this.logProcessingModule( TOOLNAME, this.getClassesModuleName() );
+
             final ClassLoader classLoader = this.getClassesClassLoader();
             final ModelContext context = this.createModelContext( classLoader );
             final ClassFileProcessor tool = this.createClassFileProcessor( context );
@@ -228,12 +232,10 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
 
             if ( validationReport.isModelValid() )
             {
-                this.logSeparator( Level.INFO );
                 final Module module = tool.getModules().getModule( this.getClassesModuleName() );
 
                 if ( module != null )
                 {
-                    this.logProcessingModule( TOOLNAME, module.getName() );
                     tool.commitModelObjects( module, context, this.getClassesDirectory() );
 
                     if ( !transformers.isEmpty() )
@@ -247,8 +249,6 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
                 {
                     this.logMissingModule( this.getClassesModuleName() );
                 }
-
-                this.logSeparator( Level.INFO );
             }
             else
             {
@@ -257,9 +257,7 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
         }
         else
         {
-            this.logSeparator( Level.INFO );
             this.log( Level.INFO, getMessage( "disabled" ), null );
-            this.logSeparator( Level.INFO );
         }
     }
 

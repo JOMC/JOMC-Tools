@@ -55,6 +55,9 @@ import org.jomc.modlet.ObjectFactory;
 public abstract class AbstractModelShowMojo extends AbstractJomcMojo
 {
 
+    /** Constant for the name of the tool backing the mojo. */
+    private static final String TOOLNAME = "ModelProcessor";
+
     /**
      * File to write the model to.
      *
@@ -78,6 +81,9 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
     @Override
     protected final void executeTool() throws Exception
     {
+        this.logSeparator();
+        this.logProcessingModel( TOOLNAME, this.getModel() );
+
         final ModelContext modelContext = this.createModelContext( this.getDisplayClassLoader() );
         final Marshaller m = modelContext.createMarshaller( this.getModel() );
         final Model displayModel = this.getDisplayModel( modelContext );
@@ -95,9 +101,7 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
                 try
                 {
                     this.setVerbose( true );
-                    this.log( Level.INFO, "", null );
                     this.log( Level.INFO, stringWriter.toString(), null );
-                    this.log( Level.INFO, "", null );
                 }
                 finally
                 {
@@ -118,6 +122,8 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
                 m.marshal( new ObjectFactory().createModel( displayModel ), out );
                 out.close();
             }
+
+            this.logToolSuccess( TOOLNAME );
         }
         else
         {

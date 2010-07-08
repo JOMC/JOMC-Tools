@@ -72,6 +72,9 @@ public final class TestModelValidateMojo extends AbstractJomcMojo
     @Override
     protected void executeTool() throws Exception
     {
+        this.logSeparator();
+        this.logProcessingModel( TOOLNAME, this.getModel() );
+
         final ModelContext context = this.createModelContext( this.getTestClassLoader() );
         final ModelValidationReport validationReport = context.validateModel( this.getModel( context ) );
 
@@ -82,9 +85,7 @@ public final class TestModelValidateMojo extends AbstractJomcMojo
             throw new MojoExecutionException( getMessage( "failed" ) );
         }
 
-        this.logSeparator( Level.INFO );
         this.logToolSuccess( TOOLNAME );
-        this.logSeparator( Level.INFO );
     }
 
     @Override

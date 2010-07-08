@@ -225,7 +225,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     /**
      * Directory holding the compiled class files of the project.
-     * <p><strong>Replaced by 'outputDirectory' parameter.</strong></p>
+     * <strong>Replaced by 'outputDirectory' parameter.</strong>
      *
      * @parameter
      */
@@ -234,7 +234,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     /**
      * Directory holding the compiled test class files of the project.
-     * <p><strong>Replaced by 'testOutputDirectory' parameter.</strong></p>
+     * <strong>Replaced by 'testOutputDirectory' parameter.</strong>
      * 
      * @parameter
      */
@@ -334,16 +334,16 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             DefaultModelProcessor.setDefaultTransformerLocation( this.transformerLocation );
             JomcTool.setDefaultTemplateProfile( this.defaultTemplateProfile );
 
+            this.logSeparator();
+            this.log( Level.INFO, getMessage( "title" ), null );
+
             if ( this.isExecutionPermitted() )
             {
-                this.logSeparator( Level.INFO );
-                this.log( Level.INFO, getMessage( "title" ), null );
-                this.logSeparator( Level.INFO );
                 this.executeTool();
             }
             else
             {
-                this.getLog().info( getMessage( "executionSuppressed", this.getExecutionStrategy() ) );
+                this.log( Level.INFO, getMessage( "executionSuppressed", this.getExecutionStrategy() ), null );
             }
         }
         catch ( final Exception e )
@@ -358,6 +358,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             DefaultModelProvider.setDefaultModuleLocation( null );
             DefaultModelProcessor.setDefaultTransformerLocation( null );
             JomcTool.setDefaultTemplateProfile( null );
+            this.logSeparator();
         }
     }
 
@@ -477,6 +478,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 directory = new File( this.getMavenProject().getBasedir(), this.classesDirectory );
             }
+
+            if ( !this.classesDirectory.equals( this.outputDirectory ) )
+            {
+                this.log( Level.WARNING, getMessage( "ignoringParameter", "outputDirectory" ), null );
+                this.outputDirectory = this.classesDirectory;
+            }
+
+            this.classesDirectory = null;
         }
         else
         {
@@ -513,6 +522,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 directory = new File( this.getMavenProject().getBasedir(), this.testClassesDirectory );
             }
+
+            if ( !this.testClassesDirectory.equals( this.testOutputDirectory ) )
+            {
+                this.log( Level.WARNING, getMessage( "ignoringParameter", "testOutputDirectory" ), null );
+                this.testOutputDirectory = this.testClassesDirectory;
+            }
+
+            this.testClassesDirectory = null;
         }
         else
         {
@@ -1124,21 +1141,80 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         return tool;
     }
 
+    /**
+     * Logs a separator at a given level.
+     *
+     * @param level The level to log a separator at.
+     *
+     * @throws MojoExecutionException if logging fails.
+     *
+     * @deprecated Replaced by {@link #logSeparator()}.
+     */
+    @Deprecated
     protected void logSeparator( final Level level ) throws MojoExecutionException
     {
-        this.log( level, getMessage( "separator" ), null );
+        this.logSeparator();
     }
 
+    /**
+     * Logs a separator.
+     *
+     * @throws MojoExecutionException if logging fails.
+     *
+     * @since 1.1
+     */
+    protected void logSeparator() throws MojoExecutionException
+    {
+        this.log( Level.INFO, getMessage( "separator" ), null );
+    }
+
+    /**
+     * Logs a message stating a tool is starting to process a module.
+     *
+     * @param toolName The tool starting execution.
+     * @param module The module getting processed.
+     *
+     * @throws MojoExecutionException if logging fails.
+     */
     protected void logProcessingModule( final String toolName, final String module ) throws MojoExecutionException
     {
         this.log( Level.INFO, getMessage( "processingModule", toolName, module ), null );
     }
 
+    /**
+     * Logs a message stating a tool is starting to process a model.
+     *
+     * @param toolName The tool starting execution.
+     * @param model The model getting processed.
+     *
+     * @throws MojoExecutionException if logging fails.
+     *
+     * @since 1.1
+     */
+    protected void logProcessingModel( final String toolName, final String model ) throws MojoExecutionException
+    {
+        this.log( Level.INFO, getMessage( "processingModel", toolName, model ), null );
+    }
+
+    /**
+     * Logs a message stating that a module has not been found.
+     *
+     * @param module The module which has not been found.
+     *
+     * @throws MojoExecutionException if logging fails.
+     */
     protected void logMissingModule( final String module ) throws MojoExecutionException
     {
         this.log( Level.WARNING, getMessage( "missingModule", module ), null );
     }
 
+    /**
+     * Logs a message stating that a tool successfully completed execution.
+     *
+     * @param toolName The name of the tool.
+     *
+     * @throws MojoExecutionException if logging fails.
+     */
     protected void logToolSuccess( final String toolName ) throws MojoExecutionException
     {
         this.log( Level.INFO, getMessage( "toolSuccess", toolName ), null );
@@ -1151,7 +1227,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         {
             if ( !report.getDetails().isEmpty() )
             {
-                this.logSeparator( level );
+                this.logSeparator();
                 final Marshaller marshaller = context.createMarshaller( this.getModel() );
                 marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
 
@@ -1166,7 +1242,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                         this.log( Level.FINE, stringWriter.toString(), null );
                     }
                 }
-                this.logSeparator( level );
             }
         }
         catch ( final ModelException e )
