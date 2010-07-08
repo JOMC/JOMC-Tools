@@ -38,8 +38,10 @@ package org.jomc.cli.commands;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
@@ -133,7 +135,7 @@ import org.jomc.modlet.ObjectFactory;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-08T15:25:19+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-08T17:02:04+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -272,7 +274,7 @@ public final class MergeModletsCommand extends AbstractJomcCommand implements Co
 
     public int executeCommand( final CommandLine commandLine ) throws Exception
     {
-        final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
+        final CommandLineClassLoader classLoader = new CommandLineClassLoader( commandLine );
         final ModelContext context = this.createModelContext( classLoader );
         final Modlets modlets = new Modlets( context.getModlets() );
         final Marshaller marshaller = context.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
@@ -296,6 +298,7 @@ public final class MergeModletsCommand extends AbstractJomcCommand implements Co
             modletVendor = commandLine.getOptionValue( this.getModletVendorOption().getOpt() );
         }
 
+        final Set<String> includedModlets = new HashSet<String>();
         if ( commandLine.hasOption( this.getModletIncludesOption().getOpt() ) )
         {
             final String[] values = commandLine.getOptionValues( this.getModletIncludesOption().getOpt() );
@@ -314,6 +317,7 @@ public final class MergeModletsCommand extends AbstractJomcCommand implements Co
                     }
                     else
                     {
+                        includedModlets.add( m.getName() );
                         this.log( Level.INFO, this.getIncludingModletInfo( this.getLocale(), m.getName() ), null );
                     }
                 }
@@ -336,6 +340,18 @@ public final class MergeModletsCommand extends AbstractJomcCommand implements Co
                         modlets.getModlet().remove( m );
                     }
                 }
+            }
+        }
+
+        final List<String> defaultExcludes = Arrays.asList( getModletExcludes().split( ":" ) );
+        for ( final Iterator<Modlet> it = modlets.getModlet().iterator(); it.hasNext(); )
+        {
+            final Modlet m = it.next();
+            if ( defaultExcludes.contains( m.getName() )
+                 && !classLoader.getExcludedModletNames().contains( m.getName() )
+                 && !includedModlets.contains( m.getName() ) )
+            {
+                it.remove();
             }
         }
 
@@ -782,7 +798,7 @@ public final class MergeModletsCommand extends AbstractJomcCommand implements Co
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-08T15:25:19+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-08T17:02:04+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

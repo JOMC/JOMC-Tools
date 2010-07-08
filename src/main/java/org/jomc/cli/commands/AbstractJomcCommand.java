@@ -124,7 +124,7 @@ import org.jomc.modlet.Services;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-08T15:25:19+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-08T17:02:04+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getClasspathElementInfo classpathElementInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>{0}: Classpath element: ''{1}''</pre></td></tr>
@@ -502,6 +502,9 @@ public abstract class AbstractJomcCommand implements Command
 
         private static final String LOG_PREFIX = "org.jomc.cli.commands.CommandLineClassLoader";
 
+        /** Set of names of modlets excluded by the instance. */
+        private Set<String> excludedModletNames;
+
         /**
          * Creates a new {@code CommandLineClassLoader} taking a command line backing the class loader.
          *
@@ -590,6 +593,21 @@ public abstract class AbstractJomcCommand implements Command
                     this.addURL( uri.toURL() );
                 }
             }
+        }
+
+        /**
+         * Gets a set of names of modlets excluded by the instance.
+         *
+         * @return A set of names of modlets excluded by the instance.
+         */
+        public Set<String> getExcludedModletNames()
+        {
+            if ( this.excludedModletNames == null )
+            {
+                this.excludedModletNames = new HashSet<String>();
+            }
+
+            return this.excludedModletNames;
         }
 
         /**
@@ -810,6 +828,7 @@ public abstract class AbstractJomcCommand implements Command
                     if ( excludedModlets.contains( m.getName() ) )
                     {
                         it.remove();
+                        this.getExcludedModletNames().add( m.getName() );
                         filtered = true;
                         log( Level.FINE, getExcludedModletInfo( getLocale(), LOG_PREFIX, resource.toExternalForm(),
                                                                 m.getName() ), null );
@@ -1095,7 +1114,7 @@ public abstract class AbstractJomcCommand implements Command
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-08T15:25:19+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-08T17:02:04+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

@@ -400,10 +400,8 @@ public class JomcTest extends TestCase
 
         assertNotNull( merged );
         assertEquals( this.getTestModletName(), merged.getName() );
-        assertNotNull( merged.getSchemas() );
-        assertNotNull( merged.getServices() );
-        assertFalse( merged.getSchemas().getSchema().isEmpty() );
-        assertFalse( merged.getServices().getService().isEmpty() );
+        assertNull( merged.getSchemas() );
+        assertNull( merged.getServices() );
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( includeArgs ) );
         merged = unmarshaller.unmarshal(
