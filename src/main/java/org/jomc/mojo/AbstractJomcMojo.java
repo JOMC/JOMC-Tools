@@ -235,7 +235,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Directory holding the compiled test class files of the project.
      * <strong>Replaced by 'testOutputDirectory' parameter.</strong>
-     * 
+     *
      * @parameter
      */
     @Deprecated
