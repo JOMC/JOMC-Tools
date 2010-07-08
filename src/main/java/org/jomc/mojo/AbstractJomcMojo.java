@@ -52,6 +52,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -410,7 +411,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 final File flagFile =
                     new File( this.getSessionDirectory(),
-                              this.getGoal() + "-" + this.getMavenSession().getStartTime().getTime() + ".flag" );
+                              ArtifactUtils.versionlessKey( this.getMavenProject().getArtifact() ).hashCode()
+                              + "-" + this.getGoal()
+                              + "-" + this.getMavenSession().getStartTime().getTime() + ".flg" );
 
                 if ( !this.getSessionDirectory().exists() && !this.getSessionDirectory().mkdirs() )
                 {

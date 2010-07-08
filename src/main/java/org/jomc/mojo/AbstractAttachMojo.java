@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import org.apache.commons.io.FileUtils;
+import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -193,8 +194,10 @@ public abstract class AbstractAttachMojo extends AbstractMojo
     {
         final File attachment =
             new File( this.getSessionDirectory(),
-                      this.getArtifactClassifier() + "-" + this.getMavenSession().getStartTime().getTime() + "."
-                      + this.getArtifactType() );
+                      ArtifactUtils.versionlessKey( this.getMavenProject().getArtifact() ).hashCode()
+                      + "-" + this.getArtifactClassifier()
+                      + "-" + this.getMavenSession().getStartTime().getTime()
+                      + "." + this.getArtifactType() );
 
         try
         {
