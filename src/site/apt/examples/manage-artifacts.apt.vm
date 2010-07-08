@@ -49,32 +49,32 @@ Managing JOMC artifacts
     <dependency>
       <groupId>org.jomc</groupId>
       <artifactId>jomc-util</artifactId>
-      <version>1.x</version>
+      <version>${jomc.site.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jomc</groupId>
       <artifactId>jomc-modlet</artifactId>
-      <version>1.x</version>
+      <version>${jomc.site.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jomc</groupId>
       <artifactId>jomc-model</artifactId>
-      <version>1.x</version>
+      <version>${jomc.site.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jomc</groupId>
       <artifactId>jomc-api</artifactId>
-      <version>1.x</version>
+      <version>${jomc.site.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jomc</groupId>
       <artifactId>jomc-spi</artifactId>
-      <version>1.x</version>
+      <version>${jomc.site.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jomc</groupId>
       <artifactId>jomc-ri</artifactId>
-      <version>1.x</version>
+      <version>${jomc.site.version}</version>
     </dependency>
     ...
   </dependencies>
