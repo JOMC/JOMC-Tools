@@ -1578,22 +1578,27 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
-        <property name="providerExcludes" value="org.jomc.modlet.DefaultModletProvider">
+        <property name="applicationModlet" value="${project.name}" final="true">
+          <documentation defaultLanguage="en">
+            <text language="en">Name of the 'shaded' application modlet.</text>
+          </documentation>
+        </property>
+        <property name="providerExcludes" value="org.jomc.modlet.DefaultModletProvider" final="true">
           <documentation defaultLanguage="en">
             <text language="en">List of providers to exclude from any {@code META-INF/services} file separated by {@code :}.</text>
           </documentation>
         </property>
-        <property name="schemaExcludes" value="org.jomc.model:org.jomc.tools.model">
+        <property name="schemaExcludes" value="org.jomc.model:org.jomc.tools.model" final="true">
           <documentation defaultLanguage="en">
             <text language="en">List of schema context-ids to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</text>
           </documentation>
         </property>
-        <property name="serviceExcludes" value="org.jomc.model.DefaultModelProcessor:org.jomc.model.DefaultModelProvider:org.jomc.model.DefaultModelValidator">
+        <property name="serviceExcludes" value="org.jomc.model.DefaultModelProcessor:org.jomc.model.DefaultModelProvider:org.jomc.model.DefaultModelValidator" final="true">
           <documentation defaultLanguage="en">
             <text language="en">List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</text>
           </documentation>
         </property>
-        <property name="modletExcludes" value="JOMC Model:JOMC Tools:JOMC CLI">
+        <property name="modletExcludes" value="JOMC Modlet:JOMC Model:JOMC Tools:JOMC CLI" final="true">
           <documentation defaultLanguage="en">
             <text language="en">List of modlet names to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</text>
           </documentation>

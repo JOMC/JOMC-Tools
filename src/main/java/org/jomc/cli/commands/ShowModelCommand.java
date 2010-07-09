@@ -68,6 +68,10 @@ import org.jomc.modlet.ObjectFactory;
  * <blockquote>Property of type {@code java.lang.String}.
  * <p>Abbreviated name of the command.</p>
  * </blockquote></li>
+ * <li>"{@link #getApplicationModlet applicationModlet}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * <p>Name of the 'shaded' application modlet.</p>
+ * </blockquote></li>
  * <li>"{@link #getCommandName commandName}"
  * <blockquote>Property of type {@code java.lang.String}.
  * <p>Name of the command.</p>
@@ -125,7 +129,7 @@ import org.jomc.modlet.ObjectFactory;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-08T20:49:54+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-09T21:31:50+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -650,6 +654,19 @@ public final class ShowModelCommand extends AbstractJomcToolCommand
     }
 
     /**
+     * Gets the value of the {@code applicationModlet} property.
+     * @return Name of the 'shaded' application modlet.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.1.x/jomc-tools" )
+    private java.lang.String getApplicationModlet()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "applicationModlet" );
+        assert _p != null : "'applicationModlet' property not found.";
+        return _p;
+    }
+
+    /**
      * Gets the value of the {@code commandName} property.
      * @return Name of the command.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
@@ -721,7 +738,7 @@ public final class ShowModelCommand extends AbstractJomcToolCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-08T20:49:54+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-09T21:31:50+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
