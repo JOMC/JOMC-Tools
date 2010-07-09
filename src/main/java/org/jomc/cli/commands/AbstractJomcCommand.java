@@ -599,6 +599,8 @@ public abstract class AbstractJomcCommand implements Command
          * Gets a set of names of modlets excluded by the instance.
          *
          * @return A set of names of modlets excluded by the instance.
+         *
+         * @since 1.1
          */
         public Set<String> getExcludedModletNames()
         {
