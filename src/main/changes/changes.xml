@@ -107,6 +107,9 @@
       <code>sourceDirectory</code>, <code>testSourceDirectory</code>, <code>outputDirectory</code> and
       <code>testOutputDirectory</code> to all goals of the <code>maven-jomc-plugin</code>.]]>
       </action>
+      <action dev="schulte2005" type="add"><![CDATA[Added parameter <code>verbose</code> to the
+      <code>attach-main-module</code> and <code>attach-test-module<code> goals of the <code>maven-jomc-plugin</code>.]]>
+      </action>
       <action dev="schulte2005" type="add"><![CDATA[Added parameters <code>moduleEncoding</code> and
       <code>modletEncoding</code> to class <code>org.jomc.mojo.JomcResourceTransformer</code> of the
       <code>maven-jomc-plugin</code>.]]>

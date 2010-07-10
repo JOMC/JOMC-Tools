@@ -91,6 +91,14 @@ public abstract class AbstractAttachMojo extends AbstractMojo
      */
     private String sessionDirectory;
 
+    /**
+     * Controls verbosity of the plugin.
+     *
+     * @parameter expression="${jomc.verbose}" default-value="false"
+     * @since 1.1
+     */
+    private boolean verbose;
+
     /** Creates a new {@code AbstractAttachMojo} instance. */
     public AbstractAttachMojo()
     {
@@ -161,6 +169,34 @@ public abstract class AbstractAttachMojo extends AbstractMojo
     }
 
     /**
+     * Gets a flag indicating verbose output is enabled.
+     *
+     * @return {@code true} if verbose output is enabled; {@code false} if information messages are suppressed.
+     *
+     * @throws MojoExecutionException if getting the flag fails.
+     *
+     * @since 1.1
+     */
+    protected final boolean isVerbose() throws MojoExecutionException
+    {
+        return this.verbose;
+    }
+
+    /**
+     * Gets a flag indicating verbose output is enabled.
+     *
+     * @param value {@code true} if verbose output is enabled; {@code false} if information messages are suppressed.
+     *
+     * @throws MojoExecutionException if setting the flag fails.
+     *
+     * @since 1.1
+     */
+    protected final void setVerbose( final boolean value ) throws MojoExecutionException
+    {
+        this.verbose = value;
+    }
+
+    /**
      * Gets the file of the artifact to attach.
      *
      * @return The file of the artifact to attach.
@@ -222,7 +258,7 @@ public abstract class AbstractAttachMojo extends AbstractMojo
                                                                  this.getArtifactClassifier(), attachment );
 
                 }
-                else if ( this.getLog().isInfoEnabled() )
+                else if ( this.isVerbose() )
                 {
                     this.getLog().info( getMessage( "executionSuppressed", this.getExecutionStrategy() ) );
                 }
