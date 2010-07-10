@@ -55,6 +55,9 @@ import org.apache.maven.project.MavenProjectHelper;
 public abstract class AbstractAttachMojo extends AbstractMojo
 {
 
+    /** Prefix prepended to log messages. */
+    private static final String LOG_PREFIX = "[JOMC] ";
+
     /**
      * The Maven project of the instance.
      *
@@ -244,7 +247,9 @@ public abstract class AbstractAttachMojo extends AbstractMojo
                 {
                     if ( attachment.exists() && !attachment.delete() )
                     {
-                        this.getLog().warn( getMessage( "failedDeletingFile", attachment.getAbsolutePath() ) );
+                        this.getLog().warn( LOG_PREFIX
+                                            + getMessage( "failedDeletingFile", attachment.getAbsolutePath() ) );
+
                     }
                     if ( !attachment.getParentFile().exists() && !attachment.getParentFile().mkdirs() )
                     {
@@ -260,12 +265,14 @@ public abstract class AbstractAttachMojo extends AbstractMojo
                 }
                 else if ( this.isVerbose() )
                 {
-                    this.getLog().info( getMessage( "executionSuppressed", this.getExecutionStrategy() ) );
+                    this.getLog().info( LOG_PREFIX + getMessage( "executionSuppressed", this.getExecutionStrategy() ) );
                 }
             }
             else if ( this.getLog().isWarnEnabled() )
             {
-                this.getLog().warn( getMessage( "artifactFileNotFound", this.getArtifactFile().getAbsolutePath() ) );
+                this.getLog().warn( LOG_PREFIX
+                                    + getMessage( "artifactFileNotFound", this.getArtifactFile().getAbsolutePath() ) );
+
             }
         }
         catch ( final IOException e )
