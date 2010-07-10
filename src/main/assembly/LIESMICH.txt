@@ -21,7 +21,7 @@
     Sollten Sie der Meinung sein, der Anwendung fehle eine Funktion oder ein
     Fehlverhalten festgestellt zu haben, erstellen Sie bitte einen Fehlerbericht
     im Problemverwaltungs-System. Zur Korrektur von Fehlern ist es wichtig, daß
-    ein Entwickler das gemeldete Fehleverhalten reproduzieren kann. Hängen Sie
+    ein Entwickler das gemeldete Fehlverhalten reproduzieren kann. Hängen Sie
     hierzu am besten vollständige Debug-Protokolle der Anwendung an den
     Fehlerbericht an.
 
