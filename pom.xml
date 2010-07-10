@@ -248,21 +248,66 @@
               <artifactItems>
                 <artifactItem>
                   <groupId>${project.groupId}</groupId>
-                  <artifactId>jomc-parent</artifactId>
-                  <version>${project.version}</version>
-                  <type>txt</type>
-                  <classifier>license</classifier>
-                  <outputDirectory>${project.build.directory}</outputDirectory>
-                  <destFileName>JOMC_LICENSE.txt</destFileName>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>jomc-parent</artifactId>
+                  <artifactId>jomc-util</artifactId>
                   <version>${project.version}</version>
                   <type>xhtml</type>
                   <classifier>changes</classifier>
-                  <outputDirectory>${project.build.directory}</outputDirectory>
-                  <destFileName>changes.xhtml</destFileName>
+                  <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
+                  <destFileName>jomc-util-${project.version}-changes.xhtml</destFileName>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>jomc-modlet</artifactId>
+                  <version>${project.version}</version>
+                  <type>xhtml</type>
+                  <classifier>changes</classifier>
+                  <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
+                  <destFileName>jomc-modlet-${project.version}-changes.xhtml</destFileName>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>jomc-model</artifactId>
+                  <version>${project.version}</version>
+                  <type>xhtml</type>
+                  <classifier>changes</classifier>
+                  <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
+                  <destFileName>jomc-model-${project.version}-changes.xhtml</destFileName>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>jomc-tools</artifactId>
+                  <version>${project.version}</version>
+                  <type>xhtml</type>
+                  <classifier>changes</classifier>
+                  <outputDirectory>${project.build.directory}/jomc-changes-tools</outputDirectory>
+                  <destFileName>jomc-tools-${project.version}-changes.xhtml</destFileName>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>jomc-api</artifactId>
+                  <version>${project.version}</version>
+                  <type>xhtml</type>
+                  <classifier>changes</classifier>
+                  <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
+                  <destFileName>jomc-api-${project.version}-changes.xhtml</destFileName>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>jomc-spi</artifactId>
+                  <version>${project.version}</version>
+                  <type>xhtml</type>
+                  <classifier>changes</classifier>
+                  <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
+                  <destFileName>jomc-spi-${project.version}-changes.xhtml</destFileName>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>jomc-ri</artifactId>
+                  <version>${project.version}</version>
+                  <type>xhtml</type>
+                  <classifier>changes</classifier>
+                  <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
+                  <destFileName>jomc-ri-${project.version}-changes.xhtml</destFileName>
                 </artifactItem>
                 <artifactItem>
                   <groupId>javax.xml.parsers</groupId>

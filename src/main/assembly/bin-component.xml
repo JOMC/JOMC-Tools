@@ -58,7 +58,7 @@
       <filtered>false</filtered>
       <lineEnding>dos</lineEnding>
       <outputDirectory>/</outputDirectory>
-      <source>${project.build.directory}/JOMC_LICENSE.txt</source>
+      <source>${basedir}/LICENSE.txt</source>
     </file>
     <file>
       <fileMode>0444</fileMode>
@@ -88,7 +88,7 @@
       <filtered>false</filtered>
       <lineEnding>dos</lineEnding>
       <outputDirectory>/</outputDirectory>
-      <source>${project.build.directory}/changes.xhtml</source>
+      <source>${project.build.directory}/generated-resources/xml/xslt/changes.xml</source>
     </file>
   </files>
   <fileSets>
@@ -177,6 +177,18 @@
       <fileMode>0555</fileMode>
       <directoryMode>0755</directoryMode>
       <outputDirectory>/lib/endorsed</outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>${project.build.directory}/jomc-changes</directory>
+      <fileMode>0444</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/lib/jomc</outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>${project.build.directory}/jomc-changes-tools</directory>
+      <fileMode>0444</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/lib/tools</outputDirectory>
     </fileSet>
   </fileSets>
   <dependencySets>
