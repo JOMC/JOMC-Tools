@@ -99,11 +99,7 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
 
             if ( this.modelObjectStylesheet != null )
             {
-                File f = new File( this.modelObjectStylesheet );
-                if ( !f.isAbsolute() )
-                {
-                    f = new File( this.getMavenProject().getBasedir(), this.modelObjectStylesheet );
-                }
+                final File f = this.getAbsoluteFile( this.modelObjectStylesheet );
 
                 if ( f.exists() )
                 {
@@ -112,6 +108,7 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
                 else
                 {
                     final URL url = classLoader.getResource( this.modelObjectStylesheet );
+
                     if ( url != null )
                     {
                         transformers.add( this.getTransformer( url ) );

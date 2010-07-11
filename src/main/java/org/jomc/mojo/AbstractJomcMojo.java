@@ -460,6 +460,36 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
+     * Gets an absolute {@code File} instance for a given name.
+     * <p>This method constructs a new {@code File} instance using the given name. If the resulting file is not
+     * absolute, the value of the {@code basedir} property of the current Maven project is prepended.</p>
+     * 
+     * @param name The name to get an absolute {@code File} instance for.
+     *
+     * @return An absolute {@code File} instance constructed from {@code name}.
+     *
+     * @throws MojoExecutionException if getting an absolute {@code File} instance for {@code name} fails.
+     * @throws NullPointerException if {@code name} is {@code null}.
+     *
+     * @since 1.1
+     */
+    protected File getAbsoluteFile( final String name ) throws MojoExecutionException
+    {
+        if ( name == null )
+        {
+            throw new NullPointerException( "name" );
+        }
+
+        File file = new File( name );
+        if ( !file.isAbsolute() )
+        {
+            file = new File( this.getMavenProject().getBasedir(), name );
+        }
+
+        return file;
+    }
+
+    /**
      * Gets the directory holding the compiled class files of the project.
      *
      * @return The directory holding the compiled class files of the project.
@@ -470,17 +500,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected File getOutputDirectory() throws MojoExecutionException
     {
-        File directory;
-
         if ( this.classesDirectory != null )
         {
             this.log( Level.WARNING, getMessage( "deprecationWarning", "classesDirectory", "outputDirectory" ), null );
-
-            directory = new File( this.classesDirectory );
-            if ( !directory.isAbsolute() )
-            {
-                directory = new File( this.getMavenProject().getBasedir(), this.classesDirectory );
-            }
 
             if ( !this.classesDirectory.equals( this.outputDirectory ) )
             {
@@ -490,16 +512,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             this.classesDirectory = null;
         }
-        else
-        {
-            directory = new File( this.outputDirectory );
-            if ( !directory.isAbsolute() )
-            {
-                directory = new File( this.getMavenProject().getBasedir(), this.outputDirectory );
-            }
-        }
 
-        return directory;
+        return this.getAbsoluteFile( this.outputDirectory );
     }
 
     /**
@@ -513,18 +527,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected File getTestOutputDirectory() throws MojoExecutionException
     {
-        File directory;
-
         if ( this.testClassesDirectory != null )
         {
             this.log( Level.WARNING, getMessage( "deprecationWarning", "testClassesDirectory",
                                                  "testOutputDirectory" ), null );
-
-            directory = new File( this.testClassesDirectory );
-            if ( !directory.isAbsolute() )
-            {
-                directory = new File( this.getMavenProject().getBasedir(), this.testClassesDirectory );
-            }
 
             if ( !this.testClassesDirectory.equals( this.testOutputDirectory ) )
             {
@@ -534,16 +540,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             this.testClassesDirectory = null;
         }
-        else
-        {
-            directory = new File( this.testOutputDirectory );
-            if ( !directory.isAbsolute() )
-            {
-                directory = new File( this.getMavenProject().getBasedir(), this.testOutputDirectory );
-            }
-        }
 
-        return directory;
+        return this.getAbsoluteFile( this.testOutputDirectory );
     }
 
     /**
@@ -557,14 +555,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected File getSourceDirectory() throws MojoExecutionException
     {
-        File directory = new File( this.sourceDirectory );
-
-        if ( !directory.isAbsolute() )
-        {
-            directory = new File( this.getMavenProject().getBasedir(), this.sourceDirectory );
-        }
-
-        return directory;
+        return this.getAbsoluteFile( this.sourceDirectory );
     }
 
     /**
@@ -578,14 +569,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected File getTestSourceDirectory() throws MojoExecutionException
     {
-        File directory = new File( this.testSourceDirectory );
-
-        if ( !directory.isAbsolute() )
-        {
-            directory = new File( this.getMavenProject().getBasedir(), this.testSourceDirectory );
-        }
-
-        return directory;
+        return this.getAbsoluteFile( this.testSourceDirectory );
     }
 
     /**
@@ -599,14 +583,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected File getSessionDirectory() throws MojoExecutionException
     {
-        File directory = new File( this.sessionDirectory );
-
-        if ( !directory.isAbsolute() )
-        {
-            directory = new File( this.getMavenProject().getBasedir(), this.sessionDirectory );
-        }
-
-        return directory;
+        return this.getAbsoluteFile( this.sessionDirectory );
     }
 
     /**
@@ -620,14 +597,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected File getReportOutputDirectory() throws MojoExecutionException
     {
-        File directory = new File( this.reportOutputDirectory );
-
-        if ( !directory.isAbsolute() )
-        {
-            directory = new File( this.getMavenProject().getBasedir(), this.reportOutputDirectory );
-        }
-
-        return directory;
+        return this.getAbsoluteFile( this.reportOutputDirectory );
     }
 
     /**
