@@ -182,13 +182,12 @@
       <directory>${project.build.directory}/jomc-changes</directory>
       <fileMode>0444</fileMode>
       <directoryMode>0755</directoryMode>
-      <outputDirectory>/lib/jomc</outputDirectory>
-    </fileSet>
-    <fileSet>
-      <directory>${project.build.directory}/jomc-changes-tools</directory>
-      <fileMode>0444</fileMode>
-      <directoryMode>0755</directoryMode>
-      <outputDirectory>/lib/tools</outputDirectory>
+      <outputDirectory>/doc</outputDirectory>
+      <filtered>false</filtered>
+      <lineEnding>keep</lineEnding>
+      <includes>
+        <include>**/**.xhtml</include>
+      </includes>
     </fileSet>
   </fileSets>
   <dependencySets>

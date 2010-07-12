@@ -197,7 +197,22 @@
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
-            <id>unpack</id>
+            <id>unpack-schemas</id>
+            <phase>package</phase>
+            <goals>
+              <goal>unpack-dependencies</goal>
+            </goals>
+            <configuration>
+              <classifier>schemas</classifier>
+              <failOnMissingClassifierArtifact>true</failOnMissingClassifierArtifact>
+              <includeArtifactIds>jomc-modlet,jomc-model,jomc-tools</includeArtifactIds>
+              <includeGroupIds>org.jomc</includeGroupIds>
+              <outputDirectory>${project.build.directory}/jomc-schemas</outputDirectory>
+              <type>jar</type>
+            </configuration>
+          </execution>
+          <execution>
+            <id>unpack-tools</id>
             <phase>package</phase>
             <goals>
               <goal>unpack</goal>
@@ -210,94 +225,17 @@
                   <type>jar</type>
                   <outputDirectory>${project.build.directory}/jomc-tools</outputDirectory>
                 </artifactItem>
-                <artifactItem>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>jomc-tools</artifactId>
-                  <classifier>schemas</classifier>
-                  <type>jar</type>
-                  <outputDirectory>${project.build.directory}/jomc-schemas</outputDirectory>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>jomc-modlet</artifactId>
-                  <classifier>schemas</classifier>
-                  <type>jar</type>
-                  <outputDirectory>${project.build.directory}/jomc-schemas</outputDirectory>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>jomc-model</artifactId>
-                  <classifier>schemas</classifier>
-                  <type>jar</type>
-                  <outputDirectory>${project.build.directory}/jomc-schemas</outputDirectory>
-                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
           <execution>
-            <id>copy</id>
+            <id>copy-endorsed</id>
             <phase>package</phase>
             <goals>
               <goal>copy</goal>
             </goals>
             <configuration>
               <artifactItems>
-                <artifactItem>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>jomc-util</artifactId>
-                  <type>xhtml</type>
-                  <classifier>changes</classifier>
-                  <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
-                  <destFileName>jomc-util-${project.version}-changes.xhtml</destFileName>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>jomc-modlet</artifactId>
-                  <type>xhtml</type>
-                  <classifier>changes</classifier>
-                  <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
-                  <destFileName>jomc-modlet-${project.version}-changes.xhtml</destFileName>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>jomc-model</artifactId>
-                  <type>xhtml</type>
-                  <classifier>changes</classifier>
-                  <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
-                  <destFileName>jomc-model-${project.version}-changes.xhtml</destFileName>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>jomc-tools</artifactId>
-                  <type>xhtml</type>
-                  <classifier>changes</classifier>
-                  <outputDirectory>${project.build.directory}/jomc-changes-tools</outputDirectory>
-                  <destFileName>jomc-tools-${project.version}-changes.xhtml</destFileName>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>jomc-api</artifactId>
-                  <type>xhtml</type>
-                  <classifier>changes</classifier>
-                  <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
-                  <destFileName>jomc-api-${project.version}-changes.xhtml</destFileName>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>jomc-spi</artifactId>
-                  <type>xhtml</type>
-                  <classifier>changes</classifier>
-                  <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
-                  <destFileName>jomc-spi-${project.version}-changes.xhtml</destFileName>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>jomc-ri</artifactId>
-                  <type>xhtml</type>
-                  <classifier>changes</classifier>
-                  <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
-                  <destFileName>jomc-ri-${project.version}-changes.xhtml</destFileName>
-                </artifactItem>
                 <artifactItem>
                   <groupId>javax.xml.parsers</groupId>
                   <artifactId>jaxp-api</artifactId>
@@ -513,60 +451,14 @@
                 <id>copy-javadoc</id>
                 <phase>package</phase>
                 <goals>
-                  <goal>copy</goal>
+                  <goal>copy-dependencies</goal>
                 </goals>
                 <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>${project.groupId}</groupId>
-                      <artifactId>jomc-api</artifactId>
-                      <type>jar</type>
-                      <classifier>javadoc</classifier>
-                      <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>${project.groupId}</groupId>
-                      <artifactId>jomc-spi</artifactId>
-                      <type>jar</type>
-                      <classifier>javadoc</classifier>
-                      <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>${project.groupId}</groupId>
-                      <artifactId>jomc-util</artifactId>
-                      <type>jar</type>
-                      <classifier>javadoc</classifier>
-                      <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>${project.groupId}</groupId>
-                      <artifactId>jomc-modlet</artifactId>
-                      <type>jar</type>
-                      <classifier>javadoc</classifier>
-                      <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>${project.groupId}</groupId>
-                      <artifactId>jomc-model</artifactId>
-                      <type>jar</type>
-                      <classifier>javadoc</classifier>
-                      <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>${project.groupId}</groupId>
-                      <artifactId>jomc-ri</artifactId>
-                      <type>jar</type>
-                      <classifier>javadoc</classifier>
-                      <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>${project.groupId}</groupId>
-                      <artifactId>jomc-tools</artifactId>
-                      <type>jar</type>
-                      <classifier>javadoc</classifier>
-                      <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
-                    </artifactItem>
-                  </artifactItems>
+                  <classifier>javadoc</classifier>
+                  <failOnMissingClassifierArtifact>true</failOnMissingClassifierArtifact>
+                  <includeGroupIds>org.jomc</includeGroupIds>
+                  <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
+                  <type>jar</type>
                 </configuration>
               </execution>
             </executions>

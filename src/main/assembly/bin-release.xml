@@ -51,6 +51,9 @@
       <directoryMode>0755</directoryMode>
       <outputDirectory>/doc</outputDirectory>
       <filtered>false</filtered>
+      <includes>
+        <include>**/*.jar</include>
+      </includes>
     </fileSet>
   </fileSets>
 </assembly>
