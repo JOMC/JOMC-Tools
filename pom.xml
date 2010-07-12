@@ -42,6 +42,7 @@
   <artifactId>jomc-cli</artifactId>
   <name>JOMC CLI</name>
   <description>Object management and configuration tools command line interface.</description>
+  <url>${jomc.artifacts.url}/${project.artifactId}-${project.version}</url>
   <build>
     <pluginManagement>
       <plugins>
@@ -388,6 +389,13 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
+  <distributionManagement>
+    <site>
+      <id>jomc.sourceforge.net</id>
+      <name>JOMC Site</name>
+      <url>${jomc.artifacts.distribution.url}/${project.artifactId}-${project.version}</url>
+    </site>
+  </distributionManagement>
   <profiles>
     <profile>
       <id>jomc-ci</id>

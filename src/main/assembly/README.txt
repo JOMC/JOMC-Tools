@@ -34,7 +34,7 @@
 
   Maven 2 Plugin
 
-    See http://jomc.sourceforge.net/jomc/${jomc.site.version}/maven-jomc-plugin
+    See ${jomc.artifacts.url}/maven-jomc-plugin-${maven-jomc-plugin.version}
 
   JDK 1.5
 
