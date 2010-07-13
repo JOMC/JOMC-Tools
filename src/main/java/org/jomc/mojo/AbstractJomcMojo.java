@@ -463,7 +463,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * Gets an absolute {@code File} instance for a given name.
      * <p>This method constructs a new {@code File} instance using the given name. If the resulting file is not
      * absolute, the value of the {@code basedir} property of the current Maven project is prepended.</p>
-     * 
+     *
      * @param name The name to get an absolute {@code File} instance for.
      *
      * @return An absolute {@code File} instance constructed from {@code name}.
