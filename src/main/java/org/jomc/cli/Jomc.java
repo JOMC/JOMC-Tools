@@ -88,8 +88,8 @@ import org.jomc.modlet.DefaultModletProvider;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getDefaultLogLevelInfo defaultLogLevelInfo}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>{0}: Default log level: ''{1}''</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0}: Standard Protokollierungsstufe: ''{1}''</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Default log level: ''{0}''</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Standard Protokollierungsstufe: ''{0}''</pre></td></tr>
  * </table>
  * <li>"{@link #getIllegalArgumentsInfo illegalArgumentsInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal arguments. Type &raquo;jomc {0} {1}&laquo; for further information.</pre></td></tr>
@@ -206,10 +206,11 @@ public final class Jomc
         if ( this.logLevel == null )
         {
             this.logLevel = getDefaultLogLevel();
+
             if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.CONFIG, this.getDefaultLogLevelInfo( this.getLocale(), this.getClass().getName(),
-                                                                     this.logLevel.getLocalizedName() ), null );
+                this.log( Level.CONFIG,
+                          this.getDefaultLogLevelInfo( this.getLocale(), this.logLevel.getLocalizedName() ), null );
 
             }
         }
@@ -365,13 +366,13 @@ public final class Jomc
 
             cmd.setLogLevel( this.getLogLevel() );
 
-            if ( this.isLoggable( Level.FINE ) )
+            if ( this.isLoggable( Level.FINER ) )
             {
                 for ( int i = 0; i < args.length; i++ )
                 {
-                    this.log( Level.FINE, new StringBuilder().append( this.getClass().getName() ).append( ": [" ).
-                        append( i ).append( "] '" ).append( args[i] ).append( "'" ).
-                        append( System.getProperty( "line.separator" ) ).toString(), null );
+                    this.log( Level.FINER, new StringBuilder().append( "[" ).append( i ).append( "] -> '" ).
+                        append( args[i] ).append( "'" ).append( System.getProperty( "line.separator" ) ).
+                        toString(), null );
 
                 }
             }
@@ -682,20 +683,19 @@ public final class Jomc
     /**
      * Gets the text of the {@code defaultLogLevelInfo} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>{0}: Default log level: ''{1}''</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0}: Standard Protokollierungsstufe: ''{1}''</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Default log level: ''{0}''</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Standard Protokollierungsstufe: ''{0}''</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
-     * @param className Format argument.
-     * @param logLevel Format argument.
+     * @param defaultLogLevel Format argument.
      * @return The text of the {@code defaultLogLevelInfo} message.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.1/jomc-tools-1.1-SNAPSHOT" )
-    private String getDefaultLogLevelInfo( final java.util.Locale locale, final java.lang.String className, final java.lang.String logLevel )
+    private String getDefaultLogLevelInfo( final java.util.Locale locale, final java.lang.String defaultLogLevel )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "defaultLogLevelInfo", locale, className, logLevel );
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "defaultLogLevelInfo", locale, defaultLogLevel );
         assert _m != null : "'defaultLogLevelInfo' message not found.";
         return _m;
     }
