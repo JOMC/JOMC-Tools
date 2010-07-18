@@ -620,9 +620,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 if ( !urls.contains( url ) )
                 {
                     urls.add( url );
-                    this.log( Level.FINE, getMessage( "classpathElement", this.getClass().getName(),
-                                                      url.toExternalForm() ), null );
-
+                    this.log( Level.FINEST, getMessage( "classpathElement", url.toExternalForm() ), null );
                 }
             }
 
@@ -656,9 +654,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 if ( !urls.contains( url ) )
                 {
                     urls.add( url );
-                    this.log( Level.FINE, getMessage( "classpathElement", this.getClass().getName(),
-                                                      url.toExternalForm() ), null );
-
+                    this.log( Level.FINEST, getMessage( "classpathElement", url.toExternalForm() ), null );
                 }
             }
 
@@ -697,14 +693,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( pluginArtifact != null )
             {
-                this.log( Level.FINE, getMessage( "ignoringPluginArtifact", this.getClass().getName(), a.toString(),
-                                                  pluginArtifact.toString() ), null );
+                this.log( Level.FINER,
+                          getMessage( "ignoringPluginArtifact", a.toString(), pluginArtifact.toString() ), null );
 
                 continue;
             }
 
             final String element = a.getFile().getAbsolutePath();
-            this.log( Level.FINE, getMessage( "runtimeElement", this.getClass().getName(), element ), null );
+            this.log( Level.FINEST, getMessage( "runtimeElement", element ), null );
             elements.add( element );
         }
 
@@ -721,14 +717,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( pluginArtifact != null )
             {
-                this.log( Level.FINE, getMessage( "ignoringPluginArtifact", this.getClass().getName(), a.toString(),
-                                                  pluginArtifact.toString() ), null );
+                this.log( Level.FINER,
+                          getMessage( "ignoringPluginArtifact", a.toString(), pluginArtifact.toString() ), null );
 
                 continue;
             }
 
             final String element = a.getFile().getAbsolutePath();
-            this.log( Level.FINE, getMessage( "compiletimeElement", this.getClass().getName(), element ), null );
+            this.log( Level.FINEST, getMessage( "compiletimeElement", element ), null );
             elements.add( element );
         }
 
@@ -761,14 +757,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( pluginArtifact != null )
             {
-                this.log( Level.FINE, getMessage( "ignoringPluginArtifact", this.getClass().getName(), a.toString(),
-                                                  pluginArtifact.toString() ), null );
+                this.log( Level.FINER,
+                          getMessage( "ignoringPluginArtifact", a.toString(), pluginArtifact.toString() ), null );
 
                 continue;
             }
 
             final String element = a.getFile().getAbsolutePath();
-            this.log( Level.FINE, getMessage( "testElement", this.getClass().getName(), element ), null );
+            this.log( Level.FINEST, getMessage( "testElement", element ), null );
             elements.add( element );
         }
 
@@ -1212,7 +1208,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     {
                         final StringWriter stringWriter = new StringWriter();
                         marshaller.marshal( detail.getElement(), stringWriter );
-                        this.log( Level.FINE, stringWriter.toString(), null );
+                        this.log( Level.FINEST, stringWriter.toString(), null );
                     }
                 }
             }
