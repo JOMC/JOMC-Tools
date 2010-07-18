@@ -586,11 +586,9 @@ public class SourceFileProcessor extends JomcTool
             {
                 if ( sourceFileType.getTemplate() != null )
                 {
-                    if ( this.isLoggable( Level.FINE ) )
+                    if ( this.isLoggable( Level.FINER ) )
                     {
-                        this.log( Level.FINE, getMessage( "creating", this.getClass().getName(),
-                                                          f.getAbsolutePath() ), null );
-
+                        this.log( Level.FINER, getMessage( "creating", f.getAbsolutePath() ), null );
                     }
 
                     final StringWriter writer = new StringWriter();
@@ -604,11 +602,9 @@ public class SourceFileProcessor extends JomcTool
             }
             else
             {
-                if ( this.isLoggable( Level.FINE ) )
+                if ( this.isLoggable( Level.FINER ) )
                 {
-                    this.log( Level.FINE, getMessage( "reading", this.getClass().getName(),
-                                                      f.getAbsolutePath() ), null );
-
+                    this.log( Level.FINER, getMessage( "reading", f.getAbsolutePath() ), null );
                 }
 
                 content = FileUtils.readFileToString( f, this.getInputEncoding() );
@@ -629,9 +625,7 @@ public class SourceFileProcessor extends JomcTool
             {
                 for ( Section s : editor.getAddedSections() )
                 {
-                    this.log( Level.FINE, getMessage( "addedSection", this.getClass().getName(), f.getAbsolutePath(),
-                                                      s.getName() ), null );
-
+                    this.log( Level.FINE, getMessage( "addedSection", f.getAbsolutePath(), s.getName() ), null );
                 }
             }
 
@@ -659,9 +653,9 @@ public class SourceFileProcessor extends JomcTool
 
                 FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );
             }
-            else if ( this.isLoggable( Level.FINE ) )
+            else if ( this.isLoggable( Level.FINER ) )
             {
-                this.log( Level.FINE, getMessage( "unchanged", this.getClass().getName(), f.getAbsolutePath() ), null );
+                this.log( Level.FINER, getMessage( "unchanged", f.getAbsolutePath() ), null );
             }
         }
     }

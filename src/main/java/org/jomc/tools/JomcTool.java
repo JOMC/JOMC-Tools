@@ -270,9 +270,11 @@ public abstract class JomcTool
         if ( this.logLevel == null )
         {
             this.logLevel = getDefaultLogLevel();
-            this.log( Level.CONFIG, getMessage( "defaultLogLevelInfo", this.getClass().getName(),
-                                                this.logLevel.getLocalizedName() ), null );
 
+            if ( this.isLoggable( Level.CONFIG ) )
+            {
+                this.log( Level.CONFIG, getMessage( "defaultLogLevelInfo", this.logLevel.getLocalizedName() ), null );
+            }
         }
 
         return this.logLevel;
@@ -1212,7 +1214,6 @@ public abstract class JomcTool
         {
             try
             {
-                final String logPrefix = this.getClass().getName();
                 final java.util.Properties props = new java.util.Properties();
                 props.put( "resource.loader", "class" );
                 props.put( "class.resource.loader.class", VELOCITY_RESOURCE_LOADER );
@@ -1235,14 +1236,12 @@ public abstract class JomcTool
 
                     public void log( final int level, final String message, final Throwable throwable )
                     {
-                        final StringBuilder b = new StringBuilder();
-                        b.append( logPrefix ).append( ": " ).append( message );
-                        JomcTool.this.log( Level.FINE, b.toString(), throwable );
+                        JomcTool.this.log( Level.FINEST, message, throwable );
                     }
 
                     public boolean isLevelEnabled( final int level )
                     {
-                        return isLoggable( Level.FINE );
+                        return isLoggable( Level.FINEST );
                     }
 
                 } );
@@ -1313,9 +1312,7 @@ public abstract class JomcTool
 
             if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.CONFIG, getMessage( "defaultTemplateEncoding", this.getClass().getName(),
-                                                    this.templateEncoding ), null );
-
+                this.log( Level.CONFIG, getMessage( "defaultTemplateEncoding", this.templateEncoding ), null );
             }
         }
 
@@ -1347,11 +1344,10 @@ public abstract class JomcTool
         if ( this.inputEncoding == null )
         {
             this.inputEncoding = new InputStreamReader( new ByteArrayInputStream( NO_BYTES ) ).getEncoding();
+
             if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.CONFIG, getMessage( "defaultInputEncoding", this.getClass().getName(),
-                                                    this.inputEncoding ), null );
-
+                this.log( Level.CONFIG, getMessage( "defaultInputEncoding", this.inputEncoding ), null );
             }
         }
 
@@ -1382,11 +1378,10 @@ public abstract class JomcTool
         if ( this.outputEncoding == null )
         {
             this.outputEncoding = new OutputStreamWriter( new ByteArrayOutputStream() ).getEncoding();
+
             if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.CONFIG, getMessage( "defaultOutputEncoding", this.getClass().getName(),
-                                                    this.outputEncoding ), null );
-
+                this.log( Level.CONFIG, getMessage( "defaultOutputEncoding", this.outputEncoding ), null );
             }
         }
 
@@ -1452,11 +1447,10 @@ public abstract class JomcTool
         if ( this.templateProfile == null )
         {
             this.templateProfile = getDefaultTemplateProfile();
+
             if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.CONFIG, getMessage( "defaultTemplateProfile", this.getClass().getName(),
-                                                    this.templateProfile ), null );
-
+                this.log( Level.CONFIG, getMessage( "defaultTemplateProfile", this.templateProfile ), null );
             }
         }
 
@@ -1485,9 +1479,10 @@ public abstract class JomcTool
         if ( this.indentation == null )
         {
             this.indentation = "    ";
+
             if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.CONFIG, getMessage( "defaultIndentation", this.getClass().getName(),
+                this.log( Level.CONFIG, getMessage( "defaultIndentation",
                                                     StringEscapeUtils.escapeJava( this.indentation ) ), null );
 
             }
@@ -1561,9 +1556,10 @@ public abstract class JomcTool
         if ( this.lineSeparator == null )
         {
             this.lineSeparator = System.getProperty( "line.separator", "\n" );
+
             if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.CONFIG, getMessage( "defaultLineSeparator", this.getClass().getName(),
+                this.log( Level.CONFIG, getMessage( "defaultLineSeparator",
                                                     StringEscapeUtils.escapeJava( this.lineSeparator ) ), null );
 
             }
@@ -1612,21 +1608,19 @@ public abstract class JomcTool
             final Template template = this.getVelocityEngine().getTemplate(
                 TEMPLATE_PREFIX + this.getTemplateProfile() + "/" + templateName, this.getTemplateEncoding() );
 
-            if ( this.isLoggable( Level.FINE ) )
+            if ( this.isLoggable( Level.FINEST ) )
             {
-                this.log( Level.FINE, getMessage( "templateInfo", this.getClass().getName(), templateName,
-                                                  this.getTemplateProfile() ), null );
-
+                this.log( Level.FINEST, getMessage( "templateInfo", templateName, this.getTemplateProfile() ), null );
             }
 
             return template;
         }
         catch ( final ResourceNotFoundException e )
         {
-            if ( this.isLoggable( Level.FINE ) )
+            if ( this.isLoggable( Level.FINER ) )
             {
-                this.log( Level.FINE, getMessage( "templateNotFound", this.getClass().getName(), templateName,
-                                                  this.getTemplateProfile() ), null );
+                this.log( Level.FINER,
+                          getMessage( "templateNotFound", templateName, this.getTemplateProfile() ), null );
 
             }
 
@@ -1635,10 +1629,10 @@ public abstract class JomcTool
                 final Template template = this.getVelocityEngine().getTemplate(
                     TEMPLATE_PREFIX + getDefaultTemplateProfile() + "/" + templateName, this.getTemplateEncoding() );
 
-                if ( this.isLoggable( Level.FINE ) )
+                if ( this.isLoggable( Level.FINEST ) )
                 {
-                    this.log( Level.FINE, getMessage( "templateInfo", this.getClass().getName(), templateName,
-                                                      getDefaultTemplateProfile() ), null );
+                    this.log( Level.FINEST,
+                              getMessage( "templateInfo", templateName, getDefaultTemplateProfile() ), null );
 
                 }
 
@@ -1668,7 +1662,7 @@ public abstract class JomcTool
      *
      * @see #getListeners()
      */
-    protected void log( final Level level, final String message, final Throwable throwable )
+    public void log( final Level level, final String message, final Throwable throwable )
     {
         if ( level == null )
         {
