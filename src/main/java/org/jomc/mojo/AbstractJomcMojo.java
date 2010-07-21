@@ -513,7 +513,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             this.classesDirectory = null;
         }
 
-        return this.getAbsoluteFile( this.outputDirectory );
+        final File dir = this.getAbsoluteFile( this.outputDirectory );
+        if ( !dir.exists() && !dir.mkdirs() )
+        {
+            throw new MojoExecutionException( getMessage( "failedCreatingDirectory", dir.getAbsolutePath() ) );
+        }
+
+        return dir;
     }
 
     /**
@@ -541,7 +547,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             this.testClassesDirectory = null;
         }
 
-        return this.getAbsoluteFile( this.testOutputDirectory );
+        final File dir = this.getAbsoluteFile( this.testOutputDirectory );
+        if ( !dir.exists() && !dir.mkdirs() )
+        {
+            throw new MojoExecutionException( getMessage( "failedCreatingDirectory", dir.getAbsolutePath() ) );
+        }
+
+        return dir;
     }
 
     /**
