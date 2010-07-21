@@ -130,7 +130,7 @@ import org.xml.sax.SAXException;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-21T09:59:18+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-21T17:19:44+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -380,9 +380,9 @@ public abstract class AbstractJomcToolCommand extends AbstractJomcCommand
                 {
                     final Module m = (Module) o;
 
-                    if ( this.isLoggable( Level.FINER ) )
+                    if ( this.isLoggable( Level.FINEST ) )
                     {
-                        this.log( Level.FINER, this.getModuleInfo(
+                        this.log( Level.FINEST, this.getModuleInfo(
                             this.getLocale(), m.getName(), m.getVersion() != null ? m.getVersion() : "" ), null );
 
                     }
@@ -393,9 +393,9 @@ public abstract class AbstractJomcToolCommand extends AbstractJomcCommand
                 {
                     for ( Module m : ( (Modules) o ).getModule() )
                     {
-                        if ( this.isLoggable( Level.FINER ) )
+                        if ( this.isLoggable( Level.FINEST ) )
                         {
-                            this.log( Level.FINER, this.getModuleInfo(
+                            this.log( Level.FINEST, this.getModuleInfo(
                                 this.getLocale(), m.getName(), m.getVersion() != null ? m.getVersion() : "" ), null );
 
                         }
@@ -425,9 +425,9 @@ public abstract class AbstractJomcToolCommand extends AbstractJomcCommand
                     {
                         modules.getModule().add( m );
                     }
-                    else if ( this.isLoggable( Level.FINE ) )
+                    else if ( this.isLoggable( Level.FINEST ) )
                     {
-                        this.log( Level.FINE,
+                        this.log( Level.FINEST,
                                   this.getExcludedModuleFromClasspathInfo( this.getLocale(), m.getName() ), null );
 
                     }
@@ -440,7 +440,7 @@ public abstract class AbstractJomcToolCommand extends AbstractJomcCommand
             final Module classpathModule = modules.getClasspathModule(
                 Modules.getDefaultClasspathModuleName(), context.getClassLoader() );
 
-            if ( classpathModule != null )
+            if ( classpathModule != null && modules.getModule( classpathModule.getName() ) == null )
             {
                 modules.getModule().add( classpathModule );
             }
@@ -800,7 +800,7 @@ public abstract class AbstractJomcToolCommand extends AbstractJomcCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-21T09:59:18+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-21T17:19:44+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
