@@ -125,6 +125,7 @@
       <filtered>true</filtered>
       <includes>
         <include>jomc.bat</include>
+        <include>jomcDebug.bat</include>
       </includes>
     </fileSet>
     <fileSet>
@@ -136,6 +137,7 @@
       <filtered>true</filtered>
       <includes>
         <include>jomc</include>
+        <include>jomcDebug</include>
       </includes>
     </fileSet>
     <fileSet>
