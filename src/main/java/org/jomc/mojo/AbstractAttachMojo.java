@@ -240,7 +240,7 @@ public abstract class AbstractAttachMojo extends AbstractMojo
 
         try
         {
-            if ( this.getArtifactFile().exists() )
+            if ( this.getArtifactFile().isFile() )
             {
                 if ( MojoDescriptor.MULTI_PASS_EXEC_STRATEGY.equals( this.getExecutionStrategy() )
                      || !attachment.exists() )
