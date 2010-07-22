@@ -44,8 +44,7 @@
         <p>
           JOMC is an object management and configuration application programming interface with corresponding reference
           implementation and tools for managing object management and configuration code.
-          See the <a href="http://jomc.sourceforge.net/jomc/${project.version}/">project's web site</a> for further
-          information.
+          See the <a href="${project.url}/../index.html">project's web site</a> for further information.
         </p>
       </answer>
     </faq>
