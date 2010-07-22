@@ -570,6 +570,10 @@ public class SourceFileProcessor extends JomcTool
         {
             throw new NullPointerException( "sourcesDirectory" );
         }
+        if ( !sourcesDirectory.isDirectory() )
+        {
+            throw new IOException( getMessage( "directoryNotFound", sourcesDirectory.getAbsolutePath() ) );
+        }
         if ( editor == null )
         {
             throw new NullPointerException( "editor" );
@@ -580,17 +584,13 @@ public class SourceFileProcessor extends JomcTool
         {
             String content = "";
             String edited = null;
+            boolean creating = false;
             final File f = new File( sourcesDirectory, sourceFileType.getLocation() );
 
             if ( !f.exists() )
             {
                 if ( sourceFileType.getTemplate() != null )
                 {
-                    if ( this.isLoggable( Level.FINER ) )
-                    {
-                        this.log( Level.FINER, getMessage( "creating", f.getAbsolutePath() ), null );
-                    }
-
                     final StringWriter writer = new StringWriter();
                     final Template template = this.getVelocityTemplate( sourceFileType.getTemplate() );
                     final VelocityContext ctx = editor.getVelocityContext();
@@ -598,6 +598,7 @@ public class SourceFileProcessor extends JomcTool
                     template.merge( ctx, writer );
                     writer.close();
                     content = writer.toString();
+                    creating = true;
                 }
             }
             else
@@ -648,7 +649,7 @@ public class SourceFileProcessor extends JomcTool
 
                 if ( this.isLoggable( Level.INFO ) )
                 {
-                    this.log( Level.INFO, getMessage( "editing", f.getAbsolutePath() ), null );
+                    this.log( Level.INFO, getMessage( creating ? "creating" : "editing", f.getAbsolutePath() ), null );
                 }
 
                 FileUtils.writeStringToFile( f, edited, this.getOutputEncoding() );

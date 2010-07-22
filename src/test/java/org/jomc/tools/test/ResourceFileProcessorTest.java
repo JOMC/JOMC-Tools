@@ -32,6 +32,7 @@
  */
 package org.jomc.tools.test;
 
+import java.util.Properties;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,6 +59,9 @@ public class ResourceFileProcessorTest extends JomcToolTest
     /** The {@code ResourceFileProcessor} instance tests are performed with. */
     private ResourceFileProcessor testTool;
 
+    /** Properties backing the instance. */
+    private Properties testProperties;
+
     @Override
     public ResourceFileProcessor getTestTool() throws IOException
     {
@@ -82,9 +86,11 @@ public class ResourceFileProcessorTest extends JomcToolTest
         final File testResourcesDirectory =
             new File( this.getTestProperty( "testResourcesDirectory" ), Integer.toString( this.testResourcesId++ ) );
 
+        assertTrue( testResourcesDirectory.isAbsolute() );
+
         if ( testResourcesDirectory.exists() )
         {
-            FileUtils.cleanDirectory( testResourcesDirectory );
+            FileUtils.deleteDirectory( testResourcesDirectory );
         }
 
         return testResourcesDirectory;
@@ -92,12 +98,17 @@ public class ResourceFileProcessorTest extends JomcToolTest
 
     private String getTestProperty( final String key ) throws IOException
     {
-        final java.util.Properties p = new java.util.Properties();
-        final InputStream in = this.getClass().getResourceAsStream( "ResourceFileProcessorTest.properties" );
-        p.load( in );
-        in.close();
+        if ( this.testProperties == null )
+        {
+            this.testProperties = new java.util.Properties();
+            final InputStream in = this.getClass().getResourceAsStream( "ResourceFileProcessorTest.properties" );
+            this.testProperties.load( in );
+            in.close();
+        }
 
-        return p.getProperty( key );
+        final String value = this.testProperties.getProperty( key );
+        assertNotNull( value );
+        return value;
     }
 
     @Override
@@ -219,16 +230,80 @@ public class ResourceFileProcessorTest extends JomcToolTest
 
     public void testWriteResourceBundleResourceFiles() throws Exception
     {
-        this.getTestTool().writeResourceBundleResourceFiles( this.getTestResourcesDirectory() );
+        final File nonExistentDirectory = this.getTestResourcesDirectory();
+        if ( nonExistentDirectory.exists() )
+        {
+            FileUtils.deleteDirectory( nonExistentDirectory );
+        }
 
-        this.getTestTool().writeResourceBundleResourceFiles(
-            this.getTestTool().getModules().getModule( "Module" ), this.getTestResourcesDirectory() );
+        try
+        {
+            this.getTestTool().writeResourceBundleResourceFiles( nonExistentDirectory );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
 
-        this.getTestTool().writeResourceBundleResourceFiles(
-            this.getTestTool().getModules().getSpecification( "Specification" ), this.getTestResourcesDirectory() );
+        try
+        {
+            this.getTestTool().writeResourceBundleResourceFiles(
+                this.getTestTool().getModules().getModule( "Module" ), nonExistentDirectory );
 
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().writeResourceBundleResourceFiles(
+                this.getTestTool().getModules().getSpecification( "Specification" ), nonExistentDirectory );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().writeResourceBundleResourceFiles(
+                this.getTestTool().getModules().getImplementation( "Implementation" ), nonExistentDirectory );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        File resourcesDirectory = this.getTestResourcesDirectory();
+        assertTrue( resourcesDirectory.mkdirs() );
+        this.getTestTool().writeResourceBundleResourceFiles( resourcesDirectory );
+
+        resourcesDirectory = this.getTestResourcesDirectory();
+        assertTrue( resourcesDirectory.mkdirs() );
         this.getTestTool().writeResourceBundleResourceFiles(
-            this.getTestTool().getModules().getImplementation( "Implementation" ), this.getTestResourcesDirectory() );
+            this.getTestTool().getModules().getModule( "Module" ), resourcesDirectory );
+
+        resourcesDirectory = this.getTestResourcesDirectory();
+        assertTrue( resourcesDirectory.mkdirs() );
+        this.getTestTool().writeResourceBundleResourceFiles(
+            this.getTestTool().getModules().getSpecification( "Specification" ), resourcesDirectory );
+
+        resourcesDirectory = this.getTestResourcesDirectory();
+        assertTrue( resourcesDirectory.mkdirs() );
+        this.getTestTool().writeResourceBundleResourceFiles(
+            this.getTestTool().getModules().getImplementation( "Implementation" ), resourcesDirectory );
 
     }
 

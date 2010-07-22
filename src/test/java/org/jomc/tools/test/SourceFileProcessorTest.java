@@ -32,6 +32,7 @@
  */
 package org.jomc.tools.test;
 
+import java.util.Properties;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -62,6 +63,9 @@ public class SourceFileProcessorTest extends JomcToolTest
     /** The {@code SourceFileProcessor} instance tests are performed with. */
     private SourceFileProcessor testTool;
 
+    /** Properties backing the instance. */
+    private Properties testProperties;
+
     @Override
     public SourceFileProcessor getTestTool() throws IOException
     {
@@ -86,9 +90,11 @@ public class SourceFileProcessorTest extends JomcToolTest
         final File testSourcesDirectory =
             new File( this.getTestProperty( "testSourcesDirectory" ), Integer.toString( this.testSourcesId++ ) );
 
+        assertTrue( testSourcesDirectory.isAbsolute() );
+
         if ( testSourcesDirectory.exists() )
         {
-            FileUtils.cleanDirectory( testSourcesDirectory );
+            FileUtils.deleteDirectory( testSourcesDirectory );
         }
 
         return testSourcesDirectory;
@@ -96,12 +102,17 @@ public class SourceFileProcessorTest extends JomcToolTest
 
     private String getTestProperty( final String key ) throws IOException
     {
-        final java.util.Properties p = new java.util.Properties();
-        final InputStream in = this.getClass().getResourceAsStream( "SourceFileProcessorTest.properties" );
-        p.load( in );
-        in.close();
+        if ( this.testProperties == null )
+        {
+            this.testProperties = new java.util.Properties();
+            final InputStream in = this.getClass().getResourceAsStream( "SourceFileProcessorTest.properties" );
+            this.testProperties.load( in );
+            in.close();
+        }
 
-        return p.getProperty( key );
+        final String value = this.testProperties.getProperty( key );
+        assertNotNull( value );
+        return value;
     }
 
     @Override
@@ -250,11 +261,73 @@ public class SourceFileProcessorTest extends JomcToolTest
 
     public void testManageSources() throws Exception
     {
-        this.getTestTool().manageSourceFiles( this.getTestSourcesDirectory() );
+        final File nonExistingDirectory = this.getTestSourcesDirectory();
+        if ( nonExistingDirectory.exists() )
+        {
+            FileUtils.deleteDirectory( nonExistingDirectory );
+        }
+
+        try
+        {
+            this.getTestTool().manageSourceFiles( nonExistingDirectory );
+            fail( "Expected IOException not found." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getModule( "Module" ),
+                                                  nonExistingDirectory );
+
+            fail( "Expected IOException not found." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
+                                                  nonExistingDirectory );
+
+            fail( "Expected IOException not found." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getSpecification( "Specification" ),
+                                                  nonExistingDirectory );
+
+            fail( "Expected IOException not found." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        File sourcesDirectory = this.getTestSourcesDirectory();
+        assertTrue( sourcesDirectory.mkdirs() );
+        this.getTestTool().manageSourceFiles( sourcesDirectory );
+
+        sourcesDirectory = this.getTestSourcesDirectory();
+        assertTrue( sourcesDirectory.mkdirs() );
         this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getModule( "Module" ),
-                                              this.getTestSourcesDirectory() );
+                                              sourcesDirectory );
 
         final File implementationDirectory = this.getTestSourcesDirectory();
+        assertTrue( implementationDirectory.mkdirs() );
         this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
@@ -262,6 +335,7 @@ public class SourceFileProcessorTest extends JomcToolTest
                                               implementationDirectory );
 
         final File specificationDirectory = this.getTestSourcesDirectory();
+        assertTrue( specificationDirectory.mkdirs() );
         this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getSpecification( "Specification" ),
                                               specificationDirectory );
 
@@ -302,15 +376,23 @@ public class SourceFileProcessorTest extends JomcToolTest
 
         this.getTestTool().setTemplateProfile( "DOES_NOT_EXIST" );
 
-        this.getTestTool().manageSourceFiles( this.getTestSourcesDirectory() );
-        this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getModule( "Module" ),
-                                              this.getTestSourcesDirectory() );
+        sourcesDirectory = this.getTestSourcesDirectory();
+        assertTrue( sourcesDirectory.mkdirs() );
+        this.getTestTool().manageSourceFiles( sourcesDirectory );
 
+        sourcesDirectory = this.getTestSourcesDirectory();
+        assertTrue( sourcesDirectory.mkdirs() );
+        this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getModule( "Module" ), sourcesDirectory );
+
+        sourcesDirectory = this.getTestSourcesDirectory();
+        assertTrue( sourcesDirectory.mkdirs() );
         this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
-                                              this.getTestSourcesDirectory() );
+                                              sourcesDirectory );
 
+        sourcesDirectory = this.getTestSourcesDirectory();
+        assertTrue( sourcesDirectory.mkdirs() );
         this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getSpecification( "Specification" ),
-                                              this.getTestSourcesDirectory() );
+                                              sourcesDirectory );
 
     }
 
@@ -319,6 +401,9 @@ public class SourceFileProcessorTest extends JomcToolTest
         final SectionEditor editor = new SectionEditor();
         final File specificationDirectory = this.getTestSourcesDirectory();
         final File implementationDirectory = this.getTestSourcesDirectory();
+
+        assertTrue( specificationDirectory.mkdirs() );
+        assertTrue( implementationDirectory.mkdirs() );
 
         File f = new File( implementationDirectory, "Implementation.java" );
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutAnnotationsSection.java.txt" ),
@@ -394,6 +479,9 @@ public class SourceFileProcessorTest extends JomcToolTest
         final SectionEditor editor = new SectionEditor();
         final File implementationDirectory = this.getTestSourcesDirectory();
         final File specificationDirectory = this.getTestSourcesDirectory();
+
+        assertTrue( specificationDirectory.mkdirs() );
+        assertTrue( implementationDirectory.mkdirs() );
 
         File f = new File( implementationDirectory, "Implementation.java" );
         IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutConstructorsSection.java.txt" ),

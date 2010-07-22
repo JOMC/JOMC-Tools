@@ -1203,6 +1203,10 @@ public class ClassFileProcessor extends JomcTool
         {
             throw new NullPointerException( "transformers" );
         }
+        if ( !classesDirectory.isDirectory() )
+        {
+            throw new IOException( getMessage( "directoryNotFound", classesDirectory.getAbsolutePath() ) );
+        }
 
         try
         {
@@ -1256,6 +1260,10 @@ public class ClassFileProcessor extends JomcTool
         if ( transformers == null )
         {
             throw new NullPointerException( "transformers" );
+        }
+        if ( !classesDirectory.isDirectory() )
+        {
+            throw new IOException( getMessage( "directoryNotFound", classesDirectory.getAbsolutePath() ) );
         }
 
         assert this.getModules().getModule( module.getName() ) != null : "Module '" + module.getName() + "' not found.";
@@ -1312,6 +1320,10 @@ public class ClassFileProcessor extends JomcTool
         {
             throw new NullPointerException( "transformers" );
         }
+        if ( !classesDirectory.isDirectory() )
+        {
+            throw new IOException( getMessage( "directoryNotFound", classesDirectory.getAbsolutePath() ) );
+        }
 
         assert this.getModules().getSpecification( specification.getIdentifier() ) != null :
             "Specification '" + specification.getIdentifier() + "' not found.";
@@ -1365,6 +1377,10 @@ public class ClassFileProcessor extends JomcTool
         if ( transformers == null )
         {
             throw new NullPointerException( "transformers" );
+        }
+        if ( !classesDirectory.isDirectory() )
+        {
+            throw new IOException( getMessage( "directoryNotFound", classesDirectory.getAbsolutePath() ) );
         }
 
         assert this.getModules().getImplementation( implementation.getIdentifier() ) != null :
@@ -1876,6 +1892,19 @@ public class ClassFileProcessor extends JomcTool
             final String classLocation = specification.getClazz().replace( '.', File.separatorChar ) + ".class";
             final File classFile = new File( classesDirectory, classLocation );
 
+            if ( !classesDirectory.isDirectory() )
+            {
+                throw new IOException( getMessage( "directoryNotFound", classesDirectory.getAbsolutePath() ) );
+            }
+            if ( !classFile.isFile() )
+            {
+                throw new IOException( getMessage( "fileNotFound", classFile.getAbsolutePath() ) );
+            }
+            if ( !( classFile.canRead() && classFile.canWrite() ) )
+            {
+                throw new IOException( getMessage( "fileAccessDenied", classFile.getAbsolutePath() ) );
+            }
+
             if ( this.isLoggable( Level.INFO ) )
             {
                 this.log( Level.INFO, getMessage( "committing", classFile.getAbsolutePath() ), null );
@@ -1894,6 +1923,19 @@ public class ClassFileProcessor extends JomcTool
         {
             final String classLocation = implementation.getClazz().replace( '.', File.separatorChar ) + ".class";
             final File classFile = new File( classesDirectory, classLocation );
+
+            if ( !classesDirectory.isDirectory() )
+            {
+                throw new IOException( getMessage( "directoryNotFound", classesDirectory.getAbsolutePath() ) );
+            }
+            if ( !classFile.isFile() )
+            {
+                throw new IOException( getMessage( "fileNotFound", classFile.getAbsolutePath() ) );
+            }
+            if ( !( classFile.canRead() && classFile.canWrite() ) )
+            {
+                throw new IOException( getMessage( "fileAccessDenied", classFile.getAbsolutePath() ) );
+            }
 
             if ( this.isLoggable( Level.INFO ) )
             {
@@ -1945,6 +1987,19 @@ public class ClassFileProcessor extends JomcTool
             final String classLocation = specification.getClazz().replace( '.', File.separatorChar ) + ".class";
             final File classFile = new File( classesDirectory, classLocation );
 
+            if ( !classesDirectory.isDirectory() )
+            {
+                throw new IOException( getMessage( "directoryNotFound", classesDirectory.getAbsolutePath() ) );
+            }
+            if ( !classFile.isFile() )
+            {
+                throw new IOException( getMessage( "fileNotFound", classFile.getAbsolutePath() ) );
+            }
+            if ( !classFile.canRead() )
+            {
+                throw new IOException( getMessage( "fileAccessDenied", classFile.getAbsolutePath() ) );
+            }
+
             if ( this.isLoggable( Level.INFO ) )
             {
                 this.log( Level.INFO, getMessage( "validating", classFile.getAbsolutePath() ), null );
@@ -1969,6 +2024,19 @@ public class ClassFileProcessor extends JomcTool
         {
             final String classLocation = implementation.getClazz().replace( '.', File.separatorChar ) + ".class";
             final File classFile = new File( classesDirectory, classLocation );
+
+            if ( !classesDirectory.isDirectory() )
+            {
+                throw new IOException( getMessage( "directoryNotFound", classesDirectory.getAbsolutePath() ) );
+            }
+            if ( !classFile.isFile() )
+            {
+                throw new IOException( getMessage( "fileNotFound", classFile.getAbsolutePath() ) );
+            }
+            if ( !classFile.canRead() )
+            {
+                throw new IOException( getMessage( "fileAccessDenied", classFile.getAbsolutePath() ) );
+            }
 
             if ( this.isLoggable( Level.INFO ) )
             {
@@ -2022,16 +2090,16 @@ public class ClassFileProcessor extends JomcTool
         {
             final String classLocation = specification.getClazz().replace( '.', '/' ) + ".class";
 
-            if ( this.isLoggable( Level.INFO ) )
-            {
-                this.log( Level.INFO, getMessage( "validatingSpecification", specification.getIdentifier() ), null );
-            }
-
             final URL classUrl = classLoader.getResource( classLocation );
 
             if ( classUrl == null )
             {
                 throw new IOException( getMessage( "resourceNotFound", classLocation ) );
+            }
+
+            if ( this.isLoggable( Level.INFO ) )
+            {
+                this.log( Level.INFO, getMessage( "validatingSpecification", specification.getIdentifier() ), null );
             }
 
             InputStream in = null;
@@ -2067,16 +2135,16 @@ public class ClassFileProcessor extends JomcTool
         {
             final String classLocation = implementation.getClazz().replace( '.', '/' ) + ".class";
 
-            if ( this.isLoggable( Level.INFO ) )
-            {
-                this.log( Level.INFO, getMessage( "validatingImplementation", implementation.getIdentifier() ), null );
-            }
-
             final URL classUrl = classLoader.getResource( classLocation );
 
             if ( classUrl == null )
             {
                 throw new IOException( getMessage( "resourceNotFound", classLocation ) );
+            }
+
+            if ( this.isLoggable( Level.INFO ) )
+            {
+                this.log( Level.INFO, getMessage( "validatingImplementation", implementation.getIdentifier() ), null );
             }
 
             InputStream in = null;
@@ -2133,6 +2201,19 @@ public class ClassFileProcessor extends JomcTool
             final String classLocation = specification.getClazz().replace( '.', File.separatorChar ) + ".class";
             final File classFile = new File( classesDirectory, classLocation );
 
+            if ( !classesDirectory.isDirectory() )
+            {
+                throw new IOException( getMessage( "directoryNotFound", classesDirectory.getAbsolutePath() ) );
+            }
+            if ( !classFile.isFile() )
+            {
+                throw new IOException( getMessage( "fileNotFound", classFile.getAbsolutePath() ) );
+            }
+            if ( !( classFile.canRead() && classFile.canWrite() ) )
+            {
+                throw new IOException( getMessage( "fileAccessDenied", classFile.getAbsolutePath() ) );
+            }
+
             if ( this.isLoggable( Level.INFO ) )
             {
                 this.log( Level.INFO, getMessage( "transforming", classFile.getAbsolutePath() ), null );
@@ -2152,6 +2233,19 @@ public class ClassFileProcessor extends JomcTool
         {
             final String classLocation = implementation.getClazz().replace( '.', File.separatorChar ) + ".class";
             final File classFile = new File( classesDirectory, classLocation );
+
+            if ( !classesDirectory.isDirectory() )
+            {
+                throw new IOException( getMessage( "directoryNotFound", classesDirectory.getAbsolutePath() ) );
+            }
+            if ( !classFile.isFile() )
+            {
+                throw new IOException( getMessage( "fileNotFound", classFile.getAbsolutePath() ) );
+            }
+            if ( !( classFile.canRead() && classFile.canWrite() ) )
+            {
+                throw new IOException( getMessage( "fileAccessDenied", classFile.getAbsolutePath() ) );
+            }
 
             if ( this.isLoggable( Level.INFO ) )
             {

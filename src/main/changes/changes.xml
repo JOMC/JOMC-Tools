@@ -46,8 +46,16 @@
       <code>@XmlSchema</code> annotation of the <code>org.jomc.tools.model</code> package. Added a <code>@XmlNs</code>
       annotation to the <code>@XmlSchema</code> annotation of the <code>org.jomc.tools.model</code> package.]]>
       </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Corrected a <code>NullPointerException</code> thrown when
+      committing, validating or transforming nonexistent class files.]]>
+      </action>
       <action dev="schulte2005" type="update"><![CDATA[Moved the default templates from the <code>jomc-tools</code>
       artifact to a separate artifact with classifier <code>templates</code>.]]>
+      </action>
+      <action dev="schulte2005" type="update"><![CDATA[Updated classes <code>org.jomc.tools.ResourceFileProcessor</code>
+      and <code>org.jomc.tools.SourceFileProcessor</code> to throw an <code>IOException</code> when passed a
+      nonexistent <code>sourcesDirectory</code> or <code>resourcesDirectory</code> instead of creating the
+      directory.]]>
       </action>
     </release>
   </body>

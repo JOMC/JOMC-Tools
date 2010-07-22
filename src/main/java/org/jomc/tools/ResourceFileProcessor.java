@@ -171,10 +171,6 @@ public class ResourceFileProcessor extends JomcTool
         {
             throw new NullPointerException( "module" );
         }
-        if ( resourcesDirectory == null )
-        {
-            throw new NullPointerException( "resourcesDirectory" );
-        }
 
         assert this.getModules().getModule( module.getName() ) != null : "Module '" + module.getName() + "' not found.";
 
@@ -223,6 +219,11 @@ public class ResourceFileProcessor extends JomcTool
 
         if ( specification.isClassDeclaration() )
         {
+            if ( !resourcesDirectory.isDirectory() )
+            {
+                throw new IOException( getMessage( "directoryNotFound", resourcesDirectory.getAbsolutePath() ) );
+            }
+
             this.assertValidTemplates( specification );
 
             final String bundlePath =
@@ -262,6 +263,11 @@ public class ResourceFileProcessor extends JomcTool
 
         if ( implementation.isClassDeclaration() )
         {
+            if ( !resourcesDirectory.isDirectory() )
+            {
+                throw new IOException( getMessage( "directoryNotFound", resourcesDirectory.getAbsolutePath() ) );
+            }
+
             this.assertValidTemplates( implementation );
 
             final String bundlePath =

@@ -32,6 +32,7 @@
  */
 package org.jomc.tools.test;
 
+import java.util.Properties;
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.JavaClass;
 import org.jomc.model.Dependency;
@@ -85,6 +86,9 @@ public class ClassFileProcessorTest extends JomcToolTest
 
     /** Serial number of the test classes directory. */
     private int testClassesId;
+
+    /** Properties backing the instance. */
+    private Properties testProperties;
 
     /**
      * Gets the {@code Model} tests are performed with.
@@ -152,24 +156,33 @@ public class ClassFileProcessorTest extends JomcToolTest
         final File testClassesDirectory = new File( this.getTestProperty( "testClassesDirectory" ),
                                                     Integer.toString( this.testClassesId++ ) );
 
+        assertTrue( testClassesDirectory.isAbsolute() );
+
         if ( testClassesDirectory.exists() )
         {
             FileUtils.cleanDirectory( testClassesDirectory );
         }
 
         final File outputDirectory = new File( this.getTestProperty( "projectBuildOutputDirectory" ) );
+        assertTrue( outputDirectory.isAbsolute() );
+
         FileUtils.copyDirectory( outputDirectory, testClassesDirectory );
         return testClassesDirectory;
     }
 
     private String getTestProperty( final String key ) throws IOException
     {
-        final java.util.Properties p = new java.util.Properties();
-        final InputStream in = this.getClass().getResourceAsStream( "ClassFileProcessorTest.properties" );
-        p.load( in );
-        in.close();
+        if ( this.testProperties == null )
+        {
+            this.testProperties = new java.util.Properties();
+            final InputStream in = this.getClass().getResourceAsStream( "ClassFileProcessorTest.properties" );
+            this.testProperties.load( in );
+            in.close();
+        }
 
-        return p.getProperty( key );
+        final String value = this.testProperties.getProperty( key );
+        assertNotNull( value );
+        return value;
     }
 
     @Override
@@ -904,6 +917,30 @@ public class ClassFileProcessorTest extends JomcToolTest
 
     public void testCommitTransformValidateClasses() throws Exception
     {
+        final File nonExistentDirectory = new File( this.getTestProperty( "testClassesDirectory" ),
+                                                    Integer.toString( this.testClassesId++ ) );
+
+        assertTrue( nonExistentDirectory.isAbsolute() );
+
+        if ( nonExistentDirectory.exists() )
+        {
+            FileUtils.deleteDirectory( nonExistentDirectory );
+        }
+
+        final File emptyDirectory = new File( this.getTestProperty( "testClassesDirectory" ),
+                                              Integer.toString( this.testClassesId++ ) );
+
+        assertTrue( emptyDirectory.isAbsolute() );
+
+        if ( emptyDirectory.exists() )
+        {
+            FileUtils.cleanDirectory( emptyDirectory );
+        }
+        else
+        {
+            assertTrue( emptyDirectory.mkdirs() );
+        }
+
         final File allClasses = this.getTestClassesDirectory();
         final ClassLoader allClassesLoader = new URLClassLoader( new URL[]
             {
@@ -949,6 +986,258 @@ public class ClassFileProcessorTest extends JomcToolTest
         assertNotNull( m );
         assertNotNull( s );
         assertNotNull( i );
+
+        try
+        {
+            this.getTestTool().commitModelObjects( this.getModelContext(), nonExistentDirectory );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().commitModelObjects( this.getModelContext(), emptyDirectory );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().commitModelObjects( m, this.getModelContext(), nonExistentDirectory );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().commitModelObjects( m, this.getModelContext(), emptyDirectory );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().commitModelObjects( s, this.getModelContext(), nonExistentDirectory );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().commitModelObjects( s, this.getModelContext(), emptyDirectory );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().commitModelObjects( i, this.getModelContext(), nonExistentDirectory );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().commitModelObjects( i, this.getModelContext(), emptyDirectory );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().transformModelObjects( this.getModelContext(), nonExistentDirectory, transformers );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().transformModelObjects( this.getModelContext(), emptyDirectory, transformers );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().transformModelObjects( m, this.getModelContext(), nonExistentDirectory, transformers );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().transformModelObjects( m, this.getModelContext(), emptyDirectory, transformers );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().transformModelObjects( s, this.getModelContext(), nonExistentDirectory, transformers );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().transformModelObjects( s, this.getModelContext(), emptyDirectory, transformers );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().transformModelObjects( i, this.getModelContext(), nonExistentDirectory, transformers );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().transformModelObjects( i, this.getModelContext(), emptyDirectory, transformers );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().validateModelObjects( this.getModelContext(), nonExistentDirectory );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().validateModelObjects( this.getModelContext(), emptyDirectory );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().validateModelObjects( m, this.getModelContext(), nonExistentDirectory );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().validateModelObjects( m, this.getModelContext(), emptyDirectory );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().validateModelObjects( s, this.getModelContext(), nonExistentDirectory );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().validateModelObjects( s, this.getModelContext(), emptyDirectory );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().validateModelObjects( i, this.getModelContext(), nonExistentDirectory );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().validateModelObjects( i, this.getModelContext(), emptyDirectory );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
 
         this.getTestTool().commitModelObjects( this.getModelContext(), allClasses );
         this.getTestTool().commitModelObjects( m, this.getModelContext(), moduleClasses );
