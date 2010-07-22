@@ -37,13 +37,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.text.MessageFormat;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -306,7 +305,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @required
      * @readonly
      */
-    private List pluginArtifacts;
+    private List<?> pluginArtifacts;
 
     /**
      * The Maven session of the instance.
@@ -623,22 +622,29 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         try
         {
-            final Collection<URL> urls = new LinkedList<URL>();
+            final Set<URI> uris = new HashSet<URI>();
 
-            for ( final Iterator it = this.getMainClasspathElements().iterator(); it.hasNext(); )
+            for ( final Iterator<?> it = this.getMainClasspathElements().iterator(); it.hasNext(); )
             {
                 final String element = (String) it.next();
-                final URL url = new File( element ).toURI().toURL();
-                if ( !urls.contains( url ) )
+                final URI uri = new File( element ).toURI();
+                if ( !uris.contains( uri ) )
                 {
-                    urls.add( url );
-                    this.log( Level.FINEST, getMessage( "classpathElement", url.toExternalForm() ), null );
+                    uris.add( uri );
                 }
             }
 
-            return new URLClassLoader( urls.toArray( new URL[ urls.size() ] ),
-                                       Thread.currentThread().getContextClassLoader() );
+            this.log( Level.FINEST, getMessage( "mainClasspathInfo" ), null );
 
+            int i = 0;
+            final URL[] urls = new URL[ uris.size() ];
+            for ( URI uri : uris )
+            {
+                urls[i] = uri.toURL();
+                this.log( Level.FINEST, "\t" + urls[i++].toExternalForm(), null );
+            }
+
+            return new URLClassLoader( urls, Thread.currentThread().getContextClassLoader() );
         }
         catch ( final IOException e )
         {
@@ -657,22 +663,29 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         try
         {
-            final Collection<URL> urls = new LinkedList<URL>();
+            final Set<URI> uris = new HashSet<URI>();
 
-            for ( final Iterator it = this.getTestClasspathElements().iterator(); it.hasNext(); )
+            for ( final Iterator<?> it = this.getTestClasspathElements().iterator(); it.hasNext(); )
             {
                 final String element = (String) it.next();
-                final URL url = new File( element ).toURI().toURL();
-                if ( !urls.contains( url ) )
+                final URI uri = new File( element ).toURI();
+                if ( !uris.contains( uri ) )
                 {
-                    urls.add( url );
-                    this.log( Level.FINEST, getMessage( "classpathElement", url.toExternalForm() ), null );
+                    uris.add( uri );
                 }
             }
 
-            return new URLClassLoader( urls.toArray( new URL[ urls.size() ] ),
-                                       Thread.currentThread().getContextClassLoader() );
+            this.log( Level.FINEST, getMessage( "testClasspathInfo" ), null );
 
+            int i = 0;
+            final URL[] urls = new URL[ uris.size() ];
+            for ( URI uri : uris )
+            {
+                urls[i] = uri.toURL();
+                this.log( Level.FINEST, "\t" + urls[i++].toExternalForm(), null );
+            }
+
+            return new URLClassLoader( urls, Thread.currentThread().getContextClassLoader() );
         }
         catch ( final IOException e )
         {
@@ -692,7 +705,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         final Set<String> elements = new HashSet<String>();
         elements.add( this.getOutputDirectory().getAbsolutePath() );
 
-        for ( final Iterator it = this.getMavenProject().getRuntimeArtifacts().iterator(); it.hasNext(); )
+        for ( final Iterator<?> it = this.getMavenProject().getRuntimeArtifacts().iterator(); it.hasNext(); )
         {
             final Artifact a = (Artifact) it.next();
             final Artifact pluginArtifact = this.getPluginArtifact( a );
@@ -712,11 +725,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
 
             final String element = a.getFile().getAbsolutePath();
-            this.log( Level.FINEST, getMessage( "runtimeElement", element ), null );
             elements.add( element );
         }
 
-        for ( final Iterator it = this.getMavenProject().getCompileArtifacts().iterator(); it.hasNext(); )
+        for ( final Iterator<?> it = this.getMavenProject().getCompileArtifacts().iterator(); it.hasNext(); )
         {
             final Artifact a = (Artifact) it.next();
             final Artifact pluginArtifact = this.getPluginArtifact( a );
@@ -736,7 +748,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
 
             final String element = a.getFile().getAbsolutePath();
-            this.log( Level.FINEST, getMessage( "compiletimeElement", element ), null );
             elements.add( element );
         }
 
@@ -756,7 +767,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         elements.add( this.getOutputDirectory().getAbsolutePath() );
         elements.add( this.getTestOutputDirectory().getAbsolutePath() );
 
-        for ( final Iterator it = this.getMavenProject().getTestArtifacts().iterator(); it.hasNext(); )
+        for ( final Iterator<?> it = this.getMavenProject().getTestArtifacts().iterator(); it.hasNext(); )
         {
             final Artifact a = (Artifact) it.next();
             final Artifact pluginArtifact = this.getPluginArtifact( a );
@@ -776,7 +787,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
 
             final String element = a.getFile().getAbsolutePath();
-            this.log( Level.FINEST, getMessage( "testElement", element ), null );
             elements.add( element );
         }
 
@@ -1388,7 +1398,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     private Artifact getPluginArtifact( final Artifact a )
     {
-        for ( final Iterator it = this.pluginArtifacts.iterator(); it.hasNext(); )
+        for ( final Iterator<?> it = this.pluginArtifacts.iterator(); it.hasNext(); )
         {
             final Artifact pluginArtifact = (Artifact) it.next();
 
