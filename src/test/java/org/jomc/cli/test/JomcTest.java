@@ -77,6 +77,9 @@ import static junit.framework.Assert.assertNull;
  * <li>"{@link #getTestModelDocumentIllegal testModelDocumentIllegal}"
  * <blockquote>Property of type {@code java.lang.String}.
  * </blockquote></li>
+ * <li>"{@link #getTestModelDocumentNonExistentClasses testModelDocumentNonExistentClasses}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
  * <li>"{@link #getTestModelOutputDocument testModelOutputDocument}"
  * <blockquote>Property of type {@code java.lang.String}.
  * </blockquote></li>
@@ -136,6 +139,14 @@ public class JomcTest extends TestCase
 
     public void testGenerateResources() throws Exception
     {
+        final File testResourcesDirectory = new File( this.getTestResourcesDirectory() );
+        assertTrue( testResourcesDirectory.isAbsolute() );
+
+        if ( testResourcesDirectory.exists() )
+        {
+            FileUtils.deleteDirectory( testResourcesDirectory );
+        }
+
         final String[] help = new String[]
         {
             "generate-resources", "help"
@@ -159,13 +170,24 @@ public class JomcTest extends TestCase
         };
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
-        assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
+        assertEquals( Command.STATUS_FAILURE, Jomc.run( args ) );
         assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
+
+        assertTrue( testResourcesDirectory.mkdirs() );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
         assertEquals( Command.STATUS_FAILURE, Jomc.run( failOnWarnings ) );
     }
 
     public void testManageSources() throws Exception
     {
+        final File testSourcesDirectory = new File( this.getTestSourcesDirectory() );
+        assertTrue( testSourcesDirectory.isAbsolute() );
+
+        if ( testSourcesDirectory.exists() )
+        {
+            FileUtils.deleteDirectory( testSourcesDirectory );
+        }
+
         final String[] help = new String[]
         {
             "manage-sources", "help"
@@ -190,13 +212,24 @@ public class JomcTest extends TestCase
         };
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
-        assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
+        assertEquals( Command.STATUS_FAILURE, Jomc.run( args ) );
         assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
+
+        assertTrue( testSourcesDirectory.mkdirs() );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
         assertEquals( Command.STATUS_FAILURE, Jomc.run( failOnWarnings ) );
     }
 
     public void testCommitValidateClasses() throws Exception
     {
+        final File testClassesDirectory = new File( this.getTestClassesDirectory() );
+        assertTrue( testClassesDirectory.isAbsolute() );
+
+        if ( testClassesDirectory.exists() )
+        {
+            FileUtils.deleteDirectory( testClassesDirectory );
+        }
+
         final String[] commitHelp = new String[]
         {
             "commit-classes", "help"
@@ -216,6 +249,12 @@ public class JomcTest extends TestCase
         final String[] validateArgs = new String[]
         {
             "validate-classes", "-df", '"' + this.getTestModelDocument() + '"', "-cp",
+            '"' + this.getTestClassesDirectory() + '"', "-D"
+        };
+
+        final String[] validateArgsNonExistentClasses = new String[]
+        {
+            "validate-classes", "-df", '"' + this.getTestModelDocumentNonExistentClasses() + '"', "-cp",
             '"' + this.getTestClassesDirectory() + '"', "-D"
         };
 
@@ -241,16 +280,22 @@ public class JomcTest extends TestCase
             '"' + this.getTestClassesDirectory() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
         };
 
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( commitHelp ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( validateHelp ) );
+        assertEquals( Command.STATUS_FAILURE, Jomc.run( commitArgs ) );
+        assertEquals( Command.STATUS_FAILURE, Jomc.run( commitUnsupportedOption ) );
+        assertEquals( Command.STATUS_FAILURE, Jomc.run( validateUnsupportedOption ) );
+
+        assertTrue( testClassesDirectory.mkdirs() );
         FileUtils.copyDirectory( new File( this.getClassesDirectory() ), new File( this.getTestClassesDirectory() ) );
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( commitHelp ) );
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( validateHelp ) );
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( commitArgs ) );
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( validateArgs ) );
-        assertEquals( Command.STATUS_FAILURE, Jomc.run( commitUnsupportedOption ) );
-        assertEquals( Command.STATUS_FAILURE, Jomc.run( validateUnsupportedOption ) );
         assertEquals( Command.STATUS_FAILURE, Jomc.run( commitFailOnWarnings ) );
         assertEquals( Command.STATUS_FAILURE, Jomc.run( validateFailOnWarnings ) );
+        assertEquals( Command.STATUS_FAILURE, Jomc.run( validateArgsNonExistentClasses ) );
     }
 
     public void testMergeModules() throws Exception
@@ -605,6 +650,19 @@ public class JomcTest extends TestCase
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocumentIllegal" );
         assert _p != null : "'testModelDocumentIllegal' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code testModelDocumentNonExistentClasses} property.
+     * @return The value of the {@code testModelDocumentNonExistentClasses} property.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.1/jomc-tools-1.1-SNAPSHOT" )
+    private java.lang.String getTestModelDocumentNonExistentClasses()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocumentNonExistentClasses" );
+        assert _p != null : "'testModelDocumentNonExistentClasses' property not found.";
         return _p;
     }
 

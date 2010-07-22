@@ -1525,6 +1525,12 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="0" name="defaultLogLevel"/>
           </arguments>
         </message>
+        <message name="defaultExceptionMessage">
+          <template defaultLanguage="en">
+            <text language="en">No details available.</text>
+            <text language="de">Keine Details verfügbar.</text>
+          </template>
+        </message>
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->

@@ -87,6 +87,10 @@ import org.jomc.modlet.DefaultModletProvider;
  * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
  * </ul></p>
  * <p><b>Messages</b><ul>
+ * <li>"{@link #getDefaultExceptionMessage defaultExceptionMessage}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>No details available.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Keine Details verf&uuml;gbar.</pre></td></tr>
+ * </table>
  * <li>"{@link #getDefaultLogLevelInfo defaultLogLevelInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Default log level: ''{0}''</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Standard Protokollierungsstufe: ''{0}''</pre></td></tr>
@@ -397,7 +401,7 @@ public final class Jomc
         }
         catch ( final Throwable t )
         {
-            this.log( Level.SEVERE, t.getMessage(), t );
+            this.log( Level.SEVERE, null, t );
             return Command.STATUS_FAILURE;
         }
         finally
@@ -468,13 +472,15 @@ public final class Jomc
                 this.getPrintWriter().print( this.formatLogLines( level, "" ) );
                 final String m = this.getMessage( throwable );
 
-                if ( m != null )
+                if ( m != null && m.length() > 0 )
                 {
                     this.getPrintWriter().print( this.formatLogLines( level, m ) );
                 }
                 else
                 {
-                    this.getPrintWriter().print( this.formatLogLines( level, throwable.toString() ) );
+                    this.getPrintWriter().print( this.formatLogLines(
+                        level, this.getDefaultExceptionMessage( this.getLocale() ) ) );
+
                 }
 
                 if ( this.getLogLevel().intValue() < Level.INFO.intValue() )
@@ -679,6 +685,25 @@ public final class Jomc
     // SECTION-END
     // SECTION-START[Messages]
     // <editor-fold defaultstate="collapsed" desc=" Generated Messages ">
+
+    /**
+     * Gets the text of the {@code defaultExceptionMessage} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>No details available.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Keine Details verf&uuml;gbar.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @return The text of the {@code defaultExceptionMessage} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.1/jomc-tools-1.1-SNAPSHOT" )
+    private String getDefaultExceptionMessage( final java.util.Locale locale )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "defaultExceptionMessage", locale );
+        assert _m != null : "'defaultExceptionMessage' message not found.";
+        return _m;
+    }
 
     /**
      * Gets the text of the {@code defaultLogLevelInfo} message.

@@ -58,7 +58,8 @@
         <property name="classesDirectory" value="${project.build.outputDirectory}"/>
         <property name="testModelDocument" value="${project.build.outputDirectory}/META-INF/jomc.xml"/>
         <property name="testModelDocumentIllegal" value="${project.build.testOutputDirectory}/org/jomc/cli/test/illegal-module.xml"/>
-        <property name="testModuleName" value="${project.name} Tests"/>
+        <property name="testModelDocumentNonExistentClasses" value="${project.build.testOutputDirectory}/org/jomc/cli/test/module-nonexistent-classes.xml"/>
+        <property name="testModuleName" value="${project.name}"/>
         <property name="testModelStylesheet" value="${basedir}/src/main/jomc/model-relocations.xsl"/>
         <property name="testModelOutputDocument" value="${project.build.directory}/jomc-test/transformed.xml"/>
         <property name="testModletName" value="${project.name} Tests"/>
