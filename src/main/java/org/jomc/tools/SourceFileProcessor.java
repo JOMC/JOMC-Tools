@@ -618,7 +618,7 @@ public class SourceFileProcessor extends JomcTool
             catch ( final IOException e )
             {
                 throw (IOException) new IOException( getMessage(
-                    "failedEditing", f.getAbsolutePath(), e.getMessage() ) ).initCause( e );
+                    "failedEditing", f.getAbsolutePath(), getMessage( e ) ) ).initCause( e );
 
             }
 
@@ -671,6 +671,11 @@ public class SourceFileProcessor extends JomcTool
         return MessageFormat.format( ResourceBundle.getBundle(
             SourceFileProcessor.class.getName().replace( '.', '/' ) ).getString( key ), arguments );
 
+    }
+
+    private static String getMessage( final Throwable t )
+    {
+        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
     /**

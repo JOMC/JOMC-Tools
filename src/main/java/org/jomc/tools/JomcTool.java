@@ -1251,7 +1251,7 @@ public abstract class JomcTool
             }
             catch ( final Exception e )
             {
-                throw (IOException) new IOException( e.getMessage() ).initCause( e );
+                throw (IOException) new IOException( getMessage( e ) ).initCause( e );
             }
         }
 
@@ -1714,9 +1714,14 @@ public abstract class JomcTool
 
     private static String getMessage( final String key, final Object... arguments )
     {
-        return MessageFormat.format( ResourceBundle.getBundle( JomcTool.class.getName().replace( '.', '/' ) ).
-            getString( key ), arguments );
+        return MessageFormat.format( ResourceBundle.getBundle(
+            JomcTool.class.getName().replace( '.', '/' ) ).getString( key ), arguments );
 
+    }
+
+    private static String getMessage( final Throwable t )
+    {
+        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

@@ -169,7 +169,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
 
@@ -213,7 +213,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
 
@@ -258,7 +258,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
 
@@ -303,7 +303,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
 
@@ -469,7 +469,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
 
@@ -511,7 +511,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
 
@@ -552,7 +552,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
 
@@ -593,7 +593,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
 
@@ -632,7 +632,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
 
@@ -679,7 +679,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
 
@@ -727,7 +727,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
 
@@ -775,7 +775,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
 
@@ -1167,11 +1167,11 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ParseException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
         catch ( final TokenMgrError e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
 
@@ -1222,7 +1222,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
 
@@ -1282,7 +1282,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
 
@@ -1340,7 +1340,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
 
@@ -1398,7 +1398,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
 
@@ -1472,20 +1472,20 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final JAXBException e )
         {
-            String message = e.getMessage();
+            String message = getMessage( e );
             if ( message == null && e.getLinkedException() != null )
             {
-                message = e.getLinkedException().getMessage();
+                message = getMessage( e.getLinkedException() );
             }
 
             throw (IOException) new IOException( message ).initCause( e );
         }
         catch ( final TransformerException e )
         {
-            String message = e.getMessage();
+            String message = getMessage( e );
             if ( message == null && e.getException() != null )
             {
-                message = e.getException().getMessage();
+                message = getMessage( e.getException() );
             }
 
             throw (IOException) new IOException( message ).initCause( e );
@@ -1633,20 +1633,20 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final JAXBException e )
         {
-            String message = e.getMessage();
+            String message = getMessage( e );
             if ( message == null && e.getLinkedException() != null )
             {
-                message = e.getLinkedException().getMessage();
+                message = getMessage( e.getLinkedException() );
             }
 
             throw (IOException) new IOException( message ).initCause( e );
         }
         catch ( final TransformerException e )
         {
-            String message = e.getMessage();
+            String message = getMessage( e );
             if ( message == null && e.getException() != null )
             {
-                message = e.getException().getMessage();
+                message = getMessage( e.getException() );
             }
 
             throw (IOException) new IOException( message ).initCause( e );
@@ -1805,10 +1805,10 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final JAXBException e )
         {
-            String message = e.getMessage();
+            String message = getMessage( e );
             if ( message == null && e.getLinkedException() != null )
             {
-                message = e.getLinkedException().getMessage();
+                message = getMessage( e.getLinkedException() );
             }
 
             throw (IOException) new IOException( message ).initCause( e );
@@ -1854,10 +1854,10 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final JAXBException e )
         {
-            String message = e.getMessage();
+            String message = getMessage( e );
             if ( message == null && e.getLinkedException() != null )
             {
-                message = e.getLinkedException().getMessage();
+                message = getMessage( e.getLinkedException() );
             }
 
             throw (IOException) new IOException( message ).initCause( e );
@@ -2260,9 +2260,14 @@ public class ClassFileProcessor extends JomcTool
 
     private static String getMessage( final String key, final Object... arguments )
     {
-        return MessageFormat.format( ResourceBundle.getBundle( ClassFileProcessor.class.getName().replace( '.', '/' ) ).
-            getString( key ), arguments );
+        return MessageFormat.format( ResourceBundle.getBundle(
+            ClassFileProcessor.class.getName().replace( '.', '/' ) ).getString( key ), arguments );
 
+    }
+
+    private static String getMessage( final Throwable t )
+    {
+        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }
