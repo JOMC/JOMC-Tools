@@ -169,6 +169,13 @@
                     <file>${project.build.directory}/maven-shared-archive-resources/META-INF/PROJECT.txt</file>
                     <resource>META-INF/PROJECT.txt</resource>
                   </transformer>
+                  <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                    <mainClass>org.jomc.cli.Jomc</mainClass>
+                    <manifestEntries>
+                      <Build-Date>${buildNumber}</Build-Date>
+                      <Maven-Version>${maven.version}</Maven-Version>
+                    </manifestEntries>
+                  </transformer>
                 </transformers>
               </configuration>
             </execution>
@@ -251,24 +258,6 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <index>true</index>
-            <addMavenDescriptor>false</addMavenDescriptor>
-            <compress>true</compress>
-            <manifest>
-              <mainClass>org.jomc.cli.Jomc</mainClass>
-            </manifest>
-            <manifestEntries>
-              <Build-Date>${buildNumber}</Build-Date>
-              <Maven-Version>${maven.version}</Maven-Version>
-            </manifestEntries>
-          </archive>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.jomc</groupId>
