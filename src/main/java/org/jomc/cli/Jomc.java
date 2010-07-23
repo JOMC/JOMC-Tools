@@ -470,7 +470,7 @@ public final class Jomc
             if ( throwable != null )
             {
                 this.getPrintWriter().print( this.formatLogLines( level, "" ) );
-                final String m = this.getMessage( throwable );
+                final String m = getMessage( throwable );
 
                 if ( m != null && m.length() > 0 )
                 {
@@ -519,19 +519,9 @@ public final class Jomc
         }
     }
 
-    private String getMessage( final Throwable throwable )
+    private static String getMessage( final Throwable t )
     {
-        if ( throwable != null )
-        {
-            if ( throwable.getMessage() != null )
-            {
-                return throwable.getMessage();
-            }
-
-            return this.getMessage( throwable.getCause() );
-        }
-
-        return null;
+        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
     // SECTION-END
