@@ -277,9 +277,10 @@ public abstract class AbstractAttachMojo extends AbstractMojo
         }
         catch ( final IOException e )
         {
+            final String message = getMessage( e );
             throw new MojoExecutionException( getMessage( "failedCopying", this.getArtifactFile().getAbsolutePath(),
                                                           attachment.getAbsolutePath(),
-                                                          e.getMessage() != null ? e.getMessage() : "" ), e );
+                                                          message != null ? message : "" ), e );
 
         }
     }
@@ -289,6 +290,11 @@ public abstract class AbstractAttachMojo extends AbstractMojo
         return MessageFormat.format( ResourceBundle.getBundle(
             AbstractAttachMojo.class.getName().replace( '.', '/' ) ).getString( key ), args );
 
+    }
+
+    private static String getMessage( final Throwable t )
+    {
+        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

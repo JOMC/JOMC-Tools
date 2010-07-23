@@ -126,17 +126,17 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
         }
         catch ( final TransformerConfigurationException e )
         {
-            String message = e.getMessage();
+            String message = getMessage( e );
             if ( message == null && e.getException() != null )
             {
-                message = e.getException().getMessage();
+                message = getMessage( e.getException() );
             }
 
             throw new MojoExecutionException( message, e );
         }
         catch ( final IOException e )
         {
-            throw new MojoExecutionException( e.getMessage(), e );
+            throw new MojoExecutionException( getMessage( e ), e );
         }
     }
 
@@ -167,7 +167,7 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
             {
                 try
                 {
-                    log( Level.WARNING, exception.getMessage(), exception );
+                    log( Level.WARNING, getMessage( exception ), exception );
                 }
                 catch ( final MojoExecutionException e )
                 {
@@ -179,7 +179,7 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
             {
                 try
                 {
-                    log( Level.SEVERE, exception.getMessage(), exception );
+                    log( Level.SEVERE, getMessage( exception ), exception );
                 }
                 catch ( final MojoExecutionException e )
                 {
@@ -193,7 +193,7 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
             {
                 try
                 {
-                    log( Level.SEVERE, exception.getMessage(), exception );
+                    log( Level.SEVERE, getMessage( exception ), exception );
                 }
                 catch ( final MojoExecutionException e )
                 {
@@ -290,6 +290,11 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
         return MessageFormat.format( ResourceBundle.getBundle(
             AbstractClassesCommitMojo.class.getName().replace( '.', '/' ) ).getString( key ), args );
 
+    }
+
+    private static String getMessage( final Throwable t )
+    {
+        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

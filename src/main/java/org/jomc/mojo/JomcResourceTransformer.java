@@ -300,17 +300,17 @@ public class JomcResourceTransformer implements ResourceTransformer
         }
         catch ( final JAXBException e )
         {
-            String message = e.getMessage();
+            String message = getMessage( e );
             if ( message == null && e.getLinkedException() != null )
             {
-                message = e.getLinkedException().getMessage();
+                message = getMessage( e.getLinkedException() );
             }
 
             throw (IOException) new IOException( message ).initCause( e );
         }
         catch ( final ModelException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
 
@@ -402,37 +402,37 @@ public class JomcResourceTransformer implements ResourceTransformer
         }
         catch ( final TransformerConfigurationException e )
         {
-            String message = e.getMessage();
+            String message = getMessage( e );
             if ( message == null && e.getException() != null )
             {
-                message = e.getException().getMessage();
+                message = getMessage( e.getException() );
             }
 
             throw (IOException) new IOException( message ).initCause( e );
         }
         catch ( final TransformerException e )
         {
-            String message = e.getMessage();
+            String message = getMessage( e );
             if ( message == null && e.getException() != null )
             {
-                message = e.getException().getMessage();
+                message = getMessage( e.getException() );
             }
 
             throw (IOException) new IOException( message ).initCause( e );
         }
         catch ( final JAXBException e )
         {
-            String message = e.getMessage();
+            String message = getMessage( e );
             if ( message == null && e.getLinkedException() != null )
             {
-                message = e.getLinkedException().getMessage();
+                message = getMessage( e.getLinkedException() );
             }
 
             throw (IOException) new IOException( message ).initCause( e );
         }
         catch ( final ModelException e )
         {
-            throw (IOException) new IOException( e.getMessage() ).initCause( e );
+            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
 
@@ -660,6 +660,11 @@ public class JomcResourceTransformer implements ResourceTransformer
         }
 
         return transformed;
+    }
+
+    private static String getMessage( final Throwable t )
+    {
+        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

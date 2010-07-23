@@ -348,7 +348,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         catch ( final Exception e )
         {
-            throw new MojoExecutionException( e.getMessage(), e );
+            throw new MojoExecutionException( getMessage( e ), e );
         }
         finally
         {
@@ -428,7 +428,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         catch ( final IOException e )
         {
-            throw new MojoExecutionException( e.getMessage(), e );
+            throw new MojoExecutionException( getMessage( e ), e );
         }
     }
 
@@ -648,7 +648,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         catch ( final IOException e )
         {
-            throw new MojoExecutionException( e.getMessage(), e );
+            throw new MojoExecutionException( getMessage( e ), e );
         }
     }
 
@@ -689,7 +689,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         catch ( final IOException e )
         {
-            throw new MojoExecutionException( e.getMessage(), e );
+            throw new MojoExecutionException( getMessage( e ), e );
         }
     }
 
@@ -1030,7 +1030,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         catch ( final ModelException e )
         {
-            throw new MojoExecutionException( e.getMessage(), e );
+            throw new MojoExecutionException( getMessage( e ), e );
         }
     }
 
@@ -1055,7 +1055,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         catch ( final ModelException e )
         {
-            throw new MojoExecutionException( e.getMessage(), e );
+            throw new MojoExecutionException( getMessage( e ), e );
         }
     }
 
@@ -1237,14 +1237,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         catch ( final ModelException e )
         {
-            throw new MojoExecutionException( e.getMessage(), e );
+            throw new MojoExecutionException( getMessage( e ), e );
         }
         catch ( final JAXBException e )
         {
-            String message = e.getMessage();
+            String message = getMessage( e );
             if ( message == null && e.getLinkedException() != null )
             {
-                message = e.getLinkedException().getMessage();
+                message = getMessage( e.getLinkedException() );
             }
 
             throw new MojoExecutionException( message, e );
@@ -1417,9 +1417,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     private static String getMessage( final String key, final Object... args )
     {
-        return MessageFormat.format( ResourceBundle.getBundle( AbstractJomcMojo.class.getName().replace( '.', '/' ) ).
-            getString( key ), args );
+        return MessageFormat.format( ResourceBundle.getBundle(
+            AbstractJomcMojo.class.getName().replace( '.', '/' ) ).getString( key ), args );
 
+    }
+
+    private static String getMessage( final Throwable t )
+    {
+        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }
