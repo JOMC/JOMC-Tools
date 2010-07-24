@@ -128,6 +128,10 @@
       <code>maven-jomc-plugin</code> to use parameters <code>classesDirectory</code> and
       <code>testClassesDirectory</code>.]]>
       </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Corrected a <code>ClassCastException</code> thrown by class
+      <code>org.jomc.mojo.JomcResourceTransformer</code> when transforming merged documents with stylesheets producing
+      illegal transformation results.]]>
+      </action>
       <action dev="schulte2005" type="remove"><![CDATA[Deprecated parameters <code>classesDirectory</code> and
       <code>testClassesDirectory</code> of all goals of the <code>maven-jomc-plugin</code> in favour of parameters
       <code>outputDirectory</code> and <code>testOutputDirectory</code>.]]>

@@ -36,8 +36,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 import javax.xml.bind.JAXBElement;
@@ -358,7 +360,7 @@ public class JomcResourceTransformer implements ResourceTransformer
                 mergedModule.setVendor( this.moduleVendor );
 
                 final JAXBElement<Module> transformedModule = this.transformModelObject(
-                    new org.jomc.model.ObjectFactory().createModule( mergedModule ) );
+                    new org.jomc.model.ObjectFactory().createModule( mergedModule ), Module.class );
 
                 out.putNextEntry( new JarEntry( this.moduleResource ) );
                 this.marshalModelObject( transformedModule, out );
@@ -394,7 +396,7 @@ public class JomcResourceTransformer implements ResourceTransformer
                 mergedModlet.setVersion( this.modletVersion );
 
                 final JAXBElement<Modlet> transformedModlet = this.transformModletObject(
-                    new org.jomc.modlet.ObjectFactory().createModlet( mergedModlet ) );
+                    new org.jomc.modlet.ObjectFactory().createModlet( mergedModlet ), Modlet.class );
 
                 out.putNextEntry( new JarEntry( this.modletResource ) );
                 this.marshalModletObject( transformedModlet, out );
@@ -513,15 +515,21 @@ public class JomcResourceTransformer implements ResourceTransformer
         this.jomcMarshaller.marshal( element, out );
     }
 
-    private <T> JAXBElement<T> transformModelObject( final JAXBElement<T> element )
+    private <T> JAXBElement<T> transformModelObject( final JAXBElement<? extends ModelObject> element,
+                                                     final Class<T> boundType )
         throws ModelException, TransformerException, JAXBException
     {
         if ( element == null )
         {
             throw new NullPointerException( "element" );
         }
+        if ( !boundType.isInstance( element.getValue() ) )
+        {
+            throw new IllegalArgumentException( element.toString() );
+        }
 
-        JAXBElement<T> transformed = element;
+        @SuppressWarnings( "unchecked" )
+        JAXBElement<T> transformed = (JAXBElement<T>) element;
 
         if ( this.modelObjectStylesheet != null )
         {
@@ -542,7 +550,19 @@ public class JomcResourceTransformer implements ResourceTransformer
                 final JAXBSource source = new JAXBSource( marshaller, element );
                 final JAXBResult result = new JAXBResult( unmarshaller );
                 transformer.transform( source, result );
-                transformed = (JAXBElement<T>) result.getResult();
+
+                if ( result.getResult() instanceof JAXBElement<?>
+                     && boundType.isInstance( ( (JAXBElement<?>) result.getResult() ).getValue() ) )
+                {
+                    @SuppressWarnings( "unchecked" ) final JAXBElement<T> e = (JAXBElement<T>) result.getResult();
+                    transformed = e;
+                }
+                else
+                {
+                    throw new ModelException( getMessage( "illegalModuleTransformationResult",
+                                                          this.modelObjectStylesheet ) );
+
+                }
             }
             finally
             {
@@ -620,15 +640,21 @@ public class JomcResourceTransformer implements ResourceTransformer
         this.modletMarshaller.marshal( element, out );
     }
 
-    private <T> JAXBElement<T> transformModletObject( final JAXBElement<T> element )
+    private <T> JAXBElement<T> transformModletObject( final JAXBElement<? extends ModletObject> element,
+                                                      final Class<T> boundType )
         throws ModelException, TransformerException, JAXBException
     {
         if ( element == null )
         {
             throw new NullPointerException( "element" );
         }
+        if ( !boundType.isInstance( element.getValue() ) )
+        {
+            throw new IllegalArgumentException( element.toString() );
+        }
 
-        JAXBElement<T> transformed = element;
+        @SuppressWarnings( "unchecked" )
+        JAXBElement<T> transformed = (JAXBElement<T>) element;
 
         if ( this.modletObjectStylesheet != null )
         {
@@ -651,7 +677,19 @@ public class JomcResourceTransformer implements ResourceTransformer
                 final JAXBSource source = new JAXBSource( marshaller, element );
                 final JAXBResult result = new JAXBResult( unmarshaller );
                 transformer.transform( source, result );
-                transformed = (JAXBElement<T>) result.getResult();
+
+                if ( result.getResult() instanceof JAXBElement<?>
+                     && boundType.isInstance( ( (JAXBElement<?>) result.getResult() ).getValue() ) )
+                {
+                    @SuppressWarnings( "unchecked" ) final JAXBElement<T> e = (JAXBElement<T>) result.getResult();
+                    transformed = e;
+                }
+                else
+                {
+                    throw new ModelException( getMessage( "illegalModletTransformationResult",
+                                                          this.modletObjectStylesheet ) );
+
+                }
             }
             finally
             {
@@ -660,6 +698,13 @@ public class JomcResourceTransformer implements ResourceTransformer
         }
 
         return transformed;
+    }
+
+    private static String getMessage( final String key, final Object... args )
+    {
+        return MessageFormat.format( ResourceBundle.getBundle(
+            JomcResourceTransformer.class.getName().replace( '.', '/' ) ).getString( key ), args );
+
     }
 
     private static String getMessage( final Throwable t )
