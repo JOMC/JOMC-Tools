@@ -33,6 +33,7 @@
 package org.jomc.tools.test;
 
 import java.util.Properties;
+import javax.xml.transform.TransformerConfigurationException;
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.JavaClass;
 import org.jomc.model.Dependency;
@@ -195,6 +196,18 @@ public class ClassFileProcessorTest extends JomcToolTest
         }
 
         return this.testTool;
+    }
+
+    public Transformer getTestTransformer( final String resource ) throws IOException, TransformerConfigurationException
+    {
+        final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        final InputStream in = this.getClass().getResourceAsStream( resource );
+        assertNotNull( in );
+
+        final Transformer transformer = transformerFactory.newTransformer( new StreamSource( in ) );
+        in.close();
+
+        return transformer;
     }
 
     @Override
@@ -976,16 +989,39 @@ public class ClassFileProcessorTest extends JomcToolTest
         final Implementation i =
             this.getTestTool().getModules().getImplementation( "org.jomc.tools.ClassFileProcessor" );
 
-        final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        final List<Transformer> transformers = Arrays.asList( new Transformer[]
-            {
-                transformerFactory.newTransformer( new StreamSource(
-                this.getClass().getResourceAsStream( "no-op.xsl" ) ) )
-            } );
-
         assertNotNull( m );
         assertNotNull( s );
         assertNotNull( i );
+
+        final List<Transformer> transformers = Arrays.asList( new Transformer[]
+            {
+                this.getTestTransformer( "no-op.xsl" )
+            } );
+
+        final List<Transformer> illegalSpecificationTransformers = Arrays.asList( new Transformer[]
+            {
+                this.getTestTransformer( "illegal-specification-transformation.xsl" )
+            } );
+
+        final List<Transformer> illegalSpecificationsTransformers = Arrays.asList( new Transformer[]
+            {
+                this.getTestTransformer( "illegal-specifications-transformation.xsl" )
+            } );
+
+        final List<Transformer> illegalDependenciesTransformers = Arrays.asList( new Transformer[]
+            {
+                this.getTestTransformer( "illegal-dependencies-transformation.xsl" )
+            } );
+
+        final List<Transformer> illegalMessagesTransformers = Arrays.asList( new Transformer[]
+            {
+                this.getTestTransformer( "illegal-messages-transformation.xsl" )
+            } );
+
+        final List<Transformer> illegalPropertiesTransformers = Arrays.asList( new Transformer[]
+            {
+                this.getTestTransformer( "illegal-properties-transformation.xsl" )
+            } );
 
         try
         {
@@ -1244,6 +1280,190 @@ public class ClassFileProcessorTest extends JomcToolTest
         this.getTestTool().commitModelObjects( s, this.getModelContext(), specificationClasses );
         this.getTestTool().commitModelObjects( i, this.getModelContext(), implementationClasses );
 
+        try
+        {
+            this.getTestTool().transformModelObjects( this.getModelContext(), allClasses,
+                                                      illegalSpecificationTransformers );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().transformModelObjects( this.getModelContext(), allClasses,
+                                                      illegalSpecificationsTransformers );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().transformModelObjects( this.getModelContext(), allClasses,
+                                                      illegalDependenciesTransformers );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().transformModelObjects( this.getModelContext(), allClasses,
+                                                      illegalMessagesTransformers );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().transformModelObjects( this.getModelContext(), allClasses,
+                                                      illegalPropertiesTransformers );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().transformModelObjects( m, this.getModelContext(), moduleClasses,
+                                                      illegalSpecificationTransformers );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().transformModelObjects( m, this.getModelContext(), moduleClasses,
+                                                      illegalSpecificationsTransformers );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().transformModelObjects( m, this.getModelContext(), moduleClasses,
+                                                      illegalDependenciesTransformers );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().transformModelObjects( m, this.getModelContext(), moduleClasses,
+                                                      illegalMessagesTransformers );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().transformModelObjects( m, this.getModelContext(), moduleClasses,
+                                                      illegalPropertiesTransformers );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().transformModelObjects( s, this.getModelContext(), specificationClasses,
+                                                      illegalSpecificationTransformers );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().transformModelObjects( i, this.getModelContext(), implementationClasses,
+                                                      illegalSpecificationsTransformers );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().transformModelObjects( i, this.getModelContext(), implementationClasses,
+                                                      illegalDependenciesTransformers );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().transformModelObjects( i, this.getModelContext(), implementationClasses,
+                                                      illegalMessagesTransformers );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+        try
+        {
+            this.getTestTool().transformModelObjects( i, this.getModelContext(), implementationClasses,
+                                                      illegalPropertiesTransformers );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
         this.getTestTool().transformModelObjects( this.getModelContext(), allClasses, transformers );
         this.getTestTool().transformModelObjects( m, this.getModelContext(), moduleClasses, transformers );
         this.getTestTool().transformModelObjects( s, this.getModelContext(), specificationClasses, transformers );
@@ -1366,17 +1586,146 @@ public class ClassFileProcessorTest extends JomcToolTest
         this.getTestTool().setModel( copy );
 
         this.getTestTool().validateModelObjects( ModelContext.createModelContext( allClassesLoader ) );
-        this.getTestTool().validateModelObjects( m, ModelContext.createModelContext( moduleClassesLoader ) );
-        this.getTestTool().validateModelObjects( s, ModelContext.createModelContext( specificationClassesLoader ) );
-        this.getTestTool().validateModelObjects( i, ModelContext.createModelContext( implementationClassesLoader ) );
+        this.getTestTool().validateModelObjects( testModule, ModelContext.createModelContext( moduleClassesLoader ) );
+        this.getTestTool().validateModelObjects( classFileProcessor,
+                                                 ModelContext.createModelContext( specificationClassesLoader ) );
+
+        this.getTestTool().validateModelObjects( classFileProcessorImpl,
+                                                 ModelContext.createModelContext( implementationClassesLoader ) );
 
         this.getTestTool().validateModelObjects( this.getModelContext(), allClasses );
-        this.getTestTool().validateModelObjects( m, this.getModelContext(), moduleClasses );
-        this.getTestTool().validateModelObjects( s, this.getModelContext(), specificationClasses );
-        this.getTestTool().validateModelObjects( i, this.getModelContext(), implementationClasses );
+        this.getTestTool().validateModelObjects( testModule, this.getModelContext(), moduleClasses );
+        this.getTestTool().validateModelObjects( classFileProcessor, this.getModelContext(), specificationClasses );
+        this.getTestTool().validateModelObjects( classFileProcessorImpl,
+                                                 this.getModelContext(), implementationClasses );
 
         this.getTestTool().validateModelObjects( ModelContext.createModelContext( uncommittedClassesLoader ) );
         this.getTestTool().validateModelObjects( this.getModelContext(), uncommittedClasses );
+
+        classFileProcessor.setClazz( this.getClass().getPackage().getName() + ".DoesNotExist" );
+        classFileProcessorImpl.setClazz( this.getClass().getPackage().getName() + ".DoesNotExist" );
+        resourceFileProcessor.setClazz( this.getClass().getPackage().getName() + ".DoesNotExist" );
+        resourceFileProcessorImpl.setClazz( this.getClass().getPackage().getName() + ".DoesNotExist" );
+        sourceFileProcessor.setClazz( this.getClass().getPackage().getName() + ".DoesNotExist" );
+        sourceFileProcessorImpl.setClazz( this.getClass().getPackage().getName() + ".DoesNotExist" );
+
+        try
+        {
+            this.getTestTool().validateModelObjects( ModelContext.createModelContext( allClassesLoader ) );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().validateModelObjects( testModule,
+                                                     ModelContext.createModelContext( moduleClassesLoader ) );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().validateModelObjects( classFileProcessor,
+                                                     ModelContext.createModelContext( specificationClassesLoader ) );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().validateModelObjects( classFileProcessorImpl,
+                                                     ModelContext.createModelContext( implementationClassesLoader ) );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().validateModelObjects( this.getModelContext(), allClasses );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().validateModelObjects( testModule, this.getModelContext(), moduleClasses );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().validateModelObjects( classFileProcessor, this.getModelContext(), specificationClasses );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().validateModelObjects( classFileProcessorImpl,
+                                                     this.getModelContext(), implementationClasses );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().validateModelObjects( ModelContext.createModelContext( uncommittedClassesLoader ) );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getTestTool().validateModelObjects( this.getModelContext(), uncommittedClasses );
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
 
         this.getTestTool().setModel( model );
     }

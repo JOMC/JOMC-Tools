@@ -1462,7 +1462,18 @@ public class ClassFileProcessor extends JomcTool
 
                     final JAXBResult result = new JAXBResult( unmarshaller );
                     transformer.transform( source, result );
-                    decodedSpecification = ( (JAXBElement<Specification>) result.getResult() ).getValue();
+
+                    if ( result.getResult() instanceof JAXBElement<?>
+                         && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Specification )
+                    {
+                        decodedSpecification = (Specification) ( (JAXBElement<?>) result.getResult() ).getValue();
+                    }
+                    else
+                    {
+                        throw new IOException( getMessage(
+                            "illegalSpecificationTransformationResult", specification.getIdentifier() ) );
+
+                    }
                 }
 
                 this.setClassfileAttribute( javaClass, Specification.class.getName(), this.encodeModelObject(
@@ -1573,7 +1584,18 @@ public class ClassFileProcessor extends JomcTool
 
                     final JAXBResult result = new JAXBResult( unmarshaller );
                     transformer.transform( source, result );
-                    decodedDependencies = ( (JAXBElement<Dependencies>) result.getResult() ).getValue();
+
+                    if ( result.getResult() instanceof JAXBElement<?>
+                         && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Dependencies )
+                    {
+                        decodedDependencies = (Dependencies) ( (JAXBElement<?>) result.getResult() ).getValue();
+                    }
+                    else
+                    {
+                        throw new IOException( getMessage(
+                            "illegalImplementationTransformationResult", implementation.getIdentifier() ) );
+
+                    }
                 }
 
                 if ( decodedMessages != null )
@@ -1581,7 +1603,18 @@ public class ClassFileProcessor extends JomcTool
                     final JAXBSource source = new JAXBSource( marshaller, of.createMessages( decodedMessages ) );
                     final JAXBResult result = new JAXBResult( unmarshaller );
                     transformer.transform( source, result );
-                    decodedMessages = ( (JAXBElement<Messages>) result.getResult() ).getValue();
+
+                    if ( result.getResult() instanceof JAXBElement<?>
+                         && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Messages )
+                    {
+                        decodedMessages = (Messages) ( (JAXBElement<?>) result.getResult() ).getValue();
+                    }
+                    else
+                    {
+                        throw new IOException( getMessage(
+                            "illegalImplementationTransformationResult", implementation.getIdentifier() ) );
+
+                    }
                 }
 
                 if ( decodedProperties != null )
@@ -1589,7 +1622,18 @@ public class ClassFileProcessor extends JomcTool
                     final JAXBSource source = new JAXBSource( marshaller, of.createProperties( decodedProperties ) );
                     final JAXBResult result = new JAXBResult( unmarshaller );
                     transformer.transform( source, result );
-                    decodedProperties = ( (JAXBElement<Properties>) result.getResult() ).getValue();
+
+                    if ( result.getResult() instanceof JAXBElement<?>
+                         && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Properties )
+                    {
+                        decodedProperties = (Properties) ( (JAXBElement<?>) result.getResult() ).getValue();
+                    }
+                    else
+                    {
+                        throw new IOException( getMessage(
+                            "illegalImplementationTransformationResult", implementation.getIdentifier() ) );
+
+                    }
                 }
 
                 if ( decodedSpecifications != null )
@@ -1599,7 +1643,18 @@ public class ClassFileProcessor extends JomcTool
 
                     final JAXBResult result = new JAXBResult( unmarshaller );
                     transformer.transform( source, result );
-                    decodedSpecifications = ( (JAXBElement<Specifications>) result.getResult() ).getValue();
+
+                    if ( result.getResult() instanceof JAXBElement<?>
+                         && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Specifications )
+                    {
+                        decodedSpecifications = (Specifications) ( (JAXBElement<?>) result.getResult() ).getValue();
+                    }
+                    else
+                    {
+                        throw new IOException( getMessage(
+                            "illegalImplementationTransformationResult", implementation.getIdentifier() ) );
+
+                    }
                 }
             }
 

@@ -49,6 +49,9 @@
       <action dev="schulte2005" type="fix"><![CDATA[Corrected a <code>NullPointerException</code> thrown when
       committing, validating or transforming nonexistent class files.]]>
       </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Corrected a <code>ClassCastException</code> thrown when
+      transforming class files using illegal transformations.]]>
+      </action>
       <action dev="schulte2005" type="update"><![CDATA[Moved the default templates from the <code>jomc-tools</code>
       artifact to a separate artifact with classifier <code>templates</code>.]]>
       </action>
