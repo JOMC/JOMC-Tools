@@ -262,6 +262,13 @@ public abstract class AbstractAttachMojo extends AbstractMojo
                     this.getMavenProjectHelper().attachArtifact( this.getMavenProject(), this.getArtifactType(),
                                                                  this.getArtifactClassifier(), attachment );
 
+                    if ( this.isVerbose() )
+                    {
+                        this.getLog().info( LOG_PREFIX + getMessage(
+                            "creatingAttachment", this.getArtifactFile().getAbsolutePath(),
+                            this.getArtifactClassifier(), this.getArtifactType() ) );
+
+                    }
                 }
                 else if ( this.isVerbose() )
                 {

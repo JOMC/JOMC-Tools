@@ -41,6 +41,7 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -622,11 +623,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         try
         {
-            final Set<URI> uris = new HashSet<URI>();
+            final Set<String> mainClasspathElements = this.getMainClasspathElements();
+            final Set<URI> uris = new HashSet<URI>( mainClasspathElements.size() );
 
-            for ( final Iterator<?> it = this.getMainClasspathElements().iterator(); it.hasNext(); )
+            for ( String element : mainClasspathElements )
             {
-                final String element = (String) it.next();
                 final URI uri = new File( element ).toURI();
                 if ( !uris.contains( uri ) )
                 {
@@ -663,11 +664,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         try
         {
-            final Set<URI> uris = new HashSet<URI>();
+            final Set<String> testClasspathElements = this.getTestClasspathElements();
+            final Set<URI> uris = new HashSet<URI>( testClasspathElements.size() );
 
-            for ( final Iterator<?> it = this.getTestClasspathElements().iterator(); it.hasNext(); )
+            for ( String element : testClasspathElements )
             {
-                final String element = (String) it.next();
                 final URI uri = new File( element ).toURI();
                 if ( !uris.contains( uri ) )
                 {
@@ -702,10 +703,12 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected Set<String> getMainClasspathElements() throws MojoExecutionException
     {
-        final Set<String> elements = new HashSet<String>();
+        final List<?> runtimeArtifacts = this.getMavenProject().getRuntimeArtifacts();
+        final List<?> compileArtifacts = this.getMavenProject().getCompileArtifacts();
+        final Set<String> elements = new HashSet<String>( runtimeArtifacts.size() + compileArtifacts.size() + 1 );
         elements.add( this.getOutputDirectory().getAbsolutePath() );
 
-        for ( final Iterator<?> it = this.getMavenProject().getRuntimeArtifacts().iterator(); it.hasNext(); )
+        for ( final Iterator<?> it = runtimeArtifacts.iterator(); it.hasNext(); )
         {
             final Artifact a = (Artifact) it.next();
             final Artifact pluginArtifact = this.getPluginArtifact( a );
@@ -728,7 +731,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             elements.add( element );
         }
 
-        for ( final Iterator<?> it = this.getMavenProject().getCompileArtifacts().iterator(); it.hasNext(); )
+        for ( final Iterator<?> it = compileArtifacts.iterator(); it.hasNext(); )
         {
             final Artifact a = (Artifact) it.next();
             final Artifact pluginArtifact = this.getPluginArtifact( a );
@@ -763,11 +766,12 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected Set<String> getTestClasspathElements() throws MojoExecutionException
     {
-        final Set<String> elements = new HashSet<String>();
+        final List<?> testArtifacts = this.getMavenProject().getTestArtifacts();
+        final Set<String> elements = new HashSet<String>( testArtifacts.size() + 2 );
         elements.add( this.getOutputDirectory().getAbsolutePath() );
         elements.add( this.getTestOutputDirectory().getAbsolutePath() );
 
-        for ( final Iterator<?> it = this.getMavenProject().getTestArtifacts().iterator(); it.hasNext(); )
+        for ( final Iterator<?> it = testArtifacts.iterator(); it.hasNext(); )
         {
             final Artifact a = (Artifact) it.next();
             final Artifact pluginArtifact = this.getPluginArtifact( a );
@@ -1219,8 +1223,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             if ( !report.getDetails().isEmpty() )
             {
                 this.logSeparator();
-                final Marshaller marshaller = context.createMarshaller( this.getModel() );
-                marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
+                Marshaller marshaller = null;
 
                 for ( ModelValidationReport.Detail detail : report.getDetails() )
                 {
@@ -1228,6 +1231,12 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
                     if ( detail.getElement() != null )
                     {
+                        if ( marshaller == null )
+                        {
+                            marshaller = context.createMarshaller( this.getModel() );
+                            marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
+                        }
+
                         final StringWriter stringWriter = new StringWriter();
                         marshaller.marshal( detail.getElement(), stringWriter );
                         this.log( Level.FINEST, stringWriter.toString(), null );
@@ -1265,7 +1274,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
                 while ( ( line = reader.readLine() ) != null )
                 {
-                    final String mojoMessage = "[JOMC] " + line;
+                    final String mojoMessage =
+                        getMessage( this.getLog().isDebugEnabled() ? "debugMessage" : "logMessage", line,
+                                    Thread.currentThread().getName(), new Date( System.currentTimeMillis() ) );
 
                     if ( ( level.equals( Level.CONFIG ) || level.equals( Level.FINE ) || level.equals( Level.FINER )
                            || level.equals( Level.FINEST ) ) && this.getLog().isDebugEnabled() )
