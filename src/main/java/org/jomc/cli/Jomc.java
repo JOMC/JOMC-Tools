@@ -520,12 +520,12 @@ public final class Jomc
             String line;
             while ( ( line = reader.readLine() ) != null )
             {
+                final boolean debug = this.getLogLevel().intValue() < Level.INFO.intValue();
                 final String localizedName = level.getLocalizedName();
-                lines.append( "[" ).append( this.getLogLevel().equals( Level.INFO )
-                                            ? localizedName
-                                            : StringUtils.rightPad( localizedName, this.getLogLevelPad() ) );
+                lines.append( "[" ).append(
+                    debug ? StringUtils.rightPad( localizedName, this.getLogLevelPad() ) : localizedName );
 
-                if ( this.getLogLevel().intValue() < Level.INFO.intValue() )
+                if ( debug )
                 {
                     lines.append( "|" ).append( Thread.currentThread().getName() ).append( "|" ).
                         append( this.getTimeInfo( this.getLocale(), new Date( System.currentTimeMillis() ) ) );

@@ -139,7 +139,7 @@ import org.jomc.modlet.ModelValidationReport;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-24T22:32:01+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-25T00:26:37+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -202,8 +202,8 @@ import org.jomc.modlet.ModelValidationReport;
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Schlie&szlig;t Modul ''{0}'' aus.</pre></td></tr>
  * </table>
  * <li>"{@link #getIllegalTransformationResultError illegalTransformationResultError}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Failure transforming merged module using ''{0}''. Illegal transformation result.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Fehler bei der Transformation des zusammengef&uuml;gten Moduls mit ''{0}''. Ung&uuml;ltiges Transformations-Ergebniss.</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Failure transforming result document using ''{0}''. Illegal transformation result.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Fehler bei der Transformation des Ergebniss-Dokuments mit ''{0}''. Ung&uuml;ltiges Transformations-Ergebniss.</pre></td></tr>
  * </table>
  * <li>"{@link #getIncludingModuleInfo includingModuleInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Including module ''{0}''.</pre></td></tr>
@@ -847,7 +847,7 @@ public final class MergeModulesCommand extends AbstractJomcToolCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-24T22:32:01+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-25T00:26:37+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -1170,8 +1170,8 @@ public final class MergeModulesCommand extends AbstractJomcToolCommand
     /**
      * Gets the text of the {@code illegalTransformationResultError} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Failure transforming merged module using ''{0}''. Illegal transformation result.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Fehler bei der Transformation des zusammengef&uuml;gten Moduls mit ''{0}''. Ung&uuml;ltiges Transformations-Ergebniss.</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Failure transforming result document using ''{0}''. Illegal transformation result.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Fehler bei der Transformation des Ergebniss-Dokuments mit ''{0}''. Ung&uuml;ltiges Transformations-Ergebniss.</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @param stylesheetInfo Format argument.
