@@ -138,7 +138,7 @@ import org.jomc.modlet.ModelValidationReport;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-23T03:17:07+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-24T20:23:19+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -381,7 +381,15 @@ public final class MergeModulesCommand extends AbstractJomcToolCommand
 
                 final JAXBResult result = new JAXBResult( unmarshaller );
                 transformer.transform( source, result );
-                mergedModule = ( (JAXBElement<Module>) result.getResult() ).getValue();
+
+                if ( !( result.getResult() instanceof JAXBElement<?> )
+                     || !( ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Module ) )
+                {
+                }
+                else
+                {
+                    mergedModule = (Module) ( (JAXBElement<?>) result.getResult() ).getValue();
+                }
             }
 
             marshaller.setSchema( context.createSchema( model.getIdentifier() ) );
@@ -822,7 +830,7 @@ public final class MergeModulesCommand extends AbstractJomcToolCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-23T03:17:07+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-24T20:23:19+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

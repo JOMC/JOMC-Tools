@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Date;
 import java.util.logging.Level;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.GnuParser;
@@ -68,6 +69,10 @@ import org.jomc.modlet.DefaultModletProvider;
  * <li>"{@link #getLeftPad leftPad}"
  * <blockquote>Property of type {@code int}.
  * <p>The number of characters of padding to be prefixed to each line.</p>
+ * </blockquote></li>
+ * <li>"{@link #getLogLevelPad logLevelPad}"
+ * <blockquote>Property of type {@code int}.
+ * <p>The number of characters of padding to be prefixed to each log level description.</p>
  * </blockquote></li>
  * <li>"{@link #getWidth width}"
  * <blockquote>Property of type {@code int}.
@@ -98,6 +103,14 @@ import org.jomc.modlet.DefaultModletProvider;
  * <li>"{@link #getIllegalArgumentsInfo illegalArgumentsInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal arguments. Type &raquo;jomc {0} {1}&laquo; for further information.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ung&uuml;ltige Argumente. Geben Sie &raquo;jomc {0} {1}&laquo; f&uuml;r weitere Informationen ein.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getLogMessage logMessage}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>[{0}] {1}</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>[{0}] {1}</pre></td></tr>
+ * </table>
+ * <li>"{@link #getTimeInfo timeInfo}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>{0,time,HH:mm:ss.SSS}</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0,time,HH:mm:ss.SSS}</pre></td></tr>
  * </table>
  * <li>"{@link #getUsage usage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Type &raquo;jomc &lt;command&gt; {0}&laquo; for further information.</pre></td></tr>
@@ -507,8 +520,19 @@ public final class Jomc
             String line;
             while ( ( line = reader.readLine() ) != null )
             {
-                lines.append( "[" ).append( level.getLocalizedName() ).append( "] " );
-                lines.append( line ).append( System.getProperty( "line.separator" ) );
+                final String localizedName = level.getLocalizedName();
+                lines.append( "[" ).append( this.getLogLevel().equals( Level.INFO )
+                                            ? localizedName
+                                            : StringUtils.rightPad( localizedName, this.getLogLevelPad() ) );
+
+                if ( this.getLogLevel().intValue() < Level.INFO.intValue() )
+                {
+                    lines.append( "|" ).append( Thread.currentThread().getName() ).append( "|" ).
+                        append( this.getTimeInfo( this.getLocale(), new Date( System.currentTimeMillis() ) ) );
+
+                }
+
+                lines.append( "] " ).append( line ).append( System.getProperty( "line.separator" ) );
             }
 
             return lines.toString();
@@ -660,6 +684,19 @@ public final class Jomc
     }
 
     /**
+     * Gets the value of the {@code logLevelPad} property.
+     * @return The number of characters of padding to be prefixed to each log level description.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.1/jomc-tools-1.1-SNAPSHOT" )
+    private int getLogLevelPad()
+    {
+        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "logLevelPad" );
+        assert _p != null : "'logLevelPad' property not found.";
+        return _p.intValue();
+    }
+
+    /**
      * Gets the value of the {@code width} property.
      * @return The number of characters per line for the usage statement.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
@@ -733,6 +770,47 @@ public final class Jomc
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "illegalArgumentsInfo", locale, command, helpCommandName );
         assert _m != null : "'illegalArgumentsInfo' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code logMessage} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>[{0}] {1}</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>[{0}] {1}</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param level Format argument.
+     * @param message Format argument.
+     * @return The text of the {@code logMessage} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.1/jomc-tools-1.1-SNAPSHOT" )
+    private String getLogMessage( final java.util.Locale locale, final java.lang.String level, final java.lang.String message )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "logMessage", locale, level, message );
+        assert _m != null : "'logMessage' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code timeInfo} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>{0,time,HH:mm:ss.SSS}</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0,time,HH:mm:ss.SSS}</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param time Format argument.
+     * @return The text of the {@code timeInfo} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.1/jomc-tools-1.1-SNAPSHOT" )
+    private String getTimeInfo( final java.util.Locale locale, final java.util.Date time )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "timeInfo", locale, time );
+        assert _m != null : "'timeInfo' message not found.";
         return _m;
     }
 
