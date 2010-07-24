@@ -2312,6 +2312,15 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="0" name="moduleName"/>
           </arguments>
         </message>
+        <message name="illegalTransformationResultError" final="true">
+          <template defaultLanguage="en">
+            <text language="en">Failure transforming merged module using ''{0}''. Illegal transformation result.</text>
+            <text language="de">Fehler bei der Transformation des zusammengefügten Moduls mit ''{0}''. Ungültiges Transformations-Ergebniss.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="stylesheetInfo"/>
+          </arguments>
+        </message>
         <reference name="writeInfo"/>
       </messages>
     </implementation>
@@ -2418,6 +2427,15 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
           </template>
           <arguments>
             <argument index="0" name="modletName"/>
+          </arguments>
+        </message>
+        <message name="illegalTransformationResultError" final="true">
+          <template defaultLanguage="en">
+            <text language="en">Failure transforming merged modlet using ''{0}''. Illegal transformation result.</text>
+            <text language="de">Fehler bei der Transformation des zusammengefügten Modlets mit ''{0}''. Ungültiges Transformations-Ergebniss.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="stylesheetInfo"/>
           </arguments>
         </message>
         <reference name="writeInfo"/>

@@ -62,6 +62,12 @@
       <action dev="schulte2005" type="fix"><![CDATA[Corrected the <code>merge-modlets</code> command of the
       command line application to exclude the applications' modlets when not included otherwise.]]>
       </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Corrected a <code>ClassCastException</code> thrown by the
+      <code>merge-modules</code> command when providing a stylesheet producing an illegal transformation result.]]>
+      </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Corrected a <code>ClassCastException</code> thrown by the
+      <code>merge-modlets</code> command when providing a stylesheet producing an illegal transformation result.]]>
+      </action>
     </release>
   </body>
 </document>

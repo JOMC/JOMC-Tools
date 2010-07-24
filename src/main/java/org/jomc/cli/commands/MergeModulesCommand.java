@@ -40,6 +40,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
@@ -138,7 +139,7 @@ import org.jomc.modlet.ModelValidationReport;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-24T20:23:19+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-24T21:09:05+0200</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -199,6 +200,10 @@ import org.jomc.modlet.ModelValidationReport;
  * <li>"{@link #getExcludingModuleInfo excludingModuleInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Excluding module ''{0}''.</pre></td></tr>
  * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Schlie&szlig;t Modul ''{0}'' aus.</pre></td></tr>
+ * </table>
+ * <li>"{@link #getIllegalTransformationResultError illegalTransformationResultError}"<table>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>Failure transforming merged module using ''{0}''. Illegal transformation result.</pre></td></tr>
+ * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Fehler bei der Transformation des zusammengef&uuml;gten Moduls mit ''{0}''. Ung&uuml;ltiges Transformations-Ergebniss.</pre></td></tr>
  * </table>
  * <li>"{@link #getIncludingModuleInfo includingModuleInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Including module ''{0}''.</pre></td></tr>
@@ -381,6 +386,18 @@ public final class MergeModulesCommand extends AbstractJomcToolCommand
 
                 final JAXBResult result = new JAXBResult( unmarshaller );
                 transformer.transform( source, result );
+
+                if ( result.getResult() instanceof JAXBElement<?>
+                     && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Module )
+                {
+                    mergedModule = (Module) ( (JAXBElement<?>) result.getResult() ).getValue();
+                }
+                else
+                {
+                    throw new Exception( this.getIllegalTransformationResultError(
+                        this.getLocale(), stylesheetFile.getAbsolutePath() ) );
+
+                }
 
                 if ( !( result.getResult() instanceof JAXBElement<?> )
                      || !( ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Module ) )
@@ -830,7 +847,7 @@ public final class MergeModulesCommand extends AbstractJomcToolCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-24T20:23:19+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.1-SNAPSHOT Build 2010-07-24T21:09:05+0200</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.
@@ -1147,6 +1164,26 @@ public final class MergeModulesCommand extends AbstractJomcToolCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "excludingModuleInfo", locale, moduleName );
         assert _m != null : "'excludingModuleInfo' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code illegalTransformationResultError} message.
+     * <p><b>Templates</b><br/><table>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>Failure transforming merged module using ''{0}''. Illegal transformation result.</pre></td></tr>
+     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Fehler bei der Transformation des zusammengef&uuml;gten Moduls mit ''{0}''. Ung&uuml;ltiges Transformations-Ergebniss.</pre></td></tr>
+     * </table></p>
+     * @param locale The locale of the message to return.
+     * @param stylesheetInfo Format argument.
+     * @return The text of the {@code illegalTransformationResultError} message.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.1/jomc-tools-1.1-SNAPSHOT" )
+    private String getIllegalTransformationResultError( final java.util.Locale locale, final java.lang.String stylesheetInfo )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "illegalTransformationResultError", locale, stylesheetInfo );
+        assert _m != null : "'illegalTransformationResultError' message not found.";
         return _m;
     }
 
