@@ -1265,8 +1265,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         try
         {
-            if ( level.intValue() < Level.INFO.intValue() || level.intValue() >= Level.WARNING.intValue()
-                 || this.isVerbose() )
+            if ( this.getLog().isDebugEnabled()
+                 || level.intValue() >= ( this.isVerbose() ? Level.INFO.intValue() : Level.WARNING.intValue() ) )
             {
                 String line;
                 final BufferedReader reader = new BufferedReader( new StringReader( message == null ? "" : message ) );
