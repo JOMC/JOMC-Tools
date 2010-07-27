@@ -1490,11 +1490,6 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <text language="en">The number of characters of padding to be prefixed to each description line.</text>
           </documentation>
         </property>
-        <property name="logLevelPad" type="int" value="15">
-          <documentation defaultLanguage="en">
-            <text language="en">The number of characters of padding to be prefixed to each log level description.</text>
-          </documentation>
-        </property>
         <property name="helpCommandName" value="help">
           <documentation defaultLanguage="en">
             <text language="en">The name of the command used to request help.</text>

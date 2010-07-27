@@ -70,10 +70,6 @@ import org.jomc.modlet.DefaultModletProvider;
  * <blockquote>Property of type {@code int}.
  * <p>The number of characters of padding to be prefixed to each line.</p>
  * </blockquote></li>
- * <li>"{@link #getLogLevelPad logLevelPad}"
- * <blockquote>Property of type {@code int}.
- * <p>The number of characters of padding to be prefixed to each log level description.</p>
- * </blockquote></li>
  * <li>"{@link #getWidth width}"
  * <blockquote>Property of type {@code int}.
  * <p>The number of characters per line for the usage statement.</p>
@@ -521,9 +517,7 @@ public final class Jomc
             while ( ( line = reader.readLine() ) != null )
             {
                 final boolean debug = this.getLogLevel().intValue() < Level.INFO.intValue();
-                final String localizedName = level.getLocalizedName();
-                lines.append( "[" ).append(
-                    debug ? StringUtils.rightPad( localizedName, this.getLogLevelPad() ) : localizedName );
+                lines.append( "[" ).append( level.getLocalizedName() );
 
                 if ( debug )
                 {
@@ -680,19 +674,6 @@ public final class Jomc
     {
         final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "leftPad" );
         assert _p != null : "'leftPad' property not found.";
-        return _p.intValue();
-    }
-
-    /**
-     * Gets the value of the {@code logLevelPad} property.
-     * @return The number of characters of padding to be prefixed to each log level description.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.1-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.1/jomc-tools-1.1-SNAPSHOT" )
-    private int getLogLevelPad()
-    {
-        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "logLevelPad" );
-        assert _p != null : "'logLevelPad' property not found.";
         return _p.intValue();
     }
 
