@@ -40,7 +40,6 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
@@ -397,15 +396,6 @@ public final class MergeModulesCommand extends AbstractJomcToolCommand
                     throw new Exception( this.getIllegalTransformationResultError(
                         this.getLocale(), stylesheetFile.getAbsolutePath() ) );
 
-                }
-
-                if ( !( result.getResult() instanceof JAXBElement<?> )
-                     || !( ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Module ) )
-                {
-                }
-                else
-                {
-                    mergedModule = (Module) ( (JAXBElement<?>) result.getResult() ).getValue();
                 }
             }
 
