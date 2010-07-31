@@ -32,6 +32,7 @@
  */
 package org.jomc.tools.test;
 
+import java.io.OutputStream;
 import java.util.Properties;
 import java.io.File;
 import java.io.FileInputStream;
@@ -261,6 +262,9 @@ public class SourceFileProcessorTest extends JomcToolTest
 
     public void testManageSources() throws Exception
     {
+        this.getTestTool().setInputEncoding( this.getTestProperty( "resourceEncoding" ) );
+        this.getTestTool().setOutputEncoding( this.getTestProperty( "resourceEncoding" ) );
+
         final File nonExistingDirectory = this.getTestSourcesDirectory();
         if ( nonExistingDirectory.exists() )
         {
@@ -342,11 +346,11 @@ public class SourceFileProcessorTest extends JomcToolTest
         this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getSpecification( "Specification" ),
                                               specificationDirectory );
 
-        IOUtils.copy( this.getClass().getResourceAsStream( "IllegalImplementationSource.java.txt" ),
-                      new FileOutputStream( new File( implementationDirectory, "Implementation.java" ) ) );
+        this.copyResource( "IllegalImplementationSource.java.txt",
+                           new File( implementationDirectory, "Implementation.java" ) );
 
-        IOUtils.copy( this.getClass().getResourceAsStream( "IllegalSpecificationSource.java.txt" ),
-                      new FileOutputStream( new File( specificationDirectory, "Specification.java" ) ) );
+        this.copyResource( "IllegalSpecificationSource.java.txt",
+                           new File( specificationDirectory, "Specification.java" ) );
 
         try
         {
@@ -394,6 +398,8 @@ public class SourceFileProcessorTest extends JomcToolTest
         this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getSpecification( "Specification" ),
                                               sourcesDirectory );
 
+        this.getTestTool().setInputEncoding( null );
+        this.getTestTool().setOutputEncoding( null );
     }
 
     public void testMandatorySections() throws Exception
@@ -405,73 +411,66 @@ public class SourceFileProcessorTest extends JomcToolTest
         assertTrue( specificationDirectory.mkdirs() );
         assertTrue( implementationDirectory.mkdirs() );
 
-        File f = new File( implementationDirectory, "Implementation.java" );
-        IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutAnnotationsSection.java.txt" ),
-                      new FileOutputStream( f ) );
+        this.getTestTool().setInputEncoding( this.getTestProperty( "resourceEncoding" ) );
+        this.getTestTool().setOutputEncoding( this.getTestProperty( "resourceEncoding" ) );
 
+        File f = new File( implementationDirectory, "Implementation.java" );
+        this.copyResource( "ImplementationWithoutAnnotationsSection.java.txt", f );
         this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
-        String edited = IOUtils.toString( new FileInputStream( f ) );
+        String edited = this.toString( f );
         editor.edit( edited );
         assertTrue( editor.isSectionPresent( "Annotations" ) );
 
         f = new File( implementationDirectory, "Implementation.java" );
-        IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutDependenciesSection.java.txt" ),
-                      new FileOutputStream( f ) );
-
+        this.copyResource( "ImplementationWithoutDependenciesSection.java.txt", f );
         this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
-        edited = IOUtils.toString( new FileInputStream( f ) );
+        edited = this.toString( f );
         editor.edit( edited );
         assertTrue( editor.isSectionPresent( "Dependencies" ) );
 
         f = new File( implementationDirectory, "Implementation.java" );
-        IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutMessagesSection.java.txt" ),
-                      new FileOutputStream( f ) );
-
+        this.copyResource( "ImplementationWithoutMessagesSection.java.txt", f );
         this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
-        edited = IOUtils.toString( new FileInputStream( f ) );
+        edited = this.toString( f );
         editor.edit( edited );
         assertTrue( editor.isSectionPresent( "Messages" ) );
 
         f = new File( implementationDirectory, "Implementation.java" );
-        IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutPropertiesSection.java.txt" ),
-                      new FileOutputStream( f ) );
-
+        this.copyResource( "ImplementationWithoutPropertiesSection.java.txt", f );
         this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
-        edited = IOUtils.toString( new FileInputStream( f ) );
+        edited = this.toString( f );
         editor.edit( edited );
         assertTrue( editor.isSectionPresent( "Properties" ) );
 
         f = new File( implementationDirectory, "ImplementationOfSpecification.java" );
-        IOUtils.copy(
-            this.getClass().getResourceAsStream( "ImplementationOfSpecificationWithoutConstructorsSection.java.txt" ),
-            new FileOutputStream( f ) );
-
+        this.copyResource( "ImplementationOfSpecificationWithoutConstructorsSection.java.txt", f );
         this.getTestTool().manageSourceFiles(
             this.getTestTool().getModules().getImplementation( "ImplementationOfSpecification" ),
             implementationDirectory );
 
-        edited = IOUtils.toString( new FileInputStream( f ) );
+        edited = this.toString( f );
         editor.edit( edited );
         assertTrue( editor.isSectionPresent( "Constructors" ) );
 
         f = new File( specificationDirectory, "Specification.java" );
-        IOUtils.copy( this.getClass().getResourceAsStream( "SpecificationWithoutAnnotationsSection.java.txt" ),
-                      new FileOutputStream( f ) );
-
+        this.copyResource( "SpecificationWithoutAnnotationsSection.java.txt", f );
         this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getSpecification( "Specification" ),
                                               specificationDirectory );
 
-        edited = IOUtils.toString( new FileInputStream( f ) );
+        edited = this.toString( f );
         editor.edit( edited );
         assertTrue( editor.isSectionPresent( "Annotations" ) );
+
+        this.getTestTool().setInputEncoding( null );
+        this.getTestTool().setOutputEncoding( null );
     }
 
     public void testOptionalSections() throws Exception
@@ -483,68 +482,58 @@ public class SourceFileProcessorTest extends JomcToolTest
         assertTrue( specificationDirectory.mkdirs() );
         assertTrue( implementationDirectory.mkdirs() );
 
-        File f = new File( implementationDirectory, "Implementation.java" );
-        IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutConstructorsSection.java.txt" ),
-                      new FileOutputStream( f ) );
+        this.getTestTool().setInputEncoding( this.getTestProperty( "resourceEncoding" ) );
+        this.getTestTool().setOutputEncoding( this.getTestProperty( "resourceEncoding" ) );
 
+        File f = new File( implementationDirectory, "Implementation.java" );
+        this.copyResource( "ImplementationWithoutConstructorsSection.java.txt", f );
         this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
-        String edited = IOUtils.toString( new FileInputStream( f ) );
+        String edited = this.toString( f );
         editor.edit( edited );
         assertFalse( editor.isSectionPresent( "Constructors" ) );
-
-        IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutDefaultConstructorSection.java.txt" ),
-                      new FileOutputStream( f ) );
-
+        this.copyResource( "ImplementationWithoutDefaultConstructorSection.java.txt", f );
         this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
-        edited = IOUtils.toString( new FileInputStream( f ) );
+        edited = this.toString( f );
         editor.edit( edited );
         assertTrue( editor.isSectionPresent( "Constructors" ) );
         assertTrue( editor.isSectionPresent( "Default Constructor" ) );
-
-        IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutDocumentationSection.java.txt" ),
-                      new FileOutputStream( f ) );
-
+        this.copyResource( "ImplementationWithoutDocumentationSection.java.txt", f );
         this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
-        edited = IOUtils.toString( new FileInputStream( f ) );
+        edited = this.toString( f );
         editor.edit( edited );
         assertFalse( editor.isSectionPresent( "Documentation" ) );
-
-        IOUtils.copy( this.getClass().getResourceAsStream( "ImplementationWithoutLicenseSection.java.txt" ),
-                      new FileOutputStream( f ) );
-
+        this.copyResource( "ImplementationWithoutLicenseSection.java.txt", f );
         this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
-        edited = IOUtils.toString( new FileInputStream( f ) );
+        edited = this.toString( f );
         editor.edit( edited );
         assertFalse( editor.isSectionPresent( "License Header" ) );
 
         f = new File( specificationDirectory, "Specification.java" );
-        IOUtils.copy( this.getClass().getResourceAsStream( "SpecificationWithoutDocumentationSection.java.txt" ),
-                      new FileOutputStream( f ) );
-
+        this.copyResource( "SpecificationWithoutDocumentationSection.java.txt", f );
         this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getSpecification( "Specification" ),
                                               specificationDirectory );
 
-        edited = IOUtils.toString( new FileInputStream( f ) );
+        edited = this.toString( f );
         editor.edit( edited );
         assertFalse( editor.isSectionPresent( "Documentation" ) );
-
-        IOUtils.copy( this.getClass().getResourceAsStream( "SpecificationWithoutLicenseSection.java.txt" ),
-                      new FileOutputStream( f ) );
-
+        this.copyResource( "SpecificationWithoutLicenseSection.java.txt", f );
         this.getTestTool().manageSourceFiles( this.getTestTool().getModules().getSpecification( "Specification" ),
                                               specificationDirectory );
 
-        edited = IOUtils.toString( new FileInputStream( f ) );
+        edited = this.toString( f );
         editor.edit( edited );
         assertFalse( editor.isSectionPresent( "License Header" ) );
+
+        this.getTestTool().setInputEncoding( null );
+        this.getTestTool().setOutputEncoding( null );
     }
 
     public void testCopyConstructor() throws Exception
@@ -561,6 +550,41 @@ public class SourceFileProcessorTest extends JomcToolTest
         }
 
         new SourceFileProcessor( this.getTestTool() );
+    }
+
+    private void copyResource( final String resourceName, final File file ) throws IOException
+    {
+        InputStream in = null;
+        OutputStream out = null;
+
+        try
+        {
+            in = this.getClass().getResourceAsStream( resourceName );
+            assertNotNull( "Resource '" + resourceName + "' not found.", in );
+
+            out = new FileOutputStream( file );
+            IOUtils.copy( in, out );
+        }
+        finally
+        {
+            IOUtils.closeQuietly( in );
+            IOUtils.closeQuietly( out );
+        }
+    }
+
+    private String toString( final File f ) throws IOException
+    {
+        InputStream in = null;
+
+        try
+        {
+            in = new FileInputStream( f );
+            return IOUtils.toString( in, this.getTestProperty( "resourceEncoding" ) );
+        }
+        finally
+        {
+            IOUtils.closeQuietly( in );
+        }
     }
 
 }
