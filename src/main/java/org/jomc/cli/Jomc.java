@@ -510,7 +510,7 @@ public final class Jomc
     {
         try
         {
-            final StringBuilder lines = new StringBuilder();
+            final StringBuilder lines = new StringBuilder( text.length() );
             final BufferedReader reader = new BufferedReader( new StringReader( text ) );
 
             String line;
