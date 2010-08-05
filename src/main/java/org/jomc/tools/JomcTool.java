@@ -356,7 +356,7 @@ public abstract class JomcTool
 
         if ( specification.getClazz() != null )
         {
-            final StringBuilder typeName = new StringBuilder();
+            final StringBuilder typeName = new StringBuilder( specification.getClazz().length() );
             final String javaPackageName = this.getJavaPackageName( specification );
 
             if ( qualified && javaPackageName.length() > 0 )
@@ -479,7 +479,7 @@ public abstract class JomcTool
 
         if ( implementation.getClazz() != null )
         {
-            final StringBuilder typeName = new StringBuilder();
+            final StringBuilder typeName = new StringBuilder( implementation.getClazz().length() );
             final String javaPackageName = this.getJavaPackageName( implementation );
 
             if ( qualified && javaPackageName.length() > 0 )
@@ -718,7 +718,7 @@ public abstract class JomcTool
 
         if ( s != null && s.getClazz() != null )
         {
-            final StringBuilder typeName = new StringBuilder();
+            final StringBuilder typeName = new StringBuilder( s.getClazz().length() );
             typeName.append( this.getJavaTypeName( s, true ) );
             if ( s.getMultiplicity() == Multiplicity.MANY && dependency.getImplementationName() == null )
             {
@@ -1691,7 +1691,7 @@ public abstract class JomcTool
 
     private String getJavaIdentifier( final String identifier )
     {
-        final StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder( identifier.length() );
         boolean capitalize = true;
 
         for ( int i = 0; i < identifier.length(); i++ )
