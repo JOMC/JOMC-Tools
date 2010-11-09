@@ -176,21 +176,21 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private boolean verbose;
 
     /**
-     * Contols processing of source code files.
+     * Controls processing of source code files.
      *
      * @parameter expression="${jomc.sourceProcessing}" default-value="true"
      */
     private boolean sourceProcessingEnabled;
 
     /**
-     * Contols processing of resource files.
+     * Controls processing of resource files.
      *
      * @parameter expression="${jomc.resourceProcessing}" default-value="true"
      */
     private boolean resourceProcessingEnabled;
 
     /**
-     * Contols processing of class files.
+     * Controls processing of class files.
      *
      * @parameter expression="${jomc.classProcessing}" default-value="true"
      */
