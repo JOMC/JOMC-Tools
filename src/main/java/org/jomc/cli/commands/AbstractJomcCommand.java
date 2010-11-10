@@ -54,10 +54,17 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+import javax.xml.transform.ErrorListener;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.io.IOUtils;
 import org.jomc.cli.Command;
@@ -128,7 +135,7 @@ import org.jomc.modlet.Services;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.2-SNAPSHOT Build 2010-10-12T03:27:37+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.2-SNAPSHOT Build 2010-11-10T03:05:38+0100</pre></td></tr>
  * </table>
  * <li>"{@link #getClasspathElementInfo classpathElementInfo}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath element: ''{0}''</pre></td></tr>
@@ -460,6 +467,67 @@ public abstract class AbstractJomcCommand implements Command
         }
     }
 
+    /**
+     * Creates a new {@code Transformer} from a given {@code Source}.
+     *
+     * @param source The source to initialize the transformer with.
+     *
+     * @return A {@code Transformer} backed by {@code source}.
+     *
+     * @throws NullPointerException if {@code source} is {@code null}.
+     * @throws TransformerConfigurationException if creating a transformer fails.
+     *
+     * @since 1.2
+     */
+    protected Transformer createTransformer( final Source source ) throws TransformerConfigurationException
+    {
+        if ( source == null )
+        {
+            throw new NullPointerException( "source" );
+        }
+
+        final ErrorListener errorListener = new ErrorListener()
+        {
+
+            public void warning( final TransformerException exception ) throws TransformerException
+            {
+                log( Level.WARNING, getMessage( exception ), exception );
+            }
+
+            public void error( final TransformerException exception ) throws TransformerException
+            {
+                throw exception;
+            }
+
+            public void fatalError( final TransformerException exception ) throws TransformerException
+            {
+                throw exception;
+            }
+
+        };
+
+        final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        transformerFactory.setErrorListener( errorListener );
+        final Transformer transformer = transformerFactory.newTransformer( source );
+        transformer.setErrorListener( errorListener );
+
+        for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
+        {
+            transformer.setParameter( e.getKey().toString(), e.getValue() );
+        }
+
+        return transformer;
+    }
+
+    /**
+     * Creates a new {@code ModelContext} for a given {@code ClassLoader}.
+     *
+     * @param classLoader The {@code ClassLoader} to create a new {@code ModelContext} with.
+     *
+     * @return A new {@code ModelContext} for {@code classLoader}.
+     *
+     * @throws ModelException if creating an new {@code ModelContext} fails.
+     */
     protected ModelContext createModelContext( final ClassLoader classLoader ) throws ModelException
     {
         final ModelContext modelContext = ModelContext.createModelContext( classLoader );
@@ -1134,7 +1202,7 @@ public abstract class AbstractJomcCommand implements Command
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.2-SNAPSHOT Build 2010-10-12T03:27:37+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.2-SNAPSHOT Build 2010-11-10T03:05:38+0100</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

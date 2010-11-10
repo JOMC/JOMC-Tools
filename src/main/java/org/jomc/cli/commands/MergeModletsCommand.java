@@ -47,7 +47,6 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.util.JAXBResult;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
@@ -137,7 +136,7 @@ import org.jomc.modlet.ObjectFactory;
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.2-SNAPSHOT Build 2010-10-12T03:27:37+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.2-SNAPSHOT Build 2010-11-10T03:05:38+0100</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -367,9 +366,7 @@ public final class MergeModletsCommand extends AbstractJomcCommand implements Co
 
         if ( stylesheetFile != null )
         {
-            final Transformer transformer =
-                TransformerFactory.newInstance().newTransformer( new StreamSource( stylesheetFile ) );
-
+            final Transformer transformer = this.createTransformer( new StreamSource( stylesheetFile ) );
             final JAXBSource source =
                 new JAXBSource( marshaller, new ObjectFactory().createModlet( mergedModlet ) );
 
@@ -824,7 +821,7 @@ public final class MergeModletsCommand extends AbstractJomcCommand implements Co
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.2-SNAPSHOT Build 2010-10-12T03:27:37+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.2-SNAPSHOT Build 2010-11-10T03:05:38+0100</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

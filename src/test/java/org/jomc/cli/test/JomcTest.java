@@ -280,6 +280,13 @@ public class JomcTest extends TestCase
             '"' + this.getTestClassesDirectory() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
         };
 
+        final String[] commitWithStylesheet = new String[]
+        {
+            "commit-classes", "-df", '"' + this.getTestModelDocument() + '"', "-cd",
+            '"' + this.getTestClassesDirectory() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-D",
+            "-stylesheet", '"' + this.getTestModelStylesheet() + '"'
+        };
+
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( commitHelp ) );
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( validateHelp ) );
         assertEquals( Command.STATUS_FAILURE, Jomc.run( commitArgs ) );
@@ -293,6 +300,7 @@ public class JomcTest extends TestCase
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( validateHelp ) );
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( commitArgs ) );
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( validateArgs ) );
+        assertEquals( Command.STATUS_SUCCESS, Jomc.run( commitWithStylesheet ) );
         assertEquals( Command.STATUS_FAILURE, Jomc.run( commitFailOnWarnings ) );
         assertEquals( Command.STATUS_FAILURE, Jomc.run( validateFailOnWarnings ) );
         assertEquals( Command.STATUS_FAILURE, Jomc.run( validateArgsNonExistentClasses ) );
@@ -552,7 +560,7 @@ public class JomcTest extends TestCase
     @Override
     protected void setUp()
     {
-        // Ensures the singleton is initialized prior to Jomc switching resource locations.
+        // Ensures the singleton is initialized prior to class Jomc switching resource locations.
         ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() );
     }
 

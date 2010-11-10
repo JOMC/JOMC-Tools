@@ -37,11 +37,15 @@
 package org.jomc.cli.commands;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 import org.jomc.model.Implementation;
@@ -119,12 +123,14 @@ import org.jomc.tools.ClassFileProcessor;
  * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
  * <li>"{@link #getSpecificationOption SpecificationOption}"<blockquote>
  * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
+ * <li>"{@link #getStylesheetOption StylesheetOption}"<blockquote>
+ * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
  * <li>"{@link #getTransformerLocationOption TransformerLocationOption}"<blockquote>
  * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
  * </ul></p>
  * <p><b>Messages</b><ul>
  * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.2-SNAPSHOT Build 2010-10-12T03:27:37+0200</pre></td></tr>
+ * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.2-SNAPSHOT Build 2010-11-10T03:05:38+0100</pre></td></tr>
  * </table>
  * <li>"{@link #getCannotProcessMessage cannotProcessMessage}"<table>
  * <tr><td valign="top">English:</td><td valign="top"><pre>Cannot process ''{0}'': {1}</pre></td></tr>
@@ -257,6 +263,7 @@ public final class CommitClassesCommand extends AbstractJomcToolCommand
             this.options.addOption( this.getImplementationOption() );
             this.options.addOption( this.getSpecificationOption() );
             this.options.addOption( this.getClassesDirectoryOption() );
+            this.options.addOption( this.getStylesheetOption() );
         }
 
         return this.options;
@@ -282,6 +289,16 @@ public final class CommitClassesCommand extends AbstractJomcToolCommand
             final File classesDirectory =
                 new File( commandLine.getOptionValue( this.getClassesDirectoryOption().getOpt() ) );
 
+            final List<Transformer> transformers = new ArrayList<Transformer>( 1 );
+
+            if ( commandLine.hasOption( this.getStylesheetOption().getOpt() ) )
+            {
+                final File stylesheetFile =
+                    new File( commandLine.getOptionValue( this.getStylesheetOption().getOpt() ) );
+
+                transformers.add( this.createTransformer( new StreamSource( stylesheetFile ) ) );
+            }
+
             boolean commitModules = true;
 
             if ( commandLine.hasOption( this.getSpecificationOption().getOpt() ) )
@@ -293,6 +310,7 @@ public final class CommitClassesCommand extends AbstractJomcToolCommand
                 if ( s != null )
                 {
                     tool.commitModelObjects( s, context, classesDirectory );
+                    tool.transformModelObjects( s, context, classesDirectory, transformers );
                 }
                 else if ( this.isLoggable( Level.WARNING ) )
                 {
@@ -311,6 +329,7 @@ public final class CommitClassesCommand extends AbstractJomcToolCommand
                 if ( i != null )
                 {
                     tool.commitModelObjects( i, context, classesDirectory );
+                    tool.transformModelObjects( i, context, classesDirectory, transformers );
                 }
                 else if ( this.isLoggable( Level.WARNING ) )
                 {
@@ -329,6 +348,7 @@ public final class CommitClassesCommand extends AbstractJomcToolCommand
                 if ( module != null )
                 {
                     tool.commitModelObjects( module, context, classesDirectory );
+                    tool.transformModelObjects( module, context, classesDirectory, transformers );
                 }
                 else if ( this.isLoggable( Level.WARNING ) )
                 {
@@ -339,6 +359,7 @@ public final class CommitClassesCommand extends AbstractJomcToolCommand
             if ( commitModules )
             {
                 tool.commitModelObjects( context, classesDirectory );
+                tool.transformModelObjects( context, classesDirectory, transformers );
             }
 
             return STATUS_SUCCESS;
@@ -582,6 +603,21 @@ public final class CommitClassesCommand extends AbstractJomcToolCommand
     }
 
     /**
+     * Gets the {@code StylesheetOption} dependency.
+     * <p>This method returns the {@code 'JOMC CLI Stylesheet Option'} object of the {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code StylesheetOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private org.apache.commons.cli.Option getStylesheetOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "StylesheetOption" );
+        assert _d != null : "'StylesheetOption' dependency not found.";
+        return _d;
+    }
+
+    /**
      * Gets the {@code TransformerLocationOption} dependency.
      * <p>This method returns the {@code 'JOMC CLI Transformer Location Option'} object of the {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
@@ -698,7 +734,7 @@ public final class CommitClassesCommand extends AbstractJomcToolCommand
     /**
      * Gets the text of the {@code applicationTitle} message.
      * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.2-SNAPSHOT Build 2010-10-12T03:27:37+0200</pre></td></tr>
+     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.2-SNAPSHOT Build 2010-11-10T03:05:38+0100</pre></td></tr>
      * </table></p>
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message.

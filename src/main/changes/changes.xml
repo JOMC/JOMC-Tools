@@ -69,5 +69,15 @@
       <code>merge-modlets</code> command when providing a stylesheet producing an illegal transformation result.]]>
       </action>
     </release>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.2">
+      <action dev="schulte2005" type="update"><![CDATA[Updated the <code>merge-modlets</code> and
+      <code>merge-modules</code> commands of the command line application to add system properties to
+      <code>Transformer</code>s as parameters.]]>
+      </action>
+      <action dev="schulte2005" type="update"><![CDATA[Added a <code>stylesheet</code> option to the
+      <code>commit-classes</code> command of the command line application to support class file transformations.]]>
+      </action>
+    </release>
   </body>
 </document>

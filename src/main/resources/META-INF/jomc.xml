@@ -979,8 +979,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Name of a XSLT file to use for transforming the merged document.</text>
-            <text language="de">Name einer XSLT Datei, mit der das zusammengefügte Dokument transformiert werden soll.</text>
+            <text language="en">Name of a XSLT file to use for transforming documents.</text>
+            <text language="de">Name einer XSLT Datei, mit der Dokumente transformiert werden sollen.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
@@ -1617,7 +1617,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <text language="en">List of schema context-ids to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</text>
           </documentation>
         </property>
-        <property name="serviceExcludes" value="org.jomc.model.DefaultModelProcessor:org.jomc.model.DefaultModelProvider:org.jomc.model.DefaultModelValidator" final="true">
+        <property name="serviceExcludes" value="org.jomc.model.modlet.DefaultModelProcessor:org.jomc.model.modlet.DefaultModelProvider:org.jomc.model.modlet.DefaultModelValidator" final="true">
           <documentation defaultLanguage="en">
             <text language="en">List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</text>
           </documentation>
@@ -2047,6 +2047,10 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <property name="required" type="boolean" value="true" override="true"/>
           </properties>
         </dependency>
+
+        <dependency name="StylesheetOption" identifier="org.apache.commons.cli.Option"
+                    implementationName="${project.name} Stylesheet Option"/>
+
       </dependencies>
       <properties>
         <property name="commandName" value="commit-classes" override="true">
