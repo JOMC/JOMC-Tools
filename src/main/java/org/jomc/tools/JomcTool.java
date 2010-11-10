@@ -1195,8 +1195,15 @@ public abstract class JomcTool
      */
     public Modules getModules()
     {
-        final Modules modules = ModelHelper.getModules( this.getModel() );
-        return modules != null ? modules : new Modules();
+        Modules modules = ModelHelper.getModules( this.getModel() );
+
+        if ( modules == null )
+        {
+            modules = new Modules();
+            ModelHelper.setModules( this.getModel(), modules );
+        }
+
+        return modules;
     }
 
     /**
