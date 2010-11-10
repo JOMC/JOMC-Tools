@@ -51,8 +51,8 @@
   </bannerRight>
   <body>
     <head>
-      <meta name="keywords" lang="de" content="objekt, container, java, quelltext, generator, quelltextgenerator, configuration, management"/>
-      <meta name="keywords" lang="en" content="object, container, java, source, code, sourcecode, generator, sourcecodegenerator, configuration, management"/>
+      <meta name="keywords" lang="de" content="objekt, behälter, java, quelltext, generator, quelltextgenerator, konfiguration, verwaltung, konfigurationsverwaltung, maven, plugin"/>
+      <meta name="keywords" lang="en" content="object, container, java, source, code, sourcecode, generator, sourcecodegenerator, configuration, management, maven, plugin"/>
       <script type="text/javascript">
 var pkBaseURL = (("https:" == document.location.protocol) ? "https://sourceforge.net/apps/piwik/jomc/" : "http://sourceforge.net/apps/piwik/jomc/");
 document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
