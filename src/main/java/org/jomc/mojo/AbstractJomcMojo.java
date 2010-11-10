@@ -45,11 +45,18 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.transform.ErrorListener;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.ArtifactUtils;
@@ -1134,6 +1141,86 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         final ClassFileProcessor tool = new ClassFileProcessor();
         this.setupJomcTool( context, tool );
         return tool;
+    }
+
+    /**
+     * Creates a new {@code Transformer} from a given {@code Source}.
+     *
+     * @param source The source to initialize the transformer with.
+     *
+     * @return A {@code Transformer} backed by {@code source}.
+     *
+     * @throws NullPointerException if {@code source} is {@code null}.
+     * @throws TransformerConfigurationException if creating a transformer fails.
+     *
+     * @since 1.2
+     */
+    protected Transformer createTransformer( final Source source ) throws TransformerConfigurationException
+    {
+        if ( source == null )
+        {
+            throw new NullPointerException( "source" );
+        }
+
+        final ErrorListener errorListener = new ErrorListener()
+        {
+
+            public void warning( final TransformerException exception ) throws TransformerException
+            {
+                try
+                {
+                    log( Level.WARNING, getMessage( exception ), exception );
+                }
+                catch ( final MojoExecutionException e )
+                {
+                    getLog().warn( exception );
+                    getLog().error( e );
+                }
+            }
+
+            public void error( final TransformerException exception ) throws TransformerException
+            {
+                try
+                {
+                    log( Level.SEVERE, getMessage( exception ), exception );
+                }
+                catch ( final MojoExecutionException e )
+                {
+                    getLog().error( exception );
+                    getLog().error( e );
+                }
+
+                throw exception;
+            }
+
+            public void fatalError( final TransformerException exception ) throws TransformerException
+            {
+                try
+                {
+                    log( Level.SEVERE, getMessage( exception ), exception );
+                }
+                catch ( final MojoExecutionException e )
+                {
+                    getLog().error( exception );
+                    getLog().error( e );
+                }
+
+                throw exception;
+            }
+
+        };
+
+        final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        transformerFactory.setErrorListener( errorListener );
+        final Transformer transformer = transformerFactory.newTransformer( source );
+        transformer.setErrorListener( errorListener );
+
+        for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
+        {
+            transformer.setParameter( e.getKey().toString(), e.getValue() );
+        }
+
+        return transformer;
     }
 
     /**

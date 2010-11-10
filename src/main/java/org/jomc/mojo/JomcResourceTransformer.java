@@ -39,6 +39,7 @@ import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
@@ -67,7 +68,8 @@ import org.jomc.modlet.Modlets;
 
 /**
  * Maven Shade Plugin {@code ResourceTransformer} implementation for assembling JOMC resources.
- * <p><b>Usage</b><pre>
+ * 
+ * <p><b>Maven Shade Plugin Usage</b><pre>
  * &lt;transformer implementation="org.jomc.mojo.JomcResourceTransformer"&gt;
  *   &lt;model&gt;http://jomc.org/model&lt;/model&gt;
  *   &lt;moduleEncoding&gt;${project.build.sourceEncoding}&lt;/moduleEncoding&gt;
@@ -168,7 +170,7 @@ public class JomcResourceTransformer implements ResourceTransformer
     /** The resource name of the assembled modlet resources. */
     private String modletResource = "META-INF/jomc-modlet.xml";
 
-    /** Names of modet resources to process. */
+    /** Names of modlet resources to process. */
     private String[] modletResources =
     {
         "META-INF/jomc-modlet.xml"
@@ -183,7 +185,7 @@ public class JomcResourceTransformer implements ResourceTransformer
     /** Model object style sheet to apply. */
     private File modelObjectStylesheet;
 
-    /** Bootstrap object style sheet to apply. */
+    /** Modlet object style sheet to apply. */
     private File modletObjectStylesheet;
 
     /** The location to search for providers. */
@@ -536,19 +538,24 @@ public class JomcResourceTransformer implements ResourceTransformer
             try
             {
                 this.setupJomc();
-                final Transformer transformer = TransformerFactory.newInstance().newTransformer(
-                    new StreamSource( this.modelObjectStylesheet ) );
+                final Transformer transformer =
+                    TransformerFactory.newInstance().newTransformer( new StreamSource( this.modelObjectStylesheet ) );
 
                 final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
                 final Marshaller marshaller = modelContext.createMarshaller( this.model );
                 final Unmarshaller unmarshaller = modelContext.createUnmarshaller( this.model );
                 final javax.xml.validation.Schema schema = modelContext.createSchema( this.model );
+                final JAXBSource source = new JAXBSource( marshaller, element );
+                final JAXBResult result = new JAXBResult( unmarshaller );
                 marshaller.setSchema( schema );
                 marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
                 unmarshaller.setSchema( schema );
 
-                final JAXBSource source = new JAXBSource( marshaller, element );
-                final JAXBResult result = new JAXBResult( unmarshaller );
+                for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
+                {
+                    transformer.setParameter( e.getKey().toString(), e.getValue() );
+                }
+
                 transformer.transform( source, result );
 
                 if ( result.getResult() instanceof JAXBElement<?>
@@ -661,8 +668,8 @@ public class JomcResourceTransformer implements ResourceTransformer
             try
             {
                 this.setupJomc();
-                final Transformer transformer = TransformerFactory.newInstance().newTransformer(
-                    new StreamSource( this.modletObjectStylesheet ) );
+                final Transformer transformer =
+                    TransformerFactory.newInstance().newTransformer( new StreamSource( this.modletObjectStylesheet ) );
 
                 final ModelContext modletContext =
                     ModelContext.createModelContext( this.getClass().getClassLoader() );
@@ -670,12 +677,17 @@ public class JomcResourceTransformer implements ResourceTransformer
                 final Marshaller marshaller = modletContext.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
                 final Unmarshaller unmarshaller = modletContext.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
                 final javax.xml.validation.Schema schema = modletContext.createSchema( ModletObject.MODEL_PUBLIC_ID );
+                final JAXBSource source = new JAXBSource( marshaller, element );
+                final JAXBResult result = new JAXBResult( unmarshaller );
                 marshaller.setSchema( schema );
                 marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
                 unmarshaller.setSchema( schema );
 
-                final JAXBSource source = new JAXBSource( marshaller, element );
-                final JAXBResult result = new JAXBResult( unmarshaller );
+                for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
+                {
+                    transformer.setParameter( e.getKey().toString(), e.getValue() );
+                }
+
                 transformer.transform( source, result );
 
                 if ( result.getResult() instanceof JAXBElement<?>

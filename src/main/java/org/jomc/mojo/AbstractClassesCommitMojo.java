@@ -33,7 +33,7 @@
 package org.jomc.mojo;
 
 import java.io.File;
-import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.LinkedList;
@@ -42,12 +42,9 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.util.JAXBSource;
-import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.jomc.model.Module;
@@ -103,7 +100,7 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
 
                 if ( f.exists() )
                 {
-                    transformers.add( this.getTransformer( f.toURI().toURL() ) );
+                    transformers.add( this.createTransformer( new StreamSource( f ) ) );
                 }
                 else
                 {
@@ -111,7 +108,7 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
 
                     if ( url != null )
                     {
-                        transformers.add( this.getTransformer( url ) );
+                        transformers.add( this.createTransformer( new StreamSource( url.toURI().toASCIIString() ) ) );
                     }
                     else
                     {
@@ -134,78 +131,10 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
 
             throw new MojoExecutionException( message, e );
         }
-        catch ( final IOException e )
+        catch ( final URISyntaxException e )
         {
             throw new MojoExecutionException( getMessage( e ), e );
         }
-    }
-
-    /**
-     * Gets a transformer from a given URL.
-     *
-     * @param url The URL to initialize the transformer with.
-     *
-     * @return A {@code Transformer} backed by {@code url}.
-     *
-     * @throws NullPointerException if {@code url} is {@code null}.
-     * @throws TransformerConfigurationException if there are errors when parsing {@code url} or creating a
-     * {@code Transformer} fails.
-     * @throws IOException if reading {@code url} fails.
-     */
-    private Transformer getTransformer( final URL url ) throws TransformerConfigurationException, IOException
-    {
-        if ( url == null )
-        {
-            throw new NullPointerException( "url" );
-        }
-
-        final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        transformerFactory.setErrorListener( new ErrorListener()
-        {
-
-            public void warning( final TransformerException exception ) throws TransformerException
-            {
-                try
-                {
-                    log( Level.WARNING, getMessage( exception ), exception );
-                }
-                catch ( final MojoExecutionException e )
-                {
-                    getLog().error( e );
-                }
-            }
-
-            public void error( final TransformerException exception ) throws TransformerException
-            {
-                try
-                {
-                    log( Level.SEVERE, getMessage( exception ), exception );
-                }
-                catch ( final MojoExecutionException e )
-                {
-                    getLog().error( e );
-                }
-
-                throw exception;
-            }
-
-            public void fatalError( final TransformerException exception ) throws TransformerException
-            {
-                try
-                {
-                    log( Level.SEVERE, getMessage( exception ), exception );
-                }
-                catch ( final MojoExecutionException e )
-                {
-                    getLog().error( e );
-                }
-
-                throw exception;
-            }
-
-        } );
-
-        return transformerFactory.newTransformer( new StreamSource( url.openStream() ) );
     }
 
     @Override

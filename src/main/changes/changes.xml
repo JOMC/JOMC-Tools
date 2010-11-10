@@ -141,5 +141,21 @@
       <code>show-main-instance</code> and <code>show-test-instance</code>.]]>
       </action>
     </release>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.2">
+      <action dev="schulte2005" type="fix"><![CDATA[Corrected goals <code>commit-main-classes</code> and
+      <code>commit-test-classes</code> to create <code>Transformer</code>s supporting resolution of relative URIs
+      based on the system id of model object style sheets.]]>
+      </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Corrected goals <code>commit-main-classes</code> and
+      <code>commit-test-classes</code> to not leave input streams open when reading style sheet resources.]]>
+      </action>
+      <action dev="schulte2005" type="update"><![CDATA[Updated class <code>org.jomc.mojo.JomcResourceTransformer</code>
+      to add system properties to transformers as parameters.]]>
+      </action>
+      <action dev="schulte2005" type="update"><![CDATA[Updated goals <code>commit-main-classes</code> and
+      <code>commit-test-classes</code> to add system properties to transformers as parameters.]]>
+      </action>
+    </release>
   </body>
 </document>
