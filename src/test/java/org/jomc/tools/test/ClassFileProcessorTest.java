@@ -32,6 +32,7 @@
  */
 package org.jomc.tools.test;
 
+import java.net.URISyntaxException;
 import java.util.Properties;
 import javax.xml.transform.TransformerConfigurationException;
 import org.apache.bcel.classfile.ClassParser;
@@ -198,14 +199,15 @@ public class ClassFileProcessorTest extends JomcToolTest
         return this.testTool;
     }
 
-    public Transformer getTestTransformer( final String resource ) throws IOException, TransformerConfigurationException
+    public Transformer getTestTransformer( final String resource )
+        throws URISyntaxException, TransformerConfigurationException
     {
         final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        final InputStream in = this.getClass().getResourceAsStream( resource );
-        assertNotNull( in );
+        final URL url = this.getClass().getResource( resource );
+        assertNotNull( url );
 
-        final Transformer transformer = transformerFactory.newTransformer( new StreamSource( in ) );
-        in.close();
+        final Transformer transformer =
+            transformerFactory.newTransformer( new StreamSource( url.toURI().toASCIIString() ) );
 
         return transformer;
     }
