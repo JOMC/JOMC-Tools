@@ -32,7 +32,7 @@
    $Id$
 
 -->
-<project name="class-file-processor-task-test" xmlns:jomctest="antlib:org.jomc.ant.test.tasks">
+<project name="class-file-processor-task-test" xmlns:jomctest="antlib:org.jomc.ant.test">
 
   <target name="test-execute-task">
     <jomctest:test-class-file-processor-task/>
