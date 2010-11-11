@@ -50,7 +50,7 @@ Installing JOMC Ant Tasks
 ---
   <path id="jomc-tools.classpath">
     <fileset dir="${jomc.home}" includes="lib/tools/*.jar"/>
-    <fileset dir="${jomc.home}" includes="lib/tools/ant/*.jar"/>
+    <fileset dir="${jomc.home}" includes="lib/ant/*.jar"/>
   </path>
 
   <typedef resource="org/jomc/ant/antlib.xml"
@@ -62,9 +62,9 @@ Installing JOMC Ant Tasks
 
 ---
   <path id="jomc-tools.classpath">
-    <fileset dir="${jomc.home}" includes="lib/ext/**.jar"/>
+    <fileset dir="${jomc.home}" includes="lib/ext/*.jar"/>
     <fileset dir="${jomc.home}" includes="lib/tools/*.jar"/>
-    <fileset dir="${jomc.home}" includes="lib/tools/ant/*.jar"/>
+    <fileset dir="${jomc.home}" includes="lib/ant/*.jar"/>
   </path>
 
   <typedef resource="org/jomc/ant/antlib.xml"
