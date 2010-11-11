@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Copyright (c) 2009 The JOMC Project
+  Copyright (c) 2005 Christian Schulte <schulte2005@users.sourceforge.net>
+  All rights reserved.
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in
+      the documentation and/or other materials provided with the
+      distribution.
+
+  THIS SOFTWARE IS PROVIDED BY THE JOMC PROJECT AND CONTRIBUTORS "AS IS"
+  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE JOMC PROJECT OR
+  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+  $Id$
+
+-->
+<module xmlns="http://jomc.org/model"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://jomc.org/model http://jomc.sourceforge.net/model/jomc-1.0.xsd"
+        name="${project.name} Tests" version="${project.version}" vendor="${project.organization.name}"
+        modelVersion="1.0">
+
+  <documentation defaultLanguage="en">
+    <text language="en">${project.description}</text>
+  </documentation>
+
+  <specifications>
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="org.jomc.ant.ClassFileProcessorTask" class="org.jomc.ant.ClassFileProcessorTask"
+                   classDeclaration="true" multiplicity="Many"/>
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="org.jomc.ant.CommitClassesTask" class="org.jomc.ant.CommitClassesTask"
+                   classDeclaration="true" multiplicity="Many"/>
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="org.jomc.ant.GenerateResourcesTask" class="org.jomc.ant.GenerateResourcesTask"
+                   classDeclaration="true" multiplicity="Many"/>
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="org.jomc.ant.JomcTask" class="org.jomc.ant.JomcTask"
+                   classDeclaration="true" multiplicity="Many"/>
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="org.jomc.ant.JomcToolTask" class="org.jomc.ant.JomcToolTask"
+                   classDeclaration="true" multiplicity="Many"/>
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="org.jomc.ant.ManageSourcesTask" class="org.jomc.ant.ManageSourcesTask"
+                   classDeclaration="true" multiplicity="Many"/>
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="org.jomc.ant.MergeModletsTask" class="org.jomc.ant.MergeModletsTask"
+                   classDeclaration="true" multiplicity="Many"/>
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="org.jomc.ant.MergeModulesTask" class="org.jomc.ant.MergeModulesTask"
+                   classDeclaration="true" multiplicity="Many"/>
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="org.jomc.ant.ResourceFileProcessorTask" class="org.jomc.ant.ResourceFileProcessorTask"
+                   classDeclaration="true" multiplicity="Many"/>
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="org.jomc.ant.SourceFileProcessorTask" class="org.jomc.ant.SourceFileProcessorTask"
+                   classDeclaration="true" multiplicity="Many"/>
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="org.jomc.ant.ValidateClassesTask" class="org.jomc.ant.ValidateClassesTask"
+                   classDeclaration="true" multiplicity="Many"/>
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="org.jomc.ant.ValidateClasspathTask" class="org.jomc.ant.ValidateClasspathTask"
+                   classDeclaration="true" multiplicity="Many"/>
+
+  </specifications>
+  <implementations>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="org.jomc.ant.ClassFileProcessorTask" class="org.jomc.ant.ClassFileProcessorTask"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="org.jomc.ant.ClassFileProcessorTask"/>
+      </specifications>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="org.jomc.ant.CommitClassesTask" class="org.jomc.ant.CommitClassesTask"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="org.jomc.ant.CommitClassesTask"/>
+      </specifications>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="org.jomc.ant.GenerateResourcesTask" class="org.jomc.ant.GenerateResourcesTask"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="org.jomc.ant.GenerateResourcesTask"/>
+      </specifications>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="org.jomc.ant.JomcTask" class="org.jomc.ant.JomcTask"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="org.jomc.ant.JomcTask"/>
+      </specifications>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="org.jomc.ant.JomcToolTask" class="org.jomc.ant.JomcToolTask"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="org.jomc.ant.JomcToolTask"/>
+      </specifications>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="org.jomc.ant.ManageSourcesTask" class="org.jomc.ant.ManageSourcesTask"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="org.jomc.ant.ManageSourcesTask"/>
+      </specifications>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="org.jomc.ant.MergeModletsTask" class="org.jomc.ant.MergeModletsTask"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="org.jomc.ant.MergeModletsTask"/>
+      </specifications>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="org.jomc.ant.MergeModulesTask" class="org.jomc.ant.MergeModulesTask"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="org.jomc.ant.MergeModulesTask"/>
+      </specifications>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="org.jomc.ant.ResourceFileProcessorTask" class="org.jomc.ant.ResourceFileProcessorTask"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="org.jomc.ant.ResourceFileProcessorTask"/>
+      </specifications>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="org.jomc.ant.SourceFileProcessorTask" class="org.jomc.ant.SourceFileProcessorTask"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="org.jomc.ant.SourceFileProcessorTask"/>
+      </specifications>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="org.jomc.ant.ValidateClassesTask" class="org.jomc.ant.ValidateClassesTask"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="org.jomc.ant.ValidateClassesTask"/>
+      </specifications>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="org.jomc.ant.ValidateClasspathTask" class="org.jomc.ant.ValidateClasspathTask"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="org.jomc.ant.ValidateClasspathTask"/>
+      </specifications>
+    </implementation>
+  </implementations>
+</module>

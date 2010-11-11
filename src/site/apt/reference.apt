@@ -1,0 +1,695 @@
+ ------
+ Task and Type Reference
+ ------
+ Christian Schulte
+ ------
+ 04 November 2010
+ ------
+
+ ~~ Copyright (c) 2009 The JOMC Project
+ ~~ Copyright (c) 2005 Christian Schulte <schulte2005@users.sourceforge.net>
+ ~~ All rights reserved.
+ ~~
+ ~~ Redistribution and use in source and binary forms, with or without
+ ~~ modification, are permitted provided that the following conditions
+ ~~ are met:
+ ~~
+ ~~   * Redistributions of source code must retain the above copyright
+ ~~        notice, this list of conditions and the following disclaimer.
+ ~~
+ ~~   * Redistributions in binary form must reproduce the above copyright
+ ~~     notice, this list of conditions and the following disclaimer in
+ ~~     the documentation and/or other materials provided with the
+ ~~     distribution.
+ ~~
+ ~~ THIS SOFTWARE IS PROVIDED BY THE JOMC PROJECT AND CONTRIBUTORS "AS IS"
+ ~~ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ ~~ THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ ~~ PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE JOMC PROJECT OR
+ ~~ CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ ~~ EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ ~~ PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ ~~ OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ ~~ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ ~~ OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ ~~ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ ~~
+ ~~ $Id$
+
+Task Reference
+
+* <<<{commit-classes}>>>
+
+  This task commits model objects to class files.
+
+  The <<<commit-classes>>> task supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classesDirectory>>>                      | The directory holding the class files to   | <<Yes.>>               |
+|                                             | commit model objects to.                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpathRef>>>                          | A reference to a class path to process     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element is supported.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classProcessingEnabled>>>                | A flag indicating the processing of        | No. Defaults to true.  |
+|                                             | classes is enabled.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<defaultTemplateProfile>>>                | The default template profile to use when   | No.                    |
+|                                             | accessing templates.                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<implementation>>>                        | The identifier of an implementation to     | No. If the             |
+|                                             | process.                                   | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<indentation>>>                           | The indentation string ('\\t' for tab).    | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<inputEncoding>>>                         | The encoding to use for reading files.     | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
+|                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
+|                                             | separator.                                 | separator.             |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
+|                                             | process.                                   | JOMC model public id.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+|                                             | resolution is enabled.                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectStylesheet>>>                 | The location of a style sheet used for     | No.                    |
+|                                             | transforming model objects.                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
+|                                             | is enabled.                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletLocation>>>                        | The class path location searched for       | No.                    |
+|                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<module>>>                                | The identifier of a module to process.     | No. If the             |
+|                                             |                                            | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleLocation>>>                        | The class path location searched for       | No.                    |
+|                                             | modules.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<outputEncoding>>>                        | The encoding to use for writing files.     | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<platformProviderLocation>>>              | The location searched for platform         | No.                    |
+|                                             | provider resources.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<providerLocation>>>                      | The class path location searched for       | No.                    |
+|                                             | providers.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<specification>>>                         | The identifier of a specification to       | No. If the             |
+|                                             | process.                                   | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateEncoding>>>                      | The encoding to use for reading templates. | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateProfile>>>                       | The template profile to use when accessing | No.                    |
+|                                             | templates.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
+|                                             | transformers.                              |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+  The <<<commit-classes>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
+  or the nested <<<classpath>>> element can be used.
+
+* <<<{generate-resources}>>>
+
+  This task generates resource files.
+
+  The <<<generate-resources>>> task supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpathRef>>>                          | A reference to a class path to process     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element is supported.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<defaultTemplateProfile>>>                | The default template profile to use when   | No.                    |
+|                                             | accessing templates.                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<implementation>>>                        | The identifier of an implementation to     | No. If the             |
+|                                             | process.                                   | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<indentation>>>                           | The indentation string ('\\t' for tab).    | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<inputEncoding>>>                         | The encoding to use for reading files.     | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
+|                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
+|                                             | separator.                                 | separator.             |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
+|                                             | process.                                   | JOMC model public id.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+|                                             | resolution is enabled.                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
+|                                             | is enabled.                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletLocation>>>                        | The class path location searched for       | No.                    |
+|                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<module>>>                                | The identifier of a module to process.     | No. If the             |
+|                                             |                                            | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleLocation>>>                        | The class path location searched for       | No.                    |
+|                                             | modules.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<outputEncoding>>>                        | The encoding to use for writing files.     | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<platformProviderLocation>>>              | The location searched for platform         | No.                    |
+|                                             | provider resources.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<providerLocation>>>                      | The class path location searched for       | No.                    |
+|                                             | providers.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<resourceBundleDefaultLanguage>>>         | The language of the default language       | No.                    |
+|                                             | properties file of generated resource      |                        |
+|                                             | bundle resource files.                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<resourceProcessingEnabled>>>             | A flag indicating the processing of        | No. Defaults to true.  |
+|                                             | resources is enabled.                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<resourcesDirectory>>>                    | The directory to generate resource files   | <<Yes.>>               |
+|                                             | to.                                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<specification>>>                         | The identifier of a specification to       | No. If the             |
+|                                             | process.                                   | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateEncoding>>>                      | The encoding to use for reading templates. | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateProfile>>>                       | The template profile to use when accessing | No.                    |
+|                                             | templates.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
+|                                             | transformers.                              |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+  The <<<generate-resources>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
+  or the nested <<<classpath>>> element can be used.
+
+* <<<{manage-sources}>>>
+
+  This task manages source code files.
+
+  The <<<manage-sources>>> task supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpathRef>>>                          | A reference to a class path to process     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element is supported.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<defaultTemplateProfile>>>                | The default template profile to use when   | No.                    |
+|                                             | accessing templates.                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<implementation>>>                        | The identifier of an implementation to     | No. If the             |
+|                                             | process.                                   | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<indentation>>>                           | The indentation string ('\\t' for tab).    | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<inputEncoding>>>                         | The encoding to use for reading files.     | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
+|                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
+|                                             | separator.                                 | separator.             |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
+|                                             | process.                                   | JOMC model public id.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+|                                             | resolution is enabled.                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
+|                                             | is enabled.                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletLocation>>>                        | The class path location searched for       | No.                    |
+|                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<module>>>                                | The identifier of a module to process.     | No. If the             |
+|                                             |                                            | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleLocation>>>                        | The class path location searched for       | No.                    |
+|                                             | modules.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<outputEncoding>>>                        | The encoding to use for writing files.     | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<platformProviderLocation>>>              | The location searched for platform         | No.                    |
+|                                             | provider resources.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<providerLocation>>>                      | The class path location searched for       | No.                    |
+|                                             | providers.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<sourcesDirectory>>>                      | The directory holding the source files to  | <<Yes.>>               |
+|                                             | manage.                                    |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<sourceProcessingEnabled>>>               | A flag indicating the processing of source | No. Defaults to true.  |
+|                                             | files is enabled.                          |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<specification>>>                         | The identifier of a specification to       | No. If the             |
+|                                             | process.                                   | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateEncoding>>>                      | The encoding to use for reading templates. | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateProfile>>>                       | The template profile to use when accessing | No.                    |
+|                                             | templates.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
+|                                             | transformers.                              |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+  The <<<manage-sources>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
+  or the nested <<<classpath>>> element can be used.
+
+* <<<{validate-classes}>>>
+
+  This task validates class file model objects.
+
+  The <<<validate-classes>>> task supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classesDirectory>>>                      | The directory holding the class files to   | <<Yes.>>               |
+|                                             | validate model objects of.                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpathRef>>>                          | A reference to a class path to process     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element is supported.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classProcessingEnabled>>>                | A flag indicating the processing of        | No. Defaults to true.  |
+|                                             | classes is enabled.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<defaultTemplateProfile>>>                | The default template profile to use when   | No.                    |
+|                                             | accessing templates.                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<implementation>>>                        | The identifier of an implementation to     | No. If the             |
+|                                             | process.                                   | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
+|                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
+|                                             | separator.                                 | separator.             |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<inputEncoding>>>                         | The encoding to use for reading files.     | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<lineSeparator>>>                         | The line separator ('\r\n' for DOS, '\r'   | No.                    |
+|                                             | for Mac, '\n' for Unix).                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
+|                                             | process.                                   | JOMC model public id.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+|                                             | resolution is enabled.                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
+|                                             | is enabled.                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletLocation>>>                        | The class path location searched for       | No.                    |
+|                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<module>>>                                | The identifier of a module to process.     | No. If the             |
+|                                             |                                            | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleLocation>>>                        | The class path location searched for       | No.                    |
+|                                             | modules.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<outputEncoding>>>                        | The encoding to use for writing files.     | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<platformProviderLocation>>>              | The location searched for platform         | No.                    |
+|                                             | provider resources.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<providerLocation>>>                      | The class path location searched for       | No.                    |
+|                                             | providers.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<specification>>>                         | The identifier of a specification to       | No. If the             |
+|                                             | process.                                   | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateEncoding>>>                      | The encoding to use for reading templates. | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateProfile>>>                       | The template profile to use when accessing | No.                    |
+|                                             | templates.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
+|                                             | transformers.                              |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+  The <<<validate-classes>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
+  or the nested <<<classpath>>> element can be used.
+
+* <<<{validate-classpath}>>>
+
+  This task validates classpath class file model objects.
+
+  The <<<validate-classpath>>> task supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpathRef>>>                          | A reference to a class path to process     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element is supported.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classProcessingEnabled>>>                | A flag indicating the processing of        | No. Defaults to true.  |
+|                                             | classes is enabled.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<defaultTemplateProfile>>>                | The default template profile to use when   | No.                    |
+|                                             | accessing templates.                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<implementation>>>                        | The identifier of an implementation to     | No. If the             |
+|                                             | process.                                   | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and  <<<module>>>      |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<indentation>>>                           | The indentation string ('\\t' for tab).    | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<inputEncoding>>>                         | The encoding to use for reading files.     | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
+|                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
+|                                             | separator.                                 | separator.             |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
+|                                             | process.                                   | JOMC model public id.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+|                                             | resolution is enabled.                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
+|                                             | is enabled.                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletLocation>>>                        | The class path location searched for       | No.                    |
+|                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<module>>>                                | The identifier of a module to process.     | No. If the             |
+|                                             |                                            | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleLocation>>>                        | The class path location searched for       | No.                    |
+|                                             | modules.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<outputEncoding>>>                        | The encoding to use for writing files.     | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<platformProviderLocation>>>              | The location searched for platform         | No.                    |
+|                                             | provider resources.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<providerLocation>>>                      | The class path location searched for       | No.                    |
+|                                             | providers.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<specification>>>                         | The identifier of a specification to       | No. If the             |
+|                                             | process.                                   | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateEncoding>>>                      | The encoding to use for reading templates. | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateProfile>>>                       | The template profile to use when accessing | No.                    |
+|                                             | templates.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
+|                                             | transformers.                              |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+  The <<<validate-classpath>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
+  or the nested <<<classpath>>> element can be used.
+
+* <<<{validate-model}>>>
+
+  This task validates models.
+
+  The <<<validate-model>>> task supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpathRef>>>                          | A reference to a class path to process     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element is supported.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
+|                                             | process.                                   | JOMC model public id.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+|                                             | resolution is enabled.                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
+|                                             | is enabled.                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletLocation>>>                        | The class path location searched for       | No.                    |
+|                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleLocation>>>                        | The class path location searched for       | No.                    |
+|                                             | modules.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<platformProviderLocation>>>              | The location searched for platform         | No.                    |
+|                                             | provider resources.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<providerLocation>>>                      | The class path location searched for       | No.                    |
+|                                             | providers.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
+|                                             | transformers.                              |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+  The <<<validate-model>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
+  or the nested <<<classpath>>> element can be used.
+
+* <<<{merge-modlets}>>>
+
+  This task merges modlet resources.
+
+  The <<<merge-modlets>>> task supports the following attributes:
+
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                         | <<Description>>                            | <<Required>>           |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<classpathRef>>>                    | A reference to a class path to process     | No. Either the         |
+|                                       |                                            | <<<classpathRef>>>     |
+|                                       |                                            | attribute or the       |
+|                                       |                                            | nested <<<classpath>>> |
+|                                       |                                            | element is supported.  |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<model>>>                           | The public identifier of the model to      | No. Defaults to the    |
+|                                       | process.                                   | JOMC model public id.  |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<modelProcessingEnabled>>>          | A flag indicating the processing of models | No. Defaults to true.  |
+|                                       | is enabled.                                |                        |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<modletEncoding>>>                  | The encoding of the modlet resource.       | No. Defaults to the    |
+|                                       |                                            | system's default       |
+|                                       |                                            | encoding.              |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<modletFile>>>                      | The file to write the merged modlet to.    | <<Yes.>>               |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<modletLocation>>>                  | The class path location searched for       | No.                    |
+|                                       | modlets.                                   |                        |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<modletName>>>                      | The name of the merged modlet.             | <<Yes.>>               |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<modletObjectStylesheet>>>          | The location of a style sheet to transform | No.                    |
+|                                       | the merged modlet with.                    |                        |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<modletVendor>>>                    | The vendor of the merged modlet.           | No.                    |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<modletVersion>>>                   | The version of the merged modlet.          | No.                    |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<platformProviderLocation>>>        | The location searched for platform         | No.                    |
+|                                       | provider resources.                        |                        |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<providerLocation>>>                | The class path location searched for       | No.                    |
+|                                       | providers.                                 |                        |
+*---------------------------------------+--------------------------------------------+------------------------+
+
+  The <<<merge-modlets>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
+  or the nested <<<classpath>>> element can be used.
+
+  For controlling the modlets to be merged, the <<<merge-modlets>>> task supports nested <<<modletInclude>>> and
+  <<<modletExclude>>> elements.
+
+** <<<{modletInclude}>>>
+
+  The nested <<<modletInclude>>> element supports a single <<<name>>> attribute specifying the name of a modlet to
+  include.
+
+** <<<{modletExclude}>>>
+
+  The nested <<<modletExclude>>> element supports a single <<<name>>> attribute specifying the name of a modlet to
+  exclude.
+
+* <<<{merge-modules}>>>
+
+  This task merges module resources.
+
+  The <<<merge-modules>>> task supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpathRef>>>                          | A reference to a class path to process     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element is supported.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
+|                                             | process.                                   | JOMC model public id.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectStylesheet>>>                 | The location of a style sheet to transform | No.                    |
+|                                             | the merged module with.                    |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+|                                             | resolution is enabled.                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
+|                                             | is enabled.                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletLocation>>>                        | The class path location searched for       | No.                    |
+|                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleEncoding>>>                        | The encoding of the module resource.       | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleFile>>>                            | The file to write the merged module to.    | <<Yes.>>               |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleName>>>                            | The name of the merged module.             | <<Yes.>>               |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleLocation>>>                        | The class path location searched for       | No.                    |
+|                                             | modules.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleVersion>>>                         | The version of the merged module.          | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleVendor>>>                          | The vendor of the merged module.           | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<platformProviderLocation>>>              | The location searched for platform         | No.                    |
+|                                             | provider resources.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<providerLocation>>>                      | The class path location searched for       | No.                    |
+|                                             | providers.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
+|                                             | transformers.                              |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+  The <<<merge-modules>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
+  or the nested <<<classpath>>> element can be used.
+
+  For controlling the modules to be merged, the <<<merge-modules>>> task supports nested <<<moduleInclude>>> and
+  <<<moduleExclude>>> elements.
+
+** <<<{moduleInclude}>>>
+
+  The nested <<<moduleInclude>>> element supports a single <<<name>>> attribute specifying the name of a module to
+  include.
+
+** <<<{moduleExclude}>>>
+
+  The nested <<<moduleExclude>>> element supports a single <<<name>>> attribute specifying the name of a module to
+  exclude.

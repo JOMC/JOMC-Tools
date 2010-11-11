@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+   Copyright (c) 2009 The JOMC Project
+   Copyright (c) 2005 Christian Schulte <schulte2005@users.sourceforge.net>
+   All rights reserved.
+
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions
+   are met:
+
+     o Redistributions of source code must retain the above copyright
+       notice, this list of conditions and the following disclaimer.
+
+     o Redistributions in binary form must reproduce the above copyright
+       notice, this list of conditions and the following disclaimer in
+       the documentation and/or other materials provided with the
+       distribution.
+
+   THIS SOFTWARE IS PROVIDED BY THE JOMC PROJECT AND CONTRIBUTORS "AS IS"
+   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+   THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+   PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE JOMC PROJECT OR
+   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+   EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+   PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+   OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+   WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+   OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+   $Id$
+
+-->
+<project name="commit-classes-test" xmlns:jomc="antlib:org.jomc.ant">
+
+  <!-- ************************************************************************************************************* -->
+  <target name="init">
+    <property name="empty.dir" value="${project.build.directory}/commit-classes-test/empty"/>
+    <property name="non.existent.dir" value="${project.build.directory}/DOES_NOT_EXIST"/>
+    <property name="no.op.stylesheet" value="org/jomc/ant/test/no-op.xsl"/>
+    <mkdir dir="${empty.dir}"/>
+    <delete dir="${non.existent.dir}"/>
+  </target>
+
+  <path id="empty.classpath">
+    <pathelement path="${empty.dir}"/>
+  </path>
+
+  <path id="jomc.classpath">
+    <fileset dir="${jomc.output.directory}">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-missing-classes-directory" depends="init">
+    <jomc:commit-classes/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-non-existing-classes-directory" depends="init">
+    <jomc:commit-classes classesDirectory="${non.existent.dir}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-stylesheet-not-found" depends="init">
+    <jomc:commit-classes classesDirectory="${empty.dir}" modelObjectStylesheet="DOES_NOT_EXIST"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-class-processing-disabled" depends="init">
+    <jomc:commit-classes classesDirectory="${empty.dir}" classProcessingEnabled="false"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-specification-not-found" depends="init">
+    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
+                         specification="DOES NOT EXIST"/>
+
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-implementation-not-found" depends="init">
+    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
+                         implementation="DOES NOT EXIST"/>
+
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-module-not-found" depends="init">
+    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
+                         module="DOES NOT EXIST"/>
+
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-commit-ant-tasks" depends="init">
+    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-commit-ant-tasks-with-no-op-stylesheet" depends="init">
+    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
+                         modelObjectStyleSheet="${no.op.stylesheet}"/>
+
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-commit-ant-tasks-with-redundant-resources" depends="init">
+    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
+                         modelObjectStyleSheet="${no.op.stylesheet}" classpathref="jomc.classpath"/>
+
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-commit-one-specification" depends="init">
+    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
+                         specification="org.jomc.ant.JomcTask"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-commit-one-implementation" depends="init">
+    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
+                         implementation="org.jomc.ant.JomcToolTask"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-commit-one-module" depends="init">
+    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
+                         module="${project.name} Tests"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-commit-one-specification-with-no-op-stylesheet" depends="init">
+    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
+                         specification="org.jomc.ant.JomcTask"
+                         modelObjectStyleSheet="${no.op.stylesheet}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-commit-one-implementation-with-no-op-stylesheet" depends="init">
+    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
+                         implementation="org.jomc.ant.JomcToolTask"
+                         modelObjectStyleSheet="${no.op.stylesheet}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-commit-one-module-with-no-op-stylesheet" depends="init">
+    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
+                         module="${project.name} Tests"
+                         modelObjectStyleSheet="${no.op.stylesheet}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-commit-ant-tasks-with-classpathref" depends="init">
+    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}" classpathref="empty.classpath"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-commit-ant-tasks-with-nested-classpath" depends="init">
+    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}">
+      <jomc:classpath>
+        <pathelement path="${empty.dir}"/>
+      </jomc:classpath>
+    </jomc:commit-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-commit-ant-tasks-all-attributes" depends="init">
+    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
+                         defaultTemplateProfile="TEST"
+                         inputEncoding="UTF-8"
+                         outputEncoding="UTF-8"
+                         templateEncoding="UTF-8"
+                         templateProfile="TEST"
+                         indentation="\t"
+                         lineSeparator="\r\n"
+                         modelProcessingEnabled="false"
+                         modelObjectClasspathResolutionEnabled="false"
+                         moduleLocation="TEST"
+                         transformerLocation="TEST"
+                         specification="TEST"
+                         implementation="TEST"
+                         module="TEST"
+                         model="TEST"
+                         modletLocation="TEST"
+                         providerLocation="TEST"
+                         platformProviderLocation="TEST">
+      <jomc:classpath>
+        <pathelement path="${empty.dir}"/>
+      </jomc:classpath>
+    </jomc:commit-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-commit-ant-tasks-broken-model" depends="init">
+    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
+                         moduleLocation="META-INF/jomc-broken.xml"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task" depends="init">
+    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"/>
+  </target>
+
+</project>

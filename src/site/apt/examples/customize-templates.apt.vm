@@ -1,0 +1,53 @@
+ ------
+ Customizing code generation
+ ------
+ Christian Schulte
+ ------
+ 09 November 2010
+ ------
+
+ ~~ Copyright (c) 2009 The JOMC Project
+ ~~ Copyright (c) 2005 Christian Schulte <schulte2005@users.sourceforge.net>
+ ~~ All rights reserved.
+ ~~
+ ~~ Redistribution and use in source and binary forms, with or without
+ ~~ modification, are permitted provided that the following conditions
+ ~~ are met:
+ ~~
+ ~~   * Redistributions of source code must retain the above copyright
+ ~~        notice, this list of conditions and the following disclaimer.
+ ~~
+ ~~   * Redistributions in binary form must reproduce the above copyright
+ ~~     notice, this list of conditions and the following disclaimer in
+ ~~     the documentation and/or other materials provided with the
+ ~~     distribution.
+ ~~
+ ~~ THIS SOFTWARE IS PROVIDED BY THE JOMC PROJECT AND CONTRIBUTORS "AS IS"
+ ~~ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ ~~ THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ ~~ PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE JOMC PROJECT OR
+ ~~ CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ ~~ EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ ~~ PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ ~~ OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ ~~ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ ~~ OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ ~~ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ ~~
+ ~~ $Id$
+
+Customizing code generation
+
+  If you need to customize the generated code, simply provide custom templates to the JOMC Ant Tasks. This
+  is done by adding a template artifact to the classpath of the tasks and setting the <<<templateProfile>>> parameter of
+  the various tasks. As a starting point you can copy the default templates from the {{{./../../jomc-tools}JOMC Tools}}
+  artifact from directory
+  {{{${project.scm.url}/../jomc-tools/src/main/templates/org/jomc/tools/templates}org/jomc/tools/templates/jomc-java}}
+  to a <<<org/jomc/tools/templates/sub-directory>>> of your template artifact.
+
+  For example, copying the default templates to directory <<<org/jomc/tools/templates/custom-profile>>>, you need to set
+  the <<<templateProfile>>> parameter to <<<custom-profile>>> and add your template artifact to the classpath of the
+  tasks for the templates to be found.
+
+  See class {{{./../../jomc-tools/apidocs/org/jomc/tools/SourceFileProcessor.html}SourceFileProcessor}} for details,
+  especially the <<<getVelocityTemplate>>> method and the <<<getSourceFileType>>> methods.
