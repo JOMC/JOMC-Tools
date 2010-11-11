@@ -181,6 +181,17 @@
       <outputDirectory>/lib/endorsed</outputDirectory>
     </fileSet>
     <fileSet>
+      <directory>${project.build.directory}/jomc-ant-tasks</directory>
+      <fileMode>0555</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/lib/tools/ant</outputDirectory>
+      <includes>
+        <include>*.jar</include>
+        <include>META-INF/PROJECT.txt</include>
+        <include>META-INF/PROJEKT.txt</include>
+      </includes>
+    </fileSet>
+    <fileSet>
       <directory>${project.build.directory}/jomc-changes</directory>
       <fileMode>0444</fileMode>
       <directoryMode>0755</directoryMode>

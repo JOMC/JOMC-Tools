@@ -32,7 +32,11 @@
     The 'lib/tools' directory contains Java archives needed when integrating the
     JOMC tools. See the jomc-tools-${project.version}.jar archive.
 
-  Maven 2 Plugin
+  Apache Ant Tasks
+
+    See ${jomc.artifacts.url}/jomc-ant-tasks-${jomc-ant-tasks.version}
+
+  Apache Maven 2 Plugin
 
     See ${jomc.artifacts.url}/maven-jomc-plugin-${maven-jomc-plugin.version}
 

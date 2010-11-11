@@ -31,7 +31,11 @@
     Integration der JOMC Werkzeuge benötigten Klassen.
     Siehe das jomc-tools-${project.version}.jar Archiv.
 
-  Maven 2 Plugin
+  Apache Ant Tasks
+
+    Siehe ${jomc.artifacts.url}/jomc-ant-tasks-${jomc-ant-tasks.version}
+
+  Apache Maven 2 Plugin
 
     Siehe ${jomc.artifacts.url}/maven-jomc-plugin-${maven-jomc-plugin.version}
 

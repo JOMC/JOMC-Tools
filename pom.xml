@@ -142,16 +142,9 @@
                     <moduleVersion>${project.version}</moduleVersion>
                     <moduleVendor>${project.organization.name}</moduleVendor>
                     <moduleResource>META-INF/jomc-cli.xml</moduleResource>
-                    <moduleResources>
-                      <moduleResource>META-INF/jomc.xml</moduleResource>
-                    </moduleResources>
                     <modletName>${project.name}</modletName>
                     <modletVendor>${project.organization.name}</modletVendor>
                     <modletVersion>${project.version}</modletVersion>
-                    <modletResource>META-INF/jomc-modlet.xml</modletResource>
-                    <modletResources>
-                      <modletResource>META-INF/jomc-modlet.xml</modletResource>
-                    </modletResources>
                   </transformer>
                   <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
                     <file>${project.build.directory}/maven-shared-archive-resources/META-INF/LIZENZ.txt</file>
@@ -229,6 +222,13 @@
                   <type>jar</type>
                   <outputDirectory>${project.build.directory}/jomc-tools</outputDirectory>
                 </artifactItem>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>jomc-ant-tasks</artifactId>
+                  <type>jar</type>
+                  <version>${jomc-ant-tasks.version}</version>
+                  <outputDirectory>${project.build.directory}/jomc-ant-tasks</outputDirectory>
+                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
@@ -253,6 +253,24 @@
                   <version>1.4.2</version>
                   <type>jar</type>
                   <outputDirectory>${project.build.directory}/jomc-endorsed</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-ant-tasks</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>jomc-ant-tasks</artifactId>
+                  <type>jar</type>
+                  <version>${jomc-ant-tasks.version}</version>
+                  <outputDirectory>${project.build.directory}/jomc-ant-tasks</outputDirectory>
                 </artifactItem>
               </artifactItems>
             </configuration>
