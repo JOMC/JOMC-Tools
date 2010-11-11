@@ -105,6 +105,8 @@ Maven JOMC Plugin
   To provide you with better understanding of some usages of the JOMC Plugin, you can take a look at the following
   examples:
 
+  * {{{./examples/assemble-artifacts.html}'Assembling' JOMC artifacts.}}
+
   * {{{./examples/customize-templates.html}Customizing JOMC code generation.}}
 
   * {{{./examples/show-model.html}Displaying model information.}}

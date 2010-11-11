@@ -77,6 +77,7 @@ piwikTracker.enableLinkTracking();
       <item name="FAQ" href="faq.html"/>
     </menu>
     <menu name="Examples">
+      <item name="Assembling artifacts" href="examples/assemble-artifacts.html"/>
       <item name="Customizing code generation" href="examples/customize-templates.html"/>
       <item name="Displaying model information" href="examples/show-model.html"/>
       <item name="Managing artifacts" href="examples/manage-artifacts.html"/>

@@ -51,6 +51,12 @@
         <directory>src/main/resources</directory>
       </resource>
     </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
   </build>
   <dependencies>
     <dependency>
@@ -114,6 +120,11 @@
           <artifactId>commons-io</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-assembly-plugin</artifactId>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
   <reporting>

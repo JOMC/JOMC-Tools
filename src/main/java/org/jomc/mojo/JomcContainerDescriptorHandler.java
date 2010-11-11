@@ -33,16 +33,17 @@
 package org.jomc.mojo;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.MessageFormat;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.jar.JarEntry;
-import java.util.jar.JarOutputStream;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -56,7 +57,12 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.lang.StringUtils;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.shade.resource.ResourceTransformer;
+import org.apache.maven.plugin.assembly.filter.ContainerDescriptorHandler;
+import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archiver.ArchiverException;
+import org.codehaus.plexus.archiver.ResourceIterator;
+import org.codehaus.plexus.archiver.UnArchiver;
+import org.codehaus.plexus.components.io.fileselectors.FileInfo;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.jomc.model.ModelObject;
 import org.jomc.model.Module;
@@ -71,73 +77,59 @@ import org.jomc.modlet.ModletObject;
 import org.jomc.modlet.Modlets;
 
 /**
- * Maven Shade Plugin {@code ResourceTransformer} implementation for shading JOMC resources.
+ * Maven Assembly Plugin {@code ContainerDescriptorHandler} implementation for assembling JOMC resources.
  *
- * <p><b>Maven Shade Plugin Usage</b><pre>
- * &lt;transformer implementation="org.jomc.mojo.JomcResourceTransformer"&gt;
- *   &lt;model&gt;http://jomc.org/model&lt;/model&gt;
- *   &lt;moduleEncoding&gt;${project.build.sourceEncoding}&lt;/moduleEncoding&gt;
- *   &lt;moduleName&gt;${project.name}&lt;/moduleName&gt;
- *   &lt;moduleVersion&gt;${project.version}&lt;/moduleVersion&gt;
- *   &lt;moduleVendor&gt;${project.organization.name}&lt;/moduleVendor&gt;
- *   &lt;moduleResource&gt;META-INF/custom-jomc.xml&lt;/moduleResource&gt;
- *   &lt;moduleResources&gt;
- *     &lt;moduleResource&gt;META-INF/jomc.xml&lt;/moduleResource&gt;
- *   &lt;/moduleResources&gt;
- *   &lt;moduleIncludes&gt;
- *     &lt;moduleInclude&gt;module name&lt;/moduleInclude&gt;
- *   &lt;/moduleIncludes&gt;
- *   &lt;moduleExcludes&gt;
- *     &lt;moduleExclude&gt;module name&lt;/moduleExclude&gt;
- *   &lt;/moduleExcludes&gt;
- *   &lt;modletEncoding&gt;${project.build.sourceEncoding}&lt;/modletEncoding&gt;
- *   &lt;modletName&gt;${project.name}&lt;/modletName&gt;
- *   &lt;modletVersion&gt;${project.version}&lt;/modletVersion&gt;
- *   &lt;modletVendor&gt;${project.organization.name}&lt;/modletVendor&gt;
- *   &lt;modletResource&gt;META-INF/custom-jomc-modlet.xml&lt;/modletResource&gt;
- *   &lt;modletResources&gt;
- *     &lt;modletResource&gt;META-INF/jomc-modlet.xml&lt;/modletResource&gt;
- *   &lt;/modletResources&gt;
- *   &lt;modletIncludes&gt;
- *     &lt;modletInclude&gt;modlet name&lt;/modletInclude&gt;
- *   &lt;/modletIncludes&gt;
- *   &lt;modletExcludes&gt;
- *     &lt;modletExclude&gt;modlet name&lt;/modletExclude&gt;
- *   &lt;/modletExcludes&gt;
- *   &lt;modelObjectStylesheet&gt;Filename of a style sheet to use for transforming the merged model document.&lt;/modelObjectStylesheet&gt;
- *   &lt;modletObjectStylesheet&gt;Filename of a style sheet to use for transforming the merged modlet document.&lt;/modletObjectStylesheet&gt;
- *   &lt;providerLocation&gt;META-INF/custom-services&lt;/providerLocation&gt;
- *   &lt;platformProviderLocation&gt;${java.home}/jre/lib/custom-jomc.properties&lt;/platformProviderLocation&gt;
- *   &lt;modletLocation&gt;META-INF/custom-jomc-modlet.xml&lt;/modletLocation&gt;
- *   &lt;modletSchemaSystemId&gt;http://custom.host.tld/custom/path/jomc-modlet-1.0.xsd&lt;/modletSchemaSystemId&gt;
- * &lt;/transformer&gt;
+ * <p><b>Maven Assembly Plugin Usage</b><pre>
+ * &lt;containerDescriptorHandler&gt;
+ *   &lt;handlerName&gt;JOMC&lt;/handlerName&gt;
+ *   &lt;configuration&gt;
+ *     &lt;model&gt;http://jomc.org/model&lt;/model&gt;
+ *     &lt;moduleEncoding&gt;${project.build.sourceEncoding}&lt;/moduleEncoding&gt;
+ *     &lt;moduleName&gt;${project.name}&lt;/moduleName&gt;
+ *     &lt;moduleVersion&gt;${project.version}&lt;/moduleVersion&gt;
+ *     &lt;moduleVendor&gt;${project.organization.name}&lt;/moduleVendor&gt;
+ *     &lt;moduleResource&gt;META-INF/custom-jomc.xml&lt;/moduleResource&gt;
+ *     &lt;moduleResources&gt;
+ *       &lt;moduleResource&gt;META-INF/jomc.xml&lt;/moduleResource&gt;
+ *     &lt;/moduleResources&gt;
+ *     &lt;moduleIncludes&gt;
+ *       &lt;moduleInclude&gt;module name&lt;/moduleInclude&gt;
+ *     &lt;/moduleIncludes&gt;
+ *     &lt;moduleExcludes&gt;
+ *       &lt;moduleExclude&gt;module name&lt;/moduleExclude&gt;
+ *     &lt;/moduleExcludes&gt;
+ *     &lt;modletEncoding&gt;${project.build.sourceEncoding}&lt;/modletEncoding&gt;
+ *     &lt;modletName&gt;${project.name}&lt;/modletName&gt;
+ *     &lt;modletVersion&gt;${project.version}&lt;/modletVersion&gt;
+ *     &lt;modletVendor&gt;${project.organization.name}&lt;/modletVendor&gt;
+ *     &lt;modletResource&gt;META-INF/custom-jomc-modlet.xml&lt;/modletResource&gt;
+ *     &lt;modletResources&gt;
+ *       &lt;modletResource&gt;META-INF/jomc-modlet.xml&lt;/modletResource&gt;
+ *     &lt;/modletResources&gt;
+ *     &lt;modletIncludes&gt;
+ *       &lt;modletInclude&gt;modlet name&lt;/modletInclude&gt;
+ *     &lt;/modletIncludes&gt;
+ *     &lt;modletExcludes&gt;
+ *       &lt;modletExclude&gt;modlet name&lt;/modletExclude&gt;
+ *     &lt;/modletExcludes&gt;
+ *     &lt;modelObjectStylesheet&gt;Filename of a style sheet to use for transforming the merged model document.&lt;/modelObjectStylesheet&gt;
+ *     &lt;modletObjectStylesheet&gt;Filename of a style sheet to use for transforming the merged modlet document.&lt;/modletObjectStylesheet&gt;
+ *     &lt;providerLocation&gt;META-INF/custom-services&lt;/providerLocation&gt;
+ *     &lt;platformProviderLocation&gt;${java.home}/jre/lib/custom-jomc.properties&lt;/platformProviderLocation&gt;
+ *     &lt;modletLocation&gt;META-INF/custom-jomc-modlet.xml&lt;/modletLocation&gt;
+ *     &lt;modletSchemaSystemId&gt;http://custom.host.tld/custom/path/jomc-modlet-1.0.xsd&lt;/modletSchemaSystemId&gt;
+ *   &lt;/configuration&gt;
+ * &lt;/containerDescriptorHandler&gt;
  * </pre></p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
- * @plexus.component role="org.apache.maven.plugins.shade.resource.ResourceTransformer"
+ * @since 1.2
+ * @plexus.component role="org.apache.maven.plugin.assembly.filter.ContainerDescriptorHandler"
  *                   role-hint="JOMC"
  */
-public class JomcResourceTransformer extends AbstractLogEnabled implements ResourceTransformer
+public class JomcContainerDescriptorHandler extends AbstractLogEnabled implements ContainerDescriptorHandler
 {
-
-    /** Type of a resource. */
-    private enum ResourceType
-    {
-
-        /** Model object resource. */
-        MODEL_OBJECT_RESOURCE,
-        /** Modlet object resource. */
-        MODLET_OBJECT_RESOURCE,
-        /**
-         * Resource being ignored/overridden.
-         * @since 1.2
-         */
-        IGNORED_RESOURCE,
-        /** Unknown resource. */
-        UNKNOWN_RESOURCE
-
-    }
 
     /** Prefix prepended to log messages. */
     private static final String LOG_PREFIX = "[JOMC] ";
@@ -223,9 +215,6 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
     /** Model resources. */
     private Modules modules = new Modules();
 
-    /** Type of the currently processed resource. */
-    private ResourceType currentResourceType = ResourceType.UNKNOWN_RESOURCE;
-
     /** The JOMC JAXB marshaller of the instance. */
     private Marshaller jomcMarshaller;
 
@@ -238,150 +227,23 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
     /** The modlet JAXB unmarshaller of the instance. */
     private Unmarshaller modletUnmarshaller;
 
-    /** Creates a new {@code JomcResourceTransformer} instance. */
-    public JomcResourceTransformer()
+    /** Creates a new {@code JomcContainerDescriptorHandler} instance. */
+    public JomcContainerDescriptorHandler()
     {
         super();
     }
 
-    public boolean canTransformResource( final String arg )
-    {
-        if ( this.moduleResources != null )
-        {
-            for ( String r : this.moduleResources )
-            {
-                if ( normalizeResourceName( arg ).equals( normalizeResourceName( r ) ) )
-                {
-                    this.currentResourceType = ResourceType.MODEL_OBJECT_RESOURCE;
-
-                    if ( this.getLogger() != null && this.getLogger().isDebugEnabled() )
-                    {
-                        this.getLogger().debug( getMessage( "processingModuleResource", arg ) );
-                    }
-
-                    return true;
-                }
-            }
-        }
-        if ( this.modletResources != null )
-        {
-            for ( String r : this.modletResources )
-            {
-                if ( normalizeResourceName( arg ).equals( normalizeResourceName( r ) ) )
-                {
-                    this.currentResourceType = ResourceType.MODLET_OBJECT_RESOURCE;
-
-                    if ( this.getLogger() != null && this.getLogger().isDebugEnabled() )
-                    {
-                        this.getLogger().debug( getMessage( "processingModletResource", arg ) );
-                    }
-
-                    return true;
-                }
-            }
-        }
-
-        if ( normalizeResourceName( arg ).equals( normalizeResourceName( this.modletResource ) )
-             || normalizeResourceName( arg ).equals( normalizeResourceName( this.moduleResource ) ) )
-        {
-            if ( this.getLogger() != null && this.getLogger().isWarnEnabled() )
-            {
-                this.getLogger().warn( LOG_PREFIX + getMessage( "overridingResource", arg ) );
-            }
-
-            this.currentResourceType = ResourceType.IGNORED_RESOURCE;
-            return true;
-        }
-
-        this.currentResourceType = ResourceType.UNKNOWN_RESOURCE;
-        return false;
-    }
-
-    public void processResource( final InputStream in ) throws IOException
+    public void finalizeArchiveCreation( final Archiver archiver ) throws ArchiverException
     {
         try
         {
             this.assertValidParameters();
 
-            switch ( this.currentResourceType )
-            {
-                case MODEL_OBJECT_RESOURCE:
-                    Object modelObject = this.unmarshalModelObject( in );
-
-                    if ( modelObject instanceof JAXBElement<?> )
-                    {
-                        modelObject = ( (JAXBElement<?>) modelObject ).getValue();
-                    }
-                    if ( modelObject instanceof Modules )
-                    {
-                        this.modules.getModule().addAll( ( (Modules) modelObject ).getModule() );
-                    }
-                    if ( modelObject instanceof Module )
-                    {
-                        this.modules.getModule().add( (Module) modelObject );
-                    }
-                    break;
-
-                case MODLET_OBJECT_RESOURCE:
-                    Object modletObject = this.unmarshalModletObject( in );
-
-                    if ( modletObject instanceof JAXBElement<?> )
-                    {
-                        modletObject = ( (JAXBElement<?>) modletObject ).getValue();
-                    }
-                    if ( modletObject instanceof Modlets )
-                    {
-                        this.modlets.getModlet().addAll( ( (Modlets) modletObject ).getModlet() );
-                    }
-                    if ( modletObject instanceof Modlet )
-                    {
-                        this.modlets.getModlet().add( (Modlet) modletObject );
-                    }
-
-                    break;
-
-                case IGNORED_RESOURCE:
-                    break;
-                default:
-                    throw new AssertionError( "" + this.currentResourceType );
-
-            }
-        }
-        catch ( final JAXBException e )
-        {
-            String message = getMessage( e );
-            if ( message == null && e.getLinkedException() != null )
-            {
-                message = getMessage( e.getLinkedException() );
-            }
-
-            throw (IOException) new IOException( message ).initCause( e );
-        }
-        catch ( final ModelException e )
-        {
-            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
-        }
-        catch ( final MojoFailureException e )
-        {
-            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
-        }
-    }
-
-    public void processResource( final String name, final InputStream in, final List relocators ) throws IOException
-    {
-        this.processResource( in );
-    }
-
-    public boolean hasTransformedResource()
-    {
-        return !( this.modules.getModule().isEmpty() && this.modlets.getModlet().isEmpty() );
-    }
-
-    public void modifyOutputStream( final JarOutputStream out ) throws IOException
-    {
-        try
-        {
-            this.assertValidParameters();
+            // This will prompt the isSelected() call, below, for all resources added to the archive. This needs to be
+            // corrected in the AbstractArchiver, where runArchiveFinalizers() is called before regular resources are
+            // added, which is done because the manifest needs to be added first, and the manifest-creation component is
+            // a finalizer in the assembly plugin.
+            for ( final ResourceIterator it = archiver.getResources(); it.hasNext(); it.next() );
 
             if ( !this.modules.getModule().isEmpty() )
             {
@@ -438,8 +300,14 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
                 final JAXBElement<Module> transformedModule = this.transformModelObject(
                     new org.jomc.model.ObjectFactory().createModule( mergedModule ), Module.class );
 
-                out.putNextEntry( new JarEntry( normalizeResourceName( this.moduleResource ) ) );
+                final File moduleFile = File.createTempFile( "maven-assembly-plugin", ".tmp" );
+                moduleFile.deleteOnExit();
+
+                final OutputStream out = new FileOutputStream( moduleFile );
                 this.marshalModelObject( transformedModule, out );
+                out.close();
+
+                archiver.addFile( moduleFile, normalizeResourceName( this.moduleResource ) );
             }
 
             if ( !this.modlets.getModlet().isEmpty() )
@@ -497,8 +365,14 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
                 final JAXBElement<Modlet> transformedModlet = this.transformModletObject(
                     new org.jomc.modlet.ObjectFactory().createModlet( mergedModlet ), Modlet.class );
 
-                out.putNextEntry( new JarEntry( normalizeResourceName( this.modletResource ) ) );
+                final File modletFile = File.createTempFile( "maven-assembly-plugin", ".tmp" );
+                modletFile.deleteOnExit();
+
+                final OutputStream out = new FileOutputStream( modletFile );
                 this.marshalModletObject( transformedModlet, out );
+                out.close();
+
+                archiver.addFile( modletFile, normalizeResourceName( this.modletResource ) );
             }
         }
         catch ( final TransformerConfigurationException e )
@@ -509,7 +383,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
                 message = getMessage( e.getException() );
             }
 
-            throw (IOException) new IOException( message ).initCause( e );
+            throw new ArchiverException( message, e );
         }
         catch ( final TransformerException e )
         {
@@ -519,7 +393,153 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
                 message = getMessage( e.getException() );
             }
 
-            throw (IOException) new IOException( message ).initCause( e );
+            throw new ArchiverException( message, e );
+        }
+        catch ( final JAXBException e )
+        {
+            String message = getMessage( e );
+            if ( message == null && e.getLinkedException() != null )
+            {
+                message = getMessage( e.getLinkedException() );
+            }
+
+            throw new ArchiverException( message, e );
+        }
+        catch ( final ModelException e )
+        {
+            throw new ArchiverException( getMessage( e ), e );
+        }
+        catch ( final IOException e )
+        {
+            throw new ArchiverException( getMessage( e ), e );
+        }
+        catch ( final MojoFailureException e )
+        {
+            throw new ArchiverException( getMessage( e ), e );
+        }
+        finally
+        {
+            this.modlets = new Modlets();
+            this.modules = new Modules();
+            this.jomcMarshaller = null;
+            this.jomcUnmarshaller = null;
+            this.modletMarshaller = null;
+            this.modletUnmarshaller = null;
+        }
+    }
+
+    public void finalizeArchiveExtraction( final UnArchiver unarchiver ) throws ArchiverException
+    {
+    }
+
+    public List<String> getVirtualFiles()
+    {
+        final List<String> virtualFiles = new LinkedList<String>();
+
+        if ( !this.modlets.getModlet().isEmpty() )
+        {
+            virtualFiles.add( normalizeResourceName( this.modletResource ) );
+        }
+
+        if ( !this.modules.getModule().isEmpty() )
+        {
+            virtualFiles.add( normalizeResourceName( this.moduleResource ) );
+        }
+
+        return virtualFiles.isEmpty() ? null : Collections.unmodifiableList( virtualFiles );
+    }
+
+    public boolean isSelected( final FileInfo fileInfo ) throws IOException
+    {
+        try
+        {
+            this.assertValidParameters();
+
+            boolean selected = true;
+            final String name = normalizeResourceName( fileInfo.getName() );
+
+            if ( this.moduleResources != null )
+            {
+                for ( String r : this.moduleResources )
+                {
+                    if ( name.equals( normalizeResourceName( r ) ) )
+                    {
+                        Object modelObject = this.unmarshalModelObject( fileInfo.getContents() );
+
+                        if ( modelObject instanceof JAXBElement<?> )
+                        {
+                            modelObject = ( (JAXBElement<?>) modelObject ).getValue();
+                        }
+                        if ( modelObject instanceof Modules )
+                        {
+                            this.modules.getModule().addAll( ( (Modules) modelObject ).getModule() );
+                        }
+                        if ( modelObject instanceof Module )
+                        {
+                            this.modules.getModule().add( (Module) modelObject );
+                        }
+
+                        selected = false;
+
+                        if ( this.getLogger() != null && !this.getLogger().isDebugEnabled() )
+                        {
+                            this.getLogger().debug( LOG_PREFIX + getMessage( "processingModuleResource", name ) );
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+            if ( this.modletResources != null )
+            {
+                for ( String r : this.modletResources )
+                {
+                    if ( name.equals( normalizeResourceName( r ) ) )
+                    {
+                        Object modletObject = this.unmarshalModletObject( fileInfo.getContents() );
+
+                        if ( modletObject instanceof JAXBElement<?> )
+                        {
+                            modletObject = ( (JAXBElement<?>) modletObject ).getValue();
+                        }
+                        if ( modletObject instanceof Modlets )
+                        {
+                            this.modlets.getModlet().addAll( ( (Modlets) modletObject ).getModlet() );
+                        }
+                        if ( modletObject instanceof Modlet )
+                        {
+                            this.modlets.getModlet().add( (Modlet) modletObject );
+                        }
+
+                        selected = false;
+
+                        if ( this.getLogger() != null && !this.getLogger().isDebugEnabled() )
+                        {
+                            this.getLogger().debug( LOG_PREFIX + getMessage( "processingModletResource", name ) );
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+            if ( selected && ( name.equals( normalizeResourceName( this.modletResource ) )
+                               || name.equals( normalizeResourceName( this.moduleResource ) ) ) )
+            {
+                if ( this.getLogger() != null && this.getLogger().isWarnEnabled() )
+                {
+                    this.getLogger().warn( LOG_PREFIX + getMessage( "overridingResource", name ) );
+                }
+
+                selected = false;
+            }
+
+            return selected;
+        }
+        catch ( final MojoFailureException e )
+        {
+            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
         catch ( final JAXBException e )
         {
@@ -535,27 +555,12 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
         {
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
-        catch ( final MojoFailureException e )
-        {
-            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
-        }
-        finally
-        {
-            this.modlets = new Modlets();
-            this.modules = new Modules();
-            this.jomcMarshaller = null;
-            this.jomcUnmarshaller = null;
-            this.modletMarshaller = null;
-            this.modletUnmarshaller = null;
-        }
     }
 
     /**
      * Checks the fields of the instance to hold valid values.
      *
      * @throws MojoFailureException if fields hold invalid values.
-     *
-     * @since 1.2
      */
     protected void assertValidParameters() throws MojoFailureException
     {
@@ -873,7 +878,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
     private static String getMessage( final String key, final Object... args )
     {
         return MessageFormat.format( ResourceBundle.getBundle(
-            JomcResourceTransformer.class.getName().replace( '.', '/' ) ).getString( key ), args );
+            JomcContainerDescriptorHandler.class.getName().replace( '.', '/' ) ).getString( key ), args );
 
     }
 
