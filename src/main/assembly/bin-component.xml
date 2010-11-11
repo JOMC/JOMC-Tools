@@ -184,11 +184,21 @@
       <directory>${project.build.directory}/jomc-ant-tasks</directory>
       <fileMode>0555</fileMode>
       <directoryMode>0755</directoryMode>
-      <outputDirectory>/lib/tools/ant</outputDirectory>
+      <outputDirectory>/lib/ant</outputDirectory>
       <includes>
         <include>*.jar</include>
-        <include>META-INF/PROJECT.txt</include>
-        <include>META-INF/PROJEKT.txt</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${project.build.directory}/jomc-ant-tasks/META-INF</directory>
+      <fileMode>0444</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/lib/ant</outputDirectory>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <includes>
+        <include>PROJECT.txt</include>
+        <include>PROJEKT.txt</include>
       </includes>
     </fileSet>
     <fileSet>
