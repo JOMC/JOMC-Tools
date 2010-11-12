@@ -33,14 +33,19 @@
 package org.jomc.ant;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import org.apache.tools.ant.BuildException;
 import org.jomc.model.Implementation;
 import org.jomc.model.Module;
 import org.jomc.model.Specification;
@@ -123,85 +128,106 @@ public final class CommitClassesTask extends ClassFileProcessorTask
     /**
      * Commits model objects to class files.
      *
-     * @throws Exception if committing model objects fails.
+     * @throws BuildException if committing model objects fails.
      */
     @Override
-    public void processClassFiles() throws Exception
+    public void processClassFiles() throws BuildException
     {
-        assertNotNull( "classesDirectory", this.getClassesDirectory() );
-        assertDirectory( this.getClassesDirectory() );
-
-        this.log( getMessage( "committingModelObjects", this.getModel() ) );
-
-        final ProjectClassLoader classLoader = this.newProjectClassLoader();
-        final ModelContext context = this.newModelContext( classLoader );
-        final ClassFileProcessor tool = this.newClassFileProcessor();
-        final JAXBContext jaxbContext = context.createContext( this.getModel() );
-        final Model model = this.getModel( context );
-        final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModel( model ) );
-        final ModelValidationReport validationReport = context.validateModel( this.getModel(), source );
-        final List<Transformer> transformers = new ArrayList<Transformer>( 1 );
-
-        if ( this.getModelObjectStylesheet() != null )
+        try
         {
-            transformers.add( this.newTransformer(
-                this.getModelObjectStylesheet(), context.getClassLoader() ) );
+            assertNotNull( "classesDirectory", this.getClassesDirectory() );
+            assertDirectory( this.getClassesDirectory() );
 
+            this.log( getMessage( "committingModelObjects", this.getModel() ) );
+
+            final ProjectClassLoader classLoader = this.newProjectClassLoader();
+            final ModelContext context = this.newModelContext( classLoader );
+            final ClassFileProcessor tool = this.newClassFileProcessor();
+            final JAXBContext jaxbContext = context.createContext( this.getModel() );
+            final Model model = this.getModel( context );
+            final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModel( model ) );
+            final ModelValidationReport validationReport = context.validateModel( this.getModel(), source );
+            final List<Transformer> transformers = new ArrayList<Transformer>( 1 );
+
+            if ( this.getModelObjectStylesheet() != null )
+            {
+                transformers.add( this.newTransformer( this.getModelObjectStylesheet(), context.getClassLoader() ) );
+            }
+
+            this.logValidationReport( context, validationReport );
+            tool.setModel( model );
+
+            if ( validationReport.isModelValid() )
+            {
+                final Specification s = this.getSpecification( model );
+                final Implementation i = this.getImplementation( model );
+                final Module m = this.getModule( model );
+
+                if ( s != null )
+                {
+                    tool.commitModelObjects( s, context, this.getClassesDirectory() );
+
+                    if ( !transformers.isEmpty() )
+                    {
+                        tool.transformModelObjects( s, context, this.getClassesDirectory(), transformers );
+                    }
+                }
+
+
+                if ( i != null )
+                {
+                    tool.commitModelObjects( i, context, this.getClassesDirectory() );
+
+                    if ( !transformers.isEmpty() )
+                    {
+                        tool.transformModelObjects( i, context, this.getClassesDirectory(), transformers );
+                    }
+                }
+
+                if ( m != null )
+                {
+                    tool.commitModelObjects( m, context, this.getClassesDirectory() );
+
+                    if ( !transformers.isEmpty() )
+                    {
+                        tool.transformModelObjects( m, context, this.getClassesDirectory(), transformers );
+                    }
+                }
+
+                if ( this.isModulesProcessingRequested() )
+                {
+                    tool.commitModelObjects( context, this.getClassesDirectory() );
+
+                    if ( !transformers.isEmpty() )
+                    {
+                        tool.transformModelObjects( context, this.getClassesDirectory(), transformers );
+                    }
+                }
+            }
+            else
+            {
+                throw new ModelException( getMessage( "invalidModel", this.getModel() ) );
+            }
         }
-
-        this.logValidationReport( context, validationReport );
-        tool.setModel( model );
-
-        if ( validationReport.isModelValid() )
+        catch ( final IOException e )
         {
-            final Specification s = this.getSpecification( model );
-            final Implementation i = this.getImplementation( model );
-            final Module m = this.getModule( model );
-
-            if ( s != null )
-            {
-                tool.commitModelObjects( s, context, this.getClassesDirectory() );
-
-                if ( !transformers.isEmpty() )
-                {
-                    tool.transformModelObjects( s, context, this.getClassesDirectory(), transformers );
-                }
-            }
-
-
-            if ( i != null )
-            {
-                tool.commitModelObjects( i, context, this.getClassesDirectory() );
-
-                if ( !transformers.isEmpty() )
-                {
-                    tool.transformModelObjects( i, context, this.getClassesDirectory(), transformers );
-                }
-            }
-
-            if ( m != null )
-            {
-                tool.commitModelObjects( m, context, this.getClassesDirectory() );
-
-                if ( !transformers.isEmpty() )
-                {
-                    tool.transformModelObjects( m, context, this.getClassesDirectory(), transformers );
-                }
-            }
-
-            if ( this.isModulesProcessingRequested() )
-            {
-                tool.commitModelObjects( context, this.getClassesDirectory() );
-
-                if ( !transformers.isEmpty() )
-                {
-                    tool.transformModelObjects( context, this.getClassesDirectory(), transformers );
-                }
-            }
+            throw new ClassProcessingException( e );
         }
-        else
+        catch ( final URISyntaxException e )
         {
-            throw new ModelException( getMessage( "invalidModel", this.getModel() ) );
+            throw new ClassProcessingException( e );
+        }
+        catch ( final JAXBException e )
+        {
+            throw new ClassProcessingException( e );
+        }
+        catch ( final TransformerConfigurationException e )
+        {
+            throw new ClassProcessingException( e );
+        }
+        catch ( final ModelException e )
+        {
+            throw new ClassProcessingException( e );
         }
     }
 

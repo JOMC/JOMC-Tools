@@ -144,36 +144,25 @@ public class ResourceFileProcessorTask extends JomcToolTask
     @Override
     public final void executeTask() throws BuildException
     {
-        try
+        if ( this.isResourceProcessingEnabled() )
         {
-            if ( this.isResourceProcessingEnabled() )
-            {
-                this.processResourceFiles();
-                this.log( getMessage( "resourceProcessingSuccess" ) );
-            }
-            else
-            {
-                this.log( getMessage( "resourceProcessingDisabled" ) );
-            }
+            this.processResourceFiles();
+            this.log( getMessage( "resourceProcessingSuccess" ) );
         }
-        catch ( final BuildException e )
+        else
         {
-            throw e;
-        }
-        catch ( final Exception e )
-        {
-            throw new BuildException( getMessage( "resourceProcessingFailure" ), e );
+            this.log( getMessage( "resourceProcessingDisabled" ) );
         }
     }
 
     /**
      * Processes resource files.
      *
-     * @throws Exception if processing resource files fails.
+     * @throws BuildException if processing resource files fails.
      *
      * @see #executeTask()
      */
-    public void processResourceFiles() throws Exception
+    public void processResourceFiles() throws BuildException
     {
         this.log( getMessage( "unimplementedTask", this.getClass().getName() ), Project.MSG_ERR );
     }

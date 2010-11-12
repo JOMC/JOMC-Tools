@@ -56,6 +56,10 @@
         <filtering>true</filtering>
         <directory>src/test/resources</directory>
       </testResource>
+      <testResource>
+        <filtering>false</filtering>
+        <directory>src/test/objects</directory>
+      </testResource>
     </testResources>
     <plugins>
       <plugin>

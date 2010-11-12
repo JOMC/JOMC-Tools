@@ -32,11 +32,14 @@
  */
 package org.jomc.ant;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.Source;
+import org.apache.tools.ant.BuildException;
 import org.jomc.model.Implementation;
 import org.jomc.model.Module;
 import org.jomc.model.Specification;
@@ -65,77 +68,92 @@ public final class ValidateClasspathTask extends ClassFileProcessorTask
     /**
      * Validates class file model objects.
      *
-     * @throws Exception if validating class file model objects fails.
+     * @throws BuildException if validating class file model objects fails.
      */
     @Override
-    public void processClassFiles() throws Exception
+    public void processClassFiles() throws BuildException
     {
-        this.log( getMessage( "validatingClasspath", this.getModel() ) );
-
-        final ProjectClassLoader classLoader = this.newProjectClassLoader();
-        final ModelContext context = this.newModelContext( classLoader );
-        final ClassFileProcessor tool = this.newClassFileProcessor();
-        final JAXBContext jaxbContext = context.createContext( this.getModel() );
-        final Model model = this.getModel( context );
-        final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModel( model ) );
-        ModelValidationReport validationReport = context.validateModel( this.getModel(), source );
-
-        this.logValidationReport( context, validationReport );
-        tool.setModel( model );
-
-        if ( validationReport.isModelValid() )
+        try
         {
-            final Specification s = this.getSpecification( model );
-            final Implementation i = this.getImplementation( model );
-            final Module m = this.getModule( model );
+            this.log( getMessage( "validatingClasspath", this.getModel() ) );
 
-            if ( s != null )
+            final ProjectClassLoader classLoader = this.newProjectClassLoader();
+            final ModelContext context = this.newModelContext( classLoader );
+            final ClassFileProcessor tool = this.newClassFileProcessor();
+            final JAXBContext jaxbContext = context.createContext( this.getModel() );
+            final Model model = this.getModel( context );
+            final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModel( model ) );
+            ModelValidationReport validationReport = context.validateModel( this.getModel(), source );
+
+            this.logValidationReport( context, validationReport );
+            tool.setModel( model );
+
+            if ( validationReport.isModelValid() )
             {
-                validationReport = tool.validateModelObjects( s, context );
-                this.logValidationReport( context, validationReport );
+                final Specification s = this.getSpecification( model );
+                final Implementation i = this.getImplementation( model );
+                final Module m = this.getModule( model );
 
-                if ( !validationReport.isModelValid() )
+                if ( s != null )
                 {
-                    throw new ModelException( getMessage( "invalidModel", this.getModel() ) );
+                    validationReport = tool.validateModelObjects( s, context );
+                    this.logValidationReport( context, validationReport );
+
+                    if ( !validationReport.isModelValid() )
+                    {
+                        throw new ModelException( getMessage( "invalidModel", this.getModel() ) );
+                    }
+                }
+
+                if ( i != null )
+                {
+                    validationReport = tool.validateModelObjects( i, context );
+                    this.logValidationReport( context, validationReport );
+
+                    if ( !validationReport.isModelValid() )
+                    {
+                        throw new ModelException( getMessage( "invalidModel", this.getModel() ) );
+                    }
+                }
+
+                if ( m != null )
+                {
+                    validationReport = tool.validateModelObjects( m, context );
+                    this.logValidationReport( context, validationReport );
+
+                    if ( !validationReport.isModelValid() )
+                    {
+                        throw new ModelException( getMessage( "invalidModel", this.getModel() ) );
+                    }
+                }
+
+                if ( this.isModulesProcessingRequested() )
+                {
+                    validationReport = tool.validateModelObjects( context );
+                    this.logValidationReport( context, validationReport );
+
+                    if ( !validationReport.isModelValid() )
+                    {
+                        throw new ModelException( getMessage( "invalidModel", this.getModel() ) );
+                    }
                 }
             }
-
-            if ( i != null )
+            else
             {
-                validationReport = tool.validateModelObjects( i, context );
-                this.logValidationReport( context, validationReport );
-
-                if ( !validationReport.isModelValid() )
-                {
-                    throw new ModelException( getMessage( "invalidModel", this.getModel() ) );
-                }
-            }
-
-            if ( m != null )
-            {
-                validationReport = tool.validateModelObjects( m, context );
-                this.logValidationReport( context, validationReport );
-
-                if ( !validationReport.isModelValid() )
-                {
-                    throw new ModelException( getMessage( "invalidModel", this.getModel() ) );
-                }
-            }
-
-            if ( this.isModulesProcessingRequested() )
-            {
-                validationReport = tool.validateModelObjects( context );
-                this.logValidationReport( context, validationReport );
-
-                if ( !validationReport.isModelValid() )
-                {
-                    throw new ModelException( getMessage( "invalidModel", this.getModel() ) );
-                }
+                throw new ModelException( getMessage( "invalidModel", this.getModel() ) );
             }
         }
-        else
+        catch ( final IOException e )
         {
-            throw new ModelException( getMessage( "invalidModel", this.getModel() ) );
+            throw new ClassProcessingException( e );
+        }
+        catch ( final JAXBException e )
+        {
+            throw new ClassProcessingException( e );
+        }
+        catch ( final ModelException e )
+        {
+            throw new ClassProcessingException( e );
         }
     }
 

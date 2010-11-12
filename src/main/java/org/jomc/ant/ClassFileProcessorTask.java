@@ -104,36 +104,25 @@ public class ClassFileProcessorTask extends JomcToolTask
     @Override
     public final void executeTask() throws BuildException
     {
-        try
+        if ( this.isClassProcessingEnabled() )
         {
-            if ( this.isClassProcessingEnabled() )
-            {
-                this.processClassFiles();
-                this.log( getMessage( "classProcessingSuccess" ) );
-            }
-            else
-            {
-                this.log( getMessage( "classProcessingDisabled" ) );
-            }
+            this.processClassFiles();
+            this.log( getMessage( "classProcessingSuccess" ) );
         }
-        catch ( final BuildException e )
+        else
         {
-            throw e;
-        }
-        catch ( final Exception e )
-        {
-            throw new BuildException( getMessage( "classProcessingFailure" ), e );
+            this.log( getMessage( "classProcessingDisabled" ) );
         }
     }
 
     /**
      * Processes class files.
      *
-     * @throws Exception if processing class files fails.
+     * @throws BuildException if processing class files fails.
      *
      * @see #executeTask()
      */
-    public void processClassFiles() throws Exception
+    public void processClassFiles() throws BuildException
     {
         this.log( getMessage( "unimplementedTask", this.getClass().getName() ), Project.MSG_ERR );
     }

@@ -33,11 +33,14 @@
 package org.jomc.ant;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.Source;
+import org.apache.tools.ant.BuildException;
 import org.jomc.model.Implementation;
 import org.jomc.model.Module;
 import org.jomc.model.Specification;
@@ -93,56 +96,71 @@ public final class ManageSourcesTask extends SourceFileProcessorTask
     /**
      * Manages source files.
      *
-     * @throws Exception if managing source files fails.
+     * @throws BuildException if managing source files fails.
      */
     @Override
-    public void processSourceFiles() throws Exception
+    public void processSourceFiles() throws BuildException
     {
-        assertNotNull( "sourcesDirectory", this.getSourcesDirectory() );
-        assertDirectory( this.getSourcesDirectory() );
-
-        this.log( getMessage( "managingSources", this.getModel() ) );
-
-        final ProjectClassLoader classLoader = this.newProjectClassLoader();
-        final ModelContext context = this.newModelContext( classLoader );
-        final SourceFileProcessor tool = this.newSourceFileProcessor();
-        final JAXBContext jaxbContext = context.createContext( this.getModel() );
-        final Model model = this.getModel( context );
-        final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModel( model ) );
-        final ModelValidationReport validationReport = context.validateModel( this.getModel(), source );
-
-        this.logValidationReport( context, validationReport );
-        tool.setModel( model );
-
-        if ( validationReport.isModelValid() )
+        try
         {
-            final Specification s = this.getSpecification( model );
-            final Implementation i = this.getImplementation( model );
-            final Module m = this.getModule( model );
+            assertNotNull( "sourcesDirectory", this.getSourcesDirectory() );
+            assertDirectory( this.getSourcesDirectory() );
 
-            if ( s != null )
+            this.log( getMessage( "managingSources", this.getModel() ) );
+
+            final ProjectClassLoader classLoader = this.newProjectClassLoader();
+            final ModelContext context = this.newModelContext( classLoader );
+            final SourceFileProcessor tool = this.newSourceFileProcessor();
+            final JAXBContext jaxbContext = context.createContext( this.getModel() );
+            final Model model = this.getModel( context );
+            final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModel( model ) );
+            final ModelValidationReport validationReport = context.validateModel( this.getModel(), source );
+
+            this.logValidationReport( context, validationReport );
+            tool.setModel( model );
+
+            if ( validationReport.isModelValid() )
             {
-                tool.manageSourceFiles( s, this.getSourcesDirectory() );
+                final Specification s = this.getSpecification( model );
+                final Implementation i = this.getImplementation( model );
+                final Module m = this.getModule( model );
+
+                if ( s != null )
+                {
+                    tool.manageSourceFiles( s, this.getSourcesDirectory() );
+                }
+
+                if ( i != null )
+                {
+                    tool.manageSourceFiles( i, this.getSourcesDirectory() );
+                }
+
+                if ( m != null )
+                {
+                    tool.manageSourceFiles( m, this.getSourcesDirectory() );
+                }
+
+                if ( this.isModulesProcessingRequested() )
+                {
+                    tool.manageSourceFiles( this.getSourcesDirectory() );
+                }
             }
-
-            if ( i != null )
+            else
             {
-                tool.manageSourceFiles( i, this.getSourcesDirectory() );
-            }
-
-            if ( m != null )
-            {
-                tool.manageSourceFiles( m, this.getSourcesDirectory() );
-            }
-
-            if ( this.isModulesProcessingRequested() )
-            {
-                tool.manageSourceFiles( this.getSourcesDirectory() );
+                throw new ModelException( getMessage( "invalidModel", this.getModel() ) );
             }
         }
-        else
+        catch ( final IOException e )
         {
-            throw new ModelException( getMessage( "invalidModel", this.getModel() ) );
+            throw new SourceProcessingException( e );
+        }
+        catch ( final JAXBException e )
+        {
+            throw new SourceProcessingException( e );
+        }
+        catch ( final ModelException e )
+        {
+            throw new SourceProcessingException( e );
         }
     }
 

@@ -105,36 +105,25 @@ public class SourceFileProcessorTask extends JomcToolTask
     @Override
     public final void executeTask() throws BuildException
     {
-        try
+        if ( this.isSourceProcessingEnabled() )
         {
-            if ( this.isSourceProcessingEnabled() )
-            {
-                this.processSourceFiles();
-                this.log( getMessage( "sourceProcessingSuccess" ) );
-            }
-            else
-            {
-                this.log( getMessage( "sourceProcessingDisabled" ) );
-            }
+            this.processSourceFiles();
+            this.log( getMessage( "sourceProcessingSuccess" ) );
         }
-        catch ( final BuildException e )
+        else
         {
-            throw e;
-        }
-        catch ( final Exception e )
-        {
-            throw new BuildException( getMessage( "sourceProcessingFailure" ), e );
+            this.log( getMessage( "sourceProcessingDisabled" ) );
         }
     }
 
     /**
      * Processes source files.
      *
-     * @throws Exception if processing source files fails.
+     * @throws BuildException if processing source files fails.
      *
      * @see #executeTask()
      */
-    public void processSourceFiles() throws Exception
+    public void processSourceFiles() throws BuildException
     {
         this.log( getMessage( "unimplementedTask", this.getClass().getName() ), Project.MSG_ERR );
     }
