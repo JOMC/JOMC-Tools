@@ -118,11 +118,12 @@ public class ProjectClassLoader extends URLClassLoader
      */
     public ProjectClassLoader( final Project project, final Path classpath ) throws MalformedURLException
     {
-        super( NO_URLS, project.getClass().getClassLoader() );
+        super( NO_URLS, ProjectClassLoader.class.getClassLoader() );
 
         for ( final String name : classpath.list() )
         {
-            this.addURL( project.resolveFile( name ).toURI().toURL() );
+            final File resolved = project.resolveFile( name );
+            this.addURL( resolved.toURI().toURL() );
         }
 
         this.project = project;
