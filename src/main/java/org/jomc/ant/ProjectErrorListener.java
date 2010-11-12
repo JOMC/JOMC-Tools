@@ -72,7 +72,10 @@ public class ProjectErrorListener implements ErrorListener
     /** {@inheritDoc} */
     public void warning( final TransformerException exception ) throws TransformerException
     {
-        this.getProject().log( getMessage( exception ), exception, Project.MSG_WARN );
+        if ( this.getProject() != null )
+        {
+            this.getProject().log( getMessage( exception ), exception, Project.MSG_WARN );
+        }
     }
 
     /** {@inheritDoc} */
