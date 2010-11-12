@@ -35,6 +35,7 @@ package org.jomc.ant;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Location;
 
 /**
  * Gets thrown whenever processing class files fails.
@@ -46,22 +47,27 @@ public class ClassProcessingException extends BuildException
 {
 
     /** Serial version UID for backwards compatibility with 1.2.x object streams. */
-    private static final long serialVersionUID = -6385382707946340204L;
+    private static final long serialVersionUID = -8803284087787885858L;
 
-    /** Creates a new {@code ClassProcessingException} instance. */
-    public ClassProcessingException()
+    /**
+     * Creates a new {@code ClassProcessingException} instance taking a location.
+     * 
+     * @param location The location this exception occured.
+     */
+    public ClassProcessingException( final Location location )
     {
-        super( getMessage( "classProcessingFailure" ) );
+        super( getMessage( "classProcessingFailure" ), location == null ? Location.UNKNOWN_LOCATION : location );
     }
 
     /**
-     * Creates a new {@code ClassProcessingException} instance taking a causing throwable.
+     * Creates a new {@code ClassProcessingException} instance taking a causing throwable and a location.
      *
      * @param t The {@code Throwable} causing the throwable.
+     * @param location The location this exception occured.
      */
-    public ClassProcessingException( final Throwable t )
+    public ClassProcessingException( final Throwable t, final Location location )
     {
-        super( getMessage( "classProcessingFailure" ), t );
+        super( getMessage( "classProcessingFailure" ), t, location == null ? Location.UNKNOWN_LOCATION : location );
     }
 
     private static String getMessage( final String key, final Object... args )

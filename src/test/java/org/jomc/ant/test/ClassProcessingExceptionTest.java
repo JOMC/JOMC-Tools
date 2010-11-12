@@ -32,9 +32,11 @@
  */
 package org.jomc.ant.test;
 
+import org.apache.tools.ant.Location;
 import java.io.ObjectInputStream;
 import junit.framework.TestCase;
 import org.jomc.ant.ClassProcessingException;
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
 /**
@@ -71,6 +73,7 @@ public class ClassProcessingExceptionTest extends TestCase
         in.close();
 
         assertNotNull( e.getMessage() );
+        assertEquals( Location.UNKNOWN_LOCATION, e.getLocation() );
         System.out.println( e );
     }
 

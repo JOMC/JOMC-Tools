@@ -103,8 +103,8 @@ public final class ValidateClassesTask extends ClassFileProcessorTask
     {
         try
         {
-            assertNotNull( "classesDirectory", this.getClassesDirectory() );
-            assertDirectory( this.getClassesDirectory() );
+            this.assertNotNull( "classesDirectory", this.getClassesDirectory() );
+            this.assertDirectory( this.getClassesDirectory() );
 
             this.log( getMessage( "validatingModelObjects", this.getModel() ) );
 
@@ -177,15 +177,15 @@ public final class ValidateClassesTask extends ClassFileProcessorTask
         }
         catch ( final IOException e )
         {
-            throw new ClassProcessingException( e );
+            throw new ClassProcessingException( e, this.getLocation() );
         }
         catch ( final JAXBException e )
         {
-            throw new ClassProcessingException( e );
+            throw new ClassProcessingException( e, this.getLocation() );
         }
         catch ( final ModelException e )
         {
-            throw new ClassProcessingException( e );
+            throw new ClassProcessingException( e, this.getLocation() );
         }
     }
 

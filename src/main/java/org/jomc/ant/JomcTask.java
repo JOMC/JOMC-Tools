@@ -449,7 +449,7 @@ public class JomcTask extends Task
 
         if ( source == null )
         {
-            throw new BuildException( getMessage( "stylesheetNotFound", location ) );
+            throw new BuildException( getMessage( "stylesheetNotFound", location ), this.getLocation() );
         }
 
         final Transformer transformer = this.newTransformerFactory().newTransformer( source );
@@ -472,7 +472,7 @@ public class JomcTask extends Task
      * @throws NullPointerException if {@code attributeName} is {@code null}.
      * @throws BuildException if {@code value} is {@code null}.
      */
-    public static void assertNotNull( final String attributeName, final Object value ) throws BuildException
+    public final void assertNotNull( final String attributeName, final Object value ) throws BuildException
     {
         if ( attributeName == null )
         {
@@ -481,7 +481,7 @@ public class JomcTask extends Task
 
         if ( value == null )
         {
-            throw new BuildException( getMessage( "mandatoryAttribute", attributeName ) );
+            throw new BuildException( getMessage( "mandatoryAttribute", attributeName ), this.getLocation() );
         }
     }
 
@@ -495,7 +495,7 @@ public class JomcTask extends Task
      * @throws BuildException if a {@code name} property of a given {@code NameType} from the {@code names} collection
      * holds a {@code null} value.
      */
-    public static void assertNamesNotNull( final Collection<NameType> names ) throws BuildException
+    public final void assertNamesNotNull( final Collection<NameType> names ) throws BuildException
     {
         if ( names == null )
         {
@@ -504,7 +504,7 @@ public class JomcTask extends Task
 
         for ( NameType n : names )
         {
-            assertNotNull( "name", n.getName() );
+            this.assertNotNull( "name", n.getName() );
         }
     }
 
@@ -516,7 +516,7 @@ public class JomcTask extends Task
      * @throws NullPointerException if {@code file} is {@code null}.
      * @throws BuildException if {@code file} is not an existing directory.
      */
-    public static void assertDirectory( final File file ) throws BuildException
+    public final void assertDirectory( final File file ) throws BuildException
     {
         if ( file == null )
         {
@@ -525,12 +525,12 @@ public class JomcTask extends Task
 
         if ( !file.isDirectory() )
         {
-            throw new BuildException( getMessage( "directoryNotFound", file.getAbsolutePath() ) );
+            throw new BuildException( getMessage( "directoryNotFound", file.getAbsolutePath() ), this.getLocation() );
         }
     }
 
     /** Logs a separator string. */
-    public void logSeparator()
+    public final void logSeparator()
     {
         this.log( getMessage( "separator" ) );
     }
@@ -543,7 +543,7 @@ public class JomcTask extends Task
      *
      * @throws BuildException if logging fails.
      */
-    public void logMessage( final Level level, final String message ) throws BuildException
+    public final void logMessage( final Level level, final String message ) throws BuildException
     {
         try
         {
@@ -573,7 +573,7 @@ public class JomcTask extends Task
         }
         catch ( final IOException e )
         {
-            throw new BuildException( getMessage( e ), e );
+            throw new BuildException( getMessage( e ), e, this.getLocation() );
         }
     }
 
@@ -586,7 +586,8 @@ public class JomcTask extends Task
      *
      * @throws BuildException if logging fails.
      */
-    public void logMessage( final Level level, final String message, final Throwable throwable ) throws BuildException
+    public final void logMessage( final Level level, final String message, final Throwable throwable )
+        throws BuildException
     {
         this.logMessage( level, message );
 
@@ -617,7 +618,7 @@ public class JomcTask extends Task
      * @throws NullPointerException if {@code context} or {@code report} is {@code null}.
      * @throws BuildException if logging fails.
      */
-    public void logValidationReport( final ModelContext context, final ModelValidationReport report )
+    public final void logValidationReport( final ModelContext context, final ModelValidationReport report )
     {
         try
         {
@@ -647,7 +648,7 @@ public class JomcTask extends Task
         }
         catch ( final ModelException e )
         {
-            throw new BuildException( getMessage( e ), e );
+            throw new BuildException( getMessage( e ), e, this.getLocation() );
         }
         catch ( final JAXBException e )
         {
@@ -657,7 +658,7 @@ public class JomcTask extends Task
                 message = getMessage( e.getLinkedException() );
             }
 
-            throw new BuildException( message, e );
+            throw new BuildException( message, e, this.getLocation() );
         }
     }
 

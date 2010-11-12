@@ -327,11 +327,11 @@ public final class MergeModletsTask extends JomcTask
     {
         try
         {
-            assertNotNull( "model", this.getModel() );
-            assertNotNull( "modletFile", this.getModletFile() );
-            assertNotNull( "modletName", this.getModletName() );
-            assertNamesNotNull( this.getModletExcludes() );
-            assertNamesNotNull( this.getModletIncludes() );
+            this.assertNotNull( "model", this.getModel() );
+            this.assertNotNull( "modletFile", this.getModletFile() );
+            this.assertNotNull( "modletName", this.getModletName() );
+            this.assertNamesNotNull( this.getModletExcludes() );
+            this.assertNamesNotNull( this.getModletIncludes() );
 
             this.log( getMessage( "mergingModlets", this.getModel() ) );
 
@@ -395,7 +395,7 @@ public final class MergeModletsTask extends JomcTask
                 else
                 {
                     throw new BuildException( getMessage( "illegalTransformationResult",
-                                                          this.getModletObjectStylesheet() ) );
+                                                          this.getModletObjectStylesheet() ), this.getLocation() );
 
                 }
             }
@@ -407,11 +407,11 @@ public final class MergeModletsTask extends JomcTask
         }
         catch ( final IOException e )
         {
-            throw new BuildException( getMessage( e ), e );
+            throw new BuildException( getMessage( e ), e, this.getLocation() );
         }
         catch ( final URISyntaxException e )
         {
-            throw new BuildException( getMessage( e ), e );
+            throw new BuildException( getMessage( e ), e, this.getLocation() );
         }
         catch ( final JAXBException e )
         {
@@ -421,19 +421,19 @@ public final class MergeModletsTask extends JomcTask
                 message = getMessage( e.getLinkedException() );
             }
 
-            throw new BuildException( message, e );
+            throw new BuildException( message, e, this.getLocation() );
         }
         catch ( final TransformerConfigurationException e )
         {
-            throw new BuildException( getMessage( e ), e );
+            throw new BuildException( getMessage( e ), e, this.getLocation() );
         }
         catch ( final TransformerException e )
         {
-            throw new BuildException( getMessage( e ), e );
+            throw new BuildException( getMessage( e ), e, this.getLocation() );
         }
         catch ( final ModelException e )
         {
-            throw new BuildException( getMessage( e ), e );
+            throw new BuildException( getMessage( e ), e, this.getLocation() );
         }
     }
 

@@ -76,18 +76,18 @@ public final class ValidateModelTask extends JomcModelTask
 
             if ( !report.isModelValid() )
             {
-                throw new BuildException( getMessage( "modelValidationFailure" ) );
+                throw new BuildException( getMessage( "modelValidationFailure" ), this.getLocation() );
             }
 
             this.log( getMessage( "modelValidationSuccess" ) );
         }
         catch ( final ModelException e )
         {
-            throw new BuildException( getMessage( e ), e );
+            throw new BuildException( getMessage( e ), e, this.getLocation() );
         }
         catch ( final IOException e )
         {
-            throw new BuildException( getMessage( e ), e );
+            throw new BuildException( getMessage( e ), e, this.getLocation() );
         }
     }
 

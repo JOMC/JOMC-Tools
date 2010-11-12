@@ -35,6 +35,7 @@ package org.jomc.ant;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Location;
 
 /**
  * Gets thrown whenever processing resource files fails.
@@ -46,22 +47,27 @@ public class ResourceProcessingException extends BuildException
 {
 
     /** Serial version UID for backwards compatibility with 1.2.x object streams. */
-    private static final long serialVersionUID = -3592472731244973392L;
+    private static final long serialVersionUID = 8479489826932807620L;
 
-    /** Creates a new {@code ResourceProcessingException} instance. */
-    public ResourceProcessingException()
+    /** 
+     * Creates a new {@code ResourceProcessingException} instance taking a location.
+     *
+     * @param location The location this exception occured.
+     */
+    public ResourceProcessingException( final Location location )
     {
-        super( getMessage( "resourceProcessingFailure" ) );
+        super( getMessage( "resourceProcessingFailure" ), location == null ? Location.UNKNOWN_LOCATION : location );
     }
 
     /**
-     * Creates a new {@code ResourceProcessingException} instance taking a causing throwable.
+     * Creates a new {@code ResourceProcessingException} instance taking a causing throwable and a location.
      *
      * @param t The {@code Throwable} causing the throwable.
+     * @param location The location this exception occured.
      */
-    public ResourceProcessingException( final Throwable t )
+    public ResourceProcessingException( final Throwable t, final Location location )
     {
-        super( getMessage( "resourceProcessingFailure" ), t );
+        super( getMessage( "resourceProcessingFailure" ), t, location == null ? Location.UNKNOWN_LOCATION : location );
     }
 
     private static String getMessage( final String key, final Object... args )

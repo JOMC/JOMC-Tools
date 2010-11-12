@@ -145,15 +145,15 @@ public final class ValidateClasspathTask extends ClassFileProcessorTask
         }
         catch ( final IOException e )
         {
-            throw new ClassProcessingException( e );
+            throw new ClassProcessingException( e, this.getLocation() );
         }
         catch ( final JAXBException e )
         {
-            throw new ClassProcessingException( e );
+            throw new ClassProcessingException( e, this.getLocation() );
         }
         catch ( final ModelException e )
         {
-            throw new ClassProcessingException( e );
+            throw new ClassProcessingException( e, this.getLocation() );
         }
     }
 

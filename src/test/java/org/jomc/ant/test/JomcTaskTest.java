@@ -126,7 +126,7 @@ public class JomcTaskTest extends BuildFileTest
     {
         try
         {
-            JomcTask.assertNotNull( null, null );
+            this.getJomcTask().assertNotNull( null, null );
             fail( "Expected 'NullPointerException' not thrown." );
         }
         catch ( final NullPointerException e )
@@ -137,7 +137,7 @@ public class JomcTaskTest extends BuildFileTest
 
         try
         {
-            JomcTask.assertNotNull( "TEST", null );
+            this.getJomcTask().assertNotNull( "TEST", null );
             fail( "Expected 'BuildException' not thrown." );
         }
         catch ( final BuildException e )
@@ -151,7 +151,7 @@ public class JomcTaskTest extends BuildFileTest
     {
         try
         {
-            JomcTask.assertNamesNotNull( null );
+            this.getJomcTask().assertNamesNotNull( null );
             fail( "Expected 'NullPointerException' not thrown." );
         }
         catch ( final NullPointerException e )
@@ -165,7 +165,7 @@ public class JomcTaskTest extends BuildFileTest
 
         try
         {
-            JomcTask.assertNamesNotNull( names );
+            this.getJomcTask().assertNamesNotNull( names );
             fail( "Expected 'BuildException' not thrown." );
         }
         catch ( final BuildException e )
@@ -179,7 +179,7 @@ public class JomcTaskTest extends BuildFileTest
     {
         try
         {
-            JomcTask.assertDirectory( null );
+            this.getJomcTask().assertDirectory( null );
             fail( "Expected 'NullPointerException' not thrown." );
         }
         catch ( final NullPointerException e )
@@ -190,7 +190,7 @@ public class JomcTaskTest extends BuildFileTest
 
         try
         {
-            JomcTask.assertDirectory( new File( "DOES_NOT_EXIST" ) );
+            this.getJomcTask().assertDirectory( new File( "DOES_NOT_EXIST" ) );
             fail( "Expected 'BuildException' not thrown." );
         }
         catch ( final BuildException e )

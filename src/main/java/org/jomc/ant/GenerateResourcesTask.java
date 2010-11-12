@@ -103,8 +103,8 @@ public final class GenerateResourcesTask extends ResourceFileProcessorTask
     {
         try
         {
-            assertNotNull( "resourcesDirectory", this.getResourcesDirectory() );
-            assertDirectory( this.getResourcesDirectory() );
+            this.assertNotNull( "resourcesDirectory", this.getResourcesDirectory() );
+            this.assertDirectory( this.getResourcesDirectory() );
 
             this.log( getMessage( "generatingResources", this.getModel() ) );
 
@@ -152,15 +152,15 @@ public final class GenerateResourcesTask extends ResourceFileProcessorTask
         }
         catch ( final IOException e )
         {
-            throw new ResourceProcessingException( e );
+            throw new ResourceProcessingException( e, this.getLocation() );
         }
         catch ( final JAXBException e )
         {
-            throw new ResourceProcessingException( e );
+            throw new ResourceProcessingException( e, this.getLocation() );
         }
         catch ( final ModelException e )
         {
-            throw new ResourceProcessingException( e );
+            throw new ResourceProcessingException( e, this.getLocation() );
         }
     }
 

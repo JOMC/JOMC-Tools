@@ -103,8 +103,8 @@ public final class ManageSourcesTask extends SourceFileProcessorTask
     {
         try
         {
-            assertNotNull( "sourcesDirectory", this.getSourcesDirectory() );
-            assertDirectory( this.getSourcesDirectory() );
+            this.assertNotNull( "sourcesDirectory", this.getSourcesDirectory() );
+            this.assertDirectory( this.getSourcesDirectory() );
 
             this.log( getMessage( "managingSources", this.getModel() ) );
 
@@ -152,15 +152,15 @@ public final class ManageSourcesTask extends SourceFileProcessorTask
         }
         catch ( final IOException e )
         {
-            throw new SourceProcessingException( e );
+            throw new SourceProcessingException( e, this.getLocation() );
         }
         catch ( final JAXBException e )
         {
-            throw new SourceProcessingException( e );
+            throw new SourceProcessingException( e, this.getLocation() );
         }
         catch ( final ModelException e )
         {
-            throw new SourceProcessingException( e );
+            throw new SourceProcessingException( e, this.getLocation() );
         }
     }
 
