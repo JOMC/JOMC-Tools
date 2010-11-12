@@ -38,6 +38,7 @@ import junit.framework.TestCase;
 import org.jomc.ant.ClassProcessingException;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
 
 /**
  * Test cases for class {@code org.jomc.ant.ClassProcessingException}.
@@ -69,12 +70,21 @@ public class ClassProcessingExceptionTest extends TestCase
         final ObjectInputStream in =
             new ObjectInputStream( this.getClass().getResourceAsStream( "ClassProcessingException.ser" ) );
 
-        final ClassProcessingException e = (ClassProcessingException) in.readObject();
+        ClassProcessingException e = (ClassProcessingException) in.readObject();
         in.close();
 
         assertNotNull( e.getMessage() );
         assertEquals( Location.UNKNOWN_LOCATION, e.getLocation() );
         System.out.println( e );
+
+        e = new ClassProcessingException( null );
+        assertNotNull( e.getMessage() );
+        assertEquals( Location.UNKNOWN_LOCATION, e.getLocation() );
+
+        e = new ClassProcessingException( null, null );
+        assertNotNull( e.getMessage() );
+        assertNull( e.getCause() );
+        assertEquals( Location.UNKNOWN_LOCATION, e.getLocation() );
     }
 
 }

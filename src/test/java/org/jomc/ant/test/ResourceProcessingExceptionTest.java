@@ -38,6 +38,7 @@ import java.io.ObjectInputStream;
 import junit.framework.TestCase;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
 
 /**
  * Test cases for class {@code org.jomc.ant.ResourceProcessingException}.
@@ -69,12 +70,21 @@ public class ResourceProcessingExceptionTest extends TestCase
         final ObjectInputStream in =
             new ObjectInputStream( this.getClass().getResourceAsStream( "ResourceProcessingException.ser" ) );
 
-        final ResourceProcessingException e = (ResourceProcessingException) in.readObject();
+        ResourceProcessingException e = (ResourceProcessingException) in.readObject();
         in.close();
 
         assertNotNull( e.getMessage() );
         assertEquals( Location.UNKNOWN_LOCATION, e.getLocation() );
         System.out.println( e );
+
+        e = new ResourceProcessingException( null );
+        assertNotNull( e.getMessage() );
+        assertEquals( Location.UNKNOWN_LOCATION, e.getLocation() );
+
+        e = new ResourceProcessingException( null, null );
+        assertNotNull( e.getMessage() );
+        assertNull( e.getCause() );
+        assertEquals( Location.UNKNOWN_LOCATION, e.getLocation() );
     }
 
 }
