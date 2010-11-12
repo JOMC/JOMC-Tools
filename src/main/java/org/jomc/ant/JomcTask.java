@@ -593,19 +593,19 @@ public class JomcTask extends Task
 
         if ( level.intValue() >= Level.SEVERE.intValue() )
         {
-            log( null, throwable, Project.MSG_ERR );
+            log( throwable, Project.MSG_ERR );
         }
         else if ( level.intValue() >= Level.WARNING.intValue() )
         {
-            log( null, throwable, Project.MSG_WARN );
+            log( throwable, Project.MSG_WARN );
         }
         else if ( level.intValue() >= Level.INFO.intValue() )
         {
-            log( null, throwable, Project.MSG_INFO );
+            log( throwable, Project.MSG_INFO );
         }
         else
         {
-            log( null, throwable, Project.MSG_DEBUG );
+            log( throwable, Project.MSG_DEBUG );
         }
     }
 
