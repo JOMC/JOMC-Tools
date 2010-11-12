@@ -50,7 +50,7 @@ Task Reference
 | <<<classesDirectory>>>                      | The directory holding the class files to   | <<Yes.>>               |
 |                                             | commit model objects to.                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<classpathRef>>>                          | A reference to a class path to process     | No. Either the         |
+| <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
 |                                             |                                            | <<<classpathRef>>>     |
 |                                             |                                            | attribute or the       |
 |                                             |                                            | nested <<<classpath>>> |
@@ -145,7 +145,7 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<Attribute>>                               | <<Description>>                            | <<Required>>           |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<classpathRef>>>                          | A reference to a class path to process     | No. Either the         |
+| <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
 |                                             |                                            | <<<classpathRef>>>     |
 |                                             |                                            | attribute or the       |
 |                                             |                                            | nested <<<classpath>>> |
@@ -244,7 +244,7 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<Attribute>>                               | <<Description>>                            | <<Required>>           |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<classpathRef>>>                          | A reference to a class path to process     | No. Either the         |
+| <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
 |                                             |                                            | <<<classpathRef>>>     |
 |                                             |                                            | attribute or the       |
 |                                             |                                            | nested <<<classpath>>> |
@@ -342,7 +342,7 @@ Task Reference
 | <<<classesDirectory>>>                      | The directory holding the class files to   | <<Yes.>>               |
 |                                             | validate model objects of.                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<classpathRef>>>                          | A reference to a class path to process     | No. Either the         |
+| <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
 |                                             |                                            | <<<classpathRef>>>     |
 |                                             |                                            | attribute or the       |
 |                                             |                                            | nested <<<classpath>>> |
@@ -435,7 +435,7 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<Attribute>>                               | <<Description>>                            | <<Required>>           |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<classpathRef>>>                          | A reference to a class path to process     | No. Either the         |
+| <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
 |                                             |                                            | <<<classpathRef>>>     |
 |                                             |                                            | attribute or the       |
 |                                             |                                            | nested <<<classpath>>> |
@@ -527,7 +527,7 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<Attribute>>                               | <<Description>>                            | <<Required>>           |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<classpathRef>>>                          | A reference to a class path to process     | No. Either the         |
+| <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
 |                                             |                                            | <<<classpathRef>>>     |
 |                                             |                                            | attribute or the       |
 |                                             |                                            | nested <<<classpath>>> |
@@ -570,7 +570,7 @@ Task Reference
 *---------------------------------------+--------------------------------------------+------------------------+
 | <<Attribute>>                         | <<Description>>                            | <<Required>>           |
 *---------------------------------------+--------------------------------------------+------------------------+
-| <<<classpathRef>>>                    | A reference to a class path to process     | No. Either the         |
+| <<<classpathRef>>>                    | A reference to a class path to process.    | No. Either the         |
 |                                       |                                            | <<<classpathRef>>>     |
 |                                       |                                            | attribute or the       |
 |                                       |                                            | nested <<<classpath>>> |
@@ -632,7 +632,7 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<Attribute>>                               | <<Description>>                            | <<Required>>           |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<classpathRef>>>                          | A reference to a class path to process     | No. Either the         |
+| <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
 |                                             |                                            | <<<classpathRef>>>     |
 |                                             |                                            | attribute or the       |
 |                                             |                                            | nested <<<classpath>>> |
