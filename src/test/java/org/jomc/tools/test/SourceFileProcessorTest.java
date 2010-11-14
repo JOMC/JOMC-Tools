@@ -32,6 +32,7 @@
  */
 package org.jomc.tools.test;
 
+import org.junit.Test;
 import java.io.OutputStream;
 import java.util.Properties;
 import java.io.File;
@@ -46,8 +47,10 @@ import org.jomc.model.Module;
 import org.jomc.model.Specification;
 import org.jomc.tools.SourceFileProcessor;
 import org.jomc.util.SectionEditor;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.fail;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Test cases for class {@code org.jomc.tools.SourceFileProcessor} implementations.
@@ -116,11 +119,9 @@ public class SourceFileProcessorTest extends JomcToolTest
         return value;
     }
 
-    @Override
-    public void testNullPointerException() throws Exception
+    @Test
+    public final void testSourceFileProcessorNullPointerException() throws Exception
     {
-        super.testNullPointerException();
-
         try
         {
             this.getTestTool().getSourceFileType( (Specification) null );
@@ -233,11 +234,9 @@ public class SourceFileProcessorTest extends JomcToolTest
         }
     }
 
-    @Override
-    public void testNotNull() throws Exception
+    @Test
+    public final void testSourceFileProcessorNotNull() throws Exception
     {
-        super.testNotNull();
-
         final Implementation i = new Implementation();
         i.setIdentifier( "TEST" );
         i.setClazz( "TEST" );
@@ -260,7 +259,8 @@ public class SourceFileProcessorTest extends JomcToolTest
 
     }
 
-    public void testManageSources() throws Exception
+    @Test
+    public final void testManageSources() throws Exception
     {
         this.getTestTool().setInputEncoding( this.getTestProperty( "resourceEncoding" ) );
         this.getTestTool().setOutputEncoding( this.getTestProperty( "resourceEncoding" ) );
@@ -402,7 +402,8 @@ public class SourceFileProcessorTest extends JomcToolTest
         this.getTestTool().setOutputEncoding( null );
     }
 
-    public void testMandatorySections() throws Exception
+    @Test
+    public final void testMandatorySections() throws Exception
     {
         final SectionEditor editor = new SectionEditor();
         final File specificationDirectory = this.getTestSourcesDirectory();
@@ -473,7 +474,8 @@ public class SourceFileProcessorTest extends JomcToolTest
         this.getTestTool().setOutputEncoding( null );
     }
 
-    public void testOptionalSections() throws Exception
+    @Test
+    public final void testOptionalSections() throws Exception
     {
         final SectionEditor editor = new SectionEditor();
         final File implementationDirectory = this.getTestSourcesDirectory();
@@ -536,7 +538,8 @@ public class SourceFileProcessorTest extends JomcToolTest
         this.getTestTool().setOutputEncoding( null );
     }
 
-    public void testCopyConstructor() throws Exception
+    @Test
+    public final void testCopyConstructor() throws Exception
     {
         try
         {

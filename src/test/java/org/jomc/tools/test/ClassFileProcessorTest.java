@@ -32,6 +32,7 @@
  */
 package org.jomc.tools.test;
 
+import org.junit.Test;
 import java.net.URISyntaxException;
 import java.util.Properties;
 import javax.xml.transform.TransformerConfigurationException;
@@ -68,8 +69,9 @@ import org.jomc.model.Modules;
 import org.jomc.model.Specification;
 import org.jomc.modlet.ModelException;
 import org.jomc.tools.ClassFileProcessor;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.fail;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Test cases for class {@code org.jomc.tools.ClassFileProcessor}.
@@ -212,11 +214,9 @@ public class ClassFileProcessorTest extends JomcToolTest
         return transformer;
     }
 
-    @Override
-    public void testNullPointerException() throws Exception
+    @Test
+    public final void testClassFileProcessorNullPointerException() throws Exception
     {
-        super.testNullPointerException();
-
         final Marshaller marshaller = this.getModelContext().createMarshaller( ModelObject.MODEL_PUBLIC_ID );
         final Unmarshaller unmarshaller = this.getModelContext().createUnmarshaller( ModelObject.MODEL_PUBLIC_ID );
         final URL object = this.getClass().getResource( "/java/lang/Object.class" );
@@ -930,7 +930,8 @@ public class ClassFileProcessorTest extends JomcToolTest
         }
     }
 
-    public void testCommitTransformValidateClasses() throws Exception
+    @Test
+    public final void testCommitTransformValidateClasses() throws Exception
     {
         final File nonExistentDirectory = new File( this.getTestProperty( "testClassesDirectory" ),
                                                     Integer.toString( this.testClassesId++ ) );
@@ -1732,7 +1733,8 @@ public class ClassFileProcessorTest extends JomcToolTest
         this.getTestTool().setModel( model );
     }
 
-    public void testCopyConstructor() throws Exception
+    @Test
+    public final void testCopyConstructor() throws Exception
     {
         try
         {

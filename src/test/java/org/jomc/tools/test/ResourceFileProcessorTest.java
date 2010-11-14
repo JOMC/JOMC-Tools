@@ -32,6 +32,7 @@
  */
 package org.jomc.tools.test;
 
+import org.junit.Test;
 import java.util.Properties;
 import java.io.File;
 import java.io.IOException;
@@ -41,8 +42,9 @@ import org.jomc.model.Implementation;
 import org.jomc.model.Module;
 import org.jomc.model.Specification;
 import org.jomc.tools.ResourceFileProcessor;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.fail;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Test cases for class {@code org.jomc.tools.ResourceFileProcessor}.
@@ -111,11 +113,9 @@ public class ResourceFileProcessorTest extends JomcToolTest
         return value;
     }
 
-    @Override
-    public void testNullPointerException() throws Exception
+    @Test
+    public final void testResourceFileProcessorNullPointerException() throws Exception
     {
-        super.testNullPointerException();
-
         try
         {
             this.getTestTool().getResourceBundleResources( (Specification) null );
@@ -207,11 +207,9 @@ public class ResourceFileProcessorTest extends JomcToolTest
         }
     }
 
-    @Override
-    public void testNotNull() throws Exception
+    @Test
+    public final void testResourceFileProcessorNotNull() throws Exception
     {
-        super.testNotNull();
-
         assertNotNull( this.getTestTool().getResourceBundleDefaultLocale() );
         assertNotNull( this.getTestTool().getResourceBundleResources(
             this.getTestTool().getModules().getSpecification( "Specification" ) ) );
@@ -221,14 +219,16 @@ public class ResourceFileProcessorTest extends JomcToolTest
 
     }
 
-    public void testResourceBundleDefaultLocale() throws Exception
+    @Test
+    public final void testResourceBundleDefaultLocale() throws Exception
     {
         this.getTestTool().setResourceBundleDefaultLocale( null );
         assertNotNull( this.getTestTool().getResourceBundleDefaultLocale() );
         this.getTestTool().setResourceBundleDefaultLocale( null );
     }
 
-    public void testWriteResourceBundleResourceFiles() throws Exception
+    @Test
+    public final void testWriteResourceBundleResourceFiles() throws Exception
     {
         final File nonExistentDirectory = this.getTestResourcesDirectory();
         if ( nonExistentDirectory.exists() )
@@ -307,7 +307,8 @@ public class ResourceFileProcessorTest extends JomcToolTest
 
     }
 
-    public void testCopyConstructor() throws Exception
+    @Test
+    public final void testCopyConstructor() throws Exception
     {
         try
         {

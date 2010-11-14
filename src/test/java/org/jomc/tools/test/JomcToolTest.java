@@ -32,6 +32,9 @@
  */
 package org.jomc.tools.test;
 
+import org.junit.Test;
+import org.junit.After;
+import org.junit.Before;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Locale;
@@ -39,7 +42,6 @@ import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import junit.framework.TestCase;
 import org.jomc.model.Argument;
 import org.jomc.model.Dependency;
 import org.jomc.model.Implementation;
@@ -56,9 +58,9 @@ import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelException;
 import org.jomc.tools.JomcTool;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 /**
  * Base tool test class.
@@ -66,7 +68,7 @@ import static junit.framework.Assert.fail;
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public abstract class JomcToolTest extends TestCase
+public abstract class JomcToolTest
 {
 
     /** Test listener. */
@@ -193,23 +195,20 @@ public abstract class JomcToolTest extends TestCase
         }
     }
 
-    @Override
-    public void setUp() throws Exception
+    @Before
+    public void addListener() throws Exception
     {
         this.getTestTool().getListeners().add( LISTENER );
     }
 
-    @Override
-    public void tearDown() throws Exception
+    @After
+    public void removeListener() throws Exception
     {
         this.getTestTool().getListeners().remove( LISTENER );
     }
 
-    /**
-     * Tests that methods declaring to throw a {@code NullPointerException} do not throw an instance with a {@code null}
-     * message.
-     */
-    public void testNullPointerException() throws Exception
+    @Test
+    public final void testNullPointerException() throws Exception
     {
         assertNotNull( this.getTestTool() );
 
@@ -589,8 +588,8 @@ public abstract class JomcToolTest extends TestCase
         }
     }
 
-    /** Tests that method declaring not to return {@code null} do not return {@code null}. */
-    public void testNotNull() throws Exception
+    @Test
+    public final void testNotNull() throws Exception
     {
         final Specification specification = new Specification();
         specification.setClazz( "java.lang.Object" );
@@ -672,8 +671,8 @@ public abstract class JomcToolTest extends TestCase
         assertEquals( this.getTestTool().getIndentation(), this.getTestTool().getIndentation( 1 ) );
     }
 
-    /** Tests the {@code getVelocityTemplate} method. */
-    public void testVelocityTemplate() throws Exception
+    @Test
+    public final void testVelocityTemplate() throws Exception
     {
         assertNotNull( this.getTestTool().getVelocityTemplate( "Implementation.java.vm" ) );
         this.getTestTool().setTemplateProfile( "DOES_NOT_EXIST" );
@@ -704,7 +703,8 @@ public abstract class JomcToolTest extends TestCase
         }
     }
 
-    public void testDefaultLogLevel() throws Exception
+    @Test
+    public final void testDefaultLogLevel() throws Exception
     {
         final String testLogLevel = System.getProperty( "org.jomc.tools.JomcTool.defaultLogLevel" );
 
@@ -725,7 +725,8 @@ public abstract class JomcToolTest extends TestCase
         JomcTool.setDefaultLogLevel( null );
     }
 
-    public void testLogLevel() throws Exception
+    @Test
+    public final void testLogLevel() throws Exception
     {
         JomcTool.setDefaultLogLevel( null );
         this.getTestTool().setLogLevel( null );
@@ -739,7 +740,8 @@ public abstract class JomcToolTest extends TestCase
         this.getTestTool().setLogLevel( null );
     }
 
-    public void testDefaultTemplateProfile() throws Exception
+    @Test
+    public final void testDefaultTemplateProfile() throws Exception
     {
         assertNotNull( JomcTool.getDefaultTemplateProfile() );
         System.setProperty( "org.jomc.tools.JomcTool.defaultTemplateProfile", "TEST" );
@@ -749,7 +751,8 @@ public abstract class JomcToolTest extends TestCase
         JomcTool.setDefaultTemplateProfile( null );
     }
 
-    public void testTemplateProfile() throws Exception
+    @Test
+    public final void testTemplateProfile() throws Exception
     {
         JomcTool.setDefaultTemplateProfile( null );
         this.getTestTool().setTemplateProfile( null );
@@ -763,7 +766,8 @@ public abstract class JomcToolTest extends TestCase
         this.getTestTool().setTemplateProfile( null );
     }
 
-    public void testIndentation() throws Exception
+    @Test
+    public final void testIndentation() throws Exception
     {
         assertEquals( "", this.getTestTool().getIndentation( 0 ) );
         assertEquals( this.getTestTool().getIndentation(), this.getTestTool().getIndentation( 1 ) );
@@ -784,7 +788,8 @@ public abstract class JomcToolTest extends TestCase
         this.getTestTool().setIndentation( null );
     }
 
-    public void testModel() throws Exception
+    @Test
+    public final void testModel() throws Exception
     {
         final Model model = this.getTestTool().getModel();
         this.getTestTool().setModel( null );
@@ -792,35 +797,40 @@ public abstract class JomcToolTest extends TestCase
         this.getTestTool().setModel( model );
     }
 
-    public void testVelocityEngine() throws Exception
+    @Test
+    public final void testVelocityEngine() throws Exception
     {
         this.getTestTool().setVelocityEngine( null );
         assertNotNull( this.getTestTool().getVelocityEngine() );
         this.getTestTool().setVelocityEngine( null );
     }
 
-    public void testTemplateEncoding() throws Exception
+    @Test
+    public final void testTemplateEncoding() throws Exception
     {
         this.getTestTool().setTemplateEncoding( null );
         assertNotNull( this.getTestTool().getTemplateEncoding() );
         this.getTestTool().setTemplateEncoding( null );
     }
 
-    public void testInputEncoding() throws Exception
+    @Test
+    public final void testInputEncoding() throws Exception
     {
         this.getTestTool().setInputEncoding( null );
         assertNotNull( this.getTestTool().getInputEncoding() );
         this.getTestTool().setInputEncoding( null );
     }
 
-    public void testOutputEncoding() throws Exception
+    @Test
+    public final void testOutputEncoding() throws Exception
     {
         this.getTestTool().setOutputEncoding( null );
         assertNotNull( this.getTestTool().getOutputEncoding() );
         this.getTestTool().setOutputEncoding( null );
     }
 
-    public void testLineSeparator() throws Exception
+    @Test
+    public final void testLineSeparator() throws Exception
     {
         this.getTestTool().setLineSeparator( null );
         assertNotNull( this.getTestTool().getLineSeparator() );
