@@ -32,50 +32,54 @@
  */
 package org.jomc.ant.test;
 
-import org.junit.Test;
-import org.apache.tools.ant.Location;
-import org.jomc.ant.SourceProcessingException;
-import java.io.ObjectInputStream;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import org.apache.tools.ant.Project;
 
 /**
- * Test cases for class {@code org.jomc.ant.SourceProcessingException}.
+ * Request to execute a target on an Ant project.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public class SourceProcessingExceptionTest
+public class AntExecutionRequest
 {
 
-    /** Creates a new {@code SourceProcessingExceptionTest} instance. */
-    public SourceProcessingExceptionTest()
+    /** The {@code Project} to execute a target of. */
+    private final Project project;
+
+    /** The identifier of the target to execute. */
+    private final String target;
+
+    /**
+     * Creates a new {@code AntExecutionRequest} taking a project and a target.
+     *
+     * @param project The {@code Project} to execute {@code target} of.
+     * @param target The identifier of the target to execute.
+     */
+    public AntExecutionRequest( final Project project, final String target )
     {
         super();
+        this.project = project;
+        this.target = target;
     }
 
-    @Test
-    public final void testSourceProcessingException() throws Exception
+    /**
+     * Gets the {@code Project} to execute a target of.
+     *
+     * @return The {@code Project} to execute a target of or {@code null}.
+     */
+    public Project getProject()
     {
-        final ObjectInputStream in =
-            new ObjectInputStream( this.getClass().getResourceAsStream( "SourceProcessingException.ser" ) );
+        return this.project;
+    }
 
-        SourceProcessingException e = (SourceProcessingException) in.readObject();
-        in.close();
-
-        assertNotNull( e.getMessage() );
-        assertEquals( Location.UNKNOWN_LOCATION, e.getLocation() );
-        System.out.println( e );
-
-        e = new SourceProcessingException( null );
-        assertNotNull( e.getMessage() );
-        assertEquals( Location.UNKNOWN_LOCATION, e.getLocation() );
-
-        e = new SourceProcessingException( null, null );
-        assertNotNull( e.getMessage() );
-        assertNull( e.getCause() );
-        assertEquals( Location.UNKNOWN_LOCATION, e.getLocation() );
+    /**
+     * Gets the identifier of the target to execute.
+     *
+     * @return The identifier of the target to execute or {@code null}.
+     */
+    public String getTarget()
+    {
+        return this.target;
     }
 
 }

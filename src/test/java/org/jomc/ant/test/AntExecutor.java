@@ -32,50 +32,25 @@
  */
 package org.jomc.ant.test;
 
-import org.junit.Test;
-import org.apache.tools.ant.Location;
-import org.jomc.ant.SourceProcessingException;
-import java.io.ObjectInputStream;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 /**
- * Test cases for class {@code org.jomc.ant.SourceProcessingException}.
+ * Interface to Ant.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public class SourceProcessingExceptionTest
+public interface AntExecutor
 {
 
-    /** Creates a new {@code SourceProcessingExceptionTest} instance. */
-    public SourceProcessingExceptionTest()
-    {
-        super();
-    }
-
-    @Test
-    public final void testSourceProcessingException() throws Exception
-    {
-        final ObjectInputStream in =
-            new ObjectInputStream( this.getClass().getResourceAsStream( "SourceProcessingException.ser" ) );
-
-        SourceProcessingException e = (SourceProcessingException) in.readObject();
-        in.close();
-
-        assertNotNull( e.getMessage() );
-        assertEquals( Location.UNKNOWN_LOCATION, e.getLocation() );
-        System.out.println( e );
-
-        e = new SourceProcessingException( null );
-        assertNotNull( e.getMessage() );
-        assertEquals( Location.UNKNOWN_LOCATION, e.getLocation() );
-
-        e = new SourceProcessingException( null, null );
-        assertNotNull( e.getMessage() );
-        assertNull( e.getCause() );
-        assertEquals( Location.UNKNOWN_LOCATION, e.getLocation() );
-    }
+    /**
+     * Executes Ant.
+     *
+     * @param request The request to execute.
+     *
+     * @return The result of the execution.
+     *
+     * @throws NullPointerException if {@code request} is {@code null}.
+     * @throws IllegalArgumentException if {@code request} holds illegal values.
+     */
+    AntExecutionResult executeAnt( AntExecutionRequest request );
 
 }

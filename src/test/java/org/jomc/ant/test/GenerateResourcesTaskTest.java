@@ -32,7 +32,17 @@
  */
 package org.jomc.ant.test;
 
+import org.jomc.ant.ResourceProcessingException;
+import org.apache.tools.ant.Project;
+import org.junit.Test;
+import org.apache.tools.ant.BuildException;
 import org.jomc.ant.GenerateResourcesTask;
+import static org.jomc.ant.test.Assert.assertException;
+import static org.jomc.ant.test.Assert.assertExceptionMessage;
+import static org.jomc.ant.test.Assert.assertExceptionMessageContaining;
+import static org.jomc.ant.test.Assert.assertMessageLogged;
+import static org.jomc.ant.test.Assert.assertMessageNotLogged;
+import static org.jomc.ant.test.Assert.assertNoException;
 
 /**
  * Test cases for class {@code org.jomc.ant.GenerateResourcesTask}.
@@ -40,7 +50,7 @@ import org.jomc.ant.GenerateResourcesTask;
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public final class GenerateResourcesTaskTest extends ResourceFileProcessorTaskTest
+public class GenerateResourcesTaskTest extends ResourceFileProcessorTaskTest
 {
 
     /** Creates a new {@code GenerateResourcesTaskTest} instance. */
@@ -49,145 +59,16 @@ public final class GenerateResourcesTaskTest extends ResourceFileProcessorTaskTe
         super();
     }
 
-    /**
-     * Creates a new {@code GenerateResourcesTaskTest} instance taking a name.
-     *
-     * @param name The name of the instance.
-     */
-    public GenerateResourcesTaskTest( final String name )
-    {
-        super( name );
-    }
-
-    /**
-     * Gets the {@code GenerateResourcesTask} tests are performed with.
-     *
-     * @return The {@code GenerateResourcesTask} tests are performed with.
-     *
-     * @see #createJomcTask()
-     */
+    /** {@inheritDoc} */
     @Override
     public GenerateResourcesTask getJomcTask()
     {
         return (GenerateResourcesTask) super.getJomcTask();
     }
 
-    public void testMissingResourcesDirectory() throws Exception
-    {
-        this.expectSpecificBuildException(
-            "test-missing-resources-directory",
-            "the \"generate-resources\" task is missing the mandatory \"resourcesDirectory\" attribute",
-            "Mandatory attribute 'resourcesDirectory' is missing a value." );
-
-    }
-
-    public void testNonExistentResourcesDirectory() throws Exception
-    {
-        this.expectBuildExceptionContaining(
-            "test-non-existing-resources-directory",
-            "the \"resourcesDirectory\" attribute of the \"generate-resources\" task specifies a non-existent directory",
-            "DOES_NOT_EXIST" );
-
-    }
-
-    public void testSpecificationNotFound() throws Exception
-    {
-        this.expectLogContaining( "test-specification-not-found",
-                                  "Specification 'DOES NOT EXIST' not found." );
-
-    }
-
-    public void testImplementationNotFound() throws Exception
-    {
-        this.expectLogContaining( "test-implementation-not-found",
-                                  "Implementation 'DOES NOT EXIST' not found." );
-
-    }
-
-    public void testModuleNotFound() throws Exception
-    {
-        this.expectLogContaining( "test-module-not-found",
-                                  "Module 'DOES NOT EXIST' not found." );
-
-    }
-
-    public void testResourceProcessingDisabled() throws Exception
-    {
-        this.expectLogContaining( "test-resource-processing-disabled", "Resource file processing disabled." );
-    }
-
-    public void testGenerateAntTaskResources() throws Exception
-    {
-        this.expectLogContaining( "test-generate-ant-task-resources", "Resource file processing successful." );
-    }
-
-    public void testGenerateAntTaskResourcesWithRedundantResources() throws Exception
-    {
-        this.expectLogContaining( "test-generate-ant-task-resources-with-redundant-resources",
-                                  "Resource file processing successful." );
-
-    }
-
-    public void testCommitOneSpecification() throws Exception
-    {
-        this.expectLogNotContaining( "test-generate-one-specification",
-                                     "Specification 'org.jomc.ant.JomcTask' not found." );
-
-    }
-
-    public void testCommitOneImplementation() throws Exception
-    {
-        this.expectLogNotContaining( "test-generate-one-implementation",
-                                     "Implementation 'org.jomc.ant.JomcToolTask' not found." );
-
-    }
-
-    public void testCommitOneModule() throws Exception
-    {
-        this.expectLogNotContaining( "test-generate-one-module",
-                                     "Module 'JOMC Ant Tasks Tests' not found." );
-
-    }
-
-    public void testGenerateAntTaskResourcesWithClasspathref() throws Exception
-    {
-        this.expectLogContaining( "test-generate-ant-task-resources-with-classpathref",
-                                  "Resource file processing successful." );
-
-    }
-
-    public void testGenerateAntTaskResourcesWithNestedClasspath() throws Exception
-    {
-        this.expectLogContaining( "test-generate-ant-task-resources-with-nested-classpath",
-                                  "Resource file processing successful." );
-
-    }
-
-    public void testGenerateAntTaskResourcesAllAttributes() throws Exception
-    {
-        this.expectLogContaining( "test-generate-ant-task-resources-all-attributes",
-                                  "Resource file processing successful." );
-
-    }
-
-    public void testGenerateAntTaskResourcesBrokenModel() throws Exception
-    {
-        this.expectSpecificBuildException(
-            "test-generate-ant-task-resources-broken-model",
-            "the \"moduleLocation\" attribute of the \"generate-resources\" task points to broken test model resources",
-            "Resource file processing failure." );
-
-    }
-
-    /**
-     * Creates a new {@code GenerateResourcesTask} instance tests are performed with.
-     *
-     * @return A new {@code GenerateResourcesTask} instance tests are performed with.
-     *
-     * @see #getJomcTask()
-     */
+    /** {@inheritDoc} */
     @Override
-    protected GenerateResourcesTask createJomcTask()
+    protected GenerateResourcesTask newJomcTask()
     {
         return new GenerateResourcesTask();
     }
@@ -197,6 +78,128 @@ public final class GenerateResourcesTaskTest extends ResourceFileProcessorTaskTe
     protected String getBuildFileName()
     {
         return "generate-resources-test.xml";
+    }
+
+    @Test
+    public final void testMissingResourcesDirectory() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-missing-resources-directory" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'resourcesDirectory' is missing a value." );
+    }
+
+    @Test
+    public final void testNonExistentResourcesDirectory() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-non-existing-resources-directory" );
+        assertException( r, BuildException.class );
+        assertExceptionMessageContaining( r, "DOES_NOT_EXIST" );
+    }
+
+    @Test
+    public final void testSpecificationNotFound() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-specification-not-found" );
+        assertNoException( r );
+        assertMessageLogged( r, "Specification 'DOES NOT EXIST' not found.", Project.MSG_WARN );
+    }
+
+    @Test
+    public final void testImplementationNotFound() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-implementation-not-found" );
+        assertNoException( r );
+        assertMessageLogged( r, "Implementation 'DOES NOT EXIST' not found.", Project.MSG_WARN );
+    }
+
+    @Test
+    public final void testModuleNotFound() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-module-not-found" );
+        assertNoException( r );
+        assertMessageLogged( r, "Module 'DOES NOT EXIST' not found.", Project.MSG_WARN );
+    }
+
+    @Test
+    public final void testResourceProcessingDisabled() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-resource-processing-disabled" );
+        assertNoException( r );
+        assertMessageLogged( r, "Resource file processing disabled.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testGenerateAntTaskResources() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-generate-ant-task-resources" );
+        assertNoException( r );
+        assertMessageLogged( r, "Resource file processing successful.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testGenerateAntTaskResourcesWithRedundantResources() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-generate-ant-task-resources-with-redundant-resources" );
+        assertNoException( r );
+        assertMessageLogged( r, "Resource file processing successful.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testCommitOneSpecification() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-generate-one-specification" );
+        assertNoException( r );
+        assertMessageNotLogged( r, "Specification 'org.jomc.ant.JomcTask' not found." );
+        assertMessageLogged( r, "Resource file processing successful.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testCommitOneImplementation() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-generate-one-implementation" );
+        assertNoException( r );
+        assertMessageNotLogged( r, "Implementation 'org.jomc.ant.JomcToolTask' not found." );
+        assertMessageLogged( r, "Resource file processing successful.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testCommitOneModule() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-generate-one-module" );
+        assertNoException( r );
+        assertMessageNotLogged( r, "Module 'JOMC Ant Tasks Tests' not found." );
+        assertMessageLogged( r, "Resource file processing successful.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testGenerateAntTaskResourcesWithClasspathref() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-generate-ant-task-resources-with-classpathref" );
+        assertNoException( r );
+        assertMessageLogged( r, "Resource file processing successful.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testGenerateAntTaskResourcesWithNestedClasspath() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-generate-ant-task-resources-with-nested-classpath" );
+        assertNoException( r );
+        assertMessageLogged( r, "Resource file processing successful.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testGenerateAntTaskResourcesAllAttributes() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-generate-ant-task-resources-all-attributes" );
+        assertNoException( r );
+        assertMessageLogged( r, "Resource file processing successful.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testGenerateAntTaskResourcesBrokenModel() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-generate-ant-task-resources-broken-model" );
+        assertException( r, ResourceProcessingException.class );
     }
 
 }

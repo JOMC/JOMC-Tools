@@ -32,8 +32,18 @@
  */
 package org.jomc.ant.test;
 
+import org.apache.tools.ant.Project;
+import org.junit.Test;
+import org.apache.tools.ant.BuildException;
 import org.jomc.ant.MergeModletsTask;
-import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+import static org.jomc.ant.test.Assert.assertException;
+import static org.jomc.ant.test.Assert.assertExceptionMessage;
+import static org.jomc.ant.test.Assert.assertExceptionMessageContaining;
+import static org.jomc.ant.test.Assert.assertMessageLogged;
+import static org.jomc.ant.test.Assert.assertMessageLoggedContaining;
+import static org.jomc.ant.test.Assert.assertNoException;
 
 /**
  * Test cases for class {@code org.jomc.ant.MergeModletsTask}.
@@ -41,7 +51,7 @@ import static junit.framework.Assert.assertNotNull;
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public final class MergeModletsTaskTest extends JomcTaskTest
+public class MergeModletsTaskTest extends JomcTaskTest
 {
 
     /** Creates a new {@code MergeModletsTaskTest} instance. */
@@ -50,106 +60,119 @@ public final class MergeModletsTaskTest extends JomcTaskTest
         super();
     }
 
-    /**
-     * Creates a new {@code MergeModletsTaskTest} instance taking a name.
-     *
-     * @param name The name of the instance.
-     */
-    public MergeModletsTaskTest( final String name )
-    {
-        super( name );
-    }
-
-    /**
-     * Gets the {@code MergeModletsTask} tests are performed with.
-     *
-     * @return The {@code MergeModletsTask} tests are performed with.
-     *
-     * @see #createJomcTask()
-     */
+    /** {@inheritDoc} */
     @Override
     public MergeModletsTask getJomcTask()
     {
         return (MergeModletsTask) super.getJomcTask();
     }
 
-    public void testMissingModletFile() throws Exception
+    /** {@inheritDoc} */
+    @Override
+    protected MergeModletsTask newJomcTask()
     {
-        this.expectSpecificBuildException(
-            "test-missing-modlet-file",
-            "the \"merge-modlets\" task is missing the mandatory \"modletFile\" attribute",
-            "Mandatory attribute 'modletFile' is missing a value." );
-
+        return new MergeModletsTask();
     }
 
-    public void testMissingModletName() throws Exception
+    /** {@inheritDoc} */
+    @Override
+    protected String getBuildFileName()
     {
-        this.expectSpecificBuildException(
-            "test-missing-modlet-name",
-            "the \"merge-modlets\" task is missing the mandatory \"modletName\" attribute",
-            "Mandatory attribute 'modletName' is missing a value." );
-
+        return "merge-modlets-test.xml";
     }
 
-    public void testExclusionMissingModletName() throws Exception
+    @Test
+    public final void testMissingModletFile() throws Exception
     {
-        this.expectSpecificBuildException(
-            "test-exclusion-missing-modlet-name",
-            "the \"modletExclude\" element of the \"merge-modlets\" task is missing the mandatory \"name\" attribute",
-            "Mandatory attribute 'name' is missing a value." );
-
+        final AntExecutionResult r = this.executeTarget( "test-missing-modlet-file" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'modletFile' is missing a value." );
     }
 
-    public void testInclusionMissingModletName() throws Exception
+    @Test
+    public final void testMissingModletName() throws Exception
     {
-        this.expectSpecificBuildException(
-            "test-inclusion-missing-modlet-name",
-            "the \"modletInclude\" element of the \"merge-modlets\" task is missing the mandatory \"name\" attribute",
-            "Mandatory attribute 'name' is missing a value." );
-
+        final AntExecutionResult r = this.executeTarget( "test-missing-modlet-name" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'modletName' is missing a value." );
     }
 
-    public void testMergeModlets() throws Exception
+    @Test
+    public final void testExclusionMissingModletName() throws Exception
     {
-        this.expectLogContaining( "test-merge-modlets", "Writing" );
+        final AntExecutionResult r = this.executeTarget( "test-exclusion-missing-modlet-name" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'name' is missing a value." );
     }
 
-    public void testMergeModletsWithNoopStylesheet() throws Exception
+    @Test
+    public final void testInclusionMissingModletName() throws Exception
     {
-        this.expectLogContaining( "test-merge-modlets-with-no-op-stylesheet", "Writing" );
+        final AntExecutionResult r = this.executeTarget( "test-inclusion-missing-modlet-name" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'name' is missing a value." );
     }
 
-    public void testMergeModletsWithRedundantResources() throws Exception
+    @Test
+    public final void testMergeModlets() throws Exception
     {
-        this.expectLogContaining( "test-merge-modlets-with-redundant-resources", "Writing" );
+        final AntExecutionResult r = this.executeTarget( "test-merge-modlets" );
+        assertNoException( r );
+        assertMessageLoggedContaining( r, "Writing" );
     }
 
-    public void testMergeModletsWithIllegalTransformationResultStylesheet() throws Exception
+    @Test
+    public final void testMergeModletsWithNoopStylesheet() throws Exception
     {
-        this.expectBuildExceptionContaining(
-            "test-merge-modlets-with-illegal-transformation-result-stylesheet",
-            "the \"modletObjectStylesheet\" attribute of the \"merge-modlets\" task points to a stylesheet"
-            + " producing an illegal transformation result",
-            "Illegal transformation result" );
-
+        final AntExecutionResult r = this.executeTarget( "test-merge-modlets-with-no-op-stylesheet" );
+        assertNoException( r );
+        assertMessageLoggedContaining( r, "Writing" );
     }
 
-    public void testMergeModletsExclusion() throws Exception
+    @Test
+    public final void testMergeModletsWithRedundantResources() throws Exception
     {
-        this.expectLogContaining( "test-merge-modlets-exclusion", "Excluding modlet 'JOMC Tools'." );
+        final AntExecutionResult r = this.executeTarget( "test-merge-modlets-with-redundant-resources" );
+        assertNoException( r );
+        assertMessageLoggedContaining( r, "Writing" );
     }
 
-    public void testMergeModletsInclusion() throws Exception
+    @Test
+    public final void testMergeModletsWithIllegalTransformationResultStylesheet() throws Exception
     {
-        this.expectLogContaining( "test-merge-modlets-inclusion", "Including modlet 'JOMC Tools'." );
+        final AntExecutionResult r =
+            this.executeTarget( "test-merge-modlets-with-illegal-transformation-result-stylesheet" );
+
+        assertException( r, BuildException.class );
+        assertExceptionMessageContaining( r, "Illegal transformation result" );
     }
 
-    public void testMergeModletsAllAttributes() throws Exception
+    @Test
+    public final void testMergeModletsExclusion() throws Exception
     {
-        this.expectLogContaining( "test-merge-modlets-all-attributes", "Writing" );
+        final AntExecutionResult r = this.executeTarget( "test-merge-modlets-exclusion" );
+        assertNoException( r );
+        assertMessageLogged( r, "Excluding modlet 'JOMC Tools'.", Project.MSG_INFO );
     }
 
-    public void testIsModletExcluded() throws Exception
+    @Test
+    public final void testMergeModletsInclusion() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-merge-modlets-inclusion" );
+        assertNoException( r );
+        assertMessageLogged( r, "Including modlet 'JOMC Tools'.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testMergeModletsAllAttributes() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-merge-modlets-all-attributes" );
+        assertNoException( r );
+        assertMessageLoggedContaining( r, "Writing", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testIsModletExcluded() throws Exception
     {
         try
         {
@@ -163,7 +186,8 @@ public final class MergeModletsTaskTest extends JomcTaskTest
         }
     }
 
-    public void testIsModletIncluded() throws Exception
+    @Test
+    public final void testIsModletIncluded() throws Exception
     {
         try
         {
@@ -175,26 +199,6 @@ public final class MergeModletsTaskTest extends JomcTaskTest
             assertNotNull( e.getMessage() );
             System.out.println( e );
         }
-    }
-
-    /**
-     * Creates a new {@code MergeModletsTask} instance tests are performed with.
-     *
-     * @return A new {@code MergeModletsTask} instance tests are performed with.
-     *
-     * @see #getJomcTask()
-     */
-    @Override
-    protected MergeModletsTask createJomcTask()
-    {
-        return new MergeModletsTask();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected String getBuildFileName()
-    {
-        return "merge-modlets-test.xml";
     }
 
 }

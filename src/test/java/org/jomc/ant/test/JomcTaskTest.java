@@ -32,6 +32,13 @@
  */
 package org.jomc.ant.test;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.tools.ant.BuildEvent;
+import org.junit.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.apache.tools.ant.ProjectHelper;
+import org.apache.tools.ant.Project;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,8 +46,9 @@ import org.jomc.ant.types.NameType;
 import org.apache.tools.ant.BuildException;
 import org.jomc.ant.JomcTask;
 import java.util.Locale;
-import org.apache.tools.ant.BuildFileTest;
-import static junit.framework.Assert.assertNotNull;
+import static org.jomc.ant.test.Assert.assertNoException;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 /**
  * Test cases for class {@code org.jomc.ant.JomcTask}.
@@ -48,7 +56,7 @@ import static junit.framework.Assert.assertNotNull;
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public class JomcTaskTest extends BuildFileTest
+public class JomcTaskTest
 {
 
     /** Cached default locale. */
@@ -57,6 +65,12 @@ public class JomcTaskTest extends BuildFileTest
     /** The {@code JomcTask} instance tests are performed with. */
     private JomcTask jomcTask;
 
+    /** The {@code Project} backing the test. */
+    private Project project;
+
+    /** The {@code AntExecutor} backing the test. */
+    private AntExecutor antExecutor;
+
     /** Creates a new {@code JomcTaskTest} instance. */
     public JomcTaskTest()
     {
@@ -64,65 +78,187 @@ public class JomcTaskTest extends BuildFileTest
     }
 
     /**
-     * Creates a new {@code JomcTaskTest} instance taking a name.
-     *
-     * @param name The name of the instance.
-     */
-    public JomcTaskTest( final String name )
-    {
-        super( name );
-    }
-
-    /**
      * Gets the {@code JomcTask} instance tests are performed with.
      *
      * @return The {@code JomcTask} instance tests are performed with.
      *
-     * @see #createJomcTask()
+     * @see #newJomcTask()
      */
     public JomcTask getJomcTask()
     {
         if ( this.jomcTask == null )
         {
-            this.jomcTask = this.createJomcTask();
+            this.jomcTask = this.newJomcTask();
         }
 
         return this.jomcTask;
     }
 
-    @Override
+    /**
+     * Creates a new {@code JomcTask} instance to test.
+     *
+     * @return A new {@code JomcTask} instance to test.
+     *
+     * @see #getJomcTask()
+     */
+    protected JomcTask newJomcTask()
+    {
+        return new JomcTask();
+    }
+
+    /**
+     * Gets the {@code Project} backing the test.
+     *
+     * @return The {@code Project} backing the test.
+     *
+     * @see #newProject()
+     */
+    public Project getProject()
+    {
+        if ( this.project == null )
+        {
+            this.project = this.newProject();
+        }
+
+        return this.project;
+    }
+
+    /**
+     * Creates and configures a new {@code Project} instance backing the test.
+     *
+     * @return A new {@code Project} instance backing the test.
+     *
+     * @see #getProject()
+     * @see #getBuildFileName()
+     */
+    protected Project newProject()
+    {
+        try
+        {
+            final Project p = new Project();
+            p.init();
+
+            final File buildFile =
+                new File( System.getProperty( JomcTaskTest.class.getName() + ".buildFilesDirectory" ),
+                          this.getBuildFileName() );
+
+            p.setUserProperty( "ant.file", buildFile.getAbsolutePath() );
+            ProjectHelper.configureProject( p, buildFile );
+            return p;
+        }
+        catch ( final BuildException e )
+        {
+            throw new AssertionError( e );
+        }
+    }
+
+    /**
+     * Gets the {@code AntExecutor} instance backing the test.
+     *
+     * @return The {@code AntExecutor} instance backing the test.
+     *
+     * @see #newAntExecutor()
+     */
+    public AntExecutor getAntExecutor()
+    {
+        if ( this.antExecutor == null )
+        {
+            this.antExecutor = this.newAntExecutor();
+        }
+
+        return this.antExecutor;
+    }
+
+    /**
+     * Creates a new {@code AntExecutor} instance backing the test.
+     *
+     * @return A new {@code AntExecutor} instance backing the test.
+     *
+     * @see #getAntExecutor()
+     */
+    protected AntExecutor newAntExecutor()
+    {
+        return new DefaultAntExecutor();
+    }
+
+    /**
+     * Gets the name of the build file backing the test.
+     *
+     * @return The the name of the build file backing the test.
+     *
+     * @see #newProject()
+     */
+    protected String getBuildFileName()
+    {
+        return "jomc-task-test.xml";
+    }
+
+    @Before
     public void setUp() throws Exception
     {
         Locale.setDefault( Locale.ENGLISH );
-        configureProject( this.getBuildFileName() );
     }
 
-    @Override
+    @After
     public void tearDown() throws Exception
     {
-        super.tearDown();
         Locale.setDefault( DEFAULT_LOCALE );
     }
 
-    @Override
-    public void expectSpecificBuildException( final String target, final String cause, final String message )
+    /**
+     * Executes an Ant target.
+     *
+     * @param target The name of the target to execute.
+     *
+     * @return The result of the execution.
+     *
+     * @throws NullPointerException if {@code target} is {@code null}.
+     */
+    public AntExecutionResult executeTarget( final String target )
     {
-        super.expectSpecificBuildException( target, cause, message );
-        assertNotNull( this.getBuildException() );
-        assertNotNull( this.getBuildException().getMessage() );
-        System.out.println( this.getBuildException() );
+        if ( target == null )
+        {
+            throw new NullPointerException( "target" );
+        }
+
+        final AntExecutionResult r =
+            this.getAntExecutor().executeAnt( new AntExecutionRequest( this.getProject(), target ) );
+
+        System.out.println( "======================================================================" );
+        System.out.println( "Target: target:" );
+        System.out.println( "======================================================================" );
+        System.out.println( "System output:" );
+        System.out.println( r.getSystemOutput() );
+        System.out.println();
+        System.out.println( "======================================================================" );
+        System.out.println( "System error:" );
+        System.out.println( r.getSystemError() );
+        System.out.println();
+
+        if ( r.getThrowable() != null )
+        {
+            System.out.println( "======================================================================" );
+            System.out.println( "Exception:" );
+            r.getThrowable().printStackTrace();
+            System.out.println();
+        }
+
+        System.out.println( "======================================================================" );
+        System.out.println( "Log:" );
+
+        for ( BuildEvent e : r.getMessageLoggedEvents() )
+        {
+            System.out.println( ToStringBuilder.reflectionToString( e ) );
+        }
+
+        System.out.println();
+        System.out.println();
+
+        return r;
     }
 
-    @Override
-    public void expectBuildExceptionContaining( final String target, final String cause, final String needle )
-    {
-        super.expectBuildExceptionContaining( target, cause, needle );
-        assertNotNull( this.getBuildException() );
-        assertNotNull( this.getBuildException().getMessage() );
-        System.out.println( this.getBuildException() );
-    }
-
-    public void testAssertNotNull() throws Exception
+    @Test
+    public final void testAssertNotNull() throws Exception
     {
         try
         {
@@ -147,7 +283,8 @@ public class JomcTaskTest extends BuildFileTest
         }
     }
 
-    public void testAssertNamesNotNull() throws Exception
+    @Test
+    public final void testAssertNamesNotNull() throws Exception
     {
         try
         {
@@ -175,7 +312,8 @@ public class JomcTaskTest extends BuildFileTest
         }
     }
 
-    public void testAssertDirectory() throws Exception
+    @Test
+    public final void testAssertDirectory() throws Exception
     {
         try
         {
@@ -200,7 +338,8 @@ public class JomcTaskTest extends BuildFileTest
         }
     }
 
-    public void testNewTransformer() throws Exception
+    @Test
+    public final void testNewTransformer() throws Exception
     {
         try
         {
@@ -225,7 +364,8 @@ public class JomcTaskTest extends BuildFileTest
         }
     }
 
-    public void testGetModel() throws Exception
+    @Test
+    public final void testGetModel() throws Exception
     {
         try
         {
@@ -239,32 +379,10 @@ public class JomcTaskTest extends BuildFileTest
         }
     }
 
-    public void testExecuteTask() throws Exception
+    @Test
+    public final void testExecuteTask() throws Exception
     {
-        this.executeTarget( "test-execute-task" );
-        assertNull( this.getBuildException() );
-    }
-
-    /**
-     * Creates a new {@code JomcTask} instance tests are performed with.
-     *
-     * @return A new {@code JomcTask} instance tests are performed with.
-     *
-     * @see #getJomcTask()
-     */
-    protected JomcTask createJomcTask()
-    {
-        return new JomcTask();
-    }
-
-    /**
-     * Gets the name of the build file backing the test.
-     *
-     * @return The name of the build file backing the test.
-     */
-    protected String getBuildFileName()
-    {
-        return "jomc-task-test.xml";
+        assertNoException( this.executeTarget( "test-execute-task" ) );
     }
 
 }

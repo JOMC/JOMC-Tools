@@ -49,38 +49,16 @@ public class JomcModelTaskTest extends JomcTaskTest
         super();
     }
 
-    /**
-     * Creates a new {@code JomcModelTaskTest} instance taking a name.
-     *
-     * @param name The name of the instance.
-     */
-    public JomcModelTaskTest( final String name )
-    {
-        super( name );
-    }
-
-    /**
-     * Gets the {@code JomcModelTask} tests are performed with.
-     *
-     * @return The {@code JomcModelTask} tests are performed with.
-     *
-     * @see #createJomcTask()
-     */
+    /** {@inheritDoc} */
     @Override
     public JomcModelTask getJomcTask()
     {
         return (JomcModelTask) super.getJomcTask();
     }
 
-    /**
-     * Creates a new {@code JomcModelTask} instance tests are performed with.
-     *
-     * @return A new {@code JomcModelTask} instance tests are performed with.
-     *
-     * @see #getJomcTask()
-     */
+    /** {@inheritDoc} */
     @Override
-    protected JomcModelTask createJomcTask()
+    protected JomcModelTask newJomcTask()
     {
         return new JomcModelTask();
     }

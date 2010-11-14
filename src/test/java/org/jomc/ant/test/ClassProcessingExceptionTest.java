@@ -32,13 +32,13 @@
  */
 package org.jomc.ant.test;
 
+import org.junit.Test;
 import org.apache.tools.ant.Location;
 import java.io.ObjectInputStream;
-import junit.framework.TestCase;
 import org.jomc.ant.ClassProcessingException;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * Test cases for class {@code org.jomc.ant.ClassProcessingException}.
@@ -46,7 +46,7 @@ import static junit.framework.Assert.assertNull;
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public class ClassProcessingExceptionTest extends TestCase
+public class ClassProcessingExceptionTest
 {
 
     /** Creates a new {@code ClassProcessingExceptionTest} instance. */
@@ -55,17 +55,8 @@ public class ClassProcessingExceptionTest extends TestCase
         super();
     }
 
-    /**
-     * Creates a new {@code ClassProcessingExceptionTest} instance taking a name.
-     *
-     * @param name The name of the instance.
-     */
-    public ClassProcessingExceptionTest( final String name )
-    {
-        super( name );
-    }
-
-    public void testClassProcessingException() throws Exception
+    @Test
+    public final void testClassProcessingException() throws Exception
     {
         final ObjectInputStream in =
             new ObjectInputStream( this.getClass().getResourceAsStream( "ClassProcessingException.ser" ) );

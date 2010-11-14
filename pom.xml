@@ -74,7 +74,7 @@
             <org.jomc.tools.JomcTool.defaultLogLevel>ALL</org.jomc.tools.JomcTool.defaultLogLevel>
             <org.jomc.cli.Jomc.defaultLogLevel>ALL</org.jomc.cli.Jomc.defaultLogLevel>
             <org.jomc.cli.commands.AbstractJomcCommand.defaultLogLevel>ALL</org.jomc.cli.commands.AbstractJomcCommand.defaultLogLevel>
-            <root>${project.build.directory}/ant</root>
+            <org.jomc.ant.test.JomcTaskTest.buildFilesDirectory>${project.build.directory}/ant</org.jomc.ant.test.JomcTaskTest.buildFilesDirectory>
           </systemPropertyVariables>
         </configuration>
       </plugin>
@@ -162,8 +162,8 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.ant</groupId>
-      <artifactId>ant-testutil</artifactId>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

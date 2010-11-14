@@ -32,8 +32,10 @@
  */
 package org.jomc.ant.test;
 
+import org.junit.Test;
 import org.jomc.ant.JomcToolTask;
-import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 /**
  * Test cases for class {@code org.jomc.ant.JomcToolTask}.
@@ -50,30 +52,29 @@ public class JomcToolTaskTest extends JomcModelTaskTest
         super();
     }
 
-    /**
-     * Creates a new {@code JomcToolTaskTest} instance taking a name.
-     *
-     * @param name The name of the instance.
-     */
-    public JomcToolTaskTest( final String name )
-    {
-        super( name );
-    }
-
-    /**
-     * Gets the {@code JomcToolTask} tests are performed with.
-     *
-     * @return The {@code JomcToolTask} tests are performed with.
-     *
-     * @see #createJomcTask()
-     */
+    /** {@inheritDoc} */
     @Override
     public JomcToolTask getJomcTask()
     {
         return (JomcToolTask) super.getJomcTask();
     }
 
-    public void testConfigureJomcTool() throws Exception
+    /** {@inheritDoc} */
+    @Override
+    protected JomcToolTask newJomcTask()
+    {
+        return new JomcToolTask();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getBuildFileName()
+    {
+        return "jomc-tool-task-test.xml";
+    }
+
+    @Test
+    public final void testConfigureJomcTool() throws Exception
     {
         try
         {
@@ -87,7 +88,8 @@ public class JomcToolTaskTest extends JomcModelTaskTest
         }
     }
 
-    public void testGetSpecification() throws Exception
+    @Test
+    public final void testGetSpecification() throws Exception
     {
         try
         {
@@ -101,7 +103,8 @@ public class JomcToolTaskTest extends JomcModelTaskTest
         }
     }
 
-    public void testGetImplementation() throws Exception
+    @Test
+    public final void testGetImplementation() throws Exception
     {
         try
         {
@@ -115,7 +118,8 @@ public class JomcToolTaskTest extends JomcModelTaskTest
         }
     }
 
-    public void testGetModule() throws Exception
+    @Test
+    public final void testGetModule() throws Exception
     {
         try
         {
@@ -127,26 +131,6 @@ public class JomcToolTaskTest extends JomcModelTaskTest
             assertNotNull( e.getMessage() );
             System.out.println( e );
         }
-    }
-
-    /**
-     * Creates a new {@code JomcToolTask} instance tests are performed with.
-     *
-     * @return A new {@code JomcToolTask} instance tests are performed with.
-     *
-     * @see #getJomcTask()
-     */
-    @Override
-    protected JomcToolTask createJomcTask()
-    {
-        return new JomcToolTask();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected String getBuildFileName()
-    {
-        return "jomc-tool-task-test.xml";
     }
 
 }

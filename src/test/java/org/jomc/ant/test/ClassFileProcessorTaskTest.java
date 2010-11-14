@@ -49,38 +49,16 @@ public class ClassFileProcessorTaskTest extends JomcToolTaskTest
         super();
     }
 
-    /**
-     * Creates a new {@code ClassFileProcessorTaskTest} instance taking a name.
-     *
-     * @param name The name of the instance.
-     */
-    public ClassFileProcessorTaskTest( final String name )
-    {
-        super( name );
-    }
-
-    /**
-     * Gets the {@code ClassFileProcessorTask} tests are performed with.
-     *
-     * @return The {@code ClassFileProcessorTask} tests are performed with.
-     *
-     * @see #createJomcTask()
-     */
+    /** {@inheritDoc} */
     @Override
     public ClassFileProcessorTask getJomcTask()
     {
         return (ClassFileProcessorTask) super.getJomcTask();
     }
 
-    /**
-     * Creates a new {@code ClassFileProcessorTask} instance tests are performed with.
-     *
-     * @return A new {@code ClassFileProcessorTask} instance tests are performed with.
-     *
-     * @see #getJomcTask()
-     */
+    /** {@inheritDoc} */
     @Override
-    protected ClassFileProcessorTask createJomcTask()
+    protected ClassFileProcessorTask newJomcTask()
     {
         return new ClassFileProcessorTask();
     }

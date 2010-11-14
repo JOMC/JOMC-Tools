@@ -32,7 +32,17 @@
  */
 package org.jomc.ant.test;
 
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
+import org.jomc.ant.ClassProcessingException;
 import org.jomc.ant.CommitClassesTask;
+import org.junit.Test;
+import static org.jomc.ant.test.Assert.assertException;
+import static org.jomc.ant.test.Assert.assertExceptionMessage;
+import static org.jomc.ant.test.Assert.assertExceptionMessageContaining;
+import static org.jomc.ant.test.Assert.assertMessageLogged;
+import static org.jomc.ant.test.Assert.assertMessageNotLogged;
+import static org.jomc.ant.test.Assert.assertNoException;
 
 /**
  * Test cases for class {@code org.jomc.ant.CommitClassesTask}.
@@ -40,7 +50,7 @@ import org.jomc.ant.CommitClassesTask;
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public final class CommitClassesTaskTest extends ClassFileProcessorTaskTest
+public class CommitClassesTaskTest extends ClassFileProcessorTaskTest
 {
 
     /** Creates a new {@code CommitClassesTaskTest} instance. */
@@ -49,180 +59,16 @@ public final class CommitClassesTaskTest extends ClassFileProcessorTaskTest
         super();
     }
 
-    /**
-     * Creates a new {@code CommitClassesTaskTest} instance taking a name.
-     *
-     * @param name The name of the instance.
-     */
-    public CommitClassesTaskTest( final String name )
-    {
-        super( name );
-    }
-
-    /**
-     * Gets the {@code CommitClassesTask} tests are performed with.
-     *
-     * @return The {@code CommitClassesTask} tests are performed with.
-     *
-     * @see #createJomcTask()
-     */
+    /** {@inheritDoc} */
     @Override
     public CommitClassesTask getJomcTask()
     {
         return (CommitClassesTask) super.getJomcTask();
     }
 
-    public void testMissingClassesDirectory() throws Exception
-    {
-        this.expectSpecificBuildException(
-            "test-missing-classes-directory",
-            "the \"commit-classes\" task is missing the mandatory \"classesDirectory\" attribute",
-            "Mandatory attribute 'classesDirectory' is missing a value." );
-
-    }
-
-    public void testNonExistentClassesDirectory() throws Exception
-    {
-        this.expectBuildExceptionContaining(
-            "test-non-existing-classes-directory",
-            "the \"classesDirectory\" attribute of the \"commit-classes\" task specifies a non-existent directory",
-            "DOES_NOT_EXIST" );
-
-    }
-
-    public void testStylesheetNotFound() throws Exception
-    {
-        this.expectSpecificBuildException(
-            "test-stylesheet-not-found",
-            "the \"modelObjectStylesheet\" attribute of the \"commit-classes\" task specifies a non-existent file",
-            "No style sheet found at 'DOES_NOT_EXIST'." );
-
-    }
-
-    public void testSpecificationNotFound() throws Exception
-    {
-        this.expectLogContaining( "test-specification-not-found",
-                                  "Specification 'DOES NOT EXIST' not found." );
-
-    }
-
-    public void testImplementationNotFound() throws Exception
-    {
-        this.expectLogContaining( "test-implementation-not-found",
-                                  "Implementation 'DOES NOT EXIST' not found." );
-
-    }
-
-    public void testModuleNotFound() throws Exception
-    {
-        this.expectLogContaining( "test-module-not-found",
-                                  "Module 'DOES NOT EXIST' not found." );
-
-    }
-
-    public void testClassProcessingDisabled() throws Exception
-    {
-        this.expectLogContaining( "test-class-processing-disabled", "Class file processing disabled." );
-    }
-
-    public void testCommitAntTasks() throws Exception
-    {
-        this.expectLogContaining( "test-commit-ant-tasks", "Class file processing successful." );
-    }
-
-    public void testCommitAntTasksWithNoopStylesheet() throws Exception
-    {
-        this.expectLogContaining( "test-commit-ant-tasks-with-no-op-stylesheet",
-                                  "Class file processing successful." );
-
-    }
-
-    public void testCommitAntTasksWithRedundantResources() throws Exception
-    {
-        this.expectLogContaining( "test-commit-ant-tasks-with-redundant-resources",
-                                  "Class file processing successful." );
-
-    }
-
-    public void testCommitOneSpecification() throws Exception
-    {
-        this.expectLogNotContaining( "test-commit-one-specification",
-                                     "Specification 'org.jomc.ant.JomcTask' not found." );
-
-    }
-
-    public void testCommitOneImplementation() throws Exception
-    {
-        this.expectLogNotContaining( "test-commit-one-implementation",
-                                     "Implementation 'org.jomc.ant.JomcToolTask' not found." );
-
-    }
-
-    public void testCommitOneModule() throws Exception
-    {
-        this.expectLogNotContaining( "test-commit-one-module",
-                                     "Module 'JOMC Ant Tasks Tests' not found." );
-
-    }
-
-    public void testCommitOneSpecificationWithNoopStylesheet() throws Exception
-    {
-        this.expectLogNotContaining( "test-commit-one-specification-with-no-op-stylesheet",
-                                     "Specification 'org.jomc.ant.JomcTask' not found." );
-
-    }
-
-    public void testCommitOneImplementationWithNoopStylesheet() throws Exception
-    {
-        this.expectLogNotContaining( "test-commit-one-implementation-with-no-op-stylesheet",
-                                     "Implementation 'org.jomc.ant.JomcToolTask' not found." );
-
-    }
-
-    public void testCommitOneModuleWithNoopStylesheet() throws Exception
-    {
-        this.expectLogNotContaining( "test-commit-one-module-with-no-op-stylesheet",
-                                     "Module 'JOMC Ant Tasks Tests' not found." );
-
-    }
-
-    public void testCommitAntTasksWithClasspathref() throws Exception
-    {
-        this.expectLogContaining( "test-commit-ant-tasks-with-classpathref", "Class file processing successful." );
-    }
-
-    public void testCommitAntTasksWithNestedClasspath() throws Exception
-    {
-        this.expectLogContaining( "test-commit-ant-tasks-with-nested-classpath",
-                                  "Class file processing successful." );
-
-    }
-
-    public void testCommitAntTasksAllAttributes() throws Exception
-    {
-        this.expectLogContaining( "test-commit-ant-tasks-all-attributes",
-                                  "Class file processing successful." );
-
-    }
-
-    public void testCommitAntTasksBrokenModel() throws Exception
-    {
-        this.expectSpecificBuildException(
-            "test-commit-ant-tasks-broken-model",
-            "the \"moduleLocation\" attribute of the \"commit-classes\" task points to broken test model resources",
-            "Class file processing failure." );
-
-    }
-
-    /**
-     * Creates a new {@code CommitClassesTask} instance tests are performed with.
-     *
-     * @return A new {@code CommitClassesTask} instance tests are performed with.
-     *
-     * @see #getJomcTask()
-     */
+    /** {@inheritDoc} */
     @Override
-    protected CommitClassesTask createJomcTask()
+    protected CommitClassesTask newJomcTask()
     {
         return new CommitClassesTask();
     }
@@ -232,6 +78,171 @@ public final class CommitClassesTaskTest extends ClassFileProcessorTaskTest
     protected String getBuildFileName()
     {
         return "commit-classes-test.xml";
+    }
+
+    @Test
+    public final void testMissingClassesDirectory() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-missing-classes-directory" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'classesDirectory' is missing a value." );
+    }
+
+    @Test
+    public final void testNonExistentClassesDirectory() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-non-existing-classes-directory" );
+        assertException( r, BuildException.class );
+        assertExceptionMessageContaining( r, "DOES_NOT_EXIST" );
+    }
+
+    @Test
+    public final void testStylesheetNotFound() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-stylesheet-not-found" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "No style sheet found at 'DOES_NOT_EXIST'." );
+    }
+
+    @Test
+    public final void testSpecificationNotFound() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-specification-not-found" );
+        assertNoException( r );
+        assertMessageLogged( r, "Specification 'DOES NOT EXIST' not found.", Project.MSG_WARN );
+    }
+
+    @Test
+    public final void testImplementationNotFound() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-implementation-not-found" );
+        assertNoException( r );
+        assertMessageLogged( r, "Implementation 'DOES NOT EXIST' not found.", Project.MSG_WARN );
+    }
+
+    @Test
+    public final void testModuleNotFound() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-module-not-found" );
+        assertNoException( r );
+        assertMessageLogged( r, "Module 'DOES NOT EXIST' not found.", Project.MSG_WARN );
+    }
+
+    @Test
+    public final void testClassProcessingDisabled() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-class-processing-disabled" );
+        assertNoException( r );
+        assertMessageLogged( r, "Class file processing disabled.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testCommitAntTasks() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-commit-ant-tasks" );
+        assertNoException( r );
+        assertMessageLogged( r, "Class file processing successful.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testCommitAntTasksWithNoopStylesheet() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-commit-ant-tasks-with-no-op-stylesheet" );
+        assertNoException( r );
+        assertMessageLogged( r, "Class file processing successful.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testCommitAntTasksWithRedundantResources() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-commit-ant-tasks-with-redundant-resources" );
+        assertNoException( r );
+        assertMessageLogged( r, "Class file processing successful.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testCommitOneSpecification() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-commit-one-specification" );
+        assertNoException( r );
+        assertMessageLogged( r, "Class file processing successful.", Project.MSG_INFO );
+        assertMessageNotLogged( r, "Specification 'org.jomc.ant.JomcTask' not found." );
+    }
+
+    @Test
+    public final void testCommitOneImplementation() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-commit-one-implementation" );
+        assertNoException( r );
+        assertMessageLogged( r, "Class file processing successful.", Project.MSG_INFO );
+        assertMessageNotLogged( r, "Implementation 'org.jomc.ant.JomcToolTask' not found." );
+    }
+
+    @Test
+    public final void testCommitOneModule() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-commit-one-module" );
+        assertNoException( r );
+        assertMessageLogged( r, "Class file processing successful.", Project.MSG_INFO );
+        assertMessageNotLogged( r, "Module 'JOMC Ant Tasks Tests' not found." );
+    }
+
+    @Test
+    public final void testCommitOneSpecificationWithNoopStylesheet() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-commit-one-specification-with-no-op-stylesheet" );
+        assertNoException( r );
+        assertMessageLogged( r, "Class file processing successful.", Project.MSG_INFO );
+        assertMessageNotLogged( r, "Specification 'org.jomc.ant.JomcTask' not found." );
+    }
+
+    @Test
+    public final void testCommitOneImplementationWithNoopStylesheet() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-commit-one-implementation-with-no-op-stylesheet" );
+        assertNoException( r );
+        assertMessageLogged( r, "Class file processing successful.", Project.MSG_INFO );
+        assertMessageNotLogged( r, "Implementation 'org.jomc.ant.JomcToolTask' not found." );
+    }
+
+    @Test
+    public final void testCommitOneModuleWithNoopStylesheet() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-commit-one-module-with-no-op-stylesheet" );
+        assertNoException( r );
+        assertMessageLogged( r, "Class file processing successful.", Project.MSG_INFO );
+        assertMessageNotLogged( r, "Module 'JOMC Ant Tasks Tests' not found." );
+    }
+
+    @Test
+    public final void testCommitAntTasksWithClasspathref() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-commit-ant-tasks-with-classpathref" );
+        assertNoException( r );
+        assertMessageLogged( r, "Class file processing successful.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testCommitAntTasksWithNestedClasspath() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-commit-ant-tasks-with-nested-classpath" );
+        assertNoException( r );
+        assertMessageLogged( r, "Class file processing successful.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testCommitAntTasksAllAttributes() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-commit-ant-tasks-all-attributes" );
+        assertNoException( r );
+        assertMessageLogged( r, "Class file processing successful.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testCommitAntTasksBrokenModel() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-commit-ant-tasks-broken-model" );
+        assertException( r, ClassProcessingException.class );
     }
 
 }

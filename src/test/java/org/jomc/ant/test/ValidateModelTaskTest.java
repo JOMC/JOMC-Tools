@@ -32,7 +32,14 @@
  */
 package org.jomc.ant.test;
 
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
 import org.jomc.ant.ValidateModelTask;
+import org.junit.Test;
+import static org.jomc.ant.test.Assert.assertException;
+import static org.jomc.ant.test.Assert.assertExceptionMessage;
+import static org.jomc.ant.test.Assert.assertMessageLogged;
+import static org.jomc.ant.test.Assert.assertNoException;
 
 /**
  * Test cases for class {@code org.jomc.ant.ValidateModelTask}.
@@ -40,7 +47,7 @@ import org.jomc.ant.ValidateModelTask;
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public final class ValidateModelTaskTest extends JomcModelTaskTest
+public class ValidateModelTaskTest extends JomcModelTaskTest
 {
 
     /** Creates a new {@code ValidateModelTaskTest} instance. */
@@ -49,56 +56,16 @@ public final class ValidateModelTaskTest extends JomcModelTaskTest
         super();
     }
 
-    /**
-     * Creates a new {@code ValidateModelTaskTest} instance taking a name.
-     *
-     * @param name The name of the instance.
-     */
-    public ValidateModelTaskTest( final String name )
-    {
-        super( name );
-    }
-
-    /**
-     * Gets the {@code ValidateModelTask} tests are performed with.
-     *
-     * @return The {@code ValidateModelTask} tests are performed with.
-     *
-     * @see #createJomcTask()
-     */
+    /** {@inheritDoc} */
     @Override
     public ValidateModelTask getJomcTask()
     {
         return (ValidateModelTask) super.getJomcTask();
     }
 
-    public void testValidateModel() throws Exception
-    {
-        this.expectLogContaining( "test-validate-model", "Model validation successful." );
-    }
-
-    public void testValidateModelWithRedundantResources() throws Exception
-    {
-        this.expectLogContaining( "test-validate-model-with-redundant-resources", "Model validation successful." );
-    }
-
-    public void testValidateModelWithBrokenModel() throws Exception
-    {
-        this.expectSpecificBuildException( "test-validate-model-with-broken-model",
-                                           "the \"validate-model\" task points to invalid module resources.",
-                                           "Model validation failure." );
-
-    }
-
-    /**
-     * Creates a new {@code ValidateModelTask} instance tests are performed with.
-     *
-     * @return A new {@code ValidateModelTask} instance tests are performed with.
-     *
-     * @see #getJomcTask()
-     */
+    /** {@inheritDoc} */
     @Override
-    protected ValidateModelTask createJomcTask()
+    protected ValidateModelTask newJomcTask()
     {
         return new ValidateModelTask();
     }
@@ -108,6 +75,30 @@ public final class ValidateModelTaskTest extends JomcModelTaskTest
     protected String getBuildFileName()
     {
         return "validate-model-test.xml";
+    }
+
+    @Test
+    public final void testValidateModel() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-validate-model" );
+        assertNoException( r );
+        assertMessageLogged( r, "Model validation successful.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testValidateModelWithRedundantResources() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-validate-model-with-redundant-resources" );
+        assertNoException( r );
+        assertMessageLogged( r, "Model validation successful.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testValidateModelWithBrokenModel() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-validate-model-with-broken-model" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Model validation failure." );
     }
 
 }

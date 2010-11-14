@@ -32,7 +32,17 @@
  */
 package org.jomc.ant.test;
 
+import org.jomc.ant.SourceProcessingException;
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.BuildException;
 import org.jomc.ant.ManageSourcesTask;
+import org.junit.Test;
+import static org.jomc.ant.test.Assert.assertException;
+import static org.jomc.ant.test.Assert.assertExceptionMessage;
+import static org.jomc.ant.test.Assert.assertExceptionMessageContaining;
+import static org.jomc.ant.test.Assert.assertMessageLogged;
+import static org.jomc.ant.test.Assert.assertMessageNotLogged;
+import static org.jomc.ant.test.Assert.assertNoException;
 
 /**
  * Test cases for class {@code org.jomc.ant.ManageSourcesTask}.
@@ -40,7 +50,7 @@ import org.jomc.ant.ManageSourcesTask;
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public final class ManageSourcesTaskTest extends SourceFileProcessorTaskTest
+public class ManageSourcesTaskTest extends SourceFileProcessorTaskTest
 {
 
     /** Creates a new {@code ManageSourcesTaskTest} instance. */
@@ -49,145 +59,16 @@ public final class ManageSourcesTaskTest extends SourceFileProcessorTaskTest
         super();
     }
 
-    /**
-     * Creates a new {@code ManageSourcesTaskTest} instance taking a name.
-     *
-     * @param name The name of the instance.
-     */
-    public ManageSourcesTaskTest( final String name )
-    {
-        super( name );
-    }
-
-    /**
-     * Gets the {@code ManageSourcesTask} tests are performed with.
-     *
-     * @return The {@code ManageSourcesTask} tests are performed with.
-     *
-     * @see #createJomcTask()
-     */
+    /** {@inheritDoc} */
     @Override
     public ManageSourcesTask getJomcTask()
     {
         return (ManageSourcesTask) super.getJomcTask();
     }
 
-    public void testMissingSourcesDirectory() throws Exception
-    {
-        this.expectSpecificBuildException(
-            "test-missing-sources-directory",
-            "the \"manage-sources\" task is missing the mandatory \"sourcesDirectory\" attribute",
-            "Mandatory attribute 'sourcesDirectory' is missing a value." );
-
-    }
-
-    public void testNonExistentSourcesDirectory() throws Exception
-    {
-        this.expectBuildExceptionContaining(
-            "test-non-existing-sources-directory",
-            "the \"sourcesDirectory\" attribute of the \"manage-sources\" task specifies a non-existent directory",
-            "DOES_NOT_EXIST" );
-
-    }
-
-    public void testSpecificationNotFound() throws Exception
-    {
-        this.expectLogContaining( "test-specification-not-found",
-                                  "Specification 'DOES NOT EXIST' not found." );
-
-    }
-
-    public void testImplementationNotFound() throws Exception
-    {
-        this.expectLogContaining( "test-implementation-not-found",
-                                  "Implementation 'DOES NOT EXIST' not found." );
-
-    }
-
-    public void testModuleNotFound() throws Exception
-    {
-        this.expectLogContaining( "test-module-not-found",
-                                  "Module 'DOES NOT EXIST' not found." );
-
-    }
-
-    public void testSourceProcessingDisabled() throws Exception
-    {
-        this.expectLogContaining( "test-source-processing-disabled", "Source file processing disabled." );
-    }
-
-    public void testManageAntTaskSources() throws Exception
-    {
-        this.expectLogContaining( "test-manage-ant-task-sources", "Source file processing successful." );
-    }
-
-    public void testManageAntTaskSourcesWithRedundantResources() throws Exception
-    {
-        this.expectLogContaining( "test-manage-ant-task-sources-with-redundant-resources",
-                                  "Source file processing successful." );
-
-    }
-
-    public void testManageOneSpecification() throws Exception
-    {
-        this.expectLogNotContaining( "test-manage-one-specification",
-                                     "Specification 'org.jomc.ant.JomcTask' not found." );
-
-    }
-
-    public void testManageOneImplementation() throws Exception
-    {
-        this.expectLogNotContaining( "test-manage-one-implementation",
-                                     "Implementation 'org.jomc.ant.JomcToolTask' not found." );
-
-    }
-
-    public void testManageOneModule() throws Exception
-    {
-        this.expectLogNotContaining( "test-manage-one-module",
-                                     "Module 'JOMC Ant Tasks Tests' not found." );
-
-    }
-
-    public void testManageAntTaskSourcesWithClasspathref() throws Exception
-    {
-        this.expectLogContaining( "test-manage-ant-task-sources-with-classpathref",
-                                  "Source file processing successful." );
-
-    }
-
-    public void testManageAntTaskSourcesWithNestedClasspath() throws Exception
-    {
-        this.expectLogContaining( "test-manage-ant-task-sources-with-nested-classpath",
-                                  "Source file processing successful." );
-
-    }
-
-    public void testManageAntTaskSourcesAllAttributes() throws Exception
-    {
-        this.expectLogContaining( "test-manage-ant-task-sources-all-attributes",
-                                  "Source file processing successful." );
-
-    }
-
-    public void testManageAntTaskSourcesBrokenModel() throws Exception
-    {
-        this.expectSpecificBuildException(
-            "test-manage-ant-task-sources-broken-model",
-            "the \"moduleLocation\" attribute of the \"manage-sources\" task points to broken test model resources",
-            "Source file processing failure." );
-
-    }
-
-    /**
-     * Creates a new {@code ManageSourcesTask} instance tests are performed with.
-     *
-     * @return A new {@code ManageSourcesTask} instance tests are performed with.
-     *
-     * @see #getJomcTask()
-     */
+    /** {@inheritDoc} */
     @Override
-    protected ManageSourcesTask createJomcTask()
+    protected ManageSourcesTask newJomcTask()
     {
         return new ManageSourcesTask();
     }
@@ -197,6 +78,125 @@ public final class ManageSourcesTaskTest extends SourceFileProcessorTaskTest
     protected String getBuildFileName()
     {
         return "manage-sources-test.xml";
+    }
+
+    @Test
+    public final void testMissingSourcesDirectory() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-missing-sources-directory" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'sourcesDirectory' is missing a value." );
+    }
+
+    @Test
+    public final void testNonExistentSourcesDirectory() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-non-existing-sources-directory" );
+        assertException( r, BuildException.class );
+        assertExceptionMessageContaining( r, "DOES_NOT_EXIST" );
+    }
+
+    @Test
+    public final void testSpecificationNotFound() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-specification-not-found" );
+        assertNoException( r );
+        assertMessageLogged( r, "Specification 'DOES NOT EXIST' not found.", Project.MSG_WARN );
+    }
+
+    @Test
+    public final void testImplementationNotFound() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-implementation-not-found" );
+        assertNoException( r );
+        assertMessageLogged( r, "Implementation 'DOES NOT EXIST' not found.", Project.MSG_WARN );
+    }
+
+    @Test
+    public final void testModuleNotFound() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-module-not-found" );
+        assertNoException( r );
+        assertMessageLogged( r, "Module 'DOES NOT EXIST' not found.", Project.MSG_WARN );
+    }
+
+    @Test
+    public final void testSourceProcessingDisabled() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-source-processing-disabled" );
+        assertNoException( r );
+        assertMessageLogged( r, "Source file processing disabled.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testManageAntTaskSources() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-manage-ant-task-sources" );
+        assertNoException( r );
+        assertMessageLogged( r, "Source file processing successful.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testManageAntTaskSourcesWithRedundantResources() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-manage-ant-task-sources-with-redundant-resources" );
+        assertNoException( r );
+        assertMessageLogged( r, "Source file processing successful.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testManageOneSpecification() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-manage-one-specification" );
+        assertNoException( r );
+        assertMessageNotLogged( r, "Specification 'org.jomc.ant.JomcTask' not found." );
+    }
+
+    @Test
+    public final void testManageOneImplementation() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-manage-one-implementation" );
+        assertNoException( r );
+        assertMessageNotLogged( r, "Implementation 'org.jomc.ant.JomcToolTask' not found." );
+    }
+
+    @Test
+    public final void testManageOneModule() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-manage-one-module" );
+        assertNoException( r );
+        assertMessageNotLogged( r, "Module 'JOMC Ant Tasks Tests' not found." );
+    }
+
+    @Test
+    public final void testManageAntTaskSourcesWithClasspathref() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-manage-ant-task-sources-with-classpathref" );
+        assertNoException( r );
+        assertMessageLogged( r, "Source file processing successful.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testManageAntTaskSourcesWithNestedClasspath() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-manage-ant-task-sources-with-nested-classpath" );
+        assertNoException( r );
+        assertMessageLogged( r, "Source file processing successful.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testManageAntTaskSourcesAllAttributes() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-manage-ant-task-sources-all-attributes" );
+        assertNoException( r );
+        assertMessageLogged( r, "Source file processing successful.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testManageAntTaskSourcesBrokenModel() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-manage-ant-task-sources-broken-model" );
+        assertException( r, SourceProcessingException.class );
     }
 
 }

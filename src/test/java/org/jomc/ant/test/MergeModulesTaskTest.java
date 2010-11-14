@@ -32,8 +32,18 @@
  */
 package org.jomc.ant.test;
 
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.BuildException;
+import org.junit.Test;
 import org.jomc.ant.MergeModulesTask;
-import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+import static org.jomc.ant.test.Assert.assertException;
+import static org.jomc.ant.test.Assert.assertExceptionMessage;
+import static org.jomc.ant.test.Assert.assertExceptionMessageContaining;
+import static org.jomc.ant.test.Assert.assertMessageLogged;
+import static org.jomc.ant.test.Assert.assertMessageLoggedContaining;
+import static org.jomc.ant.test.Assert.assertNoException;
 
 /**
  * Test cases for class {@code org.jomc.ant.MergeModulesTask}.
@@ -41,7 +51,7 @@ import static junit.framework.Assert.assertNotNull;
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public final class MergeModulesTaskTest extends JomcModelTaskTest
+public class MergeModulesTaskTest extends JomcModelTaskTest
 {
 
     /** Creates a new {@code MergeModulesTaskTest} instance. */
@@ -50,106 +60,119 @@ public final class MergeModulesTaskTest extends JomcModelTaskTest
         super();
     }
 
-    /**
-     * Creates a new {@code MergeModulesTaskTest} instance taking a name.
-     *
-     * @param name The name of the instance.
-     */
-    public MergeModulesTaskTest( final String name )
-    {
-        super( name );
-    }
-
-    /**
-     * Gets the {@code MergeModulesTask} tests are performed with.
-     *
-     * @return The {@code MergeModulesTask} tests are performed with.
-     *
-     * @see #createJomcTask()
-     */
+    /** {@inheritDoc} */
     @Override
     public MergeModulesTask getJomcTask()
     {
         return (MergeModulesTask) super.getJomcTask();
     }
 
-    public void testMissingModuleFile() throws Exception
+    /** {@inheritDoc} */
+    @Override
+    protected MergeModulesTask newJomcTask()
     {
-        this.expectSpecificBuildException(
-            "test-missing-module-file",
-            "the \"merge-modules\" task is missing the mandatory \"moduleFile\" attribute",
-            "Mandatory attribute 'moduleFile' is missing a value." );
-
+        return new MergeModulesTask();
     }
 
-    public void testMissingModuleName() throws Exception
+    /** {@inheritDoc} */
+    @Override
+    protected String getBuildFileName()
     {
-        this.expectSpecificBuildException(
-            "test-missing-module-name",
-            "the \"merge-modules\" task is missing the mandatory \"moduleName\" attribute",
-            "Mandatory attribute 'moduleName' is missing a value." );
-
+        return "merge-modules-test.xml";
     }
 
-    public void testExclusionMissingModuleName() throws Exception
+    @Test
+    public final void testMissingModuleFile() throws Exception
     {
-        this.expectSpecificBuildException(
-            "test-exclusion-missing-module-name",
-            "the \"moduleExclude\" element of the \"merge-modules\" task is missing the mandatory \"name\" attribute",
-            "Mandatory attribute 'name' is missing a value." );
-
+        final AntExecutionResult r = this.executeTarget( "test-missing-module-file" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'moduleFile' is missing a value." );
     }
 
-    public void testInclusionMissingModuleName() throws Exception
+    @Test
+    public final void testMissingModuleName() throws Exception
     {
-        this.expectSpecificBuildException(
-            "test-inclusion-missing-module-name",
-            "the \"moduleInclude\" element of the \"merge-modules\" task is missing the mandatory \"name\" attribute",
-            "Mandatory attribute 'name' is missing a value." );
-
+        final AntExecutionResult r = this.executeTarget( "test-missing-module-name" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'moduleName' is missing a value." );
     }
 
-    public void testMergeModules() throws Exception
+    @Test
+    public final void testExclusionMissingModuleName() throws Exception
     {
-        this.expectLogContaining( "test-merge-modules", "Writing" );
+        final AntExecutionResult r = this.executeTarget( "test-exclusion-missing-module-name" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'name' is missing a value." );
     }
 
-    public void testMergeModulesWithNoopStylesheet() throws Exception
+    @Test
+    public final void testInclusionMissingModuleName() throws Exception
     {
-        this.expectLogContaining( "test-merge-modules-with-no-op-stylesheet", "Writing" );
+        final AntExecutionResult r = this.executeTarget( "test-inclusion-missing-module-name" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'name' is missing a value." );
     }
 
-    public void testMergeModulesWithRedundantResources() throws Exception
+    @Test
+    public final void testMergeModules() throws Exception
     {
-        this.expectLogContaining( "test-merge-modules-with-redundant-resources", "Writing" );
+        final AntExecutionResult r = this.executeTarget( "test-merge-modules" );
+        assertNoException( r );
+        assertMessageLoggedContaining( r, "Writing", Project.MSG_INFO );
     }
 
-    public void testMergeModulesWithIllegalTransformationResultStylesheet() throws Exception
+    @Test
+    public final void testMergeModulesWithNoopStylesheet() throws Exception
     {
-        this.expectBuildExceptionContaining(
-            "test-merge-modules-with-illegal-transformation-result-stylesheet",
-            "the \"modelObjectStylesheet\" attribute of the \"merge-modules\" task points to a stylesheet"
-            + " producing an illegal transformation result",
-            "Illegal transformation result" );
-
+        final AntExecutionResult r = this.executeTarget( "test-merge-modules-with-no-op-stylesheet" );
+        assertNoException( r );
+        assertMessageLoggedContaining( r, "Writing", Project.MSG_INFO );
     }
 
-    public void testMergeModulesExclusion() throws Exception
+    @Test
+    public final void testMergeModulesWithRedundantResources() throws Exception
     {
-        this.expectLogContaining( "test-merge-modules-exclusion", "Excluding module 'JOMC Ant Tasks Tests'." );
+        final AntExecutionResult r = this.executeTarget( "test-merge-modules-with-redundant-resources" );
+        assertNoException( r );
+        assertMessageLoggedContaining( r, "Writing", Project.MSG_INFO );
     }
 
-    public void testMergeModulesInclusion() throws Exception
+    @Test
+    public final void testMergeModulesWithIllegalTransformationResultStylesheet() throws Exception
     {
-        this.expectLogContaining( "test-merge-modules-inclusion", "Including module 'JOMC Ant Tasks Tests'." );
+        final AntExecutionResult r =
+            this.executeTarget( "test-merge-modules-with-illegal-transformation-result-stylesheet" );
+
+        assertException( r, BuildException.class );
+        assertExceptionMessageContaining( r, "Illegal transformation result" );
     }
 
-    public void testMergeModulesAllAttributes() throws Exception
+    @Test
+    public final void testMergeModulesExclusion() throws Exception
     {
-        this.expectLogContaining( "test-merge-modules-all-attributes", "Writing" );
+        final AntExecutionResult r = this.executeTarget( "test-merge-modules-exclusion" );
+        assertNoException( r );
+        assertMessageLogged( r, "Excluding module 'JOMC Ant Tasks Tests'.", Project.MSG_INFO );
     }
 
-    public void testIsModuleExcluded() throws Exception
+    @Test
+    public final void testMergeModulesInclusion() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-merge-modules-inclusion" );
+        assertNoException( r );
+        assertMessageLogged( r, "Including module 'JOMC Ant Tasks Tests'.", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testMergeModulesAllAttributes() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-merge-modules-all-attributes" );
+        assertNoException( r );
+        assertMessageLoggedContaining( r, "Writing", Project.MSG_INFO );
+    }
+
+    @Test
+    public final void testIsModuleExcluded() throws Exception
     {
         try
         {
@@ -163,7 +186,8 @@ public final class MergeModulesTaskTest extends JomcModelTaskTest
         }
     }
 
-    public void testIsModuleIncluded() throws Exception
+    @Test
+    public final void testIsModuleIncluded() throws Exception
     {
         try
         {
@@ -175,26 +199,6 @@ public final class MergeModulesTaskTest extends JomcModelTaskTest
             assertNotNull( e.getMessage() );
             System.out.println( e );
         }
-    }
-
-    /**
-     * Creates a new {@code MergeModulesTask} instance tests are performed with.
-     *
-     * @return A new {@code MergeModulesTask} instance tests are performed with.
-     *
-     * @see #getJomcTask()
-     */
-    @Override
-    protected MergeModulesTask createJomcTask()
-    {
-        return new MergeModulesTask();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected String getBuildFileName()
-    {
-        return "merge-modules-test.xml";
     }
 
 }

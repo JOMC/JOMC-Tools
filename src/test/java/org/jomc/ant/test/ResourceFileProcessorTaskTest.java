@@ -49,38 +49,16 @@ public class ResourceFileProcessorTaskTest extends JomcToolTaskTest
         super();
     }
 
-    /**
-     * Creates a new {@code ResourceFileProcessorTaskTest} instance taking a name.
-     *
-     * @param name The name of the instance.
-     */
-    public ResourceFileProcessorTaskTest( final String name )
-    {
-        super( name );
-    }
-
-    /**
-     * Gets the {@code ResourceFileProcessorTask} tests are performed with.
-     *
-     * @return The {@code ResourceFileProcessorTask} tests are performed with.
-     *
-     * @see #createJomcTask()
-     */
+    /** {@inheritDoc} */
     @Override
     public ResourceFileProcessorTask getJomcTask()
     {
         return (ResourceFileProcessorTask) super.getJomcTask();
     }
 
-    /**
-     * Creates a new {@code ResourceFileProcessorTask} instance tests are performed with.
-     *
-     * @return A new {@code ResourceFileProcessorTask} instance tests are performed with.
-     *
-     * @see #getJomcTask()
-     */
+    /** {@inheritDoc} */
     @Override
-    protected ResourceFileProcessorTask createJomcTask()
+    protected ResourceFileProcessorTask newJomcTask()
     {
         return new ResourceFileProcessorTask();
     }
