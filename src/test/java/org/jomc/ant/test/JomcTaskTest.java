@@ -225,7 +225,7 @@ public class JomcTaskTest
             this.getAntExecutor().executeAnt( new AntExecutionRequest( this.getProject(), target ) );
 
         System.out.println( "======================================================================" );
-        System.out.println( "Target: target:" );
+        System.out.println( "Target: " + target );
         System.out.println( "======================================================================" );
         System.out.println( "System output:" );
         System.out.println( r.getSystemOutput() );
