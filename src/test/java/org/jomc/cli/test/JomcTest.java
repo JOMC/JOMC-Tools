@@ -36,12 +36,13 @@
 // SECTION-END
 package org.jomc.cli.test;
 
+import org.junit.Before;
+import org.junit.Test;
 import java.io.File;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
-import junit.framework.TestCase;
 import org.apache.commons.io.FileUtils;
 import org.jomc.ObjectManagerFactory;
 import org.jomc.cli.Command;
@@ -51,8 +52,10 @@ import org.jomc.model.Module;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.Modlet;
 import org.jomc.modlet.ModletObject;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 // SECTION-START[Documentation]
 // <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
@@ -128,16 +131,18 @@ import static junit.framework.Assert.assertNull;
 @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
 // </editor-fold>
 // SECTION-END
-public class JomcTest extends TestCase
+public class JomcTest
 {
     // SECTION-START[JomcTest]
 
-    public void testNoArguments() throws Exception
+    @Test
+    public final void testNoArguments() throws Exception
     {
         assertEquals( Command.STATUS_FAILURE, Jomc.run( new String[ 0 ] ) );
     }
 
-    public void testGenerateResources() throws Exception
+    @Test
+    public final void testGenerateResources() throws Exception
     {
         final File testResourcesDirectory = new File( this.getTestResourcesDirectory() );
         assertTrue( testResourcesDirectory.isAbsolute() );
@@ -178,7 +183,8 @@ public class JomcTest extends TestCase
         assertEquals( Command.STATUS_FAILURE, Jomc.run( failOnWarnings ) );
     }
 
-    public void testManageSources() throws Exception
+    @Test
+    public final void testManageSources() throws Exception
     {
         final File testSourcesDirectory = new File( this.getTestSourcesDirectory() );
         assertTrue( testSourcesDirectory.isAbsolute() );
@@ -220,7 +226,8 @@ public class JomcTest extends TestCase
         assertEquals( Command.STATUS_FAILURE, Jomc.run( failOnWarnings ) );
     }
 
-    public void testCommitValidateClasses() throws Exception
+    @Test
+    public final void testCommitValidateClasses() throws Exception
     {
         final File testClassesDirectory = new File( this.getTestClassesDirectory() );
         assertTrue( testClassesDirectory.isAbsolute() );
@@ -306,7 +313,8 @@ public class JomcTest extends TestCase
         assertEquals( Command.STATUS_FAILURE, Jomc.run( validateArgsNonExistentClasses ) );
     }
 
-    public void testMergeModules() throws Exception
+    @Test
+    public final void testMergeModules() throws Exception
     {
         final ModelContext context = ModelContext.createModelContext( this.getClass().getClassLoader() );
         final Unmarshaller unmarshaller = context.createUnmarshaller( ModelObject.MODEL_PUBLIC_ID );
@@ -379,7 +387,8 @@ public class JomcTest extends TestCase
         assertEquals( Command.STATUS_FAILURE, Jomc.run( illegalDoc ) );
     }
 
-    public void testValidateModel() throws Exception
+    @Test
+    public final void testValidateModel() throws Exception
     {
         final String[] help = new String[]
         {
@@ -407,7 +416,8 @@ public class JomcTest extends TestCase
         assertEquals( Command.STATUS_FAILURE, Jomc.run( illegalDoc ) );
     }
 
-    public void testMergeModlets() throws Exception
+    @Test
+    public final void testMergeModlets() throws Exception
     {
         final ModelContext context = ModelContext.createModelContext( this.getClass().getClassLoader() );
         final Unmarshaller unmarshaller = context.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
@@ -488,7 +498,8 @@ public class JomcTest extends TestCase
         assertNull( merged.getServices() );
     }
 
-    public void testShowModel() throws Exception
+    @Test
+    public final void testShowModel() throws Exception
     {
         final String[] help = new String[]
         {
@@ -557,8 +568,8 @@ public class JomcTest extends TestCase
         assertEquals( Command.STATUS_FAILURE, Jomc.run( unsupportedOption ) );
     }
 
-    @Override
-    protected void setUp()
+    @Before
+    public void setUp()
     {
         // Ensures the singleton is initialized prior to class Jomc switching resource locations.
         ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() );
