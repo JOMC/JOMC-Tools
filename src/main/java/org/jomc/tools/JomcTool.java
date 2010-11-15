@@ -86,7 +86,7 @@ import org.jomc.modlet.Model;
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public abstract class JomcTool
+public class JomcTool
 {
 
     /** Listener interface. */

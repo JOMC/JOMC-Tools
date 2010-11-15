@@ -67,6 +67,9 @@
       <code>org.jomc.tools.JomcTool</code> to initialize the modules of the instance if the model of the instance does
       not hold modules.]]>
       </action>
+      <action dev="schulte2005" type="update"><![CDATA[Removed <code>abstract</code> modifier of class
+      <code>org.jomc.tools.JomcTool</code>.]]>
+      </action>
     </release>
   </body>
 </document>

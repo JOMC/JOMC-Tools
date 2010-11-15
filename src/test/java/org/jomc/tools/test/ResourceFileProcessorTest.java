@@ -58,22 +58,21 @@ public class ResourceFileProcessorTest extends JomcToolTest
     /** Serial number of the test resources directory. */
     private int testResourcesId;
 
-    /** The {@code ResourceFileProcessor} instance tests are performed with. */
-    private ResourceFileProcessor testTool;
-
     /** Properties backing the instance. */
     private Properties testProperties;
 
+    /** {@inheritDoc} */
     @Override
-    public ResourceFileProcessor getTestTool() throws IOException
+    public ResourceFileProcessor getJomcTool()
     {
-        if ( this.testTool == null )
-        {
-            this.testTool = new ResourceFileProcessor();
-            this.testTool.setModel( this.getTestModel() );
-        }
+        return (ResourceFileProcessor) super.getJomcTool();
+    }
 
-        return this.testTool;
+    /** {@inheritDoc} */
+    @Override
+    protected ResourceFileProcessor newJomcTool()
+    {
+        return new ResourceFileProcessor();
     }
 
     /**
@@ -118,7 +117,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
     {
         try
         {
-            this.getTestTool().getResourceBundleResources( (Specification) null );
+            this.getJomcTool().getResourceBundleResources( (Specification) null );
             fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -128,7 +127,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().getResourceBundleResources( (Implementation) null );
+            this.getJomcTool().getResourceBundleResources( (Implementation) null );
             fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -138,7 +137,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().writeResourceBundleResourceFiles( null );
+            this.getJomcTool().writeResourceBundleResourceFiles( null );
             fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -148,7 +147,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().writeResourceBundleResourceFiles( (Module) null, new File( "/" ) );
+            this.getJomcTool().writeResourceBundleResourceFiles( (Module) null, new File( "/" ) );
             fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -158,7 +157,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().writeResourceBundleResourceFiles( new Module(), null );
+            this.getJomcTool().writeResourceBundleResourceFiles( new Module(), null );
             fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -168,7 +167,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().writeResourceBundleResourceFiles( (Specification) null, new File( "/" ) );
+            this.getJomcTool().writeResourceBundleResourceFiles( (Specification) null, new File( "/" ) );
             fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -178,7 +177,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().writeResourceBundleResourceFiles( new Specification(), null );
+            this.getJomcTool().writeResourceBundleResourceFiles( new Specification(), null );
             fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -188,7 +187,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().writeResourceBundleResourceFiles( (Implementation) null, new File( "/" ) );
+            this.getJomcTool().writeResourceBundleResourceFiles( (Implementation) null, new File( "/" ) );
             fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -198,7 +197,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().writeResourceBundleResourceFiles( new Implementation(), null );
+            this.getJomcTool().writeResourceBundleResourceFiles( new Implementation(), null );
             fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -210,21 +209,21 @@ public class ResourceFileProcessorTest extends JomcToolTest
     @Test
     public final void testResourceFileProcessorNotNull() throws Exception
     {
-        assertNotNull( this.getTestTool().getResourceBundleDefaultLocale() );
-        assertNotNull( this.getTestTool().getResourceBundleResources(
-            this.getTestTool().getModules().getSpecification( "Specification" ) ) );
+        assertNotNull( this.getJomcTool().getResourceBundleDefaultLocale() );
+        assertNotNull( this.getJomcTool().getResourceBundleResources(
+            this.getJomcTool().getModules().getSpecification( "Specification" ) ) );
 
-        assertNotNull( this.getTestTool().getResourceBundleResources(
-            this.getTestTool().getModules().getImplementation( "Implementation" ) ) );
+        assertNotNull( this.getJomcTool().getResourceBundleResources(
+            this.getJomcTool().getModules().getImplementation( "Implementation" ) ) );
 
     }
 
     @Test
     public final void testResourceBundleDefaultLocale() throws Exception
     {
-        this.getTestTool().setResourceBundleDefaultLocale( null );
-        assertNotNull( this.getTestTool().getResourceBundleDefaultLocale() );
-        this.getTestTool().setResourceBundleDefaultLocale( null );
+        this.getJomcTool().setResourceBundleDefaultLocale( null );
+        assertNotNull( this.getJomcTool().getResourceBundleDefaultLocale() );
+        this.getJomcTool().setResourceBundleDefaultLocale( null );
     }
 
     @Test
@@ -238,7 +237,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().writeResourceBundleResourceFiles( nonExistentDirectory );
+            this.getJomcTool().writeResourceBundleResourceFiles( nonExistentDirectory );
             fail( "Expected IOException not thrown." );
         }
         catch ( final IOException e )
@@ -249,21 +248,8 @@ public class ResourceFileProcessorTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().writeResourceBundleResourceFiles(
-                this.getTestTool().getModules().getModule( "Module" ), nonExistentDirectory );
-
-            fail( "Expected IOException not thrown." );
-        }
-        catch ( final IOException e )
-        {
-            assertNotNull( e.getMessage() );
-            System.out.println( e );
-        }
-
-        try
-        {
-            this.getTestTool().writeResourceBundleResourceFiles(
-                this.getTestTool().getModules().getSpecification( "Specification" ), nonExistentDirectory );
+            this.getJomcTool().writeResourceBundleResourceFiles(
+                this.getJomcTool().getModules().getModule( "Module" ), nonExistentDirectory );
 
             fail( "Expected IOException not thrown." );
         }
@@ -275,8 +261,21 @@ public class ResourceFileProcessorTest extends JomcToolTest
 
         try
         {
-            this.getTestTool().writeResourceBundleResourceFiles(
-                this.getTestTool().getModules().getImplementation( "Implementation" ), nonExistentDirectory );
+            this.getJomcTool().writeResourceBundleResourceFiles(
+                this.getJomcTool().getModules().getSpecification( "Specification" ), nonExistentDirectory );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getJomcTool().writeResourceBundleResourceFiles(
+                this.getJomcTool().getModules().getImplementation( "Implementation" ), nonExistentDirectory );
 
             fail( "Expected IOException not thrown." );
         }
@@ -288,22 +287,22 @@ public class ResourceFileProcessorTest extends JomcToolTest
 
         File resourcesDirectory = this.getTestResourcesDirectory();
         assertTrue( resourcesDirectory.mkdirs() );
-        this.getTestTool().writeResourceBundleResourceFiles( resourcesDirectory );
+        this.getJomcTool().writeResourceBundleResourceFiles( resourcesDirectory );
 
         resourcesDirectory = this.getTestResourcesDirectory();
         assertTrue( resourcesDirectory.mkdirs() );
-        this.getTestTool().writeResourceBundleResourceFiles(
-            this.getTestTool().getModules().getModule( "Module" ), resourcesDirectory );
+        this.getJomcTool().writeResourceBundleResourceFiles(
+            this.getJomcTool().getModules().getModule( "Module" ), resourcesDirectory );
 
         resourcesDirectory = this.getTestResourcesDirectory();
         assertTrue( resourcesDirectory.mkdirs() );
-        this.getTestTool().writeResourceBundleResourceFiles(
-            this.getTestTool().getModules().getSpecification( "Specification" ), resourcesDirectory );
+        this.getJomcTool().writeResourceBundleResourceFiles(
+            this.getJomcTool().getModules().getSpecification( "Specification" ), resourcesDirectory );
 
         resourcesDirectory = this.getTestResourcesDirectory();
         assertTrue( resourcesDirectory.mkdirs() );
-        this.getTestTool().writeResourceBundleResourceFiles(
-            this.getTestTool().getModules().getImplementation( "Implementation" ), resourcesDirectory );
+        this.getJomcTool().writeResourceBundleResourceFiles(
+            this.getJomcTool().getModules().getImplementation( "Implementation" ), resourcesDirectory );
 
     }
 
@@ -321,7 +320,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
             System.out.println( e.toString() );
         }
 
-        new ResourceFileProcessor( this.getTestTool() );
+        new ResourceFileProcessor( this.getJomcTool() );
     }
 
 }
