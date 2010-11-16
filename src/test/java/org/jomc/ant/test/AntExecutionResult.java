@@ -120,7 +120,7 @@ public class AntExecutionResult
      */
     public final void setSystemError( final String value )
     {
-        this.systemOutput = value;
+        this.systemError = value;
     }
 
     /**
