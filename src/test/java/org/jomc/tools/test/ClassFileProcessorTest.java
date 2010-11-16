@@ -32,9 +32,13 @@
  */
 package org.jomc.tools.test;
 
+import java.io.OutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import java.net.URISyntaxException;
-import java.util.Properties;
 import javax.xml.transform.TransformerConfigurationException;
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.JavaClass;
@@ -61,7 +65,6 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
-import org.apache.commons.io.FileUtils;
 import org.jomc.model.Implementation;
 import org.jomc.model.ModelObject;
 import org.jomc.model.Module;
@@ -82,11 +85,11 @@ import static org.junit.Assert.fail;
 public class ClassFileProcessorTest extends JomcToolTest
 {
 
-    /** Serial number of the test classes directory. */
-    private int testClassesId;
-
-    /** Properties backing the instance. */
-    private Properties testProperties;
+    /** Creates a new {@code ClassFileProcessorTest} instance. */
+    public ClassFileProcessorTest()
+    {
+        super();
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -142,57 +145,24 @@ public class ClassFileProcessorTest extends JomcToolTest
     }
 
     /**
-     * Gets the directory holding compiled Java classes.
+     * Gets a directory holding class files corresponding to the model of the instance.
      *
-     * @return The directory holding compiled Java classes.
+     * @return A directory holding class files corresponding to the model of the instance.
      *
-     * @throws IOException if getting the directory fails.
+     * @see #getNextOutputDirectory()
      */
-    public File getTestClassesDirectory() throws IOException
+    public final File getNextClassesDirectory()
     {
-        final File testClassesDirectory = new File( this.getTestProperty( "testClassesDirectory" ),
-                                                    Integer.toString( this.testClassesId++ ) );
-
-        assertTrue( testClassesDirectory.isAbsolute() );
-
-        if ( testClassesDirectory.exists() )
+        try
         {
-            FileUtils.cleanDirectory( testClassesDirectory );
+            final File classesDirectory = this.getNextOutputDirectory();
+            this.unzipResource( "classfiles.zip", classesDirectory );
+            return classesDirectory;
         }
-
-        final File outputDirectory = new File( this.getTestProperty( "projectBuildOutputDirectory" ) );
-        assertTrue( outputDirectory.isAbsolute() );
-
-        FileUtils.copyDirectory( outputDirectory, testClassesDirectory );
-        return testClassesDirectory;
-    }
-
-    private String getTestProperty( final String key ) throws IOException
-    {
-        if ( this.testProperties == null )
+        catch ( final IOException e )
         {
-            this.testProperties = new java.util.Properties();
-            final InputStream in = this.getClass().getResourceAsStream( "ClassFileProcessorTest.properties" );
-            this.testProperties.load( in );
-            in.close();
+            throw new AssertionError( e );
         }
-
-        final String value = this.testProperties.getProperty( key );
-        assertNotNull( value );
-        return value;
-    }
-
-    public Transformer getTestTransformer( final String resource )
-        throws URISyntaxException, TransformerConfigurationException
-    {
-        final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        final URL url = this.getClass().getResource( resource );
-        assertNotNull( url );
-
-        final Transformer transformer =
-            transformerFactory.newTransformer( new StreamSource( url.toURI().toASCIIString() ) );
-
-        return transformer;
     }
 
     @Test
@@ -914,61 +884,41 @@ public class ClassFileProcessorTest extends JomcToolTest
     @Test
     public final void testCommitTransformValidateClasses() throws Exception
     {
-        final File nonExistentDirectory = new File( this.getTestProperty( "testClassesDirectory" ),
-                                                    Integer.toString( this.testClassesId++ ) );
+        final File nonExistentDirectory = this.getNextOutputDirectory();
+        final File emptyDirectory = this.getNextOutputDirectory();
+        assertTrue( emptyDirectory.mkdirs() );
 
-        assertTrue( nonExistentDirectory.isAbsolute() );
-
-        if ( nonExistentDirectory.exists() )
-        {
-            FileUtils.deleteDirectory( nonExistentDirectory );
-        }
-
-        final File emptyDirectory = new File( this.getTestProperty( "testClassesDirectory" ),
-                                              Integer.toString( this.testClassesId++ ) );
-
-        assertTrue( emptyDirectory.isAbsolute() );
-
-        if ( emptyDirectory.exists() )
-        {
-            FileUtils.cleanDirectory( emptyDirectory );
-        }
-        else
-        {
-            assertTrue( emptyDirectory.mkdirs() );
-        }
-
-        final File allClasses = this.getTestClassesDirectory();
+        final File allClasses = this.getNextClassesDirectory();
         final ClassLoader allClassesLoader = new URLClassLoader( new URL[]
             {
                 allClasses.toURI().toURL()
             } );
 
-        final File moduleClasses = this.getTestClassesDirectory();
+        final File moduleClasses = this.getNextClassesDirectory();
         final ClassLoader moduleClassesLoader = new URLClassLoader( new URL[]
             {
                 moduleClasses.toURI().toURL()
             } );
 
-        final File implementationClasses = this.getTestClassesDirectory();
+        final File implementationClasses = this.getNextClassesDirectory();
         final ClassLoader implementationClassesLoader = new URLClassLoader( new URL[]
             {
                 implementationClasses.toURI().toURL()
             } );
 
-        final File specificationClasses = this.getTestClassesDirectory();
+        final File specificationClasses = this.getNextClassesDirectory();
         final ClassLoader specificationClassesLoader = new URLClassLoader( new URL[]
             {
                 specificationClasses.toURI().toURL()
             } );
 
-        final File uncommittedClasses = this.getTestClassesDirectory();
+        final File uncommittedClasses = this.getNextClassesDirectory();
         final ClassLoader uncommittedClassesLoader = new URLClassLoader( new URL[]
             {
                 uncommittedClasses.toURI().toURL()
             } );
 
-        final Module m = this.getJomcTool().getModules().getModule( this.getTestProperty( "projectName" ) );
+        final Module m = this.getJomcTool().getModules().getModule( "JOMC Tools" );
         final Specification s = this.getJomcTool().getModules().getSpecification( "org.jomc.tools.ClassFileProcessor" );
         final Implementation i =
             this.getJomcTool().getModules().getImplementation( "org.jomc.tools.ClassFileProcessor" );
@@ -979,32 +929,32 @@ public class ClassFileProcessorTest extends JomcToolTest
 
         final List<Transformer> transformers = Arrays.asList( new Transformer[]
             {
-                this.getTestTransformer( "no-op.xsl" )
+                this.getTransformer( "no-op.xsl" )
             } );
 
         final List<Transformer> illegalSpecificationTransformers = Arrays.asList( new Transformer[]
             {
-                this.getTestTransformer( "illegal-specification-transformation.xsl" )
+                this.getTransformer( "illegal-specification-transformation.xsl" )
             } );
 
         final List<Transformer> illegalSpecificationsTransformers = Arrays.asList( new Transformer[]
             {
-                this.getTestTransformer( "illegal-specifications-transformation.xsl" )
+                this.getTransformer( "illegal-specifications-transformation.xsl" )
             } );
 
         final List<Transformer> illegalDependenciesTransformers = Arrays.asList( new Transformer[]
             {
-                this.getTestTransformer( "illegal-dependencies-transformation.xsl" )
+                this.getTransformer( "illegal-dependencies-transformation.xsl" )
             } );
 
         final List<Transformer> illegalMessagesTransformers = Arrays.asList( new Transformer[]
             {
-                this.getTestTransformer( "illegal-messages-transformation.xsl" )
+                this.getTransformer( "illegal-messages-transformation.xsl" )
             } );
 
         final List<Transformer> illegalPropertiesTransformers = Arrays.asList( new Transformer[]
             {
-                this.getTestTransformer( "illegal-properties-transformation.xsl" )
+                this.getTransformer( "illegal-properties-transformation.xsl" )
             } );
 
         try
@@ -1469,7 +1419,7 @@ public class ClassFileProcessorTest extends JomcToolTest
         final Model model = this.getJomcTool().getModel();
         final Model copy = new Model( model );
         final Modules modules = ModelHelper.getModules( copy );
-        final Module testModule = modules.getModule( this.getTestProperty( "projectName" ) );
+        final Module testModule = modules.getModule( "JOMC Tools" );
         assertNotNull( testModule );
 
         final Specification classFileProcessor =
@@ -1729,6 +1679,55 @@ public class ClassFileProcessorTest extends JomcToolTest
         }
 
         new ClassFileProcessor( this.getJomcTool() );
+    }
+
+    private Transformer getTransformer( final String resource )
+        throws URISyntaxException, TransformerConfigurationException
+    {
+        final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        final URL url = this.getClass().getResource( resource );
+        assertNotNull( url );
+
+        final Transformer transformer =
+            transformerFactory.newTransformer( new StreamSource( url.toURI().toASCIIString() ) );
+
+        return transformer;
+    }
+
+    private void unzipResource( final String resourceName, final File targetDirectory ) throws IOException
+    {
+        final URL resource = this.getClass().getResource( resourceName );
+        assertNotNull( "Expected '" + resourceName + "' not found.", resource );
+
+        assertTrue( targetDirectory.isAbsolute() );
+        FileUtils.deleteDirectory( targetDirectory );
+        assertTrue( targetDirectory.mkdirs() );
+
+        final ZipInputStream in = new ZipInputStream( resource.openStream() );
+        ZipEntry e = null;
+
+        while ( ( e = in.getNextEntry() ) != null )
+        {
+            final File dest = new File( targetDirectory, e.getName() );
+            assertTrue( dest.isAbsolute() );
+
+            if ( e.isDirectory() )
+            {
+                if ( !dest.exists() )
+                {
+                    assertTrue( dest.mkdirs() );
+                }
+
+                continue;
+            }
+
+            final OutputStream out = FileUtils.openOutputStream( dest );
+            IOUtils.copy( in, out );
+            IOUtils.closeQuietly( out );
+            in.closeEntry();
+        }
+
+        IOUtils.closeQuietly( in );
     }
 
 }

@@ -34,13 +34,11 @@ package org.jomc.tools.test;
 
 import org.junit.Test;
 import java.io.OutputStream;
-import java.util.Properties;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.jomc.model.Implementation;
 import org.jomc.model.Module;
@@ -61,11 +59,11 @@ import static org.junit.Assert.fail;
 public class SourceFileProcessorTest extends JomcToolTest
 {
 
-    /** Serial number of the test sources directory. */
-    private int testSourcesId;
-
-    /** Properties backing the instance. */
-    private Properties testProperties;
+    /** Creates a new {@code SourceFileProcessorTest} instance. */
+    public SourceFileProcessorTest()
+    {
+        super();
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -79,43 +77,6 @@ public class SourceFileProcessorTest extends JomcToolTest
     protected SourceFileProcessor newJomcTool()
     {
         return new SourceFileProcessor();
-    }
-
-    /**
-     * Gets the directory to write sources to.
-     *
-     * @return The directory to write sources to.
-     *
-     * @throws IOException if getting the directory fails.
-     */
-    public File getTestSourcesDirectory() throws IOException
-    {
-        final File testSourcesDirectory =
-            new File( this.getTestProperty( "testSourcesDirectory" ), Integer.toString( this.testSourcesId++ ) );
-
-        assertTrue( testSourcesDirectory.isAbsolute() );
-
-        if ( testSourcesDirectory.exists() )
-        {
-            FileUtils.deleteDirectory( testSourcesDirectory );
-        }
-
-        return testSourcesDirectory;
-    }
-
-    private String getTestProperty( final String key ) throws IOException
-    {
-        if ( this.testProperties == null )
-        {
-            this.testProperties = new java.util.Properties();
-            final InputStream in = this.getClass().getResourceAsStream( "SourceFileProcessorTest.properties" );
-            this.testProperties.load( in );
-            in.close();
-        }
-
-        final String value = this.testProperties.getProperty( key );
-        assertNotNull( value );
-        return value;
     }
 
     @Test
@@ -261,14 +222,10 @@ public class SourceFileProcessorTest extends JomcToolTest
     @Test
     public final void testManageSources() throws Exception
     {
-        this.getJomcTool().setInputEncoding( this.getTestProperty( "resourceEncoding" ) );
-        this.getJomcTool().setOutputEncoding( this.getTestProperty( "resourceEncoding" ) );
+        this.getJomcTool().setInputEncoding( this.getResourceEncoding() );
+        this.getJomcTool().setOutputEncoding( this.getResourceEncoding() );
 
-        final File nonExistingDirectory = this.getTestSourcesDirectory();
-        if ( nonExistingDirectory.exists() )
-        {
-            FileUtils.deleteDirectory( nonExistingDirectory );
-        }
+        final File nonExistingDirectory = this.getNextOutputDirectory();
 
         try
         {
@@ -320,16 +277,16 @@ public class SourceFileProcessorTest extends JomcToolTest
             System.out.println( e );
         }
 
-        File sourcesDirectory = this.getTestSourcesDirectory();
+        File sourcesDirectory = this.getNextOutputDirectory();
         assertTrue( sourcesDirectory.mkdirs() );
         this.getJomcTool().manageSourceFiles( sourcesDirectory );
 
-        sourcesDirectory = this.getTestSourcesDirectory();
+        sourcesDirectory = this.getNextOutputDirectory();
         assertTrue( sourcesDirectory.mkdirs() );
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getModule( "Module" ),
                                               sourcesDirectory );
 
-        final File implementationDirectory = this.getTestSourcesDirectory();
+        final File implementationDirectory = this.getNextOutputDirectory();
         assertTrue( implementationDirectory.mkdirs() );
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
@@ -337,7 +294,7 @@ public class SourceFileProcessorTest extends JomcToolTest
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
-        final File specificationDirectory = this.getTestSourcesDirectory();
+        final File specificationDirectory = this.getNextOutputDirectory();
         assertTrue( specificationDirectory.mkdirs() );
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getSpecification( "Specification" ),
                                               specificationDirectory );
@@ -379,20 +336,20 @@ public class SourceFileProcessorTest extends JomcToolTest
 
         this.getJomcTool().setTemplateProfile( "DOES_NOT_EXIST" );
 
-        sourcesDirectory = this.getTestSourcesDirectory();
+        sourcesDirectory = this.getNextOutputDirectory();
         assertTrue( sourcesDirectory.mkdirs() );
         this.getJomcTool().manageSourceFiles( sourcesDirectory );
 
-        sourcesDirectory = this.getTestSourcesDirectory();
+        sourcesDirectory = this.getNextOutputDirectory();
         assertTrue( sourcesDirectory.mkdirs() );
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getModule( "Module" ), sourcesDirectory );
 
-        sourcesDirectory = this.getTestSourcesDirectory();
+        sourcesDirectory = this.getNextOutputDirectory();
         assertTrue( sourcesDirectory.mkdirs() );
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
                                               sourcesDirectory );
 
-        sourcesDirectory = this.getTestSourcesDirectory();
+        sourcesDirectory = this.getNextOutputDirectory();
         assertTrue( sourcesDirectory.mkdirs() );
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getSpecification( "Specification" ),
                                               sourcesDirectory );
@@ -405,14 +362,14 @@ public class SourceFileProcessorTest extends JomcToolTest
     public final void testMandatorySections() throws Exception
     {
         final SectionEditor editor = new SectionEditor();
-        final File specificationDirectory = this.getTestSourcesDirectory();
-        final File implementationDirectory = this.getTestSourcesDirectory();
+        final File specificationDirectory = this.getNextOutputDirectory();
+        final File implementationDirectory = this.getNextOutputDirectory();
 
         assertTrue( specificationDirectory.mkdirs() );
         assertTrue( implementationDirectory.mkdirs() );
 
-        this.getJomcTool().setInputEncoding( this.getTestProperty( "resourceEncoding" ) );
-        this.getJomcTool().setOutputEncoding( this.getTestProperty( "resourceEncoding" ) );
+        this.getJomcTool().setInputEncoding( this.getResourceEncoding() );
+        this.getJomcTool().setOutputEncoding( this.getResourceEncoding() );
 
         File f = new File( implementationDirectory, "Implementation.java" );
         this.copyResource( "ImplementationWithoutAnnotationsSection.java.txt", f );
@@ -477,14 +434,14 @@ public class SourceFileProcessorTest extends JomcToolTest
     public final void testOptionalSections() throws Exception
     {
         final SectionEditor editor = new SectionEditor();
-        final File implementationDirectory = this.getTestSourcesDirectory();
-        final File specificationDirectory = this.getTestSourcesDirectory();
+        final File implementationDirectory = this.getNextOutputDirectory();
+        final File specificationDirectory = this.getNextOutputDirectory();
 
         assertTrue( specificationDirectory.mkdirs() );
         assertTrue( implementationDirectory.mkdirs() );
 
-        this.getJomcTool().setInputEncoding( this.getTestProperty( "resourceEncoding" ) );
-        this.getJomcTool().setOutputEncoding( this.getTestProperty( "resourceEncoding" ) );
+        this.getJomcTool().setInputEncoding( this.getResourceEncoding() );
+        this.getJomcTool().setOutputEncoding( this.getResourceEncoding() );
 
         File f = new File( implementationDirectory, "Implementation.java" );
         this.copyResource( "ImplementationWithoutConstructorsSection.java.txt", f );
@@ -581,7 +538,7 @@ public class SourceFileProcessorTest extends JomcToolTest
         try
         {
             in = new FileInputStream( f );
-            return IOUtils.toString( in, this.getTestProperty( "resourceEncoding" ) );
+            return IOUtils.toString( in, this.getResourceEncoding() );
         }
         finally
         {

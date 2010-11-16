@@ -33,11 +33,8 @@
 package org.jomc.tools.test;
 
 import org.junit.Test;
-import java.util.Properties;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import org.apache.commons.io.FileUtils;
 import org.jomc.model.Implementation;
 import org.jomc.model.Module;
 import org.jomc.model.Specification;
@@ -55,11 +52,11 @@ import static org.junit.Assert.fail;
 public class ResourceFileProcessorTest extends JomcToolTest
 {
 
-    /** Serial number of the test resources directory. */
-    private int testResourcesId;
-
-    /** Properties backing the instance. */
-    private Properties testProperties;
+    /** Creates a new {@code ResourceFileProcessorTest} instance. */
+    public ResourceFileProcessorTest()
+    {
+        super();
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -73,43 +70,6 @@ public class ResourceFileProcessorTest extends JomcToolTest
     protected ResourceFileProcessor newJomcTool()
     {
         return new ResourceFileProcessor();
-    }
-
-    /**
-     * Gets the directory to write resources to.
-     *
-     * @return The directory to write resources to.
-     *
-     * @throws IOException if getting the directory fails.
-     */
-    public File getTestResourcesDirectory() throws IOException
-    {
-        final File testResourcesDirectory =
-            new File( this.getTestProperty( "testResourcesDirectory" ), Integer.toString( this.testResourcesId++ ) );
-
-        assertTrue( testResourcesDirectory.isAbsolute() );
-
-        if ( testResourcesDirectory.exists() )
-        {
-            FileUtils.deleteDirectory( testResourcesDirectory );
-        }
-
-        return testResourcesDirectory;
-    }
-
-    private String getTestProperty( final String key ) throws IOException
-    {
-        if ( this.testProperties == null )
-        {
-            this.testProperties = new java.util.Properties();
-            final InputStream in = this.getClass().getResourceAsStream( "ResourceFileProcessorTest.properties" );
-            this.testProperties.load( in );
-            in.close();
-        }
-
-        final String value = this.testProperties.getProperty( key );
-        assertNotNull( value );
-        return value;
     }
 
     @Test
@@ -229,11 +189,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
     @Test
     public final void testWriteResourceBundleResourceFiles() throws Exception
     {
-        final File nonExistentDirectory = this.getTestResourcesDirectory();
-        if ( nonExistentDirectory.exists() )
-        {
-            FileUtils.deleteDirectory( nonExistentDirectory );
-        }
+        final File nonExistentDirectory = this.getNextOutputDirectory();
 
         try
         {
@@ -285,21 +241,21 @@ public class ResourceFileProcessorTest extends JomcToolTest
             System.out.println( e );
         }
 
-        File resourcesDirectory = this.getTestResourcesDirectory();
+        File resourcesDirectory = this.getNextOutputDirectory();
         assertTrue( resourcesDirectory.mkdirs() );
         this.getJomcTool().writeResourceBundleResourceFiles( resourcesDirectory );
 
-        resourcesDirectory = this.getTestResourcesDirectory();
+        resourcesDirectory = this.getNextOutputDirectory();
         assertTrue( resourcesDirectory.mkdirs() );
         this.getJomcTool().writeResourceBundleResourceFiles(
             this.getJomcTool().getModules().getModule( "Module" ), resourcesDirectory );
 
-        resourcesDirectory = this.getTestResourcesDirectory();
+        resourcesDirectory = this.getNextOutputDirectory();
         assertTrue( resourcesDirectory.mkdirs() );
         this.getJomcTool().writeResourceBundleResourceFiles(
             this.getJomcTool().getModules().getSpecification( "Specification" ), resourcesDirectory );
 
-        resourcesDirectory = this.getTestResourcesDirectory();
+        resourcesDirectory = this.getNextOutputDirectory();
         assertTrue( resourcesDirectory.mkdirs() );
         this.getJomcTool().writeResourceBundleResourceFiles(
             this.getJomcTool().getModules().getImplementation( "Implementation" ), resourcesDirectory );

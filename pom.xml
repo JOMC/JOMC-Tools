@@ -67,6 +67,14 @@
         <filtering>false</filtering>
         <directory>src/main/templates</directory>
       </testResource>
+      <testResource>
+        <filtering>false</filtering>
+        <directory>${project.build.directory}</directory>
+        <targetPath>org/jomc/tools/test</targetPath>
+        <includes>
+          <include>classfiles.zip</include>
+        </includes>
+      </testResource>
     </testResources>
     <plugins>
       <plugin>
@@ -177,6 +185,27 @@
             <configuration>
               <classesDirectory>${project.build.directory}/schemas</classesDirectory>
               <classifier>schemas</classifier>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>assemble-test-classfiles</id>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <attach>false</attach>
+              <appendAssemblyId>false</appendAssemblyId>
+              <finalName>classfiles</finalName>
+              <descriptors>
+                <descriptor>src/test/assembly/classfiles.xml</descriptor>
+              </descriptors>
             </configuration>
           </execution>
         </executions>

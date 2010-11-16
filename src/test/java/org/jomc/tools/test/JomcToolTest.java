@@ -32,6 +32,8 @@
  */
 package org.jomc.tools.test;
 
+import org.apache.commons.io.FileUtils;
+import java.io.File;
 import org.junit.Test;
 import java.io.IOException;
 import java.util.Calendar;
@@ -58,6 +60,7 @@ import org.jomc.modlet.ModelException;
 import org.jomc.tools.JomcTool;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
@@ -69,6 +72,12 @@ import static org.junit.Assert.fail;
 public class JomcToolTest
 {
 
+    /** Constant for the name of the system property holding the name of the encoding of resources backing the test. */
+    private static final String RESOURCE_ENCODING_PROPERTY_NAME = "jomc.test.resourceEncoding";
+
+    /** Constant for the name of the system property holding the output directory for the test. */
+    private static final String OUTPUT_DIRECTORY_PROPERTY_NAME = "jomc.test.outputDirectory";
+
     /** The {@code JomcTool} instance tests are performed with. */
     private JomcTool jomcTool;
 
@@ -77,6 +86,122 @@ public class JomcToolTest
 
     /** The {@code Model} of the instance. */
     private Model model;
+
+    /** The name of the encoding to use when reading or writing resources. */
+    private String resourceEncoding;
+
+    /** The output directory of the instance. */
+    private File outputDirectory;
+
+    /** Serial number of next output directories. */
+    private volatile int outputDirectoryId;
+
+    /** Creates a new {@code JomcToolTest} instance. */
+    public JomcToolTest()
+    {
+        super();
+    }
+
+    /**
+     * Gets the name of the encoding used when reading resources.
+     *
+     * @return The name of the encoding used when reading resources.
+     *
+     * @see #setResourceEncoding(java.lang.String)
+     */
+    public final String getResourceEncoding()
+    {
+        if ( this.resourceEncoding == null )
+        {
+            this.resourceEncoding = System.getProperty( RESOURCE_ENCODING_PROPERTY_NAME );
+            assertNotNull( "Expected '" + RESOURCE_ENCODING_PROPERTY_NAME + "' system property not found.",
+                           this.resourceEncoding );
+
+        }
+
+        return this.resourceEncoding;
+    }
+
+    /**
+     * Sets the name of the encoding to use when reading resources.
+     *
+     * @param value The new name of the encoding to use when reading resources or {@code null}.
+     *
+     * @see #getResourceEncoding()
+     */
+    public final void setResourceEncoding( final String value )
+    {
+        this.resourceEncoding = value;
+    }
+
+    /**
+     * Gets the output directory of instance.
+     *
+     * @return The output directory of instance.
+     *
+     * @see #setOutputDirectory(java.io.File)
+     */
+    public final File getOutputDirectory()
+    {
+        if ( this.outputDirectory == null )
+        {
+            final String name = System.getProperty( OUTPUT_DIRECTORY_PROPERTY_NAME );
+            assertNotNull( "Expected '" + OUTPUT_DIRECTORY_PROPERTY_NAME + "' system property not found.", name );
+            this.outputDirectory = new File( new File( name ), this.getClass().getSimpleName() );
+            assertTrue( "Expected '" + OUTPUT_DIRECTORY_PROPERTY_NAME + "' system property to hold an absolute path.",
+                        this.outputDirectory.isAbsolute() );
+
+            if ( !this.outputDirectory.exists() )
+            {
+                assertTrue( this.outputDirectory.mkdirs() );
+            }
+        }
+
+        return this.outputDirectory;
+    }
+
+    /**
+     * Sets the output directory of instance.
+     *
+     * @param value The new output directory of instance or {@code null}.
+     *
+     * @see #getOutputDirectory()
+     */
+    public final void setOutputDirectory( final File value )
+    {
+        if ( value != null )
+        {
+            assertTrue( "Expected absolute 'outputDirectory'.", value.isAbsolute() );
+        }
+
+        this.outputDirectory = value;
+    }
+
+    /**
+     * Gets the next output directory of the instance.
+     *
+     * @return The next output directory of the instance.
+     */
+    public final File getNextOutputDirectory()
+    {
+        try
+        {
+            final File nextOutputDirectory =
+                new File( this.getOutputDirectory(), Integer.toString( this.outputDirectoryId++ ) );
+
+            assertTrue( nextOutputDirectory.isAbsolute() );
+            if ( nextOutputDirectory.exists() )
+            {
+                FileUtils.deleteDirectory( nextOutputDirectory );
+            }
+
+            return nextOutputDirectory;
+        }
+        catch ( final IOException e )
+        {
+            throw new AssertionError( e );
+        }
+    }
 
     /**
      * Gets the {@code JomcTool} instance tests are performed with.
@@ -224,7 +349,7 @@ public class JomcToolTest
     }
 
     @Test
-    public final void testNullPointerException() throws Exception
+    public final void testJomcToolNullPointerException() throws Exception
     {
         assertNotNull( this.getJomcTool() );
 
@@ -605,7 +730,7 @@ public class JomcToolTest
     }
 
     @Test
-    public final void testNotNull() throws Exception
+    public final void testJomcToolNotNull() throws Exception
     {
         final Specification specification = new Specification();
         specification.setClazz( "java.lang.Object" );
@@ -688,7 +813,7 @@ public class JomcToolTest
     }
 
     @Test
-    public final void testVelocityTemplate() throws Exception
+    public final void testVelocityTemplates() throws Exception
     {
         assertNotNull( this.getJomcTool().getVelocityTemplate( "Implementation.java.vm" ) );
         this.getJomcTool().setTemplateProfile( "DOES_NOT_EXIST" );
@@ -807,10 +932,10 @@ public class JomcToolTest
     @Test
     public final void testModel() throws Exception
     {
-        final Model model = this.getJomcTool().getModel();
+        final Model m = this.getJomcTool().getModel();
         this.getJomcTool().setModel( null );
         assertNotNull( this.getJomcTool().getModel() );
-        this.getJomcTool().setModel( model );
+        this.getJomcTool().setModel( m );
     }
 
     @Test
