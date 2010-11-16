@@ -72,6 +72,9 @@ import static org.junit.Assert.fail;
 public class JomcToolTest
 {
 
+    /** Constant to prefix relative resource names with. */
+    private static final String ABSOLUTE_RESOURCE_NAME_PREFIX = "/org/jomc/tools/test/";
+
     /** Constant for the name of the system property holding the name of the encoding of resources backing the test. */
     private static final String RESOURCE_ENCODING_PROPERTY_NAME = "jomc.test.resourceEncoding";
 
@@ -318,8 +321,8 @@ public class JomcToolTest
             final Unmarshaller u = this.getModelContext().createUnmarshaller( ModelObject.MODEL_PUBLIC_ID );
             u.setSchema( this.getModelContext().createSchema( ModelObject.MODEL_PUBLIC_ID ) );
 
-            final JAXBElement<Module> module =
-                (JAXBElement<Module>) u.unmarshal( this.getClass().getResource( "jomc.xml" ) );
+            final JAXBElement<Module> module = (JAXBElement<Module>) u.unmarshal( this.getClass().getResource(
+                ABSOLUTE_RESOURCE_NAME_PREFIX + "jomc.xml" ) );
 
             final Modules modules = new Modules();
             modules.getModule().add( module.getValue() );

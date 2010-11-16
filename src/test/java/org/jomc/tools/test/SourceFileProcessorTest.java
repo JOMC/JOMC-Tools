@@ -59,6 +59,9 @@ import static org.junit.Assert.fail;
 public class SourceFileProcessorTest extends JomcToolTest
 {
 
+    /** Constant to prefix relative resource names with. */
+    private static final String ABSOLUTE_RESOURCE_NAME_PREFIX = "/org/jomc/tools/test/";
+
     /** Creates a new {@code SourceFileProcessorTest} instance. */
     public SourceFileProcessorTest()
     {
@@ -302,10 +305,10 @@ public class SourceFileProcessorTest extends JomcToolTest
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getSpecification( "Specification" ),
                                               specificationDirectory );
 
-        this.copyResource( "IllegalImplementationSource.java.txt",
+        this.copyResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "IllegalImplementationSource.java.txt",
                            new File( implementationDirectory, "Implementation.java" ) );
 
-        this.copyResource( "IllegalSpecificationSource.java.txt",
+        this.copyResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "IllegalSpecificationSource.java.txt",
                            new File( specificationDirectory, "Specification.java" ) );
 
         try
@@ -372,7 +375,7 @@ public class SourceFileProcessorTest extends JomcToolTest
         this.getJomcTool().setOutputEncoding( this.getResourceEncoding() );
 
         File f = new File( implementationDirectory, "Implementation.java" );
-        this.copyResource( "ImplementationWithoutAnnotationsSection.java.txt", f );
+        this.copyResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "ImplementationWithoutAnnotationsSection.java.txt", f );
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
@@ -381,7 +384,7 @@ public class SourceFileProcessorTest extends JomcToolTest
         assertTrue( editor.isSectionPresent( "Annotations" ) );
 
         f = new File( implementationDirectory, "Implementation.java" );
-        this.copyResource( "ImplementationWithoutDependenciesSection.java.txt", f );
+        this.copyResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "ImplementationWithoutDependenciesSection.java.txt", f );
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
@@ -390,7 +393,7 @@ public class SourceFileProcessorTest extends JomcToolTest
         assertTrue( editor.isSectionPresent( "Dependencies" ) );
 
         f = new File( implementationDirectory, "Implementation.java" );
-        this.copyResource( "ImplementationWithoutMessagesSection.java.txt", f );
+        this.copyResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "ImplementationWithoutMessagesSection.java.txt", f );
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
@@ -399,7 +402,7 @@ public class SourceFileProcessorTest extends JomcToolTest
         assertTrue( editor.isSectionPresent( "Messages" ) );
 
         f = new File( implementationDirectory, "Implementation.java" );
-        this.copyResource( "ImplementationWithoutPropertiesSection.java.txt", f );
+        this.copyResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "ImplementationWithoutPropertiesSection.java.txt", f );
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
@@ -408,7 +411,9 @@ public class SourceFileProcessorTest extends JomcToolTest
         assertTrue( editor.isSectionPresent( "Properties" ) );
 
         f = new File( implementationDirectory, "ImplementationOfSpecification.java" );
-        this.copyResource( "ImplementationOfSpecificationWithoutConstructorsSection.java.txt", f );
+        this.copyResource( ABSOLUTE_RESOURCE_NAME_PREFIX
+                           + "ImplementationOfSpecificationWithoutConstructorsSection.java.txt", f );
+
         this.getJomcTool().manageSourceFiles(
             this.getJomcTool().getModules().getImplementation( "ImplementationOfSpecification" ),
             implementationDirectory );
@@ -418,7 +423,7 @@ public class SourceFileProcessorTest extends JomcToolTest
         assertTrue( editor.isSectionPresent( "Constructors" ) );
 
         f = new File( specificationDirectory, "Specification.java" );
-        this.copyResource( "SpecificationWithoutAnnotationsSection.java.txt", f );
+        this.copyResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "SpecificationWithoutAnnotationsSection.java.txt", f );
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getSpecification( "Specification" ),
                                               specificationDirectory );
 
@@ -444,14 +449,14 @@ public class SourceFileProcessorTest extends JomcToolTest
         this.getJomcTool().setOutputEncoding( this.getResourceEncoding() );
 
         File f = new File( implementationDirectory, "Implementation.java" );
-        this.copyResource( "ImplementationWithoutConstructorsSection.java.txt", f );
+        this.copyResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "ImplementationWithoutConstructorsSection.java.txt", f );
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
         String edited = this.toString( f );
         editor.edit( edited );
         assertFalse( editor.isSectionPresent( "Constructors" ) );
-        this.copyResource( "ImplementationWithoutDefaultConstructorSection.java.txt", f );
+        this.copyResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "ImplementationWithoutDefaultConstructorSection.java.txt", f );
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
@@ -459,14 +464,14 @@ public class SourceFileProcessorTest extends JomcToolTest
         editor.edit( edited );
         assertTrue( editor.isSectionPresent( "Constructors" ) );
         assertTrue( editor.isSectionPresent( "Default Constructor" ) );
-        this.copyResource( "ImplementationWithoutDocumentationSection.java.txt", f );
+        this.copyResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "ImplementationWithoutDocumentationSection.java.txt", f );
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
         edited = this.toString( f );
         editor.edit( edited );
         assertFalse( editor.isSectionPresent( "Documentation" ) );
-        this.copyResource( "ImplementationWithoutLicenseSection.java.txt", f );
+        this.copyResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "ImplementationWithoutLicenseSection.java.txt", f );
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
@@ -475,14 +480,14 @@ public class SourceFileProcessorTest extends JomcToolTest
         assertFalse( editor.isSectionPresent( "License Header" ) );
 
         f = new File( specificationDirectory, "Specification.java" );
-        this.copyResource( "SpecificationWithoutDocumentationSection.java.txt", f );
+        this.copyResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "SpecificationWithoutDocumentationSection.java.txt", f );
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getSpecification( "Specification" ),
                                               specificationDirectory );
 
         edited = this.toString( f );
         editor.edit( edited );
         assertFalse( editor.isSectionPresent( "Documentation" ) );
-        this.copyResource( "SpecificationWithoutLicenseSection.java.txt", f );
+        this.copyResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "SpecificationWithoutLicenseSection.java.txt", f );
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getSpecification( "Specification" ),
                                               specificationDirectory );
 
@@ -513,6 +518,8 @@ public class SourceFileProcessorTest extends JomcToolTest
 
     private void copyResource( final String resourceName, final File file ) throws IOException
     {
+        assertTrue( resourceName.startsWith( "/" ) );
+
         InputStream in = null;
         OutputStream out = null;
 

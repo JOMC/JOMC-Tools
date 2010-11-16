@@ -85,6 +85,9 @@ import static org.junit.Assert.fail;
 public class ClassFileProcessorTest extends JomcToolTest
 {
 
+    /** Constant to prefix relative resource names with. */
+    private static final String ABSOLUTE_RESOURCE_NAME_PREFIX = "/org/jomc/tools/test/";
+
     /** Creates a new {@code ClassFileProcessorTest} instance. */
     public ClassFileProcessorTest()
     {
@@ -114,8 +117,8 @@ public class ClassFileProcessorTest extends JomcToolTest
             final Unmarshaller u = this.getModelContext().createUnmarshaller( ModelObject.MODEL_PUBLIC_ID );
             u.setSchema( this.getModelContext().createSchema( ModelObject.MODEL_PUBLIC_ID ) );
 
-            final JAXBElement<Module> m =
-                (JAXBElement<Module>) u.unmarshal( this.getClass().getResource( "jomc-tools.xml" ) );
+            final JAXBElement<Module> m = (JAXBElement<Module>) u.unmarshal( this.getClass().getResource(
+                ABSOLUTE_RESOURCE_NAME_PREFIX + "jomc-tools.xml" ) );
 
             final Modules modules = new Modules();
             modules.getModule().add( m.getValue() );
