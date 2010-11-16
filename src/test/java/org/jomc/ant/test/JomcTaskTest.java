@@ -63,6 +63,9 @@ import static org.junit.Assert.fail;
 public class JomcTaskTest
 {
 
+    /** Constant to prefix relative resource names with. */
+    private static final String ABSOLUTE_RESOURCE_NAME_PREFIX = "/org/jomc/ant/test/";
+
     /** Cached default locale. */
     private static final Locale DEFAULT_LOCALE = Locale.getDefault();
 
@@ -172,19 +175,25 @@ public class JomcTaskTest
             final Project p = new Project();
             p.init();
 
-            final URL buildFileResource = this.getClass().getResource( this.getBuildFileName() );
+            final URL buildFileResource =
+                this.getClass().getResource( ABSOLUTE_RESOURCE_NAME_PREFIX + this.getBuildFileName() );
+
             assertNotNull( "Expected '" + this.getBuildFileName() + "' resource not found.", buildFileResource );
             final File buildFile = new File( this.getOutputDirectory(), this.getBuildFileName() );
             assertTrue( buildFile.isAbsolute() );
             FileUtils.copyInputStreamToFile( buildFileResource.openStream(), buildFile );
 
-            final URL dependenciesResource = this.getClass().getResource( "dependencies.zip" );
+            final URL dependenciesResource =
+                this.getClass().getResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "dependencies.zip" );
+
             assertNotNull( "Expected 'dependencies.zip' resource not found.", dependenciesResource );
             final File dependenciesZip = new File( this.getOutputDirectory(), "dependencies.zip" );
             assertTrue( dependenciesZip.isAbsolute() );
             FileUtils.copyInputStreamToFile( dependenciesResource.openStream(), dependenciesZip );
 
-            final URL classfilesResource = this.getClass().getResource( "classfiles.zip" );
+            final URL classfilesResource =
+                this.getClass().getResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "classfiles.zip" );
+
             assertNotNull( "Expected 'classfiles.zip' resource not found.", classfilesResource );
             final File classfilesZip = new File( this.getOutputDirectory(), "classfiles.zip" );
             assertTrue( classfilesZip.isAbsolute() );

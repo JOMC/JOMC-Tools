@@ -49,6 +49,9 @@ import static org.junit.Assert.assertNull;
 public class ClassProcessingExceptionTest
 {
 
+    /** Constant to prefix relative resource names with. */
+    private static final String ABSOLUTE_RESOURCE_NAME_PREFIX = "/org/jomc/ant/test/";
+
     /** Creates a new {@code ClassProcessingExceptionTest} instance. */
     public ClassProcessingExceptionTest()
     {
@@ -58,8 +61,8 @@ public class ClassProcessingExceptionTest
     @Test
     public final void testClassProcessingException() throws Exception
     {
-        final ObjectInputStream in =
-            new ObjectInputStream( this.getClass().getResourceAsStream( "ClassProcessingException.ser" ) );
+        final ObjectInputStream in = new ObjectInputStream( this.getClass().getResourceAsStream(
+            ABSOLUTE_RESOURCE_NAME_PREFIX + "ClassProcessingException.ser" ) );
 
         ClassProcessingException e = (ClassProcessingException) in.readObject();
         in.close();
