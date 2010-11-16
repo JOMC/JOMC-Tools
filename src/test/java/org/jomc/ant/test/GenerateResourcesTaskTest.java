@@ -145,25 +145,25 @@ public class GenerateResourcesTaskTest extends ResourceFileProcessorTaskTest
     }
 
     @Test
-    public final void testCommitOneSpecification() throws Exception
+    public final void testGenerateOneSpecification() throws Exception
     {
         final AntExecutionResult r = this.executeTarget( "test-generate-one-specification" );
         assertNoException( r );
-        assertMessageNotLogged( r, "Specification 'org.jomc.ant.JomcTask' not found." );
+        assertMessageNotLogged( r, "Specification 'org.jomc.ant.test.JomcTask' not found." );
         assertMessageLogged( r, "Resource file processing successful.", Project.MSG_INFO );
     }
 
     @Test
-    public final void testCommitOneImplementation() throws Exception
+    public final void testGenerateOneImplementation() throws Exception
     {
         final AntExecutionResult r = this.executeTarget( "test-generate-one-implementation" );
         assertNoException( r );
-        assertMessageNotLogged( r, "Implementation 'org.jomc.ant.JomcToolTask' not found." );
+        assertMessageNotLogged( r, "Implementation 'org.jomc.ant.test.JomcToolTask' not found." );
         assertMessageLogged( r, "Resource file processing successful.", Project.MSG_INFO );
     }
 
     @Test
-    public final void testCommitOneModule() throws Exception
+    public final void testGenerateOneModule() throws Exception
     {
         final AntExecutionResult r = this.executeTarget( "test-generate-one-module" );
         assertNoException( r );

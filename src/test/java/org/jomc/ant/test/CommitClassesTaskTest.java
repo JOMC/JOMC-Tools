@@ -166,7 +166,7 @@ public class CommitClassesTaskTest extends ClassFileProcessorTaskTest
         final AntExecutionResult r = this.executeTarget( "test-commit-one-specification" );
         assertNoException( r );
         assertMessageLogged( r, "Class file processing successful.", Project.MSG_INFO );
-        assertMessageNotLogged( r, "Specification 'org.jomc.ant.JomcTask' not found." );
+        assertMessageNotLogged( r, "Specification 'org.jomc.ant.test.JomcTask' not found." );
     }
 
     @Test
@@ -175,7 +175,7 @@ public class CommitClassesTaskTest extends ClassFileProcessorTaskTest
         final AntExecutionResult r = this.executeTarget( "test-commit-one-implementation" );
         assertNoException( r );
         assertMessageLogged( r, "Class file processing successful.", Project.MSG_INFO );
-        assertMessageNotLogged( r, "Implementation 'org.jomc.ant.JomcToolTask' not found." );
+        assertMessageNotLogged( r, "Implementation 'org.jomc.ant.test.JomcToolTask' not found." );
     }
 
     @Test
@@ -193,7 +193,7 @@ public class CommitClassesTaskTest extends ClassFileProcessorTaskTest
         final AntExecutionResult r = this.executeTarget( "test-commit-one-specification-with-no-op-stylesheet" );
         assertNoException( r );
         assertMessageLogged( r, "Class file processing successful.", Project.MSG_INFO );
-        assertMessageNotLogged( r, "Specification 'org.jomc.ant.JomcTask' not found." );
+        assertMessageNotLogged( r, "Specification 'org.jomc.ant.test.JomcTask' not found." );
     }
 
     @Test
@@ -202,7 +202,7 @@ public class CommitClassesTaskTest extends ClassFileProcessorTaskTest
         final AntExecutionResult r = this.executeTarget( "test-commit-one-implementation-with-no-op-stylesheet" );
         assertNoException( r );
         assertMessageLogged( r, "Class file processing successful.", Project.MSG_INFO );
-        assertMessageNotLogged( r, "Implementation 'org.jomc.ant.JomcToolTask' not found." );
+        assertMessageNotLogged( r, "Implementation 'org.jomc.ant.test.JomcToolTask' not found." );
     }
 
     @Test

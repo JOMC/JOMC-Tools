@@ -68,10 +68,12 @@ public class DefaultAntExecutor implements AntExecutor
             throw new NullPointerException( "target" );
         }
 
-        final PrintStream systemOut = System.out;
-        final PrintStream systemErr = System.err;
         final StringWriter out = new StringWriter();
         final StringWriter err = new StringWriter();
+        final PrintStream writerOut = new PrintStream( new WriterOutputStream( out ) );
+        final PrintStream writerErr = new PrintStream( new WriterOutputStream( err ) );
+        final PrintStream systemOut = System.out;
+        final PrintStream systemErr = System.err;
         final AntExecutionResult result = new AntExecutionResult();
         final BuildListener buildListener = new BuildListener()
         {
@@ -115,13 +117,12 @@ public class DefaultAntExecutor implements AntExecutor
 
         try
         {
-            request.getProject().addBuildListener( buildListener );
-
             systemOut.flush();
             systemErr.flush();
-            System.setOut( new PrintStream( new WriterOutputStream( out ) ) );
-            System.setErr( new PrintStream( new WriterOutputStream( err ) ) );
+            System.setOut( writerOut );
+            System.setErr( writerErr );
 
+            request.getProject().addBuildListener( buildListener );
             request.getProject().executeTarget( request.getTarget() );
         }
         catch ( final Throwable t )
@@ -130,13 +131,13 @@ public class DefaultAntExecutor implements AntExecutor
         }
         finally
         {
-            System.out.flush();
-            System.err.flush();
-            result.setSystemError( err.toString() );
-            result.setSystemOutput( out.toString() );
             request.getProject().removeBuildListener( buildListener );
             System.setOut( systemOut );
             System.setErr( systemErr );
+            writerOut.close();
+            writerErr.close();
+            result.setSystemError( err.toString() );
+            result.setSystemOutput( out.toString() );
         }
 
         return result;

@@ -35,7 +35,7 @@
 <module xmlns="http://jomc.org/model"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://jomc.org/model http://jomc.sourceforge.net/model/jomc-1.0.xsd"
-        name="${project.name} Tests" version="${project.version}" vendor="${project.organization.name}"
+        name="JOMC Ant Tasks Tests" version="${project.version}" vendor="${project.organization.name}"
         modelVersion="1.0">
 
   <documentation defaultLanguage="en">
@@ -44,46 +44,50 @@
 
   <specifications>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.ClassFileProcessorTask" class="org.jomc.ant.ClassFileProcessorTask"
+    <specification identifier="org.jomc.ant.test.ClassFileProcessorTask"
+                   class="org.jomc.ant.test.ClassFileProcessorTask"
                    classDeclaration="true" multiplicity="Many"/>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.CommitClassesTask" class="org.jomc.ant.CommitClassesTask"
+    <specification identifier="org.jomc.ant.test.CommitClassesTask" class="org.jomc.ant.test.CommitClassesTask"
                    classDeclaration="true" multiplicity="Many"/>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.GenerateResourcesTask" class="org.jomc.ant.GenerateResourcesTask"
+    <specification identifier="org.jomc.ant.test.GenerateResourcesTask" class="org.jomc.ant.test.GenerateResourcesTask"
                    classDeclaration="true" multiplicity="Many"/>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.JomcTask" class="org.jomc.ant.JomcTask"
+    <specification identifier="org.jomc.ant.test.JomcTask" class="org.jomc.ant.test.JomcTask"
                    classDeclaration="true" multiplicity="Many"/>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.JomcToolTask" class="org.jomc.ant.JomcToolTask"
+    <specification identifier="org.jomc.ant.test.JomcToolTask" class="org.jomc.ant.test.JomcToolTask"
                    classDeclaration="true" multiplicity="Many"/>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.ManageSourcesTask" class="org.jomc.ant.ManageSourcesTask"
+    <specification identifier="org.jomc.ant.test.ManageSourcesTask" class="org.jomc.ant.test.ManageSourcesTask"
                    classDeclaration="true" multiplicity="Many"/>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.MergeModletsTask" class="org.jomc.ant.MergeModletsTask"
+    <specification identifier="org.jomc.ant.test.MergeModletsTask" class="org.jomc.ant.test.MergeModletsTask"
                    classDeclaration="true" multiplicity="Many"/>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.MergeModulesTask" class="org.jomc.ant.MergeModulesTask"
+    <specification identifier="org.jomc.ant.test.MergeModulesTask" class="org.jomc.ant.test.MergeModulesTask"
                    classDeclaration="true" multiplicity="Many"/>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.ResourceFileProcessorTask" class="org.jomc.ant.ResourceFileProcessorTask"
+    <specification identifier="org.jomc.ant.test.ResourceFileProcessorTask"
+                   class="org.jomc.ant.test.ResourceFileProcessorTask"
                    classDeclaration="true" multiplicity="Many"/>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.SourceFileProcessorTask" class="org.jomc.ant.SourceFileProcessorTask"
+    <specification identifier="org.jomc.ant.test.SourceFileProcessorTask"
+                   class="org.jomc.ant.test.SourceFileProcessorTask"
                    classDeclaration="true" multiplicity="Many"/>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.ValidateClassesTask" class="org.jomc.ant.ValidateClassesTask"
+    <specification identifier="org.jomc.ant.test.ValidateClassesTask" class="org.jomc.ant.test.ValidateClassesTask"
                    classDeclaration="true" multiplicity="Many"/>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.ValidateClasspathTask" class="org.jomc.ant.ValidateClasspathTask"
+    <specification identifier="org.jomc.ant.test.ValidateClasspathTask" class="org.jomc.ant.test.ValidateClasspathTask"
                    classDeclaration="true" multiplicity="Many"/>
 
   </specifications>
   <implementations>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.ClassFileProcessorTask" class="org.jomc.ant.ClassFileProcessorTask"
+    <implementation identifier="org.jomc.ant.test.ClassFileProcessorTask"
+                    class="org.jomc.ant.test.ClassFileProcessorTask"
                     classDeclaration="true" name="${project.name}" version="${project.version}"
                     vendor="${project.organization.name}">
 
@@ -93,11 +97,11 @@
 
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.ClassFileProcessorTask"/>
+        <reference identifier="org.jomc.ant.test.ClassFileProcessorTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.CommitClassesTask" class="org.jomc.ant.CommitClassesTask"
+    <implementation identifier="org.jomc.ant.test.CommitClassesTask" class="org.jomc.ant.test.CommitClassesTask"
                     classDeclaration="true" name="${project.name}" version="${project.version}"
                     vendor="${project.organization.name}">
 
@@ -107,11 +111,11 @@
 
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.CommitClassesTask"/>
+        <reference identifier="org.jomc.ant.test.CommitClassesTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.GenerateResourcesTask" class="org.jomc.ant.GenerateResourcesTask"
+    <implementation identifier="org.jomc.ant.test.GenerateResourcesTask" class="org.jomc.ant.test.GenerateResourcesTask"
                     classDeclaration="true" name="${project.name}" version="${project.version}"
                     vendor="${project.organization.name}">
 
@@ -121,11 +125,11 @@
 
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.GenerateResourcesTask"/>
+        <reference identifier="org.jomc.ant.test.GenerateResourcesTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.JomcTask" class="org.jomc.ant.JomcTask"
+    <implementation identifier="org.jomc.ant.test.JomcTask" class="org.jomc.ant.test.JomcTask"
                     classDeclaration="true" name="${project.name}" version="${project.version}"
                     vendor="${project.organization.name}">
 
@@ -135,11 +139,11 @@
 
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.JomcTask"/>
+        <reference identifier="org.jomc.ant.test.JomcTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.JomcToolTask" class="org.jomc.ant.JomcToolTask"
+    <implementation identifier="org.jomc.ant.test.JomcToolTask" class="org.jomc.ant.test.JomcToolTask"
                     classDeclaration="true" name="${project.name}" version="${project.version}"
                     vendor="${project.organization.name}">
 
@@ -149,11 +153,11 @@
 
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.JomcToolTask"/>
+        <reference identifier="org.jomc.ant.test.JomcToolTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.ManageSourcesTask" class="org.jomc.ant.ManageSourcesTask"
+    <implementation identifier="org.jomc.ant.test.ManageSourcesTask" class="org.jomc.ant.test.ManageSourcesTask"
                     classDeclaration="true" name="${project.name}" version="${project.version}"
                     vendor="${project.organization.name}">
 
@@ -163,11 +167,11 @@
 
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.ManageSourcesTask"/>
+        <reference identifier="org.jomc.ant.test.ManageSourcesTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.MergeModletsTask" class="org.jomc.ant.MergeModletsTask"
+    <implementation identifier="org.jomc.ant.test.MergeModletsTask" class="org.jomc.ant.test.MergeModletsTask"
                     classDeclaration="true" name="${project.name}" version="${project.version}"
                     vendor="${project.organization.name}">
 
@@ -177,11 +181,11 @@
 
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.MergeModletsTask"/>
+        <reference identifier="org.jomc.ant.test.MergeModletsTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.MergeModulesTask" class="org.jomc.ant.MergeModulesTask"
+    <implementation identifier="org.jomc.ant.test.MergeModulesTask" class="org.jomc.ant.test.MergeModulesTask"
                     classDeclaration="true" name="${project.name}" version="${project.version}"
                     vendor="${project.organization.name}">
 
@@ -191,11 +195,12 @@
 
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.MergeModulesTask"/>
+        <reference identifier="org.jomc.ant.test.MergeModulesTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.ResourceFileProcessorTask" class="org.jomc.ant.ResourceFileProcessorTask"
+    <implementation identifier="org.jomc.ant.test.ResourceFileProcessorTask"
+                    class="org.jomc.ant.test.ResourceFileProcessorTask"
                     classDeclaration="true" name="${project.name}" version="${project.version}"
                     vendor="${project.organization.name}">
 
@@ -205,11 +210,12 @@
 
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.ResourceFileProcessorTask"/>
+        <reference identifier="org.jomc.ant.test.ResourceFileProcessorTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.SourceFileProcessorTask" class="org.jomc.ant.SourceFileProcessorTask"
+    <implementation identifier="org.jomc.ant.test.SourceFileProcessorTask"
+                    class="org.jomc.ant.test.SourceFileProcessorTask"
                     classDeclaration="true" name="${project.name}" version="${project.version}"
                     vendor="${project.organization.name}">
 
@@ -219,11 +225,11 @@
 
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.SourceFileProcessorTask"/>
+        <reference identifier="org.jomc.ant.test.SourceFileProcessorTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.ValidateClassesTask" class="org.jomc.ant.ValidateClassesTask"
+    <implementation identifier="org.jomc.ant.test.ValidateClassesTask" class="org.jomc.ant.test.ValidateClassesTask"
                     classDeclaration="true" name="${project.name}" version="${project.version}"
                     vendor="${project.organization.name}">
 
@@ -233,11 +239,11 @@
 
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.ValidateClassesTask"/>
+        <reference identifier="org.jomc.ant.test.ValidateClassesTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.ValidateClasspathTask" class="org.jomc.ant.ValidateClasspathTask"
+    <implementation identifier="org.jomc.ant.test.ValidateClasspathTask" class="org.jomc.ant.test.ValidateClasspathTask"
                     classDeclaration="true" name="${project.name}" version="${project.version}"
                     vendor="${project.organization.name}">
 
@@ -247,7 +253,7 @@
 
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.ValidateClasspathTask"/>
+        <reference identifier="org.jomc.ant.test.ValidateClasspathTask"/>
       </specifications>
     </implementation>
   </implementations>

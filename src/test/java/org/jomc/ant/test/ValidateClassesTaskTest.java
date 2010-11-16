@@ -154,7 +154,7 @@ public class ValidateClassesTaskTest extends ClassFileProcessorTaskTest
     {
         final AntExecutionResult r = this.executeTarget( "test-validate-one-specification" );
         assertNoException( r );
-        assertMessageNotLogged( r, "Specification 'org.jomc.ant.JomcTask' not found." );
+        assertMessageNotLogged( r, "Specification 'org.jomc.ant.test.JomcTask' not found." );
     }
 
     @Test
@@ -169,7 +169,7 @@ public class ValidateClassesTaskTest extends ClassFileProcessorTaskTest
     {
         final AntExecutionResult r = this.executeTarget( "test-validate-one-implementation" );
         assertNoException( r );
-        assertMessageNotLogged( r, "Implementation 'org.jomc.ant.JomcToolTask' not found." );
+        assertMessageNotLogged( r, "Implementation 'org.jomc.ant.test.JomcToolTask' not found." );
     }
 
     @Test

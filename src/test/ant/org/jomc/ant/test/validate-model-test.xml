@@ -34,11 +34,38 @@
 -->
 <project name="validate-model-test" xmlns:jomc="antlib:org.jomc.ant">
 
-  <path id="jomc.classpath">
-    <fileset dir="${jomc.output.directory}">
-      <include name="**/*.jar"/>
-    </fileset>
-  </path>
+  <!-- ************************************************************************************************************* -->
+  <target name="before-test">
+    <property name="empty.dir" location="${test.output.dir}/EMPTY"/>
+    <property name="no.dir" location="${test.output.dir}/DOES_NOT_EXIST"/>
+    <property name="classes.dir" location="${test.output.dir}/classfiles"/>
+    <property name="dependencies.dir" location="${test.output.dir}/dependencies"/>
+
+    <delete dir="${no.dir}"/>
+    <delete dir="${classes.dir}"/>
+    <mkdir dir="${empty.dir}"/>
+    <mkdir dir="${classes.dir}"/>
+    <mkdir dir="${dependencies.dir}"/>
+    <mkdir dir="${test.output.dir}"/>
+
+    <unzip src="${output.dir}/classfiles.zip" dest="${classes.dir}"/>
+    <unzip src="${output.dir}/dependencies.zip" dest="${dependencies.dir}"/>
+
+    <path id="empty.classpath">
+      <pathelement path="${empty.dir}"/>
+    </path>
+
+    <path id="classes.classpath">
+      <pathelement location="${classes.dir}"/>
+    </path>
+
+    <path id="redundant.classpath">
+      <pathelement location="${classes.dir}"/>
+      <fileset dir="${dependencies.dir}">
+        <include name="**/*.jar"/>
+      </fileset>
+    </path>
+  </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-validate-model">
@@ -47,13 +74,12 @@
 
   <!-- ************************************************************************************************************* -->
   <target name="test-validate-model-with-redundant-resources">
-    <jomc:validate-model classpathref="jomc.classpath"/>
+    <jomc:validate-model classpathref="redundant.classpath"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-validate-model-with-broken-model">
-    <jomc:validate-model classpathref="jomc.classpath"
-                         moduleLocation="META-INF/jomc-broken.xml"/>
+    <jomc:validate-model classpathref="redundant.classpath" moduleLocation="META-INF/jomc-broken.xml"/>
   </target>
 
   <!-- ************************************************************************************************************* -->

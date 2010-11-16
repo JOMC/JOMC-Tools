@@ -38,8 +38,6 @@
                 xmlns:modlet="http://jomc.org/modlet"
                 version="1.0">
 
-  <!-- No-op test stylesheet. -->
-
   <xsl:output method="xml" indent="yes" omit-xml-declaration="no"
               encoding="UTF-8" standalone="no"/>
 

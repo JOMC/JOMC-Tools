@@ -49,7 +49,7 @@ public class ResourceProcessingException extends BuildException
     /** Serial version UID for backwards compatibility with 1.2.x object streams. */
     private static final long serialVersionUID = 8479489826932807620L;
 
-    /** 
+    /**
      * Creates a new {@code ResourceProcessingException} instance taking a location.
      *
      * @param location The location this exception occured.

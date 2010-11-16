@@ -49,7 +49,7 @@ public class SourceProcessingException extends BuildException
     /** Serial version UID for backwards compatibility with 1.2.x object streams. */
     private static final long serialVersionUID = -4424962553130661462L;
 
-    /** 
+    /**
      * Creates a new {@code SourceProcessingException} instance taking a location.
      *
      * @param location The location this exception occured.

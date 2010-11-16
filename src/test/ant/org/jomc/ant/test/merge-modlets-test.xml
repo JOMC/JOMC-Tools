@@ -35,94 +35,109 @@
 <project name="commit-classes-test" xmlns:jomc="antlib:org.jomc.ant">
 
   <!-- ************************************************************************************************************* -->
-  <target name="init">
-    <property name="empty.dir" value="${project.build.directory}/merge-modlets-test/empty"/>
-    <property name="no.op.stylesheet" value="org/jomc/ant/test/no-op.xsl"/>
-    <property name="modlets.stylesheet" value="org/jomc/ant/test/modlets.xsl"/>
-    <mkdir dir="${empty.dir}"/>
-  </target>
-
-  <path id="empty.classpath">
-    <pathelement path="${empty.dir}"/>
-  </path>
-
-  <path id="jomc.classpath">
-    <fileset dir="${jomc.output.directory}">
-      <include name="**/*.jar"/>
-    </fileset>
-  </path>
+  <property name="no.op.stylesheet" value="org/jomc/ant/test/no-op.xsl"/>
+  <property name="modlets.stylesheet" value="org/jomc/ant/test/modlets.xsl"/>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-missing-modlet-file" depends="init">
+  <target name="before-test">
+    <property name="empty.dir" location="${test.output.dir}/EMPTY"/>
+    <property name="no.dir" location="${test.output.dir}/DOES_NOT_EXIST"/>
+    <property name="classes.dir" location="${test.output.dir}/classfiles"/>
+    <property name="dependencies.dir" location="${test.output.dir}/dependencies"/>
+
+    <delete dir="${no.dir}"/>
+    <delete dir="${classes.dir}"/>
+    <mkdir dir="${empty.dir}"/>
+    <mkdir dir="${classes.dir}"/>
+    <mkdir dir="${dependencies.dir}"/>
+    <mkdir dir="${test.output.dir}"/>
+
+    <unzip src="${output.dir}/classfiles.zip" dest="${classes.dir}"/>
+    <unzip src="${output.dir}/dependencies.zip" dest="${dependencies.dir}"/>
+
+    <path id="empty.classpath">
+      <pathelement path="${empty.dir}"/>
+    </path>
+
+    <path id="classes.classpath">
+      <pathelement location="${classes.dir}"/>
+    </path>
+
+    <path id="redundant.classpath">
+      <pathelement location="${classes.dir}"/>
+      <fileset dir="${dependencies.dir}">
+        <include name="**/*.jar"/>
+      </fileset>
+    </path>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-missing-modlet-file">
     <jomc:merge-modlets modletName="TEST"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-missing-modlet-name" depends="init">
+  <target name="test-missing-modlet-name">
     <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-exclusion-missing-modlet-name" depends="init">
+  <target name="test-exclusion-missing-modlet-name">
     <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST">
       <jomc:modletExclude/>
     </jomc:merge-modlets>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-inclusion-missing-modlet-name" depends="init">
+  <target name="test-inclusion-missing-modlet-name">
     <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST">
       <jomc:modletInclude/>
     </jomc:merge-modlets>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-merge-modlets" depends="init">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="${project.name}"
-                        classpathref="jomc.classpath"/>
+  <target name="test-merge-modlets">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-merge-modlets-with-no-op-stylesheet" depends="init">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="${project.name}"
-                        modletObjectStylesheet="${no.op.stylesheet}"
-                        classpathref="jomc.classpath"/>
+  <target name="test-merge-modlets-with-no-op-stylesheet">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
+                        modletObjectStylesheet="${no.op.stylesheet}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-merge-modlets-with-redundant-resources" depends="init">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="${project.name}"
-                        modletObjectStylesheet="${no.op.stylesheet}" classpathref="jomc.classpath"/>
+  <target name="test-merge-modlets-with-redundant-resources">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
+                        modletObjectStylesheet="${no.op.stylesheet}" classpathref="redundant.classpath"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-merge-modlets-with-illegal-transformation-result-stylesheet" depends="init">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="${project.name}"
+  <target name="test-merge-modlets-with-illegal-transformation-result-stylesheet">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
                         modletObjectStylesheet="${modlets.stylesheet}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-merge-modlets-exclusion" depends="init">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="${project.name}"
-                        classpathref="jomc.classpath">
+  <target name="test-merge-modlets-exclusion">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" classpathref="redundant.classpath">
       <jomc:modletExclude name="JOMC Tools"/>
     </jomc:merge-modlets>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-merge-modlets-inclusion" depends="init">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="${project.name}"
-                        classpathref="jomc.classpath">
+  <target name="test-merge-modlets-inclusion">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" classpathref="redundant.classpath">
       <jomc:modletInclude name="JOMC Tools"/>
     </jomc:merge-modlets>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-merge-modlets-all-attributes" depends="init">
+  <target name="test-merge-modlets-all-attributes">
     <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml"
-                        modletName="${project.name}"
-                        modletVersion="${project.version}"
-                        modletVendor="${project.organization.name}"
+                        modletName="TEST"
+                        modletVersion="TEST"
+                        modletVendor="TEST"
                         modletEncoding="UTF-8"
                         modletObjectStylesheet="${no.op.stylesheet}">
       <jomc:classpath>
@@ -134,9 +149,9 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task" depends="init">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="${project.name}"
-                        classpathref="jomc.classpath"/>
+  <target name="test-execute-task">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
+                        classpathref="redundant.classpath"/>
   </target>
 
 </project>

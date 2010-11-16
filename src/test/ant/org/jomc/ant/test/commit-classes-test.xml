@@ -34,132 +34,133 @@
 -->
 <project name="commit-classes-test" xmlns:jomc="antlib:org.jomc.ant">
 
+  <property name="no.op.stylesheet" value="org/jomc/ant/test/no-op.xsl"/>
+
   <!-- ************************************************************************************************************* -->
-  <target name="init">
-    <property name="empty.dir" value="${project.build.directory}/commit-classes-test/empty"/>
-    <property name="non.existent.dir" value="${project.build.directory}/DOES_NOT_EXIST"/>
-    <property name="no.op.stylesheet" value="org/jomc/ant/test/no-op.xsl"/>
+  <target name="before-test">
+    <property name="empty.dir" location="${test.output.dir}/EMPTY"/>
+    <property name="no.dir" location="${test.output.dir}/DOES_NOT_EXIST"/>
+    <property name="classes.dir" location="${test.output.dir}/classfiles"/>
+    <property name="dependencies.dir" location="${test.output.dir}/dependencies"/>
+
+    <delete dir="${no.dir}"/>
+    <delete dir="${classes.dir}"/>
     <mkdir dir="${empty.dir}"/>
-    <delete dir="${non.existent.dir}"/>
+    <mkdir dir="${classes.dir}"/>
+    <mkdir dir="${dependencies.dir}"/>
+    <mkdir dir="${test.output.dir}"/>
+
+    <unzip src="${output.dir}/classfiles.zip" dest="${classes.dir}"/>
+    <unzip src="${output.dir}/dependencies.zip" dest="${dependencies.dir}"/>
+
+    <path id="empty.classpath">
+      <pathelement path="${empty.dir}"/>
+    </path>
+
+    <path id="classes.classpath">
+      <pathelement location="${classes.dir}"/>
+    </path>
+
+    <path id="redundant.classpath">
+      <pathelement location="${classes.dir}"/>
+      <fileset dir="${dependencies.dir}">
+        <include name="**/*.jar"/>
+      </fileset>
+    </path>
   </target>
 
-  <path id="empty.classpath">
-    <pathelement path="${empty.dir}"/>
-  </path>
-
-  <path id="jomc.classpath">
-    <fileset dir="${jomc.output.directory}">
-      <include name="**/*.jar"/>
-    </fileset>
-  </path>
-
   <!-- ************************************************************************************************************* -->
-  <target name="test-missing-classes-directory" depends="init">
+  <target name="test-missing-classes-directory">
     <jomc:commit-classes/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-non-existing-classes-directory" depends="init">
-    <jomc:commit-classes classesDirectory="${non.existent.dir}"/>
+  <target name="test-non-existing-classes-directory">
+    <jomc:commit-classes classesDirectory="${no.dir}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-stylesheet-not-found" depends="init">
+  <target name="test-stylesheet-not-found">
     <jomc:commit-classes classesDirectory="${empty.dir}" modelObjectStylesheet="DOES_NOT_EXIST"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-class-processing-disabled" depends="init">
+  <target name="test-class-processing-disabled">
     <jomc:commit-classes classesDirectory="${empty.dir}" classProcessingEnabled="false"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-specification-not-found" depends="init">
-    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
-                         specification="DOES NOT EXIST"/>
-
+  <target name="test-specification-not-found">
+    <jomc:commit-classes classesDirectory="${classes.dir}" specification="DOES NOT EXIST"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-implementation-not-found" depends="init">
-    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
-                         implementation="DOES NOT EXIST"/>
-
+  <target name="test-implementation-not-found">
+    <jomc:commit-classes classesDirectory="${classes.dir}" implementation="DOES NOT EXIST"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-module-not-found" depends="init">
-    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
-                         module="DOES NOT EXIST"/>
-
+  <target name="test-module-not-found">
+    <jomc:commit-classes classesDirectory="${classes.dir}" module="DOES NOT EXIST"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-commit-ant-tasks" depends="init">
-    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"/>
+  <target name="test-commit-ant-tasks">
+    <jomc:commit-classes classesDirectory="${classes.dir}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-commit-ant-tasks-with-no-op-stylesheet" depends="init">
-    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
-                         modelObjectStyleSheet="${no.op.stylesheet}"/>
-
+  <target name="test-commit-ant-tasks-with-no-op-stylesheet">
+    <jomc:commit-classes classesDirectory="${classes.dir}" modelObjectStyleSheet="${no.op.stylesheet}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-commit-ant-tasks-with-redundant-resources" depends="init">
-    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
-                         modelObjectStyleSheet="${no.op.stylesheet}" classpathref="jomc.classpath"/>
-
+  <target name="test-commit-ant-tasks-with-redundant-resources">
+    <jomc:commit-classes classesDirectory="${classes.dir}" modelObjectStyleSheet="${no.op.stylesheet}"
+                         classpathref="redundant.classpath"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-commit-one-specification" depends="init">
-    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
-                         specification="org.jomc.ant.JomcTask"/>
+  <target name="test-commit-one-specification">
+    <jomc:commit-classes classesDirectory="${classes.dir}" specification="org.jomc.ant.test.JomcTask"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-commit-one-implementation" depends="init">
-    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
-                         implementation="org.jomc.ant.JomcToolTask"/>
+  <target name="test-commit-one-implementation">
+    <jomc:commit-classes classesDirectory="${classes.dir}" implementation="org.jomc.ant.test.JomcToolTask"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-commit-one-module" depends="init">
-    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
-                         module="${project.name} Tests"/>
+  <target name="test-commit-one-module">
+    <jomc:commit-classes classesDirectory="${classes.dir}" module="JOMC Ant Tasks Tests"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-commit-one-specification-with-no-op-stylesheet" depends="init">
-    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
-                         specification="org.jomc.ant.JomcTask"
+  <target name="test-commit-one-specification-with-no-op-stylesheet">
+    <jomc:commit-classes classesDirectory="${classes.dir}" specification="org.jomc.ant.test.JomcTask"
                          modelObjectStyleSheet="${no.op.stylesheet}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-commit-one-implementation-with-no-op-stylesheet" depends="init">
-    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
-                         implementation="org.jomc.ant.JomcToolTask"
+  <target name="test-commit-one-implementation-with-no-op-stylesheet">
+    <jomc:commit-classes classesDirectory="${classes.dir}" implementation="org.jomc.ant.test.JomcToolTask"
                          modelObjectStyleSheet="${no.op.stylesheet}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-commit-one-module-with-no-op-stylesheet" depends="init">
-    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
-                         module="${project.name} Tests"
+  <target name="test-commit-one-module-with-no-op-stylesheet">
+    <jomc:commit-classes classesDirectory="${classes.dir}" module="JOMC Ant Tasks Tests"
                          modelObjectStyleSheet="${no.op.stylesheet}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-commit-ant-tasks-with-classpathref" depends="init">
-    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}" classpathref="empty.classpath"/>
+  <target name="test-commit-ant-tasks-with-classpathref">
+    <jomc:commit-classes classesDirectory="${classes.dir}" classpathref="empty.classpath"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-commit-ant-tasks-with-nested-classpath" depends="init">
-    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}">
+  <target name="test-commit-ant-tasks-with-nested-classpath">
+    <jomc:commit-classes classesDirectory="${classes.dir}">
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>
       </jomc:classpath>
@@ -167,8 +168,8 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-commit-ant-tasks-all-attributes" depends="init">
-    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
+  <target name="test-commit-ant-tasks-all-attributes">
+    <jomc:commit-classes classesDirectory="${classes.dir}"
                          defaultTemplateProfile="TEST"
                          inputEncoding="UTF-8"
                          outputEncoding="UTF-8"
@@ -194,14 +195,13 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-commit-ant-tasks-broken-model" depends="init">
-    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"
-                         moduleLocation="META-INF/jomc-broken.xml"/>
+  <target name="test-commit-ant-tasks-broken-model">
+    <jomc:commit-classes classesDirectory="${classes.dir}" moduleLocation="META-INF/jomc-broken.xml"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task" depends="init">
-    <jomc:commit-classes classesDirectory="${project.build.outputDirectory}"/>
+  <target name="test-execute-task">
+    <jomc:commit-classes classesDirectory="${classes.dir}"/>
   </target>
 
 </project>

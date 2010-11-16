@@ -35,94 +35,100 @@
 <project name="generate-resources-test" xmlns:jomc="antlib:org.jomc.ant">
 
   <!-- ************************************************************************************************************* -->
-  <target name="init">
-    <property name="empty.dir" value="${project.build.directory}/generate-resources-test/empty"/>
-    <property name="non.existent.dir" value="${project.build.directory}/DOES_NOT_EXIST"/>
+  <target name="before-test">
+    <property name="empty.dir" location="${test.output.dir}/EMPTY"/>
+    <property name="no.dir" location="${test.output.dir}/DOES_NOT_EXIST"/>
+    <property name="classes.dir" location="${test.output.dir}/classfiles"/>
+    <property name="dependencies.dir" location="${test.output.dir}/dependencies"/>
+
+    <delete dir="${no.dir}"/>
+    <delete dir="${classes.dir}"/>
     <mkdir dir="${empty.dir}"/>
-    <delete dir="${non.existent.dir}"/>
+    <mkdir dir="${classes.dir}"/>
+    <mkdir dir="${dependencies.dir}"/>
+    <mkdir dir="${test.output.dir}"/>
+
+    <unzip src="${output.dir}/classfiles.zip" dest="${classes.dir}"/>
+    <unzip src="${output.dir}/dependencies.zip" dest="${dependencies.dir}"/>
+
+    <path id="empty.classpath">
+      <pathelement path="${empty.dir}"/>
+    </path>
+
+    <path id="classes.classpath">
+      <pathelement location="${classes.dir}"/>
+    </path>
+
+    <path id="redundant.classpath">
+      <pathelement location="${classes.dir}"/>
+      <fileset dir="${dependencies.dir}">
+        <include name="**/*.jar"/>
+      </fileset>
+    </path>
   </target>
 
-  <path id="empty.classpath">
-    <pathelement path="${empty.dir}"/>
-  </path>
-
-  <path id="jomc.classpath">
-    <fileset dir="${jomc.output.directory}">
-      <include name="**/*.jar"/>
-    </fileset>
-  </path>
-
   <!-- ************************************************************************************************************* -->
-  <target name="test-missing-resources-directory" depends="init">
+  <target name="test-missing-resources-directory">
     <jomc:generate-resources/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-non-existing-resources-directory" depends="init">
-    <jomc:generate-resources resourcesDirectory="${non.existent.dir}"/>
+  <target name="test-non-existing-resources-directory">
+    <jomc:generate-resources resourcesDirectory="${no.dir}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-resource-processing-disabled" depends="init">
+  <target name="test-resource-processing-disabled">
     <jomc:generate-resources resourcesDirectory="${empty.dir}" resourceProcessingEnabled="false"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-specification-not-found" depends="init">
-    <jomc:generate-resources resourcesDirectory="${empty.dir}"
-                             specification="DOES NOT EXIST"/>
-
+  <target name="test-specification-not-found">
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" specification="DOES NOT EXIST"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-implementation-not-found" depends="init">
-    <jomc:generate-resources resourcesDirectory="${empty.dir}"
-                             implementation="DOES NOT EXIST"/>
-
+  <target name="test-implementation-not-found">
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" implementation="DOES NOT EXIST"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-module-not-found" depends="init">
-    <jomc:generate-resources resourcesDirectory="${empty.dir}"
-                             module="DOES NOT EXIST"/>
-
+  <target name="test-module-not-found">
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" module="DOES NOT EXIST"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-generate-ant-task-resources" depends="init">
+  <target name="test-generate-ant-task-resources">
     <jomc:generate-resources resourcesDirectory="${empty.dir}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-generate-ant-task-resources-with-redundant-resources" depends="init">
-    <jomc:generate-resources resourcesDirectory="${empty.dir}" classpathref="jomc.classpath"/>
+  <target name="test-generate-ant-task-resources-with-redundant-resources">
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" classpathref="redundant.classpath"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-generate-one-specification" depends="init">
-    <jomc:generate-resources resourcesDirectory="${empty.dir}"
-                             specification="org.jomc.ant.JomcTask"/>
+  <target name="test-generate-one-specification">
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" specification="org.jomc.ant.test.JomcTask"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-generate-one-implementation" depends="init">
-    <jomc:generate-resources resourcesDirectory="${empty.dir}"
-                             implementation="org.jomc.ant.JomcToolTask"/>
+  <target name="test-generate-one-implementation">
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" implementation="org.jomc.ant.test.JomcToolTask"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-generate-one-module" depends="init">
-    <jomc:generate-resources resourcesDirectory="${empty.dir}"
-                             module="${project.name} Tests"/>
+  <target name="test-generate-one-module">
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" module="JOMC Ant Tasks Tests"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-generate-ant-task-resources-with-classpathref" depends="init">
+  <target name="test-generate-ant-task-resources-with-classpathref">
     <jomc:generate-resources resourcesDirectory="${empty.dir}" classpathref="empty.classpath"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-generate-ant-task-resources-with-nested-classpath" depends="init">
+  <target name="test-generate-ant-task-resources-with-nested-classpath">
     <jomc:generate-resources resourcesDirectory="${empty.dir}">
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>
@@ -131,7 +137,7 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-generate-ant-task-resources-all-attributes" depends="init">
+  <target name="test-generate-ant-task-resources-all-attributes">
     <jomc:generate-resources resourcesDirectory="${empty.dir}"
                              resourceBundleDefaultLanguage="de"
                              defaultTemplateProfile="TEST"
@@ -159,13 +165,12 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-generate-ant-task-resources-broken-model" depends="init">
-    <jomc:generate-resources resourcesDirectory="${empty.dir}"
-                             moduleLocation="META-INF/jomc-broken.xml"/>
+  <target name="test-generate-ant-task-resources-broken-model">
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" moduleLocation="META-INF/jomc-broken.xml"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task" depends="init">
+  <target name="test-execute-task">
     <jomc:generate-resources resourcesDirectory="${empty.dir}"/>
   </target>
 

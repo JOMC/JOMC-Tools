@@ -32,6 +32,9 @@
  */
 package org.jomc.ant.test;
 
+import java.io.IOException;
+import org.apache.commons.io.FileUtils;
+import java.net.URL;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.tools.ant.BuildEvent;
 import org.junit.Test;
@@ -48,6 +51,7 @@ import org.jomc.ant.JomcTask;
 import java.util.Locale;
 import static org.jomc.ant.test.Assert.assertNoException;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
@@ -62,6 +66,9 @@ public class JomcTaskTest
     /** Cached default locale. */
     private static final Locale DEFAULT_LOCALE = Locale.getDefault();
 
+    /** Constant for the name of the system property holding the output directory for the test. */
+    private static final String OUTPUT_DIRECTORY_PROPERTY_NAME = "jomc.test.outputDirectory";
+
     /** The {@code JomcTask} instance tests are performed with. */
     private JomcTask jomcTask;
 
@@ -71,10 +78,39 @@ public class JomcTaskTest
     /** The {@code AntExecutor} backing the test. */
     private AntExecutor antExecutor;
 
+    /** The output directory of the instance. */
+    private File outputDirectory;
+
     /** Creates a new {@code JomcTaskTest} instance. */
     public JomcTaskTest()
     {
         super();
+    }
+
+    /**
+     * Gets the output directory of instance.
+     *
+     * @return The output directory of instance.
+     *
+     * @see #setOutputDirectory(java.io.File)
+     */
+    public final File getOutputDirectory()
+    {
+        if ( this.outputDirectory == null )
+        {
+            final String name = System.getProperty( OUTPUT_DIRECTORY_PROPERTY_NAME );
+            assertNotNull( "Expected '" + OUTPUT_DIRECTORY_PROPERTY_NAME + "' system property not found.", name );
+            this.outputDirectory = new File( new File( name ), this.getClass().getSimpleName() );
+            assertTrue( "Expected '" + OUTPUT_DIRECTORY_PROPERTY_NAME + "' system property to hold an absolute path.",
+                        this.outputDirectory.isAbsolute() );
+
+            if ( !this.outputDirectory.exists() )
+            {
+                assertTrue( this.outputDirectory.mkdirs() );
+            }
+        }
+
+        return this.outputDirectory;
     }
 
     /**
@@ -138,13 +174,34 @@ public class JomcTaskTest
             final Project p = new Project();
             p.init();
 
-            final File buildFile =
-                new File( System.getProperty( JomcTaskTest.class.getName() + ".buildFilesDirectory" ),
-                          this.getBuildFileName() );
+            final URL buildFileResource = this.getClass().getResource( this.getBuildFileName() );
+            assertNotNull( "Expected '" + this.getBuildFileName() + "' resource not found.", buildFileResource );
+            final File buildFile = new File( this.getOutputDirectory(), this.getBuildFileName() );
+            assertTrue( buildFile.isAbsolute() );
+            FileUtils.copyInputStreamToFile( buildFileResource.openStream(), buildFile );
 
+            final URL dependenciesResource = this.getClass().getResource( "dependencies.zip" );
+            assertNotNull( "Expected 'dependencies.zip' resource not found.", dependenciesResource );
+            final File dependenciesZip = new File( this.getOutputDirectory(), "dependencies.zip" );
+            assertTrue( dependenciesZip.isAbsolute() );
+            FileUtils.copyInputStreamToFile( dependenciesResource.openStream(), dependenciesZip );
+
+            final URL classfilesResource = this.getClass().getResource( "classfiles.zip" );
+            assertNotNull( "Expected 'classfiles.zip' resource not found.", classfilesResource );
+            final File classfilesZip = new File( this.getOutputDirectory(), "classfiles.zip" );
+            assertTrue( classfilesZip.isAbsolute() );
+            FileUtils.copyInputStreamToFile( classfilesResource.openStream(), classfilesZip );
+
+            p.setProperty( "basedir", buildFile.getParentFile().getAbsolutePath() );
             p.setUserProperty( "ant.file", buildFile.getAbsolutePath() );
+            p.setUserProperty( "output.dir", this.getOutputDirectory().getAbsolutePath() );
+            p.setUserProperty( "test.output.dir", new File( this.getOutputDirectory(), "work" ).getAbsolutePath() );
             ProjectHelper.configureProject( p, buildFile );
             return p;
+        }
+        catch ( final IOException e )
+        {
+            throw new AssertionError( e );
         }
         catch ( final BuildException e )
         {
@@ -197,12 +254,22 @@ public class JomcTaskTest
     public void setUp() throws Exception
     {
         Locale.setDefault( Locale.ENGLISH );
+
+        if ( this.getProject().getTargets().containsKey( "before-test" ) )
+        {
+            assertNoException( this.executeTarget( "before-test" ) );
+        }
     }
 
     @After
     public void tearDown() throws Exception
     {
         Locale.setDefault( DEFAULT_LOCALE );
+
+        if ( this.getProject().getTargets().containsKey( "after-test" ) )
+        {
+            assertNoException( this.executeTarget( "after-test" ) );
+        }
     }
 
     /**

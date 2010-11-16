@@ -32,30 +32,25 @@
   $Id$
 
 -->
-<module xmlns="http://jomc.org/model"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://jomc.org/model http://jomc.sourceforge.net/model/jomc-1.0.xsd"
-        name="JOMC Ant Tasks Tests" version="${project.version}" vendor="${project.organization.name}"
-        modelVersion="1.0">
-
-  <documentation defaultLanguage="en">
-    <text language="en">${project.description}</text>
-  </documentation>
-
-  <implementations>
-    <!-- *********************************************************************************************************** -->
-    <implementation identifier="Broken" class="Broken"
-                    classDeclaration="true" name="${project.name}" version="${project.version}"
-                    vendor="${project.organization.name}">
-
-      <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
-                createDate="2005-07-25T19:56:45Z"/>
-
-      </authors>
-      <specifications>
-        <reference identifier="DOES NOT EXIST"/>
-      </specifications>
-    </implementation>
-  </implementations>
-</module>
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.1"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.1 http://maven.apache.org/xsd/assembly-1.1.1.xsd">
+  <id>dependencies</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <dependencySets>
+    <dependencySet>
+      <directoryMode>0755</directoryMode>
+      <fileMode>0555</fileMode>
+      <scope>runtime</scope>
+      <outputDirectory>/</outputDirectory>
+      <includes>
+        <include>org.jomc:jomc-modlet</include>
+        <include>org.jomc:jomc-model</include>
+        <include>org.jomc:jomc-tools</include>
+      </includes>
+    </dependencySet>
+  </dependencySets>
+</assembly>

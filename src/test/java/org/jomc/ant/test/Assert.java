@@ -32,6 +32,8 @@
  */
 package org.jomc.ant.test;
 
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 import org.apache.tools.ant.BuildEvent;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -57,8 +59,10 @@ public class Assert
     {
         assertNotNull( result );
         assertNotNull( exception );
-        assertNotNull( result.getThrowable() );
-        assertTrue( result.getThrowable().getClass() == exception );
+        assertNotNull( getMessage( "expectedException", exception.getName() ), result.getThrowable() );
+        assertTrue( getMessage( "unexpectedExceptionClass", result.getThrowable().getClass().getName(),
+                                exception.getName() ), result.getThrowable().getClass() == exception );
+
     }
 
     /**
@@ -89,8 +93,10 @@ public class Assert
     {
         assertNotNull( result );
         assertNotNull( exception );
-        assertNotNull( result.getThrowable() );
-        assertTrue( result.getThrowable().getClass().isAssignableFrom( exception ) );
+        assertNotNull( getMessage( "expectedException", exception.getName() ), result.getThrowable() );
+        assertTrue( getMessage( "unexpectedExceptionInstance", result.getThrowable().getClass().getName(),
+                                exception.getName() ), result.getThrowable().getClass().isAssignableFrom( exception ) );
+
     }
 
     /**
@@ -119,8 +125,10 @@ public class Assert
     {
         assertNotNull( result );
         assertNotNull( message );
-        assertNotNull( result.getThrowable() );
-        assertEquals( message, result.getThrowable().getMessage() );
+        assertNotNull( getMessage( "unexpectedSuccess" ), result.getThrowable() );
+        assertEquals( getMessage( "unexpectedExceptionMessage", result.getThrowable().getMessage(), message ), message,
+                      result.getThrowable().getMessage() );
+
     }
 
     /**
@@ -150,8 +158,10 @@ public class Assert
     {
         assertNotNull( result );
         assertNotNull( needle );
-        assertNotNull( result.getThrowable() );
-        assertTrue( result.getThrowable().getMessage().contains( needle ) );
+        assertNotNull( getMessage( "unexpectedSuccess" ), result.getThrowable() );
+        assertTrue( getMessage( "unexpectedExceptionMessageContaining", result.getThrowable().getMessage(), needle ),
+                    result.getThrowable().getMessage().contains( needle ) );
+
     }
 
     /**
@@ -179,7 +189,7 @@ public class Assert
     public static void assertNoException( final AntExecutionResult result )
     {
         assertNotNull( result );
-        assertNull( result.getThrowable() );
+        assertNull( getMessage( "unexpectedException", result.getThrowable() ), result.getThrowable() );
     }
 
     /**
@@ -205,8 +215,10 @@ public class Assert
     {
         assertNotNull( result );
         assertNotNull( needle );
-        assertNotNull( result.getSystemOutput() );
-        assertTrue( result.getSystemOutput().contains( needle ) );
+        assertNotNull( getMessage( "expectedSystemOutputContaining", needle ), result.getSystemOutput() );
+        assertTrue( getMessage( "expectedSystemOutputContaining", needle ),
+                    result.getSystemOutput().contains( needle ) );
+
     }
 
     /**
@@ -236,8 +248,10 @@ public class Assert
     {
         assertNotNull( result );
         assertNotNull( needle );
-        assertNotNull( result.getSystemError() );
-        assertTrue( result.getSystemError().contains( needle ) );
+        assertNotNull( getMessage( "expectedSystemErrorContaining", needle ), result.getSystemError() );
+        assertTrue( getMessage( "expectedSystemErrorContaining", needle ),
+                    result.getSystemError().contains( needle ) );
+
     }
 
     /**
@@ -279,7 +293,7 @@ public class Assert
             }
         }
 
-        assertNotNull( messageLoggedEvent );
+        assertNotNull( getMessage( "expectedMessageLogged", message ), messageLoggedEvent );
     }
 
     /**
@@ -334,8 +348,10 @@ public class Assert
             }
         }
 
-        assertNotNull( messageLoggedEvent );
-        assertEquals( priority, messageLoggedEvent.getPriority() );
+        assertNotNull( getMessage( "expectedMessageLogged", message ), messageLoggedEvent );
+        assertEquals( getMessage( "unexpectedMessagePriority", messageLoggedEvent.getPriority(), priority ), priority,
+                      messageLoggedEvent.getPriority() );
+
     }
 
     /**
@@ -391,7 +407,7 @@ public class Assert
             }
         }
 
-        assertNotNull( messageLoggedEvent );
+        assertNotNull( getMessage( "expectedMessageLoggedContaining", needle ), messageLoggedEvent );
     }
 
     /**
@@ -448,8 +464,10 @@ public class Assert
             }
         }
 
-        assertNotNull( messageLoggedEvent );
-        assertEquals( priority, messageLoggedEvent.getPriority() );
+        assertNotNull( getMessage( "expectedMessageLoggedContaining", needle ), messageLoggedEvent );
+        assertEquals( getMessage( "unexpectedMessagePriority", messageLoggedEvent.getPriority(), priority ), priority,
+                      messageLoggedEvent.getPriority() );
+
     }
 
     /**
@@ -505,7 +523,10 @@ public class Assert
             }
         }
 
-        assertNull( messageLoggedEvent );
+        assertNull( getMessage( "unexpectedMessageLogged", messageLoggedEvent != null
+                                                           ? messageLoggedEvent.getMessage() : null ),
+                    messageLoggedEvent );
+
     }
 
     /**
@@ -558,7 +579,10 @@ public class Assert
             }
         }
 
-        assertNull( messageLoggedEvent );
+        assertNull( getMessage( "unexpectedMessageLogged", messageLoggedEvent != null
+                                                           ? messageLoggedEvent.getMessage() : null ),
+                    messageLoggedEvent );
+
     }
 
     /**
@@ -588,6 +612,13 @@ public class Assert
         }
 
         assertNull( reason.toString(), messageLoggedEvent );
+    }
+
+    private static String getMessage( final String key, final Object... arguments )
+    {
+        return MessageFormat.format( ResourceBundle.getBundle( Assert.class.getName().replace( '.', '/' ) ).
+            getString( key ), arguments );
+
     }
 
 }

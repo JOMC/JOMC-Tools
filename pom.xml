@@ -58,66 +58,55 @@
       </testResource>
       <testResource>
         <filtering>false</filtering>
+        <directory>src/test/ant</directory>
+      </testResource>
+      <testResource>
+        <filtering>false</filtering>
         <directory>src/test/objects</directory>
+      </testResource>
+      <testResource>
+        <filtering>false</filtering>
+        <directory>${project.build.directory}</directory>
+        <targetPath>org/jomc/ant/test</targetPath>
+        <includes>
+          <include>classfiles.zip</include>
+          <include>dependencies.zip</include>
+        </includes>
       </testResource>
     </testResources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <forkMode>once</forkMode>
-          <redirectTestOutputToFile>true</redirectTestOutputToFile>
-          <systemPropertyVariables>
-            <org.jomc.modlet.ModelContext.defaultLogLevel>ALL</org.jomc.modlet.ModelContext.defaultLogLevel>
-            <org.jomc.ri.DefaultObjectManager.defaultLogLevel>ALL</org.jomc.ri.DefaultObjectManager.defaultLogLevel>
-            <org.jomc.tools.JomcTool.defaultLogLevel>ALL</org.jomc.tools.JomcTool.defaultLogLevel>
-            <org.jomc.cli.Jomc.defaultLogLevel>ALL</org.jomc.cli.Jomc.defaultLogLevel>
-            <org.jomc.cli.commands.AbstractJomcCommand.defaultLogLevel>ALL</org.jomc.cli.commands.AbstractJomcCommand.defaultLogLevel>
-            <org.jomc.ant.test.JomcTaskTest.buildFilesDirectory>${project.build.directory}/ant</org.jomc.ant.test.JomcTaskTest.buildFilesDirectory>
-          </systemPropertyVariables>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
+        <artifactId>maven-assembly-plugin</artifactId>
         <executions>
           <execution>
-            <id>copy-test-buildfiles</id>
+            <id>assemble-test-classfiles</id>
             <phase>generate-test-resources</phase>
             <goals>
-              <goal>copy-resources</goal>
+              <goal>single</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/ant</outputDirectory>
-              <useDefaultDelimiters>false</useDefaultDelimiters>
-              <escapeWindowsPaths>true</escapeWindowsPaths>
-              <delimiters>
-                <delimiter>${*}</delimiter>
-              </delimiters>
-              <resources>
-                <resource>
-                  <filtering>true</filtering>
-                  <directory>src/test/ant</directory>
-                </resource>
-              </resources>
+              <attach>false</attach>
+              <appendAssemblyId>false</appendAssemblyId>
+              <finalName>classfiles</finalName>
+              <descriptors>
+                <descriptor>src/test/assembly/classfiles.xml</descriptor>
+              </descriptors>
             </configuration>
           </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
           <execution>
-            <id>copy-test-dependencies</id>
+            <id>assemble-test-dependencies</id>
             <phase>generate-test-resources</phase>
             <goals>
-              <goal>copy-dependencies</goal>
+              <goal>single</goal>
             </goals>
             <configuration>
-              <outputDirectory>${jomc.output.directory}</outputDirectory>
-              <includeGroupIds>org.jomc</includeGroupIds>
+              <attach>false</attach>
+              <appendAssemblyId>false</appendAssemblyId>
+              <finalName>dependencies</finalName>
+              <descriptors>
+                <descriptor>src/test/assembly/dependencies.xml</descriptor>
+              </descriptors>
             </configuration>
           </execution>
         </executions>
@@ -194,7 +183,4 @@
       </dependencies>
     </profile>
   </profiles>
-  <properties>
-    <jomc.output.directory>${project.build.directory}/jomc-artifacts</jomc.output.directory>
-  </properties>
 </project>

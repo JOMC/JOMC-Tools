@@ -35,90 +35,109 @@
 <project name="commit-classes-test" xmlns:jomc="antlib:org.jomc.ant">
 
   <!-- ************************************************************************************************************* -->
-  <target name="init">
-    <property name="empty.dir" value="${project.build.directory}/merge-modules-test/empty"/>
-    <property name="no.op.stylesheet" value="org/jomc/ant/test/no-op.xsl"/>
-    <property name="modules.stylesheet" value="org/jomc/ant/test/modules.xsl"/>
-    <mkdir dir="${empty.dir}"/>
-  </target>
-
-  <path id="empty.classpath">
-    <pathelement path="${empty.dir}"/>
-  </path>
-
-  <path id="jomc.classpath">
-    <fileset dir="${jomc.output.directory}">
-      <include name="**/*.jar"/>
-    </fileset>
-  </path>
+  <property name="no.op.stylesheet" value="org/jomc/ant/test/no-op.xsl"/>
+  <property name="modules.stylesheet" value="org/jomc/ant/test/modules.xsl"/>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-missing-module-file" depends="init">
+  <target name="before-test">
+    <property name="empty.dir" location="${test.output.dir}/EMPTY"/>
+    <property name="no.dir" location="${test.output.dir}/DOES_NOT_EXIST"/>
+    <property name="classes.dir" location="${test.output.dir}/classfiles"/>
+    <property name="dependencies.dir" location="${test.output.dir}/dependencies"/>
+
+    <delete dir="${no.dir}"/>
+    <delete dir="${classes.dir}"/>
+    <mkdir dir="${empty.dir}"/>
+    <mkdir dir="${classes.dir}"/>
+    <mkdir dir="${dependencies.dir}"/>
+    <mkdir dir="${test.output.dir}"/>
+
+    <unzip src="${output.dir}/classfiles.zip" dest="${classes.dir}"/>
+    <unzip src="${output.dir}/dependencies.zip" dest="${dependencies.dir}"/>
+
+    <path id="empty.classpath">
+      <pathelement path="${empty.dir}"/>
+    </path>
+
+    <path id="classes.classpath">
+      <pathelement location="${classes.dir}"/>
+    </path>
+
+    <path id="redundant.classpath">
+      <pathelement location="${classes.dir}"/>
+      <fileset dir="${dependencies.dir}">
+        <include name="**/*.jar"/>
+      </fileset>
+    </path>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-missing-module-file">
     <jomc:merge-modules moduleName="TEST"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-missing-module-name" depends="init">
+  <target name="test-missing-module-name">
     <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-exclusion-missing-module-name" depends="init">
+  <target name="test-exclusion-missing-module-name">
     <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST">
       <jomc:moduleExclude/>
     </jomc:merge-modules>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-inclusion-missing-module-name" depends="init">
+  <target name="test-inclusion-missing-module-name">
     <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST">
       <jomc:moduleInclude/>
     </jomc:merge-modules>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-merge-modules" depends="init">
-    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="${project.name}"/>
+  <target name="test-merge-modules">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-merge-modules-with-no-op-stylesheet" depends="init">
-    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="${project.name}"
+  <target name="test-merge-modules-with-no-op-stylesheet">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST"
                         modelObjectStylesheet="${no.op.stylesheet}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-merge-modules-with-redundant-resources" depends="init">
-    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="${project.name}"
-                        modelObjectStylesheet="${no.op.stylesheet}" classpathref="jomc.classpath"/>
+  <target name="test-merge-modules-with-redundant-resources">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST"
+                        modelObjectStylesheet="${no.op.stylesheet}" classpathref="redundant.classpath"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-merge-modules-with-illegal-transformation-result-stylesheet" depends="init">
-    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="${project.name}"
+  <target name="test-merge-modules-with-illegal-transformation-result-stylesheet">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST"
                         modelObjectStylesheet="${modules.stylesheet}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-merge-modules-exclusion" depends="init">
-    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="${project.name}">
+  <target name="test-merge-modules-exclusion">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST">
       <jomc:moduleExclude name="JOMC Ant Tasks Tests"/>
     </jomc:merge-modules>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-merge-modules-inclusion" depends="init">
-    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="${project.name}">
+  <target name="test-merge-modules-inclusion">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST">
       <jomc:moduleInclude name="JOMC Ant Tasks Tests"/>
     </jomc:merge-modules>
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-merge-modules-all-attributes" depends="init">
+  <target name="test-merge-modules-all-attributes">
     <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml"
-                        moduleName="${project.name}"
-                        moduleVersion="${project.version}"
-                        moduleVendor="${project.organization.name}"
+                        moduleName="TEST"
+                        moduleVersion="TEST"
+                        moduleVendor="TEST"
                         moduleEncoding="UTF-8"
                         modelObjectStylesheet="${no.op.stylesheet}">
       <jomc:classpath>
@@ -130,8 +149,8 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task" depends="init">
-    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="${project.name}"/>
+  <target name="test-execute-task">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST"/>
   </target>
 
 </project>

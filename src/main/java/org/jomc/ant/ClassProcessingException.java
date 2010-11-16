@@ -51,7 +51,7 @@ public class ClassProcessingException extends BuildException
 
     /**
      * Creates a new {@code ClassProcessingException} instance taking a location.
-     * 
+     *
      * @param location The location this exception occured.
      */
     public ClassProcessingException( final Location location )

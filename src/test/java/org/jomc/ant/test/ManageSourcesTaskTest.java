@@ -149,7 +149,7 @@ public class ManageSourcesTaskTest extends SourceFileProcessorTaskTest
     {
         final AntExecutionResult r = this.executeTarget( "test-manage-one-specification" );
         assertNoException( r );
-        assertMessageNotLogged( r, "Specification 'org.jomc.ant.JomcTask' not found." );
+        assertMessageNotLogged( r, "Specification 'org.jomc.ant.test.JomcTask' not found." );
     }
 
     @Test
@@ -157,7 +157,7 @@ public class ManageSourcesTaskTest extends SourceFileProcessorTaskTest
     {
         final AntExecutionResult r = this.executeTarget( "test-manage-one-implementation" );
         assertNoException( r );
-        assertMessageNotLogged( r, "Implementation 'org.jomc.ant.JomcToolTask' not found." );
+        assertMessageNotLogged( r, "Implementation 'org.jomc.ant.test.JomcToolTask' not found." );
     }
 
     @Test
