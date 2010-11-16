@@ -76,6 +76,9 @@ import org.jomc.modlet.Services;
 public class ProjectClassLoader extends URLClassLoader
 {
 
+    /** Constant to prefix relative resource names with. */
+    private static final String ABSOLUTE_RESOURCE_NAME_PREFIX = "/org/jomc/ant/";
+
     /** Empty URL array. */
     private static final URL[] NO_URLS =
     {
@@ -303,28 +306,40 @@ public class ProjectClassLoader extends URLClassLoader
      */
     public static Set<String> getDefaultModletExcludes() throws IOException
     {
+        InputStream resource = null;
         final Set<String> defaultModletExcludes = new HashSet<String>();
-        final InputStream resource = ProjectClassLoader.class.getResourceAsStream( "DefaultModletExcludes" );
 
-        if ( resource != null )
+        try
         {
-            final List<?> lines = IOUtils.readLines( resource, "UTF-8" );
-            resource.close();
+            resource = ProjectClassLoader.class.getResourceAsStream(
+                ABSOLUTE_RESOURCE_NAME_PREFIX + "DefaultModletExcludes" );
 
-            for ( Object line : lines )
+            if ( resource != null )
             {
-                final String trimmed = line.toString().trim();
+                final List<?> lines = IOUtils.readLines( resource, "UTF-8" );
 
-                if ( trimmed.contains( "#" ) || StringUtils.isEmpty( trimmed ) )
+                for ( Object line : lines )
                 {
-                    continue;
-                }
+                    final String trimmed = line.toString().trim();
 
-                defaultModletExcludes.add( trimmed );
+                    if ( trimmed.contains( "#" ) || StringUtils.isEmpty( trimmed ) )
+                    {
+                        continue;
+                    }
+
+                    defaultModletExcludes.add( trimmed );
+                }
+            }
+
+            return defaultModletExcludes;
+        }
+        finally
+        {
+            if ( resource != null )
+            {
+                resource.close();
             }
         }
-
-        return defaultModletExcludes;
     }
 
     /**
@@ -372,28 +387,40 @@ public class ProjectClassLoader extends URLClassLoader
      */
     public static Set<String> getDefaultProviderExcludes() throws IOException
     {
+        InputStream resource = null;
         final Set<String> defaultProviderExcludes = new HashSet<String>();
-        final InputStream resource = ProjectClassLoader.class.getResourceAsStream( "DefaultProviderExcludes" );
 
-        if ( resource != null )
+        try
         {
-            final List<?> lines = IOUtils.readLines( resource, "UTF-8" );
-            resource.close();
+            resource = ProjectClassLoader.class.getResourceAsStream(
+                ABSOLUTE_RESOURCE_NAME_PREFIX + "DefaultProviderExcludes" );
 
-            for ( Object line : lines )
+            if ( resource != null )
             {
-                final String trimmed = line.toString().trim();
+                final List<?> lines = IOUtils.readLines( resource, "UTF-8" );
 
-                if ( trimmed.contains( "#" ) || StringUtils.isEmpty( trimmed ) )
+                for ( Object line : lines )
                 {
-                    continue;
-                }
+                    final String trimmed = line.toString().trim();
 
-                defaultProviderExcludes.add( trimmed );
+                    if ( trimmed.contains( "#" ) || StringUtils.isEmpty( trimmed ) )
+                    {
+                        continue;
+                    }
+
+                    defaultProviderExcludes.add( trimmed );
+                }
+            }
+
+            return defaultProviderExcludes;
+        }
+        finally
+        {
+            if ( resource != null )
+            {
+                resource.close();
             }
         }
-
-        return defaultProviderExcludes;
     }
 
     /**
@@ -441,28 +468,40 @@ public class ProjectClassLoader extends URLClassLoader
      */
     public static Set<String> getDefaultServiceExcludes() throws IOException
     {
+        InputStream resource = null;
         final Set<String> defaultServiceExcludes = new HashSet<String>();
-        final InputStream resource = ProjectClassLoader.class.getResourceAsStream( "DefaultServiceExcludes" );
 
-        if ( resource != null )
+        try
         {
-            final List<?> lines = IOUtils.readLines( resource, "UTF-8" );
-            resource.close();
+            resource = ProjectClassLoader.class.getResourceAsStream(
+                ABSOLUTE_RESOURCE_NAME_PREFIX + "DefaultServiceExcludes" );
 
-            for ( Object line : lines )
+            if ( resource != null )
             {
-                final String trimmed = line.toString().trim();
+                final List<?> lines = IOUtils.readLines( resource, "UTF-8" );
 
-                if ( trimmed.contains( "#" ) || StringUtils.isEmpty( trimmed ) )
+                for ( Object line : lines )
                 {
-                    continue;
-                }
+                    final String trimmed = line.toString().trim();
 
-                defaultServiceExcludes.add( trimmed );
+                    if ( trimmed.contains( "#" ) || StringUtils.isEmpty( trimmed ) )
+                    {
+                        continue;
+                    }
+
+                    defaultServiceExcludes.add( trimmed );
+                }
+            }
+
+            return defaultServiceExcludes;
+        }
+        finally
+        {
+            if ( resource != null )
+            {
+                resource.close();
             }
         }
-
-        return defaultServiceExcludes;
     }
 
     /**
@@ -510,28 +549,40 @@ public class ProjectClassLoader extends URLClassLoader
      */
     public static Set<String> getDefaultSchemaExcludes() throws IOException
     {
+        InputStream resource = null;
         final Set<String> defaultSchemaExcludes = new HashSet<String>();
-        final InputStream resource = ProjectClassLoader.class.getResourceAsStream( "DefaultSchemaExcludes" );
 
-        if ( resource != null )
+        try
         {
-            final List<?> lines = IOUtils.readLines( resource, "UTF-8" );
-            resource.close();
+            resource = ProjectClassLoader.class.getResourceAsStream(
+                ABSOLUTE_RESOURCE_NAME_PREFIX + "DefaultSchemaExcludes" );
 
-            for ( Object line : lines )
+            if ( resource != null )
             {
-                final String trimmed = line.toString().trim();
+                final List<?> lines = IOUtils.readLines( resource, "UTF-8" );
 
-                if ( trimmed.contains( "#" ) || StringUtils.isEmpty( trimmed ) )
+                for ( Object line : lines )
                 {
-                    continue;
-                }
+                    final String trimmed = line.toString().trim();
 
-                defaultSchemaExcludes.add( trimmed );
+                    if ( trimmed.contains( "#" ) || StringUtils.isEmpty( trimmed ) )
+                    {
+                        continue;
+                    }
+
+                    defaultSchemaExcludes.add( trimmed );
+                }
+            }
+
+            return defaultSchemaExcludes;
+        }
+        finally
+        {
+            if ( resource != null )
+            {
+                resource.close();
             }
         }
-
-        return defaultSchemaExcludes;
     }
 
     /**
@@ -554,109 +605,133 @@ public class ProjectClassLoader extends URLClassLoader
 
     private URL filterProviders( final URL resource ) throws IOException
     {
-        URL filteredResource = resource;
-        final InputStream in = resource.openStream();
-        final List<?> lines = IOUtils.readLines( in, "UTF-8" );
-        final List<String> filteredLines = new ArrayList<String>( lines.size() );
+        InputStream in = null;
 
-        for ( Object line : lines )
+        try
         {
-            if ( !this.getProviderExcludes().contains( line.toString().trim() ) )
-            {
-                filteredLines.add( line.toString().trim() );
-            }
-            else
-            {
-                this.getExcludedProviders().add( line.toString().trim() );
-                this.getProject().log( getMessage( "providerExclusion", resource.toExternalForm(),
-                                                   line.toString().trim() ), Project.MSG_DEBUG );
+            URL filteredResource = resource;
+            in = resource.openStream();
+            final List<?> lines = IOUtils.readLines( in, "UTF-8" );
+            final List<String> filteredLines = new ArrayList<String>( lines.size() );
 
-            }
-        }
-
-        if ( lines.size() != filteredLines.size() )
-        {
-            OutputStream out = null;
-            final File tmpResource = File.createTempFile( this.getClass().getName(), ".rsrc" );
-            tmpResource.deleteOnExit();
-
-            try
+            for ( Object line : lines )
             {
-                out = new FileOutputStream( tmpResource );
-                IOUtils.writeLines( filteredLines, System.getProperty( "line.separator" ), out, "UTF-8" );
-            }
-            finally
-            {
-                if ( out != null )
+                if ( !this.getProviderExcludes().contains( line.toString().trim() ) )
                 {
-                    out.close();
+                    filteredLines.add( line.toString().trim() );
+                }
+                else
+                {
+                    this.getExcludedProviders().add( line.toString().trim() );
+                    this.getProject().log( getMessage( "providerExclusion", resource.toExternalForm(),
+                                                       line.toString().trim() ), Project.MSG_DEBUG );
+
                 }
             }
 
-            filteredResource = tmpResource.toURI().toURL();
-        }
+            if ( lines.size() != filteredLines.size() )
+            {
+                OutputStream out = null;
+                final File tmpResource = File.createTempFile( this.getClass().getName(), ".rsrc" );
+                tmpResource.deleteOnExit();
 
-        in.close();
-        return filteredResource;
+                try
+                {
+                    out = new FileOutputStream( tmpResource );
+                    IOUtils.writeLines( filteredLines, System.getProperty( "line.separator" ), out, "UTF-8" );
+                }
+                finally
+                {
+                    if ( out != null )
+                    {
+                        out.close();
+                    }
+                }
+
+                filteredResource = tmpResource.toURI().toURL();
+            }
+
+            in.close();
+            return filteredResource;
+        }
+        finally
+        {
+            if ( in != null )
+            {
+                in.close();
+            }
+        }
     }
 
     private URL filterModlets( final URL resource ) throws ModelException, IOException, JAXBException
     {
-        URL filteredResource = resource;
-        final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
-        final InputStream in = resource.openStream();
-        final JAXBElement<?> e =
-            (JAXBElement<?>) modelContext.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID ).unmarshal( in );
+        InputStream in = null;
 
-        final Object o = e.getValue();
-        Modlets modlets = null;
-        boolean filtered = false;
+        try
+        {
+            URL filteredResource = resource;
+            final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
+            in = resource.openStream();
+            final JAXBElement<?> e =
+                (JAXBElement<?>) modelContext.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID ).unmarshal( in );
 
-        if ( o instanceof Modlets )
-        {
-            modlets = new Modlets( (Modlets) o );
-        }
-        else if ( o instanceof Modlet )
-        {
-            modlets = new Modlets();
-            modlets.getModlet().add( new Modlet( (Modlet) o ) );
-        }
+            final Object o = e.getValue();
+            Modlets modlets = null;
+            boolean filtered = false;
 
-        if ( modlets != null )
-        {
-            for ( final Iterator<Modlet> it = modlets.getModlet().iterator(); it.hasNext(); )
+            if ( o instanceof Modlets )
             {
-                final Modlet m = it.next();
+                modlets = new Modlets( (Modlets) o );
+            }
+            else if ( o instanceof Modlet )
+            {
+                modlets = new Modlets();
+                modlets.getModlet().add( new Modlet( (Modlet) o ) );
+            }
 
-                if ( this.getModletExcludes().contains( m.getName() ) )
+            if ( modlets != null )
+            {
+                for ( final Iterator<Modlet> it = modlets.getModlet().iterator(); it.hasNext(); )
                 {
-                    it.remove();
-                    filtered = true;
-                    this.getExcludedModlets().getModlet().add( m );
-                    this.getProject().log( getMessage( "modletExclusion", resource.toExternalForm(), m.getName() ),
-                                           Project.MSG_DEBUG );
+                    final Modlet m = it.next();
 
-                    continue;
+                    if ( this.getModletExcludes().contains( m.getName() ) )
+                    {
+                        it.remove();
+                        filtered = true;
+                        this.getExcludedModlets().getModlet().add( m );
+                        this.getProject().log( getMessage( "modletExclusion", resource.toExternalForm(), m.getName() ),
+                                               Project.MSG_DEBUG );
+
+                        continue;
+                    }
+
+                    if ( this.filterModlet( m, resource.toExternalForm() ) )
+                    {
+                        filtered = true;
+                    }
                 }
 
-                if ( this.filterModlet( m, resource.toExternalForm() ) )
+                if ( filtered )
                 {
-                    filtered = true;
+                    final File tmpResource = File.createTempFile( this.getClass().getName(), ".rsrc" );
+                    tmpResource.deleteOnExit();
+                    modelContext.createMarshaller( ModletObject.MODEL_PUBLIC_ID ).marshal(
+                        new ObjectFactory().createModlets( modlets ), tmpResource );
+
+                    filteredResource = tmpResource.toURI().toURL();
                 }
             }
 
-            if ( filtered )
+            return filteredResource;
+        }
+        finally
+        {
+            if ( in != null )
             {
-                final File tmpResource = File.createTempFile( this.getClass().getName(), ".rsrc" );
-                tmpResource.deleteOnExit();
-                modelContext.createMarshaller( ModletObject.MODEL_PUBLIC_ID ).marshal(
-                    new ObjectFactory().createModlets( modlets ), tmpResource );
-
-                filteredResource = tmpResource.toURI().toURL();
+                in.close();
             }
         }
-
-        return filteredResource;
     }
 
     private boolean filterModlet( final Modlet modlet, final String resourceInfo )
