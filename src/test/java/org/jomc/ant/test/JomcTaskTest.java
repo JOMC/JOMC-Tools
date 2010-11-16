@@ -91,8 +91,6 @@ public class JomcTaskTest
      * Gets the output directory of instance.
      *
      * @return The output directory of instance.
-     *
-     * @see #setOutputDirectory(java.io.File)
      */
     public final File getOutputDirectory()
     {
