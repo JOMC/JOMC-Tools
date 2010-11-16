@@ -68,9 +68,6 @@ import static org.junit.Assert.assertTrue;
 /**
  * Tests the {@code Jomc} CLI class.
  * <p><b>Properties</b><ul>
- * <li>"{@link #getClassesDirectory classesDirectory}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
  * <li>"{@link #getTestClassesDirectory testClassesDirectory}"
  * <blockquote>Property of type {@code java.lang.String}.
  * </blockquote></li>
@@ -134,6 +131,9 @@ import static org.junit.Assert.assertTrue;
 public class JomcTest
 {
     // SECTION-START[JomcTest]
+
+    /** Constant to prefix relative resource names with. */
+    private static final String ABSOLUTE_RESOURCE_NAME_PREFIX = "/org/jomc/cli/test/";
 
     /** Constant for the name of the system property holding the output directory for the test. */
     private static final String OUTPUT_DIRECTORY_PROPERTY_NAME = "jomc.test.outputDirectory";
@@ -637,14 +637,15 @@ public class JomcTest
         }
 
         final File resourcesDirectory = new File( this.getOutputDirectory(), "jomc-test-resources" );
-        this.unzipResource( "resources.zip", resourcesDirectory );
+        this.unzipResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "resources.zip", resourcesDirectory );
 
         final File classesDirectory = new File( this.getOutputDirectory(), "jomc-test-classes" );
-        this.unzipResource( "classfiles.zip", classesDirectory );
+        this.unzipResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "classfiles.zip", classesDirectory );
     }
 
     private void unzipResource( final String resourceName, final File targetDirectory ) throws IOException
     {
+        assertTrue( resourceName.startsWith( "/" ) );
         final URL resource = this.getClass().getResource( resourceName );
         assertNotNull( "Expected '" + resourceName + "' not found.", resource );
 
@@ -697,19 +698,6 @@ public class JomcTest
     // SECTION-END
     // SECTION-START[Properties]
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
-
-    /**
-     * Gets the value of the {@code classesDirectory} property.
-     * @return The value of the {@code classesDirectory} property.
-     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private java.lang.String getClassesDirectory()
-    {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "classesDirectory" );
-        assert _p != null : "'classesDirectory' property not found.";
-        return _p;
-    }
 
     /**
      * Gets the value of the {@code testClassesDirectory} property.
