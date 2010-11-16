@@ -187,6 +187,15 @@
         <filtering>true</filtering>
         <directory>src/test/resources</directory>
       </testResource>
+      <testResource>
+        <filtering>false</filtering>
+        <directory>${project.build.directory}</directory>
+        <targetPath>org/jomc/cli/test</targetPath>
+        <includes>
+          <include>classfiles.zip</include>
+          <include>resources.zip</include>
+        </includes>
+      </testResource>
     </testResources>
     <plugins>
       <plugin>
@@ -298,6 +307,36 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>
+          <execution>
+            <id>assemble-test-classfiles</id>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <attach>false</attach>
+              <appendAssemblyId>false</appendAssemblyId>
+              <finalName>classfiles</finalName>
+              <descriptors>
+                <descriptor>src/test/assembly/classfiles.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+          <execution>
+            <id>assemble-test-resources</id>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <attach>false</attach>
+              <appendAssemblyId>false</appendAssemblyId>
+              <finalName>resources</finalName>
+              <descriptors>
+                <descriptor>src/test/assembly/resources.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
           <execution>
             <id>bin-assembly</id>
             <phase>package</phase>
