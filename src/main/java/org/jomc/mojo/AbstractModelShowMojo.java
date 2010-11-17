@@ -33,8 +33,6 @@
 package org.jomc.mojo;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.io.StringWriter;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
@@ -117,10 +115,8 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
 
                 this.log( Level.INFO, getMessage( "writing", this.document.getAbsolutePath() ), null );
 
-                final OutputStream out = new FileOutputStream( this.document );
                 m.setProperty( Marshaller.JAXB_ENCODING, this.documentEncoding );
-                m.marshal( new ObjectFactory().createModel( displayModel ), out );
-                out.close();
+                m.marshal( new ObjectFactory().createModel( displayModel ), this.document );
             }
 
             this.logToolSuccess( TOOLNAME );

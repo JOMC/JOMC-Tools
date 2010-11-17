@@ -33,10 +33,8 @@
 package org.jomc.mojo;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Iterator;
@@ -303,9 +301,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
                 final File moduleFile = File.createTempFile( "maven-assembly-plugin", ".tmp" );
                 moduleFile.deleteOnExit();
 
-                final OutputStream out = new FileOutputStream( moduleFile );
-                this.marshalModelObject( transformedModule, out );
-                out.close();
+                this.marshalModelObject( transformedModule, moduleFile );
 
                 archiver.addFile( moduleFile, normalizeResourceName( this.moduleResource ) );
             }
@@ -368,9 +364,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
                 final File modletFile = File.createTempFile( "maven-assembly-plugin", ".tmp" );
                 modletFile.deleteOnExit();
 
-                final OutputStream out = new FileOutputStream( modletFile );
-                this.marshalModletObject( transformedModlet, out );
-                out.close();
+                this.marshalModletObject( transformedModlet, modletFile );
 
                 archiver.addFile( modletFile, normalizeResourceName( this.modletResource ) );
             }
@@ -627,16 +621,16 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
         return this.jomcUnmarshaller.unmarshal( in );
     }
 
-    private void marshalModelObject( final JAXBElement<? extends ModelObject> element, final OutputStream out )
+    private void marshalModelObject( final JAXBElement<? extends ModelObject> element, final File file )
         throws ModelException, JAXBException
     {
         if ( element == null )
         {
             throw new NullPointerException( "element" );
         }
-        if ( out == null )
+        if ( file == null )
         {
-            throw new NullPointerException( "out" );
+            throw new NullPointerException( "file" );
         }
 
         if ( this.jomcMarshaller == null )
@@ -660,7 +654,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
             }
         }
 
-        this.jomcMarshaller.marshal( element, out );
+        this.jomcMarshaller.marshal( element, file );
     }
 
     private <T> JAXBElement<T> transformModelObject( final JAXBElement<? extends ModelObject> element,
@@ -754,16 +748,16 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
         return this.modletUnmarshaller.unmarshal( in );
     }
 
-    private void marshalModletObject( final JAXBElement<? extends ModletObject> element, final OutputStream out )
+    private void marshalModletObject( final JAXBElement<? extends ModletObject> element, final File file )
         throws ModelException, JAXBException
     {
         if ( element == null )
         {
             throw new NullPointerException( "element" );
         }
-        if ( out == null )
+        if ( file == null )
         {
-            throw new NullPointerException( "out" );
+            throw new NullPointerException( "file" );
         }
 
         if ( this.modletMarshaller == null )
@@ -790,7 +784,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
             }
         }
 
-        this.modletMarshaller.marshal( element, out );
+        this.modletMarshaller.marshal( element, file );
     }
 
     private <T> JAXBElement<T> transformModletObject( final JAXBElement<? extends ModletObject> element,
