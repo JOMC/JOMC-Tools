@@ -68,6 +68,12 @@ import static org.junit.Assert.assertTrue;
 /**
  * Tests the {@code Jomc} CLI class.
  * <p><b>Properties</b><ul>
+ * <li>"{@link #getClassesDirectory classesDirectory}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
+ * <li>"{@link #getResourcesDirectory resourcesDirectory}"
+ * <blockquote>Property of type {@code java.lang.String}.
+ * </blockquote></li>
  * <li>"{@link #getTestClassesDirectory testClassesDirectory}"
  * <blockquote>Property of type {@code java.lang.String}.
  * </blockquote></li>
@@ -299,7 +305,7 @@ public class JomcTest
         final String[] commitArgs = new String[]
         {
             "commit-classes", "-df", '"' + this.getTestModelDocument() + '"', "-cd",
-            '"' + new File( this.getOutputDirectory(), "jomc-test-classes" ).getAbsolutePath() + '"', "-mn",
+            '"' + this.getClassesDirectory() + '"', "-mn",
             '"' + this.getTestModuleName() + '"', "-D"
         };
 
@@ -312,13 +318,13 @@ public class JomcTest
         final String[] validateArgs = new String[]
         {
             "validate-classes", "-df", '"' + this.getTestModelDocument() + '"', "-cp",
-            '"' + new File( this.getOutputDirectory(), "jomc-test-classes" ).getAbsolutePath() + '"', "-D"
+            '"' + this.getClassesDirectory() + '"', "-D"
         };
 
         final String[] validateArgsNonExistentClasses = new String[]
         {
             "validate-classes", "-df", '"' + this.getTestModelDocumentNonExistentClasses() + '"', "-cp",
-            '"' + new File( this.getOutputDirectory(), "jomc-test-classes" ).getAbsolutePath() + '"', "-D"
+            '"' + this.getClassesDirectory() + '"', "-D"
         };
 
         final String[] commitUnsupportedOption = new String[]
@@ -334,21 +340,21 @@ public class JomcTest
         final String[] commitFailOnWarnings = new String[]
         {
             "commit-classes", "-df", '"' + this.getTestModelDocument() + '"', "-cd",
-            '"' + new File( this.getOutputDirectory(), "jomc-test-classes" ).getAbsolutePath() + '"', "-mn",
+            '"' + this.getClassesDirectory() + '"', "-mn",
             "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
         };
 
         final String[] validateFailOnWarnings = new String[]
         {
             "validate-classes", "-df", '"' + this.getTestModelDocument() + '"', "-cp",
-            '"' + new File( this.getOutputDirectory(), "jomc-test-classes" ).getAbsolutePath() + '"', "-mn",
+            '"' + this.getClassesDirectory() + '"', "-mn",
             "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
         };
 
         final String[] commitWithStylesheet = new String[]
         {
             "commit-classes", "-df", '"' + this.getTestModelDocument() + '"', "-cd",
-            '"' + new File( this.getOutputDirectory(), "jomc-test-classes" ).getAbsolutePath() + '"', "-mn",
+            '"' + this.getClassesDirectory() + '"', "-mn",
             '"' + this.getTestModuleName() + '"', "-D", "-stylesheet", '"' + this.getTestModelStylesheet() + '"'
         };
 
@@ -636,10 +642,10 @@ public class JomcTest
             assertTrue( f.mkdirs() );
         }
 
-        final File resourcesDirectory = new File( this.getOutputDirectory(), "jomc-test-resources" );
+        final File resourcesDirectory = new File( this.getResourcesDirectory() );
         this.unzipResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "resources.zip", resourcesDirectory );
 
-        final File classesDirectory = new File( this.getOutputDirectory(), "jomc-test-classes" );
+        final File classesDirectory = new File( this.getClassesDirectory() );
         this.unzipResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "classfiles.zip", classesDirectory );
     }
 
@@ -698,6 +704,32 @@ public class JomcTest
     // SECTION-END
     // SECTION-START[Properties]
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
+
+    /**
+     * Gets the value of the {@code classesDirectory} property.
+     * @return The value of the {@code classesDirectory} property.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private java.lang.String getClassesDirectory()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "classesDirectory" );
+        assert _p != null : "'classesDirectory' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code resourcesDirectory} property.
+     * @return The value of the {@code resourcesDirectory} property.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private java.lang.String getResourcesDirectory()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "resourcesDirectory" );
+        assert _p != null : "'resourcesDirectory' property not found.";
+        return _p;
+    }
 
     /**
      * Gets the value of the {@code testClassesDirectory} property.

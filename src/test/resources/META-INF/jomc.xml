@@ -55,14 +55,14 @@
 
       </authors>
       <properties>
-        <property name="testModelDocument" value="${jomc.test.outputDirectory}/JomcTest/jomc-test-resources/jomc-cli-module.xml"/>
-        <property name="testModelDocumentIllegal" value="${jomc.test.outputDirectory}/JomcTest/jomc-test-resources/illegal-module.xml"/>
-        <property name="testModelDocumentNonExistentClasses" value="${jomc.test.outputDirectory}/JomcTest/jomc-test-resources/module-nonexistent-classes.xml"/>
+        <property name="testModelDocument" value="${jomc.test.outputDirectory}/JomcTest/resources/jomc-cli-module.xml"/>
+        <property name="testModelDocumentIllegal" value="${jomc.test.outputDirectory}/JomcTest/resources/illegal-module.xml"/>
+        <property name="testModelDocumentNonExistentClasses" value="${jomc.test.outputDirectory}/JomcTest/resources/module-nonexistent-classes.xml"/>
         <property name="testModuleName" value="${project.name}"/>
-        <property name="testModelStylesheet" value="${jomc.test.outputDirectory}/JomcTest/jomc-test-resources/model-relocations.xsl"/>
+        <property name="testModelStylesheet" value="${jomc.test.outputDirectory}/JomcTest/resources/model-relocations.xsl"/>
         <property name="testModelOutputDocument" value="${jomc.test.outputDirectory}/JomcTest/transformed-model.xml"/>
         <property name="testModletName" value="${project.name} Tests"/>
-        <property name="testModletStylesheet" value="${jomc.test.outputDirectory}/JomcTest/jomc-test-resources/modlet-relocations.xsl"/>
+        <property name="testModletStylesheet" value="${jomc.test.outputDirectory}/JomcTest/resources/modlet-relocations.xsl"/>
         <property name="testModletOutputDocument" value="${jomc.test.outputDirectory}/JomcTest/transformed-modlet.xml"/>
         <property name="testSourcesDirectory" value="${jomc.test.outputDirectory}/JomcTest/jomc-test-generated-sources"/>
         <property name="testResourcesDirectory" value="${jomc.test.outputDirectory}/JomcTest/jomc-test-generated-resources"/>
@@ -71,6 +71,8 @@
         <property name="testShowSpecificationOutputDocument" value="${jomc.test.outputDirectory}/JomcTest/shown-specification.xml"/>
         <property name="testShowInstanceOutputDocument" value="${jomc.test.outputDirectory}/JomcTest/shown-instance.xml"/>
         <property name="testShowSpecificationAndInstanceOutputDocument" value="${jomc.test.outputDirectory}/JomcTest/shown-specification-and-instance.xml"/>
+        <property name="classesDirectory" value="${jomc.test.outputDirectory}/JomcTest/classes"/>
+        <property name="resourcesDirectory" value="${jomc.test.outputDirectory}/JomcTest/resources"/>
       </properties>
     </implementation>
   </implementations>

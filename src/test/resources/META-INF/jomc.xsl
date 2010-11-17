@@ -43,7 +43,6 @@
               encoding="UTF-8" standalone="no"/>
 
   <xsl:param name="jomc.test.resourceEncoding" required="yes"/>
-  <xsl:param name="jomc.test.classesDirectory" required="yes"/>
   <xsl:param name="jomc.test.outputDirectory" required="yes"/>
 
   <xsl:template match="node()|@*">
@@ -58,9 +57,6 @@
       <xsl:choose>
         <xsl:when test="starts-with($value, '${jomc.test.resourceEncoding}')">
           <xsl:value-of select="concat($jomc.test.resourceEncoding, substring-after($value, '${jomc.test.resourceEncoding}'))"/>
-        </xsl:when>
-        <xsl:when test="starts-with($value, '${jomc.test.classesDirectory}')">
-          <xsl:value-of select="concat($jomc.test.classesDirectory, substring-after($value, '${jomc.test.classesDirectory}'))"/>
         </xsl:when>
         <xsl:when test="starts-with($value, '${jomc.test.outputDirectory}')">
           <xsl:value-of select="concat($jomc.test.outputDirectory, substring-after($value, '${jomc.test.outputDirectory}'))"/>
