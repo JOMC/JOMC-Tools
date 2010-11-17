@@ -35,6 +35,7 @@
 <project name="commit-classes-test" xmlns:jomc="antlib:org.jomc.ant">
 
   <!-- ************************************************************************************************************* -->
+  <property name="jomc.enabled" value="on"/>
   <property name="no.op.stylesheet" value="org/jomc/ant/test/no-op.xsl"/>
   <property name="modlets.stylesheet" value="org/jomc/ant/test/modlets.xsl"/>
 
@@ -73,61 +74,64 @@
 
   <!-- ************************************************************************************************************* -->
   <target name="test-missing-modlet-file">
-    <jomc:merge-modlets modletName="TEST"/>
+    <jomc:merge-modlets modletName="TEST" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-missing-modlet-name">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml"/>
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-exclusion-missing-modlet-name">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" if="${jomc.enabled}">
       <jomc:modletExclude/>
     </jomc:merge-modlets>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-inclusion-missing-modlet-name">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" if="${jomc.enabled}">
       <jomc:modletInclude/>
     </jomc:merge-modlets>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modlets">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"/>
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modlets-with-no-op-stylesheet">
     <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
-                        modletObjectStylesheet="${no.op.stylesheet}"/>
+                        modletObjectStylesheet="${no.op.stylesheet}" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modlets-with-redundant-resources">
     <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
-                        modletObjectStylesheet="${no.op.stylesheet}" classpathref="redundant.classpath"/>
+                        modletObjectStylesheet="${no.op.stylesheet}" classpathref="redundant.classpath"
+                        if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modlets-with-illegal-transformation-result-stylesheet">
     <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
-                        modletObjectStylesheet="${modlets.stylesheet}"/>
+                        modletObjectStylesheet="${modlets.stylesheet}" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modlets-exclusion">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" classpathref="redundant.classpath">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" classpathref="redundant.classpath"
+                        if="${jomc.enabled}">
       <jomc:modletExclude name="JOMC Tools"/>
     </jomc:merge-modlets>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modlets-inclusion">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" classpathref="redundant.classpath">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" classpathref="redundant.classpath"
+                        if="${jomc.enabled}">
       <jomc:modletInclude name="JOMC Tools"/>
     </jomc:merge-modlets>
   </target>
@@ -139,7 +143,8 @@
                         modletVersion="TEST"
                         modletVendor="TEST"
                         modletEncoding="UTF-8"
-                        modletObjectStylesheet="${no.op.stylesheet}">
+                        modletObjectStylesheet="${no.op.stylesheet}"
+                        if="${jomc.enabled}">
       <jomc:classpath>
         <pathelement location="${empty.dir}"/>
       </jomc:classpath>
@@ -152,6 +157,18 @@
   <target name="test-execute-task">
     <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
                         classpathref="redundant.classpath"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-if">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
+                        classpathref="redundant.classpath" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-unless">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
+                        classpathref="redundant.classpath" unless="off"/>
   </target>
 
 </project>

@@ -38,4 +38,12 @@
     <jomctest:test-resource-file-processor-task/>
   </target>
 
+  <target name="test-execute-task-if">
+    <jomctest:test-resource-file-processor-task if="on"/>
+  </target>
+
+  <target name="test-execute-task-unless">
+    <jomctest:test-resource-file-processor-task unless="off"/>
+  </target>
+
 </project>

@@ -38,4 +38,12 @@
     <jomctest:test-jomc-tool-task/>
   </target>
 
+  <target name="test-execute-task-if">
+    <jomctest:test-jomc-tool-task if="on"/>
+  </target>
+
+  <target name="test-execute-task-unless">
+    <jomctest:test-jomc-tool-task unless="off"/>
+  </target>
+
 </project>

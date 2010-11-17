@@ -50,6 +50,8 @@ import org.apache.tools.ant.BuildException;
 import org.jomc.ant.JomcTask;
 import java.util.Locale;
 import static org.jomc.ant.test.Assert.assertNoException;
+import static org.jomc.ant.test.Assert.assertMessageLogged;
+import static org.jomc.ant.test.Assert.assertMessageNotLogged;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -456,7 +458,25 @@ public class JomcTaskTest
     @Test
     public final void testExecuteTask() throws Exception
     {
-        assertNoException( this.executeTarget( "test-execute-task" ) );
+        final AntExecutionResult r = this.executeTarget( "test-execute-task" );
+        assertNoException( r );
+        assertMessageLogged( r, "--------------------------------------------------------------------------------" );
+    }
+
+    @Test
+    public final void testExecuteTaskIf() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-execute-task-if" );
+        assertNoException( r );
+        assertMessageLogged( r, "--------------------------------------------------------------------------------" );
+    }
+
+    @Test
+    public final void testExecuteTaskUnless() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-execute-task-unless" );
+        assertNoException( r );
+        assertMessageNotLogged( r, "--------------------------------------------------------------------------------" );
     }
 
 }

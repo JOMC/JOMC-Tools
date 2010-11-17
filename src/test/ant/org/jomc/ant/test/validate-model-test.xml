@@ -35,6 +35,9 @@
 <project name="validate-model-test" xmlns:jomc="antlib:org.jomc.ant">
 
   <!-- ************************************************************************************************************* -->
+  <property name="jomc.enabled" value="on"/>
+
+  <!-- ************************************************************************************************************* -->
   <target name="before-test">
     <property name="empty.dir" location="${test.output.dir}/EMPTY"/>
     <property name="no.dir" location="${test.output.dir}/DOES_NOT_EXIST"/>
@@ -69,22 +72,33 @@
 
   <!-- ************************************************************************************************************* -->
   <target name="test-validate-model">
-    <jomc:validate-model/>
+    <jomc:validate-model if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-validate-model-with-redundant-resources">
-    <jomc:validate-model classpathref="redundant.classpath"/>
+    <jomc:validate-model classpathref="redundant.classpath" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-validate-model-with-broken-model">
-    <jomc:validate-model classpathref="redundant.classpath" moduleLocation="META-INF/jomc-broken.xml"/>
+    <jomc:validate-model classpathref="redundant.classpath" moduleLocation="META-INF/jomc-broken.xml"
+                         if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-execute-task">
     <jomc:validate-model/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-if">
+    <jomc:validate-model if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-unless">
+    <jomc:validate-model unless="off"/>
   </target>
 
 </project>

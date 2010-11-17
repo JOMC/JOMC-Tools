@@ -35,6 +35,7 @@
 <project name="commit-classes-test" xmlns:jomc="antlib:org.jomc.ant">
 
   <!-- ************************************************************************************************************* -->
+  <property name="jomc.enabled" value="on"/>
   <property name="no.op.stylesheet" value="org/jomc/ant/test/no-op.xsl"/>
   <property name="modules.stylesheet" value="org/jomc/ant/test/modules.xsl"/>
 
@@ -73,61 +74,62 @@
 
   <!-- ************************************************************************************************************* -->
   <target name="test-missing-module-file">
-    <jomc:merge-modules moduleName="TEST"/>
+    <jomc:merge-modules moduleName="TEST" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-missing-module-name">
-    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml"/>
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-exclusion-missing-module-name">
-    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST" if="${jomc.enabled}">
       <jomc:moduleExclude/>
     </jomc:merge-modules>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-inclusion-missing-module-name">
-    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST" if="${jomc.enabled}">
       <jomc:moduleInclude/>
     </jomc:merge-modules>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modules">
-    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST"/>
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modules-with-no-op-stylesheet">
     <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST"
-                        modelObjectStylesheet="${no.op.stylesheet}"/>
+                        modelObjectStylesheet="${no.op.stylesheet}" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modules-with-redundant-resources">
     <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST"
-                        modelObjectStylesheet="${no.op.stylesheet}" classpathref="redundant.classpath"/>
+                        modelObjectStylesheet="${no.op.stylesheet}" classpathref="redundant.classpath"
+                        if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modules-with-illegal-transformation-result-stylesheet">
     <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST"
-                        modelObjectStylesheet="${modules.stylesheet}"/>
+                        modelObjectStylesheet="${modules.stylesheet}" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modules-exclusion">
-    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST" if="${jomc.enabled}">
       <jomc:moduleExclude name="JOMC Ant Tasks Tests"/>
     </jomc:merge-modules>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modules-inclusion">
-    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST" if="${jomc.enabled}">
       <jomc:moduleInclude name="JOMC Ant Tasks Tests"/>
     </jomc:merge-modules>
   </target>
@@ -139,7 +141,8 @@
                         moduleVersion="TEST"
                         moduleVendor="TEST"
                         moduleEncoding="UTF-8"
-                        modelObjectStylesheet="${no.op.stylesheet}">
+                        modelObjectStylesheet="${no.op.stylesheet}"
+                        if="${jomc.enabled}">
       <jomc:classpath>
         <pathelement location="${empty.dir}"/>
       </jomc:classpath>
@@ -151,6 +154,16 @@
   <!-- ************************************************************************************************************* -->
   <target name="test-execute-task">
     <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-if">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-unless">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST" unless="off"/>
   </target>
 
 </project>

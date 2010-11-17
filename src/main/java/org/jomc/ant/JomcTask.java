@@ -53,6 +53,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
+import org.apache.tools.ant.PropertyHelper;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Reference;
@@ -92,10 +93,69 @@ public class JomcTask extends Task
     /** The location to search for platform providers. */
     private String platformProviderLocation;
 
+    /** Property controlling the execution of the task. */
+    private Object _if;
+
+    /** Property controlling the execution of the task. */
+    private Object unless;
+
     /** Creates a new {@code JomcTask} instance. */
     public JomcTask()
     {
         super();
+    }
+
+    /**
+     * Gets an object controlling the execution of the task.
+     *
+     * @return An object controlling the execution of the task or {@code null}.
+     *
+     * @see #setIf(java.lang.Object)
+     */
+    public final Object getIf()
+    {
+        return this._if;
+    }
+
+    /**
+     * Sets an object controlling the execution of the task.
+     *
+     * @param value The new object controlling the execution of the task or {@code null}.
+     *
+     * @see #getIf()
+     */
+    public final void setIf( final Object value )
+    {
+        this._if = value;
+    }
+
+    /**
+     * Gets an object controlling the execution of the task.
+     *
+     * @return An object controlling the execution of the task or {@code null}.
+     *
+     * @see #setUnless(java.lang.Object)
+     */
+    public final Object getUnless()
+    {
+        if ( this.unless == null )
+        {
+            this.unless = Boolean.TRUE;
+        }
+
+        return this.unless;
+    }
+
+    /**
+     * Sets an object controlling the execution of the task.
+     *
+     * @param value The new object controlling the execution of the task or {@code null}.
+     *
+     * @see #getUnless()
+     */
+    public final void setUnless( final Object value )
+    {
+        this.unless = value;
     }
 
     /**
@@ -253,6 +313,8 @@ public class JomcTask extends Task
      *
      * @throws BuildException if something goes wrong with the build.
      *
+     * @see #getIf()
+     * @see #getUnless()
      * @see #preExecuteTask()
      * @see #executeTask()
      * @see #postExecuteTask()
@@ -260,15 +322,20 @@ public class JomcTask extends Task
     @Override
     public final void execute() throws BuildException
     {
-        this.preExecuteTask();
+        final PropertyHelper propertyHelper = PropertyHelper.getPropertyHelper( this.getProject() );
 
-        try
+        if ( propertyHelper.testIfCondition( this.getIf() ) && !propertyHelper.testUnlessCondition( this.getUnless() ) )
         {
-            this.executeTask();
-        }
-        finally
-        {
-            this.postExecuteTask();
+            this.preExecuteTask();
+
+            try
+            {
+                this.executeTask();
+            }
+            finally
+            {
+                this.postExecuteTask();
+            }
         }
     }
 

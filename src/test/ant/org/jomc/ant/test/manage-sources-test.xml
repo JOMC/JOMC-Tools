@@ -35,6 +35,9 @@
 <project name="manage-sources-test" xmlns:jomc="antlib:org.jomc.ant">
 
   <!-- ************************************************************************************************************* -->
+  <property name="jomc.enabled" value="on"/>
+
+  <!-- ************************************************************************************************************* -->
   <target name="before-test">
     <property name="empty.dir" location="${test.output.dir}/EMPTY"/>
     <property name="no.dir" location="${test.output.dir}/DOES_NOT_EXIST"/>
@@ -69,67 +72,69 @@
 
   <!-- ************************************************************************************************************* -->
   <target name="test-missing-sources-directory">
-    <jomc:manage-sources/>
+    <jomc:manage-sources if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-non-existing-sources-directory">
-    <jomc:manage-sources sourcesDirectory="${no.dir}"/>
+    <jomc:manage-sources sourcesDirectory="${no.dir}" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-source-processing-disabled">
-    <jomc:manage-sources sourcesDirectory="${empty.dir}" sourceProcessingEnabled="false"/>
+    <jomc:manage-sources sourcesDirectory="${empty.dir}" sourceProcessingEnabled="false" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-specification-not-found">
-    <jomc:manage-sources sourcesDirectory="${empty.dir}" specification="DOES NOT EXIST"/>
+    <jomc:manage-sources sourcesDirectory="${empty.dir}" specification="DOES NOT EXIST" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-implementation-not-found">
-    <jomc:manage-sources sourcesDirectory="${empty.dir}" implementation="DOES NOT EXIST"/>
+    <jomc:manage-sources sourcesDirectory="${empty.dir}" implementation="DOES NOT EXIST" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-module-not-found">
-    <jomc:manage-sources sourcesDirectory="${empty.dir}" module="DOES NOT EXIST"/>
+    <jomc:manage-sources sourcesDirectory="${empty.dir}" module="DOES NOT EXIST" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-manage-ant-task-sources">
-    <jomc:manage-sources sourcesDirectory="${empty.dir}"/>
+    <jomc:manage-sources sourcesDirectory="${empty.dir}" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-manage-ant-task-sources-with-redundant-resources">
-    <jomc:manage-sources sourcesDirectory="${empty.dir}" classpathref="redundant.classpath"/>
+    <jomc:manage-sources sourcesDirectory="${empty.dir}" classpathref="redundant.classpath" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-manage-one-specification">
-    <jomc:manage-sources sourcesDirectory="${empty.dir}" specification="org.jomc.ant.test.JomcTask"/>
+    <jomc:manage-sources sourcesDirectory="${empty.dir}" specification="org.jomc.ant.test.JomcTask"
+                         if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-manage-one-implementation">
-    <jomc:manage-sources sourcesDirectory="${empty.dir}" implementation="org.jomc.ant.test.JomcToolTask"/>
+    <jomc:manage-sources sourcesDirectory="${empty.dir}" implementation="org.jomc.ant.test.JomcToolTask"
+                         if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-manage-one-module">
-    <jomc:manage-sources sourcesDirectory="${empty.dir}" module="JOMC Ant Tasks Tests"/>
+    <jomc:manage-sources sourcesDirectory="${empty.dir}" module="JOMC Ant Tasks Tests" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-manage-ant-task-sources-with-classpathref">
-    <jomc:manage-sources sourcesDirectory="${empty.dir}" classpathref="empty.classpath"/>
+    <jomc:manage-sources sourcesDirectory="${empty.dir}" classpathref="empty.classpath" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-manage-ant-task-sources-with-nested-classpath">
-    <jomc:manage-sources sourcesDirectory="${empty.dir}">
+    <jomc:manage-sources sourcesDirectory="${empty.dir}" if="${jomc.enabled}">
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>
       </jomc:classpath>
@@ -156,7 +161,8 @@
                          model="TEST"
                          modletLocation="TEST"
                          providerLocation="TEST"
-                         platformProviderLocation="TEST">
+                         platformProviderLocation="TEST"
+                         if="${jomc.enabled}">
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>
       </jomc:classpath>
@@ -165,12 +171,23 @@
 
   <!-- ************************************************************************************************************* -->
   <target name="test-manage-ant-task-sources-broken-model">
-    <jomc:manage-sources sourcesDirectory="${empty.dir}" moduleLocation="META-INF/jomc-broken.xml"/>
+    <jomc:manage-sources sourcesDirectory="${empty.dir}" moduleLocation="META-INF/jomc-broken.xml"
+                         if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-execute-task">
     <jomc:manage-sources sourcesDirectory="${empty.dir}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-if">
+    <jomc:manage-sources sourcesDirectory="${empty.dir}" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-unless">
+    <jomc:manage-sources sourcesDirectory="${empty.dir}" unless="off"/>
   </target>
 
 </project>

@@ -35,6 +35,9 @@
 <project name="generate-resources-test" xmlns:jomc="antlib:org.jomc.ant">
 
   <!-- ************************************************************************************************************* -->
+  <property name="jomc.enabled" value="on"/>
+
+  <!-- ************************************************************************************************************* -->
   <target name="before-test">
     <property name="empty.dir" location="${test.output.dir}/EMPTY"/>
     <property name="no.dir" location="${test.output.dir}/DOES_NOT_EXIST"/>
@@ -69,67 +72,69 @@
 
   <!-- ************************************************************************************************************* -->
   <target name="test-missing-resources-directory">
-    <jomc:generate-resources/>
+    <jomc:generate-resources if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-non-existing-resources-directory">
-    <jomc:generate-resources resourcesDirectory="${no.dir}"/>
+    <jomc:generate-resources resourcesDirectory="${no.dir}" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-resource-processing-disabled">
-    <jomc:generate-resources resourcesDirectory="${empty.dir}" resourceProcessingEnabled="false"/>
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" resourceProcessingEnabled="false" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-specification-not-found">
-    <jomc:generate-resources resourcesDirectory="${empty.dir}" specification="DOES NOT EXIST"/>
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" specification="DOES NOT EXIST" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-implementation-not-found">
-    <jomc:generate-resources resourcesDirectory="${empty.dir}" implementation="DOES NOT EXIST"/>
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" implementation="DOES NOT EXIST" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-module-not-found">
-    <jomc:generate-resources resourcesDirectory="${empty.dir}" module="DOES NOT EXIST"/>
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" module="DOES NOT EXIST" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-generate-ant-task-resources">
-    <jomc:generate-resources resourcesDirectory="${empty.dir}"/>
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-generate-ant-task-resources-with-redundant-resources">
-    <jomc:generate-resources resourcesDirectory="${empty.dir}" classpathref="redundant.classpath"/>
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" classpathref="redundant.classpath" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-generate-one-specification">
-    <jomc:generate-resources resourcesDirectory="${empty.dir}" specification="org.jomc.ant.test.JomcTask"/>
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" specification="org.jomc.ant.test.JomcTask"
+                             if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-generate-one-implementation">
-    <jomc:generate-resources resourcesDirectory="${empty.dir}" implementation="org.jomc.ant.test.JomcToolTask"/>
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" implementation="org.jomc.ant.test.JomcToolTask"
+                             if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-generate-one-module">
-    <jomc:generate-resources resourcesDirectory="${empty.dir}" module="JOMC Ant Tasks Tests"/>
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" module="JOMC Ant Tasks Tests" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-generate-ant-task-resources-with-classpathref">
-    <jomc:generate-resources resourcesDirectory="${empty.dir}" classpathref="empty.classpath"/>
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" classpathref="empty.classpath" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-generate-ant-task-resources-with-nested-classpath">
-    <jomc:generate-resources resourcesDirectory="${empty.dir}">
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" if="${jomc.enabled}">
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>
       </jomc:classpath>
@@ -157,7 +162,8 @@
                              model="TEST"
                              modletLocation="TEST"
                              providerLocation="TEST"
-                             platformProviderLocation="TEST">
+                             platformProviderLocation="TEST"
+                             if="${jomc.enabled}">
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>
       </jomc:classpath>
@@ -166,12 +172,23 @@
 
   <!-- ************************************************************************************************************* -->
   <target name="test-generate-ant-task-resources-broken-model">
-    <jomc:generate-resources resourcesDirectory="${empty.dir}" moduleLocation="META-INF/jomc-broken.xml"/>
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" moduleLocation="META-INF/jomc-broken.xml"
+                             if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-execute-task">
     <jomc:generate-resources resourcesDirectory="${empty.dir}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-if">
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-unless">
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" unless="off"/>
   </target>
 
 </project>
