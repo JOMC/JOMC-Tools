@@ -171,6 +171,10 @@ public class ResourceFileProcessor extends JomcTool
         {
             throw new NullPointerException( "module" );
         }
+        if ( resourcesDirectory == null )
+        {
+            throw new NullPointerException( "resourcesDirectory" );
+        }
 
         assert this.getModules().getModule( module.getName() ) != null : "Module '" + module.getName() + "' not found.";
 
