@@ -144,6 +144,16 @@ public class JomcTest
     /** Constant for the name of the system property holding the output directory for the test. */
     private static final String OUTPUT_DIRECTORY_PROPERTY_NAME = "jomc.test.outputDirectory";
 
+    /** Test resources to copy to the resources directory. */
+    private static final String[] TEST_RESOURCE_NAMES =
+    {
+        "model-relocations.xsl",
+        "modlet-relocations.xsl",
+        "jomc.xml",
+        "illegal-module.xml",
+        "module-nonexistent-classes.xml"
+    };
+
     /** The output directory of the instance. */
     private File outputDirectory;
 
@@ -643,7 +653,16 @@ public class JomcTest
         }
 
         final File resourcesDirectory = new File( this.getResourcesDirectory() );
-        this.unzipResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "resources.zip", resourcesDirectory );
+        assertTrue( resourcesDirectory.isAbsolute() );
+        FileUtils.deleteDirectory( resourcesDirectory );
+        assertTrue( resourcesDirectory.mkdirs() );
+
+        for ( String testResourceName : TEST_RESOURCE_NAMES )
+        {
+            final URL rsrc = this.getClass().getResource( ABSOLUTE_RESOURCE_NAME_PREFIX + testResourceName );
+            assertNotNull( rsrc );
+            FileUtils.copyInputStreamToFile( rsrc.openStream(), new File( resourcesDirectory, testResourceName ) );
+        }
 
         final File classesDirectory = new File( this.getClassesDirectory() );
         this.unzipResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "classfiles.zip", classesDirectory );

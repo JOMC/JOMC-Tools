@@ -55,7 +55,7 @@
 
       </authors>
       <properties>
-        <property name="testModelDocument" value="${jomc.test.outputDirectory}/JomcTest/resources/jomc-cli-module.xml"/>
+        <property name="testModelDocument" value="${jomc.test.outputDirectory}/JomcTest/resources/jomc.xml"/>
         <property name="testModelDocumentIllegal" value="${jomc.test.outputDirectory}/JomcTest/resources/illegal-module.xml"/>
         <property name="testModelDocumentNonExistentClasses" value="${jomc.test.outputDirectory}/JomcTest/resources/module-nonexistent-classes.xml"/>
         <property name="testModuleName" value="${project.name}"/>

@@ -188,12 +188,27 @@
         <directory>src/test/resources</directory>
       </testResource>
       <testResource>
+        <filtering>true</filtering>
+        <directory>src/main/resources/META-INF</directory>
+        <targetPath>org/jomc/cli/test</targetPath>
+        <includes>
+          <include>**/*.xml</include>
+        </includes>
+      </testResource>
+      <testResource>
+        <filtering>true</filtering>
+        <directory>src/main/jomc</directory>
+        <targetPath>org/jomc/cli/test</targetPath>
+        <includes>
+          <include>**/*.xsl</include>
+        </includes>
+      </testResource>
+      <testResource>
         <filtering>false</filtering>
         <directory>${project.build.directory}</directory>
         <targetPath>org/jomc/cli/test</targetPath>
         <includes>
           <include>classfiles.zip</include>
-          <include>resources.zip</include>
         </includes>
       </testResource>
     </testResources>
@@ -319,21 +334,6 @@
               <finalName>classfiles</finalName>
               <descriptors>
                 <descriptor>src/test/assembly/classfiles.xml</descriptor>
-              </descriptors>
-            </configuration>
-          </execution>
-          <execution>
-            <id>assemble-test-resources</id>
-            <phase>generate-test-resources</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-            <configuration>
-              <attach>false</attach>
-              <appendAssemblyId>false</appendAssemblyId>
-              <finalName>resources</finalName>
-              <descriptors>
-                <descriptor>src/test/assembly/resources.xml</descriptor>
               </descriptors>
             </configuration>
           </execution>
