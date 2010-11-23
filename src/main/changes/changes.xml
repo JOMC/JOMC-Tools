@@ -147,6 +147,15 @@
       <code>org.jomc.mojo.JomcContainerDescriptorHandler</code> to add support for assembling JOMC resources using the
       Maven Assembly Plugin.]]>
       </action>
+      <action dev="schulte2005" type="add"><![CDATA[Added parameters <code>modelContextClassName</code> and
+      <code>modletSchemaSystemId</code> to goals <code>commit-main-classes</code>, <code>commit-test-classes</code>,
+      <code>validate-main-classes</code>, <code>validate-test-classes</code>, <code>validate-main-classpath</code>,
+      <code>validate-test-classpath</code>, <code>show-main-instance</code>, <code>show-test-instance</code>,
+      <code>show-main-model</code>, <code>show-test-model</code>, <code>validate-main-model</code>,
+      <code>validate-test-model</code>, <code>write-main-resources</code>, <code>write-test-resources</code>,
+      <code>manage-main-sources</code>, <code>manage-test-sources</code>, <code>show-main-specification</code> and
+      <code>show-test-specification</code>.]]>
+      </action>
       <action dev="schulte2005" type="fix"><![CDATA[Corrected goals <code>commit-main-classes</code> and
       <code>commit-test-classes</code> to create <code>Transformer</code>s supporting resolution of relative URIs
       based on the system id of model object style sheets.]]>

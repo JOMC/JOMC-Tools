@@ -141,11 +141,27 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private String model;
 
     /**
+     * The name of the {@code ModelContext} implementation class backing the task.
+     *
+     * @parameter
+     * @since 1.2
+     */
+    private String modelContextClassName;
+
+    /**
      * The location to search for modlets.
      *
      * @parameter
      */
     private String modletLocation;
+
+    /**
+     * The {@code http://jomc.org/modlet} namespace schema system id.
+     *
+     * @parameter
+     * @since 1.2
+     */
+    private String modletSchemaSystemId;
 
     /**
      * The location to search for modules.
@@ -335,6 +351,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         try
         {
+            ModelContext.setModelContextClassName( this.modelContextClassName );
+            ModelContext.setDefaultModletSchemaSystemId( this.modletSchemaSystemId );
             DefaultModletProvider.setDefaultModletLocation( this.modletLocation );
             DefaultModelContext.setDefaultProviderLocation( this.providerLocation );
             DefaultModelContext.setDefaultPlatformProviderLocation( this.platformProviderLocation );
@@ -360,6 +378,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         finally
         {
+            ModelContext.setModelContextClassName( null );
+            ModelContext.setDefaultModletSchemaSystemId( null );
             DefaultModletProvider.setDefaultModletLocation( null );
             DefaultModelContext.setDefaultProviderLocation( null );
             DefaultModelContext.setDefaultPlatformProviderLocation( null );
