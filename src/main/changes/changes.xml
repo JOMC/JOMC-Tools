@@ -63,6 +63,9 @@
     </release>
     <!-- *********************************************************************************************************** -->
     <release version="1.2">
+      <action dev="schulte2005" type="add"><![CDATA[Added method <code>getTemplateParameters</code> and updated
+      method <code>getVelocityContext</code> to add all template parameters to new context instances.]]>
+      </action>
       <action dev="schulte2005" type="fix"><![CDATA[Corrected method <code>getModules</code> of class
       <code>org.jomc.tools.JomcTool</code> to initialize the modules of the instance if the model of the instance does
       not hold modules.]]>

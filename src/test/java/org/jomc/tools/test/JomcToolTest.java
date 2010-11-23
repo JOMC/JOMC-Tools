@@ -776,6 +776,7 @@ public class JomcToolTest
         assertNotNull( this.getJomcTool().getOutputEncoding() );
         assertNotNull( this.getJomcTool().getTemplateProfile() );
         assertNotNull( this.getJomcTool().getTemplateEncoding() );
+        assertNotNull( this.getJomcTool().getTemplateParameters() );
         assertNotNull( this.getJomcTool().getIndentation() );
         assertNotNull( this.getJomcTool().getLineSeparator() );
         assertNotNull( this.getJomcTool().getVelocityContext() );

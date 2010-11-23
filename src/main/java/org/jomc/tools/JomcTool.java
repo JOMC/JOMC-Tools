@@ -148,6 +148,9 @@ public class JomcTool
     /** The encoding to use for writing files. */
     private String outputEncoding;
 
+    /** The template parameters. */
+    private Map<String, Object> templateParameters;
+
     /** The template profile of the instance. */
     private String templateProfile;
 
@@ -199,6 +202,9 @@ public class JomcTool
         this.templateEncoding = tool.templateEncoding;
         this.templateProfile = tool.templateProfile;
         this.velocityEngine = tool.velocityEngine;
+        this.templateParameters =
+            tool.templateParameters != null ? new HashMap<String, Object>( tool.templateParameters ) : null;
+
     }
 
     /**
@@ -1285,7 +1291,9 @@ public class JomcTool
     public VelocityContext getVelocityContext()
     {
         final Date now = new Date();
-        final VelocityContext ctx = new VelocityContext();
+        final VelocityContext ctx = new VelocityContext( Collections.synchronizedMap(
+            new HashMap<String, Object>( this.getTemplateParameters() ) ) );
+
         ctx.put( "model", new Model( this.getModel() ) );
         ctx.put( "modules", new Modules( this.getModules() ) );
         ctx.put( "tool", this );
@@ -1302,6 +1310,26 @@ public class JomcTool
         ctx.put( "second", new SimpleDateFormat( "ss" ).format( now ) );
         ctx.put( "timezone", new SimpleDateFormat( "Z" ).format( now ) );
         return ctx;
+    }
+
+    /**
+     * Gets the template parameters of the instance.
+     * <p>This accessor method returns a reference to the live map, not a snapshot. Therefore any modification you make
+     * to the returned map will be present inside the object. This is why there is no {@code set} method for the
+     * template parameters property.</p>
+     *
+     * @return The template parameters of the instance.
+     *
+     * @since 1.2
+     */
+    public final Map<String, Object> getTemplateParameters()
+    {
+        if ( this.templateParameters == null )
+        {
+            this.templateParameters = new HashMap<String, Object>();
+        }
+
+        return this.templateParameters;
     }
 
     /**
