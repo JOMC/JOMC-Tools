@@ -511,6 +511,23 @@
                   <type>jar</type>
                 </configuration>
               </execution>
+              <execution>
+                <id>copy-tasks-javadoc</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>copy</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>${project.groupId}</groupId>
+                      <artifactId>jomc-ant-tasks</artifactId>
+                      <classifier>javadoc</classifier>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
             </executions>
           </plugin>
           <plugin>
