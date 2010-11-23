@@ -71,6 +71,9 @@
     </release>
     <!-- *********************************************************************************************************** -->
     <release version="1.2">
+      <action dev="schulte2005" type="fix"><![CDATA[Corrected the <code>resource-dir</code> and <code>source-dir</code>
+      command line arguments to disallow multiple values.]]>
+      </action>
       <action dev="schulte2005" type="update"><![CDATA[Updated the <code>merge-modlets</code> and
       <code>merge-modules</code> commands of the command line application to add system properties to
       <code>Transformer</code>s as parameters.]]>

@@ -634,7 +634,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <properties>
         <property name="opt" value="rd" override="true"/>
         <property name="longOpt" value="resource-dir" override="true"/>
-        <property name="numberOfArgs" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
       </properties>
       <messages>
         <message name="description" override="true">
@@ -668,7 +668,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <properties>
         <property name="opt" value="sd" override="true"/>
         <property name="longOpt" value="source-dir" override="true"/>
-        <property name="numberOfArgs" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
       </properties>
       <messages>
         <message name="description" override="true">
