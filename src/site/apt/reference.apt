@@ -83,6 +83,9 @@ Task Reference
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No.                    |
+|                                             | implementation class backing the task.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
 |                                             | resolution is enabled.                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -94,6 +97,9 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletLocation>>>                        | The class path location searched for       | No.                    |
 |                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No.                    |
+|                                             | schema system id.                          |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<module>>>                                | The identifier of a module to process.     | No. If the             |
 |                                             |                                            | <<<implementation>>>,  |
@@ -175,6 +181,9 @@ Task Reference
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No.                    |
+|                                             | implementation class backing the task.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
 |                                             | resolution is enabled.                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -183,6 +192,9 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletLocation>>>                        | The class path location searched for       | No.                    |
 |                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No.                    |
+|                                             | schema system id.                          |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<module>>>                                | The identifier of a module to process.     | No. If the             |
 |                                             |                                            | <<<implementation>>>,  |
@@ -274,6 +286,9 @@ Task Reference
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No.                    |
+|                                             | implementation class backing the task.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
 |                                             | resolution is enabled.                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -282,6 +297,9 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletLocation>>>                        | The class path location searched for       | No.                    |
 |                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No.                    |
+|                                             | schema system id.                          |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<module>>>                                | The identifier of a module to process.     | No. If the             |
 |                                             |                                            | <<<implementation>>>,  |
@@ -376,6 +394,9 @@ Task Reference
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No.                    |
+|                                             | implementation class backing the task.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
 |                                             | resolution is enabled.                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -384,6 +405,9 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletLocation>>>                        | The class path location searched for       | No.                    |
 |                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No.                    |
+|                                             | schema system id.                          |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<module>>>                                | The identifier of a module to process.     | No. If the             |
 |                                             |                                            | <<<implementation>>>,  |
@@ -468,6 +492,9 @@ Task Reference
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No.                    |
+|                                             | implementation class backing the task.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
 |                                             | resolution is enabled.                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -476,6 +503,9 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletLocation>>>                        | The class path location searched for       | No.                    |
 |                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No.                    |
+|                                             | schema system id.                          |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<module>>>                                | The identifier of a module to process.     | No. If the             |
 |                                             |                                            | <<<implementation>>>,  |
@@ -536,6 +566,9 @@ Task Reference
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No.                    |
+|                                             | implementation class backing the task.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
 |                                             | resolution is enabled.                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -544,6 +577,9 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletLocation>>>                        | The class path location searched for       | No.                    |
 |                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No.                    |
+|                                             | schema system id.                          |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<moduleLocation>>>                        | The class path location searched for       | No.                    |
 |                                             | modules.                                   |                        |
@@ -579,6 +615,9 @@ Task Reference
 | <<<model>>>                           | The public identifier of the model to      | No. Defaults to the    |
 |                                       | process.                                   | JOMC model public id.  |
 *---------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextClassName>>>           | The name of the ModelContext               | No.                    |
+|                                       | implementation class backing the task.     |                        |
+*---------------------------------------+--------------------------------------------+------------------------+
 | <<<modelProcessingEnabled>>>          | A flag indicating the processing of models | No. Defaults to true.  |
 |                                       | is enabled.                                |                        |
 *---------------------------------------+--------------------------------------------+------------------------+
@@ -595,6 +634,9 @@ Task Reference
 *---------------------------------------+--------------------------------------------+------------------------+
 | <<<modletObjectStylesheet>>>          | The location of a style sheet to transform | No.                    |
 |                                       | the merged modlet with.                    |                        |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<modletSchemaSystemId>>>            | The http://jomc.org/modlet namespace       | No.                    |
+|                                       | schema system id.                          |                        |
 *---------------------------------------+--------------------------------------------+------------------------+
 | <<<modletVendor>>>                    | The vendor of the merged modlet.           | No.                    |
 *---------------------------------------+--------------------------------------------+------------------------+
@@ -641,6 +683,9 @@ Task Reference
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No.                    |
+|                                             | implementation class backing the task.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelObjectStylesheet>>>                 | The location of a style sheet to transform | No.                    |
 |                                             | the merged module with.                    |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -652,6 +697,9 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletLocation>>>                        | The class path location searched for       | No.                    |
 |                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No.                    |
+|                                             | schema system id.                          |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<moduleEncoding>>>                        | The encoding of the module resource.       | No. Defaults to the    |
 |                                             |                                            | system's default       |

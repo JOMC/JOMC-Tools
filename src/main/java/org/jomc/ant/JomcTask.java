@@ -81,11 +81,17 @@ public class JomcTask extends Task
     /** The identifier of the model to process. */
     private String model;
 
+    /** The name of the {@code ModelContext} implementation class backing the task. */
+    private String modelContextClassName;
+
     /** Controls processing of models. */
     private boolean modelProcessingEnabled = true;
 
     /** The location to search for modlets. */
     private String modletLocation;
+
+    /** The {@code http://jomc.org/modlet} namespace schema system id of the context backing the task. */
+    private String modletSchemaSystemId;
 
     /** The location to search for providers. */
     private String providerLocation;
@@ -229,6 +235,30 @@ public class JomcTask extends Task
     }
 
     /**
+     * Gets the name of the {@code ModelContext} implementation class backing the task.
+     *
+     * @return The name of the {@code ModelContext} implementation class backing the task or {@code null}.
+     *
+     * @see #setModelContextClassName(java.lang.String)
+     */
+    public final String getModelContextClassName()
+    {
+        return this.modelContextClassName;
+    }
+
+    /**
+     * Sets the name of the {@code ModelContext} implementation class backing the task.
+     *
+     * @param value The new name of the {@code ModelContext} implementation class backing the task or {@code null}.
+     *
+     * @see #getModelContextClassName()
+     */
+    public final void setModelContextClassName( final String value )
+    {
+        this.modelContextClassName = value;
+    }
+
+    /**
      * Gets a flag indicating the processing of models is enabled.
      *
      * @return {@code true} if processing of models is enabled; {@code false} else.
@@ -266,6 +296,32 @@ public class JomcTask extends Task
     public final void setModletLocation( final String value )
     {
         this.modletLocation = value;
+    }
+
+    /**
+     * Gets the {@code http://jomc.org/modlet} namespace schema system id of the context backing the task.
+     *
+     * @return The {@code http://jomc.org/modlet} namespace schema system id of the context backing the task or
+     * {@code null}.
+     *
+     * @see #setModletSchemaSystemId(java.lang.String)
+     */
+    public final String getModletSchemaSystemId()
+    {
+        return this.modletSchemaSystemId;
+    }
+
+    /**
+     * Sets the {@code http://jomc.org/modlet} namespace schema system id of the context backing the task.
+     *
+     * @param value The new {@code http://jomc.org/modlet} namespace schema system id of the context backing the task or
+     * {@code null}.
+     *
+     * @see #getModletSchemaSystemId()
+     */
+    public final void setModletSchemaSystemId( final String value )
+    {
+        this.modletSchemaSystemId = value;
     }
 
     /**
@@ -350,6 +406,8 @@ public class JomcTask extends Task
         this.log( getMessage( "title" ) );
         this.logSeparator();
 
+        ModelContext.setModelContextClassName( this.getModelContextClassName() );
+        ModelContext.setDefaultModletSchemaSystemId( this.getModletSchemaSystemId() );
         DefaultModelContext.setDefaultProviderLocation( this.getProviderLocation() );
         DefaultModelContext.setDefaultPlatformProviderLocation( this.getPlatformProviderLocation() );
         DefaultModletProvider.setDefaultModletLocation( this.getModletLocation() );
@@ -372,6 +430,8 @@ public class JomcTask extends Task
      */
     public void postExecuteTask() throws BuildException
     {
+        ModelContext.setModelContextClassName( null );
+        ModelContext.setDefaultModletSchemaSystemId( null );
         DefaultModelContext.setDefaultProviderLocation( null );
         DefaultModelContext.setDefaultPlatformProviderLocation( null );
         DefaultModletProvider.setDefaultModletLocation( null );
