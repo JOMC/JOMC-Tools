@@ -231,6 +231,17 @@ public final class CommitClassesTask extends ClassFileProcessorTask
         }
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public CommitClassesTask clone()
+    {
+        final CommitClassesTask clone = (CommitClassesTask) super.clone();
+        clone.classesDirectory =
+            this.classesDirectory != null ? new File( this.classesDirectory.getAbsolutePath() ) : null;
+
+        return clone;
+    }
+
     private static String getMessage( final String key, final Object... args )
     {
         return MessageFormat.format( ResourceBundle.getBundle(

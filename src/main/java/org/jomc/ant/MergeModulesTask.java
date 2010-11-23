@@ -489,6 +489,38 @@ public final class MergeModulesTask extends JomcModelTask
         return false;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public MergeModulesTask clone()
+    {
+        final MergeModulesTask clone = (MergeModulesTask) super.clone();
+        clone.moduleFile = this.moduleFile != null ? new File( this.moduleFile.getAbsolutePath() ) : null;
+
+        if ( this.moduleExcludes != null )
+        {
+            final HashSet<NameType> set = new HashSet<NameType>( this.moduleExcludes.size() );
+            for ( NameType t : this.moduleExcludes )
+            {
+                set.add( t.clone() );
+            }
+
+            clone.moduleExcludes = set;
+        }
+
+        if ( this.moduleIncludes != null )
+        {
+            final HashSet<NameType> set = new HashSet<NameType>( this.moduleIncludes.size() );
+            for ( NameType t : this.moduleIncludes )
+            {
+                set.add( t.clone() );
+            }
+
+            clone.moduleIncludes = set;
+        }
+
+        return clone;
+    }
+
     private static String getMessage( final String key, final Object... args )
     {
         return MessageFormat.format( ResourceBundle.getBundle(

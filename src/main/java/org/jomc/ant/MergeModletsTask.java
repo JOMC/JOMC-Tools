@@ -495,6 +495,38 @@ public final class MergeModletsTask extends JomcTask
         return false;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public MergeModletsTask clone()
+    {
+        final MergeModletsTask clone = (MergeModletsTask) super.clone();
+        clone.modletFile = this.modletFile != null ? new File( this.modletFile.getAbsolutePath() ) : null;
+
+        if ( this.modletExcludes != null )
+        {
+            final HashSet<NameType> set = new HashSet<NameType>( this.modletExcludes.size() );
+            for ( NameType t : this.modletExcludes )
+            {
+                set.add( t.clone() );
+            }
+
+            clone.modletExcludes = set;
+        }
+
+        if ( this.modletIncludes != null )
+        {
+            final HashSet<NameType> set = new HashSet<NameType>( this.modletIncludes.size() );
+            for ( NameType t : this.modletIncludes )
+            {
+                set.add( t.clone() );
+            }
+
+            clone.modletIncludes = set;
+        }
+
+        return clone;
+    }
+
     private static String getMessage( final String key, final Object... args )
     {
         return MessageFormat.format( ResourceBundle.getBundle(

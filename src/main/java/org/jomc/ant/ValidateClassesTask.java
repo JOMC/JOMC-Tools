@@ -189,6 +189,17 @@ public final class ValidateClassesTask extends ClassFileProcessorTask
         }
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ValidateClassesTask clone()
+    {
+        final ValidateClassesTask clone = (ValidateClassesTask) super.clone();
+        clone.classesDirectory =
+            this.classesDirectory != null ? new File( this.classesDirectory.getAbsolutePath() ) : null;
+
+        return clone;
+    }
+
     private static String getMessage( final String key, final Object... args )
     {
         return MessageFormat.format( ResourceBundle.getBundle(

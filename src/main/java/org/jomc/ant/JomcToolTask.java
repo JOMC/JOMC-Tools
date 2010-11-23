@@ -526,6 +526,13 @@ public class JomcToolTask extends JomcModelTask
 
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public JomcToolTask clone()
+    {
+        return (JomcToolTask) super.clone();
+    }
+
     private static String getMessage( final String key, final Object... args )
     {
         return MessageFormat.format( ResourceBundle.getBundle(

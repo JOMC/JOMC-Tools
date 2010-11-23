@@ -164,6 +164,17 @@ public final class GenerateResourcesTask extends ResourceFileProcessorTask
         }
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public GenerateResourcesTask clone()
+    {
+        final GenerateResourcesTask clone = (GenerateResourcesTask) super.clone();
+        clone.resourcesDirectory =
+            this.resourcesDirectory != null ? new File( this.resourcesDirectory.getAbsolutePath() ) : null;
+
+        return clone;
+    }
+
     private static String getMessage( final String key, final Object... args )
     {
         return MessageFormat.format( ResourceBundle.getBundle(

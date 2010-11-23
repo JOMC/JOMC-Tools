@@ -164,6 +164,17 @@ public final class ManageSourcesTask extends SourceFileProcessorTask
         }
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ManageSourcesTask clone()
+    {
+        final ManageSourcesTask clone = (ManageSourcesTask) super.clone();
+        clone.sourcesDirectory =
+            this.sourcesDirectory != null ? new File( this.sourcesDirectory.getAbsolutePath() ) : null;
+
+        return clone;
+    }
+
     private static String getMessage( final String key, final Object... args )
     {
         return MessageFormat.format( ResourceBundle.getBundle(

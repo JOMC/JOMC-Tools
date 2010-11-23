@@ -38,7 +38,7 @@ package org.jomc.ant.types;
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public class NameType
+public class NameType implements Cloneable
 {
 
     /** The name of the datatype. */
@@ -68,6 +68,20 @@ public class NameType
     public void setName( final String value )
     {
         this.name = value;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NameType clone()
+    {
+        try
+        {
+            return (NameType) super.clone();
+        }
+        catch ( final CloneNotSupportedException e )
+        {
+            throw new AssertionError( e );
+        }
     }
 
 }

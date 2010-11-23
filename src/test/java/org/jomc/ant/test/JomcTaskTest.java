@@ -52,6 +52,7 @@ import java.util.Locale;
 import static org.jomc.ant.test.Assert.assertNoException;
 import static org.jomc.ant.test.Assert.assertMessageLogged;
 import static org.jomc.ant.test.Assert.assertMessageNotLogged;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -477,6 +478,13 @@ public class JomcTaskTest
         final AntExecutionResult r = this.executeTarget( "test-execute-task-unless" );
         assertNoException( r );
         assertMessageNotLogged( r, "--------------------------------------------------------------------------------" );
+    }
+
+    @Test
+    public final void testCloneable() throws Exception
+    {
+        assertTrue( this.getJomcTask() == this.getJomcTask() );
+        assertFalse( this.getJomcTask() == this.getJomcTask().clone() );
     }
 
 }

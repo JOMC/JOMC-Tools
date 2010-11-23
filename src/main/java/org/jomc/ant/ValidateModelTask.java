@@ -91,6 +91,13 @@ public final class ValidateModelTask extends JomcModelTask
         }
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ValidateModelTask clone()
+    {
+        return (ValidateModelTask) super.clone();
+    }
+
     private static String getMessage( final String key, final Object... args )
     {
         return MessageFormat.format( ResourceBundle.getBundle(

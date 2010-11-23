@@ -127,6 +127,13 @@ public class ClassFileProcessorTask extends JomcToolTask
         this.log( getMessage( "unimplementedTask", this.getClass().getName() ), Project.MSG_ERR );
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ClassFileProcessorTask clone()
+    {
+        return (ClassFileProcessorTask) super.clone();
+    }
+
     private static String getMessage( final String key, final Object... args )
     {
         return MessageFormat.format( ResourceBundle.getBundle(

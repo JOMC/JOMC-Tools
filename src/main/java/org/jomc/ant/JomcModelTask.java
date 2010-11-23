@@ -211,4 +211,11 @@ public class JomcModelTask extends JomcTask
         super.postExecuteTask();
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public JomcModelTask clone()
+    {
+        return (JomcModelTask) super.clone();
+    }
+
 }

@@ -789,6 +789,26 @@ public class JomcTask extends Task
         }
     }
 
+    /**
+     * Creates and returns a copy of this object.
+     *
+     * @return A copy of this object.
+     */
+    @Override
+    public JomcTask clone()
+    {
+        try
+        {
+            final JomcTask clone = (JomcTask) super.clone();
+            clone.classpath = (Path) ( this.classpath != null ? this.classpath.clone() : null );
+            return clone;
+        }
+        catch ( final CloneNotSupportedException e )
+        {
+            throw new AssertionError( e );
+        }
+    }
+
     private static String getMessage( final String key, final Object... args )
     {
         return MessageFormat.format( ResourceBundle.getBundle(
