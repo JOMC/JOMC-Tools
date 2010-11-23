@@ -33,54 +33,75 @@
 package org.jomc.ant.types;
 
 /**
- * Datatype holding a {@code name} property.
+ * Datatype holding a {@code key} and a {@code value} property.
+ *
+ * @param <K> The type of the {@code key} property.
+ * @param <V> The type of the {@code value} property.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public class NameType implements Cloneable
+public class KeyValueType<K, V> implements Cloneable
 {
 
-    /** The name of the datatype. */
-    private String name;
+    /** The key of the type. */
+    private K key;
 
-    /** Creates a new {@code NameType} instance. */
-    public NameType()
+    /** The value of the type. */
+    private V value;
+
+    /**
+     * Gets the value of the {@code key} property.
+     *
+     * @return The value of the {@code key} property.
+     */
+    public final K getKey()
     {
-        super();
+        return this.key;
     }
 
     /**
-     * Gets the value of the {@code name} property.
+     * Sets the value of the {@code key} property.
      *
-     * @return The value of the {@code name} property.
+     * @param value The new value of the {@code key} property.
      */
-    public final String getName()
+    public final void setKey( final K value )
     {
-        return this.name;
+        this.key = value;
     }
 
     /**
-     * Sets the value of the {@code name} property.
+     * Gets the value of the {@code value} property.
      *
-     * @param value The new value of the {@code name} property.
+     * @return The value of the {@code value} property.
      */
-    public final void setName( final String value )
+    public final V getValue()
     {
-        this.name = value;
+        return this.value;
     }
 
-    /** 
+    /**
+     * Sets the value of the {@code key} property.
+     *
+     * @param value The new value of the {@code value} property.
+     */
+    public final void setValue( final V value )
+    {
+        this.value = value;
+    }
+
+    /**
      * Creates and returns a copy of this object.
-     * 
+     *
      * @return A copy of this object.
      */
     @Override
-    public NameType clone()
+    @SuppressWarnings( "unchecked" )
+    public KeyValueType<K, V> clone()
     {
         try
         {
-            return (NameType) super.clone();
+            return (KeyValueType<K, V>) super.clone();
         }
         catch ( final CloneNotSupportedException e )
         {

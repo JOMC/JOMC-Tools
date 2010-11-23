@@ -142,6 +142,12 @@ Task Reference
   The <<<commit-classes>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
   or the nested <<<classpath>>> element can be used.
 
+  Nested <<<velocityProperty>>> elements can be used to configure the Velocity engine backing the task. The element
+  takes two attributes - <<<key>>> and <<<value>>>.
+
+  Nested <<<templateParameter>>> elements can be used to pass additional parameters to the template engine backing
+  the task. The element takes two attributes - <<<key>>> and <<<value>>>.
+
 * <<<{generate-resources}>>>
 
   This task generates resource files.
@@ -247,6 +253,12 @@ Task Reference
   The <<<generate-resources>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
   or the nested <<<classpath>>> element can be used.
 
+  Nested <<<velocityProperty>>> elements can be used to configure the Velocity engine backing the task. The element
+  takes two attributes - <<<key>>> and <<<value>>>.
+
+  Nested <<<templateParameter>>> elements can be used to pass additional parameters to the template engine backing
+  the task. The element takes two attributes - <<<key>>> and <<<value>>>.
+
 * <<<{manage-sources}>>>
 
   This task manages source code files.
@@ -347,6 +359,12 @@ Task Reference
 
   The <<<manage-sources>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
   or the nested <<<classpath>>> element can be used.
+
+  Nested <<<velocityProperty>>> elements can be used to configure the Velocity engine backing the task. The element
+  takes two attributes - <<<key>>> and <<<value>>>.
+
+  Nested <<<templateParameter>>> elements can be used to pass additional parameters to the template engine backing
+  the task. The element takes two attributes - <<<key>>> and <<<value>>>.
 
 * <<<{validate-classes}>>>
 
@@ -450,6 +468,12 @@ Task Reference
   The <<<validate-classes>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
   or the nested <<<classpath>>> element can be used.
 
+  Nested <<<velocityProperty>>> elements can be used to configure the Velocity engine backing the task. The element
+  takes two attributes - <<<key>>> and <<<value>>>.
+
+  Nested <<<templateParameter>>> elements can be used to pass additional parameters to the template engine backing
+  the task. The element takes two attributes - <<<key>>> and <<<value>>>.
+
 * <<<{validate-classpath}>>>
 
   This task validates classpath class file model objects.
@@ -547,6 +571,12 @@ Task Reference
 
   The <<<validate-classpath>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
   or the nested <<<classpath>>> element can be used.
+
+  Nested <<<velocityProperty>>> elements can be used to configure the Velocity engine backing the task. The element
+  takes two attributes - <<<key>>> and <<<value>>>.
+
+  Nested <<<templateParameter>>> elements can be used to pass additional parameters to the template engine backing
+  the task. The element takes two attributes - <<<key>>> and <<<value>>>.
 
 * <<<{validate-model}>>>
 

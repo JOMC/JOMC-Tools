@@ -195,6 +195,8 @@
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>
       </jomc:classpath>
+      <jomc:velocityProperty key="test" value="test"/>
+      <jomc:templateParameter key="test" value="test"/>
     </jomc:commit-classes>
     <jomc:validate-classpath defaultTemplateProfile="TEST"
                              inputEncoding="UTF-8"
@@ -218,6 +220,8 @@
       <jomc:classpath>
         <pathelement location="${classes.dir}"/>
       </jomc:classpath>
+      <jomc:velocityProperty key="test" value="test"/>
+      <jomc:templateParameter key="test" value="test"/>
     </jomc:validate-classpath>
   </target>
 

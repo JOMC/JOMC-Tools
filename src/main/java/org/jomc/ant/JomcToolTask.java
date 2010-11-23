@@ -32,12 +32,16 @@
  */
 package org.jomc.ant;
 
+import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
+import org.jomc.ant.types.KeyValueType;
 import org.jomc.model.Implementation;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
@@ -84,6 +88,12 @@ public class JomcToolTask extends JomcModelTask
 
     /** The name of a module to process. */
     private String module;
+
+    /** The Velocity runtime properties. */
+    private List<KeyValueType<String, Object>> velocityProperties;
+
+    /** The template parameters. */
+    private List<KeyValueType<String, Object>> templateParameters;
 
     /** Creates a new {@code JomcToolTask} instance. */
     public JomcToolTask()
@@ -459,6 +469,70 @@ public class JomcToolTask extends JomcModelTask
         return this.getSpecification() == null && this.getImplementation() == null && this.getModule() == null;
     }
 
+    /**
+     * Gets the Velocity runtime properties to apply.
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * to the returned list will be present inside the object. This is why there is no {@code set} method for the
+     * velocity properties property.</p>
+     *
+     * @return The Velocity runtime properties to apply.
+     */
+    public final List<KeyValueType<String, Object>> getVelocityProperties()
+    {
+        if ( this.velocityProperties == null )
+        {
+            this.velocityProperties = new LinkedList<KeyValueType<String, Object>>();
+        }
+
+        return this.velocityProperties;
+    }
+
+    /**
+     * Creates a new {@code velocityProperty} element instance.
+     *
+     * @return A new {@code velocityProperty} element instance.
+     *
+     * @see #getVelocityProperties()
+     */
+    public KeyValueType<String, Object> createVelocityProperty()
+    {
+        final KeyValueType<String, Object> velocityProperty = new KeyValueType<String, Object>();
+        this.getVelocityProperties().add( velocityProperty );
+        return velocityProperty;
+    }
+
+    /**
+     * Gets the template parameters to apply.
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * to the returned list will be present inside the object. This is why there is no {@code set} method for the
+     * template parameters property.</p>
+     *
+     * @return The template parameters to apply.
+     */
+    public final List<KeyValueType<String, Object>> getTemplateParameters()
+    {
+        if ( this.templateParameters == null )
+        {
+            this.templateParameters = new LinkedList<KeyValueType<String, Object>>();
+        }
+
+        return this.templateParameters;
+    }
+
+    /**
+     * Creates a new {@code templateParameter} element instance.
+     *
+     * @return A new {@code templateParameter} element instance.
+     *
+     * @see #getTemplateParameters()
+     */
+    public KeyValueType<String, Object> createTemplateParameter()
+    {
+        final KeyValueType<String, Object> templateParameter = new KeyValueType<String, Object>();
+        this.getTemplateParameters().add( templateParameter );
+        return templateParameter;
+    }
+
     /** {@inheritDoc} */
     @Override
     public void preExecuteTask() throws BuildException
@@ -483,54 +557,95 @@ public class JomcToolTask extends JomcModelTask
      * @param tool The tool to configure.
      *
      * @throws NullPointerException if {@code tool} is {@code null}.
+     * @throws BuildException if configuring {@code tool} fails.
      */
-    public void configureJomcTool( final JomcTool tool )
+    public void configureJomcTool( final JomcTool tool ) throws BuildException
     {
         if ( tool == null )
         {
             throw new NullPointerException( "tool" );
         }
 
-        tool.setLogLevel( Level.ALL );
-        tool.setIndentation( StringEscapeUtils.unescapeJava( this.getIndentation() ) );
-        tool.setInputEncoding( this.getInputEncoding() );
-        tool.setLineSeparator( StringEscapeUtils.unescapeJava( this.getLineSeparator() ) );
-        tool.setOutputEncoding( this.getOutputEncoding() );
-        tool.setTemplateEncoding( this.getTemplateEncoding() );
-        tool.setTemplateProfile( this.getTemplateProfile() );
-        tool.getListeners().add( new JomcTool.Listener()
+        try
         {
-
-            @Override
-            public void onLog( final Level level, final String message, final Throwable throwable )
+            tool.setLogLevel( Level.ALL );
+            tool.setIndentation( StringEscapeUtils.unescapeJava( this.getIndentation() ) );
+            tool.setInputEncoding( this.getInputEncoding() );
+            tool.setLineSeparator( StringEscapeUtils.unescapeJava( this.getLineSeparator() ) );
+            tool.setOutputEncoding( this.getOutputEncoding() );
+            tool.setTemplateEncoding( this.getTemplateEncoding() );
+            tool.setTemplateProfile( this.getTemplateProfile() );
+            tool.getListeners().add( new JomcTool.Listener()
             {
-                if ( level.intValue() >= Level.SEVERE.intValue() )
+
+                @Override
+                public void onLog( final Level level, final String message, final Throwable throwable )
                 {
-                    log( message, throwable, Project.MSG_ERR );
+                    if ( level.intValue() >= Level.SEVERE.intValue() )
+                    {
+                        log( message, throwable, Project.MSG_ERR );
+                    }
+                    else if ( level.intValue() >= Level.WARNING.intValue() )
+                    {
+                        log( message, throwable, Project.MSG_WARN );
+                    }
+                    else if ( level.intValue() >= Level.INFO.intValue() )
+                    {
+                        log( message, throwable, Project.MSG_INFO );
+                    }
+                    else
+                    {
+                        log( message, throwable, Project.MSG_DEBUG );
+                    }
                 }
-                else if ( level.intValue() >= Level.WARNING.intValue() )
+
+            } );
+
+            if ( !this.getVelocityProperties().isEmpty() )
+            {
+                for ( KeyValueType<String, Object> p : this.getVelocityProperties() )
                 {
-                    log( message, throwable, Project.MSG_WARN );
-                }
-                else if ( level.intValue() >= Level.INFO.intValue() )
-                {
-                    log( message, throwable, Project.MSG_INFO );
-                }
-                else
-                {
-                    log( message, throwable, Project.MSG_DEBUG );
+                    tool.getVelocityEngine().setProperty( p.getKey(), p.getValue() );
                 }
             }
 
-        } );
-
+            if ( !this.getTemplateParameters().isEmpty() )
+            {
+                for ( KeyValueType<String, Object> p : this.getTemplateParameters() )
+                {
+                    tool.getTemplateParameters().put( p.getKey(), p.getValue() );
+                }
+            }
+        }
+        catch ( final IOException e )
+        {
+            throw new BuildException( getMessage( e ), e );
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public JomcToolTask clone()
     {
-        return (JomcToolTask) super.clone();
+        final JomcToolTask clone = (JomcToolTask) super.clone();
+
+        if ( this.velocityProperties != null )
+        {
+            for ( KeyValueType<String, Object> p : this.velocityProperties )
+            {
+                clone.getVelocityProperties().add( p.clone() );
+            }
+        }
+
+        if ( this.templateParameters != null )
+        {
+            for ( KeyValueType<String, Object> p : this.templateParameters )
+            {
+                clone.getTemplateParameters().add( p.clone() );
+            }
+        }
+
+        return clone;
     }
 
     private static String getMessage( final String key, final Object... args )
@@ -538,6 +653,11 @@ public class JomcToolTask extends JomcModelTask
         return MessageFormat.format( ResourceBundle.getBundle(
             JomcToolTask.class.getName().replace( '.', '/' ) ).getString( key ), args );
 
+    }
+
+    private static String getMessage( final Throwable t )
+    {
+        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

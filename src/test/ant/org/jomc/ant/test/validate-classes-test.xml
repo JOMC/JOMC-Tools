@@ -233,6 +233,8 @@
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>
       </jomc:classpath>
+      <jomc:velocityProperty key="test" value="test"/>
+      <jomc:templateParameter key="test" value="test"/>
     </jomc:validate-classes>
   </target>
 
