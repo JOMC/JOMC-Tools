@@ -1286,8 +1286,8 @@ public class JomcTool
     {
         final Date now = new Date();
         final VelocityContext ctx = new VelocityContext();
-        ctx.put( "model", this.getModel() );
-        ctx.put( "modules", this.getModules() );
+        ctx.put( "model", new Model( this.getModel() ) );
+        ctx.put( "modules", new Modules( this.getModules() ) );
         ctx.put( "tool", this );
         ctx.put( "toolName", this.getClass().getName() );
         ctx.put( "toolVersion", getMessage( "projectVersion" ) );
