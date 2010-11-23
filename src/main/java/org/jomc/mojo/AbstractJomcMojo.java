@@ -314,6 +314,22 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private String reportOutputDirectory;
 
     /**
+     * Velocity runtime properties.
+     *
+     * @parameter
+     * @since 1.2
+     */
+    private Map<String, Object> velocityProperties;
+
+    /**
+     * Template parameters.
+     *
+     * @parameter
+     * @since 1.2
+     */
+    private Map<String, Object> templateParameters;
+
+    /**
      * The Maven project of the instance.
      *
      * @parameter expression="${project}"
@@ -1476,41 +1492,59 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             throw new NullPointerException( "tool" );
         }
 
-        if ( this.isVerbose() || this.getLog().isDebugEnabled() )
+        try
         {
-            tool.setLogLevel( this.getLog().isDebugEnabled() ? Level.ALL : Level.INFO );
-        }
-
-        tool.getListeners().add( new JomcTool.Listener()
-        {
-
-            public void onLog( final Level level, final String message, final Throwable t )
+            if ( this.isVerbose() || this.getLog().isDebugEnabled() )
             {
-                try
-                {
-                    log( level, message, t );
-                }
-                catch ( final MojoExecutionException e )
-                {
-                    getLog().error( e );
-                }
+                tool.setLogLevel( this.getLog().isDebugEnabled() ? Level.ALL : Level.INFO );
             }
 
-        } );
+            tool.getListeners().add( new JomcTool.Listener()
+            {
 
-        tool.setTemplateEncoding( this.templateEncoding );
-        tool.setInputEncoding( this.sourceEncoding );
-        tool.setOutputEncoding( this.sourceEncoding );
-        tool.setTemplateProfile( this.templateProfile );
-        tool.setModel( this.getModel( context ) );
+                public void onLog( final Level level, final String message, final Throwable t )
+                {
+                    try
+                    {
+                        log( level, message, t );
+                    }
+                    catch ( final MojoExecutionException e )
+                    {
+                        getLog().error( e );
+                    }
+                }
 
-        if ( this.indentation != null )
-        {
-            tool.setIndentation( StringEscapeUtils.unescapeJava( this.indentation ) );
+            } );
+
+            tool.setTemplateEncoding( this.templateEncoding );
+            tool.setInputEncoding( this.sourceEncoding );
+            tool.setOutputEncoding( this.sourceEncoding );
+            tool.setTemplateProfile( this.templateProfile );
+            tool.setModel( this.getModel( context ) );
+
+            if ( this.indentation != null )
+            {
+                tool.setIndentation( StringEscapeUtils.unescapeJava( this.indentation ) );
+            }
+            if ( this.lineSeparator != null )
+            {
+                tool.setLineSeparator( StringEscapeUtils.unescapeJava( this.lineSeparator ) );
+            }
+            if ( this.velocityProperties != null )
+            {
+                for ( Map.Entry<String, Object> e : this.velocityProperties.entrySet() )
+                {
+                    tool.getVelocityEngine().setProperty( e.getKey(), e.getValue() );
+                }
+            }
+            if ( this.templateParameters != null )
+            {
+                tool.getTemplateParameters().putAll( this.templateParameters );
+            }
         }
-        if ( this.lineSeparator != null )
+        catch ( final IOException e )
         {
-            tool.setLineSeparator( StringEscapeUtils.unescapeJava( this.lineSeparator ) );
+            throw new MojoExecutionException( getMessage( e ), e );
         }
     }
 
