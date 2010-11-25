@@ -1534,12 +1534,29 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 for ( Map.Entry<String, Object> e : this.velocityProperties.entrySet() )
                 {
-                    tool.getVelocityEngine().setProperty( e.getKey(), e.getValue() );
+                    if ( e.getValue() != null )
+                    {
+                        tool.getVelocityEngine().setProperty( e.getKey(), e.getValue() );
+                    }
+                    else
+                    {
+                        tool.getVelocityEngine().clearProperty( e.getKey() );
+                    }
                 }
             }
             if ( this.templateParameters != null )
             {
-                tool.getTemplateParameters().putAll( this.templateParameters );
+                for ( Map.Entry<String, Object> e : this.templateParameters.entrySet() )
+                {
+                    if ( e.getValue() != null )
+                    {
+                        tool.getTemplateParameters().put( e.getKey(), e.getValue() );
+                    }
+                    else
+                    {
+                        tool.getTemplateParameters().remove( e.getKey() );
+                    }
+                }
             }
         }
         catch ( final IOException e )
