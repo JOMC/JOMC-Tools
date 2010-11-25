@@ -32,11 +32,13 @@
  */
 package org.jomc.ant.test;
 
+import org.apache.tools.ant.BuildException;
 import org.jomc.ant.ClassProcessingException;
 import org.apache.tools.ant.Project;
 import org.jomc.ant.ValidateClasspathTask;
 import org.junit.Test;
 import static org.jomc.ant.test.Assert.assertException;
+import static org.jomc.ant.test.Assert.assertExceptionMessage;
 import static org.jomc.ant.test.Assert.assertMessageLogged;
 import static org.jomc.ant.test.Assert.assertMessageNotLogged;
 import static org.jomc.ant.test.Assert.assertNoException;
@@ -75,6 +77,22 @@ public class ValidateClasspathTaskTest extends ClassFileProcessorTaskTest
     protected String getBuildFileName()
     {
         return "validate-classpath-test.xml";
+    }
+
+    @Test
+    public final void testVelocityPropertyMissingKey() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-velocity-property-missing-key" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
+    }
+
+    @Test
+    public final void testTemplateParameterMissingKey() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-template-parameter-missing-key" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
     }
 
     @Test

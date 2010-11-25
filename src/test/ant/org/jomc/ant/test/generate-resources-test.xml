@@ -81,6 +81,20 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-velocity-property-missing-key">
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" if="${jomc.enabled}">
+      <jomc:velocityProperty value="TEST"/>
+    </jomc:generate-resources>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-template-parameter-missing-key">
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" if="${jomc.enabled}">
+      <jomc:templateParameter value="TEST"/>
+    </jomc:generate-resources>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-resource-processing-disabled">
     <jomc:generate-resources resourcesDirectory="${empty.dir}" resourceProcessingEnabled="false" if="${jomc.enabled}"/>
   </target>

@@ -71,6 +71,20 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-velocity-property-missing-key">
+    <jomc:validate-classpath if="${jomc.enabled}">
+      <jomc:velocityProperty value="TEST"/>
+    </jomc:validate-classpath>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-template-parameter-missing-key">
+    <jomc:validate-classpath if="${jomc.enabled}">
+      <jomc:templateParameter value="TEST"/>
+    </jomc:validate-classpath>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-class-processing-disabled">
     <jomc:validate-classpath classProcessingEnabled="false" if="${jomc.enabled}"/>
   </target>

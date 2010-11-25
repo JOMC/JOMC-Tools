@@ -93,6 +93,16 @@ public final class ValidateClassesTask extends ClassFileProcessorTask
         this.classesDirectory = value;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void preExecuteTask() throws BuildException
+    {
+        super.preExecuteTask();
+
+        this.assertNotNull( "classesDirectory", this.getClassesDirectory() );
+        this.assertDirectory( this.getClassesDirectory() );
+    }
+
     /**
      * Validates class file model objects.
      *
@@ -103,9 +113,6 @@ public final class ValidateClassesTask extends ClassFileProcessorTask
     {
         try
         {
-            this.assertNotNull( "classesDirectory", this.getClassesDirectory() );
-            this.assertDirectory( this.getClassesDirectory() );
-
             this.log( getMessage( "validatingModelObjects", this.getModel() ) );
 
             final ProjectClassLoader classLoader = this.newProjectClassLoader();

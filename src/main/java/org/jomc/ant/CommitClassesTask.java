@@ -125,6 +125,16 @@ public final class CommitClassesTask extends ClassFileProcessorTask
         this.modelObjectStylesheet = value;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void preExecuteTask() throws BuildException
+    {
+        super.preExecuteTask();
+
+        this.assertNotNull( "classesDirectory", this.getClassesDirectory() );
+        this.assertDirectory( this.getClassesDirectory() );
+    }
+
     /**
      * Commits model objects to class files.
      *
@@ -135,9 +145,6 @@ public final class CommitClassesTask extends ClassFileProcessorTask
     {
         try
         {
-            this.assertNotNull( "classesDirectory", this.getClassesDirectory() );
-            this.assertDirectory( this.getClassesDirectory() );
-
             this.log( getMessage( "committingModelObjects", this.getModel() ) );
 
             final ProjectClassLoader classLoader = this.newProjectClassLoader();

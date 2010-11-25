@@ -97,6 +97,22 @@ public class CommitClassesTaskTest extends ClassFileProcessorTaskTest
     }
 
     @Test
+    public final void testVelocityPropertyMissingKey() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-velocity-property-missing-key" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
+    }
+
+    @Test
+    public final void testTemplateParameterMissingKey() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-template-parameter-missing-key" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
+    }
+
+    @Test
     public final void testStylesheetNotFound() throws Exception
     {
         final AntExecutionResult r = this.executeTarget( "test-stylesheet-not-found" );

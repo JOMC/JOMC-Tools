@@ -82,6 +82,20 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-velocity-property-missing-key">
+    <jomc:commit-classes classesDirectory="${empty.dir}" if="${jomc.enabled}">
+      <jomc:velocityProperty value="TEST"/>
+    </jomc:commit-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-template-parameter-missing-key">
+    <jomc:commit-classes classesDirectory="${empty.dir}" if="${jomc.enabled}">
+      <jomc:templateParameter value="TEST"/>
+    </jomc:commit-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-stylesheet-not-found">
     <jomc:commit-classes classesDirectory="${empty.dir}" modelObjectStylesheet="DOES_NOT_EXIST" if="${jomc.enabled}"/>
   </target>

@@ -93,6 +93,16 @@ public final class ManageSourcesTask extends SourceFileProcessorTask
         this.sourcesDirectory = value;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void preExecuteTask() throws BuildException
+    {
+        super.preExecuteTask();
+
+        this.assertNotNull( "sourcesDirectory", this.getSourcesDirectory() );
+        this.assertDirectory( this.getSourcesDirectory() );
+    }
+
     /**
      * Manages source files.
      *
@@ -103,9 +113,6 @@ public final class ManageSourcesTask extends SourceFileProcessorTask
     {
         try
         {
-            this.assertNotNull( "sourcesDirectory", this.getSourcesDirectory() );
-            this.assertDirectory( this.getSourcesDirectory() );
-
             this.log( getMessage( "managingSources", this.getModel() ) );
 
             final ProjectClassLoader classLoader = this.newProjectClassLoader();

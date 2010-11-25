@@ -317,6 +317,18 @@ public final class MergeModletsTask extends JomcTask
         return modletExclude;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void preExecuteTask() throws BuildException
+    {
+        super.preExecuteTask();
+
+        this.assertNotNull( "modletFile", this.getModletFile() );
+        this.assertNotNull( "modletName", this.getModletName() );
+        this.assertNamesNotNull( this.getModletExcludes() );
+        this.assertNamesNotNull( this.getModletIncludes() );
+    }
+
     /**
      * Merges modlet resources.
      *
@@ -327,12 +339,6 @@ public final class MergeModletsTask extends JomcTask
     {
         try
         {
-            this.assertNotNull( "model", this.getModel() );
-            this.assertNotNull( "modletFile", this.getModletFile() );
-            this.assertNotNull( "modletName", this.getModletName() );
-            this.assertNamesNotNull( this.getModletExcludes() );
-            this.assertNamesNotNull( this.getModletIncludes() );
-
             this.log( getMessage( "mergingModlets", this.getModel() ) );
 
             final ProjectClassLoader classLoader = this.newProjectClassLoader();

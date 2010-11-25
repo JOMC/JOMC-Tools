@@ -89,6 +89,22 @@ public class ManageSourcesTaskTest extends SourceFileProcessorTaskTest
     }
 
     @Test
+    public final void testVelocityPropertyMissingKey() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-velocity-property-missing-key" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
+    }
+
+    @Test
+    public final void testTemplateParameterMissingKey() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-template-parameter-missing-key" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
+    }
+
+    @Test
     public final void testNonExistentSourcesDirectory() throws Exception
     {
         final AntExecutionResult r = this.executeTarget( "test-non-existing-sources-directory" );

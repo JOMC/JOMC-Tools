@@ -93,6 +93,16 @@ public final class GenerateResourcesTask extends ResourceFileProcessorTask
         this.resourcesDirectory = value;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void preExecuteTask() throws BuildException
+    {
+        super.preExecuteTask();
+
+        this.assertNotNull( "resourcesDirectory", this.getResourcesDirectory() );
+        this.assertDirectory( this.getResourcesDirectory() );
+    }
+
     /**
      * Generates resource files.
      *
@@ -103,9 +113,6 @@ public final class GenerateResourcesTask extends ResourceFileProcessorTask
     {
         try
         {
-            this.assertNotNull( "resourcesDirectory", this.getResourcesDirectory() );
-            this.assertDirectory( this.getResourcesDirectory() );
-
             this.log( getMessage( "generatingResources", this.getModel() ) );
 
             final ProjectClassLoader classLoader = this.newProjectClassLoader();

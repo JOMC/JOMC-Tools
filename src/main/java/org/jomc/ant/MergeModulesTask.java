@@ -315,6 +315,18 @@ public final class MergeModulesTask extends JomcModelTask
         this.modelObjectStylesheet = value;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void preExecuteTask() throws BuildException
+    {
+        super.preExecuteTask();
+
+        this.assertNotNull( "moduleFile", this.getModuleFile() );
+        this.assertNotNull( "moduleName", this.getModuleName() );
+        this.assertNamesNotNull( this.getModuleExcludes() );
+        this.assertNamesNotNull( this.getModuleIncludes() );
+    }
+
     /**
      * Merges module resources.
      *
@@ -325,12 +337,6 @@ public final class MergeModulesTask extends JomcModelTask
     {
         try
         {
-            this.assertNotNull( "model", this.getModel() );
-            this.assertNotNull( "moduleFile", this.getModuleFile() );
-            this.assertNotNull( "moduleName", this.getModuleName() );
-            this.assertNamesNotNull( this.getModuleExcludes() );
-            this.assertNamesNotNull( this.getModuleIncludes() );
-
             this.log( getMessage( "mergingModules", this.getModel() ) );
 
             final ProjectClassLoader classLoader = this.newProjectClassLoader();

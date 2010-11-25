@@ -57,6 +57,7 @@ import org.apache.tools.ant.PropertyHelper;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Reference;
+import org.jomc.ant.types.KeyValueType;
 import org.jomc.ant.types.NameType;
 import org.jomc.model.ModelObject;
 import org.jomc.modlet.DefaultModelContext;
@@ -382,10 +383,9 @@ public class JomcTask extends Task
 
         if ( propertyHelper.testIfCondition( this.getIf() ) && !propertyHelper.testUnlessCondition( this.getUnless() ) )
         {
-            this.preExecuteTask();
-
             try
             {
+                this.preExecuteTask();
                 this.executeTask();
             }
             finally
@@ -411,6 +411,8 @@ public class JomcTask extends Task
         DefaultModelContext.setDefaultProviderLocation( this.getProviderLocation() );
         DefaultModelContext.setDefaultPlatformProviderLocation( this.getPlatformProviderLocation() );
         DefaultModletProvider.setDefaultModletLocation( this.getModletLocation() );
+
+        this.assertNotNull( "model", this.getModel() );
     }
 
     /**
@@ -424,7 +426,8 @@ public class JomcTask extends Task
     }
 
     /**
-     * Called by the {@code execute} method after the {@code executeTask} method even if that method threw an exception.
+     * Called by the {@code execute} method after the {@code preExecuteTask}/{@code executeTask} methods even if those
+     * methods threw an exception.
      *
      * @throws BuildException if building fails.
      */
@@ -622,7 +625,7 @@ public class JomcTask extends Task
      * @throws BuildException if a {@code name} property of a given {@code NameType} from the {@code names} collection
      * holds a {@code null} value.
      */
-    public final void assertNamesNotNull( final Collection<NameType> names ) throws BuildException
+    public final void assertNamesNotNull( final Collection<? extends NameType> names ) throws BuildException
     {
         if ( names == null )
         {
@@ -632,6 +635,29 @@ public class JomcTask extends Task
         for ( NameType n : names )
         {
             this.assertNotNull( "name", n.getName() );
+        }
+    }
+
+    /**
+     * Throws a {@code BuildException} on a {@code null} value of a {@code key} property of a given {@code KeyValueType}
+     * collection.
+     *
+     * @param keys The collection holding the  {@code KeyValueType} instances to test.
+     *
+     * @throws NullPointerException if {@code keys} is {@code null}.
+     * @throws BuildException if a {@code key} property of a given {@code KeyValueType} from the {@code keys} collection
+     * holds a {@code null} value.
+     */
+    public final void assertKeysNotNull( final Collection<? extends KeyValueType<?, ?>> keys ) throws BuildException
+    {
+        if ( keys == null )
+        {
+            throw new NullPointerException( "keys" );
+        }
+
+        for ( KeyValueType<?, ?> k : keys )
+        {
+            this.assertNotNull( "key", k.getKey() );
         }
     }
 

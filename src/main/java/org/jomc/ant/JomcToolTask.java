@@ -540,6 +540,9 @@ public class JomcToolTask extends JomcModelTask
         super.preExecuteTask();
 
         JomcTool.setDefaultTemplateProfile( this.getDefaultTemplateProfile() );
+
+        this.assertKeysNotNull( this.getVelocityProperties() );
+        this.assertKeysNotNull( this.getTemplateParameters() );
     }
 
     /** {@inheritDoc} */
@@ -605,7 +608,14 @@ public class JomcToolTask extends JomcModelTask
             {
                 for ( KeyValueType<String, Object> p : this.getVelocityProperties() )
                 {
-                    tool.getVelocityEngine().setProperty( p.getKey(), p.getValue() );
+                    if ( p.getValue() != null )
+                    {
+                        tool.getVelocityEngine().setProperty( p.getKey(), p.getValue() );
+                    }
+                    else
+                    {
+                        tool.getVelocityEngine().clearProperty( p.getKey() );
+                    }
                 }
             }
 
@@ -613,7 +623,14 @@ public class JomcToolTask extends JomcModelTask
             {
                 for ( KeyValueType<String, Object> p : this.getTemplateParameters() )
                 {
-                    tool.getTemplateParameters().put( p.getKey(), p.getValue() );
+                    if ( p.getValue() != null )
+                    {
+                        tool.getTemplateParameters().put( p.getKey(), p.getValue() );
+                    }
+                    else
+                    {
+                        tool.getTemplateParameters().remove( p.getKey() );
+                    }
                 }
             }
         }

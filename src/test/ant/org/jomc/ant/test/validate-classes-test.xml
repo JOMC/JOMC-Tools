@@ -76,6 +76,20 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-velocity-property-missing-key">
+    <jomc:validate-classes classesDirectory="${empty.dir}" if="${jomc.enabled}">
+      <jomc:velocityProperty value="TEST"/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-template-parameter-missing-key">
+    <jomc:validate-classes classesDirectory="${empty.dir}" if="${jomc.enabled}">
+      <jomc:templateParameter value="TEST"/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-non-existing-classes-directory">
     <jomc:validate-classes classesDirectory="${no.dir}" if="${jomc.enabled}"/>
   </target>

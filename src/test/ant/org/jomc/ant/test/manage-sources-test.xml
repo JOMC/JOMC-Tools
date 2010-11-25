@@ -76,6 +76,20 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-velocity-property-missing-key">
+    <jomc:manage-sources sourcesDirectory="${empty.dir}" if="${jomc.enabled}">
+      <jomc:velocityProperty value="TEST"/>
+    </jomc:manage-sources>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-template-parameter-missing-key">
+    <jomc:manage-sources sourcesDirectory="${empty.dir}" if="${jomc.enabled}">
+      <jomc:templateParameter value="TEST"/>
+    </jomc:manage-sources>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-non-existing-sources-directory">
     <jomc:manage-sources sourcesDirectory="${no.dir}" if="${jomc.enabled}"/>
   </target>
