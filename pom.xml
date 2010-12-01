@@ -75,12 +75,6 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.jomc</groupId>
-      <artifactId>jomc-tools</artifactId>
-      <classifier>templates</classifier>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
       <scope>compile</scope>
@@ -98,22 +92,22 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
-      <scope>compile</scope>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-project</artifactId>
-      <scope>compile</scope>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-artifact</artifactId>
-      <scope>compile</scope>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
-      <scope>compile</scope>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.plugins</groupId>
@@ -130,6 +124,12 @@
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-assembly-plugin</artifactId>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jomc</groupId>
+      <artifactId>jomc-tools</artifactId>
+      <classifier>templates</classifier>
+      <scope>runtime</scope>
     </dependency>
   </dependencies>
   <reporting>
