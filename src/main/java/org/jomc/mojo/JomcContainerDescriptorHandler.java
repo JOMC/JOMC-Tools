@@ -53,8 +53,6 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
-import org.apache.commons.lang.StringUtils;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.assembly.filter.ContainerDescriptorHandler;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverException;
@@ -62,6 +60,7 @@ import org.codehaus.plexus.archiver.ResourceIterator;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.components.io.fileselectors.FileInfo;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.util.StringUtils;
 import org.jomc.model.ModelObject;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
@@ -233,10 +232,29 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
 
     public void finalizeArchiveCreation( final Archiver archiver ) throws ArchiverException
     {
+        if ( StringUtils.isEmpty( this.model ) )
+        {
+            throw new ArchiverException( getMessage( "mandatoryParameterMissing", "model" ) );
+        }
+        if ( StringUtils.isEmpty( this.modletName ) )
+        {
+            throw new ArchiverException( getMessage( "mandatoryParameterMissing", "modletName" ) );
+        }
+        if ( StringUtils.isEmpty( this.modletResource ) )
+        {
+            throw new ArchiverException( getMessage( "mandatoryParameterMissing", "modletResource" ) );
+        }
+        if ( StringUtils.isEmpty( this.moduleName ) )
+        {
+            throw new ArchiverException( getMessage( "mandatoryParameterMissing", "moduleName" ) );
+        }
+        if ( StringUtils.isEmpty( this.moduleResource ) )
+        {
+            throw new ArchiverException( getMessage( "mandatoryParameterMissing", "moduleResource" ) );
+        }
+
         try
         {
-            this.assertValidParameters();
-
             // This will prompt the isSelected() call, below, for all resources added to the archive. This needs to be
             // corrected in the AbstractArchiver, where runArchiveFinalizers() is called before regular resources are
             // added, which is done because the manifest needs to be added first, and the manifest-creation component is
@@ -407,10 +425,6 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
         {
             throw new ArchiverException( getMessage( e ), e );
         }
-        catch ( final MojoFailureException e )
-        {
-            throw new ArchiverException( getMessage( e ), e );
-        }
         finally
         {
             this.modlets = new Modlets();
@@ -447,8 +461,6 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
     {
         try
         {
-            this.assertValidParameters();
-
             boolean selected = true;
             final String name = normalizeResourceName( fileInfo.getName() );
 
@@ -473,19 +485,18 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
                             this.modules.getModule().add( (Module) modelObject );
                         }
 
-                        selected = false;
-
-                        if ( this.getLogger() != null && !this.getLogger().isDebugEnabled() )
+                        if ( this.getLogger() != null && this.getLogger().isDebugEnabled() )
                         {
                             this.getLogger().debug( LOG_PREFIX + getMessage( "processingModuleResource", name ) );
                         }
 
+                        selected = false;
                         break;
                     }
                 }
             }
 
-            if ( this.modletResources != null )
+            if ( selected && this.modletResources != null )
             {
                 for ( String r : this.modletResources )
                 {
@@ -506,20 +517,19 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
                             this.modlets.getModlet().add( (Modlet) modletObject );
                         }
 
-                        selected = false;
-
-                        if ( this.getLogger() != null && !this.getLogger().isDebugEnabled() )
+                        if ( this.getLogger() != null && this.getLogger().isDebugEnabled() )
                         {
                             this.getLogger().debug( LOG_PREFIX + getMessage( "processingModletResource", name ) );
                         }
 
+                        selected = false;
                         break;
                     }
                 }
             }
 
-            if ( selected && ( name.equals( normalizeResourceName( this.modletResource ) )
-                               || name.equals( normalizeResourceName( this.moduleResource ) ) ) )
+            if ( name.equals( normalizeResourceName( this.modletResource ) )
+                 || name.equals( normalizeResourceName( this.moduleResource ) ) )
             {
                 if ( this.getLogger() != null && this.getLogger().isWarnEnabled() )
                 {
@@ -530,10 +540,6 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
             }
 
             return selected;
-        }
-        catch ( final MojoFailureException e )
-        {
-            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
         catch ( final JAXBException e )
         {
@@ -548,35 +554,6 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
         catch ( final ModelException e )
         {
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
-        }
-    }
-
-    /**
-     * Checks the fields of the instance to hold valid values.
-     *
-     * @throws MojoFailureException if fields hold invalid values.
-     */
-    protected void assertValidParameters() throws MojoFailureException
-    {
-        if ( StringUtils.isEmpty( this.model ) )
-        {
-            throw new MojoFailureException( getMessage( "mandatoryParameterMissing", "model" ) );
-        }
-        if ( StringUtils.isEmpty( this.modletName ) )
-        {
-            throw new MojoFailureException( getMessage( "mandatoryParameterMissing", "modletName" ) );
-        }
-        if ( StringUtils.isEmpty( this.modletResource ) )
-        {
-            throw new MojoFailureException( getMessage( "mandatoryParameterMissing", "modletResource" ) );
-        }
-        if ( StringUtils.isEmpty( this.moduleName ) )
-        {
-            throw new MojoFailureException( getMessage( "mandatoryParameterMissing", "moduleName" ) );
-        }
-        if ( StringUtils.isEmpty( this.moduleResource ) )
-        {
-            throw new MojoFailureException( getMessage( "mandatoryParameterMissing", "moduleResource" ) );
         }
     }
 
@@ -863,6 +840,11 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
             if ( normalized.startsWith( "/" ) )
             {
                 normalized = normalized.substring( 1 );
+            }
+
+            if ( normalized.endsWith( "/" ) )
+            {
+                normalized = normalized.substring( 0, normalized.length() );
             }
         }
 

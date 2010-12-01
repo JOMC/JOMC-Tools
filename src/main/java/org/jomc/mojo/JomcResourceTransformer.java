@@ -54,10 +54,9 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
-import org.apache.commons.lang.StringUtils;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.shade.resource.ResourceTransformer;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.util.StringUtils;
 import org.jomc.model.ModelObject;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
@@ -129,14 +128,6 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
         MODEL_OBJECT_RESOURCE,
         /** Modlet object resource. */
         MODLET_OBJECT_RESOURCE,
-        /**
-         * Resource being ignored/overridden.
-         * @since 1.2
-         */
-        IGNORED_RESOURCE,
-        /** Unknown resource. */
-        UNKNOWN_RESOURCE
-
     }
 
     /** Prefix prepended to log messages. */
@@ -223,8 +214,8 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
     /** Model resources. */
     private Modules modules = new Modules();
 
-    /** Type of the currently processed resource. */
-    private ResourceType currentResourceType = ResourceType.UNKNOWN_RESOURCE;
+    /** Type of the currently processed resource or {@code null}. */
+    private ResourceType currentResourceType;
 
     /** The JOMC JAXB marshaller of the instance. */
     private Marshaller jomcMarshaller;
@@ -246,105 +237,112 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
 
     public boolean canTransformResource( final String arg )
     {
-        if ( this.moduleResources != null )
+        boolean transformable = false;
+        this.currentResourceType = null;
+        final String name = normalizeResourceName( arg );
+
+        if ( name != null )
         {
-            for ( String r : this.moduleResources )
+            if ( this.moduleResources != null )
             {
-                if ( normalizeResourceName( arg ).equals( normalizeResourceName( r ) ) )
+                for ( String r : this.moduleResources )
                 {
-                    this.currentResourceType = ResourceType.MODEL_OBJECT_RESOURCE;
-
-                    if ( this.getLogger() != null && this.getLogger().isDebugEnabled() )
+                    if ( name.equals( normalizeResourceName( r ) ) )
                     {
-                        this.getLogger().debug( getMessage( "processingModuleResource", arg ) );
-                    }
+                        this.currentResourceType = ResourceType.MODEL_OBJECT_RESOURCE;
 
-                    return true;
+                        if ( this.getLogger() != null && this.getLogger().isDebugEnabled() )
+                        {
+                            this.getLogger().debug( LOG_PREFIX + getMessage( "processingModuleResource", arg ) );
+                        }
+
+                        transformable = true;
+                        break;
+                    }
                 }
             }
-        }
-        if ( this.modletResources != null )
-        {
-            for ( String r : this.modletResources )
+
+            if ( !transformable && this.modletResources != null )
             {
-                if ( normalizeResourceName( arg ).equals( normalizeResourceName( r ) ) )
+                for ( String r : this.modletResources )
                 {
-                    this.currentResourceType = ResourceType.MODLET_OBJECT_RESOURCE;
-
-                    if ( this.getLogger() != null && this.getLogger().isDebugEnabled() )
+                    if ( name.equals( normalizeResourceName( r ) ) )
                     {
-                        this.getLogger().debug( getMessage( "processingModletResource", arg ) );
-                    }
+                        this.currentResourceType = ResourceType.MODLET_OBJECT_RESOURCE;
 
-                    return true;
+                        if ( this.getLogger() != null && this.getLogger().isDebugEnabled() )
+                        {
+                            this.getLogger().debug( LOG_PREFIX + getMessage( "processingModletResource", arg ) );
+                        }
+
+                        transformable = true;
+                        break;
+                    }
                 }
             }
-        }
 
-        if ( normalizeResourceName( arg ).equals( normalizeResourceName( this.modletResource ) )
-             || normalizeResourceName( arg ).equals( normalizeResourceName( this.moduleResource ) ) )
-        {
-            if ( this.getLogger() != null && this.getLogger().isWarnEnabled() )
+            if ( name.equals( normalizeResourceName( this.modletResource ) )
+                 || name.equals( normalizeResourceName( this.moduleResource ) ) )
             {
-                this.getLogger().warn( LOG_PREFIX + getMessage( "overridingResource", arg ) );
-            }
+                if ( this.getLogger() != null && this.getLogger().isWarnEnabled() )
+                {
+                    this.getLogger().warn( LOG_PREFIX + getMessage( "overridingResource", arg ) );
+                }
 
-            this.currentResourceType = ResourceType.IGNORED_RESOURCE;
-            return true;
+                transformable = true;
+                this.currentResourceType = null;
+            }
         }
 
-        this.currentResourceType = ResourceType.UNKNOWN_RESOURCE;
-        return false;
+        return transformable;
     }
 
     public void processResource( final InputStream in ) throws IOException
     {
         try
         {
-            this.assertValidParameters();
-
-            switch ( this.currentResourceType )
+            if ( in != null && this.currentResourceType != null )
             {
-                case MODEL_OBJECT_RESOURCE:
-                    Object modelObject = this.unmarshalModelObject( in );
+                switch ( this.currentResourceType )
+                {
+                    case MODEL_OBJECT_RESOURCE:
+                        Object modelObject = this.unmarshalModelObject( in );
 
-                    if ( modelObject instanceof JAXBElement<?> )
-                    {
-                        modelObject = ( (JAXBElement<?>) modelObject ).getValue();
-                    }
-                    if ( modelObject instanceof Modules )
-                    {
-                        this.modules.getModule().addAll( ( (Modules) modelObject ).getModule() );
-                    }
-                    if ( modelObject instanceof Module )
-                    {
-                        this.modules.getModule().add( (Module) modelObject );
-                    }
-                    break;
+                        if ( modelObject instanceof JAXBElement<?> )
+                        {
+                            modelObject = ( (JAXBElement<?>) modelObject ).getValue();
+                        }
+                        if ( modelObject instanceof Modules )
+                        {
+                            this.modules.getModule().addAll( ( (Modules) modelObject ).getModule() );
+                        }
+                        if ( modelObject instanceof Module )
+                        {
+                            this.modules.getModule().add( (Module) modelObject );
+                        }
+                        break;
 
-                case MODLET_OBJECT_RESOURCE:
-                    Object modletObject = this.unmarshalModletObject( in );
+                    case MODLET_OBJECT_RESOURCE:
+                        Object modletObject = this.unmarshalModletObject( in );
 
-                    if ( modletObject instanceof JAXBElement<?> )
-                    {
-                        modletObject = ( (JAXBElement<?>) modletObject ).getValue();
-                    }
-                    if ( modletObject instanceof Modlets )
-                    {
-                        this.modlets.getModlet().addAll( ( (Modlets) modletObject ).getModlet() );
-                    }
-                    if ( modletObject instanceof Modlet )
-                    {
-                        this.modlets.getModlet().add( (Modlet) modletObject );
-                    }
+                        if ( modletObject instanceof JAXBElement<?> )
+                        {
+                            modletObject = ( (JAXBElement<?>) modletObject ).getValue();
+                        }
+                        if ( modletObject instanceof Modlets )
+                        {
+                            this.modlets.getModlet().addAll( ( (Modlets) modletObject ).getModlet() );
+                        }
+                        if ( modletObject instanceof Modlet )
+                        {
+                            this.modlets.getModlet().add( (Modlet) modletObject );
+                        }
+                        break;
 
-                    break;
+                    default:
+                        throw new AssertionError( this.currentResourceType );
 
-                case IGNORED_RESOURCE:
-                    break;
-                default:
-                    throw new AssertionError( "" + this.currentResourceType );
-
+                }
             }
         }
         catch ( final JAXBException e )
@@ -358,10 +356,6 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
             throw (IOException) new IOException( message ).initCause( e );
         }
         catch ( final ModelException e )
-        {
-            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
-        }
-        catch ( final MojoFailureException e )
         {
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
@@ -379,10 +373,29 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
 
     public void modifyOutputStream( final JarOutputStream out ) throws IOException
     {
+        if ( StringUtils.isEmpty( this.model ) )
+        {
+            throw new IOException( getMessage( "mandatoryParameterMissing", "model" ) );
+        }
+        if ( StringUtils.isEmpty( this.modletName ) )
+        {
+            throw new IOException( getMessage( "mandatoryParameterMissing", "modletName" ) );
+        }
+        if ( StringUtils.isEmpty( this.modletResource ) )
+        {
+            throw new IOException( getMessage( "mandatoryParameterMissing", "modletResource" ) );
+        }
+        if ( StringUtils.isEmpty( this.moduleName ) )
+        {
+            throw new IOException( getMessage( "mandatoryParameterMissing", "moduleName" ) );
+        }
+        if ( StringUtils.isEmpty( this.moduleResource ) )
+        {
+            throw new IOException( getMessage( "mandatoryParameterMissing", "moduleResource" ) );
+        }
+
         try
         {
-            this.assertValidParameters();
-
             if ( !this.modules.getModule().isEmpty() )
             {
                 if ( this.moduleIncludes != null )
@@ -535,10 +548,6 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
         {
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
-        catch ( final MojoFailureException e )
-        {
-            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
-        }
         finally
         {
             this.modlets = new Modlets();
@@ -547,37 +556,6 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
             this.jomcUnmarshaller = null;
             this.modletMarshaller = null;
             this.modletUnmarshaller = null;
-        }
-    }
-
-    /**
-     * Checks the fields of the instance to hold valid values.
-     *
-     * @throws MojoFailureException if fields hold invalid values.
-     *
-     * @since 1.2
-     */
-    protected void assertValidParameters() throws MojoFailureException
-    {
-        if ( StringUtils.isEmpty( this.model ) )
-        {
-            throw new MojoFailureException( getMessage( "mandatoryParameterMissing", "model" ) );
-        }
-        if ( StringUtils.isEmpty( this.modletName ) )
-        {
-            throw new MojoFailureException( getMessage( "mandatoryParameterMissing", "modletName" ) );
-        }
-        if ( StringUtils.isEmpty( this.modletResource ) )
-        {
-            throw new MojoFailureException( getMessage( "mandatoryParameterMissing", "modletResource" ) );
-        }
-        if ( StringUtils.isEmpty( this.moduleName ) )
-        {
-            throw new MojoFailureException( getMessage( "mandatoryParameterMissing", "moduleName" ) );
-        }
-        if ( StringUtils.isEmpty( this.moduleResource ) )
-        {
-            throw new MojoFailureException( getMessage( "mandatoryParameterMissing", "moduleResource" ) );
         }
     }
 
@@ -864,6 +842,11 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
             if ( normalized.startsWith( "/" ) )
             {
                 normalized = normalized.substring( 1 );
+            }
+
+            if ( normalized.endsWith( "/" ) )
+            {
+                normalized = normalized.substring( 0, normalized.length() );
             }
         }
 
