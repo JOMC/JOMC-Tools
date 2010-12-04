@@ -330,6 +330,22 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private Map<String, Object> templateParameters;
 
     /**
+     * Transformation parameters.
+     *
+     * @parameter
+     * @since 1.2
+     */
+    private Map<String, Object> transformationParameters;
+
+    /**
+     * Transformation output properties.
+     *
+     * @parameter
+     * @since 1.2
+     */
+    private Map<String, String> transformationOutputProperties;
+
+    /**
      * The Maven project of the instance.
      *
      * @parameter expression="${project}"
@@ -1254,6 +1270,22 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
         {
             transformer.setParameter( e.getKey().toString(), e.getValue() );
+        }
+
+        if ( this.transformationParameters != null )
+        {
+            for ( Map.Entry<String, Object> e : this.transformationParameters.entrySet() )
+            {
+                transformer.setParameter( e.getKey(), e.getValue() );
+            }
+        }
+
+        if ( this.transformationOutputProperties != null )
+        {
+            for ( Map.Entry<String, String> e : this.transformationOutputProperties.entrySet() )
+            {
+                transformer.setOutputProperty( e.getKey(), e.getValue() );
+            }
         }
 
         return transformer;
