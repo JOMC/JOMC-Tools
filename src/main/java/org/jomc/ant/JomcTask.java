@@ -41,6 +41,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -99,6 +101,12 @@ public class JomcTask extends Task
 
     /** The location to search for platform providers. */
     private String platformProviderLocation;
+
+    /** The transformation parameters to apply. */
+    private List<KeyValueType<String, Object>> transformationParameters;
+
+    /** The transformation output properties to apply. */
+    private List<KeyValueType<String, String>> transformationOutputProperties;
 
     /** Property controlling the execution of the task. */
     private Object _if;
@@ -374,6 +382,76 @@ public class JomcTask extends Task
     }
 
     /**
+     * Gets the transformation parameters to apply.
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * to the returned list will be present inside the object. This is why there is no {@code set} method for the
+     * transformation parameters property.</p>
+     *
+     * @return The transformation parameters to apply.
+     *
+     * @see #createTransformationParameter()
+     * @see #newTransformer(java.lang.String, java.lang.ClassLoader)
+     */
+    public final List<KeyValueType<String, Object>> getTransformationParameters()
+    {
+        if ( this.transformationParameters == null )
+        {
+            this.transformationParameters = new LinkedList<KeyValueType<String, Object>>();
+        }
+
+        return this.transformationParameters;
+    }
+
+    /**
+     * Creates a new {@code transformationParameter} element instance.
+     *
+     * @return A new {@code transformationParameter} element instance.
+     *
+     * @see #getTransformationParameters()
+     */
+    public KeyValueType<String, Object> createTransformationParameter()
+    {
+        final KeyValueType<String, Object> transformationParameter = new KeyValueType<String, Object>();
+        this.getTransformationParameters().add( transformationParameter );
+        return transformationParameter;
+    }
+
+    /**
+     * Gets the transformation output properties to apply.
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * to the returned list will be present inside the object. This is why there is no {@code set} method for the
+     * transformation output properties property.</p>
+     *
+     * @return The transformation output properties to apply.
+     *
+     * @see #createTransformationOutputProperty()
+     * @see #newTransformer(java.lang.String, java.lang.ClassLoader)
+     */
+    public final List<KeyValueType<String, String>> getTransformationOutputProperties()
+    {
+        if ( this.transformationOutputProperties == null )
+        {
+            this.transformationOutputProperties = new LinkedList<KeyValueType<String, String>>();
+        }
+
+        return this.transformationOutputProperties;
+    }
+
+    /**
+     * Creates a new {@code transformationOutputProperty} element instance.
+     *
+     * @return A new {@code transformationOutputProperty} element instance.
+     *
+     * @see #getTransformationOutputProperties()
+     */
+    public KeyValueType<String, String> createTransformationOutputProperty()
+    {
+        final KeyValueType<String, String> transformationOutputProperty = new KeyValueType<String, String>();
+        this.getTransformationOutputProperties().add( transformationOutputProperty );
+        return transformationOutputProperty;
+    }
+
+    /**
      * Called by the project to let the task do its work.
      *
      * @throws BuildException if something goes wrong with the build.
@@ -423,6 +501,8 @@ public class JomcTask extends Task
         DefaultModletProvider.setDefaultModletLocation( this.getModletLocation() );
 
         this.assertNotNull( "model", this.getModel() );
+        this.assertKeysNotNull( this.getTransformationParameters() );
+        this.assertKeysNotNull( this.getTransformationOutputProperties() );
     }
 
     /**
@@ -564,6 +644,8 @@ public class JomcTask extends Task
      * @throws TransformerConfigurationException if creating a new {@code Transformer} fails.
      *
      * @see ProjectErrorListener
+     * @see #getTransformationOutputProperties()
+     * @see #getTransformationParameters()
      */
     public Transformer newTransformer( final String location, final ClassLoader classLoader )
         throws URISyntaxException, TransformerConfigurationException
@@ -605,6 +687,16 @@ public class JomcTask extends Task
         for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
         {
             transformer.setParameter( e.getKey().toString(), e.getValue() );
+        }
+
+        for ( KeyValueType<String, Object> p : this.getTransformationParameters() )
+        {
+            transformer.setParameter( p.getKey(), p.getValue() );
+        }
+
+        for ( KeyValueType<String, String> p : this.getTransformationOutputProperties() )
+        {
+            transformer.setOutputProperty( p.getKey(), p.getValue() );
         }
 
         return transformer;

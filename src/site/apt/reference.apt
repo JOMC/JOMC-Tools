@@ -62,6 +62,9 @@ Task Reference
 | <<<defaultTemplateProfile>>>                | The default template profile to use when   | No.                    |
 |                                             | accessing templates.                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<if>>>                                    | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<implementation>>>                        | The identifier of an implementation to     | No. If the             |
 |                                             | process.                                   | <<<implementation>>>,  |
 |                                             |                                            | <<<specification>>>    |
@@ -138,6 +141,10 @@ Task Reference
 | <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
 |                                             | transformers.                              |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<unless>>>                                | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
 
   The <<<commit-classes>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
   or the nested <<<classpath>>> element can be used.
@@ -147,6 +154,12 @@ Task Reference
 
   Nested <<<templateParameter>>> elements can be used to pass additional parameters to the template engine backing
   the task. The element takes two attributes - <<<key>>> and <<<value>>>.
+
+  Nested <<<transformationParameter>>> elements can be used to pass additional parameters to transformers.
+  The element takes two attributes - <<<key>>> and <<<value>>>.
+
+  Nested <<<transformationOutputProperty>>> elements can be used to pass output properties to transformers.
+  The element takes two attributes - <<<key>>> and <<<value>>>.
 
 * <<<{generate-resources}>>>
 
@@ -165,6 +178,9 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<defaultTemplateProfile>>>                | The default template profile to use when   | No.                    |
 |                                             | accessing templates.                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<if>>>                                    | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<implementation>>>                        | The identifier of an implementation to     | No. If the             |
 |                                             | process.                                   | <<<implementation>>>,  |
@@ -249,6 +265,9 @@ Task Reference
 | <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
 |                                             | transformers.                              |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<unless>>>                                | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 
   The <<<generate-resources>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
   or the nested <<<classpath>>> element can be used.
@@ -258,6 +277,12 @@ Task Reference
 
   Nested <<<templateParameter>>> elements can be used to pass additional parameters to the template engine backing
   the task. The element takes two attributes - <<<key>>> and <<<value>>>.
+
+  Nested <<<transformationParameter>>> elements can be used to pass additional parameters to transformers.
+  The element takes two attributes - <<<key>>> and <<<value>>>.
+
+  Nested <<<transformationOutputProperty>>> elements can be used to pass output properties to transformers.
+  The element takes two attributes - <<<key>>> and <<<value>>>.
 
 * <<<{manage-sources}>>>
 
@@ -276,6 +301,9 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<defaultTemplateProfile>>>                | The default template profile to use when   | No.                    |
 |                                             | accessing templates.                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<if>>>                                    | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<implementation>>>                        | The identifier of an implementation to     | No. If the             |
 |                                             | process.                                   | <<<implementation>>>,  |
@@ -356,6 +384,9 @@ Task Reference
 | <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
 |                                             | transformers.                              |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<unless>>>                                | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 
   The <<<manage-sources>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
   or the nested <<<classpath>>> element can be used.
@@ -365,6 +396,12 @@ Task Reference
 
   Nested <<<templateParameter>>> elements can be used to pass additional parameters to the template engine backing
   the task. The element takes two attributes - <<<key>>> and <<<value>>>.
+
+  Nested <<<transformationParameter>>> elements can be used to pass additional parameters to transformers.
+  The element takes two attributes - <<<key>>> and <<<value>>>.
+
+  Nested <<<transformationOutputProperty>>> elements can be used to pass output properties to transformers.
+  The element takes two attributes - <<<key>>> and <<<value>>>.
 
 * <<<{validate-classes}>>>
 
@@ -389,6 +426,9 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<defaultTemplateProfile>>>                | The default template profile to use when   | No.                    |
 |                                             | accessing templates.                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<if>>>                                    | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<implementation>>>                        | The identifier of an implementation to     | No. If the             |
 |                                             | process.                                   | <<<implementation>>>,  |
@@ -464,6 +504,9 @@ Task Reference
 | <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
 |                                             | transformers.                              |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<unless>>>                                | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 
   The <<<validate-classes>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
   or the nested <<<classpath>>> element can be used.
@@ -473,6 +516,12 @@ Task Reference
 
   Nested <<<templateParameter>>> elements can be used to pass additional parameters to the template engine backing
   the task. The element takes two attributes - <<<key>>> and <<<value>>>.
+
+  Nested <<<transformationParameter>>> elements can be used to pass additional parameters to transformers.
+  The element takes two attributes - <<<key>>> and <<<value>>>.
+
+  Nested <<<transformationOutputProperty>>> elements can be used to pass output properties to transformers.
+  The element takes two attributes - <<<key>>> and <<<value>>>.
 
 * <<<{validate-classpath}>>>
 
@@ -494,6 +543,9 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<defaultTemplateProfile>>>                | The default template profile to use when   | No.                    |
 |                                             | accessing templates.                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<if>>>                                    | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<implementation>>>                        | The identifier of an implementation to     | No. If the             |
 |                                             | process.                                   | <<<implementation>>>,  |
@@ -568,6 +620,9 @@ Task Reference
 | <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
 |                                             | transformers.                              |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<unless>>>                                | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 
   The <<<validate-classpath>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
   or the nested <<<classpath>>> element can be used.
@@ -577,6 +632,12 @@ Task Reference
 
   Nested <<<templateParameter>>> elements can be used to pass additional parameters to the template engine backing
   the task. The element takes two attributes - <<<key>>> and <<<value>>>.
+
+  Nested <<<transformationParameter>>> elements can be used to pass additional parameters to transformers.
+  The element takes two attributes - <<<key>>> and <<<value>>>.
+
+  Nested <<<transformationOutputProperty>>> elements can be used to pass output properties to transformers.
+  The element takes two attributes - <<<key>>> and <<<value>>>.
 
 * <<<{validate-model}>>>
 
@@ -592,6 +653,9 @@ Task Reference
 |                                             |                                            | attribute or the       |
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element is supported.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<if>>>                                    | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
@@ -623,9 +687,18 @@ Task Reference
 | <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
 |                                             | transformers.                              |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<unless>>>                                | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 
   The <<<validate-model>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
   or the nested <<<classpath>>> element can be used.
+
+  Nested <<<transformationParameter>>> elements can be used to pass additional parameters to transformers.
+  The element takes two attributes - <<<key>>> and <<<value>>>.
+
+  Nested <<<transformationOutputProperty>>> elements can be used to pass output properties to transformers.
+  The element takes two attributes - <<<key>>> and <<<value>>>.
 
 * <<<{merge-modlets}>>>
 
@@ -641,6 +714,9 @@ Task Reference
 |                                       |                                            | attribute or the       |
 |                                       |                                            | nested <<<classpath>>> |
 |                                       |                                            | element is supported.  |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<if>>>                              | Object controlling the execution of the    | No.                    |
+|                                       | task.                                      |                        |
 *---------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                           | The public identifier of the model to      | No. Defaults to the    |
 |                                       | process.                                   | JOMC model public id.  |
@@ -678,22 +754,22 @@ Task Reference
 | <<<providerLocation>>>                | The class path location searched for       | No.                    |
 |                                       | providers.                                 |                        |
 *---------------------------------------+--------------------------------------------+------------------------+
+| <<<unless>>>                          | Object controlling the execution of the    | No.                    |
+|                                       | task.                                      |                        |
+*---------------------------------------+--------------------------------------------+------------------------+
 
   The <<<merge-modlets>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
   or the nested <<<classpath>>> element can be used.
 
   For controlling the modlets to be merged, the <<<merge-modlets>>> task supports nested <<<modletInclude>>> and
-  <<<modletExclude>>> elements.
+  <<<modletExclude>>> elements. Both elements take a single <<<name>>> attribute specifying the name of a modlet
+  to exclude/include.
 
-** <<<{modletInclude}>>>
+  Nested <<<transformationParameter>>> elements can be used to pass additional parameters to transformers.
+  The element takes two attributes - <<<key>>> and <<<value>>>.
 
-  The nested <<<modletInclude>>> element supports a single <<<name>>> attribute specifying the name of a modlet to
-  include.
-
-** <<<{modletExclude}>>>
-
-  The nested <<<modletExclude>>> element supports a single <<<name>>> attribute specifying the name of a modlet to
-  exclude.
+  Nested <<<transformationOutputProperty>>> elements can be used to pass output properties to transformers.
+  The element takes two attributes - <<<key>>> and <<<value>>>.
 
 * <<<{merge-modules}>>>
 
@@ -709,6 +785,9 @@ Task Reference
 |                                             |                                            | attribute or the       |
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element is supported.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<if>>>                                    | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
@@ -755,23 +834,19 @@ Task Reference
 | <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
 |                                             | transformers.                              |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<unless>>>                                | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 
   The <<<merge-modules>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
   or the nested <<<classpath>>> element can be used.
 
   For controlling the modules to be merged, the <<<merge-modules>>> task supports nested <<<moduleInclude>>> and
-  <<<moduleExclude>>> elements.
+  <<<moduleExclude>>> elements. Both elements take a single <<<name>>> attribute specifying the name of a module
+  to exclude/include.
 
-** <<<{moduleInclude}>>>
+  Nested <<<transformationParameter>>> elements can be used to pass additional parameters to transformers.
+  The element takes two attributes - <<<key>>> and <<<value>>>.
 
-  The nested <<<moduleInclude>>> element supports a single <<<name>>> attribute specifying the name of a module to
-  include.
-
-** <<<{moduleExclude}>>>
-
-  The nested <<<moduleExclude>>> element supports a single <<<name>>> attribute specifying the name of a module to
-  exclude.
-
-* If/Unless Attributes
-
-  All JOMC tasks support <<<if>>> and <<<unless>>> attributes which can be used to control the execution of a task.
+  Nested <<<transformationOutputProperty>>> elements can be used to pass output properties to transformers.
+  The element takes two attributes - <<<key>>> and <<<value>>>.
