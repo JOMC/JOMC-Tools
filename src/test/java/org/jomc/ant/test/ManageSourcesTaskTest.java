@@ -39,7 +39,6 @@ import org.jomc.ant.ManageSourcesTask;
 import org.junit.Test;
 import static org.jomc.ant.test.Assert.assertException;
 import static org.jomc.ant.test.Assert.assertExceptionMessage;
-import static org.jomc.ant.test.Assert.assertExceptionMessageContaining;
 import static org.jomc.ant.test.Assert.assertMessageLogged;
 import static org.jomc.ant.test.Assert.assertMessageNotLogged;
 import static org.jomc.ant.test.Assert.assertNoException;
@@ -102,14 +101,6 @@ public class ManageSourcesTaskTest extends SourceFileProcessorTaskTest
         final AntExecutionResult r = this.executeTarget( "test-template-parameter-missing-key" );
         assertException( r, BuildException.class );
         assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
-    }
-
-    @Test
-    public final void testNonExistentSourcesDirectory() throws Exception
-    {
-        final AntExecutionResult r = this.executeTarget( "test-non-existing-sources-directory" );
-        assertException( r, BuildException.class );
-        assertExceptionMessageContaining( r, "DOES_NOT_EXIST" );
     }
 
     @Test

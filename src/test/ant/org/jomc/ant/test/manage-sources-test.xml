@@ -90,11 +90,6 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-non-existing-sources-directory">
-    <jomc:manage-sources sourcesDirectory="${no.dir}" if="${jomc.enabled}"/>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
   <target name="test-source-processing-disabled">
     <jomc:manage-sources sourcesDirectory="${empty.dir}" sourceProcessingEnabled="false" if="${jomc.enabled}"/>
   </target>

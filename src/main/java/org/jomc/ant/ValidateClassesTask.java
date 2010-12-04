@@ -100,7 +100,6 @@ public final class ValidateClassesTask extends ClassFileProcessorTask
         super.preExecuteTask();
 
         this.assertNotNull( "classesDirectory", this.getClassesDirectory() );
-        this.assertDirectory( this.getClassesDirectory() );
     }
 
     /**
@@ -184,15 +183,15 @@ public final class ValidateClassesTask extends ClassFileProcessorTask
         }
         catch ( final IOException e )
         {
-            throw new ClassProcessingException( e, this.getLocation() );
+            throw new ClassProcessingException( getMessage( e ), e, this.getLocation() );
         }
         catch ( final JAXBException e )
         {
-            throw new ClassProcessingException( e, this.getLocation() );
+            throw new ClassProcessingException( getMessage( e ), e, this.getLocation() );
         }
         catch ( final ModelException e )
         {
-            throw new ClassProcessingException( e, this.getLocation() );
+            throw new ClassProcessingException( getMessage( e ), e, this.getLocation() );
         }
     }
 
@@ -212,6 +211,11 @@ public final class ValidateClassesTask extends ClassFileProcessorTask
         return MessageFormat.format( ResourceBundle.getBundle(
             ValidateClassesTask.class.getName().replace( '.', '/' ) ).getString( key ), args );
 
+    }
+
+    private static String getMessage( final Throwable t )
+    {
+        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

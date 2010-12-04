@@ -126,10 +126,6 @@ public class ResourceFileProcessorTask extends JomcToolTask
         {
             tool.setResourceBundleDefaultLocale( new Locale( this.getResourceBundleDefaultLanguage() ) );
         }
-        else
-        {
-            tool.setResourceBundleDefaultLocale( null );
-        }
 
         return tool;
     }

@@ -32,8 +32,6 @@
  */
 package org.jomc.ant;
 
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Location;
 
@@ -47,34 +45,78 @@ public class SourceProcessingException extends BuildException
 {
 
     /** Serial version UID for backwards compatibility with 1.2.x object streams. */
-    private static final long serialVersionUID = -4424962553130661462L;
+    private static final long serialVersionUID = -104232960403079592L;
 
-    /**
-     * Creates a new {@code SourceProcessingException} instance taking a location.
-     *
-     * @param location The location this exception occured.
-     */
-    public SourceProcessingException( final Location location )
+    /** Creates a new {@code SourceProcessingException} instance without descriptive information. */
+    public SourceProcessingException()
     {
-        super( getMessage( "sourceProcessingFailure" ), location == null ? Location.UNKNOWN_LOCATION : location );
+        super();
     }
 
     /**
-     * Creates a new {@code SourceProcessingException} instance taking a causing throwable and a location.
+     * Creates a new {@code SourceProcessingException} instance taking a message.
      *
-     * @param t The {@code Throwable} causing the throwable.
-     * @param location The location this exception occured.
+     * @param message A message describing the exception or {@code null}.
+     */
+    public SourceProcessingException( final String message )
+    {
+        super( message );
+    }
+
+    /**
+     * Creates a new {@code SourceProcessingException} instance taking a causing {@code Throwable}.
+     *
+     * @param t A {@code Throwable} causing the exception or {@code null}.
+     */
+    public SourceProcessingException( final Throwable t )
+    {
+        super( t );
+    }
+
+    /**
+     * Creates a new {@code SourceProcessingException} instance taking a message and a causing {@code Throwable}.
+     *
+     * @param message A message describing the exception or {@code null}.
+     * @param t A {@code Throwable} causing the exception or {@code null}.
+     */
+    public SourceProcessingException( final String message, final Throwable t )
+    {
+        super( message, t );
+    }
+
+    /**
+     * Creates a new {@code SourceProcessingException} instance taking a message and a location.
+     *
+     * @param message A message describing the exception or {@code null}.
+     * @param location A location the exception occurred or {@code null}.
+     */
+    public SourceProcessingException( final String message, final Location location )
+    {
+        super( message, location );
+    }
+
+    /**
+     * Creates a new {@code SourceProcessingException} instance taking a causing {@code Throwable} and a location.
+     *
+     * @param t A {@code Throwable} causing the exception or {@code null}.
+     * @param location A location the exception occurred or {@code null}.
      */
     public SourceProcessingException( final Throwable t, final Location location )
     {
-        super( getMessage( "sourceProcessingFailure" ), t, location == null ? Location.UNKNOWN_LOCATION : location );
+        super( t, location );
     }
 
-    private static String getMessage( final String key, final Object... args )
+    /**
+     * Creates a new {@code SourceProcessingException} instance taking a message, a causing {@code Throwable} and a
+     * location.
+     *
+     * @param message A message describing the exception or {@code null}.
+     * @param t A {@code Throwable} causing the exception or {@code null}.
+     * @param location A location the exception occurred or {@code null}.
+     */
+    public SourceProcessingException( final String message, final Throwable t, final Location location )
     {
-        return MessageFormat.format( ResourceBundle.getBundle(
-            SourceProcessingException.class.getName().replace( '.', '/' ) ).getString( key ), args );
-
+        super( message, t, location );
     }
 
 }

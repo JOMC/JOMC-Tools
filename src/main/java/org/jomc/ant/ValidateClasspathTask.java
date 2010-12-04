@@ -145,15 +145,15 @@ public final class ValidateClasspathTask extends ClassFileProcessorTask
         }
         catch ( final IOException e )
         {
-            throw new ClassProcessingException( e, this.getLocation() );
+            throw new ClassProcessingException( getMessage( e ), e, this.getLocation() );
         }
         catch ( final JAXBException e )
         {
-            throw new ClassProcessingException( e, this.getLocation() );
+            throw new ClassProcessingException( getMessage( e ), e, this.getLocation() );
         }
         catch ( final ModelException e )
         {
-            throw new ClassProcessingException( e, this.getLocation() );
+            throw new ClassProcessingException( getMessage( e ), e, this.getLocation() );
         }
     }
 
@@ -169,6 +169,11 @@ public final class ValidateClasspathTask extends ClassFileProcessorTask
         return MessageFormat.format( ResourceBundle.getBundle(
             ValidateClasspathTask.class.getName().replace( '.', '/' ) ).getString( key ), args );
 
+    }
+
+    private static String getMessage( final Throwable t )
+    {
+        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

@@ -33,12 +33,8 @@
 package org.jomc.ant.test;
 
 import org.junit.Test;
-import org.apache.tools.ant.Location;
 import org.jomc.ant.SourceProcessingException;
 import java.io.ObjectInputStream;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 /**
  * Test cases for class {@code org.jomc.ant.SourceProcessingException}.
@@ -64,21 +60,10 @@ public class SourceProcessingExceptionTest
         final ObjectInputStream in = new ObjectInputStream( this.getClass().getResourceAsStream(
             ABSOLUTE_RESOURCE_NAME_PREFIX + "SourceProcessingException.ser" ) );
 
-        SourceProcessingException e = (SourceProcessingException) in.readObject();
+        final SourceProcessingException e = (SourceProcessingException) in.readObject();
         in.close();
 
-        assertNotNull( e.getMessage() );
-        assertEquals( Location.UNKNOWN_LOCATION, e.getLocation() );
         System.out.println( e );
-
-        e = new SourceProcessingException( null );
-        assertNotNull( e.getMessage() );
-        assertEquals( Location.UNKNOWN_LOCATION, e.getLocation() );
-
-        e = new SourceProcessingException( null, null );
-        assertNotNull( e.getMessage() );
-        assertNull( e.getCause() );
-        assertEquals( Location.UNKNOWN_LOCATION, e.getLocation() );
     }
 
 }

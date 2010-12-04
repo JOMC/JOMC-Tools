@@ -76,11 +76,6 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-non-existing-resources-directory">
-    <jomc:generate-resources resourcesDirectory="${no.dir}" if="${jomc.enabled}"/>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
   <target name="test-velocity-property-missing-key">
     <jomc:generate-resources resourcesDirectory="${empty.dir}" if="${jomc.enabled}">
       <jomc:velocityProperty value="TEST"/>

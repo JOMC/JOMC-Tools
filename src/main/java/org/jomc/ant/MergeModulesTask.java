@@ -34,7 +34,6 @@ package org.jomc.ant;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URISyntaxException;
 import java.text.MessageFormat;
@@ -404,10 +403,6 @@ public final class MergeModulesTask extends JomcModelTask
             marshaller.setProperty( Marshaller.JAXB_ENCODING, this.getModuleEncoding() );
             marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
             marshaller.marshal( new ObjectFactory().createModule( mergedModule ), this.getModuleFile() );
-        }
-        catch ( final IOException e )
-        {
-            throw new BuildException( getMessage( e ), e, this.getLocation() );
         }
         catch ( final URISyntaxException e )
         {

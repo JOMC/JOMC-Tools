@@ -476,6 +476,8 @@ public class JomcToolTask extends JomcModelTask
      * velocity properties property.</p>
      *
      * @return The Velocity runtime properties to apply.
+     *
+     * @see #createVelocityProperty()
      */
     public final List<KeyValueType<String, Object>> getVelocityProperties()
     {
@@ -508,6 +510,8 @@ public class JomcToolTask extends JomcModelTask
      * template parameters property.</p>
      *
      * @return The template parameters to apply.
+     *
+     * @see #createTemplateParameter()
      */
     public final List<KeyValueType<String, Object>> getTemplateParameters()
     {

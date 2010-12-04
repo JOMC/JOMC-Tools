@@ -100,7 +100,6 @@ public final class GenerateResourcesTask extends ResourceFileProcessorTask
         super.preExecuteTask();
 
         this.assertNotNull( "resourcesDirectory", this.getResourcesDirectory() );
-        this.assertDirectory( this.getResourcesDirectory() );
     }
 
     /**
@@ -159,15 +158,15 @@ public final class GenerateResourcesTask extends ResourceFileProcessorTask
         }
         catch ( final IOException e )
         {
-            throw new ResourceProcessingException( e, this.getLocation() );
+            throw new ResourceProcessingException( getMessage( e ), e, this.getLocation() );
         }
         catch ( final JAXBException e )
         {
-            throw new ResourceProcessingException( e, this.getLocation() );
+            throw new ResourceProcessingException( getMessage( e ), e, this.getLocation() );
         }
         catch ( final ModelException e )
         {
-            throw new ResourceProcessingException( e, this.getLocation() );
+            throw new ResourceProcessingException( getMessage( e ), e, this.getLocation() );
         }
     }
 
@@ -187,6 +186,11 @@ public final class GenerateResourcesTask extends ResourceFileProcessorTask
         return MessageFormat.format( ResourceBundle.getBundle(
             GenerateResourcesTask.class.getName().replace( '.', '/' ) ).getString( key ), args );
 
+    }
+
+    private static String getMessage( final Throwable t )
+    {
+        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

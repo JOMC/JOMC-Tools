@@ -33,12 +33,8 @@
 package org.jomc.ant.test;
 
 import org.junit.Test;
-import org.apache.tools.ant.Location;
 import java.io.ObjectInputStream;
 import org.jomc.ant.ClassProcessingException;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 /**
  * Test cases for class {@code org.jomc.ant.ClassProcessingException}.
@@ -64,21 +60,10 @@ public class ClassProcessingExceptionTest
         final ObjectInputStream in = new ObjectInputStream( this.getClass().getResourceAsStream(
             ABSOLUTE_RESOURCE_NAME_PREFIX + "ClassProcessingException.ser" ) );
 
-        ClassProcessingException e = (ClassProcessingException) in.readObject();
+        final ClassProcessingException e = (ClassProcessingException) in.readObject();
         in.close();
 
-        assertNotNull( e.getMessage() );
-        assertEquals( Location.UNKNOWN_LOCATION, e.getLocation() );
         System.out.println( e );
-
-        e = new ClassProcessingException( null );
-        assertNotNull( e.getMessage() );
-        assertEquals( Location.UNKNOWN_LOCATION, e.getLocation() );
-
-        e = new ClassProcessingException( null, null );
-        assertNotNull( e.getMessage() );
-        assertNull( e.getCause() );
-        assertEquals( Location.UNKNOWN_LOCATION, e.getLocation() );
     }
 
 }

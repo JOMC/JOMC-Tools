@@ -329,6 +329,8 @@ public class JomcTask extends Task
      * Gets the location searched for providers.
      *
      * @return The location searched for providers or {@code null}.
+     *
+     * @see #setProviderLocation(java.lang.String)
      */
     public final String getProviderLocation()
     {
@@ -339,6 +341,8 @@ public class JomcTask extends Task
      * Sets the location to search for providers.
      *
      * @param value The new location to search for providers or {@code null}.
+     *
+     * @see #getProviderLocation()
      */
     public final void setProviderLocation( final String value )
     {
@@ -349,6 +353,8 @@ public class JomcTask extends Task
      * Gets the location searched for platform provider resources.
      *
      * @return The location searched for platform provider resources or {@code null}.
+     *
+     * @see #setPlatformProviderLocation(java.lang.String)
      */
     public final String getPlatformProviderLocation()
     {
@@ -359,6 +365,8 @@ public class JomcTask extends Task
      * Sets the location to search for platform provider resources.
      *
      * @param value The new location to search for platform provider resources or {@code null}.
+     *
+     * @see #getPlatformProviderLocation()
      */
     public final void setPlatformProviderLocation( final String value )
     {
@@ -399,6 +407,8 @@ public class JomcTask extends Task
      * Called by the {@code execute} method prior to the {@code executeTask} method.
      *
      * @throws BuildException if building fails.
+     *
+     * @see #execute()
      */
     public void preExecuteTask() throws BuildException
     {
@@ -419,6 +429,8 @@ public class JomcTask extends Task
      * Called by the {@code execute} method prior to the {@code postExecuteTask} method.
      *
      * @throws BuildException if building fails.
+     *
+     * @see #execute()
      */
     public void executeTask() throws BuildException
     {
@@ -430,6 +442,8 @@ public class JomcTask extends Task
      * methods threw an exception.
      *
      * @throws BuildException if building fails.
+     *
+     * @see #execute()
      */
     public void postExecuteTask() throws BuildException
     {
@@ -477,16 +491,23 @@ public class JomcTask extends Task
      *
      * @return A new {@code ProjectClassLoader} instance.
      *
-     * @throws IOException if creating a new class loader instance fails.
+     * @throws BuildException if creating a new class loader instance fails.
      */
-    public ProjectClassLoader newProjectClassLoader() throws IOException
+    public ProjectClassLoader newProjectClassLoader() throws BuildException
     {
-        final ProjectClassLoader classLoader = new ProjectClassLoader( this.getProject(), this.getClasspath() );
-        classLoader.getModletExcludes().addAll( ProjectClassLoader.getDefaultModletExcludes() );
-        classLoader.getProviderExcludes().addAll( ProjectClassLoader.getDefaultProviderExcludes() );
-        classLoader.getSchemaExcludes().addAll( ProjectClassLoader.getDefaultSchemaExcludes() );
-        classLoader.getServiceExcludes().addAll( ProjectClassLoader.getDefaultServiceExcludes() );
-        return classLoader;
+        try
+        {
+            final ProjectClassLoader classLoader = new ProjectClassLoader( this.getProject(), this.getClasspath() );
+            classLoader.getModletExcludes().addAll( ProjectClassLoader.getDefaultModletExcludes() );
+            classLoader.getProviderExcludes().addAll( ProjectClassLoader.getDefaultProviderExcludes() );
+            classLoader.getSchemaExcludes().addAll( ProjectClassLoader.getDefaultSchemaExcludes() );
+            classLoader.getServiceExcludes().addAll( ProjectClassLoader.getDefaultServiceExcludes() );
+            return classLoader;
+        }
+        catch ( final IOException e )
+        {
+            throw new BuildException( e, this.getLocation() );
+        }
     }
 
     /**
@@ -557,11 +578,7 @@ public class JomcTask extends Task
         }
 
         Source source = null;
-        File file = new File( location );
-        if ( !file.isAbsolute() )
-        {
-            file = new File( this.getProject().getBaseDir(), location );
-        }
+        final File file = this.getProject().resolveFile( location );
 
         if ( file.exists() )
         {
@@ -658,27 +675,6 @@ public class JomcTask extends Task
         for ( KeyValueType<?, ?> k : keys )
         {
             this.assertNotNull( "key", k.getKey() );
-        }
-    }
-
-    /**
-     * Throws a {@code BuildException} if a given {@code File} is not an existing directory.
-     *
-     * @param file The file to test.
-     *
-     * @throws NullPointerException if {@code file} is {@code null}.
-     * @throws BuildException if {@code file} is not an existing directory.
-     */
-    public final void assertDirectory( final File file ) throws BuildException
-    {
-        if ( file == null )
-        {
-            throw new NullPointerException( "file" );
-        }
-
-        if ( !file.isDirectory() )
-        {
-            throw new BuildException( getMessage( "directoryNotFound", file.getAbsolutePath() ), this.getLocation() );
         }
     }
 

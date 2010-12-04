@@ -32,7 +32,6 @@
  */
 package org.jomc.ant;
 
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import org.apache.tools.ant.BuildException;
@@ -82,10 +81,6 @@ public final class ValidateModelTask extends JomcModelTask
             this.log( getMessage( "modelValidationSuccess" ) );
         }
         catch ( final ModelException e )
-        {
-            throw new BuildException( getMessage( e ), e, this.getLocation() );
-        }
-        catch ( final IOException e )
         {
             throw new BuildException( getMessage( e ), e, this.getLocation() );
         }

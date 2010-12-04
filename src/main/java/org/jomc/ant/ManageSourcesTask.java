@@ -100,7 +100,6 @@ public final class ManageSourcesTask extends SourceFileProcessorTask
         super.preExecuteTask();
 
         this.assertNotNull( "sourcesDirectory", this.getSourcesDirectory() );
-        this.assertDirectory( this.getSourcesDirectory() );
     }
 
     /**
@@ -159,15 +158,15 @@ public final class ManageSourcesTask extends SourceFileProcessorTask
         }
         catch ( final IOException e )
         {
-            throw new SourceProcessingException( e, this.getLocation() );
+            throw new SourceProcessingException( getMessage( e ), e, this.getLocation() );
         }
         catch ( final JAXBException e )
         {
-            throw new SourceProcessingException( e, this.getLocation() );
+            throw new SourceProcessingException( getMessage( e ), e, this.getLocation() );
         }
         catch ( final ModelException e )
         {
-            throw new SourceProcessingException( e, this.getLocation() );
+            throw new SourceProcessingException( getMessage( e ), e, this.getLocation() );
         }
     }
 
@@ -187,6 +186,11 @@ public final class ManageSourcesTask extends SourceFileProcessorTask
         return MessageFormat.format( ResourceBundle.getBundle(
             ManageSourcesTask.class.getName().replace( '.', '/' ) ).getString( key ), args );
 
+    }
+
+    private static String getMessage( final Throwable t )
+    {
+        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

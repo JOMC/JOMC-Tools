@@ -390,32 +390,6 @@ public class JomcTaskTest
     }
 
     @Test
-    public final void testAssertDirectory() throws Exception
-    {
-        try
-        {
-            this.getJomcTask().assertDirectory( null );
-            fail( "Expected 'NullPointerException' not thrown." );
-        }
-        catch ( final NullPointerException e )
-        {
-            assertNotNull( e.getMessage() );
-            System.out.println( e );
-        }
-
-        try
-        {
-            this.getJomcTask().assertDirectory( new File( "DOES_NOT_EXIST" ) );
-            fail( "Expected 'BuildException' not thrown." );
-        }
-        catch ( final BuildException e )
-        {
-            assertNotNull( e.getMessage() );
-            System.out.println( e );
-        }
-    }
-
-    @Test
     public final void testNewTransformer() throws Exception
     {
         try

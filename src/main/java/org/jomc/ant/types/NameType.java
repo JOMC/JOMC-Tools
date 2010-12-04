@@ -70,9 +70,9 @@ public class NameType implements Cloneable
         this.name = value;
     }
 
-    /** 
+    /**
      * Creates and returns a copy of this object.
-     * 
+     *
      * @return A copy of this object.
      */
     @Override

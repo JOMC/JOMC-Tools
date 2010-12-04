@@ -90,11 +90,6 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-non-existing-classes-directory">
-    <jomc:validate-classes classesDirectory="${no.dir}" if="${jomc.enabled}"/>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
   <target name="test-class-processing-disabled">
     <jomc:validate-classes classesDirectory="${empty.dir}" classProcessingEnabled="false" if="${jomc.enabled}"/>
   </target>
