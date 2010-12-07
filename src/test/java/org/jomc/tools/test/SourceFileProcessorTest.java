@@ -83,6 +83,7 @@ public class SourceFileProcessorTest extends JomcToolTest
     }
 
     @Test
+    @SuppressWarnings( "deprecation" )
     public final void testSourceFileProcessorNullPointerException() throws Exception
     {
         try
@@ -107,6 +108,26 @@ public class SourceFileProcessorTest extends JomcToolTest
 
         try
         {
+            this.getJomcTool().getSourceFilesType( (Specification) null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
+            this.getJomcTool().getSourceFilesType( (Implementation) null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
             this.getJomcTool().getSourceFileEditor( (Specification) null );
             fail( "Expected NullPointerException not thrown." );
         }
@@ -118,6 +139,26 @@ public class SourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getJomcTool().getSourceFileEditor( (Implementation) null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
+            this.getJomcTool().getSourceFileEditors( (Specification) null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
+            this.getJomcTool().getSourceFileEditors( (Implementation) null );
             fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -198,6 +239,7 @@ public class SourceFileProcessorTest extends JomcToolTest
     }
 
     @Test
+    @SuppressWarnings( "deprecation" )
     public final void testSourceFileProcessorNotNull() throws Exception
     {
         final Implementation i = new Implementation();
@@ -211,13 +253,25 @@ public class SourceFileProcessorTest extends JomcToolTest
         assertNotNull( this.getJomcTool().getSourceFileType(
             this.getJomcTool().getModules().getImplementation( "Implementation" ) ) );
 
+        assertNotNull( this.getJomcTool().getSourceFilesType(
+            this.getJomcTool().getModules().getImplementation( "Implementation" ) ) );
+
         assertNotNull( this.getJomcTool().getSourceFileType(
+            this.getJomcTool().getModules().getSpecification( "Specification" ) ) );
+
+        assertNotNull( this.getJomcTool().getSourceFilesType(
             this.getJomcTool().getModules().getSpecification( "Specification" ) ) );
 
         assertNotNull( this.getJomcTool().getSourceFileEditor(
             this.getJomcTool().getModules().getImplementation( "Implementation" ) ) );
 
+        assertNotNull( this.getJomcTool().getSourceFileEditors(
+            this.getJomcTool().getModules().getImplementation( "Implementation" ) ) );
+
         assertNotNull( this.getJomcTool().getSourceFileEditor(
+            this.getJomcTool().getModules().getSpecification( "Specification" ) ) );
+
+        assertNotNull( this.getJomcTool().getSourceFileEditors(
             this.getJomcTool().getModules().getSpecification( "Specification" ) ) );
 
     }
