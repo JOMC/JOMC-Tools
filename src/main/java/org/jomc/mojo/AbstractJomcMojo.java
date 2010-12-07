@@ -1298,7 +1298,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *
      * @throws MojoExecutionException if logging fails.
      *
-     * @deprecated Replaced by {@link #logSeparator()}.
+     * @deprecated As of JOMC 1.1, please use method {@link #logSeparator()}.
      */
     @Deprecated
     protected void logSeparator( final Level level ) throws MojoExecutionException
