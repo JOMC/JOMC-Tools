@@ -219,6 +219,24 @@ public class JomcToolTest
         {
             this.jomcTool = this.newJomcTool();
             this.jomcTool.setModel( this.getModel() );
+            this.jomcTool.getListeners().add( new JomcTool.Listener()
+            {
+
+                @Override
+                public void onLog( final Level level, final String message, final Throwable throwable )
+                {
+                    assertNotNull( level );
+
+                    System.out.println( "[" + level.getLocalizedName() + "] " + message );
+
+                    if ( throwable != null )
+                    {
+                        throwable.printStackTrace( System.out );
+                    }
+                }
+
+            } );
+
         }
 
         return this.jomcTool;
