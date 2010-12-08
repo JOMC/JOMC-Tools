@@ -346,6 +346,30 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private Map<String, String> transformationOutputProperties;
 
     /**
+     * Class name of the {@code ClassFileProcessor} backing the goal.
+     *
+     * @parameter default-value="org.jomc.tools.ClassFileProcessor"
+     * @since 1.2
+     */
+    private String classFileProcessorClassName;
+
+    /**
+     * Class name of the {@code ResourceFileProcessor} backing the goal.
+     *
+     * @parameter default-value="org.jomc.tools.ResourceFileProcessor"
+     * @since 1.2
+     */
+    private String resourceFileProcessorClassName;
+
+    /**
+     * Class name of the {@code SourceFileProcessor} backing the goal.
+     *
+     * @parameter default-value="org.jomc.tools.SourceFileProcessor"
+     * @since 1.2
+     */
+    private String sourceFileProcessorClassName;
+
+    /**
      * The Maven project of the instance.
      *
      * @parameter expression="${project}"
@@ -1141,9 +1165,33 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             throw new NullPointerException( "context" );
         }
 
-        final SourceFileProcessor tool = new SourceFileProcessor();
-        this.setupJomcTool( context, tool );
-        return tool;
+        try
+        {
+            final SourceFileProcessor tool =
+                Class.forName( this.sourceFileProcessorClassName ).asSubclass( SourceFileProcessor.class ).
+                newInstance();
+
+            this.setupJomcTool( context, tool );
+            return tool;
+        }
+        catch ( final InstantiationException e )
+        {
+            throw new MojoExecutionException( getMessage( "failedCreatingObject",
+                                                          this.sourceFileProcessorClassName ), e );
+
+        }
+        catch ( final IllegalAccessException e )
+        {
+            throw new MojoExecutionException( getMessage( "failedCreatingObject",
+                                                          this.sourceFileProcessorClassName ), e );
+
+        }
+        catch ( final ClassNotFoundException e )
+        {
+            throw new MojoExecutionException( getMessage( "failedCreatingObject",
+                                                          this.sourceFileProcessorClassName ), e );
+
+        }
     }
 
     /**
@@ -1166,9 +1214,33 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             throw new NullPointerException( "context" );
         }
 
-        final ResourceFileProcessor tool = new ResourceFileProcessor();
-        this.setupJomcTool( context, tool );
-        return tool;
+        try
+        {
+            final ResourceFileProcessor tool =
+                Class.forName( this.resourceFileProcessorClassName ).asSubclass( ResourceFileProcessor.class ).
+                newInstance();
+
+            this.setupJomcTool( context, tool );
+            return tool;
+        }
+        catch ( final InstantiationException e )
+        {
+            throw new MojoExecutionException( getMessage( "failedCreatingObject",
+                                                          this.resourceFileProcessorClassName ), e );
+
+        }
+        catch ( final IllegalAccessException e )
+        {
+            throw new MojoExecutionException( getMessage( "failedCreatingObject",
+                                                          this.resourceFileProcessorClassName ), e );
+
+        }
+        catch ( final ClassNotFoundException e )
+        {
+            throw new MojoExecutionException( getMessage( "failedCreatingObject",
+                                                          this.resourceFileProcessorClassName ), e );
+
+        }
     }
 
     /**
@@ -1190,9 +1262,32 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             throw new NullPointerException( "context" );
         }
 
-        final ClassFileProcessor tool = new ClassFileProcessor();
-        this.setupJomcTool( context, tool );
-        return tool;
+        try
+        {
+            final ClassFileProcessor tool =
+                Class.forName( this.classFileProcessorClassName ).asSubclass( ClassFileProcessor.class ).newInstance();
+
+            this.setupJomcTool( context, tool );
+            return tool;
+        }
+        catch ( final InstantiationException e )
+        {
+            throw new MojoExecutionException( getMessage( "failedCreatingObject",
+                                                          this.classFileProcessorClassName ), e );
+
+        }
+        catch ( final IllegalAccessException e )
+        {
+            throw new MojoExecutionException( getMessage( "failedCreatingObject",
+                                                          this.classFileProcessorClassName ), e );
+
+        }
+        catch ( final ClassNotFoundException e )
+        {
+            throw new MojoExecutionException( getMessage( "failedCreatingObject",
+                                                          this.classFileProcessorClassName ), e );
+
+        }
     }
 
     /**
