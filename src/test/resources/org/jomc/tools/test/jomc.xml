@@ -168,11 +168,11 @@
             <source-section name="Constructors" head-template="implementation-constructors-head.vm"
                             tail-template="implementation-constructors-tail.vm" indentationLevel="1">
 
-              <tools:source-sections>
+              <source-sections>
                 <source-section name="Default Constructor" head-template="implementation-default-constructor.vm"
                                 indentationLevel="2" editable="true"/>
 
-              </tools:source-sections>
+              </source-sections>
             </source-section>
             <source-section name="Dependencies" head-template="implementation-dependencies.vm" indentationLevel="1"/>
             <source-section name="Properties" head-template="implementation-properties.vm" indentationLevel="1"/>
@@ -187,11 +187,11 @@
             <source-section name="Constructors" head-template="implementation-constructors-head.vm"
                             tail-template="implementation-constructors-tail.vm" indentationLevel="1">
 
-              <tools:source-sections>
+              <source-sections>
                 <source-section name="Default Constructor" head-template="implementation-default-constructor.vm"
                                 indentationLevel="2" editable="true"/>
 
-              </tools:source-sections>
+              </source-sections>
             </source-section>
             <source-section name="Dependencies" head-template="implementation-dependencies.vm" indentationLevel="1"/>
             <source-section name="Properties" head-template="implementation-properties.vm" indentationLevel="1"/>
