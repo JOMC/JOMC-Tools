@@ -172,7 +172,8 @@
                              modletLocation="TEST"
                              providerLocation="TEST"
                              platformProviderLocation="TEST"
-                             if="${jomc.enabled}">
+                             if="${jomc.enabled}"
+                             resourceFileProcessorClass="org.jomc.tools.ResourceFileProcessor">
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>
       </jomc:classpath>

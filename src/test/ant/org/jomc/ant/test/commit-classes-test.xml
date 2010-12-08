@@ -202,7 +202,8 @@
                          modletLocation="TEST"
                          providerLocation="TEST"
                          platformProviderLocation="TEST"
-                         if="${jomc.enabled}">
+                         if="${jomc.enabled}"
+                         classFileProcessorClass="org.jomc.tools.ClassFileProcessor">
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>
       </jomc:classpath>
