@@ -200,8 +200,6 @@ public class SourceFileProcessor extends JomcTool
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
      *
-     * @see #getSourceFilesType()
-     *
      * @deprecated As of JOMC 1.2, please use method {@link #getSourceFilesType(org.jomc.model.Specification)}.
      */
     @Deprecated
@@ -272,8 +270,6 @@ public class SourceFileProcessor extends JomcTool
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
      *
-     * @see #getSourceFileType(org.jomc.model.Specification)
-     *
      * @since 1.2
      */
     public SourceFilesType getSourceFilesType( final Specification specification )
@@ -305,8 +301,6 @@ public class SourceFileProcessor extends JomcTool
      * @return The source file model for {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
-     *
-     * @see #getSourceFilesType()
      *
      * @deprecated As of JOMC 1.2, please use method {@link #getSourceFilesType(org.jomc.model.Implementation)}.
      */
@@ -429,8 +423,6 @@ public class SourceFileProcessor extends JomcTool
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      *
-     * @see #getSourceFileType(org.jomc.model.Implementation)
-     *
      * @since 1.2
      */
     public SourceFilesType getSourceFilesType( final Implementation implementation )
@@ -482,7 +474,7 @@ public class SourceFileProcessor extends JomcTool
     }
 
     /**
-     * Gets a list of editors for editing the source files of a given specification of the modules of the instance.
+     * Gets a new list of editors for editing the source files of a given specification of the modules of the instance.
      *
      * @param specification The specification whose source files to edit.
      *
@@ -701,7 +693,7 @@ public class SourceFileProcessor extends JomcTool
     }
 
     /**
-     * Manages the source file of a given specification of the modules of the instance.
+     * Manages the source files of a given specification of the modules of the instance.
      *
      * @param specification The specification to process.
      * @param sourcesDirectory The directory holding the source files to manage.
@@ -738,7 +730,7 @@ public class SourceFileProcessor extends JomcTool
     }
 
     /**
-     * Manages the source file of a given implementation of the modules of the instance.
+     * Manages the source files of a given implementation of the modules of the instance.
      *
      * @param implementation The implementation to process.
      * @param sourcesDirectory The directory holding the source files to manage.
