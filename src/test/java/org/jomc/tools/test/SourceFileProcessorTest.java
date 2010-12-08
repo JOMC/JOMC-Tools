@@ -351,6 +351,14 @@ public class SourceFileProcessorTest extends JomcToolTest
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 
+        this.getJomcTool().manageSourceFiles(
+            this.getJomcTool().getModules().getImplementation( "ImplementationWithSourceFilesModel" ),
+            implementationDirectory );
+
+        this.getJomcTool().manageSourceFiles(
+            this.getJomcTool().getModules().getImplementation( "ImplementationWithSourceFilesModel" ),
+            implementationDirectory );
+
         final File specificationDirectory = this.getNextOutputDirectory();
         assertTrue( specificationDirectory.mkdirs() );
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getSpecification( "Specification" ),
@@ -358,6 +366,14 @@ public class SourceFileProcessorTest extends JomcToolTest
 
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getSpecification( "Specification" ),
                                               specificationDirectory );
+
+        this.getJomcTool().manageSourceFiles(
+            this.getJomcTool().getModules().getSpecification( "SpecificationWithSourceFilesModel" ),
+            specificationDirectory );
+
+        this.getJomcTool().manageSourceFiles(
+            this.getJomcTool().getModules().getSpecification( "SpecificationWithSourceFilesModel" ),
+            specificationDirectory );
 
         this.copyResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "IllegalImplementationSource.java.txt",
                            new File( implementationDirectory, "Implementation.java" ) );

@@ -33,8 +33,10 @@
 
 -->
 <module xmlns="http://jomc.org/model"
+        xmlns:tools="http://jomc.org/tools/model"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://jomc.org/model http://jomc.sourceforge.net/model/jomc-1.0.xsd"
+        xsi:schemaLocation="http://jomc.org/model http://jomc.sourceforge.net/model/jomc-1.0.xsd
+                            http://jomc.org/tools/model http://jomc.sourceforge.net/tools/model/jomc-tools-1.0.xsd"
         name="Module"
         version="${project.version}"
         vendor="${project.organization.name}"
@@ -57,6 +59,36 @@
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+    </specification>
+
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="SpecificationWithSourceFilesModel" class="SpecificationWithSourceFilesModel"
+                   classDeclaration="true" vendor="${project.organization.name}" version="${project.version}">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Test specification.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <source-files xmlns="http://jomc.org/tools/model">
+        <source-file identifier="Source 1" location="Specification Source 1.java" template="Specification.java.vm">
+          <source-sections>
+            <source-section name="License Header" head-template="specification-license.vm" optional="true"/>
+            <source-section name="Annotations" head-template="specification-annotations.vm"/>
+            <source-section name="Documentation" head-template="specification-documentation.vm" optional="true"/>
+          </source-sections>
+        </source-file>
+        <source-file identifier="Source 2" location="Specification Source 2.java" template="Specification.java.vm">
+          <source-sections>
+            <source-section name="License Header" head-template="specification-license.vm" optional="true"/>
+            <source-section name="Annotations" head-template="specification-annotations.vm"/>
+            <source-section name="Documentation" head-template="specification-documentation.vm" optional="true"/>
+          </source-sections>
+        </source-file>
+      </source-files>
     </specification>
   </specifications>
   <implementations>
@@ -93,6 +125,80 @@
           </arguments>
         </message>
       </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="ImplementationWithSourceFilesModel" class="ImplementationWithSourceFilesModel"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}" final="true">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Test implementation.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <dependencies>
+        <dependency name="Locale" identifier="java.util.Locale" version="1.1" bound="false"/>
+      </dependencies>
+      <properties>
+        <property name="property" value="TEST">
+          <documentation defaultLanguage="en">
+            <text language="en">Test property.</text>
+          </documentation>
+        </property>
+      </properties>
+      <messages>
+        <message name="message">
+          <template defaultLanguage="en">
+            <text language="en">TEST ''{0}''.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="test"/>
+          </arguments>
+        </message>
+      </messages>
+      <source-files xmlns="http://jomc.org/tools/model">
+        <source-file identifier="Source 1" location="Implementation Source 1.java" template="Implementation.java.vm">
+          <source-sections>
+            <source-section name="License Header" head-template="implementation-license.vm" optional="true"/>
+            <source-section name="Annotations" head-template="implementation-annotations.vm"/>
+            <source-section name="Documentation" head-template="implementation-documentation.vm" optional="true"/>
+            <source-section name="Constructors" head-template="implementation-constructors-head.vm"
+                            tail-template="implementation-constructors-tail.vm" indentationLevel="1">
+
+              <tools:source-sections>
+                <source-section name="Default Constructor" head-template="implementation-default-constructor.vm"
+                                indentationLevel="2" editable="true"/>
+
+              </tools:source-sections>
+            </source-section>
+            <source-section name="Dependencies" head-template="implementation-dependencies.vm" indentationLevel="1"/>
+            <source-section name="Properties" head-template="implementation-properties.vm" indentationLevel="1"/>
+            <source-section name="Messages" head-template="implementation-messages.vm" indentationLevel="1"/>
+          </source-sections>
+        </source-file>
+        <source-file identifier="Source 2" location="Implementation Source 2.java" template="Implementation.java.vm">
+          <source-sections>
+            <source-section name="License Header" head-template="implementation-license.vm" optional="true"/>
+            <source-section name="Annotations" head-template="implementation-annotations.vm"/>
+            <source-section name="Documentation" head-template="implementation-documentation.vm" optional="true"/>
+            <source-section name="Constructors" head-template="implementation-constructors-head.vm"
+                            tail-template="implementation-constructors-tail.vm" indentationLevel="1">
+
+              <tools:source-sections>
+                <source-section name="Default Constructor" head-template="implementation-default-constructor.vm"
+                                indentationLevel="2" editable="true"/>
+
+              </tools:source-sections>
+            </source-section>
+            <source-section name="Dependencies" head-template="implementation-dependencies.vm" indentationLevel="1"/>
+            <source-section name="Properties" head-template="implementation-properties.vm" indentationLevel="1"/>
+            <source-section name="Messages" head-template="implementation-messages.vm" indentationLevel="1"/>
+          </source-sections>
+        </source-file>
+      </source-files>
     </implementation>
     <!-- *********************************************************************************************************** -->
     <implementation identifier="ImplementationOfSpecification" class="ImplementationOfSpecification"
