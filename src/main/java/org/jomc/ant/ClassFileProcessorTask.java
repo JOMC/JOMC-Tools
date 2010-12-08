@@ -50,6 +50,9 @@ public class ClassFileProcessorTask extends JomcToolTask
     /** Controls processing of class files. */
     private boolean classProcessingEnabled = true;
 
+    /** Class of the {@code ClassFileProcessor} backing the task. */
+    private Class<? extends ClassFileProcessor> classFileProcessorClass;
+
     /** Creates a new {@code ClassFileProcessorTask} instance. */
     public ClassFileProcessorTask()
     {
@@ -81,17 +84,55 @@ public class ClassFileProcessorTask extends JomcToolTask
     }
 
     /**
+     * Gets the class of the {@code ClassFileProcessor} backing the task.
+     *
+     * @return The class of the {@code ClassFileProcessor} backing the task.
+     */
+    public final Class<? extends ClassFileProcessor> getClassFileProcessorClass()
+    {
+        if ( this.classFileProcessorClass == null )
+        {
+            this.classFileProcessorClass = ClassFileProcessor.class;
+        }
+
+        return this.classFileProcessorClass;
+    }
+
+    /**
+     * Sets the class of the {@code ClassFileProcessor} backing the task.
+     *
+     * @param value The new class of the {@code ClassFileProcessor} backing the task or {@code null}.
+     */
+    public final void setClassFileProcessorClass( final Class<? extends ClassFileProcessor> value )
+    {
+        this.classFileProcessorClass = value;
+    }
+
+    /**
      * Creates a new {@code ClassFileProcessor} instance setup using the properties of the instance.
      *
      * @return A new {@code ClassFileProcessor} instance.
      *
+     * @throws BuildException if creating a new {@code ClassFileProcessor} instance fails.
+     *
      * @see #configureJomcTool(org.jomc.tools.JomcTool)
      */
-    public ClassFileProcessor newClassFileProcessor()
+    public ClassFileProcessor newClassFileProcessor() throws BuildException
     {
-        final ClassFileProcessor tool = new ClassFileProcessor();
-        this.configureJomcTool( tool );
-        return tool;
+        try
+        {
+            final ClassFileProcessor tool = this.getClassFileProcessorClass().newInstance();
+            this.configureJomcTool( tool );
+            return tool;
+        }
+        catch ( final InstantiationException e )
+        {
+            throw new BuildException( getMessage( e ), e, this.getLocation() );
+        }
+        catch ( final IllegalAccessException e )
+        {
+            throw new BuildException( getMessage( e ), e, this.getLocation() );
+        }
     }
 
     /**
@@ -139,6 +180,11 @@ public class ClassFileProcessorTask extends JomcToolTask
         return MessageFormat.format( ResourceBundle.getBundle(
             ClassFileProcessorTask.class.getName().replace( '.', '/' ) ).getString( key ), args );
 
+    }
+
+    private static String getMessage( final Throwable t )
+    {
+        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

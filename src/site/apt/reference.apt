@@ -50,6 +50,9 @@ Task Reference
 | <<<classesDirectory>>>                      | The directory holding the class files to   | <<Yes.>>               |
 |                                             | commit model objects to.                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classFileProcessorClass>>>               | Class of the ClassFileProcessor backing    | No.                    |
+|                                             | the task.                                  |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
 |                                             |                                            | <<<classpathRef>>>     |
 |                                             |                                            | attribute or the       |
@@ -243,6 +246,9 @@ Task Reference
 |                                             | properties file of generated resource      |                        |
 |                                             | bundle resource files.                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<resourceFileProcessorClass>>>            | Class of the ResourceFileProcessor backing | No.                    |
+|                                             | the task.                                  |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<resourceProcessingEnabled>>>             | A flag indicating the processing of        | No. Defaults to true.  |
 |                                             | resources is enabled.                      |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -365,6 +371,9 @@ Task Reference
 | <<<sourcesDirectory>>>                      | The directory holding the source files to  | <<Yes.>>               |
 |                                             | manage.                                    |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<sourceFileProcessorClass>>>              | Class of the SourceFileProcessor backing   | No.                    |
+|                                             | the task.                                  |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<sourceProcessingEnabled>>>               | A flag indicating the processing of source | No. Defaults to true.  |
 |                                             | files is enabled.                          |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -414,6 +423,9 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<classesDirectory>>>                      | The directory holding the class files to   | <<Yes.>>               |
 |                                             | validate model objects of.                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classFileProcessorClass>>>               | Class of the ClassFileProcessor backing    | No.                    |
+|                                             | the task.                                  |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
 |                                             |                                            | <<<classpathRef>>>     |
@@ -531,6 +543,9 @@ Task Reference
 
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classFileProcessorClass>>>               | Class of the ClassFileProcessor backing    | No.                    |
+|                                             | the task.                                  |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
 |                                             |                                            | <<<classpathRef>>>     |

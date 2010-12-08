@@ -54,6 +54,9 @@ public class ResourceFileProcessorTask extends JomcToolTask
     /** Controls processing of resource files. */
     private boolean resourceProcessingEnabled = true;
 
+    /** Class of the {@code ResourceFileProcessor} backing the task. */
+    private Class<? extends ResourceFileProcessor> resourceFileProcessorClass;
+
     /** Creates a new {@code ResourceFileProcessorTask} instance. */
     public ResourceFileProcessorTask()
     {
@@ -111,23 +114,61 @@ public class ResourceFileProcessorTask extends JomcToolTask
     }
 
     /**
+     * Gets the class of the {@code ResourceFileProcessor} backing the task.
+     *
+     * @return The class of the {@code ResourceFileProcessor} backing the task.
+     */
+    public final Class<? extends ResourceFileProcessor> getResourceFileProcessorClass()
+    {
+        if ( this.resourceFileProcessorClass == null )
+        {
+            this.resourceFileProcessorClass = ResourceFileProcessor.class;
+        }
+
+        return this.resourceFileProcessorClass;
+    }
+
+    /**
+     * Sets the class of the {@code ResourceFileProcessor} backing the task.
+     *
+     * @param value The new class of the {@code ResourceFileProcessor} backing the task or {@code null}.
+     */
+    public final void setResourceFileProcessorClass( final Class<? extends ResourceFileProcessor> value )
+    {
+        this.resourceFileProcessorClass = value;
+    }
+
+    /**
      * Creates a new {@code ResourceFileProcessor} instance setup using the properties of the instance.
      *
      * @return A new {@code ResourceFileProcessor} instance.
      *
+     * @throws BuildException if creating a new {@code ResourceFileProcessor} instance fails.
+     *
      * @see #configureJomcTool(org.jomc.tools.JomcTool)
      */
-    public ResourceFileProcessor newResourceFileProcessor()
+    public ResourceFileProcessor newResourceFileProcessor() throws BuildException
     {
-        final ResourceFileProcessor tool = new ResourceFileProcessor();
-        this.configureJomcTool( tool );
-
-        if ( this.getResourceBundleDefaultLanguage() != null )
+        try
         {
-            tool.setResourceBundleDefaultLocale( new Locale( this.getResourceBundleDefaultLanguage() ) );
-        }
+            final ResourceFileProcessor tool = this.getResourceFileProcessorClass().newInstance();
+            this.configureJomcTool( tool );
 
-        return tool;
+            if ( this.getResourceBundleDefaultLanguage() != null )
+            {
+                tool.setResourceBundleDefaultLocale( new Locale( this.getResourceBundleDefaultLanguage() ) );
+            }
+
+            return tool;
+        }
+        catch ( final InstantiationException e )
+        {
+            throw new BuildException( getMessage( e ), e, this.getLocation() );
+        }
+        catch ( final IllegalAccessException e )
+        {
+            throw new BuildException( getMessage( e ), e, this.getLocation() );
+        }
     }
 
     /**
@@ -175,6 +216,11 @@ public class ResourceFileProcessorTask extends JomcToolTask
         return MessageFormat.format( ResourceBundle.getBundle(
             ResourceFileProcessorTask.class.getName().replace( '.', '/' ) ).getString( key ), args );
 
+    }
+
+    private static String getMessage( final Throwable t )
+    {
+        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

@@ -50,6 +50,9 @@ public class SourceFileProcessorTask extends JomcToolTask
     /** Controls processing of source files. */
     private boolean sourceProcessingEnabled = true;
 
+    /** Class of the {@code SourceFileProcessor} backing the task. */
+    private Class<? extends SourceFileProcessor> sourceFileProcessorClass;
+
     /** Creates a new {@code SourceFileProcessorTask} instance. */
     public SourceFileProcessorTask()
     {
@@ -82,17 +85,55 @@ public class SourceFileProcessorTask extends JomcToolTask
     }
 
     /**
+     * Gets the class of the {@code SourceFileProcessor} backing the task.
+     *
+     * @return The class of the {@code SourceFileProcessor} backing the task.
+     */
+    public final Class<? extends SourceFileProcessor> getSourceFileProcessorClass()
+    {
+        if ( this.sourceFileProcessorClass == null )
+        {
+            this.sourceFileProcessorClass = SourceFileProcessor.class;
+        }
+
+        return this.sourceFileProcessorClass;
+    }
+
+    /**
+     * Sets the class of the {@code SourceFileProcessor} backing the task.
+     *
+     * @param value The new class of the {@code SourceFileProcessor} backing the task or {@code null}.
+     */
+    public final void setSourceFileProcessorClass( final Class<? extends SourceFileProcessor> value )
+    {
+        this.sourceFileProcessorClass = value;
+    }
+
+    /**
      * Creates a new {@code SourceFileProcessor} instance setup using the properties of the instance.
      *
      * @return A new {@code SourceFileProcessor} instance.
      *
+     * @throws BuildException if creating a new {@code SourceFileProcessor} instance fails.
+     *
      * @see #configureJomcTool(org.jomc.tools.JomcTool)
      */
-    public SourceFileProcessor newSourceFileProcessor()
+    public SourceFileProcessor newSourceFileProcessor() throws BuildException
     {
-        final SourceFileProcessor tool = new SourceFileProcessor();
-        this.configureJomcTool( tool );
-        return tool;
+        try
+        {
+            final SourceFileProcessor tool = this.getSourceFileProcessorClass().newInstance();
+            this.configureJomcTool( tool );
+            return tool;
+        }
+        catch ( final InstantiationException e )
+        {
+            throw new BuildException( getMessage( e ), e, this.getLocation() );
+        }
+        catch ( final IllegalAccessException e )
+        {
+            throw new BuildException( getMessage( e ), e, this.getLocation() );
+        }
     }
 
     /**
@@ -140,6 +181,11 @@ public class SourceFileProcessorTask extends JomcToolTask
         return MessageFormat.format( ResourceBundle.getBundle(
             SourceFileProcessorTask.class.getName().replace( '.', '/' ) ).getString( key ), args );
 
+    }
+
+    private static String getMessage( final Throwable t )
+    {
+        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }
