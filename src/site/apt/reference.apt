@@ -84,7 +84,7 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
 |                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
-|                                             | separator.                                 | separator.             |
+|                                             |                                            | separator.             |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
@@ -201,7 +201,7 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
 |                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
-|                                             | separator.                                 | separator.             |
+|                                             |                                            | separator.             |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
@@ -327,7 +327,7 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
 |                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
-|                                             | separator.                                 | separator.             |
+|                                             |                                            | separator.             |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
@@ -452,7 +452,7 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
 |                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
-|                                             | separator.                                 | separator.             |
+|                                             |                                            | separator.             |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<inputEncoding>>>                         | The encoding to use for reading files.     | No. Defaults to the    |
 |                                             |                                            | system's default       |
@@ -578,7 +578,7 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
 |                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
-|                                             | separator.                                 | separator.             |
+|                                             |                                            | separator.             |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
