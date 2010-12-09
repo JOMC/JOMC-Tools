@@ -1284,9 +1284,11 @@ public class JomcTool
     }
 
     /**
-     * Gets the velocity context used for merging templates.
+     * Gets a new velocity context used for merging templates.
      *
-     * @return The velocity context used for merging templates.
+     * @return A new velocity context used for merging templates.
+     *
+     * @see #getTemplateParameters()
      */
     public VelocityContext getVelocityContext()
     {
@@ -1321,6 +1323,8 @@ public class JomcTool
      * @return The template parameters of the instance.
      *
      * @since 1.2
+     *
+     * @see #getVelocityContext()
      */
     public final Map<String, Object> getTemplateParameters()
     {
@@ -1630,6 +1634,7 @@ public class JomcTool
      *
      * @see #getTemplateProfile()
      * @see #getTemplateEncoding()
+     * @see #getVelocityEngine()
      */
     public Template getVelocityTemplate( final String templateName ) throws IOException
     {
@@ -1696,6 +1701,7 @@ public class JomcTool
      * @throws NullPointerException if {@code level} is {@code null}.
      *
      * @see #getListeners()
+     * @see #isLoggable(java.util.logging.Level)
      */
     public void log( final Level level, final String message, final Throwable throwable )
     {

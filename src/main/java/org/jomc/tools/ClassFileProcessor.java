@@ -1837,6 +1837,8 @@ public class ClassFileProcessor extends JomcTool
      *
      * @throws NullPointerException if {@code marshaller} or {@code modelObject} is {@code null}.
      * @throws IOException if encoding {@code modelObject} fails.
+     *
+     * @see #decodeModelObject(javax.xml.bind.Unmarshaller, byte[], java.lang.Class)
      */
     public byte[] encodeModelObject( final Marshaller marshaller, final JAXBElement<? extends ModelObject> modelObject )
         throws IOException
@@ -1882,6 +1884,8 @@ public class ClassFileProcessor extends JomcTool
      *
      * @throws NullPointerException if {@code unmarshaller}, {@code bytes} or {@code type} is {@code null}.
      * @throws IOException if decoding {@code bytes} fails.
+     *
+     * @see #encodeModelObject(javax.xml.bind.Marshaller, javax.xml.bind.JAXBElement)
      */
     public <T extends ModelObject> T decodeModelObject( final Unmarshaller unmarshaller, final byte[] bytes,
                                                         final Class<T> type ) throws IOException
