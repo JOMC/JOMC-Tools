@@ -50,6 +50,12 @@ public class KeyValueType<K, V> implements Cloneable
     /** The value of the type. */
     private V value;
 
+    /** Creates a new {@code KeyValueType} instance. */
+    public KeyValueType()
+    {
+        super();
+    }
+
     /**
      * Gets the value of the {@code key} property.
      *
