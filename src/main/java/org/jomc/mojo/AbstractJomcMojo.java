@@ -37,6 +37,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -104,6 +105,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @parameter
      */
     private String templateEncoding;
+
+    /**
+     * Location to search for templates in addition to searching the class path of the plugin.
+     *
+     * @parameter
+     * @since 1.2
+     */
+    private String templateLocation;
 
     /**
      * The template profile to use when accessing templates.
@@ -1683,6 +1692,19 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     {
                         tool.getTemplateParameters().remove( e.getKey() );
                     }
+                }
+            }
+
+            if ( this.templateLocation != null )
+            {
+                try
+                {
+                    tool.setTemplateLocation( new URL( this.templateLocation ) );
+                }
+                catch ( final MalformedURLException e )
+                {
+                    this.log( Level.FINE, getMessage( e ), e );
+                    tool.setTemplateLocation( this.getAbsoluteFile( this.templateLocation ).toURI().toURL() );
                 }
             }
         }
