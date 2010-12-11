@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.MessageFormat;
@@ -55,14 +56,17 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.log.LogChute;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
+import org.apache.velocity.runtime.resource.loader.URLResourceLoader;
 import org.jomc.model.Argument;
 import org.jomc.model.ArgumentType;
 import org.jomc.model.Dependency;
@@ -115,9 +119,6 @@ public class JomcTool
     private static final String TEMPLATE_PREFIX =
         JomcTool.class.getPackage().getName().replace( '.', '/' ) + "/templates/";
 
-    /** Name of the velocity classpath resource loader implementation. */
-    private static final String VELOCITY_RESOURCE_LOADER = ClasspathResourceLoader.class.getName();
-
     /** Constant for the default template profile. */
     private static final String DEFAULT_TEMPLATE_PROFILE = "jomc-java";
 
@@ -141,6 +142,9 @@ public class JomcTool
 
     /** The encoding to use for reading templates. */
     private String templateEncoding;
+
+    /** The location to search for templates in addition to searching the class path. */
+    private URL templateLocation;
 
     /** The encoding to use for reading files. */
     private String inputEncoding;
@@ -204,6 +208,9 @@ public class JomcTool
         this.velocityEngine = tool.velocityEngine;
         this.templateParameters =
             tool.templateParameters != null ? new HashMap<String, Object>( tool.templateParameters ) : null;
+
+        this.templateLocation =
+            tool.templateLocation != null ? new URL( tool.templateLocation.toExternalForm() ) : null;
 
     }
 
@@ -1225,47 +1232,50 @@ public class JomcTool
     {
         if ( this.velocityEngine == null )
         {
-            try
-            {
-                final java.util.Properties props = new java.util.Properties();
-                props.put( "resource.loader", "class" );
-                props.put( "class.resource.loader.class", VELOCITY_RESOURCE_LOADER );
-                props.put( "class.resource.loader.cache", Boolean.TRUE.toString() );
-                props.put( "runtime.references.strict", Boolean.TRUE.toString() );
-                props.put( "velocimacro.arguments.strict", Boolean.TRUE.toString() );
+            final java.util.Properties props = new java.util.Properties();
+            props.put( "runtime.references.strict", Boolean.TRUE.toString() );
+            props.put( "velocimacro.arguments.strict", Boolean.TRUE.toString() );
 
-                final VelocityEngine engine = new VelocityEngine();
-                engine.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, new LogChute()
+            props.put( "resource.loader", "class" );
+            props.put( "class.resource.loader.class", ClasspathResourceLoader.class.getName() );
+            props.put( "class.resource.loader.cache", Boolean.TRUE.toString() );
+
+            if ( this.getTemplateLocation() != null )
+            {
+                props.put( "resource.loader", "class,url" );
+                props.put( "url.resource.loader.class", URLResourceLoader.class.getName() );
+                props.put( "url.resource.loader.cache", Boolean.TRUE.toString() );
+                props.put( "url.resource.loader.root", this.getTemplateLocation().toExternalForm() );
+                props.put( "url.resource.loader.timeout", Integer.toString( 60000 ) );
+            }
+
+            final VelocityEngine engine = new VelocityEngine();
+            engine.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, new LogChute()
+            {
+
+                public void init( final RuntimeServices runtimeServices ) throws Exception
                 {
+                }
 
-                    public void init( final RuntimeServices runtimeServices ) throws Exception
-                    {
-                    }
+                public void log( final int level, final String message )
+                {
+                    this.log( level, message, null );
+                }
 
-                    public void log( final int level, final String message )
-                    {
-                        this.log( level, message, null );
-                    }
+                public void log( final int level, final String message, final Throwable throwable )
+                {
+                    JomcTool.this.log( Level.FINEST, message, throwable );
+                }
 
-                    public void log( final int level, final String message, final Throwable throwable )
-                    {
-                        JomcTool.this.log( Level.FINEST, message, throwable );
-                    }
+                public boolean isLevelEnabled( final int level )
+                {
+                    return isLoggable( Level.FINEST );
+                }
 
-                    public boolean isLevelEnabled( final int level )
-                    {
-                        return isLoggable( Level.FINEST );
-                    }
+            } );
 
-                } );
-
-                engine.init( props );
-                this.velocityEngine = engine;
-            }
-            catch ( final Exception e )
-            {
-                throw (IOException) new IOException( getMessage( e ) ).initCause( e );
-            }
+            engine.init( props );
+            this.velocityEngine = engine;
         }
 
         return this.velocityEngine;
@@ -1334,6 +1344,34 @@ public class JomcTool
         }
 
         return this.templateParameters;
+    }
+
+    /**
+     * Gets the location to search for templates in addition to searching the class path.
+     *
+     * @return The location to search for templates in addition to searching the class path or {@code null}.
+     *
+     * @see #setTemplateLocation(java.net.URL)
+     *
+     * @sine 1.2
+     */
+    public final URL getTemplateLocation()
+    {
+        return this.templateLocation;
+    }
+
+    /**
+     * Sets the location to search for templates in addition to searching the class path.
+     *
+     * @param value The new location to search for templates in addition to searching the class path or {@code null}.
+     *
+     * @see #getTemplateLocation()
+     *
+     * @since 1.2
+     */
+    public final void setTemplateLocation( final URL value )
+    {
+        this.templateLocation = value;
     }
 
     /**
@@ -1678,16 +1716,24 @@ public class JomcTool
 
                 return template;
             }
-            catch ( final Exception e2 )
+            catch ( final ResourceNotFoundException e2 )
             {
-                throw (IOException) new IOException( getMessage( "failedGettingTemplate",
-                                                                 templateName ) ).initCause( e2 );
+                throw (IOException) new IOException( getMessage( "noSuchTemplate", templateName ) ).initCause( e2 );
+            }
+            catch ( final ParseErrorException e2 )
+            {
+                throw (IOException) new IOException( getMessage(
+                    "invalidTemplate", templateName, getDefaultTemplateProfile(),
+                    StringUtils.defaultString( getMessage( e2 ) ) ) ).initCause( e2 );
 
             }
         }
-        catch ( final Exception e )
+        catch ( final ParseErrorException e )
         {
-            throw (IOException) new IOException( getMessage( "failedGettingTemplate", templateName ) ).initCause( e );
+            throw (IOException) new IOException( getMessage(
+                "invalidTemplate", templateName, this.getTemplateProfile(),
+                StringUtils.defaultString( getMessage( e ) ) ) ).initCause( e );
+
         }
     }
 

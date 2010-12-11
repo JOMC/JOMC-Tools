@@ -67,6 +67,11 @@
       <code>org.jomc.tools.JomcTool</code> and updated method <code>getVelocityContext</code> to add the parameters to
       new context instances.]]>
       </action>
+      <action dev="schulte2005" type="add"><![CDATA[Added property <code>templateLocation</code> to class
+      <code>org.jomc.tools.JomcTool</code> and updated method <code>getVelocityEngine</code> to setup an
+      <code>URLResourceLoader</code> to search for templates at that location in addition to searching the class
+      path.]]>
+      </action>
       <action dev="schulte2005" type="fix"><![CDATA[Corrected method <code>getModules</code> of class
       <code>org.jomc.tools.JomcTool</code> to initialize the modules of the instance if the model of the instance does
       not hold modules.]]>
