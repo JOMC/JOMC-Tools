@@ -528,8 +528,8 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
                 }
             }
 
-            if ( name.equals( normalizeResourceName( this.modletResource ) )
-                 || name.equals( normalizeResourceName( this.moduleResource ) ) )
+            if ( selected && ( name.equals( normalizeResourceName( this.modletResource ) )
+                               || name.equals( normalizeResourceName( this.moduleResource ) ) ) )
             {
                 if ( this.getLogger() != null && this.getLogger().isWarnEnabled() )
                 {
