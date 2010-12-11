@@ -138,6 +138,10 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateEncoding>>>                      | The encoding to use for reading templates. | No.                    |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateLocation>>>                      | Location to search for templates in        | No.                    |
+|                                             | addition to searching the class path of    |                        |
+|                                             | the task.                                  |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateProfile>>>                       | The template profile to use when accessing | No.                    |
 |                                             | templates.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -265,6 +269,10 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateEncoding>>>                      | The encoding to use for reading templates. | No.                    |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateLocation>>>                      | Location to search for templates in        | No.                    |
+|                                             | addition to searching the class path of    |                        |
+|                                             | the task.                                  |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateProfile>>>                       | The template profile to use when accessing | No.                    |
 |                                             | templates.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -386,6 +394,10 @@ Task Reference
 |                                             |                                            | be processed.          |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateEncoding>>>                      | The encoding to use for reading templates. | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateLocation>>>                      | Location to search for templates in        | No.                    |
+|                                             | addition to searching the class path of    |                        |
+|                                             | the task.                                  |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateProfile>>>                       | The template profile to use when accessing | No.                    |
 |                                             | templates.                                 |                        |
@@ -510,6 +522,10 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateEncoding>>>                      | The encoding to use for reading templates. | No.                    |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateLocation>>>                      | Location to search for templates in        | No.                    |
+|                                             | addition to searching the class path of    |                        |
+|                                             | the task.                                  |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateProfile>>>                       | The template profile to use when accessing | No.                    |
 |                                             | templates.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -628,6 +644,10 @@ Task Reference
 |                                             |                                            | be processed.          |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateEncoding>>>                      | The encoding to use for reading templates. | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateLocation>>>                      | Location to search for templates in        | No.                    |
+|                                             | addition to searching the class path of    |                        |
+|                                             | the task.                                  |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateProfile>>>                       | The template profile to use when accessing | No.                    |
 |                                             | templates.                                 |                        |

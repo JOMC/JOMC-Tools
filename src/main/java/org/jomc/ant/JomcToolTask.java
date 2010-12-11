@@ -33,6 +33,8 @@
 package org.jomc.ant;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
@@ -70,6 +72,9 @@ public class JomcToolTask extends JomcModelTask
 
     /** The encoding to use for reading templates. */
     private String templateEncoding;
+
+    /** Additional location to search for templates. */
+    private String templateLocation;
 
     /** The template profile to use when accessing templates. */
     private String templateProfile;
@@ -171,6 +176,31 @@ public class JomcToolTask extends JomcModelTask
     public final void setTemplateEncoding( final String value )
     {
         this.templateEncoding = value;
+    }
+
+    /**
+     * Gets the location to search for templates in addition to searching the class path of the task.
+     *
+     * @return The location to search for templates in addition to searching the class path of the task or {@code null}.
+     *
+     * @see #setTemplateLocation(java.lang.String)
+     */
+    public final String getTemplateLocation()
+    {
+        return this.templateLocation;
+    }
+
+    /**
+     * Sets the location to search for templates in addition to searching the class path of the task.
+     *
+     * @param value The new location to search for templates in addition to searching the class path of the task or
+     * {@code null}.
+     *
+     * @see #getTemplateLocation()
+     */
+    public final void setTemplateLocation( final String value )
+    {
+        this.templateLocation = value;
     }
 
     /**
@@ -637,10 +667,25 @@ public class JomcToolTask extends JomcModelTask
                     }
                 }
             }
+
+            if ( this.getTemplateLocation() != null )
+            {
+                try
+                {
+                    tool.setTemplateLocation( new URL( this.getTemplateLocation() ) );
+                }
+                catch ( final MalformedURLException e )
+                {
+                    this.log( getMessage( e ), e, Project.MSG_DEBUG );
+                    tool.setTemplateLocation(
+                        this.getProject().resolveFile( this.getTemplateLocation() ).toURI().toURL() );
+
+                }
+            }
         }
         catch ( final IOException e )
         {
-            throw new BuildException( getMessage( e ), e );
+            throw new BuildException( getMessage( e ), e, this.getLocation() );
         }
     }
 

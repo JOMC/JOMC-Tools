@@ -173,7 +173,8 @@
                              providerLocation="TEST"
                              platformProviderLocation="TEST"
                              if="${jomc.enabled}"
-                             resourceFileProcessorClass="org.jomc.tools.ResourceFileProcessor">
+                             resourceFileProcessorClass="org.jomc.tools.ResourceFileProcessor"
+                             templateLocation="${empty.dir}">
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>
       </jomc:classpath>

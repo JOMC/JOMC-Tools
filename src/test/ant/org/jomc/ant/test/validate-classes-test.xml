@@ -215,7 +215,8 @@
                          providerLocation="TEST"
                          platformProviderLocation="TEST"
                          if="${jomc.enabled}"
-                         classFileProcessorClass="org.jomc.tools.ClassFileProcessor">
+                         classFileProcessorClass="org.jomc.tools.ClassFileProcessor"
+                         templateLocation="${empty.dir}">
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>
       </jomc:classpath>
@@ -240,7 +241,8 @@
                            providerLocation="TEST"
                            platformProviderLocation="TEST"
                            if="${jomc.enabled}"
-                           classFileProcessorClass="org.jomc.tools.ClassFileProcessor">
+                           classFileProcessorClass="org.jomc.tools.ClassFileProcessor"
+                           templateLocation="${empty.dir}">
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>
       </jomc:classpath>
