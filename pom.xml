@@ -54,7 +54,7 @@
         <directory>src/main/schemas</directory>
         <targetPath>org/jomc/tools/model</targetPath>
         <includes>
-          <include>jomc-tools-1.0.xsd</include>
+          <include>jomc-tools-1.2.xsd</include>
         </includes>
       </resource>
     </resources>

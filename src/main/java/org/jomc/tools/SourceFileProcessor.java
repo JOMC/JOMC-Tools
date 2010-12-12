@@ -218,6 +218,12 @@ public class SourceFileProcessor extends JomcTool
         if ( sourceFileType == null )
         {
             sourceFileType = specification.getAnyObject( SourceFileType.class );
+
+            if ( sourceFileType != null && sourceFileType.getLocation() == null )
+            {
+                // The 'location' attribute got updated from 'required' to 'optional' in 'jomc-tools-1.2.xsd' schema.
+                sourceFileType.setLocation( specification.getClazz().replace( '.', '/' ) + ".java" );
+            }
         }
 
         if ( sourceFileType == null )
@@ -237,7 +243,6 @@ public class SourceFileProcessor extends JomcTool
             s = new SourceSectionType();
             s.setName( ANNOTATIONS_SECTION_NAME );
             s.setHeadTemplate( SPECIFICATION_ANNOTATIONS_TEMPLATE );
-            s.setOptional( false );
             sourceFileType.getSourceSections().getSourceSection().add( s );
 
             s = new SourceSectionType();
@@ -252,7 +257,6 @@ public class SourceFileProcessor extends JomcTool
                 s = new SourceSectionType();
                 s.setName( javaTypeName );
                 s.setIndentationLevel( 1 );
-                s.setOptional( false );
                 s.setEditable( true );
                 sourceFileType.getSourceSections().getSourceSection().add( s );
             }
@@ -289,6 +293,10 @@ public class SourceFileProcessor extends JomcTool
             model = new SourceFilesType();
             model.getSourceFile().add( this.getSourceFileType( specification ) );
         }
+        else
+        {
+            model = this.applyDefaults( specification, model );
+        }
 
         return model;
     }
@@ -320,6 +328,15 @@ public class SourceFileProcessor extends JomcTool
         if ( sourceFileType == null )
         {
             sourceFileType = implementation.getAnyObject( SourceFileType.class );
+
+            if ( sourceFileType != null )
+            {
+                if ( sourceFileType.getLocation() == null )
+                {
+                    // The 'location' attribute got updated from 'required' to 'optional' in 'jomc-tools-1.2.xsd' schema.
+                    sourceFileType.setLocation( implementation.getClazz().replace( '.', '/' ) + ".java" );
+                }
+            }
         }
 
         if ( sourceFileType == null )
@@ -344,7 +361,6 @@ public class SourceFileProcessor extends JomcTool
             s = new SourceSectionType();
             s.setName( ANNOTATIONS_SECTION_NAME );
             s.setHeadTemplate( IMPLEMENTATION_ANNOTATIONS_TEMPLATE );
-            s.setOptional( false );
             sourceFileType.getSourceSections().getSourceSection().add( s );
 
             s = new SourceSectionType();
@@ -358,17 +374,19 @@ public class SourceFileProcessor extends JomcTool
                 s = new SourceSectionType();
                 s.setName( interfaceName );
                 s.setIndentationLevel( 1 );
-                s.setOptional( false );
                 s.setEditable( true );
                 sourceFileType.getSourceSections().getSourceSection().add( s );
             }
 
-            s = new SourceSectionType();
-            s.setName( this.getJavaTypeName( implementation, false ) );
-            s.setIndentationLevel( 1 );
-            s.setOptional( false );
-            s.setEditable( true );
-            sourceFileType.getSourceSections().getSourceSection().add( s );
+            final String javaTypeName = this.getJavaTypeName( implementation, false );
+            if ( javaTypeName != null )
+            {
+                s = new SourceSectionType();
+                s.setName( javaTypeName );
+                s.setIndentationLevel( 1 );
+                s.setEditable( true );
+                sourceFileType.getSourceSections().getSourceSection().add( s );
+            }
 
             s = new SourceSectionType();
             s.setName( CONSTRUCTORS_SECTION_NAME );
@@ -385,7 +403,6 @@ public class SourceFileProcessor extends JomcTool
             defaultCtor.setName( DEFAULT_CONSTRUCTOR_SECTION_NAME );
             defaultCtor.setIndentationLevel( 2 );
             defaultCtor.setHeadTemplate( DEFAULT_CONSTRUCTOR_TEMPLATE );
-            defaultCtor.setOptional( false );
             defaultCtor.setEditable( true );
             s.getSourceSections().getSourceSection().add( defaultCtor );
 
@@ -441,6 +458,10 @@ public class SourceFileProcessor extends JomcTool
         {
             model = new SourceFilesType();
             model.getSourceFile().add( this.getSourceFileType( implementation ) );
+        }
+        else
+        {
+            model = this.applyDefaults( implementation, model );
         }
 
         return model;
@@ -758,6 +779,303 @@ public class SourceFileProcessor extends JomcTool
         if ( implementation.isClassDeclaration() )
         {
             this.editSourceFiles( sourcesDirectory, this.getSourceFileEditors( implementation ) );
+        }
+    }
+
+    /**
+     * Updates any optional attributes to default values.
+     *
+     * @param specification The specification corresponding to {@code sourceFilesType}.
+     * @param sourceFilesType The model to update.
+     *
+     * @return A copy of {@code sourceFilesType} with optional attributes updated to default values.
+     */
+    private SourceFilesType applyDefaults( final Specification specification, final SourceFilesType sourceFilesType )
+    {
+        final SourceFilesType types = new SourceFilesType( sourceFilesType );
+
+        for ( SourceFileType s : types.getSourceFile() )
+        {
+            if ( s.getTemplate() == null )
+            {
+                s.setTemplate( SPECIFICATION_TEMPLATE );
+            }
+            if ( s.getLocation() == null )
+            {
+                s.setLocation( specification.getClazz().replace( '.', '/' ) + ".java" );
+            }
+
+            this.applyDefaults( specification, s.getSourceSections() );
+        }
+
+        return types;
+    }
+
+    /**
+     * Updates any optional attributes to default values.
+     *
+     * @param specification The specification corresponding to {@code sourceSectionsType}.
+     * @param sourceSectionsType The model to update or {@code null}.
+     */
+    private void applyDefaults( final Specification specification, final SourceSectionsType sourceSectionsType )
+    {
+        if ( sourceSectionsType != null )
+        {
+            for ( SourceSectionType s : sourceSectionsType.getSourceSection() )
+            {
+                if ( LICENSE_SECTION_NAME.equals( s.getName() ) )
+                {
+                    if ( s.isOptional() == null )
+                    {
+                        s.setOptional( true );
+                    }
+                    if ( s.getHeadTemplate() == null )
+                    {
+                        s.setHeadTemplate( SPECIFICATION_LICENSE_TEMPLATE );
+                    }
+                }
+
+                if ( ANNOTATIONS_SECTION_NAME.equals( s.getName() ) )
+                {
+                    if ( s.getHeadTemplate() == null )
+                    {
+                        s.setHeadTemplate( SPECIFICATION_ANNOTATIONS_TEMPLATE );
+                    }
+                }
+
+                if ( DOCUMENTATION_SECTION_NAME.equals( s.getName() ) )
+                {
+                    if ( s.isOptional() == null )
+                    {
+                        s.setOptional( true );
+                    }
+                    if ( s.getHeadTemplate() == null )
+                    {
+                        s.setHeadTemplate( SPECIFICATION_DOCUMENTATION_TEMPLATE );
+                    }
+                }
+
+                final String javaTypeName = this.getJavaTypeName( specification, false );
+                if ( javaTypeName != null )
+                {
+                    if ( javaTypeName.equals( s.getName() ) )
+                    {
+                        if ( s.isEditable() == null )
+                        {
+                            s.setEditable( true );
+                        }
+                        if ( s.getIndentationLevel() == null )
+                        {
+                            s.setIndentationLevel( 1 );
+                        }
+                    }
+                }
+
+                this.applyDefaults( specification, s.getSourceSections() );
+            }
+        }
+    }
+
+    /**
+     * Updates any optional attributes to default values.
+     *
+     * @param implementation The implementation corresponding to {@code sourceFilesType}.
+     * @param sourceFilesType The model to update.
+     *
+     * @return A copy of {@code sourceFilesType} with optional attributes updated to default values.
+     */
+    private SourceFilesType applyDefaults( final Implementation implementation, final SourceFilesType sourceFilesType )
+    {
+        final SourceFilesType types = new SourceFilesType( sourceFilesType );
+
+        for ( SourceFileType s : types.getSourceFile() )
+        {
+            if ( s.getTemplate() == null )
+            {
+                s.setTemplate( IMPLEMENTATION_TEMPLATE );
+            }
+            if ( s.getLocation() == null )
+            {
+                s.setLocation( implementation.getClazz().replace( '.', '/' ) + ".java" );
+            }
+
+            this.applyDefaults( implementation, s.getSourceSections() );
+        }
+
+        return types;
+    }
+
+    /**
+     * Updates any optional attributes to default values.
+     *
+     * @param implementation The implementation corresponding to {@code sourceSectionsType}.
+     * @param sourceSectionsType The model to update or {@code null}.
+     */
+    private void applyDefaults( final Implementation implementation, final SourceSectionsType sourceSectionsType )
+    {
+        if ( sourceSectionsType != null )
+        {
+            for ( SourceSectionType s : sourceSectionsType.getSourceSection() )
+            {
+                if ( LICENSE_SECTION_NAME.equals( s.getName() ) )
+                {
+                    if ( s.isOptional() == null )
+                    {
+                        s.setOptional( true );
+                    }
+                    if ( s.getHeadTemplate() == null )
+                    {
+                        s.setHeadTemplate( IMPLEMENTATION_LICENSE_TEMPLATE );
+                    }
+                }
+
+                if ( ANNOTATIONS_SECTION_NAME.equals( s.getName() ) )
+                {
+                    if ( s.getHeadTemplate() == null )
+                    {
+                        s.setHeadTemplate( IMPLEMENTATION_ANNOTATIONS_TEMPLATE );
+                    }
+                }
+
+                if ( DOCUMENTATION_SECTION_NAME.equals( s.getName() ) )
+                {
+                    if ( s.isOptional() == null )
+                    {
+                        s.setOptional( true );
+                    }
+                    if ( s.getHeadTemplate() == null )
+                    {
+                        s.setHeadTemplate( IMPLEMENTATION_DOCUMENTATION_TEMPLATE );
+                    }
+                }
+
+                if ( CONSTRUCTORS_SECTION_NAME.equals( s.getName() ) )
+                {
+                    if ( s.getIndentationLevel() == null )
+                    {
+                        s.setIndentationLevel( 1 );
+                    }
+                    if ( s.getHeadTemplate() == null )
+                    {
+                        s.setHeadTemplate( CONSTRUCTORS_HEAD_TEMPLATE );
+                    }
+                    if ( s.getTailTemplate() == null )
+                    {
+                        s.setTailTemplate( CONSTRUCTORS_TAIL_TEMPLATE );
+                    }
+                    if ( s.isOptional() == null )
+                    {
+                        final Specifications specifications =
+                            this.getModules().getSpecifications( implementation.getIdentifier() );
+
+                        s.setOptional( specifications == null || ( specifications.getSpecification().isEmpty()
+                                                                   && specifications.getReference().isEmpty() ) );
+
+                    }
+                }
+
+                if ( DEFAULT_CONSTRUCTOR_SECTION_NAME.equals( s.getName() ) )
+                {
+                    if ( s.isEditable() == null )
+                    {
+                        s.setEditable( true );
+                    }
+                    if ( s.getIndentationLevel() == null )
+                    {
+                        s.setIndentationLevel( 2 );
+                    }
+                    if ( s.getHeadTemplate() == null )
+                    {
+                        s.setHeadTemplate( DEFAULT_CONSTRUCTOR_TEMPLATE );
+                    }
+                }
+
+                if ( DEPENDENCIES_SECTION_NAME.equals( s.getName() ) )
+                {
+                    if ( s.isOptional() == null )
+                    {
+                        final Dependencies dependencies =
+                            this.getModules().getDependencies( implementation.getIdentifier() );
+
+                        s.setOptional( dependencies == null || dependencies.getDependency().isEmpty() );
+                    }
+                    if ( s.getIndentationLevel() == null )
+                    {
+                        s.setIndentationLevel( 1 );
+                    }
+                    if ( s.getHeadTemplate() == null )
+                    {
+                        s.setHeadTemplate( DEPENDENCIES_TEMPLATE );
+                    }
+                }
+
+                if ( PROPERTIES_SECTION_NAME.equals( s.getName() ) )
+                {
+                    if ( s.isOptional() == null )
+                    {
+                        final Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
+                        s.setOptional( properties == null || properties.getProperty().isEmpty() );
+                    }
+                    if ( s.getIndentationLevel() == null )
+                    {
+                        s.setIndentationLevel( 1 );
+                    }
+                    if ( s.getHeadTemplate() == null )
+                    {
+                        s.setHeadTemplate( PROPERTIES_TEMPLATE );
+                    }
+                }
+
+                if ( MESSAGES_SECTION_NAME.equals( s.getName() ) )
+                {
+                    if ( s.isOptional() == null )
+                    {
+                        final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
+                        s.setOptional( messages == null || messages.getMessage().isEmpty() );
+                    }
+                    if ( s.getIndentationLevel() == null )
+                    {
+                        s.setIndentationLevel( 1 );
+                    }
+                    if ( s.getHeadTemplate() == null )
+                    {
+                        s.setHeadTemplate( MESSAGES_TEMPLATE );
+                    }
+                }
+
+                for ( String interfaceName : this.getJavaInterfaceNames( implementation, false ) )
+                {
+                    if ( interfaceName.equals( s.getName() ) )
+                    {
+                        if ( s.isEditable() == null )
+                        {
+                            s.setEditable( true );
+                        }
+                        if ( s.getIndentationLevel() == null )
+                        {
+                            s.setIndentationLevel( 1 );
+                        }
+                    }
+                }
+
+                final String javaTypeName = this.getJavaTypeName( implementation, false );
+                if ( javaTypeName != null )
+                {
+                    if ( javaTypeName.equals( s.getName() ) )
+                    {
+                        if ( s.isEditable() == null )
+                        {
+                            s.setEditable( true );
+                        }
+                        if ( s.getIndentationLevel() == null )
+                        {
+                            s.setIndentationLevel( 1 );
+                        }
+                    }
+                }
+
+                this.applyDefaults( implementation, s.getSourceSections() );
+            }
         }
     }
 
@@ -1266,21 +1584,21 @@ public class SourceFileProcessor extends JomcTool
 
                 if ( sourceSectionType != null )
                 {
+                    final int indentation = sourceSectionType.getIndentationLevel() == null
+                                            ? 0 : sourceSectionType.getIndentationLevel();
+
                     if ( s.getStartingLine() != null )
                     {
-                        s.setStartingLine( getIndentation( sourceSectionType.getIndentationLevel() )
-                                           + s.getStartingLine().trim() );
-
+                        s.setStartingLine( getIndentation( indentation ) + s.getStartingLine().trim() );
                     }
                     if ( s.getEndingLine() != null )
                     {
-                        s.setEndingLine( getIndentation( sourceSectionType.getIndentationLevel() )
-                                         + s.getEndingLine().trim() );
-
+                        s.setEndingLine( getIndentation( indentation ) + s.getEndingLine().trim() );
                     }
 
                     if ( sourceSectionType.getHeadTemplate() != null
-                         && ( !sourceSectionType.isEditable() || s.getHeadContent().toString().trim().length() == 0 ) )
+                         && ( sourceSectionType.isEditable() == null || !sourceSectionType.isEditable()
+                              || s.getHeadContent().toString().trim().length() == 0 ) )
                     {
                         final StringWriter writer = new StringWriter();
                         final Template template = getVelocityTemplate( sourceSectionType.getHeadTemplate() );
@@ -1293,7 +1611,8 @@ public class SourceFileProcessor extends JomcTool
                     }
 
                     if ( sourceSectionType.getTailTemplate() != null
-                         && ( !sourceSectionType.isEditable() || s.getTailContent().toString().trim().length() == 0 ) )
+                         && ( sourceSectionType.isEditable() == null || !sourceSectionType.isEditable()
+                              || s.getTailContent().toString().trim().length() == 0 ) )
                     {
                         final StringWriter writer = new StringWriter();
                         final Template template = getVelocityTemplate( sourceSectionType.getTailTemplate() );
@@ -1320,15 +1639,18 @@ public class SourceFileProcessor extends JomcTool
                 {
                     Section childSection = section.getSection( sourceSectionType.getName() );
 
-                    if ( childSection == null && !sourceSectionType.isOptional() )
+                    if ( childSection == null
+                         && ( sourceSectionType.isOptional() == null || !sourceSectionType.isOptional() ) )
                     {
+                        final int indentation = sourceSectionType.getIndentationLevel() == null
+                                                ? 0 : sourceSectionType.getIndentationLevel();
+
                         childSection = new Section();
                         childSection.setName( sourceSectionType.getName() );
-                        childSection.setStartingLine( getIndentation( sourceSectionType.getIndentationLevel() )
+                        childSection.setStartingLine( getIndentation( indentation )
                                                       + "// SECTION-START[" + sourceSectionType.getName() + "]" );
 
-                        childSection.setEndingLine( getIndentation( sourceSectionType.getIndentationLevel() )
-                                                    + "// SECTION-END" );
+                        childSection.setEndingLine( getIndentation( indentation ) + "// SECTION-END" );
 
                         section.getSections().add( childSection );
                         this.getAddedSections().add( childSection );

@@ -72,7 +72,7 @@
 
   $Id$
 
-  Location: http://jomc.sourceforge.net/tools/model/jomc-tools-1.0.xsd
+  Location: http://jomc.sourceforge.net/tools/model/jomc-tools-1.2.xsd
 
 ]]>
     </xsd:documentation>
@@ -114,7 +114,7 @@
         <xsd:documentation xml:lang="en">Identifier of the source file.</xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
-    <xsd:attribute name="location" type="xsd:string" use="required">
+    <xsd:attribute name="location" type="xsd:string" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">Location of the source file.</xsd:documentation>
       </xsd:annotation>
@@ -172,17 +172,17 @@
         <xsd:documentation xml:lang="en">Identifier of a template to use for rendering the content of this section succeeding any child section content.</xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
-    <xsd:attribute name="indentationLevel" type="xsd:int" use="optional" default="0">
+    <xsd:attribute name="indentationLevel" type="xsd:int" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">Indentation level of the section.</xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
-    <xsd:attribute name="optional" type="xsd:boolean" use="optional" default="false">
+    <xsd:attribute name="optional" type="xsd:boolean" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">Flag indicating the section is optional.</xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
-    <xsd:attribute name="editable" type="xsd:boolean" use="optional" default="false">
+    <xsd:attribute name="editable" type="xsd:boolean" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">Flag indicating the section is editable.</xsd:documentation>
       </xsd:annotation>
