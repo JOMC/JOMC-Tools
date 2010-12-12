@@ -1686,9 +1686,9 @@ public class JomcTool
             final Template template = this.getVelocityEngine().getTemplate(
                 TEMPLATE_PREFIX + this.getTemplateProfile() + "/" + templateName, this.getTemplateEncoding() );
 
-            if ( this.isLoggable( Level.FINEST ) )
+            if ( this.isLoggable( Level.FINER ) )
             {
-                this.log( Level.FINEST, getMessage( "templateInfo", templateName, this.getTemplateProfile() ), null );
+                this.log( Level.FINER, getMessage( "templateInfo", templateName, this.getTemplateProfile() ), null );
             }
 
             return template;
@@ -1707,9 +1707,9 @@ public class JomcTool
                 final Template template = this.getVelocityEngine().getTemplate(
                     TEMPLATE_PREFIX + getDefaultTemplateProfile() + "/" + templateName, this.getTemplateEncoding() );
 
-                if ( this.isLoggable( Level.FINEST ) )
+                if ( this.isLoggable( Level.FINER ) )
                 {
-                    this.log( Level.FINEST,
+                    this.log( Level.FINER,
                               getMessage( "templateInfo", templateName, getDefaultTemplateProfile() ), null );
 
                 }
