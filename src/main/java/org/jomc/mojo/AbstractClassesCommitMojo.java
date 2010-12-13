@@ -148,7 +148,6 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
      *
      * @return A list of transformers to use for transforming model objects.
      *
-     * @throws NullPointerException if {@code classLoader} is {@code null}.
      * @throws MojoExecutionException if getting the transformers fails.
      *
      * @since 1.2
