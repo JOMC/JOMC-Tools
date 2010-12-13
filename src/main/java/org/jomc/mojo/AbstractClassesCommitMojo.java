@@ -46,6 +46,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.jomc.model.Module;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelValidationReport;
@@ -209,6 +210,13 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
         {
             throw new MojoExecutionException( getMessage( e ), e );
         }
+    }
+
+    @Override
+    protected void assertValidParameters() throws MojoFailureException
+    {
+        super.assertValidParameters();
+        this.assertLocationsNotNull( this.modelObjectStylesheetResources );
     }
 
     @Override

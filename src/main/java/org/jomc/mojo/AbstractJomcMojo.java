@@ -45,6 +45,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLConnection;
 import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -557,8 +558,16 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         super();
     }
 
+    /**
+     * {@inheritDoc}
+     * @see #assertValidParameters()
+     * @see #isExecutionPermitted()
+     * @see #executeTool()
+     */
     public void execute() throws MojoExecutionException, MojoFailureException
     {
+        this.assertValidParameters();
+
         try
         {
             ModelContext.setModelContextClassName( this.modelContextClassName );
@@ -601,6 +610,47 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             DefaultModelProcessor.setDefaultTransformerLocation( null );
             JomcTool.setDefaultTemplateProfile( null );
             this.logSeparator();
+        }
+    }
+
+    /**
+     * Validates the parameters of the goal.
+     *
+     * @throws MojoFailureException if illegal parameter values are detected.
+     *
+     * @see #assertLocationsNotNull(java.util.Collection)
+     * @since 1.2
+     */
+    protected void assertValidParameters() throws MojoFailureException
+    {
+        this.assertLocationsNotNull( this.templateParameterResources );
+        this.assertLocationsNotNull( this.transformationOutputPropertyResources );
+        this.assertLocationsNotNull( this.transformationParameterResources );
+        this.assertLocationsNotNull( this.velocityPropertyResources );
+    }
+
+    /**
+     * Validates a given resource collection.
+     *
+     * @param resources The resource collection to validate or {@code null}.
+     *
+     * @throws MojoFailureException if a location property of a given resource holds a {@code null} value.
+     *
+     * @see #assertValidParameters()
+     * @since 1.2
+     */
+    protected final void assertLocationsNotNull( final Collection<? extends ResourceType> resources )
+        throws MojoFailureException
+    {
+        if ( resources != null )
+        {
+            for ( ResourceType r : resources )
+            {
+                if ( r.getLocation() == null )
+                {
+                    throw new MojoFailureException( getMessage( "mandatoryParameter", "location" ) );
+                }
+            }
         }
     }
 
