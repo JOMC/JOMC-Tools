@@ -38,7 +38,6 @@ package org.jomc.mojo;
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  * @since 1.2
- * @see #getLocation()
  */
 public class ResourceType implements Cloneable
 {
@@ -63,11 +62,6 @@ public class ResourceType implements Cloneable
 
     /**
      * Gets the value of the {@code location} property.
-     * <p>The value is a location to search a resource at. First the value is used to search the class path of the
-     * plugin. If a class path resource is found, that resource is used. If no class path resource is found, an attempt
-     * is made to parse the value to an URL. Succeeding that, the URL is used. Failing that, the value is interpreted as
-     * a file name relative to the base directory of the project. If that file exists, that file is used. If nothing is
-     * found at the given location, a warning message is logged.</p>
      *
      * @return The value of the {@code location} property.
      */
