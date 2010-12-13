@@ -41,7 +41,7 @@ import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 
 /**
- * Displays a project's main instance.
+ * Displays a project's test instance.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
