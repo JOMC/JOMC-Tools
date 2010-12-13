@@ -114,7 +114,7 @@ public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo
                 throw new MojoExecutionException( getMessage( "failed" ) );
             }
         }
-        else
+        else if ( this.isLoggable( Level.INFO ) )
         {
             this.log( Level.INFO, getMessage( "disabled" ), null );
         }

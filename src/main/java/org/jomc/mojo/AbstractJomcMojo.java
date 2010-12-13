@@ -35,18 +35,22 @@ package org.jomc.mojo;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.URLConnection;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
@@ -58,6 +62,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.ArtifactUtils;
@@ -108,6 +113,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     /**
      * Location to search for templates in addition to searching the class path of the plugin.
+     * <p>First an attempt is made to parse the location value to an URL. On successful parsing, that URL is used.
+     * Otherwise the location value is interpreted as a directory name relative to the base directory of the project.
+     * If that directory exists, that directory is used. If nothing is found at the given location, a warning message is
+     * logged.</p>
      *
      * @parameter
      * @since 1.2
@@ -258,18 +267,18 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     /**
      * Directory holding the compiled class files of the project.
-     * <strong>Replaced by 'outputDirectory' parameter.</strong>
      *
      * @parameter
+     * @deprecated As of JOMC 1.1, please use the 'outputDirectory' parameter.
      */
     @Deprecated
     private String classesDirectory;
 
     /**
      * Directory holding the compiled test class files of the project.
-     * <strong>Replaced by 'testOutputDirectory' parameter.</strong>
      *
      * @parameter
+     * @deprecated As of JOMC 1.1, please use the 'testOutputDirectory' parameter.
      */
     @Deprecated
     private String testClassesDirectory;
@@ -331,12 +340,80 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private Map<String, Object> velocityProperties;
 
     /**
+     * Velocity runtime property resources.
+     * <pre>
+     * &lt;velocityPropertyResources>
+     *   &lt;velocityPropertyResource>
+     *     &lt;location>The location of the properties resource.&lt;/location>
+     *     &lt;optional>Flag indicating the properties resource is optional.&lt;/optional>
+     *     &lt;format>The format of the properties resource.&lt;/format>
+     *     &lt;connectTimeout>Timeout value, in milliseconds.&lt;/connectTimeout>
+     *     &lt;readTimeout>Timeout value, in milliseconds.&lt;/readTimeout>
+     *   &lt;/velocityPropertyResource>
+     * &lt;/velocityPropertyResources>
+     * </pre>
+     * <p>The location value is used to first search the class path of the plugin. If a class path resource is found,
+     * that resource is used. If no class path resource is found, an attempt is made to parse the location value to an
+     * URL. On successful parsing, that URL is used. Otherwise the location value is interpreted as a file name relative
+     * to the base directory of the project. If that file exists, that file is used. If nothing is found at the given
+     * location, depending on the optional flag, a warning message is logged or a build failure is produced.</p>
+     * <p>The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
+     * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false</p>
+     * <p>The optional format value is used to specify the format of the properties resource. Supported values are
+     * {@code plain} and {@code xml}.<br/><b>Default value is:</b> plain</p>
+     * <p>The optional connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
+     * communications links to the resource. A timeout of zero is interpreted as an infinite timeout.<br/>
+     * <b>Default value is:</b> 60000</p>
+     * <p>The optional readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the
+     * resource. A timeout of zero is interpreted as an infinite timeout.<br/>
+     * <b>Default value is:</b> 60000</p>
+     *
+     * @parameter
+     * @since 1.2
+     */
+    private List<VelocityPropertyResource> velocityPropertyResources;
+
+    /**
      * Template parameters.
      *
      * @parameter
      * @since 1.2
      */
     private Map<String, Object> templateParameters;
+
+    /**
+     * Template parameter resources.
+     * <pre>
+     * &lt;templateParameterResources>
+     *   &lt;templateParameterResource>
+     *     &lt;location>The location of the properties resource.&lt;/location>
+     *     &lt;optional>Flag indicating the properties resource is optional.&lt;/optional>
+     *     &lt;format>The format of the properties resource.&lt;/format>
+     *     &lt;connectTimeout>Timeout value, in milliseconds.&lt;/connectTimeout>
+     *     &lt;readTimeout>Timeout value, in milliseconds.&lt;/readTimeout>
+     *   &lt;/templateParameterResource>
+     * &lt;/templateParameterResources>
+     * </pre>
+     * <p>The location value is used to first search the class path of the plugin. If a class path resource is found,
+     * that resource is used. If no class path resource is found, an attempt is made to parse the location value to an
+     * URL. On successful parsing, that URL is used. Otherwise the location value is interpreted as a file name relative
+     * to the base directory of the project. If that file exists, that file is used. If nothing is found at the given
+     * location, depending on the optional flag, a warning message is logged or a build failure is produced.</p>
+     * <p>The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
+     * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false</p>
+     * <p>The optional format value is used to specify the format of the properties resource. Supported values are
+     * {@code plain} and {@code xml}.<br/><b>Default value is:</b> plain</p>
+     * <p>The optional connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
+     * communications links to the resource. A timeout of zero is interpreted as an infinite timeout.<br/>
+     * <b>Default value is:</b> 60000</p>
+     * <p>The optional readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the
+     * resource. A timeout of zero is interpreted as an infinite timeout.<br/>
+     * <b>Default value is:</b> 60000</p>
+     *
+     * @parameter
+     * @since 1.2
+     */
+    private List<TemplateParameterResource> templateParameterResources;
 
     /**
      * Transformation parameters.
@@ -347,12 +424,80 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private Map<String, Object> transformationParameters;
 
     /**
+     * Transformation parameter resources.
+     * <pre>
+     * &lt;transformationParameterResources>
+     *   &lt;transformationParameterResource>
+     *     &lt;location>The location of the properties resource.&lt;/location>
+     *     &lt;optional>Flag indicating the properties resource is optional.&lt;/optional>
+     *     &lt;format>The format of the properties resource.&lt;/format>
+     *     &lt;connectTimeout>Timeout value, in milliseconds.&lt;/connectTimeout>
+     *     &lt;readTimeout>Timeout value, in milliseconds.&lt;/readTimeout>
+     *   &lt;/transformationParameterResource>
+     * &lt;/transformationParameterResources>
+     * </pre>
+     * <p>The location value is used to first search the class path of the plugin. If a class path resource is found,
+     * that resource is used. If no class path resource is found, an attempt is made to parse the location value to an
+     * URL. On successful parsing, that URL is used. Otherwise the location value is interpreted as a file name relative
+     * to the base directory of the project. If that file exists, that file is used. If nothing is found at the given
+     * location, depending on the optional flag, a warning message is logged or a build failure is produced.</p>
+     * <p>The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
+     * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false</p>
+     * <p>The optional format value is used to specify the format of the properties resource. Supported values are
+     * {@code plain} and {@code xml}.<br/><b>Default value is:</b> plain</p>
+     * <p>The optional connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
+     * communications links to the resource. A timeout of zero is interpreted as an infinite timeout.<br/>
+     * <b>Default value is:</b> 60000</p>
+     * <p>The optional readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the
+     * resource. A timeout of zero is interpreted as an infinite timeout.<br/>
+     * <b>Default value is:</b> 60000</p>
+     *
+     * @parameter
+     * @since 1.2
+     */
+    private List<TransformationParameterResource> transformationParameterResources;
+
+    /**
      * Transformation output properties.
      *
      * @parameter
      * @since 1.2
      */
     private Map<String, String> transformationOutputProperties;
+
+    /**
+     * Transformation output property resources.
+     * <pre>
+     * &lt;transformationOutputPropertyResources>
+     *   &lt;transformationOutputPropertyResource>
+     *     &lt;location>The location of the properties resource.&lt;/location>
+     *     &lt;optional>Flag indicating the properties resource is optional.&lt;/optional>
+     *     &lt;format>The format of the properties resource.&lt;/format>
+     *     &lt;connectTimeout>Timeout value, in milliseconds.&lt;/connectTimeout>
+     *     &lt;readTimeout>Timeout value, in milliseconds.&lt;/readTimeout>
+     *   &lt;/transformationOutputPropertyResource>
+     * &lt;/transformationOutputPropertyResources>
+     * </pre>
+     * <p>The location value is used to first search the class path of the plugin. If a class path resource is found,
+     * that resource is used. If no class path resource is found, an attempt is made to parse the location value to an
+     * URL. On successful parsing, that URL is used. Otherwise the location value is interpreted as a file name relative
+     * to the base directory of the project. If that file exists, that file is used. If nothing is found at the given
+     * location, depending on the optional flag, a warning message is logged or a build failure is produced.</p>
+     * <p>The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
+     * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false</p>
+     * <p>The optional format value is used to specify the format of the properties resource. Supported values are
+     * {@code plain} and {@code xml}.<br/><b>Default value is:</b> plain</p>
+     * <p>The optional connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
+     * communications links to the resource. A timeout of zero is interpreted as an infinite timeout.<br/>
+     * <b>Default value is:</b> 60000</p>
+     * <p>The optional readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the
+     * resource. A timeout of zero is interpreted as an infinite timeout.<br/>
+     * <b>Default value is:</b> 60000</p>
+     *
+     * @parameter
+     * @since 1.2
+     */
+    private List<TransformationOutputPropertyResource> transformationOutputPropertyResources;
 
     /**
      * Class name of the {@code ClassFileProcessor} backing the goal.
@@ -394,7 +539,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @required
      * @readonly
      */
-    private List<?> pluginArtifacts;
+    private List<Artifact> pluginArtifacts;
 
     /**
      * The Maven session of the instance.
@@ -426,13 +571,17 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             JomcTool.setDefaultTemplateProfile( this.defaultTemplateProfile );
 
             this.logSeparator();
-            this.log( Level.INFO, getMessage( "title" ), null );
+
+            if ( this.isLoggable( Level.INFO ) )
+            {
+                this.log( Level.INFO, getMessage( "title" ), null );
+            }
 
             if ( this.isExecutionPermitted() )
             {
                 this.executeTool();
             }
-            else
+            else if ( this.isLoggable( Level.INFO ) )
             {
                 this.log( Level.INFO, getMessage( "executionSuppressed", this.getExecutionStrategy() ), null );
             }
@@ -594,11 +743,20 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         if ( this.classesDirectory != null )
         {
-            this.log( Level.WARNING, getMessage( "deprecationWarning", "classesDirectory", "outputDirectory" ), null );
+            if ( this.isLoggable( Level.WARNING ) )
+            {
+                this.log( Level.WARNING,
+                          getMessage( "deprecationWarning", "classesDirectory", "outputDirectory" ), null );
+
+            }
 
             if ( !this.classesDirectory.equals( this.outputDirectory ) )
             {
-                this.log( Level.WARNING, getMessage( "ignoringParameter", "outputDirectory" ), null );
+                if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, getMessage( "ignoringParameter", "outputDirectory" ), null );
+                }
+
                 this.outputDirectory = this.classesDirectory;
             }
 
@@ -627,12 +785,20 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         if ( this.testClassesDirectory != null )
         {
-            this.log( Level.WARNING, getMessage( "deprecationWarning", "testClassesDirectory",
-                                                 "testOutputDirectory" ), null );
+            if ( this.isLoggable( Level.WARNING ) )
+            {
+                this.log( Level.WARNING,
+                          getMessage( "deprecationWarning", "testClassesDirectory", "testOutputDirectory" ), null );
+
+            }
 
             if ( !this.testClassesDirectory.equals( this.testOutputDirectory ) )
             {
-                this.log( Level.WARNING, getMessage( "ignoringParameter", "testOutputDirectory" ), null );
+                if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, getMessage( "ignoringParameter", "testOutputDirectory" ), null );
+                }
+
                 this.testOutputDirectory = this.testClassesDirectory;
             }
 
@@ -727,14 +893,21 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 }
             }
 
-            this.log( Level.FINEST, getMessage( "mainClasspathInfo" ), null );
+            if ( this.isLoggable( Level.FINEST ) )
+            {
+                this.log( Level.FINEST, getMessage( "mainClasspathInfo" ), null );
+            }
 
             int i = 0;
             final URL[] urls = new URL[ uris.size() ];
             for ( URI uri : uris )
             {
-                urls[i] = uri.toURL();
-                this.log( Level.FINEST, "\t" + urls[i++].toExternalForm(), null );
+                urls[i++] = uri.toURL();
+
+                if ( this.isLoggable( Level.FINEST ) )
+                {
+                    this.log( Level.FINEST, "\t" + urls[i - 1].toExternalForm(), null );
+                }
             }
 
             return new URLClassLoader( urls, Thread.currentThread().getContextClassLoader() );
@@ -768,14 +941,21 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 }
             }
 
-            this.log( Level.FINEST, getMessage( "testClasspathInfo" ), null );
+            if ( this.isLoggable( Level.FINEST ) )
+            {
+                this.log( Level.FINEST, getMessage( "testClasspathInfo" ), null );
+            }
 
             int i = 0;
             final URL[] urls = new URL[ uris.size() ];
             for ( URI uri : uris )
             {
-                urls[i] = uri.toURL();
-                this.log( Level.FINEST, "\t" + urls[i++].toExternalForm(), null );
+                urls[i++] = uri.toURL();
+
+                if ( this.isLoggable( Level.FINEST ) )
+                {
+                    this.log( Level.FINEST, "\t" + urls[i - 1].toExternalForm(), null );
+                }
             }
 
             return new URLClassLoader( urls, Thread.currentThread().getContextClassLoader() );
@@ -807,14 +987,22 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( a.getFile() == null )
             {
-                this.log( Level.WARNING, getMessage( "ignored", a.toString() ), null );
+                if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, getMessage( "ignored", a.toString() ), null );
+                }
+
                 continue;
             }
 
             if ( pluginArtifact != null )
             {
-                this.log( Level.FINER,
-                          getMessage( "ignoringPluginArtifact", a.toString(), pluginArtifact.toString() ), null );
+                if ( this.isLoggable( Level.FINER ) )
+                {
+                    this.log( Level.FINER,
+                              getMessage( "ignoringPluginArtifact", a.toString(), pluginArtifact.toString() ), null );
+
+                }
 
                 continue;
             }
@@ -830,14 +1018,22 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( a.getFile() == null )
             {
-                this.log( Level.WARNING, getMessage( "ignored", a.toString() ), null );
+                if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, getMessage( "ignored", a.toString() ), null );
+                }
+
                 continue;
             }
 
             if ( pluginArtifact != null )
             {
-                this.log( Level.FINER,
-                          getMessage( "ignoringPluginArtifact", a.toString(), pluginArtifact.toString() ), null );
+                if ( this.isLoggable( Level.FINER ) )
+                {
+                    this.log( Level.FINER,
+                              getMessage( "ignoringPluginArtifact", a.toString(), pluginArtifact.toString() ), null );
+
+                }
 
                 continue;
             }
@@ -870,14 +1066,22 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( a.getFile() == null )
             {
-                this.log( Level.WARNING, getMessage( "ignored", a.toString() ), null );
+                if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, getMessage( "ignored", a.toString() ), null );
+                }
+
                 continue;
             }
 
             if ( pluginArtifact != null )
             {
-                this.log( Level.FINER,
-                          getMessage( "ignoringPluginArtifact", a.toString(), pluginArtifact.toString() ), null );
+                if ( this.isLoggable( Level.FINER ) )
+                {
+                    this.log( Level.FINER,
+                              getMessage( "ignoringPluginArtifact", a.toString(), pluginArtifact.toString() ), null );
+
+                }
 
                 continue;
             }
@@ -1307,92 +1511,414 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @return A {@code Transformer} backed by {@code source}.
      *
      * @throws NullPointerException if {@code source} is {@code null}.
-     * @throws TransformerConfigurationException if creating a transformer fails.
+     * @throws MojoExecutionException if creating a transformer fails.
      *
      * @since 1.2
      */
-    protected Transformer createTransformer( final Source source ) throws TransformerConfigurationException
+    protected Transformer getTransformer( final Source source ) throws MojoExecutionException
     {
         if ( source == null )
         {
             throw new NullPointerException( "source" );
         }
 
-        final ErrorListener errorListener = new ErrorListener()
+        try
         {
+            final ErrorListener errorListener = new ErrorListener()
+            {
 
-            public void warning( final TransformerException exception ) throws TransformerException
+                public void warning( final TransformerException exception ) throws TransformerException
+                {
+                    try
+                    {
+                        log( Level.WARNING, getMessage( exception ), exception );
+                    }
+                    catch ( final MojoExecutionException e )
+                    {
+                        getLog().warn( exception );
+                        getLog().error( e );
+                    }
+                }
+
+                public void error( final TransformerException exception ) throws TransformerException
+                {
+                    try
+                    {
+                        log( Level.SEVERE, getMessage( exception ), exception );
+                    }
+                    catch ( final MojoExecutionException e )
+                    {
+                        getLog().error( exception );
+                        getLog().error( e );
+                    }
+
+                    throw exception;
+                }
+
+                public void fatalError( final TransformerException exception ) throws TransformerException
+                {
+                    try
+                    {
+                        log( Level.SEVERE, getMessage( exception ), exception );
+                    }
+                    catch ( final MojoExecutionException e )
+                    {
+                        getLog().error( exception );
+                        getLog().error( e );
+                    }
+
+                    throw exception;
+                }
+
+            };
+
+            final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            transformerFactory.setErrorListener( errorListener );
+            final Transformer transformer = transformerFactory.newTransformer( source );
+            transformer.setErrorListener( errorListener );
+
+            for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
+            {
+                transformer.setParameter( e.getKey().toString(), e.getValue() );
+            }
+
+            if ( this.transformationParameterResources != null )
+            {
+                for ( TransformationParameterResource r : this.transformationParameterResources )
+                {
+                    for ( Map.Entry<Object, Object> e : this.getProperties( r ).entrySet() )
+                    {
+                        transformer.setParameter( e.getKey().toString(), e.getValue() );
+                    }
+                }
+            }
+
+            if ( this.transformationParameters != null )
+            {
+                for ( Map.Entry<String, Object> e : this.transformationParameters.entrySet() )
+                {
+                    transformer.setParameter( e.getKey(), e.getValue() );
+                }
+            }
+
+            if ( this.transformationOutputPropertyResources != null )
+            {
+                for ( TransformationOutputPropertyResource r : this.transformationOutputPropertyResources )
+                {
+                    for ( Map.Entry<Object, Object> e : this.getProperties( r ).entrySet() )
+                    {
+                        transformer.setOutputProperty( e.getKey().toString(), e.getValue().toString() );
+                    }
+                }
+            }
+
+            if ( this.transformationOutputProperties != null )
+            {
+                for ( Map.Entry<String, String> e : this.transformationOutputProperties.entrySet() )
+                {
+                    transformer.setOutputProperty( e.getKey(), e.getValue() );
+                }
+            }
+
+            return transformer;
+        }
+        catch ( final TransformerConfigurationException e )
+        {
+            String m = getMessage( e );
+            if ( m == null )
+            {
+                m = getMessage( e.getException() );
+            }
+
+            m = m == null ? "" : " " + m;
+
+            throw new MojoExecutionException( getMessage( "failedCreatingTransformer", source.getSystemId(), m ), e );
+        }
+    }
+
+    /**
+     * Creates an {@code URL} for a given resource location.
+     * <p>This method first searches the class path of the plugin for a single resource matching {@code location}. If
+     * such a resource is found, the URL of that resource is returned. If no such resource is found, an attempt is made
+     * to parse the given location to an URL. On successful parsing, that URL is returned. Failing that, the given
+     * location is interpreted as a file name relative to the project's base directory. If that file is found, the URL
+     * of that file is returned. Otherwise {@code null} is returned.</p>
+     *
+     * @param location The location to create an {@code URL} from.
+     *
+     * @return An {@code URL} for {@code location} or {@code null} if parsing {@code location} to an URL fails and
+     * {@code location} points to a non-existent resource.
+     *
+     * @throws NullPointerException if {@code location} is {@code null}.
+     * @throws MojoExecutionException if creating an URL fails.
+     *
+     * @since 1.2
+     */
+    protected URL getResource( final String location ) throws MojoExecutionException
+    {
+        if ( location == null )
+        {
+            throw new NullPointerException( "location" );
+        }
+
+        try
+        {
+            String absolute = location;
+            if ( !absolute.startsWith( "/" ) )
+            {
+                absolute = "/" + location;
+            }
+
+            URL resource = this.getClass().getResource( absolute );
+            if ( resource == null )
             {
                 try
                 {
-                    log( Level.WARNING, getMessage( exception ), exception );
+                    resource = new URL( location );
                 }
-                catch ( final MojoExecutionException e )
+                catch ( final MalformedURLException e )
                 {
-                    getLog().warn( exception );
-                    getLog().error( e );
+                    if ( this.isLoggable( Level.FINEST ) )
+                    {
+                        this.log( Level.FINEST, getMessage( e ), e );
+                    }
+
+                    resource = null;
                 }
             }
 
-            public void error( final TransformerException exception ) throws TransformerException
+            if ( resource == null )
             {
-                try
-                {
-                    log( Level.SEVERE, getMessage( exception ), exception );
-                }
-                catch ( final MojoExecutionException e )
-                {
-                    getLog().error( exception );
-                    getLog().error( e );
-                }
+                final File f = this.getAbsoluteFile( location );
 
-                throw exception;
+                if ( f.isFile() )
+                {
+                    resource = f.toURI().toURL();
+                }
             }
 
-            public void fatalError( final TransformerException exception ) throws TransformerException
-            {
-                try
-                {
-                    log( Level.SEVERE, getMessage( exception ), exception );
-                }
-                catch ( final MojoExecutionException e )
-                {
-                    getLog().error( exception );
-                    getLog().error( e );
-                }
-
-                throw exception;
-            }
-
-        };
-
-        final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        transformerFactory.setErrorListener( errorListener );
-        final Transformer transformer = transformerFactory.newTransformer( source );
-        transformer.setErrorListener( errorListener );
-
-        for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
+            return resource;
+        }
+        catch ( final MalformedURLException e )
         {
-            transformer.setParameter( e.getKey().toString(), e.getValue() );
+            String m = getMessage( e );
+            m = m == null ? "" : " " + m;
+
+            throw new MojoExecutionException( getMessage( "malformedLocation", location, m ), e );
+        }
+    }
+
+    /**
+     * Creates an {@code URL} for a given directory location.
+     * <p>This method first attempts to parse the given location to an URL. On successful parsing, that URL is returned.
+     * Failing that, the given location is interpreted as a directory name relative to the project's base directory.
+     * If that directory is found, the URL of that directory is returned. Otherwise {@code null} is returned.</p>
+     *
+     * @param location The directory location to create an {@code URL} from.
+     *
+     * @return An {@code URL} for {@code location} or {@code null} if parsing {@code location} to an URL fails and
+     * {@code location} points to a non-existent directory.
+     *
+     * @throws NullPointerException if {@code location} is {@code null}.
+     * @throws MojoExecutionException if creating an URL fails.
+     *
+     * @since 1.2
+     */
+    protected URL getDirectory( final String location ) throws MojoExecutionException
+    {
+        if ( location == null )
+        {
+            throw new NullPointerException( "location" );
         }
 
-        if ( this.transformationParameters != null )
+        try
         {
-            for ( Map.Entry<String, Object> e : this.transformationParameters.entrySet() )
+            URL resource = null;
+
+            try
             {
-                transformer.setParameter( e.getKey(), e.getValue() );
+                resource = new URL( location );
             }
+            catch ( final MalformedURLException e )
+            {
+                if ( this.isLoggable( Level.FINEST ) )
+                {
+                    this.log( Level.FINEST, getMessage( e ), e );
+                }
+
+                resource = null;
+            }
+
+            if ( resource == null )
+            {
+                final File f = this.getAbsoluteFile( location );
+
+                if ( f.isDirectory() )
+                {
+                    resource = f.toURI().toURL();
+                }
+            }
+
+            return resource;
+        }
+        catch ( final MalformedURLException e )
+        {
+            String m = getMessage( e );
+            m = m == null ? "" : " " + m;
+
+            throw new MojoExecutionException( getMessage( "malformedLocation", location, m ), e );
+        }
+    }
+
+    /**
+     * Creates a new {@code Properties} instance from a {@code PropertiesResourceType}.
+     *
+     * @param propertiesResourceType The {@code PropertiesResourceType} specifying the properties to create.
+     *
+     * @return The properties for {@code propertiesResourceType}.
+     *
+     * @throws NullPointerException if {@code propertiesResourceType} is {@code null}.
+     * @throws MojoExecutionException if loading properties fails.
+     *
+     * @see #getResource(java.lang.String)
+     * @since 1.2
+     */
+    protected Properties getProperties( final PropertiesResourceType propertiesResourceType )
+        throws MojoExecutionException
+    {
+        if ( propertiesResourceType == null )
+        {
+            throw new NullPointerException( "propertiesResourceType" );
         }
 
-        if ( this.transformationOutputProperties != null )
+        InputStream in = null;
+        final URL url = this.getResource( propertiesResourceType.getLocation() );
+        final Properties properties = new Properties();
+
+        try
         {
-            for ( Map.Entry<String, String> e : this.transformationOutputProperties.entrySet() )
+            if ( url != null )
             {
-                transformer.setOutputProperty( e.getKey(), e.getValue() );
+                if ( this.isLoggable( Level.FINER ) )
+                {
+                    this.log( Level.FINER, getMessage( "loadingProperties", url.toExternalForm() ), null );
+                }
+
+                final URLConnection con = url.openConnection();
+                con.setConnectTimeout( propertiesResourceType.getConnectTimeout() );
+                con.setReadTimeout( propertiesResourceType.getReadTimeout() );
+                con.connect();
+
+                in = con.getInputStream();
+
+                if ( PropertiesResourceType.PLAIN_FORMAT.equalsIgnoreCase( propertiesResourceType.getFormat() ) )
+                {
+                    properties.load( in );
+                }
+                else if ( PropertiesResourceType.XML_FORMAT.equalsIgnoreCase( propertiesResourceType.getFormat() ) )
+                {
+                    properties.loadFromXML( in );
+                }
+            }
+            else if ( propertiesResourceType.isOptional() )
+            {
+                if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING,
+                              getMessage( "resourceNotFound", propertiesResourceType.getLocation() ), null );
+
+                }
+            }
+            else
+            {
+                throw new MojoExecutionException( getMessage( "resourceNotFound",
+                                                              propertiesResourceType.getLocation() ) );
+
             }
         }
+        catch ( final SocketTimeoutException e )
+        {
+            String m = getMessage( e );
+            m = m == null ? "" : " " + m;
 
-        return transformer;
+            if ( propertiesResourceType.isOptional() )
+            {
+                if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, getMessage( "failedLoadingProperties", url.toExternalForm(), m ), e );
+                }
+            }
+            else
+            {
+                throw new MojoExecutionException( getMessage( "failedLoadingProperties", url.toExternalForm(), m ), e );
+            }
+        }
+        catch ( final IOException e )
+        {
+            String m = getMessage( e );
+            m = m == null ? "" : " " + m;
+
+            if ( propertiesResourceType.isOptional() )
+            {
+                if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, getMessage( "failedLoadingProperties", url.toExternalForm(), m ), e );
+                }
+            }
+            else
+            {
+                throw new MojoExecutionException( getMessage( "failedLoadingProperties", url.toExternalForm(), m ), e );
+            }
+        }
+        finally
+        {
+            IOUtils.closeQuietly( in );
+        }
+
+        return properties;
+    }
+
+    /**
+     * Tests if messages at a given level are logged.
+     *
+     * @param level The level to test.
+     *
+     * @return {@code true} if messages at {@code level} are logged; {@code false} if messages at {@code level} are
+     * suppressed.
+     *
+     * @throws NullPointerException if {@code level} is {@code null}.
+     * @throws MojoExecutionException if testing the level fails.
+     *
+     * @see #isVerbose()
+     * @since 1.2
+     */
+    protected boolean isLoggable( final Level level ) throws MojoExecutionException
+    {
+        if ( level == null )
+        {
+            throw new NullPointerException( "level" );
+        }
+
+        boolean loggable = false;
+
+        if ( level.intValue() <= Level.CONFIG.intValue() )
+        {
+            loggable = this.getLog().isDebugEnabled();
+        }
+        else if ( level.intValue() <= Level.INFO.intValue() )
+        {
+            loggable = this.getLog().isInfoEnabled() && this.isVerbose();
+        }
+        else if ( level.intValue() <= Level.WARNING.intValue() )
+        {
+            loggable = this.getLog().isWarnEnabled();
+        }
+        else if ( level.intValue() <= Level.SEVERE.intValue() )
+        {
+            loggable = this.getLog().isErrorEnabled();
+        }
+
+        return loggable;
     }
 
     /**
@@ -1419,7 +1945,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected void logSeparator() throws MojoExecutionException
     {
-        this.log( Level.INFO, getMessage( "separator" ), null );
+        if ( this.isLoggable( Level.INFO ) )
+        {
+            this.log( Level.INFO, getMessage( "separator" ), null );
+        }
     }
 
     /**
@@ -1432,7 +1961,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected void logProcessingModule( final String toolName, final String module ) throws MojoExecutionException
     {
-        this.log( Level.INFO, getMessage( "processingModule", toolName, module ), null );
+        if ( this.isLoggable( Level.INFO ) )
+        {
+            this.log( Level.INFO, getMessage( "processingModule", toolName, module ), null );
+        }
     }
 
     /**
@@ -1447,7 +1979,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected void logProcessingModel( final String toolName, final String model ) throws MojoExecutionException
     {
-        this.log( Level.INFO, getMessage( "processingModel", toolName, model ), null );
+        if ( this.isLoggable( Level.INFO ) )
+        {
+            this.log( Level.INFO, getMessage( "processingModel", toolName, model ), null );
+        }
     }
 
     /**
@@ -1459,7 +1994,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected void logMissingModule( final String module ) throws MojoExecutionException
     {
-        this.log( Level.WARNING, getMessage( "missingModule", module ), null );
+        if ( this.isLoggable( Level.WARNING ) )
+        {
+            this.log( Level.WARNING, getMessage( "missingModule", module ), null );
+        }
     }
 
     /**
@@ -1471,9 +2009,21 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected void logToolSuccess( final String toolName ) throws MojoExecutionException
     {
-        this.log( Level.INFO, getMessage( "toolSuccess", toolName ), null );
+        if ( this.isLoggable( Level.INFO ) )
+        {
+            this.log( Level.INFO, getMessage( "toolSuccess", toolName ), null );
+        }
     }
 
+    /**
+     * Logs a {@code ModelValidationReport}.
+     *
+     * @param context The context to use when marshalling detail elements of the report.
+     * @param level The level to log at.
+     * @param report The report to log.
+     *
+     * @throws MojoExecutionException if logging {@code report} fails.
+     */
     protected void log( final ModelContext context, final Level level, final ModelValidationReport report )
         throws MojoExecutionException
     {
@@ -1488,7 +2038,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 {
                     this.log( detail.getLevel(), "o " + detail.getMessage(), null );
 
-                    if ( detail.getElement() != null )
+                    if ( detail.getElement() != null && this.isLoggable( Level.FINEST ) )
                     {
                         if ( marshaller == null )
                         {
@@ -1519,13 +2069,21 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
     }
 
+    /**
+     * Logs a message and throwable at a given level.
+     *
+     * @param level The level to log at.
+     * @param message The message to log or {@code null}.
+     * @param throwable The throwable to log or {@code null}.
+     *
+     * @throws MojoExecutionException if logging fails.
+     */
     protected void log( final Level level, final String message, final Throwable throwable )
         throws MojoExecutionException
     {
         try
         {
-            if ( this.getLog().isDebugEnabled()
-                 || level.intValue() >= ( this.isVerbose() ? Level.INFO.intValue() : Level.WARNING.intValue() ) )
+            if ( this.isLoggable( level ) )
             {
                 String line;
                 final BufferedReader reader = new BufferedReader( new StringReader( message == null ? "" : message ) );
@@ -1537,26 +2095,21 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                         getMessage( this.getLog().isDebugEnabled() ? "debugMessage" : "logMessage", line,
                                     Thread.currentThread().getName(), new Date( System.currentTimeMillis() ) );
 
-                    if ( ( level.equals( Level.CONFIG ) || level.equals( Level.FINE ) || level.equals( Level.FINER )
-                           || level.equals( Level.FINEST ) ) && this.getLog().isDebugEnabled() )
+                    if ( level.intValue() <= Level.CONFIG.intValue() )
                     {
                         this.getLog().debug( mojoMessage, throwableLogged ? null : throwable );
                     }
-                    else if ( level.equals( Level.INFO ) && this.getLog().isInfoEnabled() )
+                    else if ( level.intValue() <= Level.INFO.intValue() )
                     {
                         this.getLog().info( mojoMessage, throwableLogged ? null : throwable );
                     }
-                    else if ( level.equals( Level.SEVERE ) && this.getLog().isErrorEnabled() )
-                    {
-                        this.getLog().error( mojoMessage, throwableLogged ? null : throwable );
-                    }
-                    else if ( level.equals( Level.WARNING ) && this.getLog().isWarnEnabled() )
+                    else if ( level.intValue() <= Level.WARNING.intValue() )
                     {
                         this.getLog().warn( mojoMessage, throwableLogged ? null : throwable );
                     }
-                    else if ( this.getLog().isDebugEnabled() )
+                    else if ( level.intValue() <= Level.SEVERE.intValue() )
                     {
-                        this.getLog().debug( mojoMessage, throwableLogged ? null : throwable );
+                        this.getLog().error( mojoMessage, throwableLogged ? null : throwable );
                     }
 
                     throwableLogged = true;
@@ -1662,10 +2215,30 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 tool.setIndentation( StringEscapeUtils.unescapeJava( this.indentation ) );
             }
+
             if ( this.lineSeparator != null )
             {
                 tool.setLineSeparator( StringEscapeUtils.unescapeJava( this.lineSeparator ) );
             }
+
+            if ( this.velocityPropertyResources != null )
+            {
+                for ( VelocityPropertyResource r : this.velocityPropertyResources )
+                {
+                    for ( Map.Entry<Object, Object> e : this.getProperties( r ).entrySet() )
+                    {
+                        if ( e.getValue() != null )
+                        {
+                            tool.getVelocityEngine().setProperty( e.getKey().toString(), e );
+                        }
+                        else
+                        {
+                            tool.getVelocityEngine().clearProperty( e.getKey().toString() );
+                        }
+                    }
+                }
+            }
+
             if ( this.velocityProperties != null )
             {
                 for ( Map.Entry<String, Object> e : this.velocityProperties.entrySet() )
@@ -1680,6 +2253,25 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     }
                 }
             }
+
+            if ( this.templateParameterResources != null )
+            {
+                for ( TemplateParameterResource r : this.templateParameterResources )
+                {
+                    for ( Map.Entry<Object, Object> e : this.getProperties( r ).entrySet() )
+                    {
+                        if ( e.getValue() != null )
+                        {
+                            tool.getTemplateParameters().put( e.getKey().toString(), e.getValue() );
+                        }
+                        else
+                        {
+                            tool.getTemplateParameters().remove( e.getKey().toString() );
+                        }
+                    }
+                }
+            }
+
             if ( this.templateParameters != null )
             {
                 for ( Map.Entry<String, Object> e : this.templateParameters.entrySet() )
@@ -1697,14 +2289,12 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( this.templateLocation != null )
             {
-                try
+                final URL url = this.getDirectory( this.templateLocation );
+                tool.setTemplateLocation( url );
+
+                if ( url == null && this.isLoggable( Level.WARNING ) )
                 {
-                    tool.setTemplateLocation( new URL( this.templateLocation ) );
-                }
-                catch ( final MalformedURLException e )
-                {
-                    this.log( Level.FINE, getMessage( e ), e );
-                    tool.setTemplateLocation( this.getAbsoluteFile( this.templateLocation ).toURI().toURL() );
+                    this.log( Level.WARNING, getMessage( "locationNotFound", this.templateLocation ), null );
                 }
             }
         }
@@ -1716,9 +2306,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     private Artifact getPluginArtifact( final Artifact a )
     {
-        for ( final Iterator<?> it = this.pluginArtifacts.iterator(); it.hasNext(); )
+        for ( final Iterator<Artifact> it = this.pluginArtifacts.iterator(); it.hasNext(); )
         {
-            final Artifact pluginArtifact = (Artifact) it.next();
+            final Artifact pluginArtifact = it.next();
 
             if ( pluginArtifact.getGroupId().equals( a.getGroupId() )
                  && pluginArtifact.getArtifactId().equals( a.getArtifactId() )

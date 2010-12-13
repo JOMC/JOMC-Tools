@@ -99,7 +99,11 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
                 try
                 {
                     this.setVerbose( true );
-                    this.log( Level.INFO, stringWriter.toString(), null );
+
+                    if ( this.isLoggable( Level.INFO ) )
+                    {
+                        this.log( Level.INFO, stringWriter.toString(), null );
+                    }
                 }
                 finally
                 {
@@ -108,12 +112,15 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
             }
             else
             {
-                if ( this.document.exists() && !this.document.delete() )
+                if ( this.document.exists() && !this.document.delete() && this.isLoggable( Level.WARNING ) )
                 {
                     this.log( Level.WARNING, getMessage( "failedDeleting", this.document.getAbsolutePath() ), null );
                 }
 
-                this.log( Level.INFO, getMessage( "writing", this.document.getAbsolutePath() ), null );
+                if ( this.isLoggable( Level.INFO ) )
+                {
+                    this.log( Level.INFO, getMessage( "writing", this.document.getAbsolutePath() ), null );
+                }
 
                 m.setProperty( Marshaller.JAXB_ENCODING, this.documentEncoding );
                 m.marshal( new ObjectFactory().createModel( displayModel ), this.document );
@@ -121,7 +128,7 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
 
             this.logToolSuccess( TOOLNAME );
         }
-        else
+        else if ( this.isLoggable( Level.WARNING ) )
         {
             this.log( Level.WARNING, getMessage( "modelObjectNotFound" ), null );
         }

@@ -78,7 +78,6 @@ public abstract class AbstractClassesValidateMojo extends AbstractJomcMojo
             final JAXBContext jaxbContext = context.createContext( this.getModel() );
             final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModel( tool.getModel() ) );
             ModelValidationReport validationReport = context.validateModel( this.getModel(), source );
-
             this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 
             if ( validationReport.isModelValid() )
@@ -107,7 +106,7 @@ public abstract class AbstractClassesValidateMojo extends AbstractJomcMojo
                 throw new MojoExecutionException( getMessage( "failed" ) );
             }
         }
-        else
+        else if ( this.isLoggable( Level.INFO ) )
         {
             this.log( Level.INFO, getMessage( "disabled" ), null );
         }

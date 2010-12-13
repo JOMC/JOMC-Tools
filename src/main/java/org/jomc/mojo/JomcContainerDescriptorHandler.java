@@ -35,6 +35,9 @@ package org.jomc.mojo;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Iterator;
@@ -109,8 +112,8 @@ import org.jomc.modlet.Modlets;
  *     &lt;modletExcludes&gt;
  *       &lt;modletExclude&gt;modlet name&lt;/modletExclude&gt;
  *     &lt;/modletExcludes&gt;
- *     &lt;modelObjectStylesheet&gt;Filename of a style sheet to use for transforming the merged model document.&lt;/modelObjectStylesheet&gt;
- *     &lt;modletObjectStylesheet&gt;Filename of a style sheet to use for transforming the merged modlet document.&lt;/modletObjectStylesheet&gt;
+ *     &lt;modelObjectStylesheet&gt;Location of a XSLT document to use for transforming the merged model document.&lt;/modelObjectStylesheet&gt;
+ *     &lt;modletObjectStylesheet&gt;Location of a XSLT document to use for transforming the merged modlet document.&lt;/modletObjectStylesheet&gt;
  *     &lt;providerLocation&gt;META-INF/custom-services&lt;/providerLocation&gt;
  *     &lt;platformProviderLocation&gt;${java.home}/jre/lib/custom-jomc.properties&lt;/platformProviderLocation&gt;
  *     &lt;modletLocation&gt;META-INF/custom-jomc-modlet.xml&lt;/modletLocation&gt;
@@ -188,11 +191,11 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
     /** Excluded modlets. */
     private List<String> modletExcludes;
 
-    /** Model object style sheet to apply. */
-    private File modelObjectStylesheet;
+    /** Location of a XSLT document to use for transforming the merged model document. */
+    private String modelObjectStylesheet;
 
-    /** Modlet object style sheet to apply. */
-    private File modletObjectStylesheet;
+    /** Location of a XSLT document to use for transforming the merged modlet document. */
+    private String modletObjectStylesheet;
 
     /** The location to search for providers. */
     private String providerLocation;
@@ -425,6 +428,10 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
         {
             throw new ArchiverException( getMessage( e ), e );
         }
+        catch ( final URISyntaxException e )
+        {
+            throw new ArchiverException( getMessage( e ), e );
+        }
         finally
         {
             this.modlets = new Modlets();
@@ -557,6 +564,80 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
         }
     }
 
+    /**
+     * Creates an {@code URL} for a given resource location.
+     * <p>This method first searches the class loader of the class for a single resource matching {@code location}. If
+     * such a resource is found, the URL of that resource is returned. If no such resource is found, an attempt is made
+     * to parse the given location to an URL. On successful parsing, that URL is returned. Failing that, the given
+     * location is interpreted as a file name. If that file is found, the URL of that file is returned. Otherwise an
+     * {@code IOException} is thrown.</p>
+     *
+     * @param location The location to create an {@code URL} from.
+     *
+     * @return An {@code URL} for {@code location}.
+     *
+     * @throws NullPointerException if {@code location} is {@code null}.
+     * @throws IOException if creating an URL fails.
+     */
+    protected URL getResource( final String location ) throws IOException
+    {
+        if ( location == null )
+        {
+            throw new NullPointerException( "location" );
+        }
+
+        try
+        {
+            String absolute = location;
+            if ( !absolute.startsWith( "/" ) )
+            {
+                absolute = "/" + location;
+            }
+
+            URL resource = this.getClass().getResource( absolute );
+            if ( resource == null )
+            {
+                try
+                {
+                    resource = new URL( location );
+                }
+                catch ( final MalformedURLException e )
+                {
+                    if ( this.getLogger() != null && this.getLogger().isDebugEnabled() )
+                    {
+                        this.getLogger().debug( getMessage( e ), e );
+                    }
+
+                    resource = null;
+                }
+            }
+
+            if ( resource == null )
+            {
+                final File f = new File( location );
+
+                if ( f.isFile() )
+                {
+                    resource = f.toURI().toURL();
+                }
+            }
+
+            if ( resource == null )
+            {
+                throw new IOException( getMessage( "resourceNotFound", location ) );
+            }
+
+            return resource;
+        }
+        catch ( final MalformedURLException e )
+        {
+            String m = getMessage( e );
+            m = m == null ? "" : " " + m;
+
+            throw (IOException) new IOException( getMessage( "malformedLocation", location, m ) ).initCause( e );
+        }
+    }
+
     private void setupJomc()
     {
         ModelContext.setDefaultModletSchemaSystemId( this.modletSchemaSystemId );
@@ -636,7 +717,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
 
     private <T> JAXBElement<T> transformModelObject( final JAXBElement<? extends ModelObject> element,
                                                      final Class<T> boundType )
-        throws ModelException, TransformerException, JAXBException
+        throws ModelException, TransformerException, JAXBException, IOException, URISyntaxException
     {
         if ( element == null )
         {
@@ -655,8 +736,8 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
             try
             {
                 this.setupJomc();
-                final Transformer transformer =
-                    TransformerFactory.newInstance().newTransformer( new StreamSource( this.modelObjectStylesheet ) );
+                final Transformer transformer = TransformerFactory.newInstance().newTransformer(
+                    new StreamSource( this.getResource( this.modelObjectStylesheet ).toURI().toASCIIString() ) );
 
                 final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
                 final Marshaller marshaller = modelContext.createMarshaller( this.model );
@@ -766,7 +847,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
 
     private <T> JAXBElement<T> transformModletObject( final JAXBElement<? extends ModletObject> element,
                                                       final Class<T> boundType )
-        throws ModelException, TransformerException, JAXBException
+        throws ModelException, TransformerException, JAXBException, IOException, URISyntaxException
     {
         if ( element == null )
         {
@@ -785,8 +866,8 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
             try
             {
                 this.setupJomc();
-                final Transformer transformer =
-                    TransformerFactory.newInstance().newTransformer( new StreamSource( this.modletObjectStylesheet ) );
+                final Transformer transformer = TransformerFactory.newInstance().newTransformer(
+                    new StreamSource( this.getResource( this.modletObjectStylesheet ).toURI().toASCIIString() ) );
 
                 final ModelContext modletContext =
                     ModelContext.createModelContext( this.getClass().getClassLoader() );

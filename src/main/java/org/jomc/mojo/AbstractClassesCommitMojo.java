@@ -36,7 +36,7 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.MessageFormat;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -44,7 +44,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.jomc.model.Module;
@@ -66,11 +65,52 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
     private static final String TOOLNAME = "ClassFileProcessor";
 
     /**
-     * Style sheet to use for transforming model objects.
+     * XSLT document to use for transforming model objects.
+     * <p>The value of the parameter is a location to search a XSLT document at. First the value is used to search the
+     * class path of the plugin. If a class path resource is found, a XSLT document is loaded from that resource. If no
+     * class path resource is found, an attempt is made to parse the value to an URL. Succeeding that, an XSLT document
+     * is loaded from that URL (since version 1.2). Failing that, the value is interpreted as a file name of a XSLT
+     * document to load relative to the base directory of the project. If that file exists, a XSLT document is loaded
+     * from that file. If no XSLT document is found at the given location, a build failure is produced.</p>
+     * <p><b>Note:</b> When upgrading to version 1.2, any project dependencies holding XSLT documents referenced by this
+     * parameter need to be added to the plugins' dependencies.</p>
      *
      * @parameter
+     * @deprecated As of JOMC 1.2, please use parameter 'modelObjectStylesheetResources'.
      */
+    @Deprecated
     private String modelObjectStylesheet;
+
+    /**
+     * XSLT documents to use for transforming model objects.
+     * <pre>
+     * &lt;modelObjectStylesheetResources>
+     *   &lt;modelObjectStylesheetResource>
+     *     &lt;location>The location of the XSLT document.&lt;/location>
+     *     &lt;optional>Flag indicating the XSLT document is optional.&lt;/optional>
+     *     &lt;connectTimeout>Timeout value, in milliseconds.&lt;/connectTimeout>
+     *     &lt;readTimeout>Timeout value, in milliseconds.&lt;/readTimeout>
+     *   &lt;/modelObjectStylesheetResource>
+     * &lt;/modelObjectStylesheetResources>
+     * </pre>
+     * <p>The location value is used to first search the class path of the plugin. If a class path resource is found,
+     * that resource is used. If no class path resource is found, an attempt is made to parse the location value to an
+     * URL. On successful parsing, that URL is used. Otherwise the location value is interpreted as a file name relative
+     * to the base directory of the project. If that file exists, that file is used. If nothing is found at the given
+     * location, depending on the optional flag, a warning message is logged or a build failure is produced.</p>
+     * <p>The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
+     * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false</p>
+     * <p>The optional connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
+     * communications links to the resource. A timeout of zero is interpreted as an infinite timeout.<br/>
+     * <b>Default value is:</b> 60000</p>
+     * <p>The optional readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the
+     * resource. A timeout of zero is interpreted as an infinite timeout.<br/>
+     * <b>Default value is:</b> 60000</p>
+     *
+     * @parameter
+     * @since 1.2
+     */
+    private List<ModelObjectStylesheetResource> modelObjectStylesheetResources;
 
     /** Creates a new {@code AbstractClassesCommitMojo} instance. */
     public AbstractClassesCommitMojo()
@@ -87,49 +127,83 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
      *
      * @throws NullPointerException if {@code classLoader} is {@code null}.
      * @throws MojoExecutionException if getting the transformers fails.
+     *
+     * @deprecated As of JOMC 1.2, the dependencies of the project are no longer searched for XSLT documents. Please
+     * use method {@link #getTransformers()}.
      */
+    @Deprecated
     protected List<Transformer> getTransformers( final ClassLoader classLoader ) throws MojoExecutionException
     {
+        if ( classLoader == null )
+        {
+            throw new NullPointerException( "classLoader" );
+        }
+
+        return this.getTransformers();
+    }
+
+    /**
+     * Gets transformers to use for transforming model objects.
+     *
+     * @return A list of transformers to use for transforming model objects.
+     *
+     * @throws NullPointerException if {@code classLoader} is {@code null}.
+     * @throws MojoExecutionException if getting the transformers fails.
+     *
+     * @since 1.2
+     */
+    protected List<Transformer> getTransformers() throws MojoExecutionException
+    {
+        final List<Transformer> transformers = new ArrayList<Transformer>(
+            this.modelObjectStylesheetResources != null ? this.modelObjectStylesheetResources.size() + 1 : 1 );
+
         try
         {
-            final List<Transformer> transformers = new LinkedList<Transformer>();
-
             if ( this.modelObjectStylesheet != null )
             {
-                final File f = this.getAbsoluteFile( this.modelObjectStylesheet );
+                final URL url = this.getResource( this.modelObjectStylesheet );
 
-                if ( f.exists() )
+                if ( url != null )
                 {
-                    transformers.add( this.createTransformer( new StreamSource( f ) ) );
+                    transformers.add( this.getTransformer( new StreamSource( url.toURI().toASCIIString() ) ) );
                 }
                 else
                 {
-                    final URL url = classLoader.getResource( this.modelObjectStylesheet );
+                    throw new MojoExecutionException(
+                        getMessage( "modelObjectStylesheetNotFound", this.modelObjectStylesheet ) );
+
+                }
+            }
+
+            if ( this.modelObjectStylesheetResources != null )
+            {
+                for ( ModelObjectStylesheetResource r : this.modelObjectStylesheetResources )
+                {
+                    final URL url = this.getResource( r.getLocation() );
 
                     if ( url != null )
                     {
-                        transformers.add( this.createTransformer( new StreamSource( url.toURI().toASCIIString() ) ) );
+                        transformers.add( this.getTransformer( new StreamSource( url.toURI().toASCIIString() ) ) );
+                    }
+                    else if ( r.isOptional() )
+                    {
+                        if ( this.isLoggable( Level.WARNING ) )
+                        {
+                            this.log( Level.WARNING,
+                                      getMessage( "modelObjectStylesheetNotFound", r.getLocation() ), null );
+
+                        }
                     }
                     else
                     {
-                        throw new MojoExecutionException( getMessage(
-                            "modelObjectStylesheetNotFound", this.modelObjectStylesheet ) );
+                        throw new MojoExecutionException(
+                            getMessage( "modelObjectStylesheetNotFound", r.getLocation() ) );
 
                     }
                 }
             }
 
             return transformers;
-        }
-        catch ( final TransformerConfigurationException e )
-        {
-            String message = getMessage( e );
-            if ( message == null && e.getException() != null )
-            {
-                message = getMessage( e.getException() );
-            }
-
-            throw new MojoExecutionException( message, e );
         }
         catch ( final URISyntaxException e )
         {
@@ -150,7 +224,7 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
             final ModelContext context = this.createModelContext( classLoader );
             final ClassFileProcessor tool = this.createClassFileProcessor( context );
             final JAXBContext jaxbContext = context.createContext( this.getModel() );
-            final List<Transformer> transformers = this.getTransformers( classLoader );
+            final List<Transformer> transformers = this.getTransformers();
             final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModel( tool.getModel() ) );
             final ModelValidationReport validationReport = context.validateModel( this.getModel(), source );
 
@@ -181,7 +255,7 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
                 throw new MojoExecutionException( getMessage( "failed" ) );
             }
         }
-        else
+        else if ( this.isLoggable( Level.INFO ) )
         {
             this.log( Level.INFO, getMessage( "disabled" ), null );
         }
