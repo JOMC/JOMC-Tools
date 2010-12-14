@@ -30,69 +30,60 @@
  *   $Id$
  *
  */
-package org.jomc.ant;
-
-import javax.xml.transform.ErrorListener;
-import javax.xml.transform.TransformerException;
-import org.apache.tools.ant.Project;
+package org.jomc.ant.types;
 
 /**
- * Error listener backed by a project.
+ * Datatype describing a properties resource.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public class ProjectErrorListener implements ErrorListener
+public class PropertiesResourceType extends ResourceType
 {
 
-    /** The project messages are logged to. */
-    private final Project project;
+    /** The format of the properties resource. */
+    private PropertiesFormatType format;
 
-    /**
-     * Creates a new {@code ProjectErrorListener} taking a {@code Project}.
-     *
-     * @param project The {@code Project} to log messages to.
-     */
-    public ProjectErrorListener( final Project project )
+    /** Creates a new {@code PropertiesResourceType} instance. */
+    public PropertiesResourceType()
     {
         super();
-        this.project = project;
     }
 
     /**
-     * Gets the {@code Project} messages are logged to.
+     * Gets the value of the {@code format} property.
      *
-     * @return The {@code Project} messages are logged to.
+     * @return The value of the {@code format} property.
      */
-    public final Project getProject()
+    public final PropertiesFormatType getFormat()
     {
-        return this.project;
-    }
-
-    /** {@inheritDoc} */
-    public void warning( final TransformerException exception ) throws TransformerException
-    {
-        if ( this.getProject() != null )
+        if ( this.format == null )
         {
-            this.getProject().log( getMessage( exception ), exception, Project.MSG_WARN );
+            this.format = PropertiesFormatType.PLAIN;
         }
+
+        return this.format;
     }
 
-    /** {@inheritDoc} */
-    public void error( final TransformerException exception ) throws TransformerException
+    /**
+     * Sets the value of the {@code format} property.
+     *
+     * @param value The new value of the {@code format} property or {@code null}.
+     */
+    public final void setFormat( final PropertiesFormatType value )
     {
-        throw exception;
+        this.format = value;
     }
 
-    /** {@inheritDoc} */
-    public void fatalError( final TransformerException exception ) throws TransformerException
+    /**
+     * Creates and returns a copy of this object.
+     *
+     * @return A copy of this object.
+     */
+    @Override
+    public PropertiesResourceType clone()
     {
-        throw exception;
-    }
-
-    private static String getMessage( final Throwable t )
-    {
-        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
+        return (PropertiesResourceType) super.clone();
     }
 
 }

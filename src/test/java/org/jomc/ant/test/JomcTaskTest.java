@@ -32,6 +32,10 @@
  */
 package org.jomc.ant.test;
 
+import org.jomc.ant.types.TransformerResourceType;
+import java.util.Properties;
+import org.jomc.ant.types.PropertiesResourceType;
+import org.jomc.ant.types.KeyValueType;
 import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import java.net.URL;
@@ -54,6 +58,7 @@ import static org.jomc.ant.test.Assert.assertMessageLogged;
 import static org.jomc.ant.test.Assert.assertMessageNotLogged;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -129,6 +134,8 @@ public class JomcTaskTest
         if ( this.jomcTask == null )
         {
             this.jomcTask = this.newJomcTask();
+            this.jomcTask.setProject( new Project() );
+            this.jomcTask.getProject().init();
         }
 
         return this.jomcTask;
@@ -390,11 +397,11 @@ public class JomcTaskTest
     }
 
     @Test
-    public final void testNewTransformer() throws Exception
+    public final void testAssertKeysNotNull() throws Exception
     {
         try
         {
-            this.getJomcTask().newTransformer( null, null );
+            this.getJomcTask().assertKeysNotNull( null );
             fail( "Expected 'NullPointerException' not thrown." );
         }
         catch ( final NullPointerException e )
@@ -403,9 +410,27 @@ public class JomcTaskTest
             System.out.println( e );
         }
 
+        final Collection<KeyValueType<Object, Object>> keys = new ArrayList<KeyValueType<Object, Object>>( 1 );
+        keys.add( new KeyValueType<Object, Object>() );
+
         try
         {
-            this.getJomcTask().newTransformer( "TEST", null );
+            this.getJomcTask().assertKeysNotNull( keys );
+            fail( "Expected 'BuildException' not thrown." );
+        }
+        catch ( final BuildException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+    }
+
+    @Test
+    public final void testAssertLocationsNotNull() throws Exception
+    {
+        try
+        {
+            this.getJomcTask().assertLocationsNotNull( null );
             fail( "Expected 'NullPointerException' not thrown." );
         }
         catch ( final NullPointerException e )
@@ -413,6 +438,81 @@ public class JomcTaskTest
             assertNotNull( e.getMessage() );
             System.out.println( e );
         }
+
+        final Collection<PropertiesResourceType> locations = new ArrayList<PropertiesResourceType>( 1 );
+        locations.add( new PropertiesResourceType() );
+
+        try
+        {
+            this.getJomcTask().assertLocationsNotNull( locations );
+            fail( "Expected 'BuildException' not thrown." );
+        }
+        catch ( final BuildException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+    }
+
+    @Test
+    public final void testGetTransformer() throws Exception
+    {
+        try
+        {
+            this.getJomcTask().getTransformer( null );
+            fail( "Expected 'NullPointerException' not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        final TransformerResourceType r = new TransformerResourceType();
+        r.setLocation( "DOES_NOT_EXIST" );
+        r.setOptional( true );
+        assertNull( this.getJomcTask().getTransformer( r ) );
+    }
+
+    @Test
+    public final void testGetResource() throws Exception
+    {
+        try
+        {
+            this.getJomcTask().getResource( null );
+            fail( "Expected 'NullPointerException' not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        assertNull( this.getJomcTask().getResource( "DOES_NOT_EXIST" ) );
+        assertNotNull( this.getJomcTask().getResource( "file://DOES_NOT_EXIST" ) );
+    }
+
+    @Test
+    public final void testGetProperties() throws Exception
+    {
+        try
+        {
+            this.getJomcTask().getProperties( null );
+            fail( "Expected 'NullPointerException' not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        final PropertiesResourceType r = new PropertiesResourceType();
+        r.setLocation( "DOES_NOT_EXIST" );
+        r.setOptional( true );
+
+        final Properties p = this.getJomcTask().getProperties( r );
+        assertNotNull( p );
+        assertTrue( p.isEmpty() );
     }
 
     @Test

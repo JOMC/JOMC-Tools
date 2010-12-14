@@ -104,11 +104,43 @@ public class CommitClassesTaskTest extends ClassFileProcessorTaskTest
     }
 
     @Test
+    public final void testStylesheetMissingLocationKey() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-stylesheet-missing-location" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'location' is missing a value." );
+    }
+
+    @Test
+    public final void testStylesheetParameterResourceMissingLocationKey() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-stylesheet-parameter-resource-missing-location" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'location' is missing a value." );
+    }
+
+    @Test
+    public final void testStylesheetParameterMissingKey() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-stylesheet-parameter-missing-key" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
+    }
+
+    @Test
     public final void testStylesheetNotFound() throws Exception
     {
         final AntExecutionResult r = this.executeTarget( "test-stylesheet-not-found" );
         assertException( r, BuildException.class );
-        assertExceptionMessage( r, "No style sheet found at 'DOES_NOT_EXIST'." );
+        assertExceptionMessage( r, "Resource 'DOES_NOT_EXIST' not found." );
+    }
+
+    @Test
+    public final void testOptionalStylesheetNotFound() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-optional-stylesheet-not-found" );
+        assertNoException( r );
+        assertMessageLogged( r, "Resource 'DOES_NOT_EXIST' not found." );
     }
 
     @Test

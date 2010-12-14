@@ -35,24 +35,32 @@ package org.jomc.ant;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.text.MessageFormat;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.transform.Source;
+import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
+import org.apache.commons.io.IOUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.PropertyHelper;
@@ -61,6 +69,10 @@ import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Reference;
 import org.jomc.ant.types.KeyValueType;
 import org.jomc.ant.types.NameType;
+import org.jomc.ant.types.PropertiesFormatType;
+import org.jomc.ant.types.PropertiesResourceType;
+import org.jomc.ant.types.ResourceType;
+import org.jomc.ant.types.TransformerResourceType;
 import org.jomc.model.ModelObject;
 import org.jomc.modlet.DefaultModelContext;
 import org.jomc.modlet.DefaultModletProvider;
@@ -102,11 +114,11 @@ public class JomcTask extends Task
     /** The location to search for platform providers. */
     private String platformProviderLocation;
 
-    /** The transformation parameters to apply. */
+    /** The global transformation parameters to apply. */
     private List<KeyValueType<String, Object>> transformationParameters;
 
-    /** The transformation output properties to apply. */
-    private List<KeyValueType<String, String>> transformationOutputProperties;
+    /** The global transformation parameter resources to apply. */
+    private List<PropertiesResourceType> transformationParameterResources;
 
     /** Property controlling the execution of the task. */
     private Object _if;
@@ -382,7 +394,7 @@ public class JomcTask extends Task
     }
 
     /**
-     * Gets the transformation parameters to apply.
+     * Gets the global transformation parameters to apply.
      * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
      * transformation parameters property.</p>
@@ -390,7 +402,7 @@ public class JomcTask extends Task
      * @return The transformation parameters to apply.
      *
      * @see #createTransformationParameter()
-     * @see #newTransformer(java.lang.String, java.lang.ClassLoader)
+     * @see #getTransformer(org.jomc.ant.types.TransformerResourceType)
      */
     public final List<KeyValueType<String, Object>> getTransformationParameters()
     {
@@ -417,38 +429,38 @@ public class JomcTask extends Task
     }
 
     /**
-     * Gets the transformation output properties to apply.
+     * Gets the global transformation parameter resources to apply.
      * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * transformation output properties property.</p>
+     * transformation parameter resources property.</p>
      *
-     * @return The transformation output properties to apply.
+     * @return The transformation parameter resources to apply.
      *
-     * @see #createTransformationOutputProperty()
-     * @see #newTransformer(java.lang.String, java.lang.ClassLoader)
+     * @see #createTransformationParameterResource()
+     * @see #getTransformer(org.jomc.ant.types.TransformerResourceType)
      */
-    public final List<KeyValueType<String, String>> getTransformationOutputProperties()
+    public final List<PropertiesResourceType> getTransformationParameterResources()
     {
-        if ( this.transformationOutputProperties == null )
+        if ( this.transformationParameterResources == null )
         {
-            this.transformationOutputProperties = new LinkedList<KeyValueType<String, String>>();
+            this.transformationParameterResources = new LinkedList<PropertiesResourceType>();
         }
 
-        return this.transformationOutputProperties;
+        return this.transformationParameterResources;
     }
 
     /**
-     * Creates a new {@code transformationOutputProperty} element instance.
+     * Creates a new {@code transformationParameterResource} element instance.
      *
-     * @return A new {@code transformationOutputProperty} element instance.
+     * @return A new {@code transformationParameterResource} element instance.
      *
-     * @see #getTransformationOutputProperties()
+     * @see #getTransformationParameterResources()
      */
-    public KeyValueType<String, String> createTransformationOutputProperty()
+    public PropertiesResourceType createTransformationParameterResource()
     {
-        final KeyValueType<String, String> transformationOutputProperty = new KeyValueType<String, String>();
-        this.getTransformationOutputProperties().add( transformationOutputProperty );
-        return transformationOutputProperty;
+        final PropertiesResourceType transformationParameterResource = new PropertiesResourceType();
+        this.getTransformationParameterResources().add( transformationParameterResource );
+        return transformationParameterResource;
     }
 
     /**
@@ -502,7 +514,7 @@ public class JomcTask extends Task
 
         this.assertNotNull( "model", this.getModel() );
         this.assertKeysNotNull( this.getTransformationParameters() );
-        this.assertKeysNotNull( this.getTransformationOutputProperties() );
+        this.assertLocationsNotNull( this.getTransformationParameterResources() );
     }
 
     /**
@@ -567,6 +579,329 @@ public class JomcTask extends Task
     }
 
     /**
+     * Creates an {@code URL} for a given resource location.
+     * <p>This method first searches the class path of the task for a single resource matching {@code location}. If
+     * such a resource is found, the URL of that resource is returned. If no such resource is found, an attempt is made
+     * to parse the given location to an URL. On successful parsing, that URL is returned. Failing that, the given
+     * location is interpreted as a file name relative to the project's base directory. If that file is found, the URL
+     * of that file is returned. Otherwise {@code null} is returned.</p>
+     *
+     * @param location The resource location to create an {@code URL} from.
+     *
+     * @return An {@code URL} for {@code location} or {@code null} if parsing {@code location} to an URL fails and
+     * {@code location} points to a non-existent resource.
+     *
+     * @throws NullPointerException if {@code location} is {@code null}.
+     * @throws BuildException if creating an URL fails.
+     */
+    public URL getResource( final String location ) throws BuildException
+    {
+        if ( location == null )
+        {
+            throw new NullPointerException( "location" );
+        }
+
+        try
+        {
+            String absolute = location;
+            if ( !absolute.startsWith( "/" ) )
+            {
+                absolute = "/" + absolute;
+            }
+
+            URL resource = this.getClass().getResource( absolute );
+            if ( resource == null )
+            {
+                try
+                {
+                    resource = new URL( location );
+                }
+                catch ( final MalformedURLException e )
+                {
+                    this.log( e, Project.MSG_DEBUG );
+                    resource = null;
+                }
+            }
+
+            if ( resource == null )
+            {
+                final File f = this.getProject().resolveFile( location );
+
+                if ( f.isFile() )
+                {
+                    resource = f.toURI().toURL();
+                }
+            }
+
+            return resource;
+        }
+        catch ( final MalformedURLException e )
+        {
+            String m = getMessage( e );
+            m = m == null ? "" : " " + m;
+
+            throw new BuildException( getMessage( "malformedLocation", location, m ), e, this.getLocation() );
+        }
+    }
+
+    /**
+     * Creates an {@code URL} for a given directory location.
+     * <p>This method first attempts to parse the given location to an URL. On successful parsing, that URL is returned.
+     * Failing that, the given location is interpreted as a directory name relative to the project's base directory. If
+     * that directory is found, the URL of that directory is returned. Otherwise {@code null} is returned.</p>
+     *
+     * @param location The directory location to create an {@code URL} from.
+     *
+     * @return An {@code URL} for {@code location} or {@code null} if parsing {@code location} to an URL fails and
+     * {@code location} points to a non-existent directory.
+     *
+     * @throws NullPointerException if {@code location} is {@code null}.
+     * @throws BuildException if creating an URL fails.
+     */
+    public URL getDirectory( final String location ) throws BuildException
+    {
+        if ( location == null )
+        {
+            throw new NullPointerException( "location" );
+        }
+
+        try
+        {
+            URL resource = null;
+
+            try
+            {
+                resource = new URL( location );
+            }
+            catch ( final MalformedURLException e )
+            {
+                this.log( e, Project.MSG_DEBUG );
+                resource = null;
+            }
+
+            if ( resource == null )
+            {
+                final File f = this.getProject().resolveFile( location );
+
+                if ( f.isDirectory() )
+                {
+                    resource = f.toURI().toURL();
+                }
+            }
+
+            return resource;
+        }
+        catch ( final MalformedURLException e )
+        {
+            String m = getMessage( e );
+            m = m == null ? "" : " " + m;
+
+            throw new BuildException( getMessage( "malformedLocation", location, m ), e, this.getLocation() );
+        }
+    }
+
+    /**
+     * Creates a new {@code Transformer} for a given {@code TransformerResourceType}.
+     *
+     * @param resource The resource to create a {@code Transformer} of.
+     *
+     * @return A new {@code Transformer} for {@code resource} or {@code null} if {@code resource} is not found and
+     * flagged optional.
+     *
+     * @throws TransformerConfigurationException if creating a new {@code Transformer} fails.
+     *
+     * @see #getTransformationParameterResources()
+     * @see #getTransformationParameters()
+     * @see #getResource(java.lang.String)
+     */
+    public Transformer getTransformer( final TransformerResourceType resource ) throws TransformerConfigurationException
+    {
+        if ( resource == null )
+        {
+            throw new NullPointerException( "resource" );
+        }
+
+        final URL url = this.getResource( resource.getLocation() );
+
+        try
+        {
+            if ( url != null )
+            {
+                final ErrorListener errorListener = new ErrorListener()
+                {
+
+                    public void warning( final TransformerException exception ) throws TransformerException
+                    {
+                        if ( getProject() != null )
+                        {
+                            getProject().log( getMessage( exception ), exception, Project.MSG_WARN );
+                        }
+                    }
+
+                    public void error( final TransformerException exception ) throws TransformerException
+                    {
+                        throw exception;
+                    }
+
+                    public void fatalError( final TransformerException exception ) throws TransformerException
+                    {
+                        throw exception;
+                    }
+
+                };
+
+                final TransformerFactory f = TransformerFactory.newInstance();
+                f.setErrorListener( errorListener );
+                final Transformer transformer = f.newTransformer( new StreamSource( url.toURI().toASCIIString() ) );
+                transformer.setErrorListener( errorListener );
+
+                for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
+                {
+                    transformer.setParameter( e.getKey().toString(), e.getValue() );
+                }
+
+                for ( final Iterator<Map.Entry<?, ?>> it = this.getProject().getProperties().entrySet().iterator();
+                      it.hasNext(); )
+                {
+                    final Map.Entry<?, ?> e = it.next();
+                    transformer.setParameter( e.getKey().toString(), e.getValue() );
+                }
+
+                for ( PropertiesResourceType r : this.getTransformationParameterResources() )
+                {
+                    for ( Map.Entry<Object, Object> e : this.getProperties( r ).entrySet() )
+                    {
+                        transformer.setParameter( e.getKey().toString(), e.getValue() );
+                    }
+                }
+
+                for ( KeyValueType<String, Object> p : this.getTransformationParameters() )
+                {
+                    transformer.setParameter( p.getKey(), p.getValue() );
+                }
+
+                for ( PropertiesResourceType r : resource.getTransformationParameterResources() )
+                {
+                    for ( Map.Entry<Object, Object> e : this.getProperties( r ).entrySet() )
+                    {
+                        transformer.setParameter( e.getKey().toString(), e.getValue() );
+                    }
+                }
+
+                for ( KeyValueType<String, Object> p : resource.getTransformationParameters() )
+                {
+                    transformer.setParameter( p.getKey(), p.getValue() );
+                }
+
+                for ( KeyValueType<String, String> p : resource.getTransformationOutputProperties() )
+                {
+                    transformer.setOutputProperty( p.getKey(), p.getValue() );
+                }
+
+                return transformer;
+            }
+            else if ( resource.isOptional() )
+            {
+                this.log( getMessage( "resourceNotFound", resource.getLocation() ), Project.MSG_WARN );
+            }
+            else
+            {
+                throw new BuildException( getMessage( "resourceNotFound", resource.getLocation() ),
+                                          this.getLocation() );
+
+            }
+
+            return null;
+        }
+        catch ( final URISyntaxException e )
+        {
+            throw new BuildException( e, this.getLocation() );
+        }
+    }
+
+    /**
+     * Creates a new {@code Properties} instance from a {@code PropertiesResourceType}.
+     *
+     * @param propertiesResourceType The {@code PropertiesResourceType} specifying the properties to create.
+     *
+     * @return The properties for {@code propertiesResourceType}.
+     *
+     * @throws NullPointerException if {@code propertiesResourceType} is {@code null}.
+     * @throws BuildException if loading properties fails.
+     */
+    public Properties getProperties( final PropertiesResourceType propertiesResourceType ) throws BuildException
+    {
+        if ( propertiesResourceType == null )
+        {
+            throw new NullPointerException( "propertiesResourceType" );
+        }
+
+        InputStream in = null;
+        final Properties properties = new Properties();
+        final URL url = this.getResource( propertiesResourceType.getLocation() );
+
+        try
+        {
+            if ( url != null )
+            {
+                final URLConnection con = url.openConnection();
+                con.setConnectTimeout( propertiesResourceType.getConnectTimeout() );
+                con.setReadTimeout( propertiesResourceType.getReadTimeout() );
+                con.connect();
+
+                in = con.getInputStream();
+
+                if ( propertiesResourceType.getFormat() == PropertiesFormatType.PLAIN )
+                {
+                    properties.load( in );
+                }
+                else if ( propertiesResourceType.getFormat() == PropertiesFormatType.XML )
+                {
+                    properties.loadFromXML( in );
+                }
+            }
+            else if ( propertiesResourceType.isOptional() )
+            {
+                this.log( getMessage( "resourceNotFound", propertiesResourceType.getLocation() ), Project.MSG_WARN );
+            }
+            else
+            {
+                throw new BuildException( getMessage( "resourceNotFound", propertiesResourceType.getLocation() ),
+                                          this.getLocation() );
+
+            }
+        }
+        catch ( final SocketTimeoutException e )
+        {
+            if ( propertiesResourceType.isOptional() )
+            {
+                this.getProject().log( getMessage( e ), e, Project.MSG_WARN );
+            }
+            else
+            {
+                throw new BuildException( e, this.getLocation() );
+            }
+        }
+        catch ( final IOException e )
+        {
+            if ( propertiesResourceType.isOptional() )
+            {
+                this.getProject().log( getMessage( e ), e, Project.MSG_WARN );
+            }
+            else
+            {
+                throw new BuildException( e, this.getLocation() );
+            }
+        }
+        finally
+        {
+            IOUtils.closeQuietly( in );
+        }
+
+        return properties;
+    }
+
+    /**
      * Creates a new {@code ProjectClassLoader} instance.
      *
      * @return A new {@code ProjectClassLoader} instance.
@@ -615,91 +950,6 @@ public class JomcTask extends Task
         } );
 
         return modelContext;
-    }
-
-    /**
-     * Creates a new {@code TransformerFactory} using an {@code ErrorListener} logging messages to the project.
-     *
-     * @return A new {@code TransformerFactory} using an {@code ErrorListener} logging messages to the project.
-     *
-     * @see ProjectErrorListener
-     */
-    public TransformerFactory newTransformerFactory()
-    {
-        final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        transformerFactory.setErrorListener( new ProjectErrorListener( this.getProject() ) );
-        return transformerFactory;
-    }
-
-    /**
-     * Creates a new {@code Transformer} by loading a style sheet from a given location.
-     *
-     * @param location The location of the style sheet to load.
-     * @param classLoader The class loader to use for loading the style sheet.
-     *
-     * @return A new {@code Transformer} for {@code location}.
-     *
-     * @throws NullPointerException if {@code location} or {@code classLoader} is {@code null}.
-     * @throws URISyntaxException if {@code location} holds an unsupported value.
-     * @throws TransformerConfigurationException if creating a new {@code Transformer} fails.
-     *
-     * @see ProjectErrorListener
-     * @see #getTransformationOutputProperties()
-     * @see #getTransformationParameters()
-     */
-    public Transformer newTransformer( final String location, final ClassLoader classLoader )
-        throws URISyntaxException, TransformerConfigurationException
-    {
-        if ( location == null )
-        {
-            throw new NullPointerException( "location" );
-        }
-        if ( classLoader == null )
-        {
-            throw new NullPointerException( "classLoader" );
-        }
-
-        Source source = null;
-        final File file = this.getProject().resolveFile( location );
-
-        if ( file.exists() )
-        {
-            source = new StreamSource( file );
-        }
-        else
-        {
-            final URL resource = classLoader.getResource( location );
-
-            if ( resource != null )
-            {
-                source = new StreamSource( resource.toURI().toASCIIString() );
-            }
-        }
-
-        if ( source == null )
-        {
-            throw new BuildException( getMessage( "stylesheetNotFound", location ), this.getLocation() );
-        }
-
-        final Transformer transformer = this.newTransformerFactory().newTransformer( source );
-        transformer.setErrorListener( new ProjectErrorListener( this.getProject() ) );
-
-        for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
-        {
-            transformer.setParameter( e.getKey().toString(), e.getValue() );
-        }
-
-        for ( KeyValueType<String, Object> p : this.getTransformationParameters() )
-        {
-            transformer.setParameter( p.getKey(), p.getValue() );
-        }
-
-        for ( KeyValueType<String, String> p : this.getTransformationOutputProperties() )
-        {
-            transformer.setOutputProperty( p.getKey(), p.getValue() );
-        }
-
-        return transformer;
     }
 
     /**
@@ -767,6 +1017,37 @@ public class JomcTask extends Task
         for ( KeyValueType<?, ?> k : keys )
         {
             this.assertNotNull( "key", k.getKey() );
+        }
+    }
+
+    /**
+     * Throws a {@code BuildException} on a {@code null} value of a {@code location} property of a given
+     * {@code ResourceType} collection.
+     *
+     * @param locations The collection holding the  {@code ResourceType} instances to test.
+     *
+     * @throws NullPointerException if {@code locations} is {@code null}.
+     * @throws BuildException if a {@code locations} property of a given {@code ResourceType} from the
+     * {@code locations} collection holds a {@code null} value.
+     */
+    public final void assertLocationsNotNull( final Collection<? extends ResourceType> locations )
+        throws BuildException
+    {
+        if ( locations == null )
+        {
+            throw new NullPointerException( "locations" );
+        }
+
+        for ( ResourceType r : locations )
+        {
+            assertNotNull( "location", r.getLocation() );
+
+            if ( r instanceof TransformerResourceType )
+            {
+                assertKeysNotNull( ( (TransformerResourceType) r ).getTransformationOutputProperties() );
+                assertKeysNotNull( ( (TransformerResourceType) r ).getTransformationParameters() );
+                assertLocationsNotNull( ( (TransformerResourceType) r ).getTransformationParameterResources() );
+            }
         }
     }
 

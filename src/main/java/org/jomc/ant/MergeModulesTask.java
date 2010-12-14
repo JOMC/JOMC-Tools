@@ -35,11 +35,12 @@ package org.jomc.ant;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStreamWriter;
-import java.net.URISyntaxException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 import javax.xml.bind.JAXBElement;
@@ -54,6 +55,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.validation.Schema;
 import org.apache.tools.ant.BuildException;
 import org.jomc.ant.types.NameType;
+import org.jomc.ant.types.TransformerResourceType;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.ObjectFactory;
@@ -92,8 +94,8 @@ public final class MergeModulesTask extends JomcModelTask
     /** Excluded modules. */
     private Set<NameType> moduleExcludes;
 
-    /** Model object style sheet to apply. */
-    private String modelObjectStylesheet;
+    /** XSLT documents to use for transforming model objects. */
+    private List<TransformerResourceType> modelObjectStylesheetResources;
 
     /** Creates a new {@code MergeModulesTask} instance. */
     public MergeModulesTask()
@@ -295,23 +297,37 @@ public final class MergeModulesTask extends JomcModelTask
     }
 
     /**
-     * Gets the location of a style sheet to transform the merged module with.
+     * Gets the XSLT documents to use for transforming model objects.
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * to the returned list will be present inside the object. This is why there is no {@code set} method for the
+     * model object stylesheets resources property.</p>
      *
-     * @return The location of a style sheet to transform the merged module with or {@code null}.
+     * @return The XSLT documents to use for transforming model objects.
+     *
+     * @see #createModelObjectStylesheetResource()
      */
-    public String getModelObjectStylesheet()
+    public List<TransformerResourceType> getModelObjectStylesheetResources()
     {
-        return this.modelObjectStylesheet;
+        if ( this.modelObjectStylesheetResources == null )
+        {
+            this.modelObjectStylesheetResources = new LinkedList<TransformerResourceType>();
+        }
+
+        return this.modelObjectStylesheetResources;
     }
 
     /**
-     * Sets the location of a style sheet to transform the merged module with.
+     * Creates a new {@code modelObjectStylesheetResource} element instance.
      *
-     * @param value The new location of a style sheet to transform the merged module with or {@code null}.
+     * @return A new {@code modelObjectStylesheetResource} element instance.
+     *
+     * @see #getModelObjectStylesheetResources()
      */
-    public void setModelObjectStylesheet( final String value )
+    public TransformerResourceType createModelObjectStylesheetResource()
     {
-        this.modelObjectStylesheet = value;
+        final TransformerResourceType modelObjectStylesheetResource = new TransformerResourceType();
+        this.getModelObjectStylesheetResources().add( modelObjectStylesheetResource );
+        return modelObjectStylesheetResource;
     }
 
     /** {@inheritDoc} */
@@ -324,6 +340,7 @@ public final class MergeModulesTask extends JomcModelTask
         this.assertNotNull( "moduleName", this.getModuleName() );
         this.assertNamesNotNull( this.getModuleExcludes() );
         this.assertNamesNotNull( this.getModuleIncludes() );
+        this.assertLocationsNotNull( this.getModelObjectStylesheetResources() );
     }
 
     /**
@@ -369,33 +386,29 @@ public final class MergeModulesTask extends JomcModelTask
             marshaller.setSchema( schema );
             unmarshaller.setSchema( schema );
 
-            if ( this.getModelObjectStylesheet() != null )
+            for ( TransformerResourceType r : this.getModelObjectStylesheetResources() )
             {
-                final Transformer transformer = this.newTransformer( this.getModelObjectStylesheet(),
-                                                                     context.getClassLoader() );
+                final Transformer transformer = this.getTransformer( r );
 
-                for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
+                if ( transformer != null )
                 {
-                    transformer.setParameter( e.getKey().toString(), e.getValue() );
-                }
+                    final JAXBSource source =
+                        new JAXBSource( marshaller, new ObjectFactory().createModule( mergedModule ) );
 
-                final JAXBSource source =
-                    new JAXBSource( marshaller, new ObjectFactory().createModule( mergedModule ) );
+                    final JAXBResult result = new JAXBResult( unmarshaller );
+                    transformer.transform( source, result );
 
-                final JAXBResult result = new JAXBResult( unmarshaller );
+                    if ( result.getResult() instanceof JAXBElement<?>
+                         && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Module )
+                    {
+                        mergedModule = (Module) ( (JAXBElement<?>) result.getResult() ).getValue();
+                    }
+                    else
+                    {
+                        throw new BuildException( getMessage( "illegalTransformationResult", r.getLocation() ),
+                                                  this.getLocation() );
 
-                transformer.transform( source, result );
-
-                if ( result.getResult() instanceof JAXBElement<?>
-                     && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Module )
-                {
-                    mergedModule = (Module) ( (JAXBElement<?>) result.getResult() ).getValue();
-                }
-                else
-                {
-                    throw new BuildException( getMessage( "illegalTransformationResult",
-                                                          this.getModelObjectStylesheet() ), this.getLocation() );
-
+                    }
                 }
             }
 
@@ -403,10 +416,6 @@ public final class MergeModulesTask extends JomcModelTask
             marshaller.setProperty( Marshaller.JAXB_ENCODING, this.getModuleEncoding() );
             marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
             marshaller.marshal( new ObjectFactory().createModule( mergedModule ), this.getModuleFile() );
-        }
-        catch ( final URISyntaxException e )
-        {
-            throw new BuildException( getMessage( e ), e, this.getLocation() );
         }
         catch ( final JAXBException e )
         {
@@ -499,24 +508,31 @@ public final class MergeModulesTask extends JomcModelTask
 
         if ( this.moduleExcludes != null )
         {
-            final HashSet<NameType> set = new HashSet<NameType>( this.moduleExcludes.size() );
+            clone.moduleExcludes = new HashSet<NameType>( this.moduleExcludes.size() );
             for ( NameType t : this.moduleExcludes )
             {
-                set.add( t.clone() );
+                clone.moduleExcludes.add( t.clone() );
             }
-
-            clone.moduleExcludes = set;
         }
 
         if ( this.moduleIncludes != null )
         {
-            final HashSet<NameType> set = new HashSet<NameType>( this.moduleIncludes.size() );
+            clone.moduleIncludes = new HashSet<NameType>( this.moduleIncludes.size() );
             for ( NameType t : this.moduleIncludes )
             {
-                set.add( t.clone() );
+                clone.moduleIncludes.add( t.clone() );
             }
+        }
 
-            clone.moduleIncludes = set;
+        if ( this.modelObjectStylesheetResources != null )
+        {
+            clone.modelObjectStylesheetResources =
+                new ArrayList<TransformerResourceType>( this.modelObjectStylesheetResources.size() );
+
+            for ( TransformerResourceType r : this.modelObjectStylesheetResources )
+            {
+                clone.modelObjectStylesheetResources.add( r.clone() );
+            }
         }
 
         return clone;

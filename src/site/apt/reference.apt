@@ -36,7 +36,7 @@
  ~~
  ~~ $Id$
 
-Task Reference
+Task and Type Reference
 
 * <<<{commit-classes}>>>
 
@@ -95,9 +95,6 @@ Task Reference
 | <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
 |                                             | resolution is enabled.                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modelObjectStylesheet>>>                 | The location of a style sheet used for     | No.                    |
-|                                             | transforming model objects.                |                        |
-*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
 |                                             | is enabled.                                |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -140,7 +137,14 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateLocation>>>                      | Location to search for templates in        | No.                    |
 |                                             | addition to searching the class path of    |                        |
-|                                             | the task.                                  |                        |
+|                                             | the task. The value is parsed to an URL    |                        |
+|                                             | first. On successful parsing, that URL is  |                        |
+|                                             | used. Failing that, the value is           |                        |
+|                                             | interpreted as a directory name relative   |                        |
+|                                             | to the project's base directory. If that   |                        |
+|                                             | directory is found, the URL of that        |                        |
+|                                             | directory is used. Otherwise a warning     |                        |
+|                                             | message is logged.                         |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateProfile>>>                       | The template profile to use when accessing | No.                    |
 |                                             | templates.                                 |                        |
@@ -152,21 +156,47 @@ Task Reference
 |                                             | task.                                      |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 
+  The <<<commit-classes>>> task supports the following nested elements:
 
-  The <<<commit-classes>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
-  or the nested <<<classpath>>> element can be used.
-
-  Nested <<<velocityProperty>>> elements can be used to configure the Velocity engine backing the task. The element
-  takes two attributes - <<<key>>> and <<<value>>>.
-
-  Nested <<<templateParameter>>> elements can be used to pass additional parameters to the template engine backing
-  the task. The element takes two attributes - <<<key>>> and <<<value>>>.
-
-  Nested <<<transformationParameter>>> elements can be used to pass additional parameters to transformers.
-  The element takes two attributes - <<<key>>> and <<<value>>>.
-
-  Nested <<<transformationOutputProperty>>> elements can be used to pass output properties to transformers.
-  The element takes two attributes - <<<key>>> and <<<value>>>.
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Element>>                                 | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpath>>>                             | Class path to process.                     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
+|                                             | to be used to configure the Velocity       |                        |
+|                                             | engine backing the task.                   |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityProperty>>>                      | Property to be used to configure the       | No.                    |
+|                                             | Velocity engine backing the task.          |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateParameterResource>>>             | Properties resource holding properties     | No.                    |
+|                                             | passed to the template engine backing the  |                        |
+|                                             | task.                                      |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateParameter>>>                     | Parameter passed to the template engine    | No.                    |
+|                                             | backing the task.                          |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
+|                                             | be passed to all transformers of the task. |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
+|                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectStylesheetResource>>>         | XSLT documents to use for transforming     | No.                    |
+|                                             | model objects.                             |                        |
+|                                             | Type: {{TransformerResourceType}}          |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 
 * <<<{generate-resources}>>>
 
@@ -271,7 +301,14 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateLocation>>>                      | Location to search for templates in        | No.                    |
 |                                             | addition to searching the class path of    |                        |
-|                                             | the task.                                  |                        |
+|                                             | the task. The value is parsed to an URL    |                        |
+|                                             | first. On successful parsing, that URL is  |                        |
+|                                             | used. Failing that, the value is           |                        |
+|                                             | interpreted as a directory name relative   |                        |
+|                                             | to the project's base directory. If that   |                        |
+|                                             | directory is found, the URL of that        |                        |
+|                                             | directory is used. Otherwise a warning     |                        |
+|                                             | message is logged.                         |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateProfile>>>                       | The template profile to use when accessing | No.                    |
 |                                             | templates.                                 |                        |
@@ -283,20 +320,43 @@ Task Reference
 |                                             | task.                                      |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 
-  The <<<generate-resources>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
-  or the nested <<<classpath>>> element can be used.
+  The <<<generate-resources>>> task supports the following nested elements:
 
-  Nested <<<velocityProperty>>> elements can be used to configure the Velocity engine backing the task. The element
-  takes two attributes - <<<key>>> and <<<value>>>.
-
-  Nested <<<templateParameter>>> elements can be used to pass additional parameters to the template engine backing
-  the task. The element takes two attributes - <<<key>>> and <<<value>>>.
-
-  Nested <<<transformationParameter>>> elements can be used to pass additional parameters to transformers.
-  The element takes two attributes - <<<key>>> and <<<value>>>.
-
-  Nested <<<transformationOutputProperty>>> elements can be used to pass output properties to transformers.
-  The element takes two attributes - <<<key>>> and <<<value>>>.
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Element>>                                 | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpath>>>                             | Class path to process.                     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
+|                                             | to be used to configure the Velocity       |                        |
+|                                             | engine backing the task.                   |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityProperty>>>                      | Property to be used to configure the       | No.                    |
+|                                             | Velocity engine backing the task.          |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateParameterResource>>>             | Properties resource holding properties     | No.                    |
+|                                             | passed to the template engine backing the  |                        |
+|                                             | task.                                      |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateParameter>>>                     | Parameter passed to the template engine    | No.                    |
+|                                             | backing the task.                          |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
+|                                             | be passed to all transformers of the task. |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
+|                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 
 * <<<{manage-sources}>>>
 
@@ -397,7 +457,14 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateLocation>>>                      | Location to search for templates in        | No.                    |
 |                                             | addition to searching the class path of    |                        |
-|                                             | the task.                                  |                        |
+|                                             | the task. The value is parsed to an URL    |                        |
+|                                             | first. On successful parsing, that URL is  |                        |
+|                                             | used. Failing that, the value is           |                        |
+|                                             | interpreted as a directory name relative   |                        |
+|                                             | to the project's base directory. If that   |                        |
+|                                             | directory is found, the URL of that        |                        |
+|                                             | directory is used. Otherwise a warning     |                        |
+|                                             | message is logged.                         |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateProfile>>>                       | The template profile to use when accessing | No.                    |
 |                                             | templates.                                 |                        |
@@ -409,20 +476,43 @@ Task Reference
 |                                             | task.                                      |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 
-  The <<<manage-sources>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
-  or the nested <<<classpath>>> element can be used.
+  The <<<manage-sources>>> task supports the following nested elements:
 
-  Nested <<<velocityProperty>>> elements can be used to configure the Velocity engine backing the task. The element
-  takes two attributes - <<<key>>> and <<<value>>>.
-
-  Nested <<<templateParameter>>> elements can be used to pass additional parameters to the template engine backing
-  the task. The element takes two attributes - <<<key>>> and <<<value>>>.
-
-  Nested <<<transformationParameter>>> elements can be used to pass additional parameters to transformers.
-  The element takes two attributes - <<<key>>> and <<<value>>>.
-
-  Nested <<<transformationOutputProperty>>> elements can be used to pass output properties to transformers.
-  The element takes two attributes - <<<key>>> and <<<value>>>.
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Element>>                                 | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpath>>>                             | Class path to process.                     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
+|                                             | to be used to configure the Velocity       |                        |
+|                                             | engine backing the task.                   |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityProperty>>>                      | Property to be used to configure the       | No.                    |
+|                                             | Velocity engine backing the task.          |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateParameterResource>>>             | Properties resource holding properties     | No.                    |
+|                                             | passed to the template engine backing the  |                        |
+|                                             | task.                                      |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateParameter>>>                     | Parameter passed to the template engine    | No.                    |
+|                                             | backing the task.                          |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
+|                                             | be passed to all transformers of the task. |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
+|                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 
 * <<<{validate-classes}>>>
 
@@ -524,7 +614,14 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateLocation>>>                      | Location to search for templates in        | No.                    |
 |                                             | addition to searching the class path of    |                        |
-|                                             | the task.                                  |                        |
+|                                             | the task. The value is parsed to an URL    |                        |
+|                                             | first. On successful parsing, that URL is  |                        |
+|                                             | used. Failing that, the value is           |                        |
+|                                             | interpreted as a directory name relative   |                        |
+|                                             | to the project's base directory. If that   |                        |
+|                                             | directory is found, the URL of that        |                        |
+|                                             | directory is used. Otherwise a warning     |                        |
+|                                             | message is logged.                         |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateProfile>>>                       | The template profile to use when accessing | No.                    |
 |                                             | templates.                                 |                        |
@@ -536,20 +633,43 @@ Task Reference
 |                                             | task.                                      |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 
-  The <<<validate-classes>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
-  or the nested <<<classpath>>> element can be used.
+  The <<<validate-classes>>> task supports the following nested elements:
 
-  Nested <<<velocityProperty>>> elements can be used to configure the Velocity engine backing the task. The element
-  takes two attributes - <<<key>>> and <<<value>>>.
-
-  Nested <<<templateParameter>>> elements can be used to pass additional parameters to the template engine backing
-  the task. The element takes two attributes - <<<key>>> and <<<value>>>.
-
-  Nested <<<transformationParameter>>> elements can be used to pass additional parameters to transformers.
-  The element takes two attributes - <<<key>>> and <<<value>>>.
-
-  Nested <<<transformationOutputProperty>>> elements can be used to pass output properties to transformers.
-  The element takes two attributes - <<<key>>> and <<<value>>>.
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Element>>                                 | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpath>>>                             | Class path to process.                     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
+|                                             | to be used to configure the Velocity       |                        |
+|                                             | engine backing the task.                   |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityProperty>>>                      | Property to be used to configure the       | No.                    |
+|                                             | Velocity engine backing the task.          |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateParameterResource>>>             | Properties resource holding properties     | No.                    |
+|                                             | passed to the template engine backing the  |                        |
+|                                             | task.                                      |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateParameter>>>                     | Parameter passed to the template engine    | No.                    |
+|                                             | backing the task.                          |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
+|                                             | be passed to all transformers of the task. |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
+|                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 
 * <<<{validate-classpath}>>>
 
@@ -647,7 +767,14 @@ Task Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateLocation>>>                      | Location to search for templates in        | No.                    |
 |                                             | addition to searching the class path of    |                        |
-|                                             | the task.                                  |                        |
+|                                             | the task. The value is parsed to an URL    |                        |
+|                                             | first. On successful parsing, that URL is  |                        |
+|                                             | used. Failing that, the value is           |                        |
+|                                             | interpreted as a directory name relative   |                        |
+|                                             | to the project's base directory. If that   |                        |
+|                                             | directory is found, the URL of that        |                        |
+|                                             | directory is used. Otherwise a warning     |                        |
+|                                             | message is logged.                         |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateProfile>>>                       | The template profile to use when accessing | No.                    |
 |                                             | templates.                                 |                        |
@@ -659,20 +786,43 @@ Task Reference
 |                                             | task.                                      |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 
-  The <<<validate-classpath>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
-  or the nested <<<classpath>>> element can be used.
+  The <<<validate-classpath>>> task supports the following nested elements:
 
-  Nested <<<velocityProperty>>> elements can be used to configure the Velocity engine backing the task. The element
-  takes two attributes - <<<key>>> and <<<value>>>.
-
-  Nested <<<templateParameter>>> elements can be used to pass additional parameters to the template engine backing
-  the task. The element takes two attributes - <<<key>>> and <<<value>>>.
-
-  Nested <<<transformationParameter>>> elements can be used to pass additional parameters to transformers.
-  The element takes two attributes - <<<key>>> and <<<value>>>.
-
-  Nested <<<transformationOutputProperty>>> elements can be used to pass output properties to transformers.
-  The element takes two attributes - <<<key>>> and <<<value>>>.
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Element>>                                 | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpath>>>                             | Class path to process.                     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
+|                                             | to be used to configure the Velocity       |                        |
+|                                             | engine backing the task.                   |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityProperty>>>                      | Property to be used to configure the       | No.                    |
+|                                             | Velocity engine backing the task.          |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateParameterResource>>>             | Properties resource holding properties     | No.                    |
+|                                             | passed to the template engine backing the  |                        |
+|                                             | task.                                      |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateParameter>>>                     | Parameter passed to the template engine    | No.                    |
+|                                             | backing the task.                          |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
+|                                             | be passed to all transformers of the task. |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
+|                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 
 * <<<{validate-model}>>>
 
@@ -726,14 +876,25 @@ Task Reference
 |                                             | task.                                      |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 
-  The <<<validate-model>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
-  or the nested <<<classpath>>> element can be used.
+  The <<<validate-model>>> task supports the following nested elements:
 
-  Nested <<<transformationParameter>>> elements can be used to pass additional parameters to transformers.
-  The element takes two attributes - <<<key>>> and <<<value>>>.
-
-  Nested <<<transformationOutputProperty>>> elements can be used to pass output properties to transformers.
-  The element takes two attributes - <<<key>>> and <<<value>>>.
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Element>>                                 | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpath>>>                             | Class path to process.                     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
+|                                             | be passed to all transformers of the task. |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
+|                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 
 * <<<{merge-modlets}>>>
 
@@ -793,18 +954,31 @@ Task Reference
 |                                       | task.                                      |                        |
 *---------------------------------------+--------------------------------------------+------------------------+
 
-  The <<<merge-modlets>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
-  or the nested <<<classpath>>> element can be used.
+  The <<<merge-modlets>>> task supports the following nested elements:
 
-  For controlling the modlets to be merged, the <<<merge-modlets>>> task supports nested <<<modletInclude>>> and
-  <<<modletExclude>>> elements. Both elements take a single <<<name>>> attribute specifying the name of a modlet
-  to exclude/include.
-
-  Nested <<<transformationParameter>>> elements can be used to pass additional parameters to transformers.
-  The element takes two attributes - <<<key>>> and <<<value>>>.
-
-  Nested <<<transformationOutputProperty>>> elements can be used to pass output properties to transformers.
-  The element takes two attributes - <<<key>>> and <<<value>>>.
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Element>>                                 | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpath>>>                             | Class path to process.                     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
+|                                             | be passed to all transformers of the task. |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
+|                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletInclude>>>                         | Modlet to include.                         | No.                    |
+|                                             | Type: {{NameType}}                         |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletExclude>>>                         | Modlet to exclude.                         | No.                    |
+|                                             | Type: {{NameType}}                         |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 
 * <<<{merge-modules}>>>
 
@@ -873,15 +1047,188 @@ Task Reference
 |                                             | task.                                      |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 
-  The <<<merge-modules>>> task supports a nested <<<classpath>>> element. Either the <<<classpathRef>>> attribute
-  or the nested <<<classpath>>> element can be used.
+  The <<<merge-modules>>> task supports the following nested elements:
 
-  For controlling the modules to be merged, the <<<merge-modules>>> task supports nested <<<moduleInclude>>> and
-  <<<moduleExclude>>> elements. Both elements take a single <<<name>>> attribute specifying the name of a module
-  to exclude/include.
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Element>>                                 | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpath>>>                             | Class path to process.                     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
+|                                             | be passed to all transformers of the task. |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
+|                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleInclude>>>                         | Module to include.                         | No.                    |
+|                                             | Type: {{NameType}}                         |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleExclude>>>                         | Module to exclude.                         | No.                    |
+|                                             | Type: {{NameType}}                         |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 
-  Nested <<<transformationParameter>>> elements can be used to pass additional parameters to transformers.
-  The element takes two attributes - <<<key>>> and <<<value>>>.
+* <<<{NameType}>>>
 
-  Nested <<<transformationOutputProperty>>> elements can be used to pass output properties to transformers.
-  The element takes two attributes - <<<key>>> and <<<value>>>.
+  The <<<NameType>>> is used to specify names.
+
+  The <<<NameType>>> type supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<name>>>                                  | The name.                                  | <<Yes>>.               |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+* <<<{KeyValueType}>>>
+
+  The <<<KeyValueType>>> is used to specify a key value pair.
+
+  The <<<KeyValueType>>> type supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<key>>>                                   | The key.                                   | <<Yes>>.               |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<value>>>                                 | The value.                                 | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+* <<<{ResourceType}>>>
+
+  The <<<ResourceType>>> is used to specify resources.
+
+  The <<<ResourceType>>> type supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<location>>>                              | Location of the resource. The location     | <<Yes>>.               |
+|                                             | value is used to first search the class    |                        |
+|                                             | path of the task. If a class path resource |                        |
+|                                             | is found, that resource is used. If no     |                        |
+|                                             | class path resource is found, an attempt   |                        |
+|                                             | is made to parse the location value to an  |                        |
+|                                             | URL. On successful parsing, that URL is    |                        |
+|                                             | used. Otherwise the location value is      |                        |
+|                                             | interpreted as a file name relative to the |                        |
+|                                             | base directory of the project. If that     |                        |
+|                                             | file exists, that file is used. If nothing |                        |
+|                                             | is found at the given location, depending  |                        |
+|                                             | on the optional flag, a warning message is |                        |
+|                                             | logged or a build failure is produced.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<optional>>>                              | The optional flag is used to flag the      | No. Defaults to false. |
+|                                             | resource optional. When an optional        |                        |
+|                                             | resource is not found, a warning message   |                        |
+|                                             | is logged instead of producing a build     |                        |
+|                                             | failure.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<connectTimeout>>>                        | Timeout value, in milliseconds, to be used | No. Defaults to 60000. |
+|                                             | when establishing communications links     |                        |
+|                                             | to the resource.                           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<readTimeout>>>                           | Timeout value, in milliseconds, to be used | No. Defaults to 60000. |
+|                                             | when reading the resource.                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+* <<<{PropertiesResourceType}>>>
+
+  The <<<PropertiesResourceType>>> is used to specify properties resources.
+
+  The <<<PropertiesResourceType>>> type supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<location>>>                              | Location of the resource. The location     | <<Yes>>.               |
+|                                             | value is used to first search the class    |                        |
+|                                             | path of the task. If a class path resource |                        |
+|                                             | is found, that resource is used. If no     |                        |
+|                                             | class path resource is found, an attempt   |                        |
+|                                             | is made to parse the location value to an  |                        |
+|                                             | URL. On successful parsing, that URL is    |                        |
+|                                             | used. Otherwise the location value is      |                        |
+|                                             | interpreted as a file name relative to the |                        |
+|                                             | base directory of the project. If that     |                        |
+|                                             | file exists, that file is used. If nothing |                        |
+|                                             | is found at the given location, depending  |                        |
+|                                             | on the optional flag, a warning message is |                        |
+|                                             | logged or a build failure is produced.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<optional>>>                              | The optional flag is used to flag the      | No. Defaults to false. |
+|                                             | resource optional. When an optional        |                        |
+|                                             | resource is not found, a warning message   |                        |
+|                                             | is logged instead of producing a build     |                        |
+|                                             | failure.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<connectTimeout>>>                        | Timeout value, in milliseconds, to be used | No. Defaults to 60000. |
+|                                             | when establishing communications links     |                        |
+|                                             | to the resource.                           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<readTimeout>>>                           | Timeout value, in milliseconds, to be used | No. Defaults to 60000. |
+|                                             | when reading the resource.                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<format>>>                                | Format of the properties resource.         | No. Either <<<plain>>> |
+|                                             |                                            | or <<<xml>>>. Defaults |
+|                                             |                                            | to <<<plain>>>.        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+* <<<{TransformerResourceType}>>>
+
+  The <<<TransformerResourceType>>> is used to specify XSLT document resources.
+
+  The <<<TransformerResourceType>>> type supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<location>>>                              | Location of the resource. The location     | <<Yes>>.               |
+|                                             | value is used to first search the class    |                        |
+|                                             | path of the task. If a class path resource |                        |
+|                                             | is found, that resource is used. If no     |                        |
+|                                             | class path resource is found, an attempt   |                        |
+|                                             | is made to parse the location value to an  |                        |
+|                                             | URL. On successful parsing, that URL is    |                        |
+|                                             | used. Otherwise the location value is      |                        |
+|                                             | interpreted as a file name relative to the |                        |
+|                                             | base directory of the project. If that     |                        |
+|                                             | file exists, that file is used. If nothing |                        |
+|                                             | is found at the given location, depending  |                        |
+|                                             | on the optional flag, a warning message is |                        |
+|                                             | logged or a build failure is produced.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<optional>>>                              | The optional flag is used to flag the      | No. Defaults to false. |
+|                                             | resource optional. When an optional        |                        |
+|                                             | resource is not found, a warning message   |                        |
+|                                             | is logged instead of producing a build     |                        |
+|                                             | failure.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<connectTimeout>>>                        | Timeout value, in milliseconds, to be used | No. Defaults to 60000. |
+|                                             | when establishing communications links     |                        |
+|                                             | to the resource.                           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<readTimeout>>>                           | Timeout value, in milliseconds, to be used | No. Defaults to 60000. |
+|                                             | when reading the resource.                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+  The <<<TransformerResourceType>>> supports the following nested elements:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Element>>                                 | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameterResource>>>       | Properties resource holding transformation | No.                    |
+|                                             | parameters to apply.                       |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameter>>>               | Transformation parameter to apply.         | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationOutputProperty>>>          | Transformation output property to apply.   | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+

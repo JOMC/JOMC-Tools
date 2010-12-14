@@ -91,8 +91,47 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-stylesheet-missing-location">
+    <jomc:commit-classes classesDirectory="${empty.dir}" if="${jomc.enabled}">
+      <jomc:modelObjectStylesheetResource optional="false" connectTimeout="0" readTimeout="0"/>
+    </jomc:commit-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-stylesheet-parameter-resource-missing-location">
+    <jomc:commit-classes classesDirectory="${empty.dir}" if="${jomc.enabled}">
+      <jomc:modelObjectStylesheetResource location="${no.op.stylesheet}" optional="false" connectTimeout="0"
+                                          readTimeout="0">
+        <jomc:transformationParameterResource optional="true"/>
+      </jomc:modelObjectStylesheetResource>
+    </jomc:commit-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-stylesheet-parameter-missing-key">
+    <jomc:commit-classes classesDirectory="${empty.dir}" if="${jomc.enabled}">
+      <jomc:modelObjectStylesheetResource location="${no.op.stylesheet}" optional="false" connectTimeout="0"
+                                          readTimeout="0"/>
+      <jomc:transformationParameter value="TEST"/>
+    </jomc:commit-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-stylesheet-not-found">
-    <jomc:commit-classes classesDirectory="${empty.dir}" modelObjectStylesheet="DOES_NOT_EXIST" if="${jomc.enabled}"/>
+    <jomc:commit-classes classesDirectory="${empty.dir}" if="${jomc.enabled}">
+      <jomc:modelObjectStylesheetResource location="DOES_NOT_EXIST" optional="false" connectTimeout="0"
+                                          readTimeout="0"/>
+
+    </jomc:commit-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-optional-stylesheet-not-found">
+    <jomc:commit-classes classesDirectory="${classes.dir}" if="${jomc.enabled}">
+      <jomc:modelObjectStylesheetResource location="DOES_NOT_EXIST" optional="true" connectTimeout="0"
+                                          readTimeout="0"/>
+
+    </jomc:commit-classes>
   </target>
 
   <!-- ************************************************************************************************************* -->
@@ -122,14 +161,21 @@
 
   <!-- ************************************************************************************************************* -->
   <target name="test-commit-ant-tasks-with-no-op-stylesheet">
-    <jomc:commit-classes classesDirectory="${classes.dir}" modelObjectStyleSheet="${no.op.stylesheet}"
-                         if="${jomc.enabled}"/>
+    <jomc:commit-classes classesDirectory="${classes.dir}" if="${jomc.enabled}">
+      <jomc:modelObjectStylesheetResource location="${no.op.stylesheet}" optional="false" connectTimeout="0"
+                                          readTimeout="0">
+
+        <jomc:transformationParameterResource location="TRANSFORMATION_PARAMETER_RESOURCE_DOES_NOT_EXIST"
+                                              optional="true"/>
+
+        <jomc:transformationParameter key="TEST" value="TEST"/>
+      </jomc:modelObjectStylesheetResource>
+    </jomc:commit-classes>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-commit-ant-tasks-with-redundant-resources">
-    <jomc:commit-classes classesDirectory="${classes.dir}" modelObjectStyleSheet="${no.op.stylesheet}"
-                         classpathref="redundant.classpath" if="${jomc.enabled}"/>
+    <jomc:commit-classes classesDirectory="${classes.dir}" classpathref="redundant.classpath" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
@@ -152,19 +198,44 @@
   <!-- ************************************************************************************************************* -->
   <target name="test-commit-one-specification-with-no-op-stylesheet">
     <jomc:commit-classes classesDirectory="${classes.dir}" specification="org.jomc.ant.test.JomcTask"
-                         modelObjectStyleSheet="${no.op.stylesheet}" if="${jomc.enabled}"/>
+                         if="${jomc.enabled}">
+
+      <jomc:modelObjectStylesheetResource location="${no.op.stylesheet}" optional="false" connectTimeout="0"
+                                          readTimeout="0">
+
+        <jomc:transformationParameterResource location="TRANSFORMATION_PARAMETER_RESOURCE_DOES_NOT_EXIST"
+                                              optional="true"/>
+        <jomc:transformationParameter key="TEST" value="TEST"/>
+      </jomc:modelObjectStylesheetResource>
+    </jomc:commit-classes>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-commit-one-implementation-with-no-op-stylesheet">
     <jomc:commit-classes classesDirectory="${classes.dir}" implementation="org.jomc.ant.test.JomcToolTask"
-                         modelObjectStyleSheet="${no.op.stylesheet}" if="${jomc.enabled}"/>
+                         if="${jomc.enabled}">
+
+      <jomc:modelObjectStylesheetResource location="${no.op.stylesheet}" optional="false" connectTimeout="0"
+                                          readTimeout="0">
+
+        <jomc:transformationParameterResource location="TRANSFORMATION_PARAMETER_RESOURCE_DOES_NOT_EXIST"
+                                              optional="true"/>
+        <jomc:transformationParameter key="TEST" value="TEST"/>
+      </jomc:modelObjectStylesheetResource>
+    </jomc:commit-classes>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-commit-one-module-with-no-op-stylesheet">
-    <jomc:commit-classes classesDirectory="${classes.dir}" module="JOMC Ant Tasks Tests"
-                         modelObjectStyleSheet="${no.op.stylesheet}" if="${jomc.enabled}"/>
+    <jomc:commit-classes classesDirectory="${classes.dir}" module="JOMC Ant Tasks Tests" if="${jomc.enabled}">
+      <jomc:modelObjectStylesheetResource location="${no.op.stylesheet}" optional="false" connectTimeout="0"
+                                          readTimeout="0">
+
+        <jomc:transformationParameterResource location="TRANSFORMATION_PARAMETER_RESOURCE_DOES_NOT_EXIST"
+                                              optional="true"/>
+        <jomc:transformationParameter key="TEST" value="TEST"/>
+      </jomc:modelObjectStylesheetResource>
+    </jomc:commit-classes>
   </target>
 
   <!-- ************************************************************************************************************* -->

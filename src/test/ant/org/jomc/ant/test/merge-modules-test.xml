@@ -103,21 +103,24 @@
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modules-with-no-op-stylesheet">
-    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST"
-                        modelObjectStylesheet="${no.op.stylesheet}" if="${jomc.enabled}"/>
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST" if="${jomc.enabled}">
+      <jomc:modelObjectStylesheetResource location="${no.op.stylesheet}" optional="false" connectTimeout="0"
+                                          readTimeout="0"/>
+    </jomc:merge-modules>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modules-with-redundant-resources">
-    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST"
-                        modelObjectStylesheet="${no.op.stylesheet}" classpathref="redundant.classpath"
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST" classpathref="redundant.classpath"
                         if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modules-with-illegal-transformation-result-stylesheet">
-    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST"
-                        modelObjectStylesheet="${modules.stylesheet}" if="${jomc.enabled}"/>
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST" if="${jomc.enabled}">
+      <jomc:modelObjectStylesheetResource location="${modules.stylesheet}" optional="false" connectTimeout="0"
+                                          readTimeout="0"/>
+    </jomc:merge-modules>
   </target>
 
   <!-- ************************************************************************************************************* -->
@@ -141,7 +144,6 @@
                         moduleVersion="TEST"
                         moduleVendor="TEST"
                         moduleEncoding="UTF-8"
-                        modelObjectStylesheet="${no.op.stylesheet}"
                         if="${jomc.enabled}">
       <jomc:classpath>
         <pathelement location="${empty.dir}"/>

@@ -33,17 +33,19 @@
 package org.jomc.ant;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.jomc.ant.types.KeyValueType;
+import org.jomc.ant.types.PropertiesResourceType;
 import org.jomc.model.Implementation;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
@@ -97,8 +99,14 @@ public class JomcToolTask extends JomcModelTask
     /** The Velocity runtime properties. */
     private List<KeyValueType<String, Object>> velocityProperties;
 
+    /** The Velocity runtime property resources. */
+    private List<PropertiesResourceType> velocityPropertyResources;
+
     /** The template parameters. */
     private List<KeyValueType<String, Object>> templateParameters;
+
+    /** The template parameter resources. */
+    private List<PropertiesResourceType> templateParameterResources;
 
     /** Creates a new {@code JomcToolTask} instance. */
     public JomcToolTask()
@@ -534,6 +542,40 @@ public class JomcToolTask extends JomcModelTask
     }
 
     /**
+     * Gets the Velocity runtime property resources to apply.
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * to the returned list will be present inside the object. This is why there is no {@code set} method for the
+     * velocity property resources property.</p>
+     *
+     * @return The Velocity runtime property resources to apply.
+     *
+     * @see #createVelocityPropertyResource()
+     */
+    public final List<PropertiesResourceType> getVelocityPropertyResources()
+    {
+        if ( this.velocityPropertyResources == null )
+        {
+            this.velocityPropertyResources = new LinkedList<PropertiesResourceType>();
+        }
+
+        return this.velocityPropertyResources;
+    }
+
+    /**
+     * Creates a new {@code velocityPropertyResource} element instance.
+     *
+     * @return A new {@code velocityPropertyResource} element instance.
+     *
+     * @see #getVelocityPropertyResources()
+     */
+    public PropertiesResourceType createVelocityPropertyResource()
+    {
+        final PropertiesResourceType velocityPropertyResource = new PropertiesResourceType();
+        this.getVelocityPropertyResources().add( velocityPropertyResource );
+        return velocityPropertyResource;
+    }
+
+    /**
      * Gets the template parameters to apply.
      * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
@@ -567,6 +609,40 @@ public class JomcToolTask extends JomcModelTask
         return templateParameter;
     }
 
+    /**
+     * Gets the template parameter resources to apply.
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * to the returned list will be present inside the object. This is why there is no {@code set} method for the
+     * template parameter resources property.</p>
+     *
+     * @return The template parameter resources to apply.
+     *
+     * @see #createTemplateParameterResource()
+     */
+    public final List<PropertiesResourceType> getTemplateParameterResources()
+    {
+        if ( this.templateParameterResources == null )
+        {
+            this.templateParameterResources = new LinkedList<PropertiesResourceType>();
+        }
+
+        return this.templateParameterResources;
+    }
+
+    /**
+     * Creates a new {@code templateParameterResource} element instance.
+     *
+     * @return A new {@code templateParameterResource} element instance.
+     *
+     * @see #getTemplateParameterResources()
+     */
+    public PropertiesResourceType createTemplateParameterResource()
+    {
+        final PropertiesResourceType templateParameterResource = new PropertiesResourceType();
+        this.getTemplateParameterResources().add( templateParameterResource );
+        return templateParameterResource;
+    }
+
     /** {@inheritDoc} */
     @Override
     public void preExecuteTask() throws BuildException
@@ -577,6 +653,8 @@ public class JomcToolTask extends JomcModelTask
 
         this.assertKeysNotNull( this.getVelocityProperties() );
         this.assertKeysNotNull( this.getTemplateParameters() );
+        this.assertLocationsNotNull( this.getTemplateParameterResources() );
+        this.assertLocationsNotNull( this.getVelocityPropertyResources() );
     }
 
     /** {@inheritDoc} */
@@ -638,48 +716,80 @@ public class JomcToolTask extends JomcModelTask
 
             } );
 
-            if ( !this.getVelocityProperties().isEmpty() )
+            for ( PropertiesResourceType r : this.getVelocityPropertyResources() )
             {
-                for ( KeyValueType<String, Object> p : this.getVelocityProperties() )
+                for ( Map.Entry<Object, Object> e : this.getProperties( r ).entrySet() )
                 {
-                    if ( p.getValue() != null )
+                    if ( e.getValue() != null )
                     {
-                        tool.getVelocityEngine().setProperty( p.getKey(), p.getValue() );
+                        tool.getVelocityEngine().setProperty( e.getKey().toString(), e.getValue() );
                     }
                     else
                     {
-                        tool.getVelocityEngine().clearProperty( p.getKey() );
+                        tool.getVelocityEngine().clearProperty( e.getKey().toString() );
                     }
                 }
             }
 
-            if ( !this.getTemplateParameters().isEmpty() )
+            for ( KeyValueType<String, Object> p : this.getVelocityProperties() )
             {
-                for ( KeyValueType<String, Object> p : this.getTemplateParameters() )
+                if ( p.getValue() != null )
                 {
-                    if ( p.getValue() != null )
+                    tool.getVelocityEngine().setProperty( p.getKey(), p.getValue() );
+                }
+                else
+                {
+                    tool.getVelocityEngine().clearProperty( p.getKey() );
+                }
+            }
+
+            for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
+            {
+                tool.getTemplateParameters().put( e.getKey().toString(), e.getValue() );
+            }
+
+            for ( final Iterator<Map.Entry<?, ?>> it = this.getProject().getProperties().entrySet().iterator();
+                  it.hasNext(); )
+            {
+                final Map.Entry<?, ?> e = it.next();
+                tool.getTemplateParameters().put( e.getKey().toString(), e.getValue() );
+            }
+
+            for ( PropertiesResourceType r : this.getTemplateParameterResources() )
+            {
+                for ( Map.Entry<Object, Object> e : this.getProperties( r ).entrySet() )
+                {
+                    if ( e.getValue() != null )
                     {
-                        tool.getTemplateParameters().put( p.getKey(), p.getValue() );
+                        tool.getTemplateParameters().put( e.getKey().toString(), e.getValue() );
                     }
                     else
                     {
-                        tool.getTemplateParameters().remove( p.getKey() );
+                        tool.getTemplateParameters().remove( e.getKey().toString() );
                     }
+                }
+            }
+
+            for ( KeyValueType<String, Object> p : this.getTemplateParameters() )
+            {
+                if ( p.getValue() != null )
+                {
+                    tool.getTemplateParameters().put( p.getKey(), p.getValue() );
+                }
+                else
+                {
+                    tool.getTemplateParameters().remove( p.getKey() );
                 }
             }
 
             if ( this.getTemplateLocation() != null )
             {
-                try
-                {
-                    tool.setTemplateLocation( new URL( this.getTemplateLocation() ) );
-                }
-                catch ( final MalformedURLException e )
-                {
-                    this.log( getMessage( e ), e, Project.MSG_DEBUG );
-                    tool.setTemplateLocation(
-                        this.getProject().resolveFile( this.getTemplateLocation() ).toURI().toURL() );
+                final URL url = this.getDirectory( this.getTemplateLocation() );
+                tool.setTemplateLocation( url );
 
+                if ( url == null )
+                {
+                    this.log( getMessage( "templateLocationNotFound", this.getTemplateLocation() ), Project.MSG_WARN );
                 }
             }
         }

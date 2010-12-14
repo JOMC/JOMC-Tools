@@ -103,21 +103,24 @@
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modlets-with-no-op-stylesheet">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
-                        modletObjectStylesheet="${no.op.stylesheet}" if="${jomc.enabled}"/>
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" if="${jomc.enabled}">
+      <jomc:modletObjectStylesheetResource location="${no.op.stylesheet}" optional="false" connectTimeout="0"
+                                           readTimeout="0"/>
+    </jomc:merge-modlets>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modlets-with-redundant-resources">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
-                        modletObjectStylesheet="${no.op.stylesheet}" classpathref="redundant.classpath"
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" classpathref="redundant.classpath"
                         if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-merge-modlets-with-illegal-transformation-result-stylesheet">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
-                        modletObjectStylesheet="${modlets.stylesheet}" if="${jomc.enabled}"/>
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" if="${jomc.enabled}">
+      <jomc:modletObjectStylesheetResource location="${modlets.stylesheet}" optional="false" connectTimeout="0"
+                                           readTimeout="0"/>
+    </jomc:merge-modlets>
   </target>
 
   <!-- ************************************************************************************************************* -->
@@ -143,7 +146,6 @@
                         modletVersion="TEST"
                         modletVendor="TEST"
                         modletEncoding="UTF-8"
-                        modletObjectStylesheet="${no.op.stylesheet}"
                         if="${jomc.enabled}">
       <jomc:classpath>
         <pathelement location="${empty.dir}"/>

@@ -34,9 +34,9 @@ package org.jomc.ant;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.xml.bind.JAXBContext;
@@ -46,6 +46,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import org.apache.tools.ant.BuildException;
+import org.jomc.ant.types.TransformerResourceType;
 import org.jomc.model.Implementation;
 import org.jomc.model.Module;
 import org.jomc.model.Specification;
@@ -68,8 +69,8 @@ public final class CommitClassesTask extends ClassFileProcessorTask
     /** The directory holding the class files to commit model objects to. */
     private File classesDirectory;
 
-    /** Style sheet to use for transforming model objects. */
-    private String modelObjectStylesheet;
+    /** XSLT documents to use for transforming model objects. */
+    private List<TransformerResourceType> modelObjectStylesheetResources;
 
     /** Creates a new {@code CommitClassesTask} instance. */
     public CommitClassesTask()
@@ -102,27 +103,37 @@ public final class CommitClassesTask extends ClassFileProcessorTask
     }
 
     /**
-     * Gets the location of a style sheet used for transforming model objects.
+     * Gets the XSLT documents to use for transforming model objects.
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * to the returned list will be present inside the object. This is why there is no {@code set} method for the
+     * model object stylesheets resources property.</p>
      *
-     * @return The style sheet used for transforming model objects or {@code null}.
+     * @return The XSLT documents to use for transforming model objects.
      *
-     * @see #setModelObjectStylesheet(java.lang.String)
+     * @see #createModelObjectStylesheetResource()
      */
-    public String getModelObjectStylesheet()
+    public List<TransformerResourceType> getModelObjectStylesheetResources()
     {
-        return this.modelObjectStylesheet;
+        if ( this.modelObjectStylesheetResources == null )
+        {
+            this.modelObjectStylesheetResources = new LinkedList<TransformerResourceType>();
+        }
+
+        return this.modelObjectStylesheetResources;
     }
 
     /**
-     * Sets the location of a style sheet to use for transforming model objects.
+     * Creates a new {@code modelObjectStylesheetResource} element instance.
      *
-     * @param value The new location of a style sheet to use for transforming model objects or {@code null}.
+     * @return A new {@code modelObjectStylesheetResource} element instance.
      *
-     * @see #getModelObjectStylesheet()
+     * @see #getModelObjectStylesheetResources()
      */
-    public void setModelObjectStylesheet( final String value )
+    public TransformerResourceType createModelObjectStylesheetResource()
     {
-        this.modelObjectStylesheet = value;
+        final TransformerResourceType modelObjectStylesheetResource = new TransformerResourceType();
+        this.getModelObjectStylesheetResources().add( modelObjectStylesheetResource );
+        return modelObjectStylesheetResource;
     }
 
     /** {@inheritDoc} */
@@ -132,6 +143,7 @@ public final class CommitClassesTask extends ClassFileProcessorTask
         super.preExecuteTask();
 
         this.assertNotNull( "classesDirectory", this.getClassesDirectory() );
+        this.assertLocationsNotNull( this.getModelObjectStylesheetResources() );
     }
 
     /**
@@ -153,15 +165,22 @@ public final class CommitClassesTask extends ClassFileProcessorTask
             final Model model = this.getModel( context );
             final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModel( model ) );
             final ModelValidationReport validationReport = context.validateModel( this.getModel(), source );
-            final List<Transformer> transformers = new ArrayList<Transformer>( 1 );
-
-            if ( this.getModelObjectStylesheet() != null )
-            {
-                transformers.add( this.newTransformer( this.getModelObjectStylesheet(), context.getClassLoader() ) );
-            }
 
             this.logValidationReport( context, validationReport );
             tool.setModel( model );
+
+            final List<Transformer> transformers =
+                new ArrayList<Transformer>( this.getModelObjectStylesheetResources().size() );
+
+            for ( TransformerResourceType r : this.getModelObjectStylesheetResources() )
+            {
+                final Transformer transformer = this.getTransformer( r );
+
+                if ( transformer != null )
+                {
+                    transformers.add( transformer );
+                }
+            }
 
             if ( validationReport.isModelValid() )
             {
@@ -216,10 +235,6 @@ public final class CommitClassesTask extends ClassFileProcessorTask
             }
         }
         catch ( final IOException e )
-        {
-            throw new ClassProcessingException( getMessage( e ), e, this.getLocation() );
-        }
-        catch ( final URISyntaxException e )
         {
             throw new ClassProcessingException( getMessage( e ), e, this.getLocation() );
         }

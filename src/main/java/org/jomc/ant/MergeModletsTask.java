@@ -35,10 +35,12 @@ package org.jomc.ant;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStreamWriter;
-import java.net.URISyntaxException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 import javax.xml.bind.JAXBElement;
@@ -53,6 +55,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.validation.Schema;
 import org.apache.tools.ant.BuildException;
 import org.jomc.ant.types.NameType;
+import org.jomc.ant.types.TransformerResourceType;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelException;
 import org.jomc.modlet.Modlet;
@@ -90,8 +93,8 @@ public final class MergeModletsTask extends JomcTask
     /** Excluded modlets. */
     private Set<NameType> modletExcludes;
 
-    /** Modlet object style sheet to apply. */
-    private String modletObjectStylesheet;
+    /** XSLT documents to use for transforming modlet objects. */
+    private List<TransformerResourceType> modletObjectStylesheetResources;
 
     /** Creates a new {@code MergeModletsTask} instance. */
     public MergeModletsTask()
@@ -174,30 +177,6 @@ public final class MergeModletsTask extends JomcTask
     public void setModletName( final String value )
     {
         this.modletName = value;
-    }
-
-    /**
-     * Gets the location of a style sheet to transform the merged modlet with.
-     *
-     * @return The location of a style sheet to transform the merged modlet with or {@code null}.
-     *
-     * @see #setModletObjectStylesheet(java.lang.String)
-     */
-    public String getModletObjectStylesheet()
-    {
-        return this.modletObjectStylesheet;
-    }
-
-    /**
-     * Sets the location of a style sheet to transform the merged modlet with.
-     *
-     * @param value The new location of a style sheet to transform the merged modlet with or {@code null}.
-     *
-     * @see #getModletObjectStylesheet()
-     */
-    public void setModletObjectStylesheet( final String value )
-    {
-        this.modletObjectStylesheet = value;
     }
 
     /**
@@ -316,6 +295,40 @@ public final class MergeModletsTask extends JomcTask
         return modletExclude;
     }
 
+    /**
+     * Gets the XSLT documents to use for transforming modlet objects.
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * to the returned list will be present inside the object. This is why there is no {@code set} method for the
+     * modlet object stylesheets resources property.</p>
+     *
+     * @return The XSLT documents to use for transforming modlet objects.
+     *
+     * @see #createModletObjectStylesheetResource()
+     */
+    public List<TransformerResourceType> getModletObjectStylesheetResources()
+    {
+        if ( this.modletObjectStylesheetResources == null )
+        {
+            this.modletObjectStylesheetResources = new LinkedList<TransformerResourceType>();
+        }
+
+        return this.modletObjectStylesheetResources;
+    }
+
+    /**
+     * Creates a new {@code modletObjectStylesheetResource} element instance.
+     *
+     * @return A new {@code modletObjectStylesheetResource} element instance.
+     *
+     * @see #getModletObjectStylesheetResources()
+     */
+    public TransformerResourceType createModletObjectStylesheetResource()
+    {
+        final TransformerResourceType modletObjectStylesheetResource = new TransformerResourceType();
+        this.getModletObjectStylesheetResources().add( modletObjectStylesheetResource );
+        return modletObjectStylesheetResource;
+    }
+
     /** {@inheritDoc} */
     @Override
     public void preExecuteTask() throws BuildException
@@ -326,6 +339,7 @@ public final class MergeModletsTask extends JomcTask
         this.assertNotNull( "modletName", this.getModletName() );
         this.assertNamesNotNull( this.getModletExcludes() );
         this.assertNamesNotNull( this.getModletIncludes() );
+        this.assertLocationsNotNull( this.getModletObjectStylesheetResources() );
     }
 
     /**
@@ -380,28 +394,29 @@ public final class MergeModletsTask extends JomcTask
             marshaller.setSchema( schema );
             unmarshaller.setSchema( schema );
 
-            if ( this.getModletObjectStylesheet() != null )
+            for ( TransformerResourceType r : this.getModletObjectStylesheetResources() )
             {
-                final Transformer transformer = this.newTransformer( this.getModletObjectStylesheet(),
-                                                                     context.getClassLoader() );
+                final Transformer transformer = this.getTransformer( r );
 
-                final JAXBSource source =
-                    new JAXBSource( marshaller, new ObjectFactory().createModlet( mergedModlet ) );
-
-                final JAXBResult result = new JAXBResult( unmarshaller );
-
-                transformer.transform( source, result );
-
-                if ( result.getResult() instanceof JAXBElement<?>
-                     && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Modlet )
+                if ( transformer != null )
                 {
-                    mergedModlet = (Modlet) ( (JAXBElement<?>) result.getResult() ).getValue();
-                }
-                else
-                {
-                    throw new BuildException( getMessage( "illegalTransformationResult",
-                                                          this.getModletObjectStylesheet() ), this.getLocation() );
+                    final JAXBSource source =
+                        new JAXBSource( marshaller, new ObjectFactory().createModlet( mergedModlet ) );
 
+                    final JAXBResult result = new JAXBResult( unmarshaller );
+                    transformer.transform( source, result );
+
+                    if ( result.getResult() instanceof JAXBElement<?>
+                         && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Modlet )
+                    {
+                        mergedModlet = (Modlet) ( (JAXBElement<?>) result.getResult() ).getValue();
+                    }
+                    else
+                    {
+                        throw new BuildException( getMessage( "illegalTransformationResult", r.getLocation() ),
+                                                  this.getLocation() );
+
+                    }
                 }
             }
 
@@ -409,10 +424,6 @@ public final class MergeModletsTask extends JomcTask
             marshaller.setProperty( Marshaller.JAXB_ENCODING, this.getModletEncoding() );
             marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
             marshaller.marshal( new ObjectFactory().createModlet( mergedModlet ), this.getModletFile() );
-        }
-        catch ( final URISyntaxException e )
-        {
-            throw new BuildException( getMessage( e ), e, this.getLocation() );
         }
         catch ( final JAXBException e )
         {
@@ -505,24 +516,31 @@ public final class MergeModletsTask extends JomcTask
 
         if ( this.modletExcludes != null )
         {
-            final HashSet<NameType> set = new HashSet<NameType>( this.modletExcludes.size() );
+            clone.modletExcludes = new HashSet<NameType>( this.modletExcludes.size() );
             for ( NameType t : this.modletExcludes )
             {
-                set.add( t.clone() );
+                clone.modletExcludes.add( t.clone() );
             }
-
-            clone.modletExcludes = set;
         }
 
         if ( this.modletIncludes != null )
         {
-            final HashSet<NameType> set = new HashSet<NameType>( this.modletIncludes.size() );
+            clone.modletIncludes = new HashSet<NameType>( this.modletIncludes.size() );
             for ( NameType t : this.modletIncludes )
             {
-                set.add( t.clone() );
+                clone.modletIncludes.add( t.clone() );
             }
+        }
 
-            clone.modletIncludes = set;
+        if ( this.modletObjectStylesheetResources != null )
+        {
+            clone.modletObjectStylesheetResources =
+                new ArrayList<TransformerResourceType>( this.modletObjectStylesheetResources.size() );
+
+            for ( TransformerResourceType r : this.modletObjectStylesheetResources )
+            {
+                clone.modletObjectStylesheetResources.add( r.clone() );
+            }
         }
 
         return clone;
