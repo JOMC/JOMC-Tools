@@ -50,7 +50,7 @@ Customizing code generation
   the templates to be found.
 
   See class {{{./../../jomc-tools/apidocs/org/jomc/tools/SourceFileProcessor.html}SourceFileProcessor}} for details,
-  especially the <<<getVelocityTemplate>>> method and the <<<getSourceFileType>>> methods.
+  especially the <<<getVelocityTemplate>>> method and the <<<getSourceFilesType>>> methods.
 
 +-----------------+
 <project>
