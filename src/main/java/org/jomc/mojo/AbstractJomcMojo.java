@@ -41,6 +41,7 @@ import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLConnection;
@@ -58,11 +59,11 @@ import java.util.logging.Level;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.transform.ErrorListener;
-import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.maven.artifact.Artifact;
@@ -360,13 +361,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * location, depending on the optional flag, a warning message is logged or a build failure is produced.</p>
      * <p>The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
      * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false</p>
-     * <p>The optional format value is used to specify the format of the properties resource. Supported values are
-     * {@code plain} and {@code xml}.<br/><b>Default value is:</b> plain</p>
-     * <p>The optional connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
+     * <p>The format value is used to specify the format of the properties resource. Supported values are {@code plain}
+     * and {@code xml}.<br/><b>Default value is:</b> plain</p>
+     * <p>The connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
      * communications links to the resource. A timeout of zero is interpreted as an infinite timeout.<br/>
      * <b>Default value is:</b> 60000</p>
-     * <p>The optional readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the
-     * resource. A timeout of zero is interpreted as an infinite timeout.<br/>
+     * <p>The readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the resource.
+     * A timeout of zero is interpreted as an infinite timeout.<br/>
      * <b>Default value is:</b> 60000</p>
      *
      * @parameter
@@ -402,13 +403,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * location, depending on the optional flag, a warning message is logged or a build failure is produced.</p>
      * <p>The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
      * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false</p>
-     * <p>The optional format value is used to specify the format of the properties resource. Supported values are
-     * {@code plain} and {@code xml}.<br/><b>Default value is:</b> plain</p>
-     * <p>The optional connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
+     * <p>The format value is used to specify the format of the properties resource. Supported values are {@code plain}
+     * and {@code xml}.<br/><b>Default value is:</b> plain</p>
+     * <p>The connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
      * communications links to the resource. A timeout of zero is interpreted as an infinite timeout.<br/>
      * <b>Default value is:</b> 60000</p>
-     * <p>The optional readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the
-     * resource. A timeout of zero is interpreted as an infinite timeout.<br/>
+     * <p>The readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the resource.
+     * A timeout of zero is interpreted as an infinite timeout.<br/>
      * <b>Default value is:</b> 60000</p>
      *
      * @parameter
@@ -417,7 +418,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private List<TemplateParameterResource> templateParameterResources;
 
     /**
-     * Transformation parameters.
+     * Global transformation parameters.
      *
      * @parameter
      * @since 1.2
@@ -425,7 +426,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private Map<String, Object> transformationParameters;
 
     /**
-     * Transformation parameter resources.
+     * Global transformation parameter resources.
      * <pre>
      * &lt;transformationParameterResources>
      *   &lt;transformationParameterResource>
@@ -444,61 +445,19 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * location, depending on the optional flag, a warning message is logged or a build failure is produced.</p>
      * <p>The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
      * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false</p>
-     * <p>The optional format value is used to specify the format of the properties resource. Supported values are
-     * {@code plain} and {@code xml}.<br/><b>Default value is:</b> plain</p>
-     * <p>The optional connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
+     * <p>The format value is used to specify the format of the properties resource. Supported values are {@code plain}
+     * and {@code xml}.<br/><b>Default value is:</b> plain</p>
+     * <p>The connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
      * communications links to the resource. A timeout of zero is interpreted as an infinite timeout.<br/>
      * <b>Default value is:</b> 60000</p>
-     * <p>The optional readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the
-     * resource. A timeout of zero is interpreted as an infinite timeout.<br/>
+     * <p>The readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the resource.
+     * A timeout of zero is interpreted as an infinite timeout.<br/>
      * <b>Default value is:</b> 60000</p>
      *
      * @parameter
      * @since 1.2
      */
     private List<TransformationParameterResource> transformationParameterResources;
-
-    /**
-     * Transformation output properties.
-     *
-     * @parameter
-     * @since 1.2
-     */
-    private Map<String, String> transformationOutputProperties;
-
-    /**
-     * Transformation output property resources.
-     * <pre>
-     * &lt;transformationOutputPropertyResources>
-     *   &lt;transformationOutputPropertyResource>
-     *     &lt;location>The location of the properties resource.&lt;/location>
-     *     &lt;optional>Flag indicating the properties resource is optional.&lt;/optional>
-     *     &lt;format>The format of the properties resource.&lt;/format>
-     *     &lt;connectTimeout>Timeout value, in milliseconds.&lt;/connectTimeout>
-     *     &lt;readTimeout>Timeout value, in milliseconds.&lt;/readTimeout>
-     *   &lt;/transformationOutputPropertyResource>
-     * &lt;/transformationOutputPropertyResources>
-     * </pre>
-     * <p>The location value is used to first search the class path of the plugin. If a class path resource is found,
-     * that resource is used. If no class path resource is found, an attempt is made to parse the location value to an
-     * URL. On successful parsing, that URL is used. Otherwise the location value is interpreted as a file name relative
-     * to the base directory of the project. If that file exists, that file is used. If nothing is found at the given
-     * location, depending on the optional flag, a warning message is logged or a build failure is produced.</p>
-     * <p>The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
-     * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false</p>
-     * <p>The optional format value is used to specify the format of the properties resource. Supported values are
-     * {@code plain} and {@code xml}.<br/><b>Default value is:</b> plain</p>
-     * <p>The optional connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
-     * communications links to the resource. A timeout of zero is interpreted as an infinite timeout.<br/>
-     * <b>Default value is:</b> 60000</p>
-     * <p>The optional readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the
-     * resource. A timeout of zero is interpreted as an infinite timeout.<br/>
-     * <b>Default value is:</b> 60000</p>
-     *
-     * @parameter
-     * @since 1.2
-     */
-    private List<TransformationOutputPropertyResource> transformationOutputPropertyResources;
 
     /**
      * Class name of the {@code ClassFileProcessor} backing the goal.
@@ -624,7 +583,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     protected void assertValidParameters() throws MojoFailureException
     {
         this.assertLocationsNotNull( this.templateParameterResources );
-        this.assertLocationsNotNull( this.transformationOutputPropertyResources );
         this.assertLocationsNotNull( this.transformationParameterResources );
         this.assertLocationsNotNull( this.velocityPropertyResources );
     }
@@ -1554,139 +1512,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
-     * Creates a new {@code Transformer} from a given {@code Source}.
-     *
-     * @param source The source to initialize the transformer with.
-     *
-     * @return A {@code Transformer} backed by {@code source}.
-     *
-     * @throws NullPointerException if {@code source} is {@code null}.
-     * @throws MojoExecutionException if creating a transformer fails.
-     *
-     * @since 1.2
-     */
-    protected Transformer getTransformer( final Source source ) throws MojoExecutionException
-    {
-        if ( source == null )
-        {
-            throw new NullPointerException( "source" );
-        }
-
-        try
-        {
-            final ErrorListener errorListener = new ErrorListener()
-            {
-
-                public void warning( final TransformerException exception ) throws TransformerException
-                {
-                    try
-                    {
-                        log( Level.WARNING, getMessage( exception ), exception );
-                    }
-                    catch ( final MojoExecutionException e )
-                    {
-                        getLog().warn( exception );
-                        getLog().error( e );
-                    }
-                }
-
-                public void error( final TransformerException exception ) throws TransformerException
-                {
-                    try
-                    {
-                        log( Level.SEVERE, getMessage( exception ), exception );
-                    }
-                    catch ( final MojoExecutionException e )
-                    {
-                        getLog().error( exception );
-                        getLog().error( e );
-                    }
-
-                    throw exception;
-                }
-
-                public void fatalError( final TransformerException exception ) throws TransformerException
-                {
-                    try
-                    {
-                        log( Level.SEVERE, getMessage( exception ), exception );
-                    }
-                    catch ( final MojoExecutionException e )
-                    {
-                        getLog().error( exception );
-                        getLog().error( e );
-                    }
-
-                    throw exception;
-                }
-
-            };
-
-            final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            transformerFactory.setErrorListener( errorListener );
-            final Transformer transformer = transformerFactory.newTransformer( source );
-            transformer.setErrorListener( errorListener );
-
-            for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
-            {
-                transformer.setParameter( e.getKey().toString(), e.getValue() );
-            }
-
-            if ( this.transformationParameterResources != null )
-            {
-                for ( TransformationParameterResource r : this.transformationParameterResources )
-                {
-                    for ( Map.Entry<Object, Object> e : this.getProperties( r ).entrySet() )
-                    {
-                        transformer.setParameter( e.getKey().toString(), e.getValue() );
-                    }
-                }
-            }
-
-            if ( this.transformationParameters != null )
-            {
-                for ( Map.Entry<String, Object> e : this.transformationParameters.entrySet() )
-                {
-                    transformer.setParameter( e.getKey(), e.getValue() );
-                }
-            }
-
-            if ( this.transformationOutputPropertyResources != null )
-            {
-                for ( TransformationOutputPropertyResource r : this.transformationOutputPropertyResources )
-                {
-                    for ( Map.Entry<Object, Object> e : this.getProperties( r ).entrySet() )
-                    {
-                        transformer.setOutputProperty( e.getKey().toString(), e.getValue().toString() );
-                    }
-                }
-            }
-
-            if ( this.transformationOutputProperties != null )
-            {
-                for ( Map.Entry<String, String> e : this.transformationOutputProperties.entrySet() )
-                {
-                    transformer.setOutputProperty( e.getKey(), e.getValue() );
-                }
-            }
-
-            return transformer;
-        }
-        catch ( final TransformerConfigurationException e )
-        {
-            String m = getMessage( e );
-            if ( m == null )
-            {
-                m = getMessage( e.getException() );
-            }
-
-            m = m == null ? "" : " " + m;
-
-            throw new MojoExecutionException( getMessage( "failedCreatingTransformer", source.getSystemId(), m ), e );
-        }
-    }
-
-    /**
      * Creates an {@code URL} for a given resource location.
      * <p>This method first searches the class path of the plugin for a single resource matching {@code location}. If
      * such a resource is found, the URL of that resource is returned. If no such resource is found, an attempt is made
@@ -1817,6 +1642,171 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             m = m == null ? "" : " " + m;
 
             throw new MojoExecutionException( getMessage( "malformedLocation", location, m ), e );
+        }
+    }
+
+    /**
+     * Creates a new {@code Transformer} from a given {@code TransformerResourceType}.
+     *
+     * @param resource The resource to initialize the transformer with.
+     *
+     * @return A {@code Transformer} for {@code resource} or {@code null} if {@code resource} is not found and flagged
+     * optional.
+     *
+     * @throws NullPointerException if {@code resource} is {@code null}.
+     * @throws MojoExecutionException if creating a transformer fails.
+     *
+     * @see #getResource(java.lang.String)
+     * @since 1.2
+     */
+    protected Transformer getTransformer( final TransformerResourceType resource ) throws MojoExecutionException
+    {
+        if ( resource == null )
+        {
+            throw new NullPointerException( "resource" );
+        }
+
+        try
+        {
+            final URL url = this.getResource( resource.getLocation() );
+            final ErrorListener errorListener = new ErrorListener()
+            {
+
+                public void warning( final TransformerException exception ) throws TransformerException
+                {
+                    try
+                    {
+                        log( Level.WARNING, getMessage( exception ), exception );
+                    }
+                    catch ( final MojoExecutionException e )
+                    {
+                        getLog().warn( exception );
+                        getLog().error( e );
+                    }
+                }
+
+                public void error( final TransformerException exception ) throws TransformerException
+                {
+                    try
+                    {
+                        log( Level.SEVERE, getMessage( exception ), exception );
+                    }
+                    catch ( final MojoExecutionException e )
+                    {
+                        getLog().error( exception );
+                        getLog().error( e );
+                    }
+
+                    throw exception;
+                }
+
+                public void fatalError( final TransformerException exception ) throws TransformerException
+                {
+                    try
+                    {
+                        log( Level.SEVERE, getMessage( exception ), exception );
+                    }
+                    catch ( final MojoExecutionException e )
+                    {
+                        getLog().error( exception );
+                        getLog().error( e );
+                    }
+
+                    throw exception;
+                }
+
+            };
+
+            if ( url != null )
+            {
+                final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                transformerFactory.setErrorListener( errorListener );
+                final Transformer transformer =
+                    transformerFactory.newTransformer( new StreamSource( url.toURI().toASCIIString() ) );
+
+                transformer.setErrorListener( errorListener );
+
+                for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
+                {
+                    transformer.setParameter( e.getKey().toString(), e.getValue() );
+                }
+
+                if ( this.getMavenProject().getProperties() != null )
+                {
+                    for ( Map.Entry<Object, Object> e : this.getMavenProject().getProperties().entrySet() )
+                    {
+                        transformer.setParameter( e.getKey().toString(), e.getValue() );
+                    }
+                }
+
+                if ( this.transformationParameterResources != null )
+                {
+                    for ( TransformationParameterResource r : this.transformationParameterResources )
+                    {
+                        for ( Map.Entry<Object, Object> e : this.getProperties( r ).entrySet() )
+                        {
+                            transformer.setParameter( e.getKey().toString(), e.getValue() );
+                        }
+                    }
+                }
+
+                if ( this.transformationParameters != null )
+                {
+                    for ( Map.Entry<String, Object> e : this.transformationParameters.entrySet() )
+                    {
+                        transformer.setParameter( e.getKey(), e.getValue() );
+                    }
+                }
+
+                for ( TransformationParameterResource r : resource.getTransformationParameterResources() )
+                {
+                    for ( Map.Entry<Object, Object> e : this.getProperties( r ).entrySet() )
+                    {
+                        transformer.setParameter( e.getKey().toString(), e.getValue() );
+                    }
+                }
+
+                for ( Map.Entry<String, Object> e : resource.getTransformationParameters().entrySet() )
+                {
+                    transformer.setParameter( e.getKey(), e.getValue() );
+                }
+
+                for ( Map.Entry<String, String> e : resource.getTransformationOutputProperties().entrySet() )
+                {
+                    transformer.setOutputProperty( e.getKey(), e.getValue() );
+                }
+
+                return transformer;
+            }
+            else if ( resource.isOptional() )
+            {
+                if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, getMessage( "resourceNotFound", resource.getLocation() ), null );
+                }
+            }
+            else
+            {
+                throw new MojoExecutionException( getMessage( "resourceNotFound", resource.getLocation() ) );
+            }
+
+            return null;
+        }
+        catch ( final URISyntaxException e )
+        {
+            throw new MojoExecutionException( getMessage( e ), e );
+        }
+        catch ( final TransformerConfigurationException e )
+        {
+            String m = getMessage( e );
+            if ( m == null )
+            {
+                m = getMessage( e.getException() );
+            }
+
+            m = m == null ? "" : " " + m;
+
+            throw new MojoExecutionException( getMessage( "failedCreatingTransformer", resource.getLocation(), m ), e );
         }
     }
 
@@ -2301,6 +2291,19 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     {
                         tool.getVelocityEngine().clearProperty( e.getKey() );
                     }
+                }
+            }
+
+            for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
+            {
+                tool.getTemplateParameters().put( e.getKey().toString(), e.getValue() );
+            }
+
+            if ( this.getMavenProject().getProperties() != null )
+            {
+                for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
+                {
+                    tool.getTemplateParameters().put( e.getKey().toString(), e.getValue() );
                 }
             }
 

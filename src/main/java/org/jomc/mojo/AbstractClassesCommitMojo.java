@@ -33,8 +33,6 @@
 package org.jomc.mojo;
 
 import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +42,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.stream.StreamSource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.jomc.model.Module;
@@ -91,6 +88,21 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
      *     &lt;optional>Flag indicating the XSLT document is optional.&lt;/optional>
      *     &lt;connectTimeout>Timeout value, in milliseconds.&lt;/connectTimeout>
      *     &lt;readTimeout>Timeout value, in milliseconds.&lt;/readTimeout>
+     *     &lt;transformationParameterResources>
+     *       &lt;transformationParameterResource>
+     *         &lt;location>The location of the properties resource.&lt;/location>
+     *         &lt;optional>Flag indicating the properties resource is optional.&lt;/optional>
+     *         &lt;format>The format of the properties resource.&lt;/format>
+     *         &lt;connectTimeout>Timeout value, in milliseconds.&lt;/connectTimeout>
+     *         &lt;readTimeout>Timeout value, in milliseconds.&lt;/readTimeout>
+     *       &lt;/transformationParameterResource>
+     *     &lt;/transformationParameterResources>
+     *     &lt;transformationParameters>
+     *       &lt;key>value&lt;/key>
+     *     &lt;/transformationParameters>
+     *     &lt;transformationOutputProperties>
+     *       &lt;key>value&lt;/key>
+     *     &lt;/transformationOutputProperties>
      *   &lt;/modelObjectStylesheetResource>
      * &lt;/modelObjectStylesheetResources>
      * </pre>
@@ -101,11 +113,11 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
      * location, depending on the optional flag, a warning message is logged or a build failure is produced.</p>
      * <p>The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
      * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false</p>
-     * <p>The optional connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
+     * <p>The connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
      * communications links to the resource. A timeout of zero is interpreted as an infinite timeout.<br/>
      * <b>Default value is:</b> 60000</p>
-     * <p>The optional readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the
-     * resource. A timeout of zero is interpreted as an infinite timeout.<br/>
+     * <p>The readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the resource.
+     * A timeout of zero is interpreted as an infinite timeout.<br/>
      * <b>Default value is:</b> 60000</p>
      *
      * @parameter
@@ -157,58 +169,33 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
         final List<Transformer> transformers = new ArrayList<Transformer>(
             this.modelObjectStylesheetResources != null ? this.modelObjectStylesheetResources.size() + 1 : 1 );
 
-        try
+        if ( this.modelObjectStylesheet != null )
         {
-            if ( this.modelObjectStylesheet != null )
+            final TransformerResourceType r = new TransformerResourceType();
+            r.setLocation( this.modelObjectStylesheet );
+
+            final Transformer transformer = this.getTransformer( r );
+
+            if ( transformer != null )
             {
-                final URL url = this.getResource( this.modelObjectStylesheet );
+                transformers.add( transformer );
+            }
+        }
 
-                if ( url != null )
-                {
-                    transformers.add( this.getTransformer( new StreamSource( url.toURI().toASCIIString() ) ) );
-                }
-                else
-                {
-                    throw new MojoExecutionException(
-                        getMessage( "modelObjectStylesheetNotFound", this.modelObjectStylesheet ) );
+        if ( this.modelObjectStylesheetResources != null )
+        {
+            for ( ModelObjectStylesheetResource r : this.modelObjectStylesheetResources )
+            {
+                final Transformer transformer = this.getTransformer( r );
 
+                if ( transformer != null )
+                {
+                    transformers.add( transformer );
                 }
             }
-
-            if ( this.modelObjectStylesheetResources != null )
-            {
-                for ( ModelObjectStylesheetResource r : this.modelObjectStylesheetResources )
-                {
-                    final URL url = this.getResource( r.getLocation() );
-
-                    if ( url != null )
-                    {
-                        transformers.add( this.getTransformer( new StreamSource( url.toURI().toASCIIString() ) ) );
-                    }
-                    else if ( r.isOptional() )
-                    {
-                        if ( this.isLoggable( Level.WARNING ) )
-                        {
-                            this.log( Level.WARNING,
-                                      getMessage( "modelObjectStylesheetNotFound", r.getLocation() ), null );
-
-                        }
-                    }
-                    else
-                    {
-                        throw new MojoExecutionException(
-                            getMessage( "modelObjectStylesheetNotFound", r.getLocation() ) );
-
-                    }
-                }
-            }
-
-            return transformers;
         }
-        catch ( final URISyntaxException e )
-        {
-            throw new MojoExecutionException( getMessage( e ), e );
-        }
+
+        return transformers;
     }
 
     @Override
@@ -300,11 +287,6 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
         return MessageFormat.format( ResourceBundle.getBundle(
             AbstractClassesCommitMojo.class.getName().replace( '.', '/' ) ).getString( key ), args );
 
-    }
-
-    private static String getMessage( final Throwable t )
-    {
-        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

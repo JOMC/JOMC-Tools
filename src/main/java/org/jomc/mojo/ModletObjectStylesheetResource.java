@@ -33,17 +33,17 @@
 package org.jomc.mojo;
 
 /**
- * {@code modelObjectStylesheetResource} element.
+ * {@code modletObjectStylesheetResource} element.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  * @since 1.2
  */
-public final class ModelObjectStylesheetResource extends TransformerResourceType
+public final class ModletObjectStylesheetResource extends TransformerResourceType
 {
 
-    /** Creates a new {@code ModelObjectStylesheetResource} instance. */
-    public ModelObjectStylesheetResource()
+    /** Creates a new {@code ModletObjectStylesheetResource} instance. */
+    public ModletObjectStylesheetResource()
     {
         super();
     }
@@ -54,9 +54,9 @@ public final class ModelObjectStylesheetResource extends TransformerResourceType
      * @return A copy of this object.
      */
     @Override
-    public ModelObjectStylesheetResource clone()
+    public ModletObjectStylesheetResource clone()
     {
-        return (ModelObjectStylesheetResource) super.clone();
+        return (ModletObjectStylesheetResource) super.clone();
     }
 
 }
