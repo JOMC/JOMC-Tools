@@ -179,10 +179,6 @@
       to ignore/override any <code>modletResource</code> and <code>moduleResource</code> resources not merged due to
       <code>modletResources</code> and <code>moduleResources</code>.]]>
       </action>
-      <action dev="schulte2005" type="fix"><![CDATA[Updated parameter <code>sourceEncoding</code> to
-      <code>required</code> to fail the build if <code>${project.build.sourceEncoding}</code> evaluates to
-      <code>null</code>.]]>
-      </action>
       <action dev="schulte2005" type="update"><![CDATA[Updated class <code>org.jomc.mojo.JomcResourceTransformer</code>
       to use default values of class <code>org.jomc.modlet.DefaultModletProvider</code> for parameters
       <code>modletResource</code> and <code>modletResources</code> instead of the hardcoded

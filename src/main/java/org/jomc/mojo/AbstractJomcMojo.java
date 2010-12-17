@@ -103,7 +103,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * The encoding to use for reading and writing files.
      *
      * @parameter default-value="${project.build.sourceEncoding}"
-     * @required
      */
     private String sourceEncoding;
 
@@ -1720,6 +1719,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( url != null )
             {
+                if ( this.isLoggable( Level.FINER ) )
+                {
+                    this.log( Level.FINER, getMessage( "loadingTransformer", url.toExternalForm() ), null );
+                }
+
                 final TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 transformerFactory.setErrorListener( errorListener );
                 final Transformer transformer =
@@ -1783,12 +1787,12 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 if ( this.isLoggable( Level.WARNING ) )
                 {
-                    this.log( Level.WARNING, getMessage( "resourceNotFound", resource.getLocation() ), null );
+                    this.log( Level.WARNING, getMessage( "transformerNotFound", resource.getLocation() ), null );
                 }
             }
             else
             {
-                throw new MojoExecutionException( getMessage( "resourceNotFound", resource.getLocation() ) );
+                throw new MojoExecutionException( getMessage( "transformerNotFound", resource.getLocation() ) );
             }
 
             return null;
@@ -1866,13 +1870,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 if ( this.isLoggable( Level.WARNING ) )
                 {
                     this.log( Level.WARNING,
-                              getMessage( "resourceNotFound", propertiesResourceType.getLocation() ), null );
+                              getMessage( "propertiesNotFound", propertiesResourceType.getLocation() ), null );
 
                 }
             }
             else
             {
-                throw new MojoExecutionException( getMessage( "resourceNotFound",
+                throw new MojoExecutionException( getMessage( "propertiesNotFound",
                                                               propertiesResourceType.getLocation() ) );
 
             }
