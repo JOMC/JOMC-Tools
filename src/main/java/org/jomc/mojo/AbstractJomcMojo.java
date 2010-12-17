@@ -103,6 +103,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * The encoding to use for reading and writing files.
      *
      * @parameter default-value="${project.build.sourceEncoding}"
+     * @required
      */
     private String sourceEncoding;
 
