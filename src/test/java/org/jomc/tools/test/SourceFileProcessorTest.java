@@ -148,26 +148,6 @@ public class SourceFileProcessorTest extends JomcToolTest
 
         try
         {
-            this.getJomcTool().getSourceFileEditors( (Specification) null );
-            fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( final NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            this.getJomcTool().getSourceFileEditors( (Implementation) null );
-            fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( final NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
             this.getJomcTool().manageSourceFiles( null );
             fail( "Expected NullPointerException not thrown." );
         }
@@ -262,16 +242,12 @@ public class SourceFileProcessorTest extends JomcToolTest
         assertNotNull( this.getJomcTool().getSourceFilesType(
             this.getJomcTool().getModules().getSpecification( "Specification" ) ) );
 
+        assertNotNull( this.getJomcTool().getSourceFileEditor() );
+
         assertNotNull( this.getJomcTool().getSourceFileEditor(
             this.getJomcTool().getModules().getImplementation( "Implementation" ) ) );
 
-        assertNotNull( this.getJomcTool().getSourceFileEditors(
-            this.getJomcTool().getModules().getImplementation( "Implementation" ) ) );
-
         assertNotNull( this.getJomcTool().getSourceFileEditor(
-            this.getJomcTool().getModules().getSpecification( "Specification" ) ) );
-
-        assertNotNull( this.getJomcTool().getSourceFileEditors(
             this.getJomcTool().getModules().getSpecification( "Specification" ) ) );
 
     }

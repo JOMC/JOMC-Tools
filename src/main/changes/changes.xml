@@ -90,12 +90,17 @@
       <code>SourceFileType</code> complex type of the <code>jomc-tools-1.0.xsd</code> schema from
       <code>required</code> to <code>optional</code>.]]>
       </action>
-      <action dev="schulte2005" type="update"><![CDATA[Removed the default value of the <code>indentationLevel</code>,
-      <code>optional</code> and <code>editable</code> attributes of the <code>SourceSectionType</code> complex type of
-      the <code>jomc-tools-1.0.xsd</code> schema.]]>
-      </action>
       <action dev="schulte2005" type="update"><![CDATA[Added the <code>jomc-tools-1.2.xsd</code> schema deprecating the
       <code>jomc-tools-1.0.xsd</code> schema.]]>
+      </action>
+      <action dev="schulte2005" type="add"><![CDATA[Added <code>TemplateProfilesType</code>,
+      <code>TemplateProfileType</code>, <code>TemplatesType</code> and <code>TemplateType</code> complex types to the
+      <code>jomc-tools-1.2.xsd</code> schema and updated method <code>getVelocityEngine</code> of class
+      <code>org.jomc.tools.JomcTool</code> to setup an additional <code>ResourceLoader</code> searching the modules of
+      the instance.]]>
+      </action>
+      <action dev="schulte2005" type="add"><![CDATA[Added <code>ToolsType</code> complex type to the
+      <code>jomc-tools-1.2.xsd</code> schema and updated all complex types to extend that base type.]]>
       </action>
     </release>
   </body>

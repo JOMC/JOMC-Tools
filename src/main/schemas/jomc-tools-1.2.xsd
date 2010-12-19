@@ -78,6 +78,13 @@
     </xsd:documentation>
   </xsd:annotation>
   <!-- ************************************************************************************************************* -->
+  <xsd:complexType name="ToolsType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Base tools type.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="modelVersion" type="xsd:string" use="optional" default="1.2"/>
+  </xsd:complexType>
+  <!-- ************************************************************************************************************* -->
   <xsd:element name="source-files" type="tools:SourceFilesType">
     <xsd:key name="source-file-identifier-key">
       <xsd:annotation>
@@ -91,39 +98,47 @@
     <xsd:annotation>
       <xsd:documentation xml:lang="en">List of source files.</xsd:documentation>
     </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element ref="tools:source-file" minOccurs="0" maxOccurs="unbounded"/>
-    </xsd:sequence>
+    <xsd:complexContent>
+      <xsd:extension base="tools:ToolsType">
+        <xsd:sequence>
+          <xsd:element ref="tools:source-file" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
   </xsd:complexType>
   <!-- ************************************************************************************************************* -->
   <xsd:element name="source-file" type="tools:SourceFileType"/>
   <xsd:complexType name="SourceFileType">
     <xsd:annotation>
-      <xsd:documentation xml:lang="en">
-      </xsd:documentation>
+      <xsd:documentation xml:lang="en">Model of a source code file.</xsd:documentation>
     </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element ref="tools:source-sections" minOccurs="0" maxOccurs="1">
-        <xsd:annotation>
-          <xsd:documentation xml:lang="en">Sections of the source file.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:sequence>
-    <xsd:attribute name="identifier" type="xsd:string" use="required">
-      <xsd:annotation>
-        <xsd:documentation xml:lang="en">Identifier of the source file.</xsd:documentation>
-      </xsd:annotation>
-    </xsd:attribute>
-    <xsd:attribute name="location" type="xsd:string" use="optional">
-      <xsd:annotation>
-        <xsd:documentation xml:lang="en">Location of the source file.</xsd:documentation>
-      </xsd:annotation>
-    </xsd:attribute>
-    <xsd:attribute name="template" type="xsd:string" use="optional">
-      <xsd:annotation>
-        <xsd:documentation xml:lang="en">Identifier of a template to use for creating the file.</xsd:documentation>
-      </xsd:annotation>
-    </xsd:attribute>
+    <xsd:complexContent>
+      <xsd:extension base="tools:ToolsType">
+        <xsd:sequence>
+          <xsd:element ref="tools:source-sections" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Sections of the source file.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="identifier" type="xsd:string" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Identifier of the source file.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="location" type="xsd:string" use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Location of the source file.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="template" type="xsd:string" use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Identifier of a template to use for creating the file.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
   </xsd:complexType>
   <!-- ************************************************************************************************************* -->
   <xsd:element name="source-sections" type="tools:SourceSectionsType">
@@ -139,53 +154,158 @@
     <xsd:annotation>
       <xsd:documentation xml:lang="en">List of source sections.</xsd:documentation>
     </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element ref="tools:source-section" minOccurs="0" maxOccurs="unbounded"/>
-    </xsd:sequence>
+    <xsd:complexContent>
+      <xsd:extension base="tools:ToolsType">
+        <xsd:sequence>
+          <xsd:element ref="tools:source-section" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
   </xsd:complexType>
   <!-- ************************************************************************************************************* -->
   <xsd:element name="source-section" type="tools:SourceSectionType"/>
   <xsd:complexType name="SourceSectionType">
     <xsd:annotation>
-      <xsd:documentation xml:lang="en">
-      </xsd:documentation>
+      <xsd:documentation xml:lang="en">Model of a source code file section.</xsd:documentation>
     </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element ref="tools:source-sections" minOccurs="0" maxOccurs="1">
-        <xsd:annotation>
-          <xsd:documentation xml:lang="en">Child sections of the section.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:sequence>
-    <xsd:attribute name="name" type="xsd:string" use="required">
+    <xsd:complexContent>
+      <xsd:extension base="tools:ToolsType">
+        <xsd:sequence>
+          <xsd:element ref="tools:source-sections" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Child sections of the section.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Name of the section.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="head-template" type="xsd:string" use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Identifier of a template to use for rendering the content of this section preceding any child section content.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="tail-template" type="xsd:string" use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Identifier of a template to use for rendering the content of this section succeeding any child section content.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="indentationLevel" type="xsd:int" use="optional" default="0">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Indentation level of the section.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="optional" type="xsd:boolean" use="optional" default="false">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Flag indicating the section is optional.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="editable" type="xsd:boolean" use="optional" default="false">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Flag indicating the section is editable.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ************************************************************************************************************* -->
+  <xsd:element name="template-profiles" type="tools:TemplateProfilesType">
+    <xsd:key name="template-profile-identifier-key">
       <xsd:annotation>
-        <xsd:documentation xml:lang="en">Name of the section.</xsd:documentation>
+        <xsd:documentation xml:lang="en">Identifier key of a template profile.</xsd:documentation>
       </xsd:annotation>
-    </xsd:attribute>
-    <xsd:attribute name="head-template" type="xsd:string" use="optional">
+      <xsd:selector xpath="tools:template-profile"/>
+      <xsd:field xpath="@identifier"/>
+    </xsd:key>
+  </xsd:element>
+  <xsd:complexType name="TemplateProfilesType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">List of template profiles.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tools:ToolsType">
+        <xsd:sequence>
+          <xsd:element ref="tools:template-profile" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ************************************************************************************************************* -->
+  <xsd:element name="template-profile" type="tools:TemplateProfileType"/>
+  <xsd:complexType name="TemplateProfileType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Template profile.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tools:ToolsType">
+        <xsd:sequence>
+          <xsd:element ref="tools:templates" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The templates of the profile.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="identifier" type="xsd:string" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Identifier of the template profile.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ************************************************************************************************************* -->
+  <xsd:element name="templates" type="tools:TemplatesType">
+    <xsd:key name="template-name-key">
       <xsd:annotation>
-        <xsd:documentation xml:lang="en">Identifier of a template to use for rendering the content of this section preceding any child section content.</xsd:documentation>
+        <xsd:documentation xml:lang="en">Name key of a template.</xsd:documentation>
       </xsd:annotation>
-    </xsd:attribute>
-    <xsd:attribute name="tail-template" type="xsd:string" use="optional">
-      <xsd:annotation>
-        <xsd:documentation xml:lang="en">Identifier of a template to use for rendering the content of this section succeeding any child section content.</xsd:documentation>
-      </xsd:annotation>
-    </xsd:attribute>
-    <xsd:attribute name="indentationLevel" type="xsd:int" use="optional">
-      <xsd:annotation>
-        <xsd:documentation xml:lang="en">Indentation level of the section.</xsd:documentation>
-      </xsd:annotation>
-    </xsd:attribute>
-    <xsd:attribute name="optional" type="xsd:boolean" use="optional">
-      <xsd:annotation>
-        <xsd:documentation xml:lang="en">Flag indicating the section is optional.</xsd:documentation>
-      </xsd:annotation>
-    </xsd:attribute>
-    <xsd:attribute name="editable" type="xsd:boolean" use="optional">
-      <xsd:annotation>
-        <xsd:documentation xml:lang="en">Flag indicating the section is editable.</xsd:documentation>
-      </xsd:annotation>
-    </xsd:attribute>
+      <xsd:selector xpath="tools:template"/>
+      <xsd:field xpath="@name"/>
+    </xsd:key>
+  </xsd:element>
+  <xsd:complexType name="TemplatesType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">List of templates.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tools:ToolsType">
+        <xsd:sequence>
+          <xsd:element ref="tools:template" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ************************************************************************************************************* -->
+  <xsd:element name="template" type="tools:TemplateType"/>
+  <xsd:complexType name="TemplateType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Template.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tools:ToolsType">
+        <xsd:sequence>
+          <xsd:element name="content" type="xsd:string" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The content of the template.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Name of the template.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="mime-type" type="xsd:string" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Type of the template.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
   </xsd:complexType>
 </xsd:schema>

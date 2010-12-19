@@ -36,6 +36,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
@@ -55,17 +56,21 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+import org.apache.commons.collections.ExtendedProperties;
+import org.apache.commons.io.input.ReaderInputStream;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
+import org.apache.velocity.exception.VelocityException;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.log.LogChute;
+import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
+import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 import org.apache.velocity.runtime.resource.loader.URLResourceLoader;
 import org.jomc.model.Argument;
 import org.jomc.model.ArgumentType;
@@ -73,6 +78,7 @@ import org.jomc.model.Dependency;
 import org.jomc.model.Implementation;
 import org.jomc.model.Message;
 import org.jomc.model.ModelObject;
+import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.Multiplicity;
 import org.jomc.model.Properties;
@@ -83,6 +89,9 @@ import org.jomc.model.Specifications;
 import org.jomc.model.Text;
 import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.Model;
+import org.jomc.tools.model.TemplateProfileType;
+import org.jomc.tools.model.TemplateProfilesType;
+import org.jomc.tools.model.TemplateType;
 
 /**
  * Base tool class.
@@ -1232,26 +1241,98 @@ public class JomcTool
     {
         if ( this.velocityEngine == null )
         {
-            final java.util.Properties props = new java.util.Properties();
-            props.put( "runtime.references.strict", Boolean.TRUE.toString() );
-            props.put( "velocimacro.arguments.strict", Boolean.TRUE.toString() );
-
-            props.put( "resource.loader", "class" );
-            props.put( "class.resource.loader.class", ClasspathResourceLoader.class.getName() );
-            props.put( "class.resource.loader.cache", Boolean.TRUE.toString() );
-
-            if ( this.getTemplateLocation() != null )
+            /** {@code ResourceLoader} backed by {@code TemplateProfilesType}. */
+            class JomcResourceLoader extends ResourceLoader
             {
-                props.put( "resource.loader", "class,url" );
-                props.put( "url.resource.loader.class", URLResourceLoader.class.getName() );
-                props.put( "url.resource.loader.cache", Boolean.TRUE.toString() );
-                props.put( "url.resource.loader.root", this.getTemplateLocation().toExternalForm() );
-                props.put( "url.resource.loader.timeout", Integer.toString( 60000 ) );
+
+                private final long lastModified = System.currentTimeMillis();
+
+                JomcResourceLoader()
+                {
+                    super();
+                }
+
+                @Override
+                public void init( final ExtendedProperties configuration )
+                {
+                }
+
+                @Override
+                public InputStream getResourceStream( final String source ) throws ResourceNotFoundException
+                {
+                    InputStream in = null;
+
+                    for ( Module module : getModules().getModule() )
+                    {
+                        in = this.findTemplate( module.getAnyObject( TemplateProfileType.class ), source );
+                        if ( in != null )
+                        {
+                            return in;
+                        }
+
+                        final TemplateProfilesType profiles = module.getAnyObject( TemplateProfilesType.class );
+                        if ( profiles != null )
+                        {
+                            for ( TemplateProfileType p : profiles.getTemplateProfile() )
+                            {
+                                in = this.findTemplate( p, source );
+                                if ( in != null )
+                                {
+                                    return in;
+                                }
+                            }
+                        }
+                    }
+
+                    throw new ResourceNotFoundException( getMessage( "resourceNotFound", source ) );
+                }
+
+                @Override
+                public boolean isSourceModified( final Resource resource )
+                {
+                    return false;
+                }
+
+                @Override
+                public long getLastModified( final Resource resource )
+                {
+                    return this.lastModified;
+                }
+
+                private InputStream findTemplate( final TemplateProfileType p, final String s )
+                {
+                    InputStream in = null;
+
+                    if ( p != null && p.getTemplates() != null )
+                    {
+                        for ( TemplateType t : p.getTemplates().getTemplate() )
+                        {
+                            if ( !"text/x-velocity".equals( t.getMimeType() ) )
+                            {
+                                continue;
+                            }
+
+                            if ( ( TEMPLATE_PREFIX + p.getIdentifier() + "/" + t.getName() ).equals( s ) )
+                            {
+                                in = new ReaderInputStream( new StringReader( t.getContent() ), getTemplateEncoding() );
+                                break;
+                            }
+                        }
+                    }
+
+                    return in;
+                }
+
             }
 
-            final VelocityEngine engine = new VelocityEngine();
-            engine.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, new LogChute()
+            /** {@code LogChute} logging to the listeners of the tool. */
+            class JomcLogChute implements LogChute
             {
+
+                JomcLogChute()
+                {
+                    super();
+                }
 
                 public void init( final RuntimeServices runtimeServices ) throws Exception
                 {
@@ -1272,9 +1353,28 @@ public class JomcTool
                     return isLoggable( Level.FINEST );
                 }
 
-            } );
+            }
 
-            engine.init( props );
+            final VelocityEngine engine = new VelocityEngine();
+            engine.setProperty( RuntimeConstants.RUNTIME_REFERENCES_STRICT, Boolean.TRUE.toString() );
+            engine.setProperty( RuntimeConstants.VM_ARGUMENTS_STRICT, Boolean.TRUE.toString() );
+            engine.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, new JomcLogChute() );
+
+            engine.setProperty( RuntimeConstants.RESOURCE_LOADER, "jomc,class" );
+            engine.setProperty( "class.resource.loader.class", ClasspathResourceLoader.class.getName() );
+            engine.setProperty( "class.resource.loader.cache", Boolean.TRUE.toString() );
+            engine.setProperty( "jomc.resource.loader.instance", new JomcResourceLoader() );
+
+            if ( this.getTemplateLocation() != null )
+            {
+                engine.setProperty( RuntimeConstants.RESOURCE_LOADER, "jomc,class,url" );
+                engine.setProperty( "url.resource.loader.class", URLResourceLoader.class.getName() );
+                engine.setProperty( "url.resource.loader.cache", Boolean.TRUE.toString() );
+                engine.setProperty( "url.resource.loader.root", this.getTemplateLocation().toExternalForm() );
+                engine.setProperty( "url.resource.loader.timeout", Integer.toString( 60000 ) );
+            }
+
+            engine.init();
             this.velocityEngine = engine;
         }
 
@@ -1353,7 +1453,7 @@ public class JomcTool
      *
      * @see #setTemplateLocation(java.net.URL)
      *
-     * @sine 1.2
+     * @since 1.2
      */
     public final URL getTemplateLocation()
     {
@@ -1722,17 +1822,39 @@ public class JomcTool
             }
             catch ( final ParseErrorException e2 )
             {
+                String m = getMessage( e2 );
+                m = m == null ? "" : " " + m;
+
                 throw (IOException) new IOException( getMessage(
-                    "invalidTemplate", templateName, getDefaultTemplateProfile(),
-                    StringUtils.defaultString( getMessage( e2 ) ) ) ).initCause( e2 );
+                    "invalidTemplate", templateName, getDefaultTemplateProfile(), m ) ).initCause( e2 );
+
+            }
+            catch ( final VelocityException e2 )
+            {
+                String m = getMessage( e2 );
+                m = m == null ? "" : " " + m;
+
+                throw (IOException) new IOException( getMessage(
+                    "velocityException", templateName, m ) ).initCause( e );
 
             }
         }
         catch ( final ParseErrorException e )
         {
+            String m = getMessage( e );
+            m = m == null ? "" : " " + m;
+
             throw (IOException) new IOException( getMessage(
-                "invalidTemplate", templateName, this.getTemplateProfile(),
-                StringUtils.defaultString( getMessage( e ) ) ) ).initCause( e );
+                "invalidTemplate", templateName, this.getTemplateProfile(), m ) ).initCause( e );
+
+        }
+        catch ( final VelocityException e )
+        {
+            String m = getMessage( e );
+            m = m == null ? "" : " " + m;
+
+            throw (IOException) new IOException( getMessage(
+                "velocityException", templateName, m ) ).initCause( e );
 
         }
     }
