@@ -802,11 +802,11 @@ public class JomcTask extends Task
             }
             else if ( resource.isOptional() )
             {
-                this.log( getMessage( "resourceNotFound", resource.getLocation() ), Project.MSG_WARN );
+                this.log( getMessage( "transformerNotFound", resource.getLocation() ), Project.MSG_WARN );
             }
             else
             {
-                throw new BuildException( getMessage( "resourceNotFound", resource.getLocation() ),
+                throw new BuildException( getMessage( "transformerNotFound", resource.getLocation() ),
                                           this.getLocation() );
 
             }
@@ -862,11 +862,11 @@ public class JomcTask extends Task
             }
             else if ( propertiesResourceType.isOptional() )
             {
-                this.log( getMessage( "resourceNotFound", propertiesResourceType.getLocation() ), Project.MSG_WARN );
+                this.log( getMessage( "propertiesNotFound", propertiesResourceType.getLocation() ), Project.MSG_WARN );
             }
             else
             {
-                throw new BuildException( getMessage( "resourceNotFound", propertiesResourceType.getLocation() ),
+                throw new BuildException( getMessage( "propertiesNotFound", propertiesResourceType.getLocation() ),
                                           this.getLocation() );
 
             }

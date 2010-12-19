@@ -132,7 +132,7 @@ public class CommitClassesTaskTest extends ClassFileProcessorTaskTest
     {
         final AntExecutionResult r = this.executeTarget( "test-stylesheet-not-found" );
         assertException( r, BuildException.class );
-        assertExceptionMessage( r, "Resource 'DOES_NOT_EXIST' not found." );
+        assertExceptionMessage( r, "XSLT document 'DOES_NOT_EXIST' not found." );
     }
 
     @Test
@@ -140,7 +140,7 @@ public class CommitClassesTaskTest extends ClassFileProcessorTaskTest
     {
         final AntExecutionResult r = this.executeTarget( "test-optional-stylesheet-not-found" );
         assertNoException( r );
-        assertMessageLogged( r, "Resource 'DOES_NOT_EXIST' not found." );
+        assertMessageLogged( r, "XSLT document 'DOES_NOT_EXIST' not found." );
     }
 
     @Test
