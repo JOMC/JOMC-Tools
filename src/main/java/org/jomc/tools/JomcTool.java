@@ -1264,18 +1264,18 @@ public class JomcTool
 
                     for ( Module module : getModules().getModule() )
                     {
-                        in = this.findTemplate( module.getAnyObject( TemplateProfileType.class ), source );
+                        in = this.findTemplate( module.getAnyObjects( TemplateProfileType.class ), source );
                         if ( in != null )
                         {
                             return in;
                         }
 
-                        final TemplateProfilesType profiles = module.getAnyObject( TemplateProfilesType.class );
+                        final List<TemplateProfilesType> profiles = module.getAnyObjects( TemplateProfilesType.class );
                         if ( profiles != null )
                         {
-                            for ( TemplateProfileType p : profiles.getTemplateProfile() )
+                            for ( TemplateProfilesType p : profiles )
                             {
-                                in = this.findTemplate( p, source );
+                                in = this.findTemplate( p.getTemplateProfile(), source );
                                 if ( in != null )
                                 {
                                     return in;
@@ -1299,23 +1299,32 @@ public class JomcTool
                     return this.lastModified;
                 }
 
-                private InputStream findTemplate( final TemplateProfileType p, final String s )
+                private InputStream findTemplate( final List<TemplateProfileType> profiles, final String s )
                 {
                     InputStream in = null;
 
-                    if ( p != null && p.getTemplates() != null )
+                    if ( profiles != null )
                     {
-                        for ( TemplateType t : p.getTemplates().getTemplate() )
+                        found:
+                        for ( TemplateProfileType p : profiles )
                         {
-                            if ( !"text/x-velocity".equals( t.getMimeType() ) )
+                            if ( p.getTemplates() != null )
                             {
-                                continue;
-                            }
+                                for ( TemplateType t : p.getTemplates().getTemplate() )
+                                {
+                                    if ( !"text/x-velocity".equals( t.getMimeType() ) )
+                                    {
+                                        continue;
+                                    }
 
-                            if ( ( TEMPLATE_PREFIX + p.getIdentifier() + "/" + t.getName() ).equals( s ) )
-                            {
-                                in = new ReaderInputStream( new StringReader( t.getContent() ), getTemplateEncoding() );
-                                break;
+                                    if ( ( TEMPLATE_PREFIX + p.getIdentifier() + "/" + t.getName() ).equals( s ) )
+                                    {
+                                        in = new ReaderInputStream( new StringReader( t.getContent() ),
+                                                                    getTemplateEncoding() );
+
+                                        break found;
+                                    }
+                                }
                             }
                         }
                     }
