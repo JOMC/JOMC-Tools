@@ -32,6 +32,8 @@
  */
 package org.jomc.mojo;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
  * Datatype describing a resource.
  *
@@ -163,6 +165,17 @@ public class ResourceType implements Cloneable
         {
             throw new AssertionError( e );
         }
+    }
+
+    /**
+     * Creates and returns a string representation of the object.
+     *
+     * @return A string representation of the object.
+     */
+    @Override
+    public String toString()
+    {
+        return ToStringBuilder.reflectionToString( this );
     }
 
 }

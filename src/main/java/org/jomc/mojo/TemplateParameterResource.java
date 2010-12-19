@@ -32,6 +32,8 @@
  */
 package org.jomc.mojo;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
  * {@code templateParameterResource} element.
  *
@@ -46,6 +48,17 @@ public final class TemplateParameterResource extends PropertiesResourceType
     public TemplateParameterResource()
     {
         super();
+    }
+
+    /**
+     * Creates and returns a string representation of the object.
+     *
+     * @return A string representation of the object.
+     */
+    @Override
+    public String toString()
+    {
+        return ToStringBuilder.reflectionToString( this );
     }
 
 }
