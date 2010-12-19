@@ -35,6 +35,7 @@ package org.jomc.ant.types;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * Datatype describing a XSLT document resource.
@@ -206,6 +207,17 @@ public class TransformerResourceType extends ResourceType
         }
 
         return clone;
+    }
+
+    /**
+     * Creates and returns a string representation of the object.
+     *
+     * @return A string representation of the object.
+     */
+    @Override
+    public String toString()
+    {
+        return ToStringBuilder.reflectionToString( this );
     }
 
 }
