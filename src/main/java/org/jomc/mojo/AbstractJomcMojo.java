@@ -102,14 +102,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * The encoding to use for reading and writing files.
      *
-     * @parameter default-value="${project.build.sourceEncoding}"
+     * @parameter default-value="${project.build.sourceEncoding}" expression="${jomc.sourceEncoding}"
      */
     private String sourceEncoding;
 
     /**
      * The encoding to use for reading templates.
      *
-     * @parameter
+     * @parameter expression="${jomc.templateEncoding}"
      */
     private String templateEncoding;
 
@@ -120,7 +120,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * If that directory exists, that directory is used. If nothing is found at the given location, a warning message is
      * logged.</p>
      *
-     * @parameter
+     * @parameter expression="${jomc.templateLocation}"
      * @since 1.2
      */
     private String templateLocation;
@@ -128,42 +128,42 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * The template profile to use when accessing templates.
      *
-     * @parameter
+     * @parameter expression="${jomc.templateProfile}"
      */
     private String templateProfile;
 
     /**
      * The default template profile to use when accessing templates.
      *
-     * @parameter
+     * @parameter expression="${jomc.defaultTemplateProfile}"
      */
     private String defaultTemplateProfile;
 
     /**
      * The location to search for providers.
      *
-     * @parameter
+     * @parameter expression="${jomc.providerLocation}"
      */
     private String providerLocation;
 
     /**
      * The location to search for platform providers.
      *
-     * @parameter
+     * @parameter expression="${jomc.platformProviderLocation}"
      */
     private String platformProviderLocation;
 
     /**
      * The identifier of the model to process.
      *
-     * @parameter default-value="http://jomc.org/model"
+     * @parameter default-value="http://jomc.org/model" expression="${jomc.model}"
      */
     private String model;
 
     /**
      * The name of the {@code ModelContext} implementation class backing the task.
      *
-     * @parameter
+     * @parameter expression="${jomc.modelContextClassName}"
      * @since 1.2
      */
     private String modelContextClassName;
@@ -171,14 +171,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * The location to search for modlets.
      *
-     * @parameter
+     * @parameter expression="${jomc.modletLocation}"
      */
     private String modletLocation;
 
     /**
      * The {@code http://jomc.org/modlet} namespace schema system id.
      *
-     * @parameter
+     * @parameter expression="${jomc.modletSchemaSystemId}"
      * @since 1.2
      */
     private String modletSchemaSystemId;
@@ -186,28 +186,28 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * The location to search for modules.
      *
-     * @parameter
+     * @parameter expression="${jomc.moduleLocation}"
      */
     private String moduleLocation;
 
     /**
      * The location to search for transformers.
      *
-     * @parameter
+     * @parameter expression="${jomc.transformerLocation}"
      */
     private String transformerLocation;
 
     /**
      * The indentation string ('\t' for tab).
      *
-     * @parameter
+     * @parameter expression="${jomc.indentation}"
      */
     private String indentation;
 
     /**
      * The line separator ('\r\n' for DOS, '\r' for Mac, '\n' for Unix).
      *
-     * @parameter
+     * @parameter expression="${jomc.lineSeparator}"
      */
     private String lineSeparator;
 
@@ -256,14 +256,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Name of the module to process.
      *
-     * @parameter default-value="${project.name}"
+     * @parameter default-value="${project.name}" expression="${jomc.moduleName}"
      */
     private String moduleName;
 
     /**
      * Name of the test module to process.
      *
-     * @parameter default-value="${project.name} Tests"
+     * @parameter default-value="${project.name} Tests" expression="${jomc.testModuleName}"
      */
     private String testModuleName;
 
@@ -462,7 +462,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Class name of the {@code ClassFileProcessor} backing the goal.
      *
-     * @parameter default-value="org.jomc.tools.ClassFileProcessor"
+     * @parameter default-value="org.jomc.tools.ClassFileProcessor" expression="${jomc.classFileProcessorClassName}"
      * @since 1.2
      */
     private String classFileProcessorClassName;
@@ -471,6 +471,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * Class name of the {@code ResourceFileProcessor} backing the goal.
      *
      * @parameter default-value="org.jomc.tools.ResourceFileProcessor"
+     *            expression="${jomc.resourceFileProcessorClassName}"
      * @since 1.2
      */
     private String resourceFileProcessorClassName;
@@ -478,7 +479,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Class name of the {@code SourceFileProcessor} backing the goal.
      *
-     * @parameter default-value="org.jomc.tools.SourceFileProcessor"
+     * @parameter default-value="org.jomc.tools.SourceFileProcessor" expression="${jomc.sourceFileProcessorClassName}"
      * @since 1.2
      */
     private String sourceFileProcessorClassName;
