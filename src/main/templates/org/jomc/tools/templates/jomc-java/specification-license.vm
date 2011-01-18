@@ -64,7 +64,7 @@ ${tool.getIndentation(0)} *   Copyright (c) $year $author.getName()#if($author.g
 
 #end
 #if($author.getDocumentation())
-${tool.getIndentation(0)} *     $tool.getJavadocComment($author.getDocumentation().getText("en"), 0, " *     ")
+${tool.getIndentation(0)} *     $tool.getJavadocComment($author.getDocumentation(), 0, " *     ")
 ${tool.getIndentation(0)} *
 #end
 #end
