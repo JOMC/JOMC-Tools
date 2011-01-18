@@ -51,6 +51,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -66,6 +67,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.execution.MavenSession;
@@ -210,6 +212,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @parameter expression="${jomc.lineSeparator}"
      */
     private String lineSeparator;
+
+    /**
+     * The language to use when generating text.
+     *
+     * @parameter expression="${jomc.language}"
+     * @since 1.2
+     */
+    private String language;
 
     /**
      * Controls verbosity of the plugin.
@@ -578,14 +588,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *
      * @throws MojoFailureException if illegal parameter values are detected.
      *
-     * @see #assertLocationsNotNull(java.util.Collection)
+     * @see #assertValidResources(java.util.Collection)
      * @since 1.2
      */
     protected void assertValidParameters() throws MojoFailureException
     {
-        this.assertLocationsNotNull( this.templateParameterResources );
-        this.assertLocationsNotNull( this.transformationParameterResources );
-        this.assertLocationsNotNull( this.velocityPropertyResources );
+        this.assertValidResources( this.templateParameterResources );
+        this.assertValidResources( this.transformationParameterResources );
+        this.assertValidResources( this.velocityPropertyResources );
     }
 
     /**
@@ -593,12 +603,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *
      * @param resources The resource collection to validate or {@code null}.
      *
-     * @throws MojoFailureException if a location property of a given resource holds a {@code null} value.
+     * @throws MojoFailureException if a location property of a given resource holds a {@code null} value or a given
+     * {@code PropertiesResourceType} holds an illegal format.
      *
      * @see #assertValidParameters()
+     * @see PropertiesResourceType#isFormatSupported(java.lang.String)
      * @since 1.2
      */
-    protected final void assertLocationsNotNull( final Collection<? extends ResourceType> resources )
+    protected final void assertValidResources( final Collection<? extends ResourceType> resources )
         throws MojoFailureException
     {
         if ( resources != null )
@@ -608,6 +620,19 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 if ( r.getLocation() == null )
                 {
                     throw new MojoFailureException( getMessage( "mandatoryParameter", "location" ) );
+                }
+
+                if ( r instanceof PropertiesResourceType )
+                {
+                    final PropertiesResourceType p = (PropertiesResourceType) r;
+
+                    if ( !PropertiesResourceType.isFormatSupported( p.getFormat() ) )
+                    {
+                        throw new MojoFailureException( getMessage(
+                            "illegalPropertiesFormat", p.getFormat(),
+                            StringUtils.join( PropertiesResourceType.FORMAT_VALUES, ',' ) ) );
+
+                    }
                 }
             }
         }
@@ -1378,7 +1403,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @throws NullPointerException if {@code context} is {@code null}.
      * @throws MojoExecutionException if getting the tool of the instance fails.
      *
-     * @see #setupJomcTool(org.jomc.modlet.ModelContext, org.jomc.tools.JomcTool)
+     * @see #createJomcTool(org.jomc.modlet.ModelContext, java.lang.String, java.lang.Class)
      */
     protected SourceFileProcessor createSourceFileProcessor( final ModelContext context ) throws MojoExecutionException
     {
@@ -1387,33 +1412,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             throw new NullPointerException( "context" );
         }
 
-        try
-        {
-            final SourceFileProcessor tool =
-                Class.forName( this.sourceFileProcessorClassName ).asSubclass( SourceFileProcessor.class ).
-                newInstance();
-
-            this.setupJomcTool( context, tool );
-            return tool;
-        }
-        catch ( final InstantiationException e )
-        {
-            throw new MojoExecutionException( getMessage( "failedCreatingObject",
-                                                          this.sourceFileProcessorClassName ), e );
-
-        }
-        catch ( final IllegalAccessException e )
-        {
-            throw new MojoExecutionException( getMessage( "failedCreatingObject",
-                                                          this.sourceFileProcessorClassName ), e );
-
-        }
-        catch ( final ClassNotFoundException e )
-        {
-            throw new MojoExecutionException( getMessage( "failedCreatingObject",
-                                                          this.sourceFileProcessorClassName ), e );
-
-        }
+        return this.createJomcTool( context, this.sourceFileProcessorClassName, SourceFileProcessor.class );
     }
 
     /**
@@ -1426,7 +1425,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @throws NullPointerException if {@code context} is {@code null}.
      * @throws MojoExecutionException if getting the tool of the instance fails.
      *
-     * @see #setupJomcTool(org.jomc.modlet.ModelContext, org.jomc.tools.JomcTool)
+     * @see #createJomcTool(org.jomc.modlet.ModelContext, java.lang.String, java.lang.Class)
      */
     protected ResourceFileProcessor createResourceFileProcessor( final ModelContext context )
         throws MojoExecutionException
@@ -1436,33 +1435,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             throw new NullPointerException( "context" );
         }
 
-        try
-        {
-            final ResourceFileProcessor tool =
-                Class.forName( this.resourceFileProcessorClassName ).asSubclass( ResourceFileProcessor.class ).
-                newInstance();
-
-            this.setupJomcTool( context, tool );
-            return tool;
-        }
-        catch ( final InstantiationException e )
-        {
-            throw new MojoExecutionException( getMessage( "failedCreatingObject",
-                                                          this.resourceFileProcessorClassName ), e );
-
-        }
-        catch ( final IllegalAccessException e )
-        {
-            throw new MojoExecutionException( getMessage( "failedCreatingObject",
-                                                          this.resourceFileProcessorClassName ), e );
-
-        }
-        catch ( final ClassNotFoundException e )
-        {
-            throw new MojoExecutionException( getMessage( "failedCreatingObject",
-                                                          this.resourceFileProcessorClassName ), e );
-
-        }
+        return this.createJomcTool( context, this.resourceFileProcessorClassName, ResourceFileProcessor.class );
     }
 
     /**
@@ -1475,7 +1448,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @throws NullPointerException if {@code context} is {@code null}.
      * @throws MojoExecutionException if getting the tool of the instance fails.
      *
-     * @see #setupJomcTool(org.jomc.modlet.ModelContext, org.jomc.tools.JomcTool)
+     * @see #createJomcTool(org.jomc.modlet.ModelContext, java.lang.String, java.lang.Class)
      */
     protected ClassFileProcessor createClassFileProcessor( final ModelContext context ) throws MojoExecutionException
     {
@@ -1484,31 +1457,92 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             throw new NullPointerException( "context" );
         }
 
+        return this.createJomcTool( context, this.classFileProcessorClassName, ClassFileProcessor.class );
+    }
+
+    /**
+     * Creates a new {@code JomcTool} object for a given class name and type.
+     *
+     * @param context The context of the tool.
+     * @param className The name of the class to create an object of.
+     * @param type The class of the type of object to create.
+     * @param <T> The type of the object to create.
+     *
+     * @return A new instance of the class with name {@code className}.
+     *
+     * @throws NullPointerException if {@code context}, {@code className} or {@code type} is {@code null}.
+     * @throws MojoExecutionException if creating a new {@code JomcTool} object fails.
+     *
+     * @see #createObject(java.lang.String, java.lang.Class)
+     * @see #setupJomcTool(org.jomc.modlet.ModelContext, org.jomc.tools.JomcTool)
+     *
+     * @since 1.2
+     */
+    protected <T extends JomcTool> T createJomcTool( final ModelContext context, final String className,
+                                                     final Class<T> type ) throws MojoExecutionException
+    {
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+        if ( className == null )
+        {
+            throw new NullPointerException( "className" );
+        }
+        if ( type == null )
+        {
+            throw new NullPointerException( "type" );
+        }
+
+        final T tool = this.createObject( className, type );
+        this.setupJomcTool( context, tool );
+        return tool;
+    }
+
+    /**
+     * Creates a new object for a given class name and type.
+     *
+     * @param className The name of the class to create an object of.
+     * @param type The class of the type of object to create.
+     * @param <T> The type of the object to create.
+     *
+     * @return A new instance of the class with name {@code className}.
+     *
+     * @throws NullPointerException if {@code className} or {@code type} is {@code null}.
+     * @throws MojoExecutionException if creating a new object fails.
+     *
+     * @since 1.2
+     */
+    protected <T> T createObject( final String className, final Class<T> type ) throws MojoExecutionException
+    {
+        if ( className == null )
+        {
+            throw new NullPointerException( "className" );
+        }
+        if ( type == null )
+        {
+            throw new NullPointerException( "type" );
+        }
+
         try
         {
-            final ClassFileProcessor tool =
-                Class.forName( this.classFileProcessorClassName ).asSubclass( ClassFileProcessor.class ).newInstance();
-
-            this.setupJomcTool( context, tool );
-            return tool;
+            return Class.forName( className ).asSubclass( type ).newInstance();
         }
         catch ( final InstantiationException e )
         {
-            throw new MojoExecutionException( getMessage( "failedCreatingObject",
-                                                          this.classFileProcessorClassName ), e );
-
+            throw new MojoExecutionException( getMessage( "failedCreatingObject", className ), e );
         }
         catch ( final IllegalAccessException e )
         {
-            throw new MojoExecutionException( getMessage( "failedCreatingObject",
-                                                          this.classFileProcessorClassName ), e );
-
+            throw new MojoExecutionException( getMessage( "failedCreatingObject", className ), e );
         }
         catch ( final ClassNotFoundException e )
         {
-            throw new MojoExecutionException( getMessage( "failedCreatingObject",
-                                                          this.classFileProcessorClassName ), e );
-
+            throw new MojoExecutionException( getMessage( "failedCreatingObject", className ), e );
+        }
+        catch ( final ClassCastException e )
+        {
+            throw new MojoExecutionException( getMessage( "failedCreatingObject", className ), e );
         }
     }
 
@@ -1649,7 +1683,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Creates a new {@code Transformer} from a given {@code TransformerResourceType}.
      *
-     * @param resource The resource to initialize the transformer with.
+     * @param resource The resource to initialise the transformer with.
      *
      * @return A {@code Transformer} for {@code resource} or {@code null} if {@code resource} is not found and flagged
      * optional.
@@ -2265,6 +2299,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             if ( this.lineSeparator != null )
             {
                 tool.setLineSeparator( StringEscapeUtils.unescapeJava( this.lineSeparator ) );
+            }
+
+            if ( this.language != null )
+            {
+                tool.setLocale( new Locale( this.language ) );
             }
 
             if ( this.velocityPropertyResources != null )

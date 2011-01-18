@@ -50,6 +50,12 @@ public class PropertiesResourceType extends ResourceType
     /** Constant for the XML properties file format. */
     public static final String XML_FORMAT = "xml";
 
+    /** Supported properties file format values. */
+    public static final String[] FORMAT_VALUES =
+    {
+        PLAIN_FORMAT, XML_FORMAT
+    };
+
     /** The format of the properties resource. */
     private String format;
 
@@ -82,6 +88,31 @@ public class PropertiesResourceType extends ResourceType
     public final void setFormat( final String value )
     {
         this.format = value;
+    }
+
+    /**
+     * Tests a given format value.
+     *
+     * @param value The format value to test.
+     *
+     * @return {@code true} if the given format value is valid; {@code false} if the given format value is not valid.
+     *
+     * @see #FORMAT_VALUES
+     */
+    public static boolean isFormatSupported( final String value )
+    {
+        if ( value != null )
+        {
+            for ( String format : FORMAT_VALUES )
+            {
+                if ( value.equalsIgnoreCase( format ) )
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

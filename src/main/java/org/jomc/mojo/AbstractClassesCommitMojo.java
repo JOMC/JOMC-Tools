@@ -202,7 +202,7 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
     protected void assertValidParameters() throws MojoFailureException
     {
         super.assertValidParameters();
-        this.assertLocationsNotNull( this.modelObjectStylesheetResources );
+        this.assertValidResources( this.modelObjectStylesheetResources );
     }
 
     @Override
