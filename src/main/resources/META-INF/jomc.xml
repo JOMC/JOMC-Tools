@@ -34,7 +34,8 @@
 -->
 <module xmlns="http://jomc.org/model"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://jomc.org/model http://jomc.sourceforge.net/model/jomc-1.0.xsd"
+        xsi:schemaLocation="http://jomc.org/model http://jomc.sourceforge.net/model/jomc-1.0.xsd
+                            http://jomc.org/tools/model http://jomc.sourceforge.net/tools/model/jomc-tools-1.2.xsd"
         name="${project.name}" version="${project.version}" vendor="${project.organization.name}" modelVersion="1.0">
 
   <documentation defaultLanguage="en">
@@ -44,10 +45,36 @@
   <specifications>
     <!-- *********************************************************************************************************** -->
     <specification identifier="${project.name} Command" class="org.jomc.cli.Command" classDeclaration="true"
-                   vendor="${project.organization.name}" version="1.0">
+                   vendor="${project.organization.name}" version="1.0" createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
         <text language="en">Command.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+    </specification>
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="${project.name} Application Option" class="org.apache.commons.cli.Option"
+                   vendor="${project.organization.name}" version="1.2" createDate="2009-07-25T19:56:45Z">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Application option.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+    </specification>
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="${project.name} Command Option" class="org.apache.commons.cli.Option"
+                   vendor="${project.organization.name}" version="1.2" createDate="2009-07-25T19:56:45Z">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Command option.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -64,7 +91,7 @@
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} Option Factory" class="org.jomc.cli.model.OptionFactory"
                     classDeclaration="true" name="${project.name}" version="${project.version}"
-                    vendor="${project.organization.name}" abstract="true">
+                    vendor="${project.organization.name}" abstract="true" createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
         <text language="en"><![CDATA[
@@ -77,11 +104,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
-      <specifications>
-        <reference identifier="org.apache.commons.cli.Option" final="true"/>
-      </specifications>
       <dependencies>
-        <dependency identifier="java.util.Locale" name="Locale" version="1.1" implementationName="default" final="true"/>
+        <dependency identifier="java.util.Locale" name="Locale" version="1.1" implementationName="default"/>
       </dependencies>
       <properties>
         <property name="opt">
@@ -141,13 +165,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Model Option"
                     name="${project.name} Model Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -174,13 +201,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} Verbose Option" name="${project.name} Verbose Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Application Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -200,13 +230,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} Debug Option" name="${project.name} Debug Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Application Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -234,13 +267,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} Fail-On-Warnings Option" name="${project.name} Fail-On-Warnings Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Application Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -260,13 +296,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} Classpath Option" name="${project.name} Classpath Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -296,13 +335,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} Documents Option" name="${project.name} Documents Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -332,13 +374,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} Module Location Option" name="${project.name} Module Location Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -365,13 +410,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} Modlet Location Option" name="${project.name} Modlet Location Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -399,13 +447,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Transformer Location Option"
                     name="${project.name} Transformer Location Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -432,13 +483,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} Provider Location Option" name="${project.name} Provider Location Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -466,13 +520,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Platform Provider Location Option"
                     name="${project.name} Platform Provider Location Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -499,13 +556,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} Module Name Option" name="${project.name} Module Name Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -533,13 +593,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} No Classpath Resolution Option"
                     name="${project.name} No Classpath Resolution Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -560,13 +623,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} No Model Processing Option"
                     name="${project.name} No Model Processing Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -587,13 +653,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Language Option"
                     name="${project.name} Language Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -621,13 +690,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Resource Directory Option"
                     name="${project.name} Resource Directory Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -655,13 +727,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Source Directory Option"
                     name="${project.name} Source Directory Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -689,13 +764,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Template Profile Option"
                     name="${project.name} Template Profile Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -723,13 +801,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Default Template Profile Option"
                     name="${project.name} Default Template Profile Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -757,13 +838,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Template Encoding Option"
                     name="${project.name} Template Encoding Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -788,16 +872,56 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="${project.name} Input Encoding Option"
-                    name="${project.name} Input Encoding Option"
+    <implementation identifier="${project.name} Template Location Option"
+                    name="${project.name} Template Location Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
+      <implementations>
+        <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="tl" override="true"/>
+        <property name="longOpt" value="template-location" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Location to search for templates in addition to searching the class path of the application.</text>
+            <text language="de">Ort, an dem zusätzlich zum Klassenpfad der Anwendung nach Vorlagen gesucht werden soll.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">location</text>
+            <text language="de">Ort</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Input Encoding Option"
+                    name="${project.name} Input Encoding Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -825,13 +949,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Output Encoding Option"
                     name="${project.name} Output Encoding Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -859,13 +986,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Classes Directory Option"
                     name="${project.name} Classes Directory Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -893,13 +1023,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Document Option"
                     name="${project.name} Document Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}" final="true">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -927,13 +1060,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Document Encoding Option"
                     name="${project.name} Document Encoding Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}" final="true">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -961,13 +1097,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Stylesheet Option"
                     name="${project.name} Stylesheet Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}" final="true">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -995,13 +1134,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Module Version Option"
                     name="${project.name} Module Version Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -1029,13 +1171,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Module Vendor Option"
                     name="${project.name} Module Vendor Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -1063,13 +1208,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Module Includes Option"
                     name="${project.name} Module Includes Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -1100,13 +1248,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Module Excludes Option"
                     name="${project.name} Module Excludes Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -1137,13 +1288,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Indentation String Option"
                     name="${project.name} Indentation String Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -1171,13 +1325,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Line Separator Option"
                     name="${project.name} Line Separator Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -1204,13 +1361,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} Modlet Name Option" name="${project.name} Modlet Name Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -1238,13 +1398,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Modlet Version Option"
                     name="${project.name} Modlet Version Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -1272,13 +1435,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Modlet Vendor Option"
                     name="${project.name} Modlet Vendor Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -1306,13 +1472,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Modlet Includes Option"
                     name="${project.name} Modlet Includes Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -1343,13 +1512,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Modlet Excludes Option"
                     name="${project.name} Modlet Excludes Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -1380,13 +1552,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Implementation Option"
                     name="${project.name} Implementation Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -1414,13 +1589,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
     <implementation identifier="${project.name} Specification Option"
                     name="${project.name} Specification Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}">
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
@@ -1445,13 +1623,288 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} ClassFileProcessor Class Name Option"
+                    name="${project.name} ClassFileProcessor Class Name Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
+      <implementations>
+        <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="cfpc" override="true"/>
+        <property name="longOpt" value="class-file-processor-class" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Class name of the 'ClassFileProcessor' to use.</text>
+            <text language="de">Klassenname des zu verwendenden 'ClassFileProcessor's.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">name</text>
+            <text language="de">Name</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} ResourceFileProcessor Class Name Option"
+                    name="${project.name} ResourceFileProcessor Class Name Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
+      <implementations>
+        <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="rfpc" override="true"/>
+        <property name="longOpt" value="resource-file-processor-class" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Class name of the 'ResourceFileProcessor' to use.</text>
+            <text language="de">Klassenname des zu verwendenden 'ResourceFileProcessor's.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">name</text>
+            <text language="de">Name</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} SourceFileProcessor Class Name Option"
+                    name="${project.name} SourceFileProcessor Class Name Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
+      <implementations>
+        <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="sfpc" override="true"/>
+        <property name="longOpt" value="source-file-processor-class" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Class name of the 'SourceFileProcessor' to use.</text>
+            <text language="de">Klassenname des zu verwendenden 'SourceFileProcessor's.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">name</text>
+            <text language="de">Name</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} ModelContext Class Name Option"
+                    name="${project.name} ModelContext Class Name Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
+      <implementations>
+        <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="mcc" override="true"/>
+        <property name="longOpt" value="model-context-class" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Class name of the 'ModelContext' to use.</text>
+            <text language="de">Klassenname des zu verwendenden 'ModelContext'.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">name</text>
+            <text language="de">Name</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Modlet Schema System Id Option"
+                    name="${project.name} Modlet Schema System Id Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
+      <implementations>
+        <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="mssid" override="true"/>
+        <property name="longOpt" value="modlet-schema-system-id" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">System ID of the 'modlet' schema.</text>
+            <text language="de">System ID des 'modlet' schemas.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">URI</text>
+            <text language="de">URI</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} No Class File Processing Option"
+                    name="${project.name} No Class File Processing Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
+      <implementations>
+        <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="ncp" override="true"/>
+        <property name="longOpt" value="no-class-processing" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Deactivates class file processing.</text>
+            <text language="de">Deaktiviert die Klassendatei-Verarbeitung.</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} No Source File Processing Option"
+                    name="${project.name} No Source File Processing Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
+      <implementations>
+        <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="nsp" override="true"/>
+        <property name="longOpt" value="no-source-processing" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Deactivates source file processing.</text>
+            <text language="de">Deaktiviert die Quelltextdatei-Verarbeitung.</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} No Resource File Processing Option"
+                    name="${project.name} No Resource File Processing Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+      </specifications>
+      <implementations>
+        <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="nrp" override="true"/>
+        <property name="longOpt" value="no-resource-processing" override="true"/>
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Deactivates resource file processing.</text>
+            <text language="de">Deaktiviert die Ressourcedatei-Verarbeitung.</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
     <!--                                                                                                             -->
     <!-- Application                                                                                                 -->
     <!--                                                                                                             -->
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} Application" class="org.jomc.cli.Jomc" classDeclaration="true"
                     name="${project.name}" version="${project.version}" vendor="${project.organization.name}"
-                    final="true">
+                    createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
         <text language="en">JOMC command line interface.</text>
@@ -1464,13 +1917,22 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <dependencies>
         <dependency name="Commands" identifier="${project.name} Command" version="1.0" bound="false"/>
         <dependency name="Locale" identifier="java.util.Locale" version="1.1" implementationName="default"/>
-        <dependency name="DebugOption" identifier="org.apache.commons.cli.Option"
+        <!-- dependency name="CommandLineParser" identifier="org.apache.commons.cli.CommandLineParser"
+                    implementationName="Commons CLI - Basic Command Line Parser" bound="false"/ -->
+
+        <dependency name="CommandLineParser" identifier="org.apache.commons.cli.CommandLineParser"
+                    implementationName="Commons CLI - GNU Command Line Parser" bound="false"/>
+
+        <!-- dependency name="CommandLineParser" identifier="org.apache.commons.cli.CommandLineParser"
+                    implementationName="Commons CLI - Posix Command Line Parser" bound="false"/ -->
+
+        <dependency name="DebugOption" identifier="${project.name} Application Option"
                     implementationName="${project.name} Debug Option"/>
 
-        <dependency name="FailOnWarningsOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="FailOnWarningsOption" identifier="${project.name} Application Option"
                     implementationName="${project.name} Fail-On-Warnings Option"/>
 
-        <dependency name="VerboseOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="VerboseOption" identifier="${project.name} Application Option"
                     implementationName="${project.name} Verbose Option"/>
 
       </dependencies>
@@ -1553,17 +2015,68 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
+    <implementation identifier="Commons CLI - Basic Command Line Parser" class="org.apache.commons.cli.BasicParser"
+                    name="Commons CLI - Basic Command Line Parser" version="1.2" vendor="The Apache Software Foundation"
+                    final="true" createDate="2009-07-25T19:56:45Z">
+
+      <documentation defaultLanguage="en">
+        <text language="en">The BasicParser provides a very simple implementation of the flatten method.</text>
+      </documentation>
+      <specifications>
+        <reference identifier="org.apache.commons.cli.CommandLineParser"/>
+      </specifications>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="Commons CLI - GNU Command Line Parser" class="org.apache.commons.cli.GnuParser"
+                    name="Commons CLI - GNU Command Line Parser" version="1.2" vendor="The Apache Software Foundation"
+                    final="true" createDate="2009-07-25T19:56:45Z">
+
+      <documentation defaultLanguage="en">
+        <text language="en">The GnuParser provides an implementation of the flatten method.</text>
+      </documentation>
+      <specifications>
+        <reference identifier="org.apache.commons.cli.CommandLineParser"/>
+      </specifications>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="Commons CLI - Posix Command Line Parser" class="org.apache.commons.cli.PosixParser"
+                    name="Commons CLI - Posix Command Line Parser" version="1.2" vendor="The Apache Software Foundation"
+                    final="true" createDate="2009-07-25T19:56:45Z">
+
+      <documentation defaultLanguage="en">
+        <text language="en">The PosixParser provides an implementation of the flatten method.</text>
+      </documentation>
+      <specifications>
+        <reference identifier="org.apache.commons.cli.CommandLineParser"/>
+      </specifications>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
     <!--                                                                                                             -->
     <!-- Commands                                                                                                    -->
     <!--                                                                                                             -->
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="${project.name} JOMC Command"
-                    class="org.jomc.cli.commands.AbstractJomcCommand" classDeclaration="true"
-                    name="${project.name} AbstractJomcCommand" version="${project.version}"
-                    vendor="${project.organization.name}" abstract="true">
+    <implementation identifier="${project.name} Command Execution Exception"
+                    class="org.jomc.cli.commands.CommandExecutionException"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}" createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en">Base JOMC {@code Command} implementation.</text>
+        <text language="en">Command execution exception.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Abstract Command"
+                    class="org.jomc.cli.commands.AbstractCommand" classDeclaration="true"
+                    name="${project.name} Command" version="${project.version}"
+                    vendor="${project.organization.name}" abstract="true" createDate="2009-07-25T19:56:45Z">
+
+      <documentation defaultLanguage="en">
+        <text language="en">${project.name} command implementation.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -1574,22 +2087,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="${project.name} Command" version="1.0" final="true"/>
       </specifications>
       <dependencies>
-        <dependency name="Locale" identifier="java.util.Locale" version="1.1" implementationName="default" final="true"/>
-        <dependency name="ClasspathOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Classpath Option"/>
-
-        <dependency name="ModelOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Model Option"/>
-
-        <dependency name="ModletLocationOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Modlet Location Option"/>
-
-        <dependency name="ProviderLocationOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Provider Location Option"/>
-
-        <dependency name="PlatformProviderLocationOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Platform Provider Location Option"/>
-
+        <dependency name="Locale" identifier="java.util.Locale" version="1.1" implementationName="default"/>
       </dependencies>
       <properties>
         <property name="commandName" value="no-operation">
@@ -1602,6 +2100,107 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
+      </properties>
+      <messages>
+        <message name="shortDescriptionMessage">
+          <template defaultLanguage="en">
+            <text language="en"/>
+          </template>
+        </message>
+        <message name="longDescriptionMessage">
+          <template defaultLanguage="en">
+            <text language="en"/>
+          </template>
+        </message>
+        <message name="separator">
+          <template defaultLanguage="en">
+            <text language="en">--------------------------------------------------------------------------------</text>
+          </template>
+        </message>
+        <message name="applicationTitle">
+          <template defaultLanguage="en">
+            <text language="en">${project.name} Version ${project.version} Build ${buildNumber}</text>
+          </template>
+        </message>
+        <message name="commandInfoMessage">
+          <template defaultLanguage="en">
+            <text language="en">Executing command {0} ...</text>
+            <text language="de">Führt Befehl {0} aus ... </text>
+          </template>
+          <arguments>
+            <argument index="0" name="toolName"/>
+          </arguments>
+        </message>
+        <message name="commandSuccessMessage">
+          <template defaultLanguage="en">
+            <text language="en">{0} successful.</text>
+            <text language="de">{0} erfolgreich.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="toolName"/>
+          </arguments>
+        </message>
+        <message name="commandFailureMessage">
+          <template defaultLanguage="en">
+            <text language="en">{0} failure.</text>
+            <text language="de">{0} fehlgeschlagen.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="toolName"/>
+          </arguments>
+        </message>
+        <message name="defaultLogLevelInfo">
+          <template defaultLanguage="en">
+            <text language="en">Default log level: ''{0}''</text>
+            <text language="de">Standard-Protokollierungsstufe: ''{0}''</text>
+          </template>
+          <arguments>
+            <argument index="0" name="defaultLogLevel"/>
+          </arguments>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Modlet Command"
+                    class="org.jomc.cli.commands.AbstractModletCommand" classDeclaration="true"
+                    name="${project.name} Modlet Command" version="${project.version}"
+                    vendor="${project.organization.name}" abstract="true" createDate="2009-07-25T19:56:45Z">
+
+      <documentation defaultLanguage="en">
+        <text language="en">${project.name} modlet based command implementation.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <implementations>
+        <reference identifier="${project.name} Abstract Command" version="${project.version}" final="true"/>
+      </implementations>
+      <dependencies>
+        <dependency name="ClasspathOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} Classpath Option"/>
+
+        <dependency name="ModelContextOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} ModelContext Class Name Option"/>
+
+        <dependency name="ModelOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} Model Option"/>
+
+        <dependency name="ModletSchemaSystemIdOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} Modlet Schema System Id Option"/>
+
+        <dependency name="ModletLocationOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} Modlet Location Option"/>
+
+        <dependency name="ProviderLocationOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} Provider Location Option"/>
+
+        <dependency name="PlatformProviderLocationOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} Platform Provider Location Option"/>
+
+      </dependencies>
+      <properties>
         <property name="applicationModlet" value="${project.name}" final="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the 'shaded' application modlet.</text>
@@ -1629,36 +2228,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         </property>
       </properties>
       <messages>
-        <message name="defaultLogLevelInfo">
-          <template defaultLanguage="en">
-            <text language="en">Default log level: ''{0}''</text>
-            <text language="de">Standard-Protokollierungsstufe: ''{0}''</text>
-          </template>
-          <arguments>
-            <argument index="0" name="defaultLogLevel"/>
-          </arguments>
-        </message>
-        <message name="shortDescriptionMessage">
-          <template defaultLanguage="en">
-            <text language="en"/>
-          </template>
-        </message>
-        <message name="longDescriptionMessage">
-          <template defaultLanguage="en">
-            <text language="en"/>
-          </template>
-        </message>
-        <message name="separator" final="true">
-          <template defaultLanguage="en">
-            <text language="en">--------------------------------------------------------------------------------</text>
-          </template>
-        </message>
-        <message name="applicationTitle" final="true">
-          <template defaultLanguage="en">
-            <text language="en">${project.name} Version ${project.version} Build ${buildNumber}</text>
-          </template>
-        </message>
-        <message name="classpathElementInfo" final="true">
+        <message name="classpathElementInfo">
           <template defaultLanguage="en">
             <text language="en">Classpath element: ''{0}''</text>
             <text language="de">Klassenpfad-Element: ''{0}''</text>
@@ -1667,34 +2237,16 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="0" name="classpathElement"/>
           </arguments>
         </message>
-        <message name="commandInfoMessage" final="true">
+        <message name="classpathElementNotFoundWarning">
           <template defaultLanguage="en">
-            <text language="en">Executing command {0} ...</text>
-            <text language="de">Führt Befehl {0} aus ... </text>
+            <text language="en">Classpath element ''{0}'' ignored. File not found.</text>
+            <text language="de">Klassenpfad-Element ''{0}'' ignoriert. Datei nicht gefunden.</text>
           </template>
           <arguments>
-            <argument index="0" name="toolName"/>
+            <argument index="0" name="fileName"/>
           </arguments>
         </message>
-        <message name="commandSuccessMessage" final="true">
-          <template defaultLanguage="en">
-            <text language="en">{0} successful.</text>
-            <text language="de">{0} erfolgreich.</text>
-          </template>
-          <arguments>
-            <argument index="0" name="toolName"/>
-          </arguments>
-        </message>
-        <message name="commandFailureMessage" final="true">
-          <template defaultLanguage="en">
-            <text language="en">{0} failure.</text>
-            <text language="de">{0} fehlgeschlagen.</text>
-          </template>
-          <arguments>
-            <argument index="0" name="toolName"/>
-          </arguments>
-        </message>
-        <message name="excludedProviderInfo" final="true">
+        <message name="excludedProviderInfo">
           <template defaultLanguage="en">
             <text language="en">Provider ''{1}'' from class path resource ''{0}'' ignored.</text>
             <text language="de">Provider ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</text>
@@ -1704,7 +2256,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="1" name="providerName"/>
           </arguments>
         </message>
-        <message name="excludedServiceInfo" final="true">
+        <message name="excludedServiceInfo">
           <template defaultLanguage="en">
             <text language="en">Service ''{1}'' from class path resource ''{0}'' ignored.</text>
             <text language="de">Service ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</text>
@@ -1714,7 +2266,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="1" name="serviceName"/>
           </arguments>
         </message>
-        <message name="excludedSchemaInfo" final="true">
+        <message name="excludedSchemaInfo">
           <template defaultLanguage="en">
             <text language="en">Context ''{1}'' from class path resource ''{0}'' ignored.</text>
             <text language="de">Kontext ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</text>
@@ -1724,7 +2276,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="1" name="contextId"/>
           </arguments>
         </message>
-        <message name="excludedModletInfo" final="true">
+        <message name="excludedModletInfo">
           <template defaultLanguage="en">
             <text language="en">Modlet ''{1}'' from class path resource ''{0}'' ignored.</text>
             <text language="de">Modlet ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</text>
@@ -1734,25 +2286,25 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="1" name="modletIdentifier"/>
           </arguments>
         </message>
-        <message name="classpathElementNotFoundWarning" final="true">
+        <message name="invalidModelMessage">
           <template defaultLanguage="en">
-            <text language="en">Classpath element ''{0}'' ignored. File not found.</text>
-            <text language="de">Klassenpfad-Element ''{0}'' ignoriert. Datei nicht gefunden.</text>
+            <text language="en">Invalid ''{0}'' model.</text>
+            <text language="de">Ungültiges ''{0}'' Modell.</text>
           </template>
           <arguments>
-            <argument index="0" name="fileName"/>
+            <argument index="0" name="modelIdentifier"/>
           </arguments>
         </message>
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="${project.name} JOMC Tool Command"
-                    class="org.jomc.cli.commands.AbstractJomcToolCommand" classDeclaration="true"
-                    name="${project.name} AbstractJomcToolCommand" version="${project.version}"
-                    vendor="${project.organization.name}" abstract="true">
+    <implementation identifier="${project.name} Model Command"
+                    class="org.jomc.cli.commands.AbstractModelCommand" classDeclaration="true"
+                    name="${project.name} Model Command" version="${project.version}"
+                    vendor="${project.organization.name}" abstract="true" createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en">Base JOMC {@code Command} implementation for processing modules.</text>
+        <text language="en">${project.name} model based command implementation.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -1760,27 +2312,27 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <implementations>
-        <reference identifier="${project.name} JOMC Command" version="${project.version}"/>
+        <reference identifier="${project.name} Modlet Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="DocumentsOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="DocumentsOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Documents Option"/>
 
-        <dependency name="ModuleLocationOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="ModuleLocationOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Module Location Option"/>
 
-        <dependency name="TransformerLocationOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="TransformerLocationOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Transformer Location Option"/>
 
-        <dependency name="NoClasspathResolutionOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="NoClasspathResolutionOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} No Classpath Resolution Option"/>
 
-        <dependency name="NoModelProcessingOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="NoModelProcessingOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} No Model Processing Option"/>
 
       </dependencies>
       <messages>
-        <message name="documentFileInfo" final="true">
+        <message name="documentFileInfo">
           <template defaultLanguage="en">
             <text language="en">Document file: ''{0}''</text>
             <text language="de">Dokument-Datei: ''{0}''</text>
@@ -1789,7 +2341,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="0" name="documentFile"/>
           </arguments>
         </message>
-        <message name="documentFileNotFoundWarning" final="true">
+        <message name="documentFileNotFoundWarning">
           <template defaultLanguage="en">
             <text language="en">Document file ''{0}'' ignored. File not found.</text>
             <text language="de">Dokument-Datei ''{0}'' ignoriert. Datei nicht gefunden.</text>
@@ -1798,7 +2350,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="0" name="fileName"/>
           </arguments>
         </message>
-        <message name="excludedModuleFromClasspathInfo" final="true">
+        <message name="excludedModuleFromClasspathInfo">
           <template defaultLanguage="en">
             <text language="en">Module ''{0}'' from class path ignored. Module with identical name already loaded.</text>
             <text language="de">Modul ''{0}'' aus Klassenpfad ignoriert. Modul mit identischem Namen bereits geladen.</text>
@@ -1807,7 +2359,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="0" name="moduleName"/>
           </arguments>
         </message>
-        <message name="moduleInfo" final="true">
+        <message name="moduleInfo">
           <template defaultLanguage="en">
             <text language="en">Found module ''{0} {1}''.</text>
             <text language="de">Modul ''{0} {1}'' gefunden.</text>
@@ -1817,7 +2369,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="1" name="moduleVersion"/>
           </arguments>
         </message>
-        <message name="cannotProcessMessage" final="true">
+        <message name="cannotProcessMessage">
           <template defaultLanguage="en">
             <text language="en">Cannot process ''{0}'': {1}</text>
             <text language="de">Kann ''{0}'' nicht verarbeiten: {1}</text>
@@ -1830,34 +2382,125 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="${project.name} generate-resources Command"
-                    class="org.jomc.cli.commands.GenerateResourcesCommand" classDeclaration="true"
-                    name="default-generate-resources" version="${project.version}" vendor="${project.organization.name}">
+    <implementation identifier="${project.name} JomcTool Command"
+                    class="org.jomc.cli.commands.AbstractJomcToolCommand" classDeclaration="true"
+                    name="${project.name} JomcTool Command" version="${project.version}"
+                    vendor="${project.organization.name}" abstract="true" createDate="2009-07-25T19:56:45Z">
+
       <documentation defaultLanguage="en">
-        <text language="en">Command line interface for the {@code org.jomc.tools.ResourceFileProcessor} tool.</text>
+        <text language="en">${project.name} {@code JomcTool} based command implementation.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.2" mail="schulte2005@users.sourceforge.net"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
       <implementations>
-        <reference identifier="${project.name} JOMC Tool Command" version="${project.version}" final="true"/>
+        <reference identifier="${project.name} Model Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="ImplementationOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="TemplateProfileOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} Template Profile Option"/>
+
+        <dependency name="DefaultTemplateProfileOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} Default Template Profile Option"/>
+
+        <dependency name="TemplateEncodingOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} Template Encoding Option"/>
+
+        <dependency name="TemplateLocationOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} Template Location Option"/>
+
+        <dependency name="OutputEncodingOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} Output Encoding Option"/>
+
+        <dependency name="InputEncodingOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} Input Encoding Option"/>
+
+        <dependency name="IndentationStringOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} Indentation String Option"/>
+
+        <dependency name="LineSeparatorOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} Line Separator Option"/>
+
+        <dependency name="ImplementationOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Implementation Option"/>
 
-        <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="ModuleNameOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Module Name Option"/>
 
-        <dependency name="SpecificationOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="SpecificationOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Specification Option"/>
 
-        <dependency name="LanguageOption" identifier="org.apache.commons.cli.Option"
+      </dependencies>
+      <messages>
+        <reference name="moduleNotFoundWarning" final="true"/>
+        <reference name="implementationNotFoundWarning" final="true"/>
+        <reference name="specificationNotFoundWarning" final="true"/>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} ClassFileProcessor Command"
+                    class="org.jomc.cli.commands.AbstractClassFileProcessorCommand" classDeclaration="true"
+                    name="${project.name} ClassFileProcessor Command" version="${project.version}"
+                    vendor="${project.organization.name}" abstract="true" createDate="2009-07-25T19:56:45Z">
+
+      <documentation defaultLanguage="en">
+        <text language="en">${project.name} {@code ClassFileProcessor} based command implementation.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.2" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <implementations>
+        <reference identifier="${project.name} JomcTool Command" version="${project.version}" final="true"/>
+      </implementations>
+      <dependencies>
+        <dependency name="ClassFileProcessorOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} ClassFileProcessor Class Name Option"/>
+
+        <dependency name="NoClassProcessingOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} No Class File Processing Option"/>
+
+      </dependencies>
+      <messages>
+        <message name="disabledMessage">
+          <template defaultLanguage="en">
+            <text language="en">Class file processing disabled.</text>
+            <text language="de">Klassendateiverarbeitung deaktiviert.</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} ResourceFileProcessor Command"
+                    class="org.jomc.cli.commands.AbstractResourceFileProcessorCommand" classDeclaration="true"
+                    name="${project.name} ResourceFileProcessor Command" version="${project.version}"
+                    vendor="${project.organization.name}" abstract="true" createDate="2009-07-25T19:56:45Z">
+
+      <documentation defaultLanguage="en">
+        <text language="en">${project.name} {@code ResourceFileProcessor} based command implementation.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.2" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <implementations>
+        <reference identifier="${project.name} JomcTool Command" version="${project.version}" final="true"/>
+      </implementations>
+      <dependencies>
+        <dependency name="ResourceFileProcessorOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} ResourceFileProcessor Class Name Option"/>
+
+        <dependency name="NoResourceProcessingOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} No Resource File Processing Option"/>
+
+        <dependency name="LanguageOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Language Option"/>
 
-        <dependency name="ResourceDirectoryOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="ResourceDirectoryOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Resource Directory Option">
 
           <properties>
@@ -1865,6 +2508,73 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
           </properties>
         </dependency>
       </dependencies>
+      <messages>
+        <message name="disabledMessage">
+          <template defaultLanguage="en">
+            <text language="en">Resource file processing disabled.</text>
+            <text language="de">Ressourcedateiverarbeitung deaktiviert.</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} SourceFileProcessor Command"
+                    class="org.jomc.cli.commands.AbstractSourceFileProcessorCommand" classDeclaration="true"
+                    name="${project.name} SourceFileProcessor Command" version="${project.version}"
+                    vendor="${project.organization.name}" abstract="true" createDate="2009-07-25T19:56:45Z">
+
+      <documentation defaultLanguage="en">
+        <text language="en">${project.name} {@code SourceFileProcessor} based command implementation.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.2" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <implementations>
+        <reference identifier="${project.name} JomcTool Command" version="${project.version}" final="true"/>
+      </implementations>
+      <dependencies>
+        <dependency name="SourceFileProcessorOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} SourceFileProcessor Class Name Option"/>
+
+        <dependency name="NoSourceProcessingOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} No Source File Processing Option"/>
+
+        <dependency name="SourceDirectoryOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} Source Directory Option">
+
+          <properties>
+            <property name="required" type="boolean" value="true" override="true"/>
+          </properties>
+        </dependency>
+      </dependencies>
+      <messages>
+        <message name="disabledMessage">
+          <template defaultLanguage="en">
+            <text language="en">Source file processing disabled.</text>
+            <text language="de">Quelltextdateiverarbeitung deaktiviert.</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} generate-resources Command"
+                    class="org.jomc.cli.commands.GenerateResourcesCommand" classDeclaration="true"
+                    name="default-generate-resources" version="${project.version}" vendor="${project.organization.name}"
+                    createDate="2009-07-25T19:56:45Z">
+
+      <documentation defaultLanguage="en">
+        <text language="en">${project.name} {@code generate-resources} command implementation.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <implementations>
+        <reference identifier="${project.name} ResourceFileProcessor Command" version="${project.version}" final="true"/>
+      </implementations>
       <properties>
         <property name="commandName" value="generate-resources" override="true">
           <documentation defaultLanguage="en">
@@ -1897,7 +2607,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                       -sd /tmp/src \
                       -df examples/xml/jomc-cli.xml \
                       -mn "JOMC CLI" \
-                      -tp "jomc-java-bundles" \
+                      -tp "jomc-cli-bundles" \
+                      -tl "examples/vm" \
                       -v]]></text>
             <text language="de"><![CDATA[Beispiel:
   jomc generate-resources -cp examples/lib/commons-cli-1.2.jar \
@@ -1910,22 +2621,40 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                       -sd /tmp/src \
                       -df examples/xml/jomc-cli.xml \
                       -mn "JOMC CLI" \
-                      -tp "jomc-java-bundles" \
+                      -tp "jomc-cli-bundles" \
+                      -tl "examples/vm" \
                       -v]]></text>
           </template>
         </message>
-        <reference name="moduleNotFoundWarning" final="true"/>
-        <reference name="implementationNotFoundWarning" final="true"/>
-        <reference name="specificationNotFoundWarning" final="true"/>
       </messages>
+      <source-files xmlns="http://jomc.org/tools/model">
+        <source-file identifier="${project.name} generate-resources Command">
+          <source-sections>
+            <source-section name="License Header"/>
+            <source-section name="Annotations"/>
+            <source-section name="Documentation"/>
+            <source-section name="GenerateResourcesCommand" editable="true"/>
+            <source-section name="Constructors">
+              <source-sections>
+                <source-section name="Default Constructor" editable="true"/>
+              </source-sections>
+            </source-section>
+            <source-section name="Command" head-template="command-implementation.vm" editable="false"/>
+            <source-section name="Dependencies"/>
+            <source-section name="Properties"/>
+            <source-section name="Messages"/>
+          </source-sections>
+        </source-file>
+      </source-files>
     </implementation>
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} manage-sources Command"
                     class="org.jomc.cli.commands.ManageSourcesCommand" classDeclaration="true"
-                    name="default-manage-sources" version="${project.version}" vendor="${project.organization.name}">
+                    name="default-manage-sources" version="${project.version}" vendor="${project.organization.name}"
+                    createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en">Command line interface for the {@code JavaSources} tool.</text>
+        <text language="en">${project.name} {@code manage-sources} command implementation.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -1933,47 +2662,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <implementations>
-        <reference identifier="${project.name} JOMC Tool Command" version="${project.version}" final="true"/>
+        <reference identifier="${project.name} SourceFileProcessor Command" version="${project.version}" final="true"/>
       </implementations>
-      <dependencies>
-        <dependency name="ImplementationOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Implementation Option"/>
-
-        <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Module Name Option"/>
-
-        <dependency name="SpecificationOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Specification Option"/>
-
-        <dependency name="SourceDirectoryOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Source Directory Option">
-
-          <properties>
-            <property name="required" type="boolean" value="true" override="true"/>
-          </properties>
-        </dependency>
-        <dependency name="TemplateProfileOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Template Profile Option"/>
-
-        <dependency name="DefaultTemplateProfileOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Default Template Profile Option"/>
-
-        <dependency name="TemplateEncodingOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Template Encoding Option"/>
-
-        <dependency name="OutputEncodingOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Output Encoding Option"/>
-
-        <dependency name="InputEncodingOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Input Encoding Option"/>
-
-        <dependency name="IndentationStringOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Indentation String Option"/>
-
-        <dependency name="LineSeparatorOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Line Separator Option"/>
-
-      </dependencies>
       <properties>
         <property name="commandName" value="manage-sources" override="true">
           <documentation defaultLanguage="en">
@@ -2000,27 +2690,48 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                       -sd /tmp/src \
                       -df examples/xml/jomc-cli.xml \
                       -mn "JOMC CLI" \
+                      -tp "jomc-cli" \
+                      -tl "examples/vm" \
                       -v]]></text>
             <text language="de"><![CDATA[Beispiel:
   jomc manage-sources -cp examples/lib/commons-cli-1.2.jar \
                       -sd /tmp/src \
                       -df examples/xml/jomc-cli.xml \
                       -mn "JOMC CLI" \
+                      -tp "jomc-cli" \
+                      -tl "examples/vm" \
                       -v]]></text>
           </template>
         </message>
-        <reference name="moduleNotFoundWarning" final="true"/>
-        <reference name="implementationNotFoundWarning" final="true"/>
-        <reference name="specificationNotFoundWarning" final="true"/>
       </messages>
+      <source-files xmlns="http://jomc.org/tools/model">
+        <source-file identifier="${project.name} manage-sources Command">
+          <source-sections>
+            <source-section name="License Header"/>
+            <source-section name="Annotations"/>
+            <source-section name="Documentation"/>
+            <source-section name="ManageSourcesCommand" editable="true"/>
+            <source-section name="Constructors">
+              <source-sections>
+                <source-section name="Default Constructor" editable="true"/>
+              </source-sections>
+            </source-section>
+            <source-section name="Command" head-template="command-implementation.vm" editable="false"/>
+            <source-section name="Dependencies"/>
+            <source-section name="Properties"/>
+            <source-section name="Messages"/>
+          </source-sections>
+        </source-file>
+      </source-files>
     </implementation>
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} commit-classes Command"
                     class="org.jomc.cli.commands.CommitClassesCommand" classDeclaration="true"
-                    name="default-commit-classes" version="${project.version}" vendor="${project.organization.name}">
+                    name="default-commit-classes" version="${project.version}" vendor="${project.organization.name}"
+                    createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en">Command line interface for committing model objects to class files with the {@code org.jomc.tools.ClassFileProcessor} tool.</text>
+        <text language="en">${project.name} {@code commit-classes} command implementation.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -2028,19 +2739,10 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <implementations>
-        <reference identifier="${project.name} JOMC Tool Command" version="${project.version}" final="true"/>
+        <reference identifier="${project.name} ClassFileProcessor Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="ImplementationOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Implementation Option"/>
-
-        <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Module Name Option"/>
-
-        <dependency name="SpecificationOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Specification Option"/>
-
-        <dependency name="ClassesDirectoryOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="ClassesDirectoryOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Classes Directory Option">
 
           <properties>
@@ -2048,7 +2750,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
           </properties>
         </dependency>
 
-        <dependency name="StylesheetOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="StylesheetOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Stylesheet Option"/>
 
       </dependencies>
@@ -2087,18 +2789,35 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                       -v]]></text>
           </template>
         </message>
-        <reference name="moduleNotFoundWarning" final="true"/>
-        <reference name="implementationNotFoundWarning" final="true"/>
-        <reference name="specificationNotFoundWarning" final="true"/>
       </messages>
+      <source-files xmlns="http://jomc.org/tools/model">
+        <source-file identifier="${project.name} commit-classes Command">
+          <source-sections>
+            <source-section name="License Header"/>
+            <source-section name="Annotations"/>
+            <source-section name="Documentation"/>
+            <source-section name="CommitClassesCommand" editable="true"/>
+            <source-section name="Constructors">
+              <source-sections>
+                <source-section name="Default Constructor" editable="true"/>
+              </source-sections>
+            </source-section>
+            <source-section name="Command" head-template="command-implementation.vm" editable="false"/>
+            <source-section name="Dependencies"/>
+            <source-section name="Properties"/>
+            <source-section name="Messages"/>
+          </source-sections>
+        </source-file>
+      </source-files>
     </implementation>
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} validate-classes Command"
                     class="org.jomc.cli.commands.ValidateClassesCommand" classDeclaration="true"
-                    name="default-validate-classes" version="${project.version}" vendor="${project.organization.name}">
+                    name="default-validate-classes" version="${project.version}" vendor="${project.organization.name}"
+                    createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en">Command line interface for validating model objects of class files with the {@code org.jomc.tools.ClassFileProcessor} tool.</text>
+        <text language="en">${project.name} {@code validate-classes} command implementation.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -2106,19 +2825,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <implementations>
-        <reference identifier="${project.name} JOMC Tool Command" version="${project.version}" final="true"/>
+        <reference identifier="${project.name} ClassFileProcessor Command" version="${project.version}" final="true"/>
       </implementations>
-      <dependencies>
-        <dependency name="ImplementationOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Implementation Option"/>
-
-        <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Module Name Option"/>
-
-        <dependency name="SpecificationOption" identifier="org.apache.commons.cli.Option"
-                    implementationName="${project.name} Specification Option"/>
-
-      </dependencies>
       <properties>
         <property name="commandName" value="validate-classes" override="true">
           <documentation defaultLanguage="en">
@@ -2150,18 +2858,35 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                         -v]]></text>
           </template>
         </message>
-        <reference name="moduleNotFoundWarning" final="true"/>
-        <reference name="implementationNotFoundWarning" final="true"/>
-        <reference name="specificationNotFoundWarning" final="true"/>
       </messages>
+      <source-files xmlns="http://jomc.org/tools/model">
+        <source-file identifier="${project.name} validate-classes Command">
+          <source-sections>
+            <source-section name="License Header"/>
+            <source-section name="Annotations"/>
+            <source-section name="Documentation"/>
+            <source-section name="ValidateClassesCommand" editable="true"/>
+            <source-section name="Constructors">
+              <source-sections>
+                <source-section name="Default Constructor" editable="true"/>
+              </source-sections>
+            </source-section>
+            <source-section name="Command" head-template="command-implementation.vm" editable="false"/>
+            <source-section name="Dependencies"/>
+            <source-section name="Properties"/>
+            <source-section name="Messages"/>
+          </source-sections>
+        </source-file>
+      </source-files>
     </implementation>
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} validate-model Command"
                     class="org.jomc.cli.commands.ValidateModelCommand" classDeclaration="true"
-                    name="default-validate-model" version="${project.version}" vendor="${project.organization.name}">
+                    name="default-validate-model" version="${project.version}" vendor="${project.organization.name}"
+                    createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en">Command line interface for validating models.</text>
+        <text language="en">${project.name} {@code validate-model} command implementation.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -2169,7 +2894,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <implementations>
-        <reference identifier="${project.name} JOMC Tool Command" version="${project.version}" final="true"/>
+        <reference identifier="${project.name} Model Command" version="${project.version}" final="true"/>
       </implementations>
       <properties>
         <property name="commandName" value="validate-model" override="true">
@@ -2203,14 +2928,34 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
           </template>
         </message>
       </messages>
+      <source-files xmlns="http://jomc.org/tools/model">
+        <source-file identifier="${project.name} validate-model Command">
+          <source-sections>
+            <source-section name="License Header"/>
+            <source-section name="Annotations"/>
+            <source-section name="Documentation"/>
+            <source-section name="ValidateModelCommand" editable="true"/>
+            <source-section name="Constructors">
+              <source-sections>
+                <source-section name="Default Constructor" editable="true"/>
+              </source-sections>
+            </source-section>
+            <source-section name="Command" head-template="command-implementation.vm" editable="false"/>
+            <source-section name="Dependencies"/>
+            <source-section name="Properties"/>
+            <source-section name="Messages"/>
+          </source-sections>
+        </source-file>
+      </source-files>
     </implementation>
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} merge-modules Command"
                     class="org.jomc.cli.commands.MergeModulesCommand" classDeclaration="true"
-                    name="default-merge-modules" version="${project.version}" vendor="${project.organization.name}">
+                    name="default-merge-modules" version="${project.version}" vendor="${project.organization.name}"
+                    createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en">Command line interface for merging modules.</text>
+        <text language="en">${project.name} {@code merge-modules} command implementation.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -2218,10 +2963,10 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <implementations>
-        <reference identifier="${project.name} JOMC Tool Command" version="${project.version}" final="true"/>
+        <reference identifier="${project.name} Model Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="DocumentOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="DocumentOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Document Option">
 
           <properties>
@@ -2229,29 +2974,29 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
           </properties>
         </dependency>
 
-        <dependency name="DocumentEncodingOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="DocumentEncodingOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Document Encoding Option"/>
 
-        <dependency name="StylesheetOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="StylesheetOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Stylesheet Option"/>
 
-        <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="ModuleNameOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Module Name Option">
 
           <properties>
             <property name="required" type="boolean" value="true"/>
           </properties>
         </dependency>
-        <dependency name="ModuleVersionOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="ModuleVersionOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Module Version Option"/>
 
-        <dependency name="ModuleVendorOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="ModuleVendorOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Module Vendor Option"/>
 
-        <dependency name="ModuleIncludesOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="ModuleIncludesOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Module Includes Option"/>
 
-        <dependency name="ModuleExcludesOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="ModuleExcludesOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Module Excludes Option"/>
 
       </dependencies>
@@ -2293,7 +3038,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                      -v]]></text>
           </template>
         </message>
-        <message name="includingModuleInfo" final="true">
+        <message name="includingModuleInfo">
           <template defaultLanguage="en">
             <text language="en">Including module ''{0}''.</text>
             <text language="de">Schließt Modul ''{0}'' ein.</text>
@@ -2302,7 +3047,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="0" name="moduleName"/>
           </arguments>
         </message>
-        <message name="excludingModuleInfo" final="true">
+        <message name="excludingModuleInfo">
           <template defaultLanguage="en">
             <text language="en">Excluding module ''{0}''.</text>
             <text language="de">Schließt Modul ''{0}'' aus.</text>
@@ -2314,14 +3059,34 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference name="illegalTransformationResultError"/>
         <reference name="writeInfo"/>
       </messages>
+      <source-files xmlns="http://jomc.org/tools/model">
+        <source-file identifier="${project.name} merge-modules Command">
+          <source-sections>
+            <source-section name="License Header"/>
+            <source-section name="Annotations"/>
+            <source-section name="Documentation"/>
+            <source-section name="MergeModulesCommand" editable="true"/>
+            <source-section name="Constructors">
+              <source-sections>
+                <source-section name="Default Constructor" editable="true"/>
+              </source-sections>
+            </source-section>
+            <source-section name="Command" head-template="command-implementation.vm" editable="false"/>
+            <source-section name="Dependencies"/>
+            <source-section name="Properties"/>
+            <source-section name="Messages"/>
+          </source-sections>
+        </source-file>
+      </source-files>
     </implementation>
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} merge-modlets Command"
                     class="org.jomc.cli.commands.MergeModletsCommand" classDeclaration="true"
-                    name="default-merge-modlets" version="${project.version}" vendor="${project.organization.name}">
+                    name="default-merge-modlets" version="${project.version}" vendor="${project.organization.name}"
+                    createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en">Command line interface for merging modlets.</text>
+        <text language="en">${project.name} {@code merge-modlets} command implementation.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -2329,10 +3094,10 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <implementations>
-        <reference identifier="${project.name} JOMC Tool Command" version="${project.version}" final="true"/>
+        <reference identifier="${project.name} Modlet Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="DocumentOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="DocumentOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Document Option">
 
           <properties>
@@ -2340,33 +3105,32 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
           </properties>
         </dependency>
 
-        <dependency name="DocumentEncodingOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="DocumentEncodingOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Document Encoding Option"/>
 
-        <dependency name="StylesheetOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="StylesheetOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Stylesheet Option"/>
 
-        <dependency name="ModletNameOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="ModletNameOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Modlet Name Option">
 
           <properties>
             <property name="required" type="boolean" value="true"/>
           </properties>
         </dependency>
-        <dependency name="ModletVersionOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="ModletVersionOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Modlet Version Option"/>
 
-        <dependency name="ModletVendorOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="ModletVendorOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Modlet Vendor Option"/>
 
-        <dependency name="ModletIncludesOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="ModletIncludesOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Modlet Includes Option"/>
 
-        <dependency name="ModletExcludesOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="ModletExcludesOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Modlet Excludes Option"/>
 
       </dependencies>
-
       <properties>
         <property name="commandName" value="merge-modlets" override="true">
           <documentation defaultLanguage="en">
@@ -2402,7 +3166,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                      -v]]></text>
           </template>
         </message>
-        <message name="includingModletInfo" final="true">
+        <message name="includingModletInfo">
           <template defaultLanguage="en">
             <text language="en">Including modlet ''{0}''.</text>
             <text language="de">Schließt Modlet ''{0}'' ein.</text>
@@ -2411,7 +3175,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="0" name="modletName"/>
           </arguments>
         </message>
-        <message name="excludingModletInfo" final="true">
+        <message name="excludingModletInfo">
           <template defaultLanguage="en">
             <text language="en">Excluding modlet ''{0}''.</text>
             <text language="de">Schließt Modlet ''{0}'' aus.</text>
@@ -2423,14 +3187,34 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference name="illegalTransformationResultError"/>
         <reference name="writeInfo"/>
       </messages>
+      <source-files xmlns="http://jomc.org/tools/model">
+        <source-file identifier="${project.name} merge-modlets Command">
+          <source-sections>
+            <source-section name="License Header"/>
+            <source-section name="Annotations"/>
+            <source-section name="Documentation"/>
+            <source-section name="MergeModletsCommand" editable="true"/>
+            <source-section name="Constructors">
+              <source-sections>
+                <source-section name="Default Constructor" editable="true"/>
+              </source-sections>
+            </source-section>
+            <source-section name="Command" head-template="command-implementation.vm" editable="false"/>
+            <source-section name="Dependencies"/>
+            <source-section name="Properties"/>
+            <source-section name="Messages"/>
+          </source-sections>
+        </source-file>
+      </source-files>
     </implementation>
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} show-model Command"
                     class="org.jomc.cli.commands.ShowModelCommand" classDeclaration="true"
-                    name="default-show-model" version="${project.version}" vendor="${project.organization.name}">
+                    name="default-show-model" version="${project.version}" vendor="${project.organization.name}"
+                    createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en">Command line interface for displaying model objects.</text>
+        <text language="en">${project.name} {@code show-model} command implementation.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -2438,22 +3222,22 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <implementations>
-        <reference identifier="${project.name} JOMC Tool Command" version="${project.version}" final="true"/>
+        <reference identifier="${project.name} Model Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="DocumentOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="DocumentOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Document Option"/>
 
-        <dependency name="DocumentEncodingOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="DocumentEncodingOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Document Encoding Option"/>
 
-        <dependency name="ImplementationOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="ImplementationOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Implementation Option"/>
 
-        <dependency name="ModuleNameOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="ModuleNameOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Module Name Option"/>
 
-        <dependency name="SpecificationOption" identifier="org.apache.commons.cli.Option"
+        <dependency name="SpecificationOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Specification Option"/>
 
       </dependencies>
@@ -2491,8 +3275,27 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference name="moduleNotFoundWarning" final="true"/>
         <reference name="implementationNotFoundWarning" final="true"/>
         <reference name="specificationNotFoundWarning" final="true"/>
-        <reference name="writeInfo"/>
+        <reference name="writeInfo" final="true"/>
       </messages>
+      <source-files xmlns="http://jomc.org/tools/model">
+        <source-file identifier="${project.name} show-model Command">
+          <source-sections>
+            <source-section name="License Header"/>
+            <source-section name="Annotations"/>
+            <source-section name="Documentation"/>
+            <source-section name="ShowModelCommand" editable="true"/>
+            <source-section name="Constructors">
+              <source-sections>
+                <source-section name="Default Constructor" editable="true"/>
+              </source-sections>
+            </source-section>
+            <source-section name="Command" head-template="command-implementation.vm" editable="false"/>
+            <source-section name="Dependencies"/>
+            <source-section name="Properties"/>
+            <source-section name="Messages"/>
+          </source-sections>
+        </source-file>
+      </source-files>
     </implementation>
   </implementations>
   <messages>

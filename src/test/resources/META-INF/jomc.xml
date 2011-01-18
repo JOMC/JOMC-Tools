@@ -45,7 +45,7 @@
     <!-- **********************************************************************************************************  -->
     <implementation identifier="org.jomc.cli.test.JomcTest" name="${project.name} Tests"
                     class="org.jomc.cli.test.JomcTest" classDeclaration="true" vendor="${project.organization.name}"
-                    version="${project.version}">
+                    version="${project.version}" createDate="2009-07-25T19:56:45Z">
       <documentation defaultLanguage="en">
         <text language="en">Tests the {@code Jomc} CLI class.</text>
       </documentation>
@@ -73,6 +73,7 @@
         <property name="testShowSpecificationAndInstanceOutputDocument" value="${jomc.test.outputDirectory}/JomcTest/shown-specification-and-instance.xml"/>
         <property name="classesDirectory" value="${jomc.test.outputDirectory}/JomcTest/classes"/>
         <property name="resourcesDirectory" value="${jomc.test.outputDirectory}/JomcTest/resources"/>
+        <property name="templatesDirectory" value="${jomc.test.outputDirectory}/JomcTest/templates"/>
       </properties>
     </implementation>
   </implementations>

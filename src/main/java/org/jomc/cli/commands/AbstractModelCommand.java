@@ -1,8 +1,8 @@
 // SECTION-START[License Header]
 // <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
- *   Copyright (c) 2011 The JOMC Project
- *   Copyright (c) 2005 Christian Schulte <schulte2005@users.sourceforge.net>
+ *   Copyright (c) 2009 - 2011 The JOMC Project
+ *   Copyright (c) 2005 - 2011 Christian Schulte <schulte2005@users.sourceforge.net>
  *   All rights reserved.
  *
  *   Redistribution and use in source and binary forms, with or without
@@ -38,54 +38,32 @@ package org.jomc.cli.commands;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
-import javax.xml.transform.ErrorListener;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.io.IOUtils;
-import org.jomc.cli.Command;
-import org.jomc.model.ModelObject;
-import org.jomc.modlet.DefaultModelContext;
-import org.jomc.modlet.DefaultModletProvider;
+import org.jomc.model.Module;
+import org.jomc.model.Modules;
+import org.jomc.model.modlet.DefaultModelProcessor;
+import org.jomc.model.modlet.DefaultModelProvider;
+import org.jomc.model.modlet.ModelHelper;
+import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelException;
-import org.jomc.modlet.Modlet;
-import org.jomc.modlet.ModletObject;
-import org.jomc.modlet.Modlets;
-import org.jomc.modlet.ObjectFactory;
-import org.jomc.modlet.Schema;
-import org.jomc.modlet.Schemas;
-import org.jomc.modlet.Service;
-import org.jomc.modlet.Services;
 
 // SECTION-START[Documentation]
 // <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 /**
- * Base JOMC {@code Command} implementation.
+ * JOMC CLI model based command implementation.
  * <p>
  *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
  *     <caption class="TableCaption">Specifications</caption>
@@ -157,27 +135,55 @@ import org.jomc.modlet.Services;
  *       </tr>
  *       <tr class="TableRowColor">
  *         <td align="left" nowrap>{@link #getClasspathOption ClasspathOption}</td>
- *         <td align="left">Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getDocumentsOption DocumentsOption}</td>
+ *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
  *       </tr>
  *       <tr class="TableRowColor">
  *         <td align="left" nowrap>{@link #getLocale Locale}</td>
  *         <td align="left">Dependency on {@code 'java.util.Locale'} {@code (java.util.Locale)} at specification level 1.1 bound to an instance.</td>
  *       </tr>
  *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getModelContextOption ModelContextOption}</td>
+ *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
  *         <td align="left" nowrap>{@link #getModelOption ModelOption}</td>
- *         <td align="left">Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
  *       </tr>
  *       <tr class="TableRowColor">
  *         <td align="left" nowrap>{@link #getModletLocationOption ModletLocationOption}</td>
- *         <td align="left">Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getModletSchemaSystemIdOption ModletSchemaSystemIdOption}</td>
+ *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getModuleLocationOption ModuleLocationOption}</td>
+ *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getNoClasspathResolutionOption NoClasspathResolutionOption}</td>
+ *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getNoModelProcessingOption NoModelProcessingOption}</td>
+ *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
  *       </tr>
  *       <tr class="TableRowColor">
  *         <td align="left" nowrap>{@link #getPlatformProviderLocationOption PlatformProviderLocationOption}</td>
- *         <td align="left">Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
  *       </tr>
  *       <tr class="TableRowColor">
  *         <td align="left" nowrap>{@link #getProviderLocationOption ProviderLocationOption}</td>
- *         <td align="left">Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getTransformerLocationOption TransformerLocationOption}</td>
+ *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
  *       </tr>
  *   </table>
  * </p>
@@ -192,7 +198,12 @@ import org.jomc.modlet.Services;
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getApplicationTitle applicationTitle}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
- *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-18T08:54:15+0100</code></pre></td>
+ *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-18T13:24:08+0100</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getCannotProcessMessage cannotProcessMessage}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Cannot process ''{0}'': {1}</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getClasspathElementInfo classpathElementInfo}</td>
@@ -225,9 +236,24 @@ import org.jomc.modlet.Services;
  *       <td align="left" valign="top" nowrap><pre><code>Default log level: ''{0}''</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getDocumentFileInfo documentFileInfo}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Document file: ''{0}''</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getDocumentFileNotFoundWarning documentFileNotFoundWarning}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Document file ''{0}'' ignored. File not found.</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getExcludedModletInfo excludedModletInfo}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
  *       <td align="left" valign="top" nowrap><pre><code>Modlet ''{1}'' from class path resource ''{0}'' ignored.</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getExcludedModuleFromClasspathInfo excludedModuleFromClasspathInfo}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Module ''{0}'' from class path ignored. Module with identical name already loaded.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getExcludedProviderInfo excludedProviderInfo}</td>
@@ -245,9 +271,19 @@ import org.jomc.modlet.Services;
  *       <td align="left" valign="top" nowrap><pre><code>Service ''{1}'' from class path resource ''{0}'' ignored.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getInvalidModelMessage invalidModelMessage}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Invalid ''{0}'' model.</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getLongDescriptionMessage longDescriptionMessage}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
  *       <td align="left" valign="top" nowrap><pre><code></code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getModuleInfo moduleInfo}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Found module ''{0} {1}''.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getSeparator separator}</td>
@@ -272,409 +308,79 @@ import org.jomc.modlet.Services;
 @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
 // </editor-fold>
 // SECTION-END
-public abstract class AbstractJomcCommand implements Command
+public abstract class AbstractModelCommand extends AbstractModletCommand
 {
     // SECTION-START[Command]
-
-    /**
-     * Gets the list of registered listeners.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
-     * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * listeners property.</p>
-     *
-     * @return The list of registered listeners.
-     *
-     * @see #log(java.util.logging.Level, java.lang.String, java.lang.Throwable)
-     */
-    public List<Listener> getListeners()
-    {
-        if ( this.listeners == null )
-        {
-            this.listeners = new LinkedList<Listener>();
-        }
-
-        return this.listeners;
-    }
-
-    /**
-     * Gets the log level of the instance.
-     *
-     * @return The log level of the instance.
-     *
-     * @see #getDefaultLogLevel()
-     * @see #setLogLevel(java.util.logging.Level)
-     * @see #isLoggable(java.util.logging.Level)
-     */
-    public Level getLogLevel()
-    {
-        if ( this.logLevel == null )
-        {
-            this.logLevel = getDefaultLogLevel();
-
-            if ( this.isLoggable( Level.CONFIG ) )
-            {
-                this.log( Level.CONFIG,
-                          this.getDefaultLogLevelInfo( this.getLocale(), this.logLevel.getLocalizedName() ), null );
-
-            }
-        }
-
-        return this.logLevel;
-    }
-
-    /**
-     * Sets the log level of the instance.
-     *
-     * @param value The new log level of the instance or {@code null}.
-     *
-     * @see #getLogLevel()
-     * @see #isLoggable(java.util.logging.Level)
-     */
-    public void setLogLevel( final Level value )
-    {
-        this.logLevel = value;
-    }
-
-    public String getName()
-    {
-        return this.getCommandName();
-    }
-
-    public String getAbbreviatedName()
-    {
-        return this.getAbbreviatedCommandName();
-    }
-
-    public String getShortDescription( final Locale locale )
-    {
-        return this.getShortDescriptionMessage( locale );
-    }
-
-    public String getLongDescription( final Locale locale )
-    {
-        return this.getLongDescriptionMessage( locale );
-    }
-
-    public final int execute( final CommandLine commandLine )
-    {
-        try
-        {
-            if ( commandLine.hasOption( this.getProviderLocationOption().getOpt() ) )
-            {
-                DefaultModelContext.setDefaultProviderLocation(
-                    commandLine.getOptionValue( this.getProviderLocationOption().getOpt() ) );
-
-            }
-            else
-            {
-                DefaultModelContext.setDefaultProviderLocation( null );
-            }
-
-            if ( commandLine.hasOption( this.getPlatformProviderLocationOption().getOpt() ) )
-            {
-                DefaultModelContext.setDefaultPlatformProviderLocation(
-                    commandLine.getOptionValue( this.getPlatformProviderLocationOption().getOpt() ) );
-
-            }
-            else
-            {
-                DefaultModelContext.setDefaultPlatformProviderLocation( null );
-            }
-
-            if ( commandLine.hasOption( this.getModletLocationOption().getOpt() ) )
-            {
-                DefaultModletProvider.setDefaultModletLocation(
-                    commandLine.getOptionValue( this.getModletLocationOption().getOpt() ) );
-
-            }
-            else
-            {
-                DefaultModletProvider.setDefaultModletLocation( null );
-            }
-
-            if ( this.isLoggable( Level.INFO ) )
-            {
-                this.log( Level.INFO, this.getSeparator( this.getLocale() ), null );
-                this.log( Level.INFO, this.getApplicationTitle( this.getLocale() ), null );
-                this.log( Level.INFO, this.getSeparator( this.getLocale() ), null );
-                this.log( Level.INFO, this.getCommandInfoMessage( this.getLocale(), this.getCommandName() ), null );
-            }
-
-            final int status = this.executeCommand( commandLine );
-
-            if ( this.isLoggable( Level.INFO ) )
-            {
-                if ( status == Command.STATUS_SUCCESS )
-                {
-                    this.log( Level.INFO,
-                              this.getCommandSuccessMessage( this.getLocale(), this.getCommandName() ), null );
-
-                }
-                else
-                {
-                    this.log( Level.INFO,
-                              this.getCommandFailureMessage( this.getLocale(), this.getCommandName() ), null );
-
-                }
-
-                this.log( Level.INFO, this.getSeparator( this.getLocale() ), null );
-            }
-
-            return status;
-        }
-        catch ( final Throwable t )
-        {
-            this.log( Level.SEVERE, null, t );
-            return Command.STATUS_FAILURE;
-        }
-        finally
-        {
-            ModelContext.setDefaultModletSchemaSystemId( null );
-            DefaultModelContext.setDefaultPlatformProviderLocation( null );
-            DefaultModelContext.setDefaultProviderLocation( null );
-            DefaultModletProvider.setDefaultModletLocation( null );
-        }
-    }
-
     // SECTION-END
-    // SECTION-START[AbstractJomcCommand]
-    /**
-     * Log level events are logged at by default.
-     * @see #getDefaultLogLevel()
-     */
-    private static final Level DEFAULT_LOG_LEVEL = Level.WARNING;
+    // SECTION-START[AbstractModelCommand]
 
-    /** Default log level. */
-    private static volatile Level defaultLogLevel;
-
-    /** The listeners of the instance. */
-    private List<Listener> listeners;
-
-    /** Log level of the instance. */
-    private Level logLevel;
-
-    /**
-     * Gets the default log level events are logged at.
-     * <p>The default log level is controlled by system property
-     * {@code org.jomc.cli.command.AbstractJomcCommand.defaultLogLevel} holding the log level to log events at by
-     * default. If that property is not set, the {@code WARNING} default is returned.</p>
-     *
-     * @return The log level events are logged at by default.
-     *
-     * @see #getLogLevel()
-     * @see Level#parse(java.lang.String)
-     */
-    public static Level getDefaultLogLevel()
-    {
-        if ( defaultLogLevel == null )
-        {
-            defaultLogLevel = Level.parse( System.getProperty(
-                "org.jomc.cli.command.AbstractJomcCommand.defaultLogLevel", DEFAULT_LOG_LEVEL.getName() ) );
-
-        }
-
-        return defaultLogLevel;
-    }
-
-    /**
-     * Sets the default log level events are logged at.
-     *
-     * @param value The new default level events are logged at or {@code null}.
-     *
-     * @see #getDefaultLogLevel()
-     */
-    public static void setDefaultLogLevel( final Level value )
-    {
-        defaultLogLevel = value;
-    }
-
-    protected abstract int executeCommand( final CommandLine commandLine ) throws Exception;
-
-    /**
-     * Checks if a message at a given level is provided to the listeners of the instance.
-     *
-     * @param level The level to test.
-     *
-     * @return {@code true} if messages at {@code level} are provided to the listeners of the instance;
-     * {@code false} if messages at {@code level} are not provided to the listeners of the instance.
-     *
-     * @throws NullPointerException if {@code level} is {@code null}.
-     *
-     * @see #getLogLevel()
-     * @see #setLogLevel(java.util.logging.Level)
-     */
-    protected boolean isLoggable( final Level level )
-    {
-        if ( level == null )
-        {
-            throw new NullPointerException( "level" );
-        }
-
-        return level.intValue() >= this.getLogLevel().intValue();
-    }
-
-    /**
-     * Notifies registered listeners.
-     *
-     * @param level The level of the event.
-     * @param message The message of the event or {@code null}.
-     * @param throwable The throwable of the event {@code null}.
-     *
-     * @throws NullPointerException if {@code level} is {@code null}.
-     *
-     * @see #getListeners()
-     * @see #isLoggable(java.util.logging.Level)
-     */
-    protected void log( final Level level, final String message, final Throwable throwable )
-    {
-        if ( level == null )
-        {
-            throw new NullPointerException( "level" );
-        }
-
-        if ( this.isLoggable( level ) )
-        {
-            for ( Listener l : this.getListeners() )
-            {
-                l.onLog( level, message, throwable );
-            }
-        }
-    }
-
-    /**
-     * Creates a new {@code Transformer} from a given {@code Source}.
-     *
-     * @param source The source to initialize the transformer with.
-     *
-     * @return A {@code Transformer} backed by {@code source}.
-     *
-     * @throws NullPointerException if {@code source} is {@code null}.
-     * @throws TransformerConfigurationException if creating a transformer fails.
-     *
-     * @since 1.2
-     */
-    protected Transformer createTransformer( final Source source ) throws TransformerConfigurationException
-    {
-        if ( source == null )
-        {
-            throw new NullPointerException( "source" );
-        }
-
-        final ErrorListener errorListener = new ErrorListener()
-        {
-
-            public void warning( final TransformerException exception ) throws TransformerException
-            {
-                log( Level.WARNING, getMessage( exception ), exception );
-            }
-
-            public void error( final TransformerException exception ) throws TransformerException
-            {
-                throw exception;
-            }
-
-            public void fatalError( final TransformerException exception ) throws TransformerException
-            {
-                throw exception;
-            }
-
-        };
-
-        final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        transformerFactory.setErrorListener( errorListener );
-        final Transformer transformer = transformerFactory.newTransformer( source );
-        transformer.setErrorListener( errorListener );
-
-        for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
-        {
-            transformer.setParameter( e.getKey().toString(), e.getValue() );
-        }
-
-        return transformer;
-    }
-
-    /**
-     * Creates a new {@code ModelContext} for a given {@code ClassLoader}.
-     *
-     * @param classLoader The {@code ClassLoader} to create a new {@code ModelContext} with.
-     *
-     * @return A new {@code ModelContext} for {@code classLoader}.
-     *
-     * @throws ModelException if creating an new {@code ModelContext} fails.
-     */
-    protected ModelContext createModelContext( final ClassLoader classLoader ) throws ModelException
-    {
-        final ModelContext modelContext = ModelContext.createModelContext( classLoader );
-        modelContext.setLogLevel( this.getLogLevel() );
-        modelContext.getListeners().add( new ModelContext.Listener()
-        {
-
-            public void onLog( final Level level, final String message, final Throwable t )
-            {
-                log( level, message, t );
-            }
-
-        } );
-
-        return modelContext;
-    }
-
-    /**
-     * Gets the identifier of the model to process.
-     *
-     * @param commandLine The command line to get the model identifier of the model to process from.
-     *
-     * @return The identifier of the model to process.
-     *
-     * @throws NullPointerException if {@code commandLine} is {@code null}.
-     */
-    protected String getModel( final CommandLine commandLine )
+    /** {@inheritDoc} */
+    @Override
+    protected void preExecuteCommand( final CommandLine commandLine ) throws CommandExecutionException
     {
         if ( commandLine == null )
         {
             throw new NullPointerException( "commandLine" );
         }
 
-        return commandLine.hasOption( this.getModelOption().getOpt() )
-               ? commandLine.getOptionValue( this.getModelOption().getOpt() )
-               : ModelObject.MODEL_PUBLIC_ID;
+        super.preExecuteCommand( commandLine );
 
+        if ( commandLine.hasOption( this.getTransformerLocationOption().getOpt() ) )
+        {
+            DefaultModelProcessor.setDefaultTransformerLocation(
+                commandLine.getOptionValue( this.getTransformerLocationOption().getOpt() ) );
+
+        }
+        else
+        {
+            DefaultModelProcessor.setDefaultTransformerLocation( null );
+        }
+
+        if ( commandLine.hasOption( this.getModuleLocationOption().getOpt() ) )
+        {
+            DefaultModelProvider.setDefaultModuleLocation(
+                commandLine.getOptionValue( this.getModuleLocationOption().getOpt() ) );
+
+        }
+        else
+        {
+            DefaultModelProvider.setDefaultModuleLocation( null );
+        }
     }
 
-    private static String getMessage( final Throwable t )
+    /** {@inheritDoc} */
+    @Override
+    protected void postExecuteCommand( final CommandLine commandLine ) throws CommandExecutionException
     {
-        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
+        if ( commandLine == null )
+        {
+            throw new NullPointerException( "commandLine" );
+        }
+
+        DefaultModelProcessor.setDefaultTransformerLocation( null );
+        DefaultModelProvider.setDefaultModuleLocation( null );
+
+        super.postExecuteCommand( commandLine );
     }
 
     /**
-     * Class loader backed by a command line.
+     * Gets the document files specified by a given command line.
      *
-     * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
-     * @version $Id$
+     * @param commandLine The command line specifying the document files to get.
+     *
+     * @return The document files specified by {@code commandLine}.
+     *
+     * @throws CommandExecutionException if getting the document files fails.
      */
-    public class CommandLineClassLoader extends URLClassLoader
+    protected Set<File> getDocumentFiles( final CommandLine commandLine ) throws CommandExecutionException
     {
-
-        /** {@code Modlets} excluded by the instance. */
-        private Modlets excludedModlets;
-
-        /**
-         * Creates a new {@code CommandLineClassLoader} taking a command line backing the class loader.
-         *
-         * @param commandLine The command line backing the class loader.
-         *
-         * @throws NullPointerException if {@code commandLine} is {@code null}.
-         * @throws IOException if processing {@code commandLine} fails.
-         */
-        public CommandLineClassLoader( final CommandLine commandLine ) throws IOException
+        try
         {
-            super( new URL[ 0 ] );
+            final Set<File> files = new HashSet<File>();
 
-            if ( commandLine.hasOption( getClasspathOption().getOpt() ) )
+            if ( commandLine.hasOption( this.getDocumentsOption().getOpt() ) )
             {
-                final Set<URI> uris = new HashSet<URI>();
-                final String[] elements = commandLine.getOptionValues( getClasspathOption().getOpt() );
-
+                final String[] elements = commandLine.getOptionValues( this.getDocumentsOption().getOpt() );
                 if ( elements != null )
                 {
                     for ( String e : elements )
@@ -697,12 +403,19 @@ public abstract class AbstractJomcCommand implements Command
 
                                         if ( f.exists() )
                                         {
-                                            uris.add( f.toURI() );
+                                            if ( this.isLoggable( Level.FINER ) )
+                                            {
+                                                this.log( Level.FINER, this.getDocumentFileInfo(
+                                                    this.getLocale(), f.getAbsolutePath() ), null );
+
+                                            }
+
+                                            files.add( f );
                                         }
-                                        else if ( isLoggable( Level.WARNING ) )
+                                        else if ( this.isLoggable( Level.WARNING ) )
                                         {
-                                            log( Level.WARNING, getClasspathElementNotFoundWarning(
-                                                getLocale(), f.getAbsolutePath() ), null );
+                                            this.log( Level.WARNING, this.getDocumentFileNotFoundWarning(
+                                                this.getLocale(), f.getAbsolutePath() ), null );
 
                                         }
                                     }
@@ -710,10 +423,7 @@ public abstract class AbstractJomcCommand implements Command
                             }
                             finally
                             {
-                                if ( reader != null )
-                                {
-                                    reader.close();
-                                }
+                                IOUtils.closeQuietly( reader );
                             }
                         }
                         else
@@ -722,358 +432,176 @@ public abstract class AbstractJomcCommand implements Command
 
                             if ( file.exists() )
                             {
-                                uris.add( file.toURI() );
+                                if ( this.isLoggable( Level.FINER ) )
+                                {
+                                    this.log( Level.FINER, this.getDocumentFileInfo(
+                                        this.getLocale(), file.getAbsolutePath() ), null );
+
+                                }
+
+                                files.add( file );
                             }
-                            else if ( isLoggable( Level.WARNING ) )
+                            else if ( this.isLoggable( Level.WARNING ) )
                             {
-                                log( Level.WARNING, getClasspathElementNotFoundWarning(
-                                    getLocale(), file.getAbsolutePath() ), null );
+                                this.log( Level.WARNING, this.getDocumentFileNotFoundWarning(
+                                    this.getLocale(), file.getAbsolutePath() ), null );
 
                             }
                         }
                     }
                 }
-
-                for ( URI uri : uris )
-                {
-                    if ( isLoggable( Level.FINEST ) )
-                    {
-                        log( Level.FINEST, getClasspathElementInfo( getLocale(), uri.toASCIIString() ), null );
-                    }
-
-                    this.addURL( uri.toURL() );
-                }
             }
+
+            return files;
         }
-
-        /**
-         * Gets the {@code Modlets} excluded by the instance.
-         *
-         * @return The {@code Modlets} excluded by the instance.
-         *
-         * @since 1.1
-         */
-        public Modlets getExcludedModlets()
+        catch ( final IOException e )
         {
-            if ( this.excludedModlets == null )
-            {
-                this.excludedModlets = new Modlets();
-            }
-
-            return this.excludedModlets;
+            throw new CommandExecutionException( getExceptionMessage( e ), e );
         }
+    }
 
-        /**
-         * Finds the resource with the specified name on the URL search path.
-         *
-         * @param name The name of the resource.
-         *
-         * @return A {@code URL} for the resource, or {@code null} if the resource could not be found.
-         */
-        @Override
-        public URL findResource( final String name )
+    /**
+     * Gets the model as specified by a given command line.
+     *
+     * @param context The context to use for getting the model.
+     * @param commandLine The command line specifying the model to get.
+     *
+     * @return The model as specified by {@code commandLine}.
+     *
+     * @throws CommandExecutionException if getting the model fails.
+     */
+    protected Model getModel( final ModelContext context, final CommandLine commandLine )
+        throws CommandExecutionException
+    {
+        try
         {
-            try
-            {
-                URL resource = super.findResource( name );
+            Model model = new Model();
+            model.setIdentifier( this.getModel( commandLine ) );
+            Modules modules = new Modules();
 
-                if ( resource != null )
+            if ( commandLine.hasOption( this.getDocumentsOption().getOpt() ) )
+            {
+                final Unmarshaller u = context.createUnmarshaller( model.getIdentifier() );
+                for ( File f : this.getDocumentFiles( commandLine ) )
                 {
-                    if ( name.contains( DefaultModelContext.getDefaultProviderLocation() ) )
+                    final InputStream in = new FileInputStream( f );
+                    Object o = u.unmarshal( new StreamSource( in ) );
+                    if ( o instanceof JAXBElement<?> )
                     {
-                        resource = this.filterProviders( resource );
-                    }
-                    else if ( name.contains( DefaultModletProvider.getDefaultModletLocation() ) )
-                    {
-                        resource = this.filterModlets( resource );
-                    }
-                }
-
-                return resource;
-            }
-            catch ( final IOException e )
-            {
-                log( Level.SEVERE, getMessage( e ), e );
-                return null;
-            }
-            catch ( final JAXBException e )
-            {
-                String message = getMessage( e );
-                if ( message == null && e.getLinkedException() != null )
-                {
-                    message = getMessage( e.getLinkedException() );
-                }
-
-                log( Level.SEVERE, message, e );
-                return null;
-            }
-            catch ( final ModelException e )
-            {
-                log( Level.SEVERE, getMessage( e ), e );
-                return null;
-            }
-        }
-
-        /**
-         * Returns an {@code Enumeration} of {@code URL}s representing all of the resources on the URL search path
-         * having the specified name.
-         *
-         * @param name The resource name.
-         *
-         * @throws IOException if an I/O exception occurs
-         *
-         * @return An {@code Enumeration} of {@code URL}s.
-         */
-        @Override
-        public Enumeration<URL> findResources( final String name ) throws IOException
-        {
-            final Enumeration<URL> allResources = super.findResources( name );
-
-            Enumeration<URL> enumeration = allResources;
-
-            if ( name.contains( DefaultModelContext.getDefaultProviderLocation() ) )
-            {
-                enumeration = new Enumeration<URL>()
-                {
-
-                    public boolean hasMoreElements()
-                    {
-                        return allResources.hasMoreElements();
+                        o = ( (JAXBElement<?>) o ).getValue();
                     }
 
-                    public URL nextElement()
+                    IOUtils.closeQuietly( in );
+
+                    if ( o instanceof Module )
                     {
-                        try
+                        final Module m = (Module) o;
+
+                        if ( this.isLoggable( Level.FINEST ) )
                         {
-                            return filterProviders( allResources.nextElement() );
+                            this.log( Level.FINEST, this.getModuleInfo(
+                                this.getLocale(), m.getName(), m.getVersion() != null ? m.getVersion() : "" ), null );
+
                         }
-                        catch ( final IOException e )
-                        {
-                            log( Level.SEVERE, getMessage( e ), e );
-                            return null;
-                        }
+
+                        modules.getModule().add( (Module) o );
                     }
-
-                };
-            }
-            else if ( name.contains( DefaultModletProvider.getDefaultModletLocation() ) )
-            {
-                enumeration = new Enumeration<URL>()
-                {
-
-                    public boolean hasMoreElements()
+                    else if ( o instanceof Modules )
                     {
-                        return allResources.hasMoreElements();
-                    }
-
-                    public URL nextElement()
-                    {
-                        try
+                        for ( Module m : ( (Modules) o ).getModule() )
                         {
-                            return filterModlets( allResources.nextElement() );
-                        }
-                        catch ( final IOException e )
-                        {
-                            log( Level.SEVERE, getMessage( e ), e );
-                            return null;
-                        }
-                        catch ( final JAXBException e )
-                        {
-                            String message = getMessage( e );
-                            if ( message == null && e.getLinkedException() != null )
+                            if ( this.isLoggable( Level.FINEST ) )
                             {
-                                message = getMessage( e.getLinkedException() );
+                                this.log( Level.FINEST, this.getModuleInfo(
+                                    this.getLocale(), m.getName(),
+                                    m.getVersion() != null ? m.getVersion() : "" ), null );
+
                             }
 
-                            log( Level.SEVERE, message, e );
-                            return null;
+                            modules.getModule().add( m );
                         }
-                        catch ( final ModelException e )
+                    }
+                    else if ( this.isLoggable( Level.WARNING ) )
+                    {
+                        this.log( Level.WARNING, this.getCannotProcessMessage(
+                            this.getLocale(), f.getAbsolutePath(), o.toString() ), null );
+
+                    }
+                }
+            }
+
+            if ( commandLine.hasOption( this.getClasspathOption().getOpt() ) )
+            {
+                final Model foundModel = context.findModel( model.getIdentifier() );
+                final Modules modelModules = ModelHelper.getModules( foundModel );
+
+                if ( modelModules != null )
+                {
+                    for ( Module m : modelModules.getModule() )
+                    {
+                        if ( modules.getModule( m.getName() ) == null )
                         {
-                            log( Level.SEVERE, getMessage( e ), e );
-                            return null;
+                            modules.getModule().add( m );
+                        }
+                        else if ( this.isLoggable( Level.FINEST ) )
+                        {
+                            this.log( Level.FINEST,
+                                      this.getExcludedModuleFromClasspathInfo( this.getLocale(), m.getName() ), null );
+
                         }
                     }
-
-                };
+                }
             }
 
-            return enumeration;
-        }
+            if ( !commandLine.hasOption( this.getNoClasspathResolutionOption().getOpt() ) )
+            {
+                final Module classpathModule = modules.getClasspathModule(
+                    Modules.getDefaultClasspathModuleName(), context.getClassLoader() );
 
-        private URL filterProviders( final URL resource ) throws IOException
+                if ( classpathModule != null && modules.getModule( classpathModule.getName() ) == null )
+                {
+                    modules.getModule().add( classpathModule );
+                }
+            }
+
+            ModelHelper.setModules( model, modules );
+
+            if ( !commandLine.hasOption( this.getNoModelProcessingOption().getOpt() ) )
+            {
+                model = context.processModel( model );
+                modules = ModelHelper.getModules( model );
+            }
+
+            assert modules != null : "Modules '" + this.getModel( commandLine ) + "' not found.";
+            return model;
+        }
+        catch ( final IOException e )
         {
-            URL filteredResource = resource;
-            final InputStream in = resource.openStream();
-            final List<?> lines = IOUtils.readLines( in, "UTF-8" );
-            final List<String> providerExcludes = Arrays.asList( getProviderExcludes().split( ":" ) );
-            final List<String> filteredLines = new ArrayList<String>( lines.size() );
-
-            for ( Object line : lines )
-            {
-                if ( !providerExcludes.contains( line.toString() ) )
-                {
-                    filteredLines.add( line.toString() );
-                }
-                else
-                {
-                    log( Level.FINE,
-                         getExcludedProviderInfo( getLocale(), resource.toExternalForm(), line.toString() ), null );
-
-                }
-            }
-
-            if ( lines.size() != filteredLines.size() )
-            {
-                OutputStream out = null;
-                final File tmpResource = File.createTempFile( this.getClass().getName(), ".rsrc" );
-                tmpResource.deleteOnExit();
-
-                try
-                {
-                    out = new FileOutputStream( tmpResource );
-                    IOUtils.writeLines( filteredLines, System.getProperty( "line.separator" ), out, "UTF-8" );
-                }
-                finally
-                {
-                    if ( out != null )
-                    {
-                        out.close();
-                    }
-                }
-
-                filteredResource = tmpResource.toURI().toURL();
-            }
-
-            in.close();
-            return filteredResource;
+            throw new CommandExecutionException( getExceptionMessage( e ), e );
         }
-
-        private URL filterModlets( final URL resource ) throws ModelException, IOException, JAXBException
+        catch ( final ModelException e )
         {
-            URL filteredResource = resource;
-            final List<String> excludedModlets = Arrays.asList( getModletExcludes().split( ":" ) );
-            final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
-            final InputStream in = resource.openStream();
-            final JAXBElement<?> e =
-                (JAXBElement<?>) modelContext.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID ).unmarshal( in );
-
-            final Object o = e.getValue();
-            Modlets modlets = null;
-            boolean filtered = false;
-
-            if ( o instanceof Modlets )
-            {
-                modlets = new Modlets( (Modlets) o );
-            }
-            else if ( o instanceof Modlet )
-            {
-                modlets = new Modlets();
-                modlets.getModlet().add( new Modlet( (Modlet) o ) );
-            }
-
-            if ( modlets != null )
-            {
-                for ( final Iterator<Modlet> it = modlets.getModlet().iterator(); it.hasNext(); )
-                {
-                    final Modlet m = it.next();
-
-                    if ( excludedModlets.contains( m.getName() ) )
-                    {
-                        it.remove();
-                        filtered = true;
-                        this.getExcludedModlets().getModlet().add( m );
-                        log( Level.FINE,
-                             getExcludedModletInfo( getLocale(), resource.toExternalForm(), m.getName() ), null );
-
-                        continue;
-                    }
-
-                    if ( this.filterModlet( m, resource.toExternalForm() ) )
-                    {
-                        filtered = true;
-                    }
-                }
-
-                if ( filtered )
-                {
-                    final File tmpResource = File.createTempFile( this.getClass().getName(), ".rsrc" );
-                    tmpResource.deleteOnExit();
-                    modelContext.createMarshaller( ModletObject.MODEL_PUBLIC_ID ).marshal(
-                        new ObjectFactory().createModlets( modlets ), tmpResource );
-
-                    filteredResource = tmpResource.toURI().toURL();
-                }
-            }
-
-            return filteredResource;
+            throw new CommandExecutionException( getExceptionMessage( e ), e );
         }
-
-        private boolean filterModlet( final Modlet modlet, final String resourceInfo )
+        catch ( final JAXBException e )
         {
-            boolean filteredSchemas = false;
-            boolean filteredServices = false;
-            final List<String> excludedSchemas = Arrays.asList( getSchemaExcludes().split( ":" ) );
-            final List<String> excludedServices = Arrays.asList( getServiceExcludes().split( ":" ) );
-
-            if ( modlet.getSchemas() != null )
+            String message = getExceptionMessage( e );
+            if ( message == null )
             {
-                final Schemas schemas = new Schemas();
-
-                for ( Schema s : modlet.getSchemas().getSchema() )
-                {
-                    if ( !excludedSchemas.contains( s.getContextId() ) )
-                    {
-                        schemas.getSchema().add( s );
-                    }
-                    else
-                    {
-                        log( Level.FINE, getExcludedSchemaInfo( getLocale(), resourceInfo, s.getContextId() ), null );
-                        filteredSchemas = true;
-                    }
-                }
-
-                if ( filteredSchemas )
-                {
-                    modlet.setSchemas( schemas );
-                }
+                message = getExceptionMessage( e.getLinkedException() );
             }
 
-            if ( modlet.getServices() != null )
-            {
-                final Services services = new Services();
-
-                for ( Service s : modlet.getServices().getService() )
-                {
-                    if ( !excludedServices.contains( s.getClazz() ) )
-                    {
-                        services.getService().add( s );
-                    }
-                    else
-                    {
-                        log( Level.FINE, getExcludedServiceInfo( getLocale(), resourceInfo, s.getClazz() ), null );
-                        filteredServices = true;
-                    }
-                }
-
-                if ( filteredServices )
-                {
-                    modlet.setServices( services );
-                }
-            }
-
-            return filteredSchemas || filteredServices;
+            throw new CommandExecutionException( message, e );
         }
-
     }
 
     // SECTION-END
     // SECTION-START[Constructors]
     // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
 
-    /** Creates a new {@code AbstractJomcCommand} instance. */
+    /** Creates a new {@code AbstractModelCommand} instance. */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    public AbstractJomcCommand()
+    public AbstractModelCommand()
     {
         // SECTION-START[Default Constructor]
         super();
@@ -1086,7 +614,7 @@ public abstract class AbstractJomcCommand implements Command
 
     /**
      * Gets the {@code ClasspathOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Classpath Option'} object of the {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Classpath Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ClasspathOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -1096,6 +624,21 @@ public abstract class AbstractJomcCommand implements Command
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ClasspathOption" );
         assert _d != null : "'ClasspathOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code DocumentsOption} dependency.
+     * <p>This method returns the {@code 'JOMC CLI Documents Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code DocumentsOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private org.apache.commons.cli.Option getDocumentsOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "DocumentsOption" );
+        assert _d != null : "'DocumentsOption' dependency not found.";
         return _d;
     }
 
@@ -1115,8 +658,23 @@ public abstract class AbstractJomcCommand implements Command
     }
 
     /**
+     * Gets the {@code ModelContextOption} dependency.
+     * <p>This method returns the {@code 'JOMC CLI ModelContext Class Name Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code ModelContextOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private org.apache.commons.cli.Option getModelContextOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModelContextOption" );
+        assert _d != null : "'ModelContextOption' dependency not found.";
+        return _d;
+    }
+
+    /**
      * Gets the {@code ModelOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Model Option'} object of the {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Model Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ModelOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -1131,7 +689,7 @@ public abstract class AbstractJomcCommand implements Command
 
     /**
      * Gets the {@code ModletLocationOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Modlet Location Option'} object of the {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Modlet Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ModletLocationOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -1145,8 +703,68 @@ public abstract class AbstractJomcCommand implements Command
     }
 
     /**
+     * Gets the {@code ModletSchemaSystemIdOption} dependency.
+     * <p>This method returns the {@code 'JOMC CLI Modlet Schema System Id Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code ModletSchemaSystemIdOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private org.apache.commons.cli.Option getModletSchemaSystemIdOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModletSchemaSystemIdOption" );
+        assert _d != null : "'ModletSchemaSystemIdOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code ModuleLocationOption} dependency.
+     * <p>This method returns the {@code 'JOMC CLI Module Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code ModuleLocationOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private org.apache.commons.cli.Option getModuleLocationOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModuleLocationOption" );
+        assert _d != null : "'ModuleLocationOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code NoClasspathResolutionOption} dependency.
+     * <p>This method returns the {@code 'JOMC CLI No Classpath Resolution Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code NoClasspathResolutionOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private org.apache.commons.cli.Option getNoClasspathResolutionOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "NoClasspathResolutionOption" );
+        assert _d != null : "'NoClasspathResolutionOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code NoModelProcessingOption} dependency.
+     * <p>This method returns the {@code 'JOMC CLI No Model Processing Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code NoModelProcessingOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private org.apache.commons.cli.Option getNoModelProcessingOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "NoModelProcessingOption" );
+        assert _d != null : "'NoModelProcessingOption' dependency not found.";
+        return _d;
+    }
+
+    /**
      * Gets the {@code PlatformProviderLocationOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Platform Provider Location Option'} object of the {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Platform Provider Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code PlatformProviderLocationOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -1161,7 +779,7 @@ public abstract class AbstractJomcCommand implements Command
 
     /**
      * Gets the {@code ProviderLocationOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Provider Location Option'} object of the {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Provider Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ProviderLocationOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -1171,6 +789,21 @@ public abstract class AbstractJomcCommand implements Command
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ProviderLocationOption" );
         assert _d != null : "'ProviderLocationOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code TransformerLocationOption} dependency.
+     * <p>This method returns the {@code 'JOMC CLI Transformer Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code TransformerLocationOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private org.apache.commons.cli.Option getTransformerLocationOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "TransformerLocationOption" );
+        assert _d != null : "'TransformerLocationOption' dependency not found.";
         return _d;
     }
     // </editor-fold>
@@ -1283,7 +916,7 @@ public abstract class AbstractJomcCommand implements Command
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-18T08:54:15+0100</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-18T13:24:08+0100</code></pre></td>
      *     </tr>
      *   </table>
      * </p>
@@ -1298,6 +931,40 @@ public abstract class AbstractJomcCommand implements Command
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "applicationTitle", locale );
         assert _m != null : "'applicationTitle' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code cannotProcessMessage} message.
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Cannot process ''{0}'': {1}</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Kann ''{0}'' nicht verarbeiten: {1}</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
+     * @param locale The locale of the message to return.
+     * @param itemInfo Format argument.
+     * @param detailMessage Format argument.
+     * @return The text of the {@code cannotProcessMessage} message for {@code locale}.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private String getCannotProcessMessage( final java.util.Locale locale, final java.lang.String itemInfo, final java.lang.String detailMessage )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "cannotProcessMessage", locale, itemInfo, detailMessage );
+        assert _m != null : "'cannotProcessMessage' message not found.";
         return _m;
     }
 
@@ -1500,6 +1167,72 @@ public abstract class AbstractJomcCommand implements Command
     }
 
     /**
+     * Gets the text of the {@code documentFileInfo} message.
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Document file: ''{0}''</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Dokument-Datei: ''{0}''</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
+     * @param locale The locale of the message to return.
+     * @param documentFile Format argument.
+     * @return The text of the {@code documentFileInfo} message for {@code locale}.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private String getDocumentFileInfo( final java.util.Locale locale, final java.lang.String documentFile )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentFileInfo", locale, documentFile );
+        assert _m != null : "'documentFileInfo' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code documentFileNotFoundWarning} message.
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Document file ''{0}'' ignored. File not found.</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Dokument-Datei ''{0}'' ignoriert. Datei nicht gefunden.</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
+     * @param locale The locale of the message to return.
+     * @param fileName Format argument.
+     * @return The text of the {@code documentFileNotFoundWarning} message for {@code locale}.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private String getDocumentFileNotFoundWarning( final java.util.Locale locale, final java.lang.String fileName )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentFileNotFoundWarning", locale, fileName );
+        assert _m != null : "'documentFileNotFoundWarning' message not found.";
+        return _m;
+    }
+
+    /**
      * Gets the text of the {@code excludedModletInfo} message.
      * <p><strong>Templates:</strong>
      *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
@@ -1530,6 +1263,39 @@ public abstract class AbstractJomcCommand implements Command
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "excludedModletInfo", locale, resourceName, modletIdentifier );
         assert _m != null : "'excludedModletInfo' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code excludedModuleFromClasspathInfo} message.
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Module ''{0}'' from class path ignored. Module with identical name already loaded.</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Modul ''{0}'' aus Klassenpfad ignoriert. Modul mit identischem Namen bereits geladen.</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
+     * @param locale The locale of the message to return.
+     * @param moduleName Format argument.
+     * @return The text of the {@code excludedModuleFromClasspathInfo} message for {@code locale}.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private String getExcludedModuleFromClasspathInfo( final java.util.Locale locale, final java.lang.String moduleName )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "excludedModuleFromClasspathInfo", locale, moduleName );
+        assert _m != null : "'excludedModuleFromClasspathInfo' message not found.";
         return _m;
     }
 
@@ -1636,6 +1402,39 @@ public abstract class AbstractJomcCommand implements Command
     }
 
     /**
+     * Gets the text of the {@code invalidModelMessage} message.
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Invalid ''{0}'' model.</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Ung&uuml;ltiges ''{0}'' Modell.</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
+     * @param locale The locale of the message to return.
+     * @param modelIdentifier Format argument.
+     * @return The text of the {@code invalidModelMessage} message for {@code locale}.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private String getInvalidModelMessage( final java.util.Locale locale, final java.lang.String modelIdentifier )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "invalidModelMessage", locale, modelIdentifier );
+        assert _m != null : "'invalidModelMessage' message not found.";
+        return _m;
+    }
+
+    /**
      * Gets the text of the {@code longDescriptionMessage} message.
      * <p><strong>Templates:</strong>
      *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
@@ -1660,6 +1459,40 @@ public abstract class AbstractJomcCommand implements Command
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "longDescriptionMessage", locale );
         assert _m != null : "'longDescriptionMessage' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code moduleInfo} message.
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Found module ''{0} {1}''.</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Modul ''{0} {1}'' gefunden.</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
+     * @param locale The locale of the message to return.
+     * @param moduleName Format argument.
+     * @param moduleVersion Format argument.
+     * @return The text of the {@code moduleInfo} message for {@code locale}.
+     *
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private String getModuleInfo( final java.util.Locale locale, final java.lang.String moduleName, final java.lang.String moduleVersion )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleInfo", locale, moduleName, moduleVersion );
+        assert _m != null : "'moduleInfo' message not found.";
         return _m;
     }
 

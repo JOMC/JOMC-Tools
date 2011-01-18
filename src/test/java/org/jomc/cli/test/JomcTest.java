@@ -1,8 +1,8 @@
 // SECTION-START[License Header]
 // <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
- *   Copyright (c) 2011 The JOMC Project
- *   Copyright (c) 2005 Christian Schulte <schulte2005@users.sourceforge.net>
+ *   Copyright (c) 2009 - 2011 The JOMC Project
+ *   Copyright (c) 2005 - 2011 Christian Schulte <schulte2005@users.sourceforge.net>
  *   All rights reserved.
  *
  *   Redistribution and use in source and binary forms, with or without
@@ -36,20 +36,18 @@
 // SECTION-END
 package org.jomc.cli.test;
 
-import org.apache.commons.io.IOUtils;
+import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import java.net.URL;
-import java.io.IOException;
-import org.junit.Before;
-import org.junit.Test;
-import java.io.File;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.jomc.ObjectManagerFactory;
 import org.jomc.cli.Command;
 import org.jomc.cli.Jomc;
@@ -58,6 +56,8 @@ import org.jomc.model.Module;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.Modlet;
 import org.jomc.modlet.ModletObject;
+import org.junit.Before;
+import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -82,6 +82,11 @@ import static org.junit.Assert.assertTrue;
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getResourcesDirectory resourcesDirectory}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top"></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getTemplatesDirectory templatesDirectory}</td>
  *       <td align="left" nowrap>{@code java.lang.String}</td>
  *       <td align="left" valign="top"></td>
  *     </tr>
@@ -312,7 +317,7 @@ public class JomcTest
         {
             "manage-sources", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-df",
             '"' + this.getTestModelDocument() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-D",
-            "-ls", "\r\n", "-idt", "\t"
+            "-ls", "\r\n", "-idt", "\t", "-tp", "jomc-cli", "-tl", '"' + this.getTemplatesDirectory() + '"'
         };
 
         final String[] unsupportedOption = new String[]
@@ -323,7 +328,8 @@ public class JomcTest
         final String[] failOnWarnings = new String[]
         {
             "manage-sources", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-df",
-            '"' + this.getTestModelDocument() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
+            '"' + this.getTestModelDocument() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D",
+            "-tp", "jomc-cli", "-tl", '"' + this.getTemplatesDirectory() + '"'
         };
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
@@ -710,6 +716,9 @@ public class JomcTest
 
         final File classesDirectory = new File( this.getClassesDirectory() );
         this.unzipResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "classfiles.zip", classesDirectory );
+
+        final File templatesDirectory = new File( this.getTemplatesDirectory() );
+        this.unzipResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "templates.zip", templatesDirectory );
     }
 
     private void unzipResource( final String resourceName, final File targetDirectory ) throws IOException
@@ -791,6 +800,19 @@ public class JomcTest
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "resourcesDirectory" );
         assert _p != null : "'resourcesDirectory' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code templatesDirectory} property.
+     * @return The value of the {@code templatesDirectory} property.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private java.lang.String getTemplatesDirectory()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "templatesDirectory" );
+        assert _p != null : "'templatesDirectory' property not found.";
         return _p;
     }
 

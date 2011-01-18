@@ -1,8 +1,8 @@
 // SECTION-START[License Header]
 // <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
- *   Copyright (c) 2011 The JOMC Project
- *   Copyright (c) 2005 Christian Schulte <schulte2005@users.sourceforge.net>
+ *   Copyright (c) 2009 - 2011 The JOMC Project
+ *   Copyright (c) 2005 - 2011 Christian Schulte <schulte2005@users.sourceforge.net>
  *   All rights reserved.
  *
  *   Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,6 @@ import java.io.StringWriter;
 import java.util.Date;
 import java.util.logging.Level;
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
@@ -95,16 +94,20 @@ import org.jomc.modlet.DefaultModletProvider;
  *         <th align="left" class="TableHeader" scope="col" nowrap>Description</th>
  *       </tr>
  *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getCommandLineParser CommandLineParser}</td>
+ *         <td align="left">Dependency on {@code 'org.apache.commons.cli.CommandLineParser'} {@code (org.apache.commons.cli.CommandLineParser)}.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
  *         <td align="left" nowrap>{@link #getCommands Commands}</td>
  *         <td align="left">Dependency on {@code 'JOMC CLI Command'} {@code (org.jomc.cli.Command)} at specification level 1.0.</td>
  *       </tr>
  *       <tr class="TableRowColor">
  *         <td align="left" nowrap>{@link #getDebugOption DebugOption}</td>
- *         <td align="left">Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *         <td align="left">Dependency on {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
  *       </tr>
  *       <tr class="TableRowColor">
  *         <td align="left" nowrap>{@link #getFailOnWarningsOption FailOnWarningsOption}</td>
- *         <td align="left">Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *         <td align="left">Dependency on {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
  *       </tr>
  *       <tr class="TableRowColor">
  *         <td align="left" nowrap>{@link #getLocale Locale}</td>
@@ -112,7 +115,7 @@ import org.jomc.modlet.DefaultModletProvider;
  *       </tr>
  *       <tr class="TableRowColor">
  *         <td align="left" nowrap>{@link #getVerboseOption VerboseOption}</td>
- *         <td align="left">Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *         <td align="left">Dependency on {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
  *       </tr>
  *   </table>
  * </p>
@@ -343,7 +346,7 @@ public final class Jomc
 
                 commandInfo.append( StringUtils.rightPad( c.getName(), 25 ) ).append( " : " ).
                     append( c.getShortDescription( this.getLocale() ) ).append( " (" ).append( c.getAbbreviatedName() ).
-                    append( ")" ).append( System.getProperty( "line.separator" ) );
+                    append( ")" ).append( System.getProperty( "line.separator", "\n" ) );
 
             }
 
@@ -401,7 +404,7 @@ public final class Jomc
             DefaultModelProcessor.setDefaultTransformerLocation( null );
             DefaultModletProvider.setDefaultModletLocation( null );
 
-            final CommandLine commandLine = new GnuParser().parse( options, commandArguments );
+            final CommandLine commandLine = this.getCommandLineParser().parse( options, commandArguments );
             final boolean debug = commandLine.hasOption( this.getDebugOption().getOpt() );
             final boolean verbose = commandLine.hasOption( this.getVerboseOption().getOpt() );
             Level debugLevel = Level.ALL;
@@ -462,6 +465,7 @@ public final class Jomc
             DefaultModelProcessor.setDefaultTransformerLocation( null );
             DefaultModletProvider.setDefaultModletLocation( null );
             this.getPrintWriter().flush();
+            this.severity = Level.ALL;
         }
     }
 
@@ -569,7 +573,7 @@ public final class Jomc
 
                 }
 
-                lines.append( "] " ).append( line ).append( System.getProperty( "line.separator" ) );
+                lines.append( "] " ).append( line ).append( System.getProperty( "line.separator", "\n" ) );
             }
 
             return lines.toString();
@@ -603,6 +607,21 @@ public final class Jomc
     // <editor-fold defaultstate="collapsed" desc=" Generated Dependencies ">
 
     /**
+     * Gets the {@code CommandLineParser} dependency.
+     * <p>This method returns the {@code 'Commons CLI - GNU Command Line Parser'} object of the {@code 'org.apache.commons.cli.CommandLineParser'} {@code (org.apache.commons.cli.CommandLineParser)} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested.</p>
+     * @return The {@code CommandLineParser} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private org.apache.commons.cli.CommandLineParser getCommandLineParser()
+    {
+        final org.apache.commons.cli.CommandLineParser _d = (org.apache.commons.cli.CommandLineParser) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "CommandLineParser" );
+        assert _d != null : "'CommandLineParser' dependency not found.";
+        return _d;
+    }
+
+    /**
      * Gets the {@code Commands} dependency.
      * <p>This method returns any available object of the {@code 'JOMC CLI Command'} {@code (org.jomc.cli.Command)} specification at specification level 1.0.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested.</p>
@@ -619,7 +638,7 @@ public final class Jomc
 
     /**
      * Gets the {@code DebugOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Debug Option'} object of the {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Debug Option'} object of the {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code DebugOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -634,7 +653,7 @@ public final class Jomc
 
     /**
      * Gets the {@code FailOnWarningsOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Fail-On-Warnings Option'} object of the {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Fail-On-Warnings Option'} object of the {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code FailOnWarningsOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -664,7 +683,7 @@ public final class Jomc
 
     /**
      * Gets the {@code VerboseOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Verbose Option'} object of the {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Verbose Option'} object of the {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code VerboseOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.

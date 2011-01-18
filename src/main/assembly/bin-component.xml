@@ -212,6 +212,39 @@
         <include>**/**.xhtml</include>
       </includes>
     </fileSet>
+    <fileSet>
+      <directory>src/main/templates/org/jomc/tools/templates/jomc-cli</directory>
+      <fileMode>0444</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/examples/vm/org/jomc/tools/templates/jomc-cli</outputDirectory>
+      <filtered>false</filtered>
+      <lineEnding>keep</lineEnding>
+      <includes>
+        <include>**/**.vm</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>src/main/templates/org/jomc/tools/templates/jomc-cli</directory>
+      <fileMode>0444</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/examples/vm/org/jomc/tools/templates/jomc-cli-bundles</outputDirectory>
+      <filtered>false</filtered>
+      <lineEnding>keep</lineEnding>
+      <includes>
+        <include>**/**.vm</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${project.build.directory}/jomc-templates/org/jomc/tools/templates/jomc-java-bundles</directory>
+      <fileMode>0444</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/examples/vm/org/jomc/tools/templates/jomc-cli-bundles</outputDirectory>
+      <filtered>false</filtered>
+      <lineEnding>keep</lineEnding>
+      <includes>
+        <include>**/**.vm</include>
+      </includes>
+    </fileSet>
   </fileSets>
   <dependencySets>
     <dependencySet>

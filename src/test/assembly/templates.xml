@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
   Copyright (c) 2009 The JOMC Project
@@ -32,16 +32,21 @@
   $Id$
 
 -->
-<html>
-  <body>
-    Object management and configuration commands.
-    @see org.jomc.cli.commands.CommitClassesCommand
-    @see org.jomc.cli.commands.GenerateResourcesCommand
-    @see org.jomc.cli.commands.ManageSourcesCommand
-    @see org.jomc.cli.commands.MergeModletsCommand
-    @see org.jomc.cli.commands.MergeModulesCommand
-    @see org.jomc.cli.commands.ShowModelCommand
-    @see org.jomc.cli.commands.ValidateClassesCommand
-    @see org.jomc.cli.commands.ValidateModelCommand
-  </body>
-</html>
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.1"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.1 http://maven.apache.org/xsd/assembly-1.1.1.xsd">
+  <id>templates</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <fileSets>
+    <fileSet>
+      <directory>src/main/templates</directory>
+      <directoryMode>0755</directoryMode>
+      <fileMode>0444</fileMode>
+      <filtered>false</filtered>
+      <outputDirectory>/</outputDirectory>
+    </fileSet>
+  </fileSets>
+</assembly>

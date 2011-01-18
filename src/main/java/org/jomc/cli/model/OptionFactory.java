@@ -1,8 +1,8 @@
 // SECTION-START[License Header]
 // <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
- *   Copyright (c) 2011 The JOMC Project
- *   Copyright (c) 2005 Christian Schulte <schulte2005@users.sourceforge.net>
+ *   Copyright (c) 2009 - 2011 The JOMC Project
+ *   Copyright (c) 2005 - 2011 Christian Schulte <schulte2005@users.sourceforge.net>
  *   All rights reserved.
  *
  *   Redistribution and use in source and binary forms, with or without
@@ -46,23 +46,6 @@ import org.apache.commons.cli.Option;
  * Creates {@code Option} objects describing a single command-line option by maintaining information regarding the
  * short-name, the long-name, a flag indicating if an argument is required, and a self-documenting description.
  *
- * <p>
- *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
- *     <caption class="TableCaption">Specifications</caption>
- *     <tr>
- *       <th align="left" class="TableHeader" scope="col" nowrap>Identifier</th>
- *       <th align="left" class="TableHeader" scope="col" nowrap>Class</th>
- *       <th align="left" class="TableHeader" scope="col" nowrap>Scope</th>
- *       <th align="left" class="TableHeader" scope="col" nowrap>Version</th>
- *     </tr>
- *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@code org.apache.commons.cli.Option}</td>
- *       <td align="left" nowrap>{@code org.apache.commons.cli.Option}</td>
- *       <td align="left" nowrap>{@code Multiton}</td>
- *       <td align="left" nowrap></td>
- *     </tr>
- *   </table>
- * </p>
  * <p>
  *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
  *     <caption class="TableCaption">Properties</caption>
@@ -149,8 +132,6 @@ import org.apache.commons.cli.Option;
 // SECTION-END
 public final class OptionFactory
 {
-    // SECTION-START[Option]
-    // SECTION-END
     // SECTION-START[OptionFactory]
 
     public Option getObject()

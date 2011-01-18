@@ -74,7 +74,6 @@
                     <include>org.apache.bcel:bcel</include>
                     <include>org.apache.velocity:velocity</include>
                     <include>jakarta-regexp:jakarta-regexp</include>
-                    <include>oro:oro</include>
                   </includes>
                 </artifactSet>
                 <filters>
@@ -116,12 +115,6 @@
                   </filter>
                   <filter>
                     <artifact>jakarta-regexp:jakarta-regexp</artifact>
-                    <excludes>
-                      <exclude>META-INF/**</exclude>
-                    </excludes>
-                  </filter>
-                  <filter>
-                    <artifact>oro:oro</artifact>
                     <excludes>
                       <exclude>META-INF/**</exclude>
                     </excludes>
@@ -209,10 +202,60 @@
         <targetPath>org/jomc/cli/test</targetPath>
         <includes>
           <include>classfiles.zip</include>
+          <include>templates.zip</include>
         </includes>
       </testResource>
     </testResources>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-templates</id>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/templates</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/main/templates</directory>
+                  <filtering>false</filtering>
+                  <includes>
+                    <include>**/*.vm</include>
+                  </includes>
+                </resource>
+                <resource>
+                  <directory>${remoteResourcesOutputDirectory}</directory>
+                  <filtering>false</filtering>
+                  <includes>
+                    <include>**/*.txt</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-templates</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <classesDirectory>${project.build.directory}/templates</classesDirectory>
+              <classifier>templates</classifier>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
@@ -233,7 +276,7 @@
             </configuration>
           </execution>
           <execution>
-            <id>unpack-tools</id>
+            <id>unpack-artifacts</id>
             <phase>package</phase>
             <goals>
               <goal>unpack</goal>
@@ -245,6 +288,13 @@
                   <artifactId>jomc-tools</artifactId>
                   <type>jar</type>
                   <outputDirectory>${project.build.directory}/jomc-tools</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>jomc-tools</artifactId>
+                  <classifier>templates</classifier>
+                  <type>jar</type>
+                  <outputDirectory>${project.build.directory}/jomc-templates</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>${project.groupId}</groupId>
@@ -317,6 +367,10 @@
               <goal>validate-main-model</goal>
               <goal>validate-main-classpath</goal>
             </goals>
+            <configuration>
+              <templateProfile>jomc-cli</templateProfile>
+              <templateLocation>src/main/templates</templateLocation>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -340,6 +394,21 @@
               <finalName>classfiles</finalName>
               <descriptors>
                 <descriptor>src/test/assembly/classfiles.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+          <execution>
+            <id>assemble-test-templates</id>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <attach>false</attach>
+              <appendAssemblyId>false</appendAssemblyId>
+              <finalName>templates</finalName>
+              <descriptors>
+                <descriptor>src/test/assembly/templates.xml</descriptor>
               </descriptors>
             </configuration>
           </execution>
