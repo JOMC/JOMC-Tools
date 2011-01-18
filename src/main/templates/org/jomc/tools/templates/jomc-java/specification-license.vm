@@ -49,7 +49,7 @@ ${tool.getIndentation(0)}// <editor-fold defaultstate="collapsed" desc=" Generat
 ${tool.getIndentation(0)}/*
 #if($specification.getVendor())
 #if($specification.getCreateDate())
-${tool.getIndentation(0)} *   Copyright (c) $specification.getCreateDate().getYear() $specification.getVendor()
+${tool.getIndentation(0)} *   Copyright (c) $tool.getYears($specification.getCreateDate().toGregorianCalendar(), $calendar) $specification.getVendor()
 #else
 ${tool.getIndentation(0)} *   Copyright (c) $year $specification.getVendor()
 #end
@@ -57,7 +57,7 @@ ${tool.getIndentation(0)} *   Copyright (c) $year $specification.getVendor()
 #if($specification.getAuthors())
 #foreach($author in $specification.getAuthors().getAuthor())
 #if($author.getCreateDate())
-${tool.getIndentation(0)} *   Copyright (c) $author.getCreateDate().getYear() $author.getName()#if($author.getMail()) <$author.getMail()>#end
+${tool.getIndentation(0)} *   Copyright (c) $tool.getYears($author.getCreateDate().toGregorianCalendar(), $calendar) $author.getName()#if($author.getMail()) <$author.getMail()>#end
 
 #else
 ${tool.getIndentation(0)} *   Copyright (c) $year $author.getName()#if($author.getMail()) <$author.getMail()>#end
