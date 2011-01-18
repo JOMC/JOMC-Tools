@@ -93,14 +93,19 @@
       <action dev="schulte2005" type="update"><![CDATA[Added the <code>jomc-tools-1.2.xsd</code> schema deprecating the
       <code>jomc-tools-1.0.xsd</code> schema.]]>
       </action>
-      <action dev="schulte2005" type="add"><![CDATA[Added <code>TemplateProfilesType</code>,
-      <code>TemplateProfileType</code>, <code>TemplatesType</code> and <code>TemplateType</code> complex types to the
-      <code>jomc-tools-1.2.xsd</code> schema and updated method <code>getVelocityEngine</code> of class
-      <code>org.jomc.tools.JomcTool</code> to setup an additional <code>ResourceLoader</code> searching the modules of
-      the instance.]]>
+      <action dev="schulte2005" type="update"><![CDATA[Updated templates to produce documentation using classes of the
+      Javadoc stylesheet.]]>
+      </action>
+      <action dev="schulte2005" type="add"><![CDATA[Added <code>head-comment</code> and <code>tail-comment</code>
+      attributes to the <code>SourceFileType</code> complex type of the <code>jomc-tools-1.2.xsd</code> schema and
+      updated class <code>org.jomc.tools.SourceFileProcessor</code> to support those attributes.]]>
       </action>
       <action dev="schulte2005" type="add"><![CDATA[Added <code>ToolsType</code> complex type to the
       <code>jomc-tools-1.2.xsd</code> schema and updated all complex types to extend that base type.]]>
+      </action>
+      <action dev="schulte2005" type="add"><![CDATA[Added property <code>locale</code> to class
+      <code>org.jomc.tools.JomcTool</code> and updated templates to use the value of that property when producing
+      documentation.]]>
       </action>
     </release>
   </body>

@@ -58,7 +58,7 @@ ${tool.getIndentation(0)}// SECTION-END
 ${tool.getIndentation(0)}// SECTION-START[Annotations]
 ${tool.getIndentation(0)}// SECTION-END
 ${tool.getIndentation(0)}public#if($implementation.isAbstract()) abstract#end class ${tool.getJavaTypeName($implementation,false)}
-#set($interfaces = $tool.getJavaInterfaceNames($implementation,true))
+#set($interfaces = $tool.getImplementedJavaTypeNames($implementation,true))
 #if(!$interfaces.isEmpty())
 ${tool.getIndentation(1)}implements
 #set($i = $interfaces.size())

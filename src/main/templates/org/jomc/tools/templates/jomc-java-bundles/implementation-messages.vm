@@ -51,27 +51,37 @@ ${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generat
 #foreach($message in $messages.getMessage())
 
 ${tool.getIndentation(1)}/**
-${tool.getIndentation(1)} * Gets the text of the {@code $message.getName()} message.
-${tool.getIndentation(1)} * <p><b>Templates</b><br/><table>
+${tool.getIndentation(1)} * Gets the text of the {@code $tool.getHtmlString($message.getName())} message.
+${tool.getIndentation(1)} * <p><strong>Templates:</strong>
+${tool.getIndentation(1)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+${tool.getIndentation(1)} *     <tr class="TableSubHeadingColor">
+${tool.getIndentation(1)} *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+${tool.getIndentation(1)} *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+${tool.getIndentation(1)} *     </tr>
 #foreach($text in $message.getTemplate().getText())
-${tool.getIndentation(1)} * <tr><td valign="top">$tool.getDisplayLanguage($text.getLanguage()):</td><td valign="top"><pre>$tool.getJavadocComment($message.getTemplate().getText($text.getLanguage()), 1, " * ")</pre></td></tr>
+${tool.getIndentation(1)} *     <tr class="TableRow">
+${tool.getIndentation(1)} *       <td align="left" valign="top" nowrap>$tool.getHtmlString($tool.getDisplayLanguage($text.getLanguage()))#if($message.getTemplate().getDefaultLanguage() == $text.getLanguage()) (default)#end</td>
+${tool.getIndentation(1)} *       <td align="left" valign="top" nowrap><pre><code>$tool.getJavadocComment($message.getTemplate().getText($text.getLanguage()), 1, " * ")</code></pre></td>
+${tool.getIndentation(1)} *     </tr>
 #end
-${tool.getIndentation(1)} * </table></p>
+${tool.getIndentation(1)} *   </table>
+${tool.getIndentation(1)} * </p>
+${tool.getIndentation(1)} *
 ${tool.getIndentation(1)} * @param locale The locale of the message to return.
 #if($message.getArguments() && !$message.getArguments().getArgument().isEmpty())
 #set($i = 0)
 #foreach($argument in $message.getArguments().getArgument())
 #set($argument = $message.getArguments().getArgument($i))
 #set($i = $i + 1)
-${tool.getIndentation(1)} * @param $argument.getName() #if($argument.getDocumentation())$tool.getJavadocComment($argument.getDocumentation().getText("en"), 1, " * ")#end#if(!$argument.getDocumentation())Format argument.#end
+${tool.getIndentation(1)} * @param $tool.getJavaMethodParameterName($argument) #if($argument.getDocumentation())$tool.getJavadocComment($argument.getDocumentation(), 1, " * ")#end#if(!$argument.getDocumentation())Format argument.#end
 
 #end
 #end
 #if($message.getDocumentation())
-${tool.getIndentation(1)} * @return $tool.getJavadocComment($message.getDocumentation().getText("en"), 1, " * ")
+${tool.getIndentation(1)} * @return $tool.getJavadocComment($message.getDocumentation(), 1, " * ")
 #end
 #if(!$message.getDocumentation())
-${tool.getIndentation(1)} * @return The text of the {@code $message.getName()} message.
+${tool.getIndentation(1)} * @return The text of the {@code $tool.getHtmlString($message.getName())} message for {@code locale}.
 #end
 ${tool.getIndentation(1)} *
 ${tool.getIndentation(1)} * @throws org.jomc.ObjectManagementException if getting the message instance fails.

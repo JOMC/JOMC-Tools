@@ -48,11 +48,11 @@
 ${tool.getIndentation(0)}// <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 ${tool.getIndentation(0)}/**
 #if($specification.getDocumentation())
-${tool.getIndentation(0)} * $tool.getJavadocComment($specification.getDocumentation().getText("en"), 0, " * ")
+${tool.getIndentation(0)} * $tool.getJavadocComment($specification.getDocumentation(), 0, " * ")
 #end
 ${tool.getIndentation(0)} *
 ${tool.getIndentation(0)} * <p>
-${tool.getIndentation(0)} *   This specification declares a multiplicity of {@code $specification.getMultiplicity().value()}.
+${tool.getIndentation(0)} *   This specification declares a multiplicity of {@code $tool.getHtmlString($specification.getMultiplicity().value())}.
 #if($specification.getMultiplicity().value() == "One")
 ${tool.getIndentation(0)} *   An application assembler may provide either no or one implementation of this specification.
 #end
@@ -77,8 +77,8 @@ ${tool.getIndentation(0)} * </p>
 ${tool.getIndentation(0)} *
 ${tool.getIndentation(0)} * <p>
 #if($specification.getScope())
-${tool.getIndentation(0)} *   This specification applies to {@code $specification.getScope()} scope.
-${tool.getIndentation(0)} *   The same $specification.getScope().toLowerCase() object is returned whenever requested.
+${tool.getIndentation(0)} *   This specification applies to {@code $tool.getHtmlString($specification.getScope())} scope.
+${tool.getIndentation(0)} *   The same $tool.getHtmlString($specification.getScope().toLowerCase()) object is returned whenever requested.
 #else
 ${tool.getIndentation(0)} *   This specification does not apply to any scope. A new object is returned whenever requested.
 #end
@@ -86,7 +86,7 @@ ${tool.getIndentation(0)} * </p>
 ${tool.getIndentation(0)} *
 #if($specification.getAuthors())
 #foreach($author in $specification.getAuthors().getAuthor())
-${tool.getIndentation(0)} * @author #if($author.getMail())<a href="mailto:$author.getMail()">#end$author.getName()#if($author.getMail())</a>#end $author.getVersion()
+${tool.getIndentation(0)} * @author #if($author.getMail())<a href="mailto:$author.getMail()">#end$tool.getHtmlString($author.getName())#if($author.getMail())</a>#end $tool.getHtmlString($author.getVersion())
 #end
 #end
 #set($D = "$")

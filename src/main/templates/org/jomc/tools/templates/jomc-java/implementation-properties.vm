@@ -51,12 +51,12 @@ ${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generat
 #foreach($property in $properties.getProperty())
 
 ${tool.getIndentation(1)}/**
-${tool.getIndentation(1)} * Gets the value of the {@code $property.getName()} property.
+${tool.getIndentation(1)} * Gets the value of the {@code $tool.getHtmlString($property.getName())} property.
 #if($property.getDocumentation())
-${tool.getIndentation(1)} * @return $tool.getJavadocComment($property.getDocumentation().getText("en"), 1, " * ")
+${tool.getIndentation(1)} * @return $tool.getJavadocComment($property.getDocumentation(), 1, " * ")
 #end
 #if(!$property.getDocumentation())
-${tool.getIndentation(1)} * @return The value of the {@code $property.getName()} property.
+${tool.getIndentation(1)} * @return The value of the {@code $tool.getHtmlString($property.getName())} property.
 #end
 ${tool.getIndentation(1)} * @throws org.jomc.ObjectManagementException if getting the property instance fails.
 ${tool.getIndentation(1)} */

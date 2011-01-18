@@ -36,7 +36,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
@@ -56,9 +55,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
-import org.apache.commons.collections.ExtendedProperties;
-import org.apache.commons.io.input.ReaderInputStream;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -68,9 +66,7 @@ import org.apache.velocity.exception.VelocityException;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.log.LogChute;
-import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
-import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 import org.apache.velocity.runtime.resource.loader.URLResourceLoader;
 import org.jomc.model.Argument;
 import org.jomc.model.ArgumentType;
@@ -78,7 +74,6 @@ import org.jomc.model.Dependency;
 import org.jomc.model.Implementation;
 import org.jomc.model.Message;
 import org.jomc.model.ModelObject;
-import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.Multiplicity;
 import org.jomc.model.Properties;
@@ -87,11 +82,9 @@ import org.jomc.model.Specification;
 import org.jomc.model.SpecificationReference;
 import org.jomc.model.Specifications;
 import org.jomc.model.Text;
+import org.jomc.model.Texts;
 import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.Model;
-import org.jomc.tools.model.TemplateProfileType;
-import org.jomc.tools.model.TemplateProfilesType;
-import org.jomc.tools.model.TemplateType;
 
 /**
  * Base tool class.
@@ -179,6 +172,9 @@ public class JomcTool
     /** Log level of the instance. */
     private Level logLevel;
 
+    /** The locale of the instance. */
+    private Locale locale;
+
     /** Cached indentation strings. */
     private final Map<Integer, String> indentationCache = new HashMap<Integer, String>();
 
@@ -215,6 +211,7 @@ public class JomcTool
         this.templateEncoding = tool.templateEncoding;
         this.templateProfile = tool.templateProfile;
         this.velocityEngine = tool.velocityEngine;
+        this.locale = tool.locale;
         this.templateParameters =
             tool.templateParameters != null ? new HashMap<String, Object>( tool.templateParameters ) : null;
 
@@ -542,17 +539,41 @@ public class JomcTool
     }
 
     /**
-     * Gets all Java interfaces an implementation implements.
+     * Gets a list of names of all Java types an implementation implements.
      *
-     * @param implementation The implementation to get all implemented Java interfaces of.
+     * @param implementation The implementation to get names of all implemented Java types of.
      * @param qualified {@code true} to return the fully qualified type names (with package name prepended);
      * {@code false} to return the short type names (without package name prepended).
      *
-     * @return Unmodifiable list contaning all Java interfaces implemented by {@code implementation}.
+     * @return An unmodifiable list of names of all Java types implemented by {@code implementation}.
+     *
+     * @throws NullPointerException if {@code implementation} is {@code null}.
+     *
+     * @deprecated As of JOMC 1.2, replaced by method {@link #getImplementedJavaTypeNames(org.jomc.model.Implementation, boolean)}.
+     */
+    @Deprecated
+    public List<String> getJavaInterfaceNames( final Implementation implementation, final boolean qualified )
+    {
+        if ( implementation == null )
+        {
+            throw new NullPointerException( "implementation" );
+        }
+
+        return this.getImplementedJavaTypeNames( implementation, qualified );
+    }
+
+    /**
+     * Gets a list of names of all Java types an implementation implements.
+     *
+     * @param implementation The implementation to get names of all implemented Java types of.
+     * @param qualified {@code true} to return the fully qualified type names (with package name prepended);
+     * {@code false} to return the short type names (without package name prepended).
+     *
+     * @return An unmodifiable list of names of all Java types implemented by {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      */
-    public List<String> getJavaInterfaceNames( final Implementation implementation, final boolean qualified )
+    public List<String> getImplementedJavaTypeNames( final Implementation implementation, final boolean qualified )
     {
         if ( implementation == null )
         {
@@ -608,6 +629,27 @@ public class JomcTool
         }
 
         return javaTypeName;
+    }
+
+    /**
+     * Gets a Java method parameter name of an argument.
+     *
+     * @param argument The argument to get the Java method parameter name of.
+     *
+     * @return The Java method parameter name of {@code argument}.
+     *
+     * @throws NullPointerException if {@code argument} is {@code null}.
+     *
+     * @since 1.2
+     */
+    public String getJavaMethodParameterName( final Argument argument )
+    {
+        if ( argument == null )
+        {
+            throw new NullPointerException( "argument" );
+        }
+
+        return this.getJavaIdentifier( argument.getName(), false );
     }
 
     /**
@@ -694,11 +736,11 @@ public class JomcTool
     }
 
     /**
-     * Gets the name of a Java accessor method of a given property.
+     * Gets the name of a Java getter method of a given property.
      *
-     * @param property The property to get a Java accessor method name of.
+     * @param property The property to get a Java getter method name of.
      *
-     * @return The Java accessor method name of {@code property}.
+     * @return The Java getter method name of {@code property}.
      *
      * @throws NullPointerException if {@code property} is {@code null}.
      */
@@ -717,7 +759,49 @@ public class JomcTool
             prefix = "is";
         }
 
-        return prefix + this.getJavaIdentifier( property.getName() );
+        return prefix + this.getJavaIdentifier( property.getName(), true );
+    }
+
+    /**
+     * Gets the name of a Java setter method of a given property.
+     *
+     * @param property The property to get a Java setter method name of.
+     *
+     * @return The Java setter method name of {@code property}.
+     *
+     * @throws NullPointerException if {@code property} is {@code null}.
+     *
+     * @since 1.2
+     */
+    public String getJavaSetterMethodName( final Property property )
+    {
+        if ( property == null )
+        {
+            throw new NullPointerException( "property" );
+        }
+
+        return "set" + this.getJavaIdentifier( property.getName(), true );
+    }
+
+    /**
+     * Gets a Java method parameter name of a property.
+     *
+     * @param property The property to get the Java method parameter name of.
+     *
+     * @return The Java method parameter name of {@code property}.
+     *
+     * @throws NullPointerException if {@code property} is {@code null}.
+     *
+     * @since 1.2
+     */
+    public String getJavaMethodParameterName( final Property property )
+    {
+        if ( property == null )
+        {
+            throw new NullPointerException( "property" );
+        }
+
+        return this.getJavaIdentifier( property.getName(), false );
     }
 
     /**
@@ -754,11 +838,11 @@ public class JomcTool
     }
 
     /**
-     * Gets the name of a Java accessor method of a given dependency.
+     * Gets the name of a Java getter method of a given dependency.
      *
-     * @param dependency The dependency to get a Java accessor method name of.
+     * @param dependency The dependency to get a Java getter method name of.
      *
-     * @return The Java accessor method name of {@code dependency}.
+     * @return The Java getter method name of {@code dependency}.
      *
      * @throws NullPointerException if {@code dependency} is {@code null}.
      */
@@ -769,15 +853,57 @@ public class JomcTool
             throw new NullPointerException( "dependency" );
         }
 
-        return "get" + this.getJavaIdentifier( dependency.getName() );
+        return "get" + this.getJavaIdentifier( dependency.getName(), true );
     }
 
     /**
-     * Gets the name of a Java accessor method of a given message.
+     * Gets the name of a Java setter method of a given dependency.
      *
-     * @param message The message to get a Java accessor method name of.
+     * @param dependency The dependency to get a Java setter method name of.
      *
-     * @return The Java accessor method name of {@code message}.
+     * @return The Java setter method name of {@code dependency}.
+     *
+     * @throws NullPointerException if {@code dependency} is {@code null}.
+     *
+     * @since 1.2
+     */
+    public String getJavaSetterMethodName( final Dependency dependency )
+    {
+        if ( dependency == null )
+        {
+            throw new NullPointerException( "dependency" );
+        }
+
+        return "set" + this.getJavaIdentifier( dependency.getName(), true );
+    }
+
+    /**
+     * Gets a Java method parameter name of a dependency.
+     *
+     * @param dependency The dependency to get the Java method parameter name of.
+     *
+     * @return The Java method parameter name of {@code dependency}.
+     *
+     * @throws NullPointerException if {@code dependency} is {@code null}.
+     *
+     * @since 1.2
+     */
+    public String getJavaMethodParameterName( final Dependency dependency )
+    {
+        if ( dependency == null )
+        {
+            throw new NullPointerException( "dependency" );
+        }
+
+        return this.getJavaIdentifier( dependency.getName(), false );
+    }
+
+    /**
+     * Gets the name of a Java getter method of a given message.
+     *
+     * @param message The message to get a Java getter method name of.
+     *
+     * @return The Java getter method name of {@code message}.
      *
      * @throws NullPointerException if {@code message} is {@code null}.
      */
@@ -788,7 +914,49 @@ public class JomcTool
             throw new NullPointerException( "message" );
         }
 
-        return "get" + this.getJavaIdentifier( message.getName() );
+        return "get" + this.getJavaIdentifier( message.getName(), true );
+    }
+
+    /**
+     * Gets the name of a Java setter method of a given message.
+     *
+     * @param message The message to get a Java setter method name of.
+     *
+     * @return The Java setter method name of {@code message}.
+     *
+     * @throws NullPointerException if {@code message} is {@code null}.
+     *
+     * @since 1.2
+     */
+    public String getJavaSetterMethodName( final Message message )
+    {
+        if ( message == null )
+        {
+            throw new NullPointerException( "message" );
+        }
+
+        return "set" + this.getJavaIdentifier( message.getName(), true );
+    }
+
+    /**
+     * Gets a Java method parameter name of a message.
+     *
+     * @param message The message to get the Java method parameter name of.
+     *
+     * @return The Java method parameter name of {@code message}.
+     *
+     * @throws NullPointerException if {@code message} is {@code null}.
+     *
+     * @since 1.2
+     */
+    public String getJavaMethodParameterName( final Message message )
+    {
+        if ( message == null )
+        {
+            throw new NullPointerException( "message" );
+        }
+
+        return this.getJavaIdentifier( message.getName(), false );
     }
 
     /**
@@ -876,22 +1044,22 @@ public class JomcTool
      *
      * @param text The text to format to a Javadoc comment.
      * @param indentationLevel The indentation level of the comment.
-     * @param suffix The text to append to any line breaks.
+     * @param linePrefix The text to prepend lines with.
      *
      * @return {@code text} formatted as a Javadoc comment.
      *
-     * @throws NullPointerException if {@code text} or {@code suffix} is {@code null}.
+     * @throws NullPointerException if {@code text} or {@code linePrefix} is {@code null}.
      * @throws IllegalArgumentException if {@code indentationLevel} is negative.
      */
-    public String getJavadocComment( final Text text, final int indentationLevel, final String suffix )
+    public String getJavadocComment( final Text text, final int indentationLevel, final String linePrefix )
     {
         if ( text == null )
         {
             throw new NullPointerException( "text" );
         }
-        if ( suffix == null )
+        if ( linePrefix == null )
         {
-            throw new NullPointerException( "suffix" );
+            throw new NullPointerException( "linePrefix" );
         }
         if ( indentationLevel < 0 )
         {
@@ -911,13 +1079,13 @@ public class JomcTool
                 String line;
                 while ( ( line = reader.readLine() ) != null )
                 {
-                    builder.append( this.getLineSeparator() ).append( indent ).append( suffix ).
+                    builder.append( this.getLineSeparator() ).append( indent ).append( linePrefix ).
                         append( line.replaceAll( "\\/\\*\\*", "/*" ).replaceAll( "\\*/", "/" ) );
 
                 }
 
                 javadoc = builder.length() == 0 ? "" : StringEscapeUtils.escapeHtml(
-                    builder.substring( this.getLineSeparator().length() + indent.length() + suffix.length() ) );
+                    builder.substring( this.getLineSeparator().length() + indent.length() + linePrefix.length() ) );
 
             }
 
@@ -930,15 +1098,94 @@ public class JomcTool
     }
 
     /**
+     * Formats a text from a list of texts to a Javadoc comment.
+     *
+     * @param texts The list of texts to format to a Javadoc comment.
+     * @param indentationLevel The indentation level of the comment.
+     * @param linePrefix The text to prepend lines with.
+     *
+     * @return The text corresponding to the locale of the instance from the list of texts formatted to a Javadoc
+     * comment.
+     *
+     * @throws NullPointerException if {@code texts} or {@code linePrefix} is {@code null}.
+     * @throws IllegalArgumentException if {@code indentationLevel} is negative.
+     *
+     * @since 1.2
+     */
+    public String getJavadocComment( final Texts texts, final int indentationLevel, final String linePrefix )
+    {
+        if ( texts == null )
+        {
+            throw new NullPointerException( "texts" );
+        }
+        if ( linePrefix == null )
+        {
+            throw new NullPointerException( "linePrefix" );
+        }
+        if ( indentationLevel < 0 )
+        {
+            throw new IllegalArgumentException( Integer.toString( indentationLevel ) );
+        }
+
+        return this.getJavadocComment( texts.getText( this.getLocale().getLanguage() ), indentationLevel, linePrefix );
+    }
+
+    /**
      * Formats a string to a Java string with unicode escapes.
      *
      * @param str The string to format to a Java string or {@code null}.
      *
-     * @return {@code str} formatted as a Java string or {@code null}.
+     * @return {@code str} formatted to a Java string or {@code null}.
+     *
+     * @see StringEscapeUtils#escapeJava(java.lang.String)
      */
     public String getJavaString( final String str )
     {
         return StringEscapeUtils.escapeJava( str );
+    }
+
+    /**
+     * Formats a string to a Java identifier.
+     *
+     * @param str The string to format or {@code null}.
+     * @param capitalize {@code true} to return an identifier with the first character upper cased; {@code false} to
+     * return an identifier with the first character lower cased.
+     *
+     * @return {@code str} formatted to a Java identifier.
+     *
+     * @since 1.2
+     */
+    public String getJavaIdentifier( final String str, final boolean capitalize )
+    {
+        String identifier = null;
+
+        if ( str != null )
+        {
+            final int len = str.length();
+            final StringBuilder builder = new StringBuilder( len );
+            boolean uc = capitalize;
+
+            for ( int i = 0; i < len; i++ )
+            {
+                final char c = str.charAt( i );
+
+                if ( !( Character.isJavaIdentifierStart( c ) || Character.isJavaIdentifierPart( c ) ) )
+                {
+                    uc = true;
+                }
+                else if ( builder.length() == 0
+                          ? Character.isJavaIdentifierStart( c )
+                          : Character.isJavaIdentifierPart( c ) )
+                {
+                    builder.append( uc ? Character.toUpperCase( c ) : c );
+                    uc = false;
+                }
+            }
+
+            identifier = builder.toString();
+        }
+
+        return identifier;
     }
 
     /**
@@ -982,6 +1229,86 @@ public class JomcTool
     }
 
     /**
+     * Formats a string to a HTML string with HTML entities.
+     *
+     * @param str The string to format to a HTML string with HTML entities or {@code null}.
+     *
+     * @return {@code str} formatted to a HTML string with HTML entities or {@code null}.
+     *
+     * @see StringEscapeUtils#escapeHtml(java.lang.String)
+     *
+     * @since 1.2
+     */
+    public String getHtmlString( final String str )
+    {
+        return StringEscapeUtils.escapeHtml( str );
+    }
+
+    /**
+     * Formats a string to a XML string with XML entities.
+     *
+     * @param str The string to format to a XML string with XML entities or {@code null}.
+     *
+     * @return {@code str} formatted to a XML string with XML entities or {@code null}.
+     *
+     * @see StringEscapeUtils#escapeXml(java.lang.String)
+     *
+     * @since 1.2
+     */
+    public String getXmlString( final String str )
+    {
+        return StringEscapeUtils.escapeXml( str );
+    }
+
+    /**
+     * Formats a string to a JavaScript string applying JavaScript string rules.
+     *
+     * @param str The string to format to a JavaScript string by applying JavaScript string rules or {@code null}.
+     *
+     * @return {@code str} formatted to a JavaScript string with JavaScript string rules applied or {@code null}.
+     *
+     * @see StringEscapeUtils#escapeJavaScript(java.lang.String)
+     *
+     * @since 1.2
+     */
+    public String getJavaScriptString( final String str )
+    {
+        return StringEscapeUtils.escapeJavaScript( str );
+    }
+
+    /**
+     * Formats a string to a SQL string.
+     *
+     * @param str The string to format to a SQL string or {@code null}.
+     *
+     * @return {@code str} formatted to a SQL string or {@code null}.
+     *
+     * @see StringEscapeUtils#escapeSql(java.lang.String)
+     *
+     * @since 1.2
+     */
+    public String getSqlString( final String str )
+    {
+        return StringEscapeUtils.escapeSql( str );
+    }
+
+    /**
+     * Formats a string to a CSV string.
+     *
+     * @param str The string to format to a CSV string or {@code null}.
+     *
+     * @return {@code str} formatted to a CSV string or {@code null}.
+     *
+     * @see StringEscapeUtils#escapeCsv(java.lang.String)
+     *
+     * @since 1.2
+     */
+    public String getCsvString( final String str )
+    {
+        return StringEscapeUtils.escapeCsv( str );
+    }
+
+    /**
      * Gets the display language of a given language code.
      *
      * @param language The language code to get the display language of.
@@ -997,8 +1324,8 @@ public class JomcTool
             throw new NullPointerException( "language" );
         }
 
-        final Locale locale = new Locale( language );
-        return locale.getDisplayLanguage( locale );
+        final Locale l = new Locale( language );
+        return l.getDisplayLanguage( l );
     }
 
     /**
@@ -1019,7 +1346,30 @@ public class JomcTool
             throw new NullPointerException( "calendar" );
         }
 
-        return DateFormat.getDateInstance( DateFormat.SHORT ).format( calendar.getTime() );
+        return DateFormat.getDateInstance( DateFormat.SHORT, this.getLocale() ).format( calendar.getTime() );
+    }
+
+    /**
+     * Formats a calendar instance to a string.
+     *
+     * @param calendar The calendar to format.
+     *
+     * @return Date of {@code calendar} formatted using a medium format style pattern.
+     *
+     * @throws NullPointerException if {@code calendar} is {@code null}.
+     *
+     * @see DateFormat#MEDIUM
+     *
+     * @since 1.2
+     */
+    public String getMediumDate( final Calendar calendar )
+    {
+        if ( calendar == null )
+        {
+            throw new NullPointerException( "calendar" );
+        }
+
+        return DateFormat.getDateInstance( DateFormat.MEDIUM, this.getLocale() ).format( calendar.getTime() );
     }
 
     /**
@@ -1040,7 +1390,7 @@ public class JomcTool
             throw new NullPointerException( "calendar" );
         }
 
-        return DateFormat.getDateInstance( DateFormat.LONG ).format( calendar.getTime() );
+        return DateFormat.getDateInstance( DateFormat.LONG, this.getLocale() ).format( calendar.getTime() );
     }
 
     /**
@@ -1061,7 +1411,30 @@ public class JomcTool
             throw new NullPointerException( "calendar" );
         }
 
-        return DateFormat.getTimeInstance( DateFormat.SHORT ).format( calendar.getTime() );
+        return DateFormat.getTimeInstance( DateFormat.SHORT, this.getLocale() ).format( calendar.getTime() );
+    }
+
+    /**
+     * Formats a calendar instance to a string.
+     *
+     * @param calendar The calendar to format.
+     *
+     * @return Time of {@code calendar} formatted using a medium format style pattern.
+     *
+     * @throws NullPointerException if {@code calendar} is {@code null}.
+     *
+     * @see DateFormat#MEDIUM
+     *
+     * @since 1.2
+     */
+    public String getMediumTime( final Calendar calendar )
+    {
+        if ( calendar == null )
+        {
+            throw new NullPointerException( "calendar" );
+        }
+
+        return DateFormat.getTimeInstance( DateFormat.MEDIUM, this.getLocale() ).format( calendar.getTime() );
     }
 
     /**
@@ -1082,7 +1455,7 @@ public class JomcTool
             throw new NullPointerException( "calendar" );
         }
 
-        return DateFormat.getTimeInstance( DateFormat.LONG ).format( calendar.getTime() );
+        return DateFormat.getTimeInstance( DateFormat.LONG, this.getLocale() ).format( calendar.getTime() );
     }
 
     /**
@@ -1103,7 +1476,34 @@ public class JomcTool
             throw new NullPointerException( "calendar" );
         }
 
-        return DateFormat.getDateTimeInstance( DateFormat.SHORT, DateFormat.SHORT ).format( calendar.getTime() );
+        return DateFormat.getDateTimeInstance( DateFormat.SHORT, DateFormat.SHORT, this.getLocale() ).
+            format( calendar.getTime() );
+
+    }
+
+    /**
+     * Formats a calendar instance to a string.
+     *
+     * @param calendar The calendar to format.
+     *
+     * @return Date and time of {@code calendar} formatted using a medium format style pattern.
+     *
+     * @throws NullPointerException if {@code calendar} is {@code null}.
+     *
+     * @see DateFormat#MEDIUM
+     *
+     * @since 1.2
+     */
+    public String getMediumDateTime( final Calendar calendar )
+    {
+        if ( calendar == null )
+        {
+            throw new NullPointerException( "calendar" );
+        }
+
+        return DateFormat.getDateTimeInstance( DateFormat.MEDIUM, DateFormat.MEDIUM, this.getLocale() ).
+            format( calendar.getTime() );
+
     }
 
     /**
@@ -1124,7 +1524,9 @@ public class JomcTool
             throw new NullPointerException( "calendar" );
         }
 
-        return DateFormat.getDateTimeInstance( DateFormat.LONG, DateFormat.LONG ).format( calendar.getTime() );
+        return DateFormat.getDateTimeInstance( DateFormat.LONG, DateFormat.LONG, this.getLocale() ).
+            format( calendar.getTime() );
+
     }
 
     /**
@@ -1148,7 +1550,7 @@ public class JomcTool
             throw new NullPointerException( "end" );
         }
 
-        final Format yearFormat = new SimpleDateFormat( "yyyy" );
+        final Format yearFormat = new SimpleDateFormat( "yyyy", this.getLocale() );
         final int s = start.get( Calendar.YEAR );
         final int e = end.get( Calendar.YEAR );
         final StringBuilder years = new StringBuilder();
@@ -1241,99 +1643,6 @@ public class JomcTool
     {
         if ( this.velocityEngine == null )
         {
-            /** {@code ResourceLoader} backed by {@code TemplateProfilesType}. */
-            class JomcResourceLoader extends ResourceLoader
-            {
-
-                private final long lastModified = System.currentTimeMillis();
-
-                JomcResourceLoader()
-                {
-                    super();
-                }
-
-                @Override
-                public void init( final ExtendedProperties configuration )
-                {
-                }
-
-                @Override
-                public InputStream getResourceStream( final String source ) throws ResourceNotFoundException
-                {
-                    InputStream in = null;
-
-                    for ( Module module : getModules().getModule() )
-                    {
-                        in = this.findTemplate( module.getAnyObjects( TemplateProfileType.class ), source );
-                        if ( in != null )
-                        {
-                            return in;
-                        }
-
-                        final List<TemplateProfilesType> profiles = module.getAnyObjects( TemplateProfilesType.class );
-                        if ( profiles != null )
-                        {
-                            for ( TemplateProfilesType p : profiles )
-                            {
-                                in = this.findTemplate( p.getTemplateProfile(), source );
-                                if ( in != null )
-                                {
-                                    return in;
-                                }
-                            }
-                        }
-                    }
-
-                    throw new ResourceNotFoundException( getMessage( "resourceNotFound", source ) );
-                }
-
-                @Override
-                public boolean isSourceModified( final Resource resource )
-                {
-                    return false;
-                }
-
-                @Override
-                public long getLastModified( final Resource resource )
-                {
-                    return this.lastModified;
-                }
-
-                private InputStream findTemplate( final List<TemplateProfileType> profiles, final String s )
-                {
-                    InputStream in = null;
-
-                    if ( profiles != null )
-                    {
-                        found:
-                        for ( TemplateProfileType p : profiles )
-                        {
-                            if ( p.getTemplates() != null )
-                            {
-                                for ( TemplateType t : p.getTemplates().getTemplate() )
-                                {
-                                    if ( !"text/x-velocity".equals( t.getMimeType() ) )
-                                    {
-                                        continue;
-                                    }
-
-                                    if ( ( TEMPLATE_PREFIX + p.getIdentifier() + "/" + t.getName() ).equals( s ) )
-                                    {
-                                        in = new ReaderInputStream( new StringReader( t.getContent() ),
-                                                                    getTemplateEncoding() );
-
-                                        break found;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    return in;
-                }
-
-            }
-
             /** {@code LogChute} logging to the listeners of the tool. */
             class JomcLogChute implements LogChute
             {
@@ -1369,14 +1678,13 @@ public class JomcTool
             engine.setProperty( RuntimeConstants.VM_ARGUMENTS_STRICT, Boolean.TRUE.toString() );
             engine.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, new JomcLogChute() );
 
-            engine.setProperty( RuntimeConstants.RESOURCE_LOADER, "jomc,class" );
+            engine.setProperty( RuntimeConstants.RESOURCE_LOADER, "class" );
             engine.setProperty( "class.resource.loader.class", ClasspathResourceLoader.class.getName() );
             engine.setProperty( "class.resource.loader.cache", Boolean.TRUE.toString() );
-            engine.setProperty( "jomc.resource.loader.instance", new JomcResourceLoader() );
 
             if ( this.getTemplateLocation() != null )
             {
-                engine.setProperty( RuntimeConstants.RESOURCE_LOADER, "jomc,class,url" );
+                engine.setProperty( RuntimeConstants.RESOURCE_LOADER, "class,url" );
                 engine.setProperty( "url.resource.loader.class", URLResourceLoader.class.getName() );
                 engine.setProperty( "url.resource.loader.cache", Boolean.TRUE.toString() );
                 engine.setProperty( "url.resource.loader.root", this.getTemplateLocation().toExternalForm() );
@@ -1422,14 +1730,14 @@ public class JomcTool
         ctx.put( "toolVersion", getMessage( "projectVersion" ) );
         ctx.put( "toolUrl", getMessage( "projectUrl" ) );
         ctx.put( "calendar", Calendar.getInstance() );
-        ctx.put( "now", new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSZ" ).format( now ) );
-        ctx.put( "year", new SimpleDateFormat( "yyyy" ).format( now ) );
-        ctx.put( "month", new SimpleDateFormat( "MM" ).format( now ) );
-        ctx.put( "day", new SimpleDateFormat( "dd" ).format( now ) );
-        ctx.put( "hour", new SimpleDateFormat( "HH" ).format( now ) );
-        ctx.put( "minute", new SimpleDateFormat( "mm" ).format( now ) );
-        ctx.put( "second", new SimpleDateFormat( "ss" ).format( now ) );
-        ctx.put( "timezone", new SimpleDateFormat( "Z" ).format( now ) );
+        ctx.put( "now", new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSZ", this.getLocale() ).format( now ) );
+        ctx.put( "year", new SimpleDateFormat( "yyyy", this.getLocale() ).format( now ) );
+        ctx.put( "month", new SimpleDateFormat( "MM", this.getLocale() ).format( now ) );
+        ctx.put( "day", new SimpleDateFormat( "dd", this.getLocale() ).format( now ) );
+        ctx.put( "hour", new SimpleDateFormat( "HH", this.getLocale() ).format( now ) );
+        ctx.put( "minute", new SimpleDateFormat( "mm", this.getLocale() ).format( now ) );
+        ctx.put( "second", new SimpleDateFormat( "ss", this.getLocale() ).format( now ) );
+        ctx.put( "timezone", new SimpleDateFormat( "Z", this.getLocale() ).format( now ) );
         return ctx;
     }
 
@@ -1767,10 +2075,48 @@ public class JomcTool
     }
 
     /**
+     * Gets the locale of the instance.
+     *
+     * @return The locale of the instance.
+     *
+     * @see #setLocale(java.util.Locale)
+     */
+    public final Locale getLocale()
+    {
+        if ( this.locale == null )
+        {
+            this.locale = Locale.ENGLISH;
+
+            if ( this.isLoggable( Level.CONFIG ) )
+            {
+                this.log( Level.CONFIG, getMessage( "defaultLocale", this.locale ), null );
+            }
+        }
+
+        return this.locale;
+    }
+
+    /**
+     * Sets the locale of the instance.
+     *
+     * @param value The new locale of the instance or {@code null}.
+     *
+     * @see #getLocale()
+     */
+    public final void setLocale( final Locale value )
+    {
+        this.locale = value;
+    }
+
+    /**
      * Gets a velocity template for a given name.
-     * <p>This method returns the template corresponding to the profile of the instance. If that template is not found,
-     * the template of the default profile is returned so that only templates differing from the default templates need
-     * to be provided when exchanging templates.</p>
+     * <p>This method searches templates at the following locations:
+     * <ol>
+     *  <li><code>org/jomc/tools/templates/{@link #getTemplateProfile() profile}/{@link #getLocale() language}/<i>templateName</i></code></li>
+     *  <li><code>org/jomc/tools/templates/{@link #getTemplateProfile() profile}/<i>templateName</i></code></li>
+     *  <li><code>org/jomc/tools/templates/{@link #getDefaultTemplateProfile() default profile}/{@link #getLocale() language}/<i>templateName</i></code></li>
+     *  <li><code>org/jomc/tools/templates/{@link #getDefaultTemplateProfile() default profile}/<i>templateName</i></code></li>
+     * </ol></p>
      *
      * @param templateName The name of the template to get.
      *
@@ -1790,82 +2136,48 @@ public class JomcTool
             throw new NullPointerException( "templateName" );
         }
 
-        try
+        String location = null;
+        Template template = null;
+
+        if ( !StringUtils.EMPTY.equals( this.getLocale().getLanguage() ) )
         {
-            final Template template = this.getVelocityEngine().getTemplate(
-                TEMPLATE_PREFIX + this.getTemplateProfile() + "/" + templateName, this.getTemplateEncoding() );
+            location =
+                TEMPLATE_PREFIX + this.getTemplateProfile() + "/" + this.getLocale().getLanguage() + "/" + templateName;
 
-            if ( this.isLoggable( Level.FINER ) )
-            {
-                this.log( Level.FINER, getMessage( "templateInfo", templateName, this.getTemplateProfile() ), null );
-            }
-
-            return template;
+            template = this.findVelocityTemplate( location );
         }
-        catch ( final ResourceNotFoundException e )
+
+        if ( template == null )
         {
-            if ( this.isLoggable( Level.FINER ) )
-            {
-                this.log( Level.FINER,
-                          getMessage( "templateNotFound", templateName, this.getTemplateProfile() ), null );
-
-            }
-
-            try
-            {
-                final Template template = this.getVelocityEngine().getTemplate(
-                    TEMPLATE_PREFIX + getDefaultTemplateProfile() + "/" + templateName, this.getTemplateEncoding() );
-
-                if ( this.isLoggable( Level.FINER ) )
-                {
-                    this.log( Level.FINER,
-                              getMessage( "templateInfo", templateName, getDefaultTemplateProfile() ), null );
-
-                }
-
-                return template;
-            }
-            catch ( final ResourceNotFoundException e2 )
-            {
-                throw (IOException) new IOException( getMessage( "noSuchTemplate", templateName ) ).initCause( e2 );
-            }
-            catch ( final ParseErrorException e2 )
-            {
-                String m = getMessage( e2 );
-                m = m == null ? "" : " " + m;
-
-                throw (IOException) new IOException( getMessage(
-                    "invalidTemplate", templateName, getDefaultTemplateProfile(), m ) ).initCause( e2 );
-
-            }
-            catch ( final VelocityException e2 )
-            {
-                String m = getMessage( e2 );
-                m = m == null ? "" : " " + m;
-
-                throw (IOException) new IOException( getMessage(
-                    "velocityException", templateName, m ) ).initCause( e );
-
-            }
+            location = TEMPLATE_PREFIX + this.getTemplateProfile() + "/" + templateName;
+            template = this.findVelocityTemplate( location );
         }
-        catch ( final ParseErrorException e )
+
+        if ( template == null && !StringUtils.EMPTY.equals( this.getLocale().getLanguage() ) )
         {
-            String m = getMessage( e );
-            m = m == null ? "" : " " + m;
+            location = TEMPLATE_PREFIX + getDefaultTemplateProfile() + "/" + this.getLocale().getLanguage() + "/"
+                       + templateName;
 
-            throw (IOException) new IOException( getMessage(
-                "invalidTemplate", templateName, this.getTemplateProfile(), m ) ).initCause( e );
-
+            template = this.findVelocityTemplate( location );
         }
-        catch ( final VelocityException e )
+
+        if ( template == null )
         {
-            String m = getMessage( e );
-            m = m == null ? "" : " " + m;
-
-            throw (IOException) new IOException( getMessage(
-                "velocityException", templateName, m ) ).initCause( e );
-
+            location = TEMPLATE_PREFIX + getDefaultTemplateProfile() + "/" + templateName;
+            template = this.findVelocityTemplate( location );
         }
+
+        if ( template == null )
+        {
+            throw new IOException( getMessage( "noSuchTemplate", templateName ) );
+        }
+
+        if ( this.isLoggable( Level.FINER ) )
+        {
+            this.log( Level.FINER, getMessage( "templateInfo", templateName, location ), null );
+        }
+
+        return template;
     }
 
     /**
@@ -1907,27 +2219,35 @@ public class JomcTool
         return idx != -1 ? identifier.substring( 0, idx ) : "";
     }
 
-    private String getJavaIdentifier( final String identifier )
+    private Template findVelocityTemplate( final String location ) throws IOException
     {
-        final StringBuilder builder = new StringBuilder( identifier.length() );
-        boolean capitalize = true;
-
-        for ( int i = 0; i < identifier.length(); i++ )
+        try
         {
-            final char c = identifier.charAt( i );
-
-            if ( Character.isWhitespace( c ) )
-            {
-                capitalize = true;
-            }
-            else if ( i == 0 ? Character.isJavaIdentifierStart( c ) : Character.isJavaIdentifierPart( c ) )
-            {
-                builder.append( capitalize ? Character.toUpperCase( c ) : c );
-                capitalize = false;
-            }
+            return this.getVelocityEngine().getTemplate( location, this.getTemplateEncoding() );
         }
+        catch ( final ResourceNotFoundException e )
+        {
+            if ( this.isLoggable( Level.FINER ) )
+            {
+                this.log( Level.FINER, getMessage( "templateNotFound", location ), null );
+            }
 
-        return builder.toString();
+            return null;
+        }
+        catch ( final ParseErrorException e )
+        {
+            String m = getMessage( e );
+            m = m == null ? "" : " " + m;
+
+            throw (IOException) new IOException( getMessage( "invalidTemplate", location, m ) ).initCause( e );
+        }
+        catch ( final VelocityException e )
+        {
+            String m = getMessage( e );
+            m = m == null ? "" : " " + m;
+
+            throw (IOException) new IOException( getMessage( "velocityException", location, m ) ).initCause( e );
+        }
     }
 
     private static String getMessage( final String key, final Object... arguments )

@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.exception.VelocityException;
@@ -219,10 +220,19 @@ public class SourceFileProcessor extends JomcTool
         {
             sourceFileType = specification.getAnyObject( SourceFileType.class );
 
-            if ( sourceFileType != null && sourceFileType.getLocation() == null )
+            if ( sourceFileType != null )
             {
-                // The 'location' attribute got updated from 'required' to 'optional' in 'jomc-tools-1.2.xsd' schema.
-                sourceFileType.setLocation( specification.getClazz().replace( '.', '/' ) + ".java" );
+                if ( sourceFileType.getLocation() == null )
+                {
+                    // As of version 1.2, the 'location' attribute got updated from 'required' to 'optional'.
+                    sourceFileType.setLocation( specification.getClazz().replace( '.', '/' ) + ".java" );
+                }
+
+                if ( sourceFileType.getHeadComment() == null )
+                {
+                    // The 'head-comment' and 'tail-comment' attributes got introduced in version 1.2.
+                    sourceFileType.setHeadComment( "//" );
+                }
             }
         }
 
@@ -232,6 +242,7 @@ public class SourceFileProcessor extends JomcTool
             sourceFileType.setIdentifier( specification.getIdentifier() );
             sourceFileType.setLocation( specification.getClazz().replace( '.', '/' ) + ".java" );
             sourceFileType.setTemplate( SPECIFICATION_TEMPLATE );
+            sourceFileType.setHeadComment( "//" );
             sourceFileType.setSourceSections( new SourceSectionsType() );
 
             SourceSectionType s = new SourceSectionType();
@@ -329,10 +340,19 @@ public class SourceFileProcessor extends JomcTool
         {
             sourceFileType = implementation.getAnyObject( SourceFileType.class );
 
-            if ( sourceFileType != null && sourceFileType.getLocation() == null )
+            if ( sourceFileType != null )
             {
-                // The 'location' attribute got updated from 'required' to 'optional' in 'jomc-tools-1.2.xsd' schema.
-                sourceFileType.setLocation( implementation.getClazz().replace( '.', '/' ) + ".java" );
+                if ( sourceFileType.getLocation() == null )
+                {
+                    // As of version 1.2, the 'location' attribute got updated from 'required' to 'optional'.
+                    sourceFileType.setLocation( implementation.getClazz().replace( '.', '/' ) + ".java" );
+                }
+
+                if ( sourceFileType.getHeadComment() == null )
+                {
+                    // The 'head-comment' and 'tail-comment' attributes got introduced in version 1.2.
+                    sourceFileType.setHeadComment( "//" );
+                }
             }
         }
 
@@ -347,6 +367,7 @@ public class SourceFileProcessor extends JomcTool
             sourceFileType.setIdentifier( implementation.getIdentifier() );
             sourceFileType.setLocation( implementation.getClazz().replace( '.', '/' ) + ".java" );
             sourceFileType.setTemplate( IMPLEMENTATION_TEMPLATE );
+            sourceFileType.setHeadComment( "//" );
             sourceFileType.setSourceSections( new SourceSectionsType() );
 
             SourceSectionType s = new SourceSectionType();
@@ -366,7 +387,7 @@ public class SourceFileProcessor extends JomcTool
             s.setOptional( true );
             sourceFileType.getSourceSections().getSourceSection().add( s );
 
-            for ( String interfaceName : this.getJavaInterfaceNames( implementation, false ) )
+            for ( String interfaceName : this.getImplementedJavaTypeNames( implementation, false ) )
             {
                 s = new SourceSectionType();
                 s.setName( interfaceName );
@@ -701,6 +722,10 @@ public class SourceFileProcessor extends JomcTool
             {
                 s.setLocation( specification.getClazz().replace( '.', '/' ) + ".java" );
             }
+            if ( s.getHeadComment() == null )
+            {
+                s.setHeadComment( "//" );
+            }
 
             this.applyDefaults( specification, s.getSourceSections() );
         }
@@ -801,6 +826,10 @@ public class SourceFileProcessor extends JomcTool
             if ( s.getLocation() == null )
             {
                 s.setLocation( implementation.getClazz().replace( '.', '/' ) + ".java" );
+            }
+            if ( s.getHeadComment() == null )
+            {
+                s.setHeadComment( "//" );
             }
 
             this.applyDefaults( implementation, s.getSourceSections() );
@@ -951,7 +980,7 @@ public class SourceFileProcessor extends JomcTool
                         }
                     }
 
-                    for ( String interfaceName : this.getJavaInterfaceNames( implementation, false ) )
+                    for ( String interfaceName : this.getImplementedJavaTypeNames( implementation, false ) )
                     {
                         if ( interfaceName.equals( s.getName() ) )
                         {
@@ -1406,7 +1435,7 @@ public class SourceFileProcessor extends JomcTool
          *
          * @param section The section to start rendering the editor's output with.
          *
-         * @see #createSection(org.jomc.tools.model.SourceSectionType)
+         * @see #createSection(java.lang.String, java.lang.String, org.jomc.tools.model.SourceSectionType)
          */
         @Override
         protected String getOutput( final Section section ) throws IOException
@@ -1508,36 +1537,6 @@ public class SourceFileProcessor extends JomcTool
             }
         }
 
-        /**
-         * Creates a new {@code Section} instance for a given {@code SourceSectionType}.
-         *
-         * @param sourceSectionType The {@code SourceSectionType} to create a new {@code Section} instance for.
-         *
-         * @return A new {@code Section} instance for {@code sourceSectionType}.
-         *
-         * @throws NullPointerException if {@code sourceSectionType} is {@code null}.
-         * @throws IOException if creating a new {@code Section} instance fails.
-         *
-         * @since 1.2
-         */
-        protected Section createSection( final SourceSectionType sourceSectionType ) throws IOException
-        {
-            if ( sourceSectionType == null )
-            {
-                throw new NullPointerException( "sourceSectionType" );
-            }
-
-            final Section s = new Section();
-            s.setName( sourceSectionType.getName() );
-            s.setStartingLine( getIndentation( sourceSectionType.getIndentationLevel() )
-                               + "// SECTION-START[" + sourceSectionType.getName() + "]" );
-
-            s.setEndingLine( getIndentation( sourceSectionType.getIndentationLevel() )
-                             + "// SECTION-END" );
-
-            return s;
-        }
-
         private void createSections( final SourceFileType sourceFileType, final SourceSectionsType sourceSectionsType,
                                      final Section section ) throws IOException
         {
@@ -1549,7 +1548,10 @@ public class SourceFileProcessor extends JomcTool
 
                     if ( childSection == null && !sourceSectionType.isOptional() )
                     {
-                        childSection = this.createSection( sourceSectionType );
+                        childSection = this.createSection( StringUtils.defaultString( sourceFileType.getHeadComment() ),
+                                                           StringUtils.defaultString( sourceFileType.getTailComment() ),
+                                                           sourceSectionType );
+
                         section.getSections().add( childSection );
 
                         if ( isLoggable( Level.FINE ) )
@@ -1565,6 +1567,49 @@ public class SourceFileProcessor extends JomcTool
                     this.createSections( sourceFileType, sourceSectionType.getSourceSections(), childSection );
                 }
             }
+        }
+
+        /**
+         * Creates a new {@code Section} instance for a given {@code SourceSectionType}.
+         *
+         * @param headComment Characters to use to start a comment in the source file.
+         * @param tailComment Characters to use to end a comment in the source file.
+         * @param sourceSectionType The {@code SourceSectionType} to create a new {@code Section} instance for.
+         *
+         * @return A new {@code Section} instance for {@code sourceSectionType}.
+         *
+         * @throws NullPointerException if {@code headComment}, {@code tailComment} or {@code sourceSectionType} is
+         * {@code null}.
+         * @throws IOException if creating a new {@code Section} instance fails.
+         *
+         * @since 1.2
+         */
+        private Section createSection( final String headComment, final String tailComment,
+                                       final SourceSectionType sourceSectionType ) throws IOException
+        {
+            if ( headComment == null )
+            {
+                throw new NullPointerException( "headComment" );
+            }
+            if ( tailComment == null )
+            {
+                throw new NullPointerException( "tailComment" );
+            }
+            if ( sourceSectionType == null )
+            {
+                throw new NullPointerException( "sourceSectionType" );
+            }
+
+            final Section s = new Section();
+            s.setName( sourceSectionType.getName() );
+
+            final StringBuilder head = new StringBuilder( 255 );
+            head.append( getIndentation( sourceSectionType.getIndentationLevel() ) ).append( headComment );
+
+            s.setStartingLine( head + " SECTION-START[" + sourceSectionType.getName() + ']' + tailComment );
+            s.setEndingLine( head + " SECTION-END" + tailComment );
+
+            return s;
         }
 
         private void editSourceFile( final File sourcesDirectory ) throws IOException

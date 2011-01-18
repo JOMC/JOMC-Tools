@@ -32,12 +32,12 @@
  */
 package org.jomc.tools.model.test;
 
-import org.jomc.tools.model.ToolsType;
-import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
+import org.jomc.tools.model.ToolsType;
+import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 

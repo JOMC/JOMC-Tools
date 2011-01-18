@@ -48,53 +48,94 @@
 ${tool.getIndentation(0)}// <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 ${tool.getIndentation(0)}/**
 #if($implementation.getDocumentation())
-${tool.getIndentation(0)} * $tool.getJavadocComment($implementation.getDocumentation().getText("en"), 0, " * ")
+${tool.getIndentation(0)} * $tool.getJavadocComment($implementation.getDocumentation(), 0, " * ")
 #end
 #set($specifications = $modules.getSpecifications($implementation.getIdentifier()))
-#if($specifications)
-${tool.getIndentation(0)} * <p><b>Specifications</b><ul>
+#if($specifications && !$specifications.getReference().isEmpty())
+${tool.getIndentation(0)} * <p>
+${tool.getIndentation(0)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+${tool.getIndentation(0)} *     <caption class="TableCaption">Specifications</caption>
+${tool.getIndentation(0)} *     <tr>
+${tool.getIndentation(0)} *       <th align="left" class="TableHeader" scope="col" nowrap>Identifier</th>
+${tool.getIndentation(0)} *       <th align="left" class="TableHeader" scope="col" nowrap>Class</th>
+${tool.getIndentation(0)} *       <th align="left" class="TableHeader" scope="col" nowrap>Scope</th>
+${tool.getIndentation(0)} *       <th align="left" class="TableHeader" scope="col" nowrap>Version</th>
+${tool.getIndentation(0)} *     </tr>
 #foreach($reference in $specifications.getReference())
 #set($specification = $specifications.getSpecification($reference.getIdentifier()))
-${tool.getIndentation(0)} * <li>{@code '$reference.getIdentifier()'}#if($specification && $specification.getClazz()) {@code ($specification.getClazz())}#end#if($reference.getVersion()) {@code $reference.getVersion()}#end#if($specification)#if($specification.getScope()) {@code $specification.getScope()}#else {@code Multiton}#end#end</li>
+${tool.getIndentation(0)} *     <tr class="TableRowColor">
+${tool.getIndentation(0)} *       <td align="left" nowrap>{@code $tool.getHtmlString($reference.getIdentifier())}</td>
+${tool.getIndentation(0)} *       <td align="left" nowrap>#if($specification && $specification.getClazz()){@code $tool.getHtmlString($specification.getClazz())}#end</td>
+${tool.getIndentation(0)} *       <td align="left" nowrap>#if($specification){@code#if($specification.getScope()) $tool.getHtmlString($specification.getScope())}#else Multiton#end}#end</td>
+${tool.getIndentation(0)} *       <td align="left" nowrap>#if($reference.getVersion()){@code $tool.getHtmlString($reference.getVersion())}#end</td>
+${tool.getIndentation(0)} *     </tr>
 #end
-${tool.getIndentation(0)} * </ul></p>
+${tool.getIndentation(0)} *   </table>
+${tool.getIndentation(0)} * </p>
 #end
-#if($modules.getProperties($implementation.getIdentifier()))
-${tool.getIndentation(0)} * <p><b>Properties</b><ul>
-#foreach($property in $modules.getProperties($implementation.getIdentifier()).getProperty())
-${tool.getIndentation(0)} * <li>"{@link #$tool.getJavaGetterMethodName($property) $property.getName()}"
-${tool.getIndentation(0)} * <blockquote>Property of type {@code $tool.getJavaTypeName($property,false)}.
-#if($property.getDocumentation())
-${tool.getIndentation(0)} * <p>$tool.getJavadocComment($property.getDocumentation().getText("en"), 0, " * ")</p>
+#set($properties = $modules.getProperties($implementation.getIdentifier()))
+#if($properties && !$properties.getProperty().isEmpty())
+${tool.getIndentation(0)} * <p>
+${tool.getIndentation(0)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+${tool.getIndentation(0)} *     <caption class="TableCaption">Properties</caption>
+${tool.getIndentation(0)} *     <tr>
+${tool.getIndentation(0)} *       <th align="left" class="TableHeader" scope="col" nowrap>Name</th>
+${tool.getIndentation(0)} *       <th align="left" class="TableHeader" scope="col" nowrap>Type</th>
+${tool.getIndentation(0)} *       <th align="left" class="TableHeader" scope="col" nowrap>Documentation</th>
+${tool.getIndentation(0)} *     </tr>
+#foreach($property in $properties.getProperty())
+${tool.getIndentation(0)} *     <tr class="TableRowColor">
+${tool.getIndentation(0)} *       <td align="left" nowrap>{@link #$tool.getJavaGetterMethodName($property) $tool.getHtmlString($property.getName())}</td>
+${tool.getIndentation(0)} *       <td align="left" nowrap>{@code $tool.getHtmlString($tool.getJavaTypeName($property,false))}</td>
+${tool.getIndentation(0)} *       <td align="left" valign="top">#if($property.getDocumentation())$tool.getJavadocComment($property.getDocumentation(), 0, " *                        ")#end</td>
+${tool.getIndentation(0)} *     </tr>
 #end
-${tool.getIndentation(0)} * </blockquote></li>
+${tool.getIndentation(0)} *   </table>
+${tool.getIndentation(0)} * </p>
 #end
-${tool.getIndentation(0)} * </ul></p>
-#end
-#if($modules.getDependencies($implementation.getIdentifier()))
-${tool.getIndentation(0)} * <p><b>Dependencies</b><ul>
-#foreach($dependency in $modules.getDependencies($implementation.getIdentifier()).getDependency())
+#set($dependencies = $modules.getDependencies($implementation.getIdentifier()))
+#if($dependencies && !$dependencies.getDependency().isEmpty())
+${tool.getIndentation(0)} * <p>
+${tool.getIndentation(0)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+${tool.getIndentation(0)} *     <caption class="TableCaption">Dependencies</caption>
+${tool.getIndentation(0)} *       <tr>
+${tool.getIndentation(0)} *         <th align="left" class="TableHeader" scope="col" nowrap>Name</th>
+${tool.getIndentation(0)} *         <th align="left" class="TableHeader" scope="col" nowrap>Description</th>
+${tool.getIndentation(0)} *       </tr>
+#foreach($dependency in $dependencies.getDependency())
 #set($specification = $modules.getSpecification($dependency.getIdentifier()))
-${tool.getIndentation(0)} * <li>"{@link #$tool.getJavaGetterMethodName($dependency) $dependency.getName()}"<blockquote>
-${tool.getIndentation(0)} * Dependency on {@code '$dependency.getIdentifier()'}#if($specification && $specification.getClazz()) {@code ($specification.getClazz())}#end#if($dependency.getVersion()) at specification level $dependency.getVersion()#end#if($dependency.isBound()) bound to an instance#end.</blockquote></li>
+${tool.getIndentation(0)} *       <tr class="TableRowColor">
+${tool.getIndentation(0)} *         <td align="left" nowrap>{@link #$tool.getJavaGetterMethodName($dependency) $tool.getHtmlString($dependency.getName())}</td>
+${tool.getIndentation(0)} *         <td align="left">Dependency on {@code '$tool.getHtmlString($dependency.getIdentifier())'}#if($specification && $specification.getClazz()) {@code ($tool.getHtmlString($specification.getClazz()))}#end#if($dependency.getVersion()) at specification level $tool.getHtmlString($dependency.getVersion())#end#if($dependency.isBound()) bound to an instance#end.</td>
+${tool.getIndentation(0)} *       </tr>
 #end
-${tool.getIndentation(0)} * </ul></p>
+${tool.getIndentation(0)} *   </table>
+${tool.getIndentation(0)} * </p>
 #end
-#if($modules.getMessages($implementation.getIdentifier()))
-${tool.getIndentation(0)} * <p><b>Messages</b><ul>
-#foreach($message in $modules.getMessages($implementation.getIdentifier()).getMessage())
-${tool.getIndentation(0)} * <li>"{@link #$tool.getJavaGetterMethodName($message) $message.getName()}"<table>
-#foreach($text in $message.getTemplate().getText())
-${tool.getIndentation(0)} * <tr><td valign="top">$tool.getDisplayLanguage($text.getLanguage()):</td><td valign="top"><pre>$tool.getJavadocComment($message.getTemplate().getText($text.getLanguage()), 0, " * ")</pre></td></tr>
+#set($messages = $modules.getMessages($implementation.getIdentifier()))
+#if($messages && !$messages.getMessage().isEmpty())
+${tool.getIndentation(0)} * <p>
+${tool.getIndentation(0)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+${tool.getIndentation(0)} *     <caption class="TableCaption">Messages</caption>
+${tool.getIndentation(0)} *     <tr>
+${tool.getIndentation(0)} *       <th align="left" class="TableHeader" scope="col" nowrap>Name</th>
+${tool.getIndentation(0)} *       <th align="left" class="TableHeader" scope="col" nowrap>Languages</th>
+${tool.getIndentation(0)} *       <th align="left" class="TableHeader" scope="col" nowrap>Default Template</th>
+${tool.getIndentation(0)} *     </tr>
+#foreach($message in $messages.getMessage())
+${tool.getIndentation(0)} *     <tr class="TableRowColor">
+${tool.getIndentation(0)} *       <td align="left" valign="top" nowrap>{@link #$tool.getJavaGetterMethodName($message) $tool.getHtmlString($message.getName())}</td>
+${tool.getIndentation(0)} *       <td align="left" valign="top" nowrap>#set($size = $message.getTemplate().getText().size())#foreach($text in $message.getTemplate().getText())$tool.getHtmlString($tool.getDisplayLanguage($text.getLanguage()))#if($text.getLanguage() == $message.getTemplate().getDefaultLanguage()) (default)#end#set($size = $size - 1)#if($size > 0),&nbsp;#end#end</td>
+${tool.getIndentation(0)} *       <td align="left" valign="top" nowrap><pre><code>$tool.getJavadocComment($message.getTemplate().getText($message.getTemplate().getDefaultLanguage()), 0, " * ")</code></pre></td>
+${tool.getIndentation(0)} *     </tr>
 #end
-${tool.getIndentation(0)} * </table>
-#end
-${tool.getIndentation(0)} * </ul></p>
+${tool.getIndentation(0)} *   </table>
+${tool.getIndentation(0)} * </p>
 #end
 ${tool.getIndentation(0)} *
 #if($implementation.getAuthors())
 #foreach($author in $implementation.getAuthors().getAuthor())
-${tool.getIndentation(0)} * @author #if($author.getMail())<a href="mailto:$author.getMail()">#end$author.getName()#if($author.getMail())</a>#end $author.getVersion()
+${tool.getIndentation(0)} * @author #if($author.getMail())<a href="mailto:$author.getMail()">#end$tool.getHtmlString($author.getName())#if($author.getMail())</a>#end $tool.getHtmlString($author.getVersion())
 #end
 #end
 #set($D = "$")

@@ -32,9 +32,7 @@
  */
 package org.jomc.tools.test;
 
-import org.apache.commons.io.FileUtils;
 import java.io.File;
-import org.junit.Test;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Locale;
@@ -42,6 +40,7 @@ import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import org.apache.commons.io.FileUtils;
 import org.jomc.model.Argument;
 import org.jomc.model.Dependency;
 import org.jomc.model.Implementation;
@@ -53,11 +52,13 @@ import org.jomc.model.Property;
 import org.jomc.model.Specification;
 import org.jomc.model.SpecificationReference;
 import org.jomc.model.Text;
+import org.jomc.model.Texts;
 import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelException;
 import org.jomc.tools.JomcTool;
+import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -370,6 +371,7 @@ public class JomcToolTest
     }
 
     @Test
+    @SuppressWarnings( "deprecation" )
     public final void testJomcToolNullPointerException() throws Exception
     {
         assertNotNull( this.getJomcTool() );
@@ -377,6 +379,16 @@ public class JomcToolTest
         try
         {
             this.getJomcTool().getDisplayLanguage( null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
+            this.getJomcTool().getImplementedJavaTypeNames( null, false );
             fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -427,6 +439,46 @@ public class JomcToolTest
         try
         {
             this.getJomcTool().getJavaGetterMethodName( (Property) null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
+            this.getJomcTool().getJavaMethodParameterName( (Argument) null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
+            this.getJomcTool().getJavaMethodParameterName( (Dependency) null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
+            this.getJomcTool().getJavaMethodParameterName( (Message) null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
+            this.getJomcTool().getJavaMethodParameterName( (Property) null );
             fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -533,6 +585,36 @@ public class JomcToolTest
 
         try
         {
+            this.getJomcTool().getJavaSetterMethodName( (Dependency) null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
+            this.getJomcTool().getJavaSetterMethodName( (Message) null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
+            this.getJomcTool().getJavaSetterMethodName( (Property) null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
             this.getJomcTool().getJavaTypeName( (Argument) null );
             fail( "Expected NullPointerException not thrown." );
         }
@@ -593,7 +675,7 @@ public class JomcToolTest
 
         try
         {
-            this.getJomcTool().getJavadocComment( null, 0, "\n" );
+            this.getJomcTool().getJavadocComment( (Text) null, 0, "\n" );
             fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -612,6 +694,34 @@ public class JomcToolTest
         try
         {
             this.getJomcTool().getJavadocComment( new Text(), Integer.MIN_VALUE, "\n" );
+            fail( "Expected IllegalArgumentException not thrown." );
+        }
+        catch ( final IllegalArgumentException e )
+        {
+            assertIllegalArgumentException( e );
+        }
+
+        try
+        {
+            this.getJomcTool().getJavadocComment( (Texts) null, 0, "\n" );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getJomcTool().getJavadocComment( new Texts(), 0, null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getJomcTool().getJavadocComment( new Texts(), Integer.MIN_VALUE, "\n" );
             fail( "Expected IllegalArgumentException not thrown." );
         }
         catch ( final IllegalArgumentException e )
@@ -642,6 +752,36 @@ public class JomcToolTest
         try
         {
             this.getJomcTool().getLongTime( null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
+            this.getJomcTool().getMediumDate( null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
+            this.getJomcTool().getMediumDateTime( null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
+            this.getJomcTool().getMediumTime( null );
             fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -751,6 +891,7 @@ public class JomcToolTest
     }
 
     @Test
+    @SuppressWarnings( "deprecation" )
     public final void testJomcToolNotNull() throws Exception
     {
         final Specification specification = new Specification();
@@ -803,6 +944,9 @@ public class JomcToolTest
         assertNotNull( this.getJomcTool().getLongDate( now ) );
         assertNotNull( this.getJomcTool().getLongDateTime( now ) );
         assertNotNull( this.getJomcTool().getLongTime( now ) );
+        assertNotNull( this.getJomcTool().getMediumDate( now ) );
+        assertNotNull( this.getJomcTool().getMediumDateTime( now ) );
+        assertNotNull( this.getJomcTool().getMediumTime( now ) );
         assertNotNull( this.getJomcTool().getShortDate( now ) );
         assertNotNull( this.getJomcTool().getShortDateTime( now ) );
         assertNotNull( this.getJomcTool().getShortTime( now ) );
@@ -822,6 +966,7 @@ public class JomcToolTest
         assertEquals( "getMessage", this.getJomcTool().getJavaGetterMethodName( m ) );
         assertEquals( "getProperty", this.getJomcTool().getJavaGetterMethodName( p ) );
         assertEquals( 0, this.getJomcTool().getJavaInterfaceNames( implementation, true ).size() );
+        assertEquals( 0, this.getJomcTool().getImplementedJavaTypeNames( implementation, true ).size() );
         assertEquals( "private", this.getJomcTool().getJavaModifierName( implementation, d ) );
         assertEquals( "private", this.getJomcTool().getJavaModifierName( implementation, m ) );
         assertEquals( "private", this.getJomcTool().getJavaModifierName( implementation, p ) );

@@ -32,13 +32,13 @@
  */
 package org.jomc.tools.test;
 
-import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import org.jomc.model.Implementation;
 import org.jomc.model.Module;
 import org.jomc.model.Specification;
 import org.jomc.tools.ResourceFileProcessor;
+import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;

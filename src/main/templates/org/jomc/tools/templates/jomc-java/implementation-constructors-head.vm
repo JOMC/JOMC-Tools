@@ -47,7 +47,7 @@
 ## @param implementation The implementation to render.
 ${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
 
-${tool.getIndentation(1)}/** Creates a new {@code $tool.getJavaTypeName($implementation,false)} instance. */
+${tool.getIndentation(1)}/** Creates a new {@code $tool.getHtmlString($tool.getJavaTypeName($implementation,false))} instance. */
 ${tool.getIndentation(1)}@javax.annotation.Generated( value = "$toolName $toolVersion", comments = "See $toolUrl" )
 ${tool.getIndentation(1)}public $tool.getJavaTypeName($implementation,false)()
 ${tool.getIndentation(1)}{
