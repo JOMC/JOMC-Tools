@@ -1,7 +1,7 @@
 // SECTION-START[License Header]
 // <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
- *   Copyright (c) 2010 The JOMC Project
+ *   Copyright (c) 2011 The JOMC Project
  *   Copyright (c) 2005 Christian Schulte <schulte2005@users.sourceforge.net>
  *   All rights reserved.
  *
@@ -57,62 +57,105 @@ import org.jomc.modlet.DefaultModletProvider;
 // <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 /**
  * JOMC command line interface.
- * <p><b>Properties</b><ul>
- * <li>"{@link #getDescPad descPad}"
- * <blockquote>Property of type {@code int}.
- * <p>The number of characters of padding to be prefixed to each description line.</p>
- * </blockquote></li>
- * <li>"{@link #getHelpCommandName helpCommandName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>The name of the command used to request help.</p>
- * </blockquote></li>
- * <li>"{@link #getLeftPad leftPad}"
- * <blockquote>Property of type {@code int}.
- * <p>The number of characters of padding to be prefixed to each line.</p>
- * </blockquote></li>
- * <li>"{@link #getWidth width}"
- * <blockquote>Property of type {@code int}.
- * <p>The number of characters per line for the usage statement.</p>
- * </blockquote></li>
- * </ul></p>
- * <p><b>Dependencies</b><ul>
- * <li>"{@link #getCommands Commands}"<blockquote>
- * Dependency on {@code 'JOMC CLI Command'} {@code (org.jomc.cli.Command)} at specification level 1.0.</blockquote></li>
- * <li>"{@link #getDebugOption DebugOption}"<blockquote>
- * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
- * <li>"{@link #getFailOnWarningsOption FailOnWarningsOption}"<blockquote>
- * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
- * <li>"{@link #getLocale Locale}"<blockquote>
- * Dependency on {@code 'java.util.Locale'} {@code (java.util.Locale)} at specification level 1.1 bound to an instance.</blockquote></li>
- * <li>"{@link #getVerboseOption VerboseOption}"<blockquote>
- * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
- * </ul></p>
- * <p><b>Messages</b><ul>
- * <li>"{@link #getDefaultExceptionMessage defaultExceptionMessage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>No details available.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Keine Details verf&uuml;gbar.</pre></td></tr>
- * </table>
- * <li>"{@link #getDefaultLogLevelInfo defaultLogLevelInfo}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Default log level: ''{0}''</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Standard Protokollierungsstufe: ''{0}''</pre></td></tr>
- * </table>
- * <li>"{@link #getIllegalArgumentsInfo illegalArgumentsInfo}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal arguments. Type &raquo;jomc {0} {1}&laquo; for further information.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ung&uuml;ltige Argumente. Geben Sie &raquo;jomc {0} {1}&laquo; f&uuml;r weitere Informationen ein.</pre></td></tr>
- * </table>
- * <li>"{@link #getLogMessage logMessage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>[{0}] {1}</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>[{0}] {1}</pre></td></tr>
- * </table>
- * <li>"{@link #getTimeInfo timeInfo}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>{0,time,HH:mm:ss.SSS}</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0,time,HH:mm:ss.SSS}</pre></td></tr>
- * </table>
- * <li>"{@link #getUsage usage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Type &raquo;jomc &lt;command&gt; {0}&laquo; for further information.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Geben Sie &raquo;jomc &lt;Befehl&gt; {0}&laquo; f&uuml;r weitere Informationen ein.</pre></td></tr>
- * </table>
- * </ul></p>
+ * <p>
+ *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+ *     <caption class="TableCaption">Properties</caption>
+ *     <tr>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Name</th>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Type</th>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Documentation</th>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getDescPad descPad}</td>
+ *       <td align="left" nowrap>{@code int}</td>
+ *       <td align="left" valign="top">The number of characters of padding to be prefixed to each description line.</td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getHelpCommandName helpCommandName}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top">The name of the command used to request help.</td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getLeftPad leftPad}</td>
+ *       <td align="left" nowrap>{@code int}</td>
+ *       <td align="left" valign="top">The number of characters of padding to be prefixed to each line.</td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getWidth width}</td>
+ *       <td align="left" nowrap>{@code int}</td>
+ *       <td align="left" valign="top">The number of characters per line for the usage statement.</td>
+ *     </tr>
+ *   </table>
+ * </p>
+ * <p>
+ *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+ *     <caption class="TableCaption">Dependencies</caption>
+ *       <tr>
+ *         <th align="left" class="TableHeader" scope="col" nowrap>Name</th>
+ *         <th align="left" class="TableHeader" scope="col" nowrap>Description</th>
+ *       </tr>
+ *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getCommands Commands}</td>
+ *         <td align="left">Dependency on {@code 'JOMC CLI Command'} {@code (org.jomc.cli.Command)} at specification level 1.0.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getDebugOption DebugOption}</td>
+ *         <td align="left">Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getFailOnWarningsOption FailOnWarningsOption}</td>
+ *         <td align="left">Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getLocale Locale}</td>
+ *         <td align="left">Dependency on {@code 'java.util.Locale'} {@code (java.util.Locale)} at specification level 1.1 bound to an instance.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getVerboseOption VerboseOption}</td>
+ *         <td align="left">Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       </tr>
+ *   </table>
+ * </p>
+ * <p>
+ *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+ *     <caption class="TableCaption">Messages</caption>
+ *     <tr>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Name</th>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Languages</th>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Default Template</th>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getDefaultExceptionMessage defaultExceptionMessage}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>No details available.</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getDefaultLogLevelInfo defaultLogLevelInfo}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Default log level: ''{0}''</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getIllegalArgumentsInfo illegalArgumentsInfo}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Illegal arguments. Type &raquo;jomc {0} {1}&laquo; for further information.</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getLogMessage logMessage}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>[{0}] {1}</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getTimeInfo timeInfo}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>{0,time,HH:mm:ss.SSS}</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getUsage usage}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Type &raquo;jomc &lt;command&gt; {0}&laquo; for further information.</code></pre></td>
+ *     </tr>
+ *   </table>
+ * </p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
  * @version $Id$
@@ -696,12 +739,25 @@ public final class Jomc
 
     /**
      * Gets the text of the {@code defaultExceptionMessage} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>No details available.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Keine Details verf&uuml;gbar.</pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>No details available.</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Keine Details verf&uuml;gbar.</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
-     * @return The text of the {@code defaultExceptionMessage} message.
+     * @return The text of the {@code defaultExceptionMessage} message for {@code locale}.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -715,13 +771,26 @@ public final class Jomc
 
     /**
      * Gets the text of the {@code defaultLogLevelInfo} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Default log level: ''{0}''</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Standard Protokollierungsstufe: ''{0}''</pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Default log level: ''{0}''</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Standard Protokollierungsstufe: ''{0}''</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
      * @param defaultLogLevel Format argument.
-     * @return The text of the {@code defaultLogLevelInfo} message.
+     * @return The text of the {@code defaultLogLevelInfo} message for {@code locale}.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -735,14 +804,27 @@ public final class Jomc
 
     /**
      * Gets the text of the {@code illegalArgumentsInfo} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Illegal arguments. Type &raquo;jomc {0} {1}&laquo; for further information.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Ung&uuml;ltige Argumente. Geben Sie &raquo;jomc {0} {1}&laquo; f&uuml;r weitere Informationen ein.</pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Illegal arguments. Type &raquo;jomc {0} {1}&laquo; for further information.</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Ung&uuml;ltige Argumente. Geben Sie &raquo;jomc {0} {1}&laquo; f&uuml;r weitere Informationen ein.</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
      * @param command Format argument.
      * @param helpCommandName Format argument.
-     * @return The text of the {@code illegalArgumentsInfo} message.
+     * @return The text of the {@code illegalArgumentsInfo} message for {@code locale}.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -756,14 +838,27 @@ public final class Jomc
 
     /**
      * Gets the text of the {@code logMessage} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>[{0}] {1}</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>[{0}] {1}</pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>[{0}] {1}</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>[{0}] {1}</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
      * @param level Format argument.
      * @param message Format argument.
-     * @return The text of the {@code logMessage} message.
+     * @return The text of the {@code logMessage} message for {@code locale}.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -777,13 +872,26 @@ public final class Jomc
 
     /**
      * Gets the text of the {@code timeInfo} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>{0,time,HH:mm:ss.SSS}</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0,time,HH:mm:ss.SSS}</pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>{0,time,HH:mm:ss.SSS}</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>{0,time,HH:mm:ss.SSS}</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
      * @param time Format argument.
-     * @return The text of the {@code timeInfo} message.
+     * @return The text of the {@code timeInfo} message for {@code locale}.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -797,13 +905,26 @@ public final class Jomc
 
     /**
      * Gets the text of the {@code usage} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Type &raquo;jomc &lt;command&gt; {0}&laquo; for further information.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Geben Sie &raquo;jomc &lt;Befehl&gt; {0}&laquo; f&uuml;r weitere Informationen ein.</pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Type &raquo;jomc &lt;command&gt; {0}&laquo; for further information.</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Geben Sie &raquo;jomc &lt;Befehl&gt; {0}&laquo; f&uuml;r weitere Informationen ein.</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
      * @param helpCommandName Format argument.
-     * @return The text of the {@code usage} message.
+     * @return The text of the {@code usage} message for {@code locale}.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */

@@ -1,7 +1,7 @@
 // SECTION-START[License Header]
 // <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
- *   Copyright (c) 2010 The JOMC Project
+ *   Copyright (c) 2011 The JOMC Project
  *   Copyright (c) 2005 Christian Schulte <schulte2005@users.sourceforge.net>
  *   All rights reserved.
  *
@@ -67,62 +67,106 @@ import static org.junit.Assert.assertTrue;
 // <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 /**
  * Tests the {@code Jomc} CLI class.
- * <p><b>Properties</b><ul>
- * <li>"{@link #getClassesDirectory classesDirectory}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
- * <li>"{@link #getResourcesDirectory resourcesDirectory}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
- * <li>"{@link #getTestClassesDirectory testClassesDirectory}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
- * <li>"{@link #getTestModelDocument testModelDocument}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
- * <li>"{@link #getTestModelDocumentIllegal testModelDocumentIllegal}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
- * <li>"{@link #getTestModelDocumentNonExistentClasses testModelDocumentNonExistentClasses}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
- * <li>"{@link #getTestModelOutputDocument testModelOutputDocument}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
- * <li>"{@link #getTestModelStylesheet testModelStylesheet}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
- * <li>"{@link #getTestModletName testModletName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
- * <li>"{@link #getTestModletOutputDocument testModletOutputDocument}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
- * <li>"{@link #getTestModletStylesheet testModletStylesheet}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
- * <li>"{@link #getTestModuleName testModuleName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
- * <li>"{@link #getTestResourcesDirectory testResourcesDirectory}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
- * <li>"{@link #getTestShowInstanceOutputDocument testShowInstanceOutputDocument}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
- * <li>"{@link #getTestShowModelOutputDocument testShowModelOutputDocument}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
- * <li>"{@link #getTestShowSpecificationAndInstanceOutputDocument testShowSpecificationAndInstanceOutputDocument}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
- * <li>"{@link #getTestShowSpecificationOutputDocument testShowSpecificationOutputDocument}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
- * <li>"{@link #getTestSourcesDirectory testSourcesDirectory}"
- * <blockquote>Property of type {@code java.lang.String}.
- * </blockquote></li>
- * </ul></p>
+ * <p>
+ *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+ *     <caption class="TableCaption">Properties</caption>
+ *     <tr>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Name</th>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Type</th>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Documentation</th>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getClassesDirectory classesDirectory}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top"></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getResourcesDirectory resourcesDirectory}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top"></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getTestClassesDirectory testClassesDirectory}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top"></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getTestModelDocument testModelDocument}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top"></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getTestModelDocumentIllegal testModelDocumentIllegal}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top"></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getTestModelDocumentNonExistentClasses testModelDocumentNonExistentClasses}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top"></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getTestModelOutputDocument testModelOutputDocument}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top"></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getTestModelStylesheet testModelStylesheet}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top"></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getTestModletName testModletName}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top"></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getTestModletOutputDocument testModletOutputDocument}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top"></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getTestModletStylesheet testModletStylesheet}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top"></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getTestModuleName testModuleName}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top"></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getTestResourcesDirectory testResourcesDirectory}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top"></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getTestShowInstanceOutputDocument testShowInstanceOutputDocument}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top"></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getTestShowModelOutputDocument testShowModelOutputDocument}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top"></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getTestShowSpecificationAndInstanceOutputDocument testShowSpecificationAndInstanceOutputDocument}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top"></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getTestShowSpecificationOutputDocument testShowSpecificationOutputDocument}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top"></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getTestSourcesDirectory testSourcesDirectory}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top"></td>
+ *     </tr>
+ *   </table>
+ * </p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
  * @version $Id$

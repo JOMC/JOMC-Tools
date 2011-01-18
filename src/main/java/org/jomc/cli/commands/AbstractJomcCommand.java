@@ -1,7 +1,7 @@
 // SECTION-START[License Header]
 // <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
- *   Copyright (c) 2010 The JOMC Project
+ *   Copyright (c) 2011 The JOMC Project
  *   Copyright (c) 2005 Christian Schulte <schulte2005@users.sourceforge.net>
  *   All rights reserved.
  *
@@ -86,107 +86,181 @@ import org.jomc.modlet.Services;
 // <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 /**
  * Base JOMC {@code Command} implementation.
- * <p><b>Specifications</b><ul>
- * <li>{@code 'JOMC CLI Command'} {@code (org.jomc.cli.Command)} {@code 1.0} {@code Multiton}</li>
- * </ul></p>
- * <p><b>Properties</b><ul>
- * <li>"{@link #getAbbreviatedCommandName abbreviatedCommandName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Abbreviated name of the command.</p>
- * </blockquote></li>
- * <li>"{@link #getApplicationModlet applicationModlet}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the 'shaded' application modlet.</p>
- * </blockquote></li>
- * <li>"{@link #getCommandName commandName}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the command.</p>
- * </blockquote></li>
- * <li>"{@link #getModletExcludes modletExcludes}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>List of modlet names to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</p>
- * </blockquote></li>
- * <li>"{@link #getProviderExcludes providerExcludes}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>List of providers to exclude from any {@code META-INF/services} file separated by {@code :}.</p>
- * </blockquote></li>
- * <li>"{@link #getSchemaExcludes schemaExcludes}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>List of schema context-ids to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</p>
- * </blockquote></li>
- * <li>"{@link #getServiceExcludes serviceExcludes}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</p>
- * </blockquote></li>
- * </ul></p>
- * <p><b>Dependencies</b><ul>
- * <li>"{@link #getClasspathOption ClasspathOption}"<blockquote>
- * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
- * <li>"{@link #getLocale Locale}"<blockquote>
- * Dependency on {@code 'java.util.Locale'} {@code (java.util.Locale)} at specification level 1.1 bound to an instance.</blockquote></li>
- * <li>"{@link #getModelOption ModelOption}"<blockquote>
- * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
- * <li>"{@link #getModletLocationOption ModletLocationOption}"<blockquote>
- * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
- * <li>"{@link #getPlatformProviderLocationOption PlatformProviderLocationOption}"<blockquote>
- * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
- * <li>"{@link #getProviderLocationOption ProviderLocationOption}"<blockquote>
- * Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</blockquote></li>
- * </ul></p>
- * <p><b>Messages</b><ul>
- * <li>"{@link #getApplicationTitle applicationTitle}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.2-SNAPSHOT Build 2010-11-16T17:17:45+0100</pre></td></tr>
- * </table>
- * <li>"{@link #getClasspathElementInfo classpathElementInfo}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath element: ''{0}''</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Klassenpfad-Element: ''{0}''</pre></td></tr>
- * </table>
- * <li>"{@link #getClasspathElementNotFoundWarning classpathElementNotFoundWarning}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath element ''{0}'' ignored. File not found.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Klassenpfad-Element ''{0}'' ignoriert. Datei nicht gefunden.</pre></td></tr>
- * </table>
- * <li>"{@link #getCommandFailureMessage commandFailureMessage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>{0} failure.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} fehlgeschlagen.</pre></td></tr>
- * </table>
- * <li>"{@link #getCommandInfoMessage commandInfoMessage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} ...</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>F&uuml;hrt Befehl {0} aus ... </pre></td></tr>
- * </table>
- * <li>"{@link #getCommandSuccessMessage commandSuccessMessage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>{0} successful.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} erfolgreich.</pre></td></tr>
- * </table>
- * <li>"{@link #getDefaultLogLevelInfo defaultLogLevelInfo}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Default log level: ''{0}''</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Standard-Protokollierungsstufe: ''{0}''</pre></td></tr>
- * </table>
- * <li>"{@link #getExcludedModletInfo excludedModletInfo}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Modlet ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modlet ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
- * </table>
- * <li>"{@link #getExcludedProviderInfo excludedProviderInfo}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Provider ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Provider ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
- * </table>
- * <li>"{@link #getExcludedSchemaInfo excludedSchemaInfo}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Context ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kontext ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
- * </table>
- * <li>"{@link #getExcludedServiceInfo excludedServiceInfo}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>Service ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
- * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Service ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
- * </table>
- * <li>"{@link #getLongDescriptionMessage longDescriptionMessage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre></pre></td></tr>
- * </table>
- * <li>"{@link #getSeparator separator}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre>--------------------------------------------------------------------------------</pre></td></tr>
- * </table>
- * <li>"{@link #getShortDescriptionMessage shortDescriptionMessage}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre></pre></td></tr>
- * </table>
- * </ul></p>
+ * <p>
+ *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+ *     <caption class="TableCaption">Specifications</caption>
+ *     <tr>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Identifier</th>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Class</th>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Scope</th>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Version</th>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@code JOMC CLI Command}</td>
+ *       <td align="left" nowrap>{@code org.jomc.cli.Command}</td>
+ *       <td align="left" nowrap>{@code Multiton}</td>
+ *       <td align="left" nowrap>{@code 1.0}</td>
+ *     </tr>
+ *   </table>
+ * </p>
+ * <p>
+ *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+ *     <caption class="TableCaption">Properties</caption>
+ *     <tr>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Name</th>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Type</th>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Documentation</th>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getAbbreviatedCommandName abbreviatedCommandName}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top">Abbreviated name of the command.</td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getApplicationModlet applicationModlet}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top">Name of the 'shaded' application modlet.</td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getCommandName commandName}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top">Name of the command.</td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getModletExcludes modletExcludes}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top">List of modlet names to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getProviderExcludes providerExcludes}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top">List of providers to exclude from any {@code META-INF/services} file separated by {@code :}.</td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getSchemaExcludes schemaExcludes}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top">List of schema context-ids to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getServiceExcludes serviceExcludes}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top">List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</td>
+ *     </tr>
+ *   </table>
+ * </p>
+ * <p>
+ *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+ *     <caption class="TableCaption">Dependencies</caption>
+ *       <tr>
+ *         <th align="left" class="TableHeader" scope="col" nowrap>Name</th>
+ *         <th align="left" class="TableHeader" scope="col" nowrap>Description</th>
+ *       </tr>
+ *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getClasspathOption ClasspathOption}</td>
+ *         <td align="left">Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getLocale Locale}</td>
+ *         <td align="left">Dependency on {@code 'java.util.Locale'} {@code (java.util.Locale)} at specification level 1.1 bound to an instance.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getModelOption ModelOption}</td>
+ *         <td align="left">Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getModletLocationOption ModletLocationOption}</td>
+ *         <td align="left">Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getPlatformProviderLocationOption PlatformProviderLocationOption}</td>
+ *         <td align="left">Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getProviderLocationOption ProviderLocationOption}</td>
+ *         <td align="left">Dependency on {@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       </tr>
+ *   </table>
+ * </p>
+ * <p>
+ *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+ *     <caption class="TableCaption">Messages</caption>
+ *     <tr>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Name</th>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Languages</th>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Default Template</th>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getApplicationTitle applicationTitle}</td>
+ *       <td align="left" valign="top" nowrap>English (default)</td>
+ *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-18T08:54:15+0100</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getClasspathElementInfo classpathElementInfo}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Classpath element: ''{0}''</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getClasspathElementNotFoundWarning classpathElementNotFoundWarning}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Classpath element ''{0}'' ignored. File not found.</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getCommandFailureMessage commandFailureMessage}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>{0} failure.</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getCommandInfoMessage commandInfoMessage}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Executing command {0} ...</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getCommandSuccessMessage commandSuccessMessage}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>{0} successful.</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getDefaultLogLevelInfo defaultLogLevelInfo}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Default log level: ''{0}''</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getExcludedModletInfo excludedModletInfo}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Modlet ''{1}'' from class path resource ''{0}'' ignored.</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getExcludedProviderInfo excludedProviderInfo}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Provider ''{1}'' from class path resource ''{0}'' ignored.</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getExcludedSchemaInfo excludedSchemaInfo}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Context ''{1}'' from class path resource ''{0}'' ignored.</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getExcludedServiceInfo excludedServiceInfo}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Service ''{1}'' from class path resource ''{0}'' ignored.</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getLongDescriptionMessage longDescriptionMessage}</td>
+ *       <td align="left" valign="top" nowrap>English (default)</td>
+ *       <td align="left" valign="top" nowrap><pre><code></code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getSeparator separator}</td>
+ *       <td align="left" valign="top" nowrap>English (default)</td>
+ *       <td align="left" valign="top" nowrap><pre><code>--------------------------------------------------------------------------------</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getShortDescriptionMessage shortDescriptionMessage}</td>
+ *       <td align="left" valign="top" nowrap>English (default)</td>
+ *       <td align="left" valign="top" nowrap><pre><code></code></pre></td>
+ *     </tr>
+ *   </table>
+ * </p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
  * @version $Id$
@@ -1201,11 +1275,21 @@ public abstract class AbstractJomcCommand implements Command
 
     /**
      * Gets the text of the {@code applicationTitle} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>JOMC CLI Version 1.2-SNAPSHOT Build 2010-11-16T17:17:45+0100</pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-18T08:54:15+0100</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
-     * @return The text of the {@code applicationTitle} message.
+     * @return The text of the {@code applicationTitle} message for {@code locale}.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1219,13 +1303,26 @@ public abstract class AbstractJomcCommand implements Command
 
     /**
      * Gets the text of the {@code classpathElementInfo} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath element: ''{0}''</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Klassenpfad-Element: ''{0}''</pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Classpath element: ''{0}''</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Klassenpfad-Element: ''{0}''</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
      * @param classpathElement Format argument.
-     * @return The text of the {@code classpathElementInfo} message.
+     * @return The text of the {@code classpathElementInfo} message for {@code locale}.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1239,13 +1336,26 @@ public abstract class AbstractJomcCommand implements Command
 
     /**
      * Gets the text of the {@code classpathElementNotFoundWarning} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Classpath element ''{0}'' ignored. File not found.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Klassenpfad-Element ''{0}'' ignoriert. Datei nicht gefunden.</pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Classpath element ''{0}'' ignored. File not found.</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Klassenpfad-Element ''{0}'' ignoriert. Datei nicht gefunden.</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
      * @param fileName Format argument.
-     * @return The text of the {@code classpathElementNotFoundWarning} message.
+     * @return The text of the {@code classpathElementNotFoundWarning} message for {@code locale}.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1259,13 +1369,26 @@ public abstract class AbstractJomcCommand implements Command
 
     /**
      * Gets the text of the {@code commandFailureMessage} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>{0} failure.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} fehlgeschlagen.</pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>{0} failure.</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>{0} fehlgeschlagen.</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
-     * @return The text of the {@code commandFailureMessage} message.
+     * @return The text of the {@code commandFailureMessage} message for {@code locale}.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1279,13 +1402,26 @@ public abstract class AbstractJomcCommand implements Command
 
     /**
      * Gets the text of the {@code commandInfoMessage} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Executing command {0} ...</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>F&uuml;hrt Befehl {0} aus ... </pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Executing command {0} ...</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>F&uuml;hrt Befehl {0} aus ... </code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
-     * @return The text of the {@code commandInfoMessage} message.
+     * @return The text of the {@code commandInfoMessage} message for {@code locale}.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1299,13 +1435,26 @@ public abstract class AbstractJomcCommand implements Command
 
     /**
      * Gets the text of the {@code commandSuccessMessage} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>{0} successful.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>{0} erfolgreich.</pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>{0} successful.</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>{0} erfolgreich.</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
-     * @return The text of the {@code commandSuccessMessage} message.
+     * @return The text of the {@code commandSuccessMessage} message for {@code locale}.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1319,13 +1468,26 @@ public abstract class AbstractJomcCommand implements Command
 
     /**
      * Gets the text of the {@code defaultLogLevelInfo} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Default log level: ''{0}''</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Standard-Protokollierungsstufe: ''{0}''</pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Default log level: ''{0}''</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Standard-Protokollierungsstufe: ''{0}''</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
      * @param defaultLogLevel Format argument.
-     * @return The text of the {@code defaultLogLevelInfo} message.
+     * @return The text of the {@code defaultLogLevelInfo} message for {@code locale}.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1339,14 +1501,27 @@ public abstract class AbstractJomcCommand implements Command
 
     /**
      * Gets the text of the {@code excludedModletInfo} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Modlet ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Modlet ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Modlet ''{1}'' from class path resource ''{0}'' ignored.</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Modlet ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
      * @param modletIdentifier Format argument.
-     * @return The text of the {@code excludedModletInfo} message.
+     * @return The text of the {@code excludedModletInfo} message for {@code locale}.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1360,14 +1535,27 @@ public abstract class AbstractJomcCommand implements Command
 
     /**
      * Gets the text of the {@code excludedProviderInfo} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Provider ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Provider ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Provider ''{1}'' from class path resource ''{0}'' ignored.</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Provider ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
      * @param providerName Format argument.
-     * @return The text of the {@code excludedProviderInfo} message.
+     * @return The text of the {@code excludedProviderInfo} message for {@code locale}.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1381,14 +1569,27 @@ public abstract class AbstractJomcCommand implements Command
 
     /**
      * Gets the text of the {@code excludedSchemaInfo} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Context ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Kontext ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Context ''{1}'' from class path resource ''{0}'' ignored.</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Kontext ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
      * @param contextId Format argument.
-     * @return The text of the {@code excludedSchemaInfo} message.
+     * @return The text of the {@code excludedSchemaInfo} message for {@code locale}.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1402,14 +1603,27 @@ public abstract class AbstractJomcCommand implements Command
 
     /**
      * Gets the text of the {@code excludedServiceInfo} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>Service ''{1}'' from class path resource ''{0}'' ignored.</pre></td></tr>
-     * <tr><td valign="top">Deutsch:</td><td valign="top"><pre>Service ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Service ''{1}'' from class path resource ''{0}'' ignored.</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Service ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
      * @param serviceName Format argument.
-     * @return The text of the {@code excludedServiceInfo} message.
+     * @return The text of the {@code excludedServiceInfo} message for {@code locale}.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1423,11 +1637,21 @@ public abstract class AbstractJomcCommand implements Command
 
     /**
      * Gets the text of the {@code longDescriptionMessage} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre></pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code></code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
-     * @return The text of the {@code longDescriptionMessage} message.
+     * @return The text of the {@code longDescriptionMessage} message for {@code locale}.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1441,11 +1665,21 @@ public abstract class AbstractJomcCommand implements Command
 
     /**
      * Gets the text of the {@code separator} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre>--------------------------------------------------------------------------------</pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>--------------------------------------------------------------------------------</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
-     * @return The text of the {@code separator} message.
+     * @return The text of the {@code separator} message for {@code locale}.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
@@ -1459,11 +1693,21 @@ public abstract class AbstractJomcCommand implements Command
 
     /**
      * Gets the text of the {@code shortDescriptionMessage} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre></pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code></code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
-     * @return The text of the {@code shortDescriptionMessage} message.
+     * @return The text of the {@code shortDescriptionMessage} message for {@code locale}.
      *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */

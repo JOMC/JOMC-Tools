@@ -1,7 +1,7 @@
 // SECTION-START[License Header]
 // <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
- *   Copyright (c) 2010 The JOMC Project
+ *   Copyright (c) 2011 The JOMC Project
  *   Copyright (c) 2005 Christian Schulte <schulte2005@users.sourceforge.net>
  *   All rights reserved.
  *
@@ -46,47 +46,96 @@ import org.apache.commons.cli.Option;
  * Creates {@code Option} objects describing a single command-line option by maintaining information regarding the
  * short-name, the long-name, a flag indicating if an argument is required, and a self-documenting description.
  *
- * <p><b>Specifications</b><ul>
- * <li>{@code 'org.apache.commons.cli.Option'} {@code (org.apache.commons.cli.Option)} {@code Multiton}</li>
- * </ul></p>
- * <p><b>Properties</b><ul>
- * <li>"{@link #getLongOpt longOpt}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Long name of the option.</p>
- * </blockquote></li>
- * <li>"{@link #getNumberOfArgs numberOfArgs}"
- * <blockquote>Property of type {@code int}.
- * <p>Number of argument values the option can take.</p>
- * </blockquote></li>
- * <li>"{@link #getOpt opt}"
- * <blockquote>Property of type {@code java.lang.String}.
- * <p>Name of the option.</p>
- * </blockquote></li>
- * <li>"{@link #isOptionalArg optionalArg}"
- * <blockquote>Property of type {@code boolean}.
- * <p>Query to see if the option can have an optional argument.</p>
- * </blockquote></li>
- * <li>"{@link #isRequired required}"
- * <blockquote>Property of type {@code boolean}.
- * <p>Query to see if the option is required.</p>
- * </blockquote></li>
- * <li>"{@link #getValueSeparator valueSeparator}"
- * <blockquote>Property of type {@code char}.
- * <p>Value separator of the option.</p>
- * </blockquote></li>
- * </ul></p>
- * <p><b>Dependencies</b><ul>
- * <li>"{@link #getLocale Locale}"<blockquote>
- * Dependency on {@code 'java.util.Locale'} {@code (java.util.Locale)} at specification level 1.1 bound to an instance.</blockquote></li>
- * </ul></p>
- * <p><b>Messages</b><ul>
- * <li>"{@link #getArgumentDescription argumentDescription}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre></pre></td></tr>
- * </table>
- * <li>"{@link #getDescription description}"<table>
- * <tr><td valign="top">English:</td><td valign="top"><pre></pre></td></tr>
- * </table>
- * </ul></p>
+ * <p>
+ *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+ *     <caption class="TableCaption">Specifications</caption>
+ *     <tr>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Identifier</th>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Class</th>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Scope</th>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Version</th>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@code org.apache.commons.cli.Option}</td>
+ *       <td align="left" nowrap>{@code org.apache.commons.cli.Option}</td>
+ *       <td align="left" nowrap>{@code Multiton}</td>
+ *       <td align="left" nowrap></td>
+ *     </tr>
+ *   </table>
+ * </p>
+ * <p>
+ *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+ *     <caption class="TableCaption">Properties</caption>
+ *     <tr>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Name</th>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Type</th>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Documentation</th>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getLongOpt longOpt}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top">Long name of the option.</td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getNumberOfArgs numberOfArgs}</td>
+ *       <td align="left" nowrap>{@code int}</td>
+ *       <td align="left" valign="top">Number of argument values the option can take.</td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getOpt opt}</td>
+ *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top">Name of the option.</td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #isOptionalArg optionalArg}</td>
+ *       <td align="left" nowrap>{@code boolean}</td>
+ *       <td align="left" valign="top">Query to see if the option can have an optional argument.</td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #isRequired required}</td>
+ *       <td align="left" nowrap>{@code boolean}</td>
+ *       <td align="left" valign="top">Query to see if the option is required.</td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" nowrap>{@link #getValueSeparator valueSeparator}</td>
+ *       <td align="left" nowrap>{@code char}</td>
+ *       <td align="left" valign="top">Value separator of the option.</td>
+ *     </tr>
+ *   </table>
+ * </p>
+ * <p>
+ *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+ *     <caption class="TableCaption">Dependencies</caption>
+ *       <tr>
+ *         <th align="left" class="TableHeader" scope="col" nowrap>Name</th>
+ *         <th align="left" class="TableHeader" scope="col" nowrap>Description</th>
+ *       </tr>
+ *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getLocale Locale}</td>
+ *         <td align="left">Dependency on {@code 'java.util.Locale'} {@code (java.util.Locale)} at specification level 1.1 bound to an instance.</td>
+ *       </tr>
+ *   </table>
+ * </p>
+ * <p>
+ *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+ *     <caption class="TableCaption">Messages</caption>
+ *     <tr>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Name</th>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Languages</th>
+ *       <th align="left" class="TableHeader" scope="col" nowrap>Default Template</th>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getArgumentDescription argumentDescription}</td>
+ *       <td align="left" valign="top" nowrap>English (default)</td>
+ *       <td align="left" valign="top" nowrap><pre><code></code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getDescription description}</td>
+ *       <td align="left" valign="top" nowrap>English (default)</td>
+ *       <td align="left" valign="top" nowrap><pre><code></code></pre></td>
+ *     </tr>
+ *   </table>
+ * </p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
  * @version $Id$
@@ -250,9 +299,19 @@ public final class OptionFactory
 
     /**
      * Gets the text of the {@code argumentDescription} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre></pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code></code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
      * @return Display name for the argument value of the option.
      *
@@ -268,9 +327,19 @@ public final class OptionFactory
 
     /**
      * Gets the text of the {@code description} message.
-     * <p><b>Templates</b><br/><table>
-     * <tr><td valign="top">English:</td><td valign="top"><pre></pre></td></tr>
-     * </table></p>
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code></code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
      * @param locale The locale of the message to return.
      * @param valueSeparator Format argument.
      * @return Display description of the option.
