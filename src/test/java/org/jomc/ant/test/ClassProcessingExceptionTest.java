@@ -32,9 +32,9 @@
  */
 package org.jomc.ant.test;
 
-import org.junit.Test;
 import java.io.ObjectInputStream;
 import org.jomc.ant.ClassProcessingException;
+import org.junit.Test;
 
 /**
  * Test cases for class {@code org.jomc.ant.ClassProcessingException}.

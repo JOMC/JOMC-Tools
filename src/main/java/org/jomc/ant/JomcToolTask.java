@@ -38,6 +38,7 @@ import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -86,6 +87,9 @@ public class JomcToolTask extends JomcModelTask
 
     /** The line separator ('\r\n' for DOS, '\r' for Mac, '\n' for Unix). */
     private String lineSeparator;
+
+    /** The locale. */
+    private Locale locale;
 
     /** The identifier of a specification to process. */
     private String specification;
@@ -305,6 +309,30 @@ public class JomcToolTask extends JomcModelTask
     public final void setLineSeparator( final String value )
     {
         this.lineSeparator = value;
+    }
+
+    /**
+     * Gets the locale.
+     * 
+     * @return The locale or {@code null}.
+     *
+     * @see #setLocale(java.util.Locale)
+     */
+    public final Locale getLocale()
+    {
+        return this.locale;
+    }
+
+    /**
+     * Sets the locale.
+     *
+     * @param value The new locale or {@code null}.
+     *
+     * @see #getLocale()
+     */
+    public final void setLocale( final Locale value )
+    {
+        this.locale = value;
     }
 
     /**
@@ -690,6 +718,7 @@ public class JomcToolTask extends JomcModelTask
             tool.setOutputEncoding( this.getOutputEncoding() );
             tool.setTemplateEncoding( this.getTemplateEncoding() );
             tool.setTemplateProfile( this.getTemplateProfile() );
+            tool.setLocale( this.getLocale() );
             tool.getListeners().add( new JomcTool.Listener()
             {
 

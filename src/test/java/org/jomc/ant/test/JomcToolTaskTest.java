@@ -32,8 +32,8 @@
  */
 package org.jomc.ant.test;
 
-import org.junit.Test;
 import org.jomc.ant.JomcToolTask;
+import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 

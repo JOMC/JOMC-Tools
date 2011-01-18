@@ -32,10 +32,10 @@
  */
 package org.jomc.ant.test;
 
-import org.jomc.ant.SourceProcessingException;
-import org.apache.tools.ant.Project;
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
 import org.jomc.ant.ManageSourcesTask;
+import org.jomc.ant.SourceProcessingException;
 import org.junit.Test;
 import static org.jomc.ant.test.Assert.assertException;
 import static org.jomc.ant.test.Assert.assertExceptionMessage;

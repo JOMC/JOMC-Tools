@@ -32,11 +32,11 @@
  */
 package org.jomc.ant.test;
 
-import org.jomc.ant.ResourceProcessingException;
-import org.apache.tools.ant.Project;
-import org.junit.Test;
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
 import org.jomc.ant.GenerateResourcesTask;
+import org.jomc.ant.ResourceProcessingException;
+import org.junit.Test;
 import static org.jomc.ant.test.Assert.assertException;
 import static org.jomc.ant.test.Assert.assertExceptionMessage;
 import static org.jomc.ant.test.Assert.assertMessageLogged;

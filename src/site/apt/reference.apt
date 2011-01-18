@@ -86,6 +86,8 @@ Task and Type Reference
 |                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
 |                                             |                                            | separator.             |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<locale>>>                                | The locale.                                | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -236,6 +238,8 @@ Task and Type Reference
 | <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
 |                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
 |                                             |                                            | separator.             |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<locale>>>                                | The locale.                                | No.                    |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
@@ -397,6 +401,8 @@ Task and Type Reference
 |                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
 |                                             |                                            | separator.             |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<locale>>>                                | The locale.                                | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -552,16 +558,14 @@ Task and Type Reference
 |                                             |                                            | set, all modules will  |
 |                                             |                                            | be processed.          |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
-|                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
-|                                             |                                            | separator.             |
-*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<inputEncoding>>>                         | The encoding to use for reading files.     | No. Defaults to the    |
 |                                             |                                            | system's default       |
 |                                             |                                            | encoding.              |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<lineSeparator>>>                         | The line separator ('\r\n' for DOS, '\r'   | No.                    |
 |                                             | for Mac, '\n' for Unix).                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<locale>>>                                | The locale.                                | No.                    |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
@@ -715,6 +719,8 @@ Task and Type Reference
 | <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
 |                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
 |                                             |                                            | separator.             |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<locale>>>                                | The locale.                                | No.                    |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |

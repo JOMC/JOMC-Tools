@@ -242,7 +242,8 @@
                            platformProviderLocation="TEST"
                            if="${jomc.enabled}"
                            classFileProcessorClass="org.jomc.tools.ClassFileProcessor"
-                           templateLocation="${empty.dir}">
+                           templateLocation="${empty.dir}"
+                           locale="de">
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>
       </jomc:classpath>
