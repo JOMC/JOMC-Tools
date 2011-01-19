@@ -674,8 +674,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Default language (defaults to system''s default locale).</text>
-            <text language="de">Standard-Sprache (Standardlokalisierung des Systems, wenn nicht angegeben).</text>
+            <text language="en">Language.</text>
+            <text language="de">Sprache.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
@@ -2423,6 +2423,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <dependency name="LineSeparatorOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Line Separator Option"/>
 
+        <dependency name="LanguageOption" identifier="${project.name} Command Option"
+                    implementationName="${project.name} Language Option"/>
+
         <dependency name="ImplementationOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Implementation Option"/>
 
@@ -2496,9 +2499,6 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
         <dependency name="NoResourceProcessingOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} No Resource File Processing Option"/>
-
-        <dependency name="LanguageOption" identifier="${project.name} Command Option"
-                    implementationName="${project.name} Language Option"/>
 
         <dependency name="ResourceDirectoryOption" identifier="${project.name} Command Option"
                     implementationName="${project.name} Resource Directory Option">

@@ -777,7 +777,6 @@ public final class Jomc
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code defaultExceptionMessage} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -810,7 +809,6 @@ public final class Jomc
      * @param locale The locale of the message to return.
      * @param defaultLogLevel Format argument.
      * @return The text of the {@code defaultLogLevelInfo} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -844,7 +842,6 @@ public final class Jomc
      * @param command Format argument.
      * @param helpCommandName Format argument.
      * @return The text of the {@code illegalArgumentsInfo} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -878,7 +875,6 @@ public final class Jomc
      * @param level Format argument.
      * @param message Format argument.
      * @return The text of the {@code logMessage} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -911,7 +907,6 @@ public final class Jomc
      * @param locale The locale of the message to return.
      * @param time Format argument.
      * @return The text of the {@code timeInfo} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -944,7 +939,6 @@ public final class Jomc
      * @param locale The locale of the message to return.
      * @param helpCommandName Format argument.
      * @return The text of the {@code usage} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )

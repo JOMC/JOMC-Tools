@@ -295,7 +295,6 @@ public final class OptionFactory
      *
      * @param locale The locale of the message to return.
      * @return Display name for the argument value of the option.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -324,7 +323,6 @@ public final class OptionFactory
      * @param locale The locale of the message to return.
      * @param valueSeparator Format argument.
      * @return Display description of the option.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )

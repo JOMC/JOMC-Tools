@@ -252,7 +252,7 @@ import org.jomc.tools.ResourceFileProcessor;
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getApplicationTitle applicationTitle}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
- *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-19T11:22:19+0100</code></pre></td>
+ *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-19T15:23:46+0100</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getCannotProcessMessage cannotProcessMessage}</td>
@@ -1184,14 +1184,13 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-19T11:22:19+0100</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-19T15:23:46+0100</code></pre></td>
      *     </tr>
      *   </table>
      * </p>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1225,7 +1224,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @param itemInfo Format argument.
      * @param detailMessage Format argument.
      * @return The text of the {@code cannotProcessMessage} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1258,7 +1256,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @param locale The locale of the message to return.
      * @param classpathElement Format argument.
      * @return The text of the {@code classpathElementInfo} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1291,7 +1288,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @param locale The locale of the message to return.
      * @param fileName Format argument.
      * @return The text of the {@code classpathElementNotFoundWarning} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1324,7 +1320,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
      * @return The text of the {@code commandFailureMessage} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1357,7 +1352,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
      * @return The text of the {@code commandInfoMessage} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1390,7 +1384,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
      * @return The text of the {@code commandSuccessMessage} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1423,7 +1416,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @param locale The locale of the message to return.
      * @param defaultLogLevel Format argument.
      * @return The text of the {@code defaultLogLevelInfo} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1455,7 +1447,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code disabledMessage} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1488,7 +1479,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @param locale The locale of the message to return.
      * @param documentFile Format argument.
      * @return The text of the {@code documentFileInfo} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1521,7 +1511,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @param locale The locale of the message to return.
      * @param fileName Format argument.
      * @return The text of the {@code documentFileNotFoundWarning} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1555,7 +1544,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @param resourceName Format argument.
      * @param modletIdentifier Format argument.
      * @return The text of the {@code excludedModletInfo} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1588,7 +1576,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @param locale The locale of the message to return.
      * @param moduleName Format argument.
      * @return The text of the {@code excludedModuleFromClasspathInfo} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1622,7 +1609,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @param resourceName Format argument.
      * @param providerName Format argument.
      * @return The text of the {@code excludedProviderInfo} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1656,7 +1642,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @param resourceName Format argument.
      * @param contextId Format argument.
      * @return The text of the {@code excludedSchemaInfo} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1690,7 +1675,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @param resourceName Format argument.
      * @param serviceName Format argument.
      * @return The text of the {@code excludedServiceInfo} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1723,7 +1707,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @param locale The locale of the message to return.
      * @param implementationIdentifier Format argument.
      * @return The text of the {@code implementationNotFoundWarning} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1756,7 +1739,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @param locale The locale of the message to return.
      * @param modelIdentifier Format argument.
      * @return The text of the {@code invalidModelMessage} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1814,7 +1796,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code longDescriptionMessage} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1848,7 +1829,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @param moduleName Format argument.
      * @param moduleVersion Format argument.
      * @return The text of the {@code moduleInfo} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1881,7 +1861,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @param locale The locale of the message to return.
      * @param moduleName Format argument.
      * @return The text of the {@code moduleNotFoundWarning} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1909,7 +1888,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code separator} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1941,7 +1919,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code shortDescriptionMessage} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1974,7 +1951,6 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @param locale The locale of the message to return.
      * @param specificationIdentifier Format argument.
      * @return The text of the {@code specificationNotFoundWarning} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )

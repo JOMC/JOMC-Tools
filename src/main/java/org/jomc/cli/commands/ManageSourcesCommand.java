@@ -152,6 +152,10 @@ import org.jomc.tools.SourceFileProcessor;
  *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
  *       </tr>
  *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getLanguageOption LanguageOption}</td>
+ *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
  *         <td align="left" nowrap>{@link #getLineSeparatorOption LineSeparatorOption}</td>
  *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
  *       </tr>
@@ -248,7 +252,7 @@ import org.jomc.tools.SourceFileProcessor;
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getApplicationTitle applicationTitle}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
- *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-19T11:22:19+0100</code></pre></td>
+ *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-19T15:23:46+0100</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getCannotProcessMessage cannotProcessMessage}</td>
@@ -515,6 +519,10 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Language Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Line Separator Option</td>
      *     </tr>
      *     <tr class="TableRow">
@@ -608,6 +616,7 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
         options.addOption( this.getImplementationOption() );
         options.addOption( this.getIndentationStringOption() );
         options.addOption( this.getInputEncodingOption() );
+        options.addOption( this.getLanguageOption() );
         options.addOption( this.getLineSeparatorOption() );
         options.addOption( this.getModelContextOption() );
         options.addOption( this.getModelOption() );
@@ -722,6 +731,21 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "InputEncodingOption" );
         assert _d != null : "'InputEncodingOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code LanguageOption} dependency.
+     * <p>This method returns the {@code 'JOMC CLI Language Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code LanguageOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private org.apache.commons.cli.Option getLanguageOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "LanguageOption" );
+        assert _d != null : "'LanguageOption' dependency not found.";
         return _d;
     }
 
@@ -1154,14 +1178,13 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-19T11:22:19+0100</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-19T15:23:46+0100</code></pre></td>
      *     </tr>
      *   </table>
      * </p>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code applicationTitle} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1195,7 +1218,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      * @param itemInfo Format argument.
      * @param detailMessage Format argument.
      * @return The text of the {@code cannotProcessMessage} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1228,7 +1250,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      * @param locale The locale of the message to return.
      * @param classpathElement Format argument.
      * @return The text of the {@code classpathElementInfo} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1261,7 +1282,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      * @param locale The locale of the message to return.
      * @param fileName Format argument.
      * @return The text of the {@code classpathElementNotFoundWarning} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1294,7 +1314,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
      * @return The text of the {@code commandFailureMessage} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1327,7 +1346,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
      * @return The text of the {@code commandInfoMessage} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1360,7 +1378,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
      * @return The text of the {@code commandSuccessMessage} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1393,7 +1410,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      * @param locale The locale of the message to return.
      * @param defaultLogLevel Format argument.
      * @return The text of the {@code defaultLogLevelInfo} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1425,7 +1441,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code disabledMessage} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1458,7 +1473,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      * @param locale The locale of the message to return.
      * @param documentFile Format argument.
      * @return The text of the {@code documentFileInfo} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1491,7 +1505,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      * @param locale The locale of the message to return.
      * @param fileName Format argument.
      * @return The text of the {@code documentFileNotFoundWarning} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1525,7 +1538,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      * @param resourceName Format argument.
      * @param modletIdentifier Format argument.
      * @return The text of the {@code excludedModletInfo} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1558,7 +1570,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      * @param locale The locale of the message to return.
      * @param moduleName Format argument.
      * @return The text of the {@code excludedModuleFromClasspathInfo} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1592,7 +1603,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      * @param resourceName Format argument.
      * @param providerName Format argument.
      * @return The text of the {@code excludedProviderInfo} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1626,7 +1636,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      * @param resourceName Format argument.
      * @param contextId Format argument.
      * @return The text of the {@code excludedSchemaInfo} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1660,7 +1669,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      * @param resourceName Format argument.
      * @param serviceName Format argument.
      * @return The text of the {@code excludedServiceInfo} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1693,7 +1701,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      * @param locale The locale of the message to return.
      * @param implementationIdentifier Format argument.
      * @return The text of the {@code implementationNotFoundWarning} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1726,7 +1733,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      * @param locale The locale of the message to return.
      * @param modelIdentifier Format argument.
      * @return The text of the {@code invalidModelMessage} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1772,7 +1778,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code longDescriptionMessage} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1806,7 +1811,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      * @param moduleName Format argument.
      * @param moduleVersion Format argument.
      * @return The text of the {@code moduleInfo} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1839,7 +1843,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      * @param locale The locale of the message to return.
      * @param moduleName Format argument.
      * @return The text of the {@code moduleNotFoundWarning} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1867,7 +1870,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code separator} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1899,7 +1901,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code shortDescriptionMessage} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1932,7 +1933,6 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      * @param locale The locale of the message to return.
      * @param specificationIdentifier Format argument.
      * @return The text of the {@code specificationNotFoundWarning} message for {@code locale}.
-     *
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )

@@ -89,22 +89,22 @@
       the command line application.]]>
       </action>
       <action dev="schulte2005" type="add"><![CDATA[Added options <code>model-context-class</code>,
-      <code>no-source-processing</code> and <code>source-file-processor-class</code> to the <code>manage-sources</code>
-      command of the command line application.]]>
+      <code>no-source-processing</code>, <code>source-file-processor-class</code> and <code>language</code> to the
+      <code>manage-sources</code> command of the command line application.]]>
       </action>
       <action dev="schulte2005" type="add"><![CDATA[Added options <code>class-file-processor-class</code>,
       <code>default-template-profile</code>, <code>indentation</code>, <code>input-encoding</code>,
-      <code>line-separator</code>, <code>model-context-class</code>, <code>modlet-schema-system-id</code>,
-      <code>no-class-processing</code>, <code>output-encoding</code>, <code>template-encoding</code>,
-      <code>template-location</code>, <code>template-profile</code> and <code>stylesheet</code> to the
-      <code>commit-classes</code> command of the command line application.]]>
+      <code>language</code>, <code>line-separator</code>, <code>model-context-class</code>,
+      <code>modlet-schema-system-id</code>, <code>no-class-processing</code>, <code>output-encoding</code>,
+      <code>template-encoding</code>, <code>template-location</code>, <code>template-profile</code> and
+      <code>stylesheet</code> to the <code>commit-classes</code> command of the command line application.]]>
       </action>
       <action dev="schulte2005" type="add"><![CDATA[Added options <code>class-file-processor-class</code>,
       <code>default-template-profile</code>, <code>indentation</code>, <code>input-encoding</code>,
-      <code>line-separator</code>, <code>model-context-class</code>, <code>modlet-schema-system-id</code>,
-      <code>no-class-processing</code>, <code>output-encoding</code>,  <code>template-encoding</code>,
-      <code>template-location</code> and <code>template-profile</code> to the <code>validate-classes</code>
-      command of the command line application.]]>
+      <code>language</code>, <code>line-separator</code>, <code>model-context-class</code>,
+      <code>modlet-schema-system-id</code>, <code>no-class-processing</code>, <code>output-encoding</code>,
+      <code>template-encoding</code>, <code>template-location</code> and <code>template-profile</code> to the
+      <code>validate-classes</code> command of the command line application.]]>
       </action>
       <action dev="schulte2005" type="add"><![CDATA[Added options <code>model-context-class</code> and
       <code>modlet-schema-system-id</code> to the <code>merge-modules</code> command of the command line application.]]>
