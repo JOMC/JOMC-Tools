@@ -69,7 +69,7 @@ ${tool.getIndentation(1)}$interface#if($i > 0),#end
 #end
 #end
 ${tool.getIndentation(0)}{
-#set($interfaces = $tool.getJavaInterfaceNames($implementation,false))
+#set($interfaces = $tool.getImplementedJavaTypeNames($implementation,false))
 #if(!$interfaces.isEmpty())
 #foreach($interface in $interfaces)
 ${tool.getIndentation(1)}// SECTION-START[$interface]
