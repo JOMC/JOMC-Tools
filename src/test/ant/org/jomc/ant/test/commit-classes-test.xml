@@ -45,8 +45,8 @@
     <property name="classes.dir" location="${test.output.dir}/classfiles"/>
     <property name="dependencies.dir" location="${test.output.dir}/dependencies"/>
 
-    <delete dir="${no.dir}"/>
-    <delete dir="${classes.dir}"/>
+    <delete dir="${no.dir}" includeemptydirs="true"/>
+    <delete dir="${classes.dir}" includeemptydirs="true"/>
     <mkdir dir="${empty.dir}"/>
     <mkdir dir="${classes.dir}"/>
     <mkdir dir="${dependencies.dir}"/>
