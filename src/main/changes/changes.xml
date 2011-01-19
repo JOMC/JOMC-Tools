@@ -111,6 +111,10 @@
       <action dev="schulte2005" type="update"><![CDATA[Updated templates to produce documentation using classes of the
       Javadoc stylesheet.]]>
       </action>
+      <action dev="schulte2005" type="update"><![CDATA[Updated method <code>getResourceBundleDefaultLocale</code> of
+      class <code>org.jomc.tools.ResourceBundleDefaultLocale</code> to default to the english locale, rather than to the
+      system's default locale.]]>
+      </action>
     </release>
   </body>
 </document>
