@@ -72,12 +72,27 @@
       <code>URLResourceLoader</code> to search for templates at that location in addition to searching the class
       path.]]>
       </action>
+      <action dev="schulte2005" type="add"><![CDATA[Added <code>head-comment</code> and <code>tail-comment</code>
+      attributes to the <code>SourceFileType</code> complex type of the <code>jomc-tools-1.2.xsd</code> schema and
+      updated class <code>org.jomc.tools.SourceFileProcessor</code> to support those attributes.]]>
+      </action>
+      <action dev="schulte2005" type="add"><![CDATA[Added <code>ToolsType</code> complex type to the
+      <code>jomc-tools-1.2.xsd</code> schema and updated all complex types to extend that base type.]]>
+      </action>
+      <action dev="schulte2005" type="add"><![CDATA[Added property <code>locale</code> to class
+      <code>org.jomc.tools.JomcTool</code> and updated templates to use the value of that property when producing
+      documentation.]]>
+      </action>
       <action dev="schulte2005" type="fix"><![CDATA[Corrected method <code>getModules</code> of class
       <code>org.jomc.tools.JomcTool</code> to initialize the modules of the instance if the model of the instance does
       not hold modules.]]>
       </action>
       <action dev="schulte2005" type="fix"><![CDATA[Corrected method <code>getVelocityContext</code> of class
       <code>org.jomc.tools.JomcTool</code> to provide a copy of the model of the instance.]]>
+      </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Corrected method <code>manageSourceFiles(Specification,File)</code>
+      of class <code>org.jomc.tools.SourceFileProcessor</code> to correctly manage implementations based on flag
+      <code>classDeclaration</code> instead of attribute <code>identifier</code>.]]>
       </action>
       <action dev="schulte2005" type="update"><![CDATA[Removed <code>abstract</code> modifier of class
       <code>org.jomc.tools.JomcTool</code>.]]>
@@ -95,17 +110,6 @@
       </action>
       <action dev="schulte2005" type="update"><![CDATA[Updated templates to produce documentation using classes of the
       Javadoc stylesheet.]]>
-      </action>
-      <action dev="schulte2005" type="add"><![CDATA[Added <code>head-comment</code> and <code>tail-comment</code>
-      attributes to the <code>SourceFileType</code> complex type of the <code>jomc-tools-1.2.xsd</code> schema and
-      updated class <code>org.jomc.tools.SourceFileProcessor</code> to support those attributes.]]>
-      </action>
-      <action dev="schulte2005" type="add"><![CDATA[Added <code>ToolsType</code> complex type to the
-      <code>jomc-tools-1.2.xsd</code> schema and updated all complex types to extend that base type.]]>
-      </action>
-      <action dev="schulte2005" type="add"><![CDATA[Added property <code>locale</code> to class
-      <code>org.jomc.tools.JomcTool</code> and updated templates to use the value of that property when producing
-      documentation.]]>
       </action>
     </release>
   </body>

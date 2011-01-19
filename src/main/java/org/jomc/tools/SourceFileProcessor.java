@@ -48,6 +48,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.exception.VelocityException;
 import org.jomc.model.Dependencies;
 import org.jomc.model.Implementation;
+import org.jomc.model.Implementations;
 import org.jomc.model.Messages;
 import org.jomc.model.Module;
 import org.jomc.model.Properties;
@@ -637,22 +638,35 @@ public class SourceFileProcessor extends JomcTool
         assert this.getModules().getSpecification( specification.getIdentifier() ) != null :
             "Specification '" + specification.getIdentifier() + "' not found.";
 
-        final Implementation i = this.getModules().getImplementation( specification.getIdentifier() );
-
-        if ( i != null && i.isClassDeclaration() )
+        if ( specification.isClassDeclaration() )
         {
-            this.manageSourceFiles( i, sourcesDirectory );
-        }
-        else if ( specification.isClassDeclaration() )
-        {
-            final SourceFileEditor editor = this.getSourceFileEditor( specification );
-            final SourceFilesType model = this.getSourceFilesType( specification );
+            boolean manage = true;
+            final Implementations implementations = this.getModules().getImplementations();
 
-            if ( editor != null && model != null )
+            if ( implementations != null )
             {
-                for ( SourceFileType sourceFileType : model.getSourceFile() )
+                for ( Implementation i : implementations.getImplementation() )
                 {
-                    editor.edit( specification, sourceFileType, sourcesDirectory );
+                    if ( i.isClassDeclaration() && specification.getClazz().equals( i.getClazz() ) )
+                    {
+                        this.manageSourceFiles( i, sourcesDirectory );
+                        manage = false;
+                        break;
+                    }
+                }
+            }
+
+            if ( manage )
+            {
+                final SourceFileEditor editor = this.getSourceFileEditor( specification );
+                final SourceFilesType model = this.getSourceFilesType( specification );
+
+                if ( editor != null && model != null )
+                {
+                    for ( SourceFileType sourceFileType : model.getSourceFile() )
+                    {
+                        editor.edit( specification, sourceFileType, sourcesDirectory );
+                    }
                 }
             }
         }
