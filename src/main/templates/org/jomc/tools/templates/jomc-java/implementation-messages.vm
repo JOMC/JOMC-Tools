@@ -83,7 +83,6 @@ ${tool.getIndentation(1)} * @return $tool.getJavadocComment($message.getDocument
 #if(!$message.getDocumentation())
 ${tool.getIndentation(1)} * @return The text of the {@code $tool.getHtmlString($message.getName())} message for {@code locale}.
 #end
-${tool.getIndentation(1)} *
 ${tool.getIndentation(1)} * @throws org.jomc.ObjectManagementException if getting the message instance fails.
 ${tool.getIndentation(1)} */
 #if($message.isDeprecated())
