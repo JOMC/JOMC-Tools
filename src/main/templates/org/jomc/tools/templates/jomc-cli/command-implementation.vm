@@ -55,11 +55,21 @@ ${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generat
 ${tool.getIndentation(1)}/**
 ${tool.getIndentation(1)} * Gets the options of the command.
 ${tool.getIndentation(1)} *
-${tool.getIndentation(1)} * <p><ul>
+${tool.getIndentation(1)} * <p><strong>Options:</strong>
+${tool.getIndentation(1)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+${tool.getIndentation(1)} *     <tr class="TableSubHeadingColor">
+${tool.getIndentation(1)} *       <th align="left" class="TableHeader" scope="col" nowrap>Specification</th>
+${tool.getIndentation(1)} *       <th align="left" class="TableHeader" scope="col" nowrap>Implementation</th>
+${tool.getIndentation(1)} *     </tr>
 #foreach($option in $options)
-${tool.getIndentation(1)} * <li>{@code $option.getImplementationName()}</li>
+${tool.getIndentation(1)} *     <tr class="TableRow">
+#set($specification = $modules.getSpecification($option.getIdentifier()))
+${tool.getIndentation(1)} *       <td align="left" valign="top" nowrap>$tool.getHtmlString($option.getIdentifier()) {@code ($specification.getClazz())}</td>
+${tool.getIndentation(1)} *       <td align="left" valign="top" nowrap>$tool.getHtmlString($option.getImplementationName())</td>
+${tool.getIndentation(1)} *     </tr>
 #end
-${tool.getIndentation(1)} * </ul></p>
+${tool.getIndentation(1)} *   </table>
+${tool.getIndentation(1)} * </p>
 ${tool.getIndentation(1)} *
 ${tool.getIndentation(1)} * @return The options of the command.
 ${tool.getIndentation(1)} */
