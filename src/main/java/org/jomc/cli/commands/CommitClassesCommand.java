@@ -256,7 +256,7 @@ import org.jomc.tools.ClassFileProcessor;
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getApplicationTitle applicationTitle}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
- *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-18T14:37:29+0100</code></pre></td>
+ *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-19T11:22:19+0100</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getCannotProcessMessage cannotProcessMessage}</td>
@@ -519,35 +519,122 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
     /**
      * Gets the options of the command.
      *
-     * <p><ul>
-     * <li>{@code JOMC CLI ClassFileProcessor Class Name Option}</li>
-     * <li>{@code JOMC CLI Classes Directory Option}</li>
-     * <li>{@code JOMC CLI Classpath Option}</li>
-     * <li>{@code JOMC CLI Default Template Profile Option}</li>
-     * <li>{@code JOMC CLI Documents Option}</li>
-     * <li>{@code JOMC CLI Implementation Option}</li>
-     * <li>{@code JOMC CLI Indentation String Option}</li>
-     * <li>{@code JOMC CLI Input Encoding Option}</li>
-     * <li>{@code JOMC CLI Line Separator Option}</li>
-     * <li>{@code JOMC CLI ModelContext Class Name Option}</li>
-     * <li>{@code JOMC CLI Model Option}</li>
-     * <li>{@code JOMC CLI Modlet Location Option}</li>
-     * <li>{@code JOMC CLI Modlet Schema System Id Option}</li>
-     * <li>{@code JOMC CLI Module Location Option}</li>
-     * <li>{@code JOMC CLI Module Name Option}</li>
-     * <li>{@code JOMC CLI No Class File Processing Option}</li>
-     * <li>{@code JOMC CLI No Classpath Resolution Option}</li>
-     * <li>{@code JOMC CLI No Model Processing Option}</li>
-     * <li>{@code JOMC CLI Output Encoding Option}</li>
-     * <li>{@code JOMC CLI Platform Provider Location Option}</li>
-     * <li>{@code JOMC CLI Provider Location Option}</li>
-     * <li>{@code JOMC CLI Specification Option}</li>
-     * <li>{@code JOMC CLI Stylesheet Option}</li>
-     * <li>{@code JOMC CLI Template Encoding Option}</li>
-     * <li>{@code JOMC CLI Template Location Option}</li>
-     * <li>{@code JOMC CLI Template Profile Option}</li>
-     * <li>{@code JOMC CLI Transformer Location Option}</li>
-     * </ul></p>
+     * <p><strong>Options:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Specification</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Implementation</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI ClassFileProcessor Class Name Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Classes Directory Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Classpath Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Default Template Profile Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Documents Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Implementation Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Indentation String Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Input Encoding Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Line Separator Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI ModelContext Class Name Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Model Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Modlet Location Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Modlet Schema System Id Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Module Location Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Module Name Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI No Class File Processing Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI No Classpath Resolution Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI No Model Processing Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Output Encoding Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Platform Provider Location Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Provider Location Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Specification Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Stylesheet Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Template Encoding Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Template Location Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Template Profile Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Transformer Location Option</td>
+     *     </tr>
+     *   </table>
+     * </p>
      *
      * @return The options of the command.
      */
@@ -1123,7 +1210,7 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-18T14:37:29+0100</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-19T11:22:19+0100</code></pre></td>
      *     </tr>
      *   </table>
      * </p>

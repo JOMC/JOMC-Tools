@@ -230,7 +230,7 @@ import org.jomc.modlet.ModelValidationReport;
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getApplicationTitle applicationTitle}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
- *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-18T14:37:29+0100</code></pre></td>
+ *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-19T11:22:19+0100</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getCannotProcessMessage cannotProcessMessage}</td>
@@ -554,28 +554,94 @@ public final class MergeModulesCommand extends AbstractModelCommand
     /**
      * Gets the options of the command.
      *
-     * <p><ul>
-     * <li>{@code JOMC CLI Classpath Option}</li>
-     * <li>{@code JOMC CLI Document Encoding Option}</li>
-     * <li>{@code JOMC CLI Document Option}</li>
-     * <li>{@code JOMC CLI Documents Option}</li>
-     * <li>{@code JOMC CLI ModelContext Class Name Option}</li>
-     * <li>{@code JOMC CLI Model Option}</li>
-     * <li>{@code JOMC CLI Modlet Location Option}</li>
-     * <li>{@code JOMC CLI Modlet Schema System Id Option}</li>
-     * <li>{@code JOMC CLI Module Excludes Option}</li>
-     * <li>{@code JOMC CLI Module Includes Option}</li>
-     * <li>{@code JOMC CLI Module Location Option}</li>
-     * <li>{@code JOMC CLI Module Name Option}</li>
-     * <li>{@code JOMC CLI Module Vendor Option}</li>
-     * <li>{@code JOMC CLI Module Version Option}</li>
-     * <li>{@code JOMC CLI No Classpath Resolution Option}</li>
-     * <li>{@code JOMC CLI No Model Processing Option}</li>
-     * <li>{@code JOMC CLI Platform Provider Location Option}</li>
-     * <li>{@code JOMC CLI Provider Location Option}</li>
-     * <li>{@code JOMC CLI Stylesheet Option}</li>
-     * <li>{@code JOMC CLI Transformer Location Option}</li>
-     * </ul></p>
+     * <p><strong>Options:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Specification</th>
+     *       <th align="left" class="TableHeader" scope="col" nowrap>Implementation</th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Classpath Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Document Encoding Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Document Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Documents Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI ModelContext Class Name Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Model Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Modlet Location Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Modlet Schema System Id Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Module Excludes Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Module Includes Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Module Location Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Module Name Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Module Vendor Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Module Version Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI No Classpath Resolution Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI No Model Processing Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Platform Provider Location Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Provider Location Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Stylesheet Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Transformer Location Option</td>
+     *     </tr>
+     *   </table>
+     * </p>
      *
      * @return The options of the command.
      */
@@ -1044,7 +1110,7 @@ public final class MergeModulesCommand extends AbstractModelCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-18T14:37:29+0100</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-19T11:22:19+0100</code></pre></td>
      *     </tr>
      *   </table>
      * </p>

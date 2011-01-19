@@ -2070,7 +2070,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </authors>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="${project.name} Abstract Command"
+    <implementation identifier="${project.name} Command"
                     class="org.jomc.cli.commands.AbstractCommand" classDeclaration="true"
                     name="${project.name} Command" version="${project.version}"
                     vendor="${project.organization.name}" abstract="true" createDate="2009-07-25T19:56:45Z">
@@ -2175,7 +2175,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <implementations>
-        <reference identifier="${project.name} Abstract Command" version="${project.version}" final="true"/>
+        <reference identifier="${project.name} Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
         <dependency name="ClasspathOption" identifier="${project.name} Command Option"
