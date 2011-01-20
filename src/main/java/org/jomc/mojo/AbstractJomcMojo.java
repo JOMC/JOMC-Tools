@@ -219,12 +219,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * &lt;locale>
      *   &lt;language>Lowercase two-letter ISO-639 code.&lt;/language>
      *   &lt;country>Uppercase two-letter ISO-3166 code.&lt;/country>
-     *   &lt;variant>Vendor and browser specific code. See description of class java.util.Locale.&lt;/variant>
+     *   &lt;variant>Vendor and browser specific code.&lt;/variant>
      * &lt;/locale>
      * </pre>
      *
      * @parameter
      * @since 1.2
+     * @see Locale
      */
     private LocaleType locale;
 
