@@ -122,6 +122,10 @@ import org.jomc.tools.ClassFileProcessor;
  *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
  *       </tr>
  *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getCountryOption CountryOption}</td>
+ *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
  *         <td align="left" nowrap>{@link #getDefaultTemplateProfileOption DefaultTemplateProfileOption}</td>
  *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
  *       </tr>
@@ -152,6 +156,10 @@ import org.jomc.tools.ClassFileProcessor;
  *       <tr class="TableRowColor">
  *         <td align="left" nowrap>{@link #getLocale Locale}</td>
  *         <td align="left">Dependency on {@code 'java.util.Locale'} {@code (java.util.Locale)} at specification level 1.1 bound to an instance.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getLocaleVariantOption LocaleVariantOption}</td>
+ *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
  *       </tr>
  *       <tr class="TableRowColor">
  *         <td align="left" nowrap>{@link #getModelContextOption ModelContextOption}</td>
@@ -234,7 +242,7 @@ import org.jomc.tools.ClassFileProcessor;
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getApplicationTitle applicationTitle}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
- *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-19T16:08:48+0100</code></pre></td>
+ *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-20T15:37:48+0100</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getCannotProcessMessage cannotProcessMessage}</td>
@@ -471,6 +479,21 @@ public abstract class AbstractClassFileProcessorCommand extends AbstractJomcTool
     }
 
     /**
+     * Gets the {@code CountryOption} dependency.
+     * <p>This method returns the {@code 'JOMC CLI Country Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code CountryOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private org.apache.commons.cli.Option getCountryOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "CountryOption" );
+        assert _d != null : "'CountryOption' dependency not found.";
+        return _d;
+    }
+
+    /**
      * Gets the {@code DefaultTemplateProfileOption} dependency.
      * <p>This method returns the {@code 'JOMC CLI Default Template Profile Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
@@ -587,6 +610,21 @@ public abstract class AbstractClassFileProcessorCommand extends AbstractJomcTool
     {
         final java.util.Locale _d = (java.util.Locale) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "Locale" );
         assert _d != null : "'Locale' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code LocaleVariantOption} dependency.
+     * <p>This method returns the {@code 'JOMC CLI Locale Variant Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code LocaleVariantOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private org.apache.commons.cli.Option getLocaleVariantOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "LocaleVariantOption" );
+        assert _d != null : "'LocaleVariantOption' dependency not found.";
         return _d;
     }
 
@@ -954,7 +992,7 @@ public abstract class AbstractClassFileProcessorCommand extends AbstractJomcTool
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-19T16:08:48+0100</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-20T15:37:48+0100</code></pre></td>
      *     </tr>
      *   </table>
      * </p>

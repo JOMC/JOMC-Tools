@@ -135,6 +135,10 @@ import org.jomc.tools.ClassFileProcessor;
  *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
  *       </tr>
  *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getCountryOption CountryOption}</td>
+ *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
  *         <td align="left" nowrap>{@link #getDefaultTemplateProfileOption DefaultTemplateProfileOption}</td>
  *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
  *       </tr>
@@ -165,6 +169,10 @@ import org.jomc.tools.ClassFileProcessor;
  *       <tr class="TableRowColor">
  *         <td align="left" nowrap>{@link #getLocale Locale}</td>
  *         <td align="left">Dependency on {@code 'java.util.Locale'} {@code (java.util.Locale)} at specification level 1.1 bound to an instance.</td>
+ *       </tr>
+ *       <tr class="TableRowColor">
+ *         <td align="left" nowrap>{@link #getLocaleVariantOption LocaleVariantOption}</td>
+ *         <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
  *       </tr>
  *       <tr class="TableRowColor">
  *         <td align="left" nowrap>{@link #getModelContextOption ModelContextOption}</td>
@@ -247,7 +255,7 @@ import org.jomc.tools.ClassFileProcessor;
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getApplicationTitle applicationTitle}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
- *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-19T16:08:48+0100</code></pre></td>
+ *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-20T15:37:48+0100</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getCannotProcessMessage cannotProcessMessage}</td>
@@ -498,6 +506,10 @@ public final class ValidateClassesCommand extends AbstractClassFileProcessorComm
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Country Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Default Template Profile Option</td>
      *     </tr>
      *     <tr class="TableRow">
@@ -523,6 +535,10 @@ public final class ValidateClassesCommand extends AbstractClassFileProcessorComm
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Line Separator Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Locale Variant Option</td>
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
@@ -603,6 +619,7 @@ public final class ValidateClassesCommand extends AbstractClassFileProcessorComm
         final org.apache.commons.cli.Options options = new org.apache.commons.cli.Options();
         options.addOption( this.getClassFileProcessorOption() );
         options.addOption( this.getClasspathOption() );
+        options.addOption( this.getCountryOption() );
         options.addOption( this.getDefaultTemplateProfileOption() );
         options.addOption( this.getDocumentsOption() );
         options.addOption( this.getImplementationOption() );
@@ -610,6 +627,7 @@ public final class ValidateClassesCommand extends AbstractClassFileProcessorComm
         options.addOption( this.getInputEncodingOption() );
         options.addOption( this.getLanguageOption() );
         options.addOption( this.getLineSeparatorOption() );
+        options.addOption( this.getLocaleVariantOption() );
         options.addOption( this.getModelContextOption() );
         options.addOption( this.getModelOption() );
         options.addOption( this.getModletLocationOption() );
@@ -661,6 +679,21 @@ public final class ValidateClassesCommand extends AbstractClassFileProcessorComm
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ClasspathOption" );
         assert _d != null : "'ClasspathOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code CountryOption} dependency.
+     * <p>This method returns the {@code 'JOMC CLI Country Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code CountryOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private org.apache.commons.cli.Option getCountryOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "CountryOption" );
+        assert _d != null : "'CountryOption' dependency not found.";
         return _d;
     }
 
@@ -781,6 +814,21 @@ public final class ValidateClassesCommand extends AbstractClassFileProcessorComm
     {
         final java.util.Locale _d = (java.util.Locale) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "Locale" );
         assert _d != null : "'Locale' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code LocaleVariantOption} dependency.
+     * <p>This method returns the {@code 'JOMC CLI Locale Variant Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code LocaleVariantOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private org.apache.commons.cli.Option getLocaleVariantOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "LocaleVariantOption" );
+        assert _d != null : "'LocaleVariantOption' dependency not found.";
         return _d;
     }
 
@@ -1148,7 +1196,7 @@ public final class ValidateClassesCommand extends AbstractClassFileProcessorComm
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-19T16:08:48+0100</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-20T15:37:48+0100</code></pre></td>
      *     </tr>
      *   </table>
      * </p>
