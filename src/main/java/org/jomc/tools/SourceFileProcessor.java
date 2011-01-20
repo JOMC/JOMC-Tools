@@ -1638,11 +1638,12 @@ public class SourceFileProcessor extends JomcTool
             }
 
             final SourceFileType model = this.getSourceFileType();
-            final File f = new File( sourcesDirectory, model.getLocation() );
 
-            try
+            if ( model != null && model.getLocation() != null )
             {
-                if ( model != null )
+                final File f = new File( sourcesDirectory, model.getLocation() );
+
+                try
                 {
                     String content = "";
                     String edited = null;
@@ -1706,12 +1707,12 @@ public class SourceFileProcessor extends JomcTool
                         log( Level.FINER, getMessage( "unchanged", f.getAbsolutePath() ), null );
                     }
                 }
-            }
-            catch ( final VelocityException e )
-            {
-                throw (IOException) new IOException( getMessage(
-                    "failedEditing", f.getAbsolutePath(), getMessage( e ) ) ).initCause( e );
+                catch ( final VelocityException e )
+                {
+                    throw (IOException) new IOException( getMessage(
+                        "failedEditing", f.getAbsolutePath(), getMessage( e ) ) ).initCause( e );
 
+                }
             }
         }
 
