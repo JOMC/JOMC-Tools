@@ -152,7 +152,7 @@
       <code>transformationParameters</code>, <code>transformationOutputProperties</code>,
       <code>classFileProcessorClassName</code>, <code>resourceFileProcessorClassName</code>,
       <code>sourceFileProcessorClassName</code>, <code>templateLocation</code>, <code>velocityPropertyResources</code>,
-      <code>templateParameterResources</code>, <code>transformationParameterResources</code> and <code>language</code>
+      <code>templateParameterResources</code>, <code>transformationParameterResources</code> and <code>locale</code>
       to goals <code>commit-main-classes</code>, <code>commit-test-classes</code>, <code>validate-main-classes</code>,
       <code>validate-test-classes</code>, <code>validate-main-classpath</code>, <code>validate-test-classpath</code>,
       <code>show-main-instance</code>, <code>show-test-instance</code>, <code>show-main-model</code>,

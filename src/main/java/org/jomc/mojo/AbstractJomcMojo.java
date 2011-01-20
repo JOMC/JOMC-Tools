@@ -214,12 +214,19 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private String lineSeparator;
 
     /**
-     * The language to use when generating text.
+     * The locale.
+     * <pre>
+     * &lt;locale>
+     *   &lt;language>Lowercase two-letter ISO-639 code.&lt;/language>
+     *   &lt;country>Uppercase two-letter ISO-3166 code.&lt;/country>
+     *   &lt;variant>Vendor and browser specific code. See description of class java.util.Locale.&lt;/variant>
+     * &lt;/locale>
+     * </pre>
      *
-     * @parameter expression="${jomc.language}"
+     * @parameter
      * @since 1.2
      */
-    private String language;
+    private LocaleType locale;
 
     /**
      * Controls verbosity of the plugin.
@@ -2301,9 +2308,12 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 tool.setLineSeparator( StringEscapeUtils.unescapeJava( this.lineSeparator ) );
             }
 
-            if ( this.language != null )
+            if ( this.locale != null )
             {
-                tool.setLocale( new Locale( this.language ) );
+                tool.setLocale( new Locale( StringUtils.defaultString( this.locale.getLanguage() ),
+                                            StringUtils.defaultString( this.locale.getCountry() ),
+                                            StringUtils.defaultString( this.locale.getVariant() ) ) );
+
             }
 
             if ( this.velocityPropertyResources != null )
