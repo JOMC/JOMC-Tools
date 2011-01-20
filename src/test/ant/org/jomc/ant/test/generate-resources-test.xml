@@ -90,6 +90,14 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-invalid-multiple-locale-elements">
+    <jomc:generate-resources resourcesDirectory="${empty.dir}">
+      <jomc:locale language="de" country="de" variant="ISO8859_1"/>
+      <jomc:locale language="de" country="de" variant="ISO8859_1"/>
+    </jomc:generate-resources>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-resource-processing-disabled">
     <jomc:generate-resources resourcesDirectory="${empty.dir}" resourceProcessingEnabled="false" if="${jomc.enabled}"/>
   </target>
@@ -174,13 +182,13 @@
                              platformProviderLocation="TEST"
                              if="${jomc.enabled}"
                              resourceFileProcessorClass="org.jomc.tools.ResourceFileProcessor"
-                             templateLocation="${empty.dir}"
-                             locale="de">
+                             templateLocation="${empty.dir}">
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>
       </jomc:classpath>
       <jomc:velocityProperty key="test" value="test"/>
       <jomc:templateParameter key="test" value="test"/>
+      <jomc:locale language="de" country="de" variant="ISO8859-1"/>
     </jomc:generate-resources>
   </target>
 

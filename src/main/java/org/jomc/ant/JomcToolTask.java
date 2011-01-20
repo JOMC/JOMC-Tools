@@ -43,9 +43,11 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.jomc.ant.types.KeyValueType;
+import org.jomc.ant.types.LocaleType;
 import org.jomc.ant.types.PropertiesResourceType;
 import org.jomc.model.Implementation;
 import org.jomc.model.Module;
@@ -89,7 +91,7 @@ public class JomcToolTask extends JomcModelTask
     private String lineSeparator;
 
     /** The locale. */
-    private Locale locale;
+    private LocaleType locale;
 
     /** The identifier of a specification to process. */
     private String specification;
@@ -313,26 +315,34 @@ public class JomcToolTask extends JomcModelTask
 
     /**
      * Gets the locale.
-     * 
+     *
      * @return The locale or {@code null}.
      *
-     * @see #setLocale(java.util.Locale)
+     * @see #createLocale()
      */
-    public final Locale getLocale()
+    public final LocaleType getLocale()
     {
         return this.locale;
     }
 
     /**
-     * Sets the locale.
+     * Creates a new {@code locale} element instance.
      *
-     * @param value The new locale or {@code null}.
+     * @return A new {@code locale} element instance.
+     *
+     * @throws BuildException if a value already has been created.
      *
      * @see #getLocale()
      */
-    public final void setLocale( final Locale value )
+    public LocaleType createLocale()
     {
-        this.locale = value;
+        if ( this.locale != null )
+        {
+            throw new BuildException( getMessage( "multipleElements", "locale" ), this.getLocation() );
+        }
+
+        this.locale = new LocaleType();
+        return this.locale;
     }
 
     /**
@@ -718,7 +728,6 @@ public class JomcToolTask extends JomcModelTask
             tool.setOutputEncoding( this.getOutputEncoding() );
             tool.setTemplateEncoding( this.getTemplateEncoding() );
             tool.setTemplateProfile( this.getTemplateProfile() );
-            tool.setLocale( this.getLocale() );
             tool.getListeners().add( new JomcTool.Listener()
             {
 
@@ -820,6 +829,14 @@ public class JomcToolTask extends JomcModelTask
                 {
                     this.log( getMessage( "templateLocationNotFound", this.getTemplateLocation() ), Project.MSG_WARN );
                 }
+            }
+
+            if ( this.getLocale() != null )
+            {
+                tool.setLocale( new Locale( StringUtils.defaultString( this.getLocale().getLanguage() ),
+                                            StringUtils.defaultString( this.getLocale().getCountry() ),
+                                            StringUtils.defaultString( this.getLocale().getVariant() ) ) );
+
             }
         }
         catch ( final IOException e )

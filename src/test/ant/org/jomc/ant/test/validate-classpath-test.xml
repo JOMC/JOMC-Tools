@@ -85,6 +85,14 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-invalid-multiple-locale-elements">
+    <jomc:validate-classpath>
+      <jomc:locale language="de" country="de" variant="ISO8859_1"/>
+      <jomc:locale language="de" country="de" variant="ISO8859_1"/>
+    </jomc:validate-classpath>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-class-processing-disabled">
     <jomc:validate-classpath classProcessingEnabled="false" if="${jomc.enabled}"/>
   </target>
@@ -207,13 +215,13 @@
                          platformProviderLocation="TEST"
                          if="${jomc.enabled}"
                          classFileProcessorClass="org.jomc.tools.ClassFileProcessor"
-                         templateLocation="${empty.dir}"
-                         locale="de">
+                         templateLocation="${empty.dir}">
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>
       </jomc:classpath>
       <jomc:velocityProperty key="test" value="test"/>
       <jomc:templateParameter key="test" value="test"/>
+      <jomc:locale language="de" country="de" variant="ISO8859-1"/>
     </jomc:commit-classes>
     <jomc:validate-classpath defaultTemplateProfile="TEST"
                              inputEncoding="UTF-8"
@@ -235,13 +243,13 @@
                              platformProviderLocation="TEST"
                              if="${jomc.enabled}"
                              classFileProcessorClass="org.jomc.tools.ClassFileProcessor"
-                             templateLocation="${empty.dir}"
-                             locale="de">
+                             templateLocation="${empty.dir}">
       <jomc:classpath>
         <pathelement location="${classes.dir}"/>
       </jomc:classpath>
       <jomc:velocityProperty key="test" value="test"/>
       <jomc:templateParameter key="test" value="test"/>
+      <jomc:locale language="de" country="de" variant="ISO8859-1"/>
     </jomc:validate-classpath>
   </target>
 

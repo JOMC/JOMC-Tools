@@ -90,6 +90,14 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-invalid-multiple-locale-elements">
+    <jomc:validate-classes classesDirectory="${empty.dir}">
+      <jomc:locale language="de" country="de" variant="ISO8859_1"/>
+      <jomc:locale language="de" country="de" variant="ISO8859_1"/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-class-processing-disabled">
     <jomc:validate-classes classesDirectory="${empty.dir}" classProcessingEnabled="false" if="${jomc.enabled}"/>
   </target>
@@ -242,13 +250,13 @@
                            platformProviderLocation="TEST"
                            if="${jomc.enabled}"
                            classFileProcessorClass="org.jomc.tools.ClassFileProcessor"
-                           templateLocation="${empty.dir}"
-                           locale="de">
+                           templateLocation="${empty.dir}">
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>
       </jomc:classpath>
       <jomc:velocityProperty key="test" value="test"/>
       <jomc:templateParameter key="test" value="test"/>
+      <jomc:locale language="de" country="de" variant="ISO8859-1"/>
     </jomc:validate-classes>
   </target>
 

@@ -86,8 +86,6 @@ Task and Type Reference
 |                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
 |                                             |                                            | separator.             |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<locale>>>                                | The locale.                                | No.                    |
-*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -169,6 +167,9 @@ Task and Type Reference
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element can be used.   |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<locale>>>                                | Locale of the task.                        | No.                    |
+|                                             | Type: {{LocaleType}}                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
 |                                             | to be used to configure the Velocity       |                        |
 |                                             | engine backing the task.                   |                        |
@@ -195,7 +196,7 @@ Task and Type Reference
 |                                             | all transformers of the task.              |                        |
 |                                             | Type: {{KeyValueType}}                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modelObjectStylesheetResource>>>         | XSLT documents to use for transforming     | No.                    |
+| <<<modelObjectStylesheetResource>>>         | XSLT document to use for transforming      | No.                    |
 |                                             | model objects.                             |                        |
 |                                             | Type: {{TransformerResourceType}}          |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -238,8 +239,6 @@ Task and Type Reference
 | <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
 |                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
 |                                             |                                            | separator.             |
-*---------------------------------------------+--------------------------------------------+------------------------+
-| <<<locale>>>                                | The locale.                                | No.                    |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
@@ -335,6 +334,9 @@ Task and Type Reference
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element can be used.   |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<locale>>>                                | Locale of the task.                        | No.                    |
+|                                             | Type: {{LocaleType}}                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
 |                                             | to be used to configure the Velocity       |                        |
 |                                             | engine backing the task.                   |                        |
@@ -400,8 +402,6 @@ Task and Type Reference
 | <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
 |                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
 |                                             |                                            | separator.             |
-*---------------------------------------------+--------------------------------------------+------------------------+
-| <<<locale>>>                                | The locale.                                | No.                    |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
@@ -493,6 +493,9 @@ Task and Type Reference
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element can be used.   |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<locale>>>                                | Locale of the task.                        | No.                    |
+|                                             | Type: {{LocaleType}}                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
 |                                             | to be used to configure the Velocity       |                        |
 |                                             | engine backing the task.                   |                        |
@@ -564,8 +567,6 @@ Task and Type Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<lineSeparator>>>                         | The line separator ('\r\n' for DOS, '\r'   | No.                    |
 |                                             | for Mac, '\n' for Unix).                   |                        |
-*---------------------------------------------+--------------------------------------------+------------------------+
-| <<<locale>>>                                | The locale.                                | No.                    |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
@@ -648,6 +649,9 @@ Task and Type Reference
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element can be used.   |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<locale>>>                                | Locale of the task.                        | No.                    |
+|                                             | Type: {{LocaleType}}                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
 |                                             | to be used to configure the Velocity       |                        |
 |                                             | engine backing the task.                   |                        |
@@ -719,8 +723,6 @@ Task and Type Reference
 | <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
 |                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
 |                                             |                                            | separator.             |
-*---------------------------------------------+--------------------------------------------+------------------------+
-| <<<locale>>>                                | The locale.                                | No.                    |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
@@ -802,6 +804,9 @@ Task and Type Reference
 |                                             |                                            | attribute or the       |
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<locale>>>                                | Locale of the task.                        | No.                    |
+|                                             | Type: {{LocaleType}}                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
 |                                             | to be used to configure the Velocity       |                        |
@@ -1103,6 +1108,24 @@ Task and Type Reference
 | <<<key>>>                                   | The key.                                   | <<Yes>>.               |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<value>>>                                 | The value.                                 | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+* <<<{LocaleType}>>>
+
+  The <<<LocaleType>>> is used to specify a locale.
+
+  The <<<LocaleType>>> type supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<language>>>                              | Lowercase two-letter ISO-639 code.         | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<country>>>                               | Uppercase two-letter ISO-3166 code.        | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<variant>>>                               | Vendor and browser specific code.          | No.                    |
+|                                             | See description of class                   |                        |
+|                                             | <<<java.util.Locale>>>.                    |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 
 * <<<{ResourceType}>>>

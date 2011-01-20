@@ -104,6 +104,14 @@ public class GenerateResourcesTaskTest extends ResourceFileProcessorTaskTest
     }
 
     @Test
+    public final void testInvalidMultipleLocaleElements() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-invalid-multiple-locale-elements" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Multiple nested 'locale' elements." );
+    }
+
+    @Test
     public final void testSpecificationNotFound() throws Exception
     {
         final AntExecutionResult r = this.executeTarget( "test-specification-not-found" );
