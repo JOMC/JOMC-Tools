@@ -851,6 +851,11 @@ public class JomcToolTask extends JomcModelTask
     {
         final JomcToolTask clone = (JomcToolTask) super.clone();
 
+        if ( this.locale != null )
+        {
+            clone.locale = this.locale.clone();
+        }
+
         if ( this.velocityProperties != null )
         {
             for ( KeyValueType<String, Object> p : this.velocityProperties )
