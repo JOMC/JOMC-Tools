@@ -56,6 +56,7 @@ public class ToolsTypeTest
         super();
     }
 
+    /** Test {@code ToolsType}. */
     public static class TestToolsType extends ToolsType
     {
 
