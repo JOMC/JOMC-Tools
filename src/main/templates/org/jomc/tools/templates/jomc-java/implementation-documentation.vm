@@ -54,17 +54,19 @@ ${tool.getIndentation(0)} * $tool.getJavadocComment($implementation.getDocumenta
 #if($specifications && !$specifications.getReference().isEmpty())
 ${tool.getIndentation(0)} * <p>
 ${tool.getIndentation(0)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-${tool.getIndentation(0)} *     <caption class="TableCaption">Specifications</caption>
-${tool.getIndentation(0)} *     <tr>
-${tool.getIndentation(0)} *       <th align="left" class="TableHeader" scope="col" nowrap>Identifier</th>
-${tool.getIndentation(0)} *       <th align="left" class="TableHeader" scope="col" nowrap>Class</th>
-${tool.getIndentation(0)} *       <th align="left" class="TableHeader" scope="col" nowrap>Scope</th>
-${tool.getIndentation(0)} *       <th align="left" class="TableHeader" scope="col" nowrap>Version</th>
+${tool.getIndentation(0)} *     <tr class="TableHeadingColor">
+${tool.getIndentation(0)} *       <th align="left" scope="col" colspan="4" nowrap><font size="+2">Specifications</font></th>
+${tool.getIndentation(0)} *     </tr>
+${tool.getIndentation(0)} *     <tr class="TableSubHeadingColor">
+${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Identifier</b></td>
+${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Class</b></td>
+${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Scope</b></td>
+${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Version</b></td>
 ${tool.getIndentation(0)} *     </tr>
 #foreach($reference in $specifications.getReference())
 #set($specification = $specifications.getSpecification($reference.getIdentifier()))
 ${tool.getIndentation(0)} *     <tr class="TableRowColor">
-${tool.getIndentation(0)} *       <td align="left" nowrap>{@code $tool.getHtmlString($reference.getIdentifier())}</td>
+${tool.getIndentation(0)} *       <td align="left" nowrap>{@code $tool.getHtmlString($reference.getIdentifier())}</font></td>
 ${tool.getIndentation(0)} *       <td align="left" nowrap>#if($specification && $specification.getClazz()){@code $tool.getHtmlString($specification.getClazz())}#end</td>
 ${tool.getIndentation(0)} *       <td align="left" nowrap>#if($specification){@code#if($specification.getScope()) $tool.getHtmlString($specification.getScope())#else Multiton#end}#end</td>
 ${tool.getIndentation(0)} *       <td align="left" nowrap>#if($reference.getVersion()){@code $tool.getHtmlString($reference.getVersion())}#end</td>
@@ -77,11 +79,13 @@ ${tool.getIndentation(0)} * </p>
 #if($properties && !$properties.getProperty().isEmpty())
 ${tool.getIndentation(0)} * <p>
 ${tool.getIndentation(0)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-${tool.getIndentation(0)} *     <caption class="TableCaption">Properties</caption>
-${tool.getIndentation(0)} *     <tr>
-${tool.getIndentation(0)} *       <th align="left" class="TableHeader" scope="col" nowrap>Name</th>
-${tool.getIndentation(0)} *       <th align="left" class="TableHeader" scope="col" nowrap>Type</th>
-${tool.getIndentation(0)} *       <th align="left" class="TableHeader" scope="col" nowrap>Documentation</th>
+${tool.getIndentation(0)} *     <tr class="TableHeadingColor">
+${tool.getIndentation(0)} *       <th align="left" scope="col" colspan="3" nowrap><font size="+2">Properties</font></th>
+${tool.getIndentation(0)} *     </tr>
+${tool.getIndentation(0)} *     <tr class="TableSubHeadingColor">
+${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Name</b></td>
+${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Type</b></td>
+${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Documentation</b></td>
 ${tool.getIndentation(0)} *     </tr>
 #foreach($property in $properties.getProperty())
 ${tool.getIndentation(0)} *     <tr class="TableRowColor">
@@ -97,17 +101,19 @@ ${tool.getIndentation(0)} * </p>
 #if($dependencies && !$dependencies.getDependency().isEmpty())
 ${tool.getIndentation(0)} * <p>
 ${tool.getIndentation(0)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-${tool.getIndentation(0)} *     <caption class="TableCaption">Dependencies</caption>
-${tool.getIndentation(0)} *       <tr>
-${tool.getIndentation(0)} *         <th align="left" class="TableHeader" scope="col" nowrap>Name</th>
-${tool.getIndentation(0)} *         <th align="left" class="TableHeader" scope="col" nowrap>Description</th>
-${tool.getIndentation(0)} *       </tr>
+${tool.getIndentation(0)} *     <tr class="TableHeadingColor">
+${tool.getIndentation(0)} *       <th align="left" scope="col" colspan="2" nowrap><font size="+2">Dependencies</font></th>
+${tool.getIndentation(0)} *     </tr>
+${tool.getIndentation(0)} *     <tr class="TableSubHeadingColor">
+${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Name</b></td>
+${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Description</b></td>
+${tool.getIndentation(0)} *     </tr>
 #foreach($dependency in $dependencies.getDependency())
 #set($specification = $modules.getSpecification($dependency.getIdentifier()))
-${tool.getIndentation(0)} *       <tr class="TableRowColor">
-${tool.getIndentation(0)} *         <td align="left" nowrap>{@link #$tool.getJavaGetterMethodName($dependency) $tool.getHtmlString($dependency.getName())}</td>
-${tool.getIndentation(0)} *         <td align="left">Dependency on {@code '$tool.getHtmlString($dependency.getIdentifier())'}#if($specification && $specification.getClazz()) {@code ($tool.getHtmlString($specification.getClazz()))}#end#if($dependency.getVersion()) at specification level $tool.getHtmlString($dependency.getVersion())#end#if($dependency.isBound()) bound to an instance#end.</td>
-${tool.getIndentation(0)} *       </tr>
+${tool.getIndentation(0)} *     <tr class="TableRowColor">
+${tool.getIndentation(0)} *       <td align="left" nowrap>{@link #$tool.getJavaGetterMethodName($dependency) $tool.getHtmlString($dependency.getName())}</td>
+${tool.getIndentation(0)} *       <td align="left">Dependency on {@code '$tool.getHtmlString($dependency.getIdentifier())'}#if($specification && $specification.getClazz()) {@code ($tool.getHtmlString($specification.getClazz()))}#end#if($dependency.getVersion()) at specification level $tool.getHtmlString($dependency.getVersion())#end#if($dependency.isBound()) bound to an instance#end.</td>
+${tool.getIndentation(0)} *     </tr>
 #end
 ${tool.getIndentation(0)} *   </table>
 ${tool.getIndentation(0)} * </p>
@@ -116,11 +122,13 @@ ${tool.getIndentation(0)} * </p>
 #if($messages && !$messages.getMessage().isEmpty())
 ${tool.getIndentation(0)} * <p>
 ${tool.getIndentation(0)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-${tool.getIndentation(0)} *     <caption class="TableCaption">Messages</caption>
-${tool.getIndentation(0)} *     <tr>
-${tool.getIndentation(0)} *       <th align="left" class="TableHeader" scope="col" nowrap>Name</th>
-${tool.getIndentation(0)} *       <th align="left" class="TableHeader" scope="col" nowrap>Languages</th>
-${tool.getIndentation(0)} *       <th align="left" class="TableHeader" scope="col" nowrap>Default Template</th>
+${tool.getIndentation(0)} *     <tr class="TableHeadingColor">
+${tool.getIndentation(0)} *       <th align="left" scope="col" colspan="3" nowrap><font size="+2">Messages</font></th>
+${tool.getIndentation(0)} *     </tr>
+${tool.getIndentation(0)} *     <tr class="TableSubHeadingColor">
+${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Name</b></td>
+${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Languages</b></td>
+${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Default Template</b></td>
 ${tool.getIndentation(0)} *     </tr>
 #foreach($message in $messages.getMessage())
 ${tool.getIndentation(0)} *     <tr class="TableRowColor">

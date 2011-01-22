@@ -55,8 +55,8 @@ ${tool.getIndentation(1)} * Gets the text of the {@code $tool.getHtmlString($mes
 ${tool.getIndentation(1)} * <p><strong>Templates:</strong>
 ${tool.getIndentation(1)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
 ${tool.getIndentation(1)} *     <tr class="TableSubHeadingColor">
-${tool.getIndentation(1)} *       <th align="left" class="TableHeader" scope="col" nowrap>Language</th>
-${tool.getIndentation(1)} *       <th align="left" class="TableHeader" scope="col" nowrap>Template</th>
+${tool.getIndentation(1)} *       <th align="left" scope="col" nowrap><b>Language</b></th>
+${tool.getIndentation(1)} *       <th align="left" scope="col" nowrap><b>Template</b></th>
 ${tool.getIndentation(1)} *     </tr>
 #foreach($text in $message.getTemplate().getText())
 ${tool.getIndentation(1)} *     <tr class="TableRow">
