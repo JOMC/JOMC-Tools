@@ -66,7 +66,7 @@ ${tool.getIndentation(0)} *     </tr>
 #foreach($reference in $specifications.getReference())
 #set($specification = $specifications.getSpecification($reference.getIdentifier()))
 ${tool.getIndentation(0)} *     <tr class="TableRowColor">
-${tool.getIndentation(0)} *       <td align="left" nowrap>{@code $tool.getHtmlString($reference.getIdentifier())}</font></td>
+${tool.getIndentation(0)} *       <td align="left" nowrap>{@code $tool.getHtmlString($reference.getIdentifier())}</td>
 ${tool.getIndentation(0)} *       <td align="left" nowrap>#if($specification && $specification.getClazz()){@code $tool.getHtmlString($specification.getClazz())}#end</td>
 ${tool.getIndentation(0)} *       <td align="left" nowrap>#if($specification){@code#if($specification.getScope()) $tool.getHtmlString($specification.getScope())#else Multiton#end}#end</td>
 ${tool.getIndentation(0)} *       <td align="left" nowrap>#if($reference.getVersion()){@code $tool.getHtmlString($reference.getVersion())}#end</td>
