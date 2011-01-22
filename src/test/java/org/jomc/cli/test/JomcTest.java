@@ -69,11 +69,13 @@ import static org.junit.Assert.assertTrue;
  * Tests the {@code Jomc} CLI class.
  * <p>
  *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
- *     <caption class="TableCaption">Properties</caption>
- *     <tr>
- *       <th align="left" class="TableHeader" scope="col" nowrap>Name</th>
- *       <th align="left" class="TableHeader" scope="col" nowrap>Type</th>
- *       <th align="left" class="TableHeader" scope="col" nowrap>Documentation</th>
+ *     <tr class="TableHeadingColor">
+ *       <th align="left" scope="col" colspan="3" nowrap><font size="+2">Properties</font></th>
+ *     </tr>
+ *     <tr class="TableSubHeadingColor">
+ *       <td align="left" scope="col" nowrap><b>Name</b></td>
+ *       <td align="left" scope="col" nowrap><b>Type</b></td>
+ *       <td align="left" scope="col" nowrap><b>Documentation</b></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getClassesDirectory classesDirectory}</td>
