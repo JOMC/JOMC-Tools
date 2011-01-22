@@ -58,8 +58,8 @@ ${tool.getIndentation(1)} *
 ${tool.getIndentation(1)} * <p><strong>Options:</strong>
 ${tool.getIndentation(1)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
 ${tool.getIndentation(1)} *     <tr class="TableSubHeadingColor">
-${tool.getIndentation(1)} *       <th align="left" class="TableHeader" scope="col" nowrap>Specification</th>
-${tool.getIndentation(1)} *       <th align="left" class="TableHeader" scope="col" nowrap>Implementation</th>
+${tool.getIndentation(1)} *       <th align="left" scope="col" nowrap><b>Specification</b></th>
+${tool.getIndentation(1)} *       <th align="left" scope="col" nowrap><b>Implementation</b></th>
 ${tool.getIndentation(1)} *     </tr>
 #foreach($option in $options)
 ${tool.getIndentation(1)} *     <tr class="TableRow">
