@@ -128,13 +128,13 @@ ${tool.getIndentation(0)} *     </tr>
 ${tool.getIndentation(0)} *     <tr class="TableSubHeadingColor">
 ${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Name</b></td>
 ${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Languages</b></td>
-${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Default Template</b></td>
+${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Default Templates</b></td>
 ${tool.getIndentation(0)} *     </tr>
 #foreach($message in $messages.getMessage())
 ${tool.getIndentation(0)} *     <tr class="TableRowColor">
 ${tool.getIndentation(0)} *       <td align="left" valign="top" nowrap>{@link #$tool.getJavaGetterMethodName($message) $tool.getHtmlString($message.getName())}</td>
 ${tool.getIndentation(0)} *       <td align="left" valign="top" nowrap>#set($size = $message.getTemplate().getText().size())#foreach($text in $message.getTemplate().getText())$tool.getHtmlString($tool.getDisplayLanguage($text.getLanguage()))#if($text.getLanguage() == $message.getTemplate().getDefaultLanguage()) (default)#end#set($size = $size - 1)#if($size > 0),&nbsp;#end#end</td>
-${tool.getIndentation(0)} *       <td align="left" valign="top" nowrap><pre><code>$tool.getJavadocComment($message.getTemplate().getText($message.getTemplate().getDefaultLanguage()), 0, " * ")</code></pre></td>
+${tool.getIndentation(0)} *       <td align="left" valign="top" nowrap>#set($i = $message.getTemplate().getText().size())#foreach($text in $message.getTemplate().getText())#set($i = $i - 1)<pre><code>$tool.getJavadocComment($text, 0, " * ")</code></pre>#if($i > 0)<hr/>#end#end</td>
 ${tool.getIndentation(0)} *     </tr>
 #end
 ${tool.getIndentation(0)} *   </table>
