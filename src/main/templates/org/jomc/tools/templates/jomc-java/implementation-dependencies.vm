@@ -52,22 +52,22 @@ ${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generat
 #set($specification = $modules.getSpecification($dependency.getIdentifier()))
 
 ${tool.getIndentation(1)}/**
-${tool.getIndentation(1)} * Gets the {@code $tool.getHtmlString($dependency.getName())} dependency.
+${tool.getIndentation(1)} * Gets the {@code $dependency.getName()} dependency.
 #if($dependency.getImplementationName())
-${tool.getIndentation(1)} * <p>This method returns the {@code '$tool.getHtmlString($dependency.getImplementationName())'} object of the {@code '$tool.getHtmlString($dependency.getIdentifier())'}#if($specification && $specification.getClazz()) {@code ($tool.getHtmlString($specification.getClazz()))}#end specification#if($dependency.getVersion()) at specification level $tool.getHtmlString($dependency.getVersion())#end.</p>
+${tool.getIndentation(1)} * <p>This method returns the {@code '$dependency.getImplementationName()'} object of the {@code '$dependency.getIdentifier()'}#if($specification && $specification.getClazz()) {@code ($specification.getClazz())}#end specification#if($dependency.getVersion()) at specification level $tool.getHtmlString($dependency.getVersion())#end.</p>
 #else
-${tool.getIndentation(1)} * <p>This method returns any available object of the {@code '$tool.getHtmlString($dependency.getIdentifier())'}#if($specification && $specification.getClazz()) {@code ($tool.getHtmlString($specification.getClazz()))}#end specification#if($dependency.getVersion()) at specification level $tool.getHtmlString($dependency.getVersion())#end.</p>
+${tool.getIndentation(1)} * <p>This method returns any available object of the {@code '$dependency.getIdentifier()'}#if($specification && $specification.getClazz()) {@code ($specification.getClazz())}#end specification#if($dependency.getVersion()) at specification level $tool.getHtmlString($dependency.getVersion())#end.</p>
 #end
 #if($specification.getScope())
-${tool.getIndentation(1)} * <p>That specification applies to {@code $tool.getHtmlString($specification.getScope())} scope. The $tool.getHtmlString($specification.getScope().toLowerCase()) object is returned whenever requested#if($dependency.isBound()) and bound to this instance#end.</p>
+${tool.getIndentation(1)} * <p>That specification applies to {@code $specification.getScope()} scope. The $tool.getHtmlString($specification.getScope().toLowerCase()) object is returned whenever requested#if($dependency.isBound()) and bound to this instance#end.</p>
 #else
 ${tool.getIndentation(1)} * <p>That specification does not apply to any scope. A new object is returned whenever requested#if($dependency.isBound()) and bound to this instance#end.</p>
 #end
 #if($dependency.getProperties())
 ${tool.getIndentation(1)} * <p><b>Properties</b><dl>
 #foreach($property in $dependency.getProperties().getProperty())
-${tool.getIndentation(1)} * <dt>"{@code $tool.getHtmlString($property.getName())}"</dt>
-${tool.getIndentation(1)} * <dd>Property of type {@code $tool.getHtmlString($tool.getJavaTypeName($property,false))}.
+${tool.getIndentation(1)} * <dt>"{@code $property.getName()}"</dt>
+${tool.getIndentation(1)} * <dd>Property of type {@code $tool.getJavaTypeName($property,false)}.
 #if($property.getDocumentation())
 ${tool.getIndentation(1)} * <blockquote>$tool.getJavadocComment($property.getDocumentation(), 1, " * ")</blockquote>
 #end
@@ -78,7 +78,7 @@ ${tool.getIndentation(1)} * </dl>
 #if($dependency.getDocumentation())
 ${tool.getIndentation(1)} * @return $tool.getJavadocComment($dependency.getDocumentation(), 1, " * ")
 #else
-${tool.getIndentation(1)} * @return The {@code $tool.getHtmlString($dependency.getName())} dependency.
+${tool.getIndentation(1)} * @return The {@code $dependency.getName()} dependency.
 #end
 #if($dependency.isOptional())
 ${tool.getIndentation(1)} * {@code null} if no object is available.

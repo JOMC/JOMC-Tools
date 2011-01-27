@@ -66,10 +66,10 @@ ${tool.getIndentation(0)} *     </tr>
 #foreach($reference in $specifications.getReference())
 #set($specification = $specifications.getSpecification($reference.getIdentifier()))
 ${tool.getIndentation(0)} *     <tr class="TableRowColor">
-${tool.getIndentation(0)} *       <td align="left" nowrap>{@code $tool.getHtmlString($reference.getIdentifier())}</td>
-${tool.getIndentation(0)} *       <td align="left" nowrap>#if($specification && $specification.getClazz()){@code $tool.getHtmlString($specification.getClazz())}#end</td>
-${tool.getIndentation(0)} *       <td align="left" nowrap>#if($specification){@code#if($specification.getScope()) $tool.getHtmlString($specification.getScope())#else Multiton#end}#end</td>
-${tool.getIndentation(0)} *       <td align="left" nowrap>#if($reference.getVersion()){@code $tool.getHtmlString($reference.getVersion())}#end</td>
+${tool.getIndentation(0)} *       <td align="left" nowrap>{@code $reference.getIdentifier()}</td>
+${tool.getIndentation(0)} *       <td align="left" nowrap>#if($specification && $specification.getClazz()){@code $specification.getClazz()}#end</td>
+${tool.getIndentation(0)} *       <td align="left" nowrap>#if($specification){@code#if($specification.getScope()) $specification.getScope()#else Multiton#end}#end</td>
+${tool.getIndentation(0)} *       <td align="left" nowrap>#if($reference.getVersion()){@code $reference.getVersion()}#end</td>
 ${tool.getIndentation(0)} *     </tr>
 #end
 ${tool.getIndentation(0)} *   </table>
@@ -90,7 +90,7 @@ ${tool.getIndentation(0)} *     </tr>
 #foreach($property in $properties.getProperty())
 ${tool.getIndentation(0)} *     <tr class="TableRowColor">
 ${tool.getIndentation(0)} *       <td align="left" nowrap>{@link #$tool.getJavaGetterMethodName($property) $tool.getHtmlString($property.getName())}</td>
-${tool.getIndentation(0)} *       <td align="left" nowrap>{@code $tool.getHtmlString($tool.getJavaTypeName($property,false))}</td>
+${tool.getIndentation(0)} *       <td align="left" nowrap>{@code $tool.getJavaTypeName($property,false)}</td>
 ${tool.getIndentation(0)} *       <td align="left" valign="top">#if($property.getDocumentation())$tool.getJavadocComment($property.getDocumentation(), 0, " *                        ")#end</td>
 ${tool.getIndentation(0)} *     </tr>
 #end
@@ -112,7 +112,7 @@ ${tool.getIndentation(0)} *     </tr>
 #set($specification = $modules.getSpecification($dependency.getIdentifier()))
 ${tool.getIndentation(0)} *     <tr class="TableRowColor">
 ${tool.getIndentation(0)} *       <td align="left" nowrap>{@link #$tool.getJavaGetterMethodName($dependency) $tool.getHtmlString($dependency.getName())}</td>
-${tool.getIndentation(0)} *       <td align="left">Dependency on {@code '$tool.getHtmlString($dependency.getIdentifier())'}#if($specification && $specification.getClazz()) {@code ($tool.getHtmlString($specification.getClazz()))}#end#if($dependency.getVersion()) at specification level $tool.getHtmlString($dependency.getVersion())#end#if($dependency.isBound()) bound to an instance#end.</td>
+${tool.getIndentation(0)} *       <td align="left">Dependency on {@code '$dependency.getIdentifier()'}#if($specification && $specification.getClazz()) {@code ($specification.getClazz())}#end#if($dependency.getVersion()) at specification level $tool.getHtmlString($dependency.getVersion())#end#if($dependency.isBound()) bound to an instance#end.</td>
 ${tool.getIndentation(0)} *     </tr>
 #end
 ${tool.getIndentation(0)} *   </table>

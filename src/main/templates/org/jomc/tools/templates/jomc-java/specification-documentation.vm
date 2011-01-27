@@ -52,7 +52,7 @@ ${tool.getIndentation(0)} * $tool.getJavadocComment($specification.getDocumentat
 #end
 ${tool.getIndentation(0)} *
 ${tool.getIndentation(0)} * <p>
-${tool.getIndentation(0)} *   This specification declares a multiplicity of {@code $tool.getHtmlString($specification.getMultiplicity().value())}.
+${tool.getIndentation(0)} *   This specification declares a multiplicity of {@code $specification.getMultiplicity().value()}.
 #if($specification.getMultiplicity().value() == "One")
 ${tool.getIndentation(0)} *   An application assembler may provide either no or one implementation of this specification.
 #end
@@ -77,7 +77,7 @@ ${tool.getIndentation(0)} * </p>
 ${tool.getIndentation(0)} *
 ${tool.getIndentation(0)} * <p>
 #if($specification.getScope())
-${tool.getIndentation(0)} *   This specification applies to {@code $tool.getHtmlString($specification.getScope())} scope.
+${tool.getIndentation(0)} *   This specification applies to {@code $specification.getScope()} scope.
 ${tool.getIndentation(0)} *   The same $tool.getHtmlString($specification.getScope().toLowerCase()) object is returned whenever requested.
 #else
 ${tool.getIndentation(0)} *   This specification does not apply to any scope. A new object is returned whenever requested.
