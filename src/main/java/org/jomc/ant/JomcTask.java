@@ -199,6 +199,8 @@ public class JomcTask extends Task
      * Gets the class path to process.
      *
      * @return The class path to process.
+     *
+     * @see #setClasspath(org.apache.tools.ant.types.Path)
      */
     public final Path getClasspath()
     {
@@ -214,6 +216,8 @@ public class JomcTask extends Task
      * Adds to the class path to process.
      *
      * @param value The path to add to the list of class path elements.
+     *
+     * @see #getClasspath()
      */
     public final void setClasspath( final Path value )
     {
@@ -224,6 +228,8 @@ public class JomcTask extends Task
      * Adds a reference to a class path defined elsewhere.
      *
      * @param value A reference to a class path.
+     *
+     * @see #getClasspath()
      */
     public final void setClasspathRef( final Reference value )
     {
@@ -234,6 +240,8 @@ public class JomcTask extends Task
      * Gets the identifier of the model to process.
      *
      * @return The identifier of the model to process.
+     *
+     * @see #setModel(java.lang.String)
      */
     public final String getModel()
     {
@@ -249,6 +257,8 @@ public class JomcTask extends Task
      * Sets the identifier of the model to process.
      *
      * @param value The new identifier of the model to process or {@code null}.
+     *
+     * @see #getModel()
      */
     public final void setModel( final String value )
     {
@@ -283,6 +293,8 @@ public class JomcTask extends Task
      * Gets a flag indicating the processing of models is enabled.
      *
      * @return {@code true} if processing of models is enabled; {@code false} else.
+     *
+     * @see #setModelProcessingEnabled(boolean)
      */
     public final boolean isModelProcessingEnabled()
     {
@@ -293,6 +305,8 @@ public class JomcTask extends Task
      * Sets the flag indicating the processing of models is enabled.
      *
      * @param value {@code true} to enable processing of models; {@code false} to disable processing of models.
+     *
+     * @see #isModelProcessingEnabled()
      */
     public final void setModelProcessingEnabled( final boolean value )
     {
@@ -303,6 +317,8 @@ public class JomcTask extends Task
      * Gets the location searched for modlets.
      *
      * @return The location searched for modlets or {@code null}.
+     *
+     * @see #setModletLocation(java.lang.String)
      */
     public final String getModletLocation()
     {
@@ -313,6 +329,8 @@ public class JomcTask extends Task
      * Sets the location to search for modlets.
      *
      * @param value The new location to search for modlets or {@code null}.
+     *
+     * @see #getModletLocation()
      */
     public final void setModletLocation( final String value )
     {

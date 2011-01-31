@@ -117,6 +117,8 @@ public class ResourceFileProcessorTask extends JomcToolTask
      * Gets the class of the {@code ResourceFileProcessor} backing the task.
      *
      * @return The class of the {@code ResourceFileProcessor} backing the task.
+     *
+     * @see #setResourceFileProcessorClass(java.lang.Class)
      */
     public final Class<? extends ResourceFileProcessor> getResourceFileProcessorClass()
     {
@@ -132,6 +134,8 @@ public class ResourceFileProcessorTask extends JomcToolTask
      * Sets the class of the {@code ResourceFileProcessor} backing the task.
      *
      * @param value The new class of the {@code ResourceFileProcessor} backing the task or {@code null}.
+     *
+     * @see #getResourceFileProcessorClass()
      */
     public final void setResourceFileProcessorClass( final Class<? extends ResourceFileProcessor> value )
     {
@@ -146,6 +150,7 @@ public class ResourceFileProcessorTask extends JomcToolTask
      * @throws BuildException if creating a new {@code ResourceFileProcessor} instance fails.
      *
      * @see #configureJomcTool(org.jomc.tools.JomcTool)
+     * @see #getResourceFileProcessorClass()
      */
     public ResourceFileProcessor newResourceFileProcessor() throws BuildException
     {

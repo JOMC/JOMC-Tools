@@ -87,6 +87,8 @@ public class ClassFileProcessorTask extends JomcToolTask
      * Gets the class of the {@code ClassFileProcessor} backing the task.
      *
      * @return The class of the {@code ClassFileProcessor} backing the task.
+     *
+     * @see #setClassFileProcessorClass(java.lang.Class)
      */
     public final Class<? extends ClassFileProcessor> getClassFileProcessorClass()
     {
@@ -102,6 +104,8 @@ public class ClassFileProcessorTask extends JomcToolTask
      * Sets the class of the {@code ClassFileProcessor} backing the task.
      *
      * @param value The new class of the {@code ClassFileProcessor} backing the task or {@code null}.
+     *
+     * @see #getClassFileProcessorClass()
      */
     public final void setClassFileProcessorClass( final Class<? extends ClassFileProcessor> value )
     {
@@ -116,6 +120,7 @@ public class ClassFileProcessorTask extends JomcToolTask
      * @throws BuildException if creating a new {@code ClassFileProcessor} instance fails.
      *
      * @see #configureJomcTool(org.jomc.tools.JomcTool)
+     * @see #getClassFileProcessorClass()
      */
     public ClassFileProcessor newClassFileProcessor() throws BuildException
     {
