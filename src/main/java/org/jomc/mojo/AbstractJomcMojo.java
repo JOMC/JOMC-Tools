@@ -287,18 +287,18 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     /**
      * Directory holding the compiled class files of the project.
+     * <p><strong>Deprecated:</strong> As of JOMC 1.1, please use the 'outputDirectory' parameter.</p>
      *
      * @parameter
-     * @deprecated As of JOMC 1.1, please use the 'outputDirectory' parameter.
      */
     @Deprecated
     private String classesDirectory;
 
     /**
      * Directory holding the compiled test class files of the project.
+     * <p><strong>Deprecated:</strong> As of JOMC 1.1, please use the 'testOutputDirectory' parameter.</p>
      *
      * @parameter
-     * @deprecated As of JOMC 1.1, please use the 'testOutputDirectory' parameter.
      */
     @Deprecated
     private String testClassesDirectory;
