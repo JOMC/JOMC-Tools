@@ -56,6 +56,8 @@ public class NameType implements Cloneable
      * Gets the value of the {@code name} property.
      *
      * @return The value of the {@code name} property.
+     *
+     * @see #setName(java.lang.String)
      */
     public final String getName()
     {
@@ -66,6 +68,8 @@ public class NameType implements Cloneable
      * Sets the value of the {@code name} property.
      *
      * @param value The new value of the {@code name} property.
+     *
+     * @see #getName()
      */
     public final void setName( final String value )
     {

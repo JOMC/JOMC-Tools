@@ -65,6 +65,8 @@ public class ResourceType implements Cloneable
      * Gets the value of the {@code location} property.
      *
      * @return The value of the {@code location} property.
+     *
+     * @see #setLocation(java.lang.String)
      */
     public final String getLocation()
     {
@@ -75,6 +77,8 @@ public class ResourceType implements Cloneable
      * Sets the value of the {@code location} property.
      *
      * @param value The value of the {@code location} property.
+     *
+     * @see #getLocation()
      */
     public final void setLocation( final String value )
     {
@@ -86,6 +90,8 @@ public class ResourceType implements Cloneable
      *
      * @return {@code true} if the resource is optional; {@code false} if the build fails when the resource is not
      * found.
+     *
+     * @see #setOptional(boolean)
      */
     public final boolean isOptional()
     {
@@ -97,6 +103,8 @@ public class ResourceType implements Cloneable
      *
      * @param value {@code true} to flag the resource optional; {@code false} to fail the build when the resource is not
      * found.
+     *
+     * @see #isOptional()
      */
     public final void setOptional( final boolean value )
     {
@@ -108,6 +116,8 @@ public class ResourceType implements Cloneable
      * A timeout of zero is interpreted as an infinite timeout.
      *
      * @return The timeout value, in milliseconds, to be used when opening communications links to the resource.
+     *
+     * @see #setConnectTimeout(int)
      */
     public final int getConnectTimeout()
     {
@@ -120,6 +130,8 @@ public class ResourceType implements Cloneable
      *
      * @param value The new timeout value, in milliseconds, to be used when opening communications links to the
      * resource.
+     *
+     * @see #getConnectTimeout()
      */
     public final void setConnectTimeout( final int value )
     {
@@ -131,6 +143,8 @@ public class ResourceType implements Cloneable
      * as an infinite timeout.
      *
      * @return The timeout value, in milliseconds, to be used when reading the resource.
+     *
+     * @see #setReadTimeout(int)
      */
     public final int getReadTimeout()
     {
@@ -142,6 +156,8 @@ public class ResourceType implements Cloneable
      * as an infinite timeout.
      *
      * @param value The new timeout value, in milliseconds, to be used when reading the resource.
+     *
+     * @see #getReadTimeout()
      */
     public final void setReadTimeout( final int value )
     {

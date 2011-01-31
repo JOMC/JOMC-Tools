@@ -56,6 +56,8 @@ public class PropertiesResourceType extends ResourceType
      * Gets the value of the {@code format} property.
      *
      * @return The value of the {@code format} property.
+     *
+     * @see #setFormat(org.jomc.ant.types.PropertiesFormatType)
      */
     public final PropertiesFormatType getFormat()
     {
@@ -71,6 +73,8 @@ public class PropertiesResourceType extends ResourceType
      * Sets the value of the {@code format} property.
      *
      * @param value The new value of the {@code format} property or {@code null}.
+     *
+     * @see #getFormat()
      */
     public final void setFormat( final PropertiesFormatType value )
     {

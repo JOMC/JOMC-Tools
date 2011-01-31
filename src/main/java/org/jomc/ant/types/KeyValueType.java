@@ -62,6 +62,8 @@ public class KeyValueType<K, V> implements Cloneable
      * Gets the value of the {@code key} property.
      *
      * @return The value of the {@code key} property.
+     *
+     * @see #setKey(java.lang.Object)
      */
     public final K getKey()
     {
@@ -72,6 +74,8 @@ public class KeyValueType<K, V> implements Cloneable
      * Sets the value of the {@code key} property.
      *
      * @param value The new value of the {@code key} property.
+     *
+     * @see #getKey()
      */
     public final void setKey( final K value )
     {
@@ -82,6 +86,8 @@ public class KeyValueType<K, V> implements Cloneable
      * Gets the value of the {@code value} property.
      *
      * @return The value of the {@code value} property.
+     *
+     * @see #setValue(java.lang.Object)
      */
     public final V getValue()
     {
@@ -92,6 +98,8 @@ public class KeyValueType<K, V> implements Cloneable
      * Sets the value of the {@code key} property.
      *
      * @param value The new value of the {@code value} property.
+     *
+     * @see #getValue()
      */
     public final void setValue( final V value )
     {
