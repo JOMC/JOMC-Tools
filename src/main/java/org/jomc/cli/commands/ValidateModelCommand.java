@@ -123,11 +123,11 @@ import org.jomc.modlet.ModelValidationReport;
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getClasspathOption ClasspathOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getDocumentsOption DocumentsOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getLocale Locale}</td>
@@ -135,43 +135,43 @@ import org.jomc.modlet.ModelValidationReport;
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getModelContextOption ModelContextOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getModelOption ModelOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getModletLocationOption ModletLocationOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getModletSchemaSystemIdOption ModletSchemaSystemIdOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getModuleLocationOption ModuleLocationOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getNoClasspathResolutionOption NoClasspathResolutionOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getNoModelProcessingOption NoModelProcessingOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getPlatformProviderLocationOption PlatformProviderLocationOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getProviderLocationOption ProviderLocationOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getTransformerLocationOption TransformerLocationOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *   </table>
  * </p>
@@ -188,7 +188,7 @@ import org.jomc.modlet.ModelValidationReport;
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getApplicationTitle applicationTitle}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
- *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-30T00:17:13+0100</code></pre></td>
+ *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-02-01T16:14:38+0100</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getCannotProcessMessage cannotProcessMessage}</td>
@@ -362,51 +362,51 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *       <th align="left" scope="col" nowrap><b>Implementation</b></th>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Classpath Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Documents Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI ModelContext Class Name Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Model Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Modlet Location Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Modlet Schema System Id Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Module Location Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI No Classpath Resolution Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI No Model Processing Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Platform Provider Location Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Provider Location Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Transformer Location Option</td>
      *     </tr>
      *   </table>
@@ -439,7 +439,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
 
     /**
      * Gets the {@code ClasspathOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Classpath Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Classpath Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ClasspathOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -454,7 +454,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
 
     /**
      * Gets the {@code DocumentsOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Documents Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Documents Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code DocumentsOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -484,7 +484,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
 
     /**
      * Gets the {@code ModelContextOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI ModelContext Class Name Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI ModelContext Class Name Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ModelContextOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -499,7 +499,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
 
     /**
      * Gets the {@code ModelOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Model Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Model Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ModelOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -514,7 +514,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
 
     /**
      * Gets the {@code ModletLocationOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Modlet Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Modlet Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ModletLocationOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -529,7 +529,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
 
     /**
      * Gets the {@code ModletSchemaSystemIdOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Modlet Schema System Id Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Modlet Schema System Id Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ModletSchemaSystemIdOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -544,7 +544,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
 
     /**
      * Gets the {@code ModuleLocationOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Module Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Module Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ModuleLocationOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -559,7 +559,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
 
     /**
      * Gets the {@code NoClasspathResolutionOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI No Classpath Resolution Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI No Classpath Resolution Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code NoClasspathResolutionOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -574,7 +574,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
 
     /**
      * Gets the {@code NoModelProcessingOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI No Model Processing Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI No Model Processing Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code NoModelProcessingOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -589,7 +589,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
 
     /**
      * Gets the {@code PlatformProviderLocationOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Platform Provider Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Platform Provider Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code PlatformProviderLocationOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -604,7 +604,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
 
     /**
      * Gets the {@code ProviderLocationOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Provider Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Provider Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ProviderLocationOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -619,7 +619,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
 
     /**
      * Gets the {@code TransformerLocationOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Transformer Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Transformer Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code TransformerLocationOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -741,7 +741,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-30T00:17:13+0100</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-02-01T16:14:38+0100</code></pre></td>
      *     </tr>
      *   </table>
      * </p>

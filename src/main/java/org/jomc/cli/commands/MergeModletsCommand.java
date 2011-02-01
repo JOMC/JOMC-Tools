@@ -139,15 +139,15 @@ import org.jomc.modlet.ObjectFactory;
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getClasspathOption ClasspathOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getDocumentEncodingOption DocumentEncodingOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getDocumentOption DocumentOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getLocale Locale}</td>
@@ -155,51 +155,51 @@ import org.jomc.modlet.ObjectFactory;
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getModelContextOption ModelContextOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getModelOption ModelOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getModletExcludesOption ModletExcludesOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getModletIncludesOption ModletIncludesOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getModletLocationOption ModletLocationOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getModletNameOption ModletNameOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getModletSchemaSystemIdOption ModletSchemaSystemIdOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getModletVendorOption ModletVendorOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getModletVersionOption ModletVersionOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getPlatformProviderLocationOption PlatformProviderLocationOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getProviderLocationOption ProviderLocationOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getStylesheetOption StylesheetOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *   </table>
  * </p>
@@ -216,7 +216,7 @@ import org.jomc.modlet.ObjectFactory;
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getApplicationTitle applicationTitle}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
- *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-30T00:17:13+0100</code></pre></td>
+ *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-02-01T16:14:38+0100</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getClasspathElementInfo classpathElementInfo}</td>
@@ -519,63 +519,63 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *       <th align="left" scope="col" nowrap><b>Implementation</b></th>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Classpath Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Document Encoding Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Document Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI ModelContext Class Name Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Model Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Modlet Excludes Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Modlet Includes Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Modlet Location Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Modlet Name Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Modlet Schema System Id Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Modlet Vendor Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Modlet Version Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Platform Provider Location Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Provider Location Option</td>
      *     </tr>
      *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)}</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Stylesheet Option</td>
      *     </tr>
      *   </table>
@@ -611,7 +611,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
 
     /**
      * Gets the {@code ClasspathOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Classpath Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Classpath Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ClasspathOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -626,7 +626,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
 
     /**
      * Gets the {@code DocumentEncodingOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Document Encoding Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Document Encoding Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code DocumentEncodingOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -641,7 +641,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
 
     /**
      * Gets the {@code DocumentOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Document Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Document Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * <p><b>Properties</b><dl>
      * <dt>"{@code required}"</dt>
@@ -676,7 +676,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
 
     /**
      * Gets the {@code ModelContextOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI ModelContext Class Name Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI ModelContext Class Name Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ModelContextOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -691,7 +691,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
 
     /**
      * Gets the {@code ModelOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Model Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Model Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ModelOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -706,7 +706,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
 
     /**
      * Gets the {@code ModletExcludesOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Modlet Excludes Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Modlet Excludes Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ModletExcludesOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -721,7 +721,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
 
     /**
      * Gets the {@code ModletIncludesOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Modlet Includes Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Modlet Includes Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ModletIncludesOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -736,7 +736,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
 
     /**
      * Gets the {@code ModletLocationOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Modlet Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Modlet Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ModletLocationOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -751,7 +751,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
 
     /**
      * Gets the {@code ModletNameOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Modlet Name Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Modlet Name Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * <p><b>Properties</b><dl>
      * <dt>"{@code required}"</dt>
@@ -771,7 +771,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
 
     /**
      * Gets the {@code ModletSchemaSystemIdOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Modlet Schema System Id Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Modlet Schema System Id Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ModletSchemaSystemIdOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -786,7 +786,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
 
     /**
      * Gets the {@code ModletVendorOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Modlet Vendor Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Modlet Vendor Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ModletVendorOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -801,7 +801,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
 
     /**
      * Gets the {@code ModletVersionOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Modlet Version Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Modlet Version Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ModletVersionOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -816,7 +816,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
 
     /**
      * Gets the {@code PlatformProviderLocationOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Platform Provider Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Platform Provider Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code PlatformProviderLocationOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -831,7 +831,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
 
     /**
      * Gets the {@code ProviderLocationOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Provider Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Provider Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code ProviderLocationOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -846,7 +846,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
 
     /**
      * Gets the {@code StylesheetOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Stylesheet Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Stylesheet Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code StylesheetOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -968,7 +968,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-01-30T00:17:13+0100</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-02-01T16:14:38+0100</code></pre></td>
      *     </tr>
      *   </table>
      * </p>

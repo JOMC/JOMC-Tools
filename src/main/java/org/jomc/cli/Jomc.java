@@ -107,11 +107,11 @@ import org.jomc.modlet.DefaultModletProvider;
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getDebugOption DebugOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getFailOnWarningsOption FailOnWarningsOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getLocale Locale}</td>
@@ -119,7 +119,7 @@ import org.jomc.modlet.DefaultModletProvider;
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" nowrap>{@link #getVerboseOption VerboseOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} bound to an instance.</td>
+ *       <td align="left">Dependency on {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *   </table>
  * </p>
@@ -202,6 +202,8 @@ public final class Jomc
      * Gets the print writer of the instance.
      *
      * @return The print writer of the instance.
+     *
+     * @see #setPrintWriter(java.io.PrintWriter)
      */
     public PrintWriter getPrintWriter()
     {
@@ -217,6 +219,8 @@ public final class Jomc
      * Sets the print writer of the instance.
      *
      * @param value The new print writer of the instance or {@code null}.
+     *
+     * @see #getPrintWriter()
      */
     public void setPrintWriter( final PrintWriter value )
     {
@@ -644,7 +648,7 @@ public final class Jomc
 
     /**
      * Gets the {@code DebugOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Debug Option'} object of the {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Debug Option'} object of the {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code DebugOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -659,7 +663,7 @@ public final class Jomc
 
     /**
      * Gets the {@code FailOnWarningsOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Fail-On-Warnings Option'} object of the {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Fail-On-Warnings Option'} object of the {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code FailOnWarningsOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
@@ -689,7 +693,7 @@ public final class Jomc
 
     /**
      * Gets the {@code VerboseOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Verbose Option'} object of the {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} specification.</p>
+     * <p>This method returns the {@code 'JOMC CLI Verbose Option'} object of the {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
      * @return The {@code VerboseOption} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.

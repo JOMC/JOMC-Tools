@@ -45,7 +45,7 @@
   <specifications>
     <!-- *********************************************************************************************************** -->
     <specification identifier="${project.name} Command" class="org.jomc.cli.Command" classDeclaration="true"
-                   vendor="${project.organization.name}" version="1.0" createDate="2009-07-25T19:56:45Z">
+                   vendor="${project.organization.name}" version="${jomc.cli.command.version}" createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
         <text language="en">Command.</text>
@@ -58,7 +58,7 @@
     </specification>
     <!-- *********************************************************************************************************** -->
     <specification identifier="${project.name} Application Option" class="org.apache.commons.cli.Option"
-                   vendor="${project.organization.name}" version="1.2" createDate="2009-07-25T19:56:45Z">
+                   vendor="${project.organization.name}" version="${jomc.cli.application.option.version}" createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
         <text language="en">Application option.</text>
@@ -71,7 +71,7 @@
     </specification>
     <!-- *********************************************************************************************************** -->
     <specification identifier="${project.name} Command Option" class="org.apache.commons.cli.Option"
-                   vendor="${project.organization.name}" version="1.2" createDate="2009-07-25T19:56:45Z">
+                   vendor="${project.organization.name}" version="${jomc.cli.command.option.version}" createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
         <text language="en">Command option.</text>
@@ -173,7 +173,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -209,7 +209,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Application Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Application Option" version="${jomc.cli.application.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -238,7 +238,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Application Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Application Option" version="${jomc.cli.application.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -275,7 +275,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Application Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Application Option" version="${jomc.cli.application.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -304,7 +304,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -343,7 +343,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -382,7 +382,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -418,7 +418,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -455,7 +455,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -491,7 +491,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -528,7 +528,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -564,7 +564,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -601,7 +601,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -631,7 +631,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -661,7 +661,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -698,7 +698,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -735,7 +735,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -772,7 +772,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -809,7 +809,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -846,7 +846,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -883,7 +883,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -920,7 +920,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -957,7 +957,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -994,7 +994,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1031,7 +1031,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1068,7 +1068,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1105,7 +1105,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1142,7 +1142,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1179,7 +1179,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1216,7 +1216,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1253,7 +1253,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1290,7 +1290,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1330,7 +1330,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1370,7 +1370,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1407,7 +1407,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1443,7 +1443,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1480,7 +1480,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1517,7 +1517,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1554,7 +1554,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1594,7 +1594,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1634,7 +1634,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1671,7 +1671,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1708,7 +1708,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1745,7 +1745,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1782,7 +1782,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1819,7 +1819,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1856,7 +1856,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1893,7 +1893,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1923,7 +1923,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -1953,7 +1953,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command Option" version="1.2" final="true"/>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
       </specifications>
       <implementations>
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
@@ -2000,13 +2000,13 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <!-- dependency name="CommandLineParser" identifier="org.apache.commons.cli.CommandLineParser"
                     implementationName="Commons CLI - Posix Command Line Parser" bound="false"/ -->
 
-        <dependency name="DebugOption" identifier="${project.name} Application Option"
+        <dependency name="DebugOption" identifier="${project.name} Application Option" version="${jomc.cli.application.option.version}"
                     implementationName="${project.name} Debug Option"/>
 
-        <dependency name="FailOnWarningsOption" identifier="${project.name} Application Option"
+        <dependency name="FailOnWarningsOption" identifier="${project.name} Application Option" version="${jomc.cli.application.option.version}"
                     implementationName="${project.name} Fail-On-Warnings Option"/>
 
-        <dependency name="VerboseOption" identifier="${project.name} Application Option"
+        <dependency name="VerboseOption" identifier="${project.name} Application Option" version="${jomc.cli.application.option.version}"
                     implementationName="${project.name} Verbose Option"/>
 
       </dependencies>
@@ -2158,7 +2158,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </authors>
       <specifications>
-        <reference identifier="${project.name} Command" version="1.0" final="true"/>
+        <reference identifier="${project.name} Command" version="${jomc.cli.command.version}" final="true"/>
       </specifications>
       <dependencies>
         <dependency name="Locale" identifier="java.util.Locale" version="1.1" implementationName="default"/>
@@ -2252,25 +2252,25 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="${project.name} Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="ClasspathOption" identifier="${project.name} Command Option"
+        <dependency name="ClasspathOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Classpath Option"/>
 
-        <dependency name="ModelContextOption" identifier="${project.name} Command Option"
+        <dependency name="ModelContextOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ModelContext Class Name Option"/>
 
-        <dependency name="ModelOption" identifier="${project.name} Command Option"
+        <dependency name="ModelOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Model Option"/>
 
-        <dependency name="ModletSchemaSystemIdOption" identifier="${project.name} Command Option"
+        <dependency name="ModletSchemaSystemIdOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Modlet Schema System Id Option"/>
 
-        <dependency name="ModletLocationOption" identifier="${project.name} Command Option"
+        <dependency name="ModletLocationOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Modlet Location Option"/>
 
-        <dependency name="ProviderLocationOption" identifier="${project.name} Command Option"
+        <dependency name="ProviderLocationOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Provider Location Option"/>
 
-        <dependency name="PlatformProviderLocationOption" identifier="${project.name} Command Option"
+        <dependency name="PlatformProviderLocationOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Platform Provider Location Option"/>
 
       </dependencies>
@@ -2389,19 +2389,19 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="${project.name} Modlet Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="DocumentsOption" identifier="${project.name} Command Option"
+        <dependency name="DocumentsOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Documents Option"/>
 
-        <dependency name="ModuleLocationOption" identifier="${project.name} Command Option"
+        <dependency name="ModuleLocationOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Module Location Option"/>
 
-        <dependency name="TransformerLocationOption" identifier="${project.name} Command Option"
+        <dependency name="TransformerLocationOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Transformer Location Option"/>
 
-        <dependency name="NoClasspathResolutionOption" identifier="${project.name} Command Option"
+        <dependency name="NoClasspathResolutionOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} No Classpath Resolution Option"/>
 
-        <dependency name="NoModelProcessingOption" identifier="${project.name} Command Option"
+        <dependency name="NoModelProcessingOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} No Model Processing Option"/>
 
       </dependencies>
@@ -2473,46 +2473,46 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="${project.name} Model Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="TemplateProfileOption" identifier="${project.name} Command Option"
+        <dependency name="TemplateProfileOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Template Profile Option"/>
 
-        <dependency name="DefaultTemplateProfileOption" identifier="${project.name} Command Option"
+        <dependency name="DefaultTemplateProfileOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Default Template Profile Option"/>
 
-        <dependency name="TemplateEncodingOption" identifier="${project.name} Command Option"
+        <dependency name="TemplateEncodingOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Template Encoding Option"/>
 
-        <dependency name="TemplateLocationOption" identifier="${project.name} Command Option"
+        <dependency name="TemplateLocationOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Template Location Option"/>
 
-        <dependency name="OutputEncodingOption" identifier="${project.name} Command Option"
+        <dependency name="OutputEncodingOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Output Encoding Option"/>
 
-        <dependency name="InputEncodingOption" identifier="${project.name} Command Option"
+        <dependency name="InputEncodingOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Input Encoding Option"/>
 
-        <dependency name="IndentationStringOption" identifier="${project.name} Command Option"
+        <dependency name="IndentationStringOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Indentation String Option"/>
 
-        <dependency name="LineSeparatorOption" identifier="${project.name} Command Option"
+        <dependency name="LineSeparatorOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Line Separator Option"/>
 
-        <dependency name="LanguageOption" identifier="${project.name} Command Option"
+        <dependency name="LanguageOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Language Option"/>
 
-        <dependency name="CountryOption" identifier="${project.name} Command Option"
+        <dependency name="CountryOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Country Option"/>
 
-        <dependency name="LocaleVariantOption" identifier="${project.name} Command Option"
+        <dependency name="LocaleVariantOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Locale Variant Option"/>
 
-        <dependency name="ImplementationOption" identifier="${project.name} Command Option"
+        <dependency name="ImplementationOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Implementation Option"/>
 
-        <dependency name="ModuleNameOption" identifier="${project.name} Command Option"
+        <dependency name="ModuleNameOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Module Name Option"/>
 
-        <dependency name="SpecificationOption" identifier="${project.name} Command Option"
+        <dependency name="SpecificationOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Specification Option"/>
 
       </dependencies>
@@ -2540,10 +2540,10 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="${project.name} JomcTool Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="ClassFileProcessorOption" identifier="${project.name} Command Option"
+        <dependency name="ClassFileProcessorOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ClassFileProcessor Class Name Option"/>
 
-        <dependency name="NoClassProcessingOption" identifier="${project.name} Command Option"
+        <dependency name="NoClassProcessingOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} No Class File Processing Option"/>
 
       </dependencies>
@@ -2574,13 +2574,13 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="${project.name} JomcTool Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="ResourceFileProcessorOption" identifier="${project.name} Command Option"
+        <dependency name="ResourceFileProcessorOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ResourceFileProcessor Class Name Option"/>
 
-        <dependency name="NoResourceProcessingOption" identifier="${project.name} Command Option"
+        <dependency name="NoResourceProcessingOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} No Resource File Processing Option"/>
 
-        <dependency name="ResourceDirectoryOption" identifier="${project.name} Command Option"
+        <dependency name="ResourceDirectoryOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Resource Directory Option">
 
           <properties>
@@ -2615,13 +2615,13 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="${project.name} JomcTool Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="SourceFileProcessorOption" identifier="${project.name} Command Option"
+        <dependency name="SourceFileProcessorOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} SourceFileProcessor Class Name Option"/>
 
-        <dependency name="NoSourceProcessingOption" identifier="${project.name} Command Option"
+        <dependency name="NoSourceProcessingOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} No Source File Processing Option"/>
 
-        <dependency name="SourceDirectoryOption" identifier="${project.name} Command Option"
+        <dependency name="SourceDirectoryOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Source Directory Option">
 
           <properties>
@@ -2822,7 +2822,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="${project.name} ClassFileProcessor Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="ClassesDirectoryOption" identifier="${project.name} Command Option"
+        <dependency name="ClassesDirectoryOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Classes Directory Option">
 
           <properties>
@@ -2830,7 +2830,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
           </properties>
         </dependency>
 
-        <dependency name="StylesheetOption" identifier="${project.name} Command Option"
+        <dependency name="StylesheetOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Stylesheet Option"/>
 
       </dependencies>
@@ -3046,7 +3046,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="${project.name} Model Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="DocumentOption" identifier="${project.name} Command Option"
+        <dependency name="DocumentOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Document Option">
 
           <properties>
@@ -3054,29 +3054,29 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
           </properties>
         </dependency>
 
-        <dependency name="DocumentEncodingOption" identifier="${project.name} Command Option"
+        <dependency name="DocumentEncodingOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Document Encoding Option"/>
 
-        <dependency name="StylesheetOption" identifier="${project.name} Command Option"
+        <dependency name="StylesheetOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Stylesheet Option"/>
 
-        <dependency name="ModuleNameOption" identifier="${project.name} Command Option"
+        <dependency name="ModuleNameOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Module Name Option">
 
           <properties>
             <property name="required" type="boolean" value="true"/>
           </properties>
         </dependency>
-        <dependency name="ModuleVersionOption" identifier="${project.name} Command Option"
+        <dependency name="ModuleVersionOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Module Version Option"/>
 
-        <dependency name="ModuleVendorOption" identifier="${project.name} Command Option"
+        <dependency name="ModuleVendorOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Module Vendor Option"/>
 
-        <dependency name="ModuleIncludesOption" identifier="${project.name} Command Option"
+        <dependency name="ModuleIncludesOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Module Includes Option"/>
 
-        <dependency name="ModuleExcludesOption" identifier="${project.name} Command Option"
+        <dependency name="ModuleExcludesOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Module Excludes Option"/>
 
       </dependencies>
@@ -3177,7 +3177,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="${project.name} Modlet Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="DocumentOption" identifier="${project.name} Command Option"
+        <dependency name="DocumentOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Document Option">
 
           <properties>
@@ -3185,29 +3185,29 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
           </properties>
         </dependency>
 
-        <dependency name="DocumentEncodingOption" identifier="${project.name} Command Option"
+        <dependency name="DocumentEncodingOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Document Encoding Option"/>
 
-        <dependency name="StylesheetOption" identifier="${project.name} Command Option"
+        <dependency name="StylesheetOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Stylesheet Option"/>
 
-        <dependency name="ModletNameOption" identifier="${project.name} Command Option"
+        <dependency name="ModletNameOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Modlet Name Option">
 
           <properties>
             <property name="required" type="boolean" value="true"/>
           </properties>
         </dependency>
-        <dependency name="ModletVersionOption" identifier="${project.name} Command Option"
+        <dependency name="ModletVersionOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Modlet Version Option"/>
 
-        <dependency name="ModletVendorOption" identifier="${project.name} Command Option"
+        <dependency name="ModletVendorOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Modlet Vendor Option"/>
 
-        <dependency name="ModletIncludesOption" identifier="${project.name} Command Option"
+        <dependency name="ModletIncludesOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Modlet Includes Option"/>
 
-        <dependency name="ModletExcludesOption" identifier="${project.name} Command Option"
+        <dependency name="ModletExcludesOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Modlet Excludes Option"/>
 
       </dependencies>
@@ -3305,19 +3305,19 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="${project.name} Model Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="DocumentOption" identifier="${project.name} Command Option"
+        <dependency name="DocumentOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Document Option"/>
 
-        <dependency name="DocumentEncodingOption" identifier="${project.name} Command Option"
+        <dependency name="DocumentEncodingOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Document Encoding Option"/>
 
-        <dependency name="ImplementationOption" identifier="${project.name} Command Option"
+        <dependency name="ImplementationOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Implementation Option"/>
 
-        <dependency name="ModuleNameOption" identifier="${project.name} Command Option"
+        <dependency name="ModuleNameOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Module Name Option"/>
 
-        <dependency name="SpecificationOption" identifier="${project.name} Command Option"
+        <dependency name="SpecificationOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Specification Option"/>
 
       </dependencies>

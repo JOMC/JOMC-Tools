@@ -64,7 +64,7 @@ ${tool.getIndentation(1)} *     </tr>
 #foreach($option in $options)
 ${tool.getIndentation(1)} *     <tr class="TableRow">
 #set($specification = $modules.getSpecification($option.getIdentifier()))
-${tool.getIndentation(1)} *       <td align="left" valign="top" nowrap>$tool.getHtmlString($option.getIdentifier()) {@code ($specification.getClazz())}</td>
+${tool.getIndentation(1)} *       <td align="left" valign="top" nowrap>$tool.getHtmlString($option.getIdentifier()) {@code ($specification.getClazz())}#if($option.getVersion()) @ $tool.getHtmlString($option.getVersion())#end</td>
 ${tool.getIndentation(1)} *       <td align="left" valign="top" nowrap>$tool.getHtmlString($option.getImplementationName())</td>
 ${tool.getIndentation(1)} *     </tr>
 #end
