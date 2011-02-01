@@ -1110,6 +1110,8 @@ public class JomcTool
      * @throws NullPointerException if {@code texts} or {@code linePrefix} is {@code null}.
      * @throws IllegalArgumentException if {@code indentationLevel} is negative.
      *
+     * @see #getLocale()
+     *
      * @since 1.2
      */
     public String getJavadocComment( final Texts texts, final int indentationLevel, final String linePrefix )
@@ -1967,6 +1969,8 @@ public class JomcTool
      * Gets the indentation string of the instance.
      *
      * @return The indentation string of the instance.
+     *
+     * @see #setIndentation(java.lang.String)
      */
     public final String getIndentation()
     {
@@ -2044,6 +2048,8 @@ public class JomcTool
      * Gets the line separator of the instance.
      *
      * @return The line separator of the instance.
+     *
+     * @see #setLineSeparator(java.lang.String)
      */
     public final String getLineSeparator()
     {
