@@ -52,6 +52,8 @@ JOMC Ant Tasks
 
   * {{{./reference.html#merge-modules}jomc:merge-modules}} Merges module resources.
 
+  * {{{./reference.html#show-model}jomc:show-model}} Displays model objects.
+
   * {{{./reference.html#validate-classes}jomc:validate-classes}} Validates class file model objects.
 
   * {{{./reference.html#validate-classpath}jomc:validate-classpath}} Validates classpath class file model objects.

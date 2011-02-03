@@ -1084,6 +1084,92 @@ Task and Type Reference
 |                                             | Type: {{NameType}}                         |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 
+* <<<{show-model}>>>
+
+  This task displays model objects.
+
+  The <<<show-model>>> task supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element is supported.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<if>>>                                    | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<implementation>>>                        | The identifier of an implementation to     | No.                    |
+|                                             | show.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
+|                                             | process.                                   | JOMC model public id.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No.                    |
+|                                             | implementation class backing the task.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelEncoding>>>                         | The encoding to use when writing the       | No.                    |
+|                                             | model.                                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelFile>>>                             | File to write the model to.                | No. If no file is set, |
+|                                             |                                            | the model will be      |
+|                                             |                                            | logged instead.        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+|                                             | resolution is enabled.                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
+|                                             | is enabled.                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletLocation>>>                        | The class path location searched for       | No.                    |
+|                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No.                    |
+|                                             | schema system id.                          |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<module>>>                                | The name of a module to show.              | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleLocation>>>                        | The class path location searched for       | No.                    |
+|                                             | modules.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<platformProviderLocation>>>              | The location searched for platform         | No.                    |
+|                                             | provider resources.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<providerLocation>>>                      | The class path location searched for       | No.                    |
+|                                             | providers.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<specification>>>                         | The identifier of a specification to show. | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
+|                                             | transformers.                              |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<unless>>>                                | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+  The <<<show-model>>> task supports the following nested elements:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Element>>                                 | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpath>>>                             | Class path to process.                     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
+|                                             | be passed to all transformers of the task. |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
+|                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
 * <<<{NameType}>>>
 
   The <<<NameType>>> is used to specify names.
