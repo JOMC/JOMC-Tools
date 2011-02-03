@@ -63,6 +63,8 @@
     </release>
     <!-- *********************************************************************************************************** -->
     <release version="1.2">
+      <action dev="schulte2005" type="add"><![CDATA[Added a <code>META-INF/sun-jaxb.episode</code> file.]]>
+      </action>
       <action dev="schulte2005" type="add"><![CDATA[Added method <code>getTemplateParameters</code> to class
       <code>org.jomc.tools.JomcTool</code> and updated method <code>getVelocityContext</code> to add the parameters to
       new context instances.]]>
