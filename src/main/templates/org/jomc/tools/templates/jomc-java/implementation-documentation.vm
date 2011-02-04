@@ -89,8 +89,8 @@ ${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Documen
 ${tool.getIndentation(0)} *     </tr>
 #foreach($property in $properties.getProperty())
 ${tool.getIndentation(0)} *     <tr class="TableRowColor">
-${tool.getIndentation(0)} *       <td align="left" nowrap>{@link #$tool.getJavaGetterMethodName($property) $tool.getHtmlString($property.getName())}</td>
-${tool.getIndentation(0)} *       <td align="left" nowrap>{@code $tool.getJavaTypeName($property,false)}</td>
+${tool.getIndentation(0)} *       <td align="left" valign="top" nowrap>{@link #$tool.getJavaGetterMethodName($property) $tool.getHtmlString($property.getName())}</td>
+${tool.getIndentation(0)} *       <td align="left" valign="top" nowrap>{@code $tool.getJavaTypeName($property,false)}</td>
 ${tool.getIndentation(0)} *       <td align="left" valign="top">#if($property.getDocumentation())$tool.getJavadocComment($property.getDocumentation(), 0, " *                        ")#end</td>
 ${tool.getIndentation(0)} *     </tr>
 #end
@@ -111,8 +111,12 @@ ${tool.getIndentation(0)} *     </tr>
 #foreach($dependency in $dependencies.getDependency())
 #set($specification = $modules.getSpecification($dependency.getIdentifier()))
 ${tool.getIndentation(0)} *     <tr class="TableRowColor">
-${tool.getIndentation(0)} *       <td align="left" nowrap>{@link #$tool.getJavaGetterMethodName($dependency) $tool.getHtmlString($dependency.getName())}</td>
-${tool.getIndentation(0)} *       <td align="left">Dependency on {@code '$dependency.getIdentifier()'}#if($specification && $specification.getClazz()) {@code ($specification.getClazz())}#end#if($dependency.getVersion()) at specification level $tool.getHtmlString($dependency.getVersion())#end#if($dependency.isBound()) bound to an instance#end.</td>
+${tool.getIndentation(0)} *       <td align="left" valign="top" nowrap>{@link #$tool.getJavaGetterMethodName($dependency) $tool.getHtmlString($dependency.getName())}</td>
+#if($dependency.getImplementationName())
+${tool.getIndentation(0)} *       <td align="left" valign="top">Dependency on the {@code '$dependency.getImplementationName()'} object of the {@code '$dependency.getIdentifier()'}#if($specification && $specification.getClazz()) {@code ($specification.getClazz())}#end specification#if($dependency.getVersion()) at specification level $tool.getHtmlString($dependency.getVersion())#end#if($dependency.isBound()) bound to an instance#end.</td>
+#else
+${tool.getIndentation(0)} *       <td align="left" valign="top">Dependency on any object of the {@code '$dependency.getIdentifier()'}#if($specification && $specification.getClazz()) {@code ($specification.getClazz())}#end specification#if($dependency.getVersion()) at specification level $tool.getHtmlString($dependency.getVersion())#end#if($dependency.isBound()) bound to an instance#end.</td>
+#end
 ${tool.getIndentation(0)} *     </tr>
 #end
 ${tool.getIndentation(0)} *   </table>
