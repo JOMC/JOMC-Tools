@@ -64,16 +64,22 @@ ${tool.getIndentation(1)} * <p>That specification applies to {@code $specificati
 ${tool.getIndentation(1)} * <p>That specification does not apply to any scope. A new object is returned whenever requested#if($dependency.isBound()) and bound to this instance#end.</p>
 #end
 #if($dependency.getProperties())
-${tool.getIndentation(1)} * <p><b>Properties</b><dl>
+${tool.getIndentation(1)} * <p><strong>Properties:</strong>
+${tool.getIndentation(1)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+${tool.getIndentation(1)} *     <tr class="TableSubHeadingColor">
+${tool.getIndentation(1)} *       <th align="left" scope="col" nowrap><b>Name</b></th>
+${tool.getIndentation(1)} *       <th align="left" scope="col" nowrap><b>Type</b></th>
+${tool.getIndentation(1)} *       <th align="left" scope="col" nowrap><b>Documentation</b></th>
+${tool.getIndentation(1)} *     </tr>
 #foreach($property in $dependency.getProperties().getProperty())
-${tool.getIndentation(1)} * <dt>"{@code $property.getName()}"</dt>
-${tool.getIndentation(1)} * <dd>Property of type {@code $tool.getJavaTypeName($property,false)}.
-#if($property.getDocumentation())
-${tool.getIndentation(1)} * <blockquote>$tool.getJavadocComment($property.getDocumentation(), 1, " * ")</blockquote>
+${tool.getIndentation(1)} *     <tr class="TableRow">
+${tool.getIndentation(1)} *       <td align="left" valign="top" nowrap>{@code $property.getName()}</td>
+${tool.getIndentation(1)} *       <td align="left" valign="top" nowrap>{@code $tool.getJavaTypeName($property,false)}</td>
+${tool.getIndentation(1)} *       <td align="left" valign="top">#if($property.getDocumentation())$tool.getJavadocComment($property.getDocumentation(), 1, " * ")#end</td>
+${tool.getIndentation(1)} *     </tr>
 #end
-${tool.getIndentation(1)} * </dd>
-#end
-${tool.getIndentation(1)} * </dl>
+${tool.getIndentation(1)} *   </table>
+${tool.getIndentation(1)} * </p>
 #end
 #if($dependency.getDocumentation())
 ${tool.getIndentation(1)} * @return $tool.getJavadocComment($dependency.getDocumentation(), 1, " * ")
