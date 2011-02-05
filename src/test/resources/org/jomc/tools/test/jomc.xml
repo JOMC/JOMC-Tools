@@ -59,6 +59,13 @@
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
+      <properties>
+        <property name="Property">
+          <documentation defaultLanguage="en">
+            <text language="en">Test property.</text>
+          </documentation>
+        </property>
+      </properties>
     </specification>
 
     <!-- *********************************************************************************************************** -->
@@ -218,6 +225,15 @@
       </specifications>
       <dependencies>
         <dependency name="Locale" identifier="java.util.Locale" version="1.1" bound="false"/>
+        <dependency name="Dependency" identifier="Specification" version="${project.version}" bound="false">
+          <properties>
+            <property name="Property">
+              <documentation defaultLanguage="en">
+                <text language="en">Test property.</text>
+              </documentation>
+            </property>
+          </properties>
+        </dependency>
       </dependencies>
       <properties>
         <property name="property" value="TEST">
