@@ -57,33 +57,33 @@ import org.apache.commons.cli.Option;
  *       <td align="left" scope="col" nowrap><b>Documentation</b></td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getLongOpt longOpt}</td>
- *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@link #getLongOpt longOpt}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
  *       <td align="left" valign="top">Long name of the option.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getNumberOfArgs numberOfArgs}</td>
- *       <td align="left" nowrap>{@code int}</td>
+ *       <td align="left" valign="top" nowrap>{@link #getNumberOfArgs numberOfArgs}</td>
+ *       <td align="left" valign="top" nowrap>{@code int}</td>
  *       <td align="left" valign="top">Number of argument values the option can take.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getOpt opt}</td>
- *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@link #getOpt opt}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
  *       <td align="left" valign="top">Name of the option.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #isOptionalArg optionalArg}</td>
- *       <td align="left" nowrap>{@code boolean}</td>
+ *       <td align="left" valign="top" nowrap>{@link #isOptionalArg optionalArg}</td>
+ *       <td align="left" valign="top" nowrap>{@code boolean}</td>
  *       <td align="left" valign="top">Query to see if the option can have an optional argument.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #isRequired required}</td>
- *       <td align="left" nowrap>{@code boolean}</td>
+ *       <td align="left" valign="top" nowrap>{@link #isRequired required}</td>
+ *       <td align="left" valign="top" nowrap>{@code boolean}</td>
  *       <td align="left" valign="top">Query to see if the option is required.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getValueSeparator valueSeparator}</td>
- *       <td align="left" nowrap>{@code char}</td>
+ *       <td align="left" valign="top" nowrap>{@link #getValueSeparator valueSeparator}</td>
+ *       <td align="left" valign="top" nowrap>{@code char}</td>
  *       <td align="left" valign="top">Value separator of the option.</td>
  *     </tr>
  *   </table>
@@ -98,8 +98,8 @@ import org.apache.commons.cli.Option;
  *       <td align="left" scope="col" nowrap><b>Description</b></td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getLocale Locale}</td>
- *       <td align="left">Dependency on {@code 'java.util.Locale'} {@code (java.util.Locale)} at specification level 1.1 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getLocale Locale}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'default'} object of the {@code 'java.util.Locale'} {@code (java.util.Locale)} specification at specification level 1.1 bound to an instance.</td>
  *     </tr>
  *   </table>
  * </p>

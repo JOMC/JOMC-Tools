@@ -76,13 +76,13 @@ import org.apache.commons.cli.CommandLine;
  *       <td align="left" scope="col" nowrap><b>Documentation</b></td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getAbbreviatedCommandName abbreviatedCommandName}</td>
- *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@link #getAbbreviatedCommandName abbreviatedCommandName}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
  *       <td align="left" valign="top">Abbreviated name of the command.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getCommandName commandName}</td>
- *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@link #getCommandName commandName}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
  *       <td align="left" valign="top">Name of the command.</td>
  *     </tr>
  *   </table>
@@ -97,8 +97,8 @@ import org.apache.commons.cli.CommandLine;
  *       <td align="left" scope="col" nowrap><b>Description</b></td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getLocale Locale}</td>
- *       <td align="left">Dependency on {@code 'java.util.Locale'} {@code (java.util.Locale)} at specification level 1.1 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getLocale Locale}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'default'} object of the {@code 'java.util.Locale'} {@code (java.util.Locale)} specification at specification level 1.1 bound to an instance.</td>
  *     </tr>
  *   </table>
  * </p>
@@ -115,7 +115,7 @@ import org.apache.commons.cli.CommandLine;
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getApplicationTitle applicationTitle}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
- *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-02-01T16:57:42+0100</code></pre></td>
+ *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-02-05T04:31:39+0100</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getCommandFailureMessage commandFailureMessage}</td>
@@ -543,7 +543,7 @@ public abstract class AbstractCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-02-01T16:57:42+0100</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-02-05T04:31:39+0100</code></pre></td>
      *     </tr>
      *   </table>
      * </p>

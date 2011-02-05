@@ -91,38 +91,38 @@ import org.jomc.modlet.ObjectFactory;
  *       <td align="left" scope="col" nowrap><b>Documentation</b></td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getAbbreviatedCommandName abbreviatedCommandName}</td>
- *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@link #getAbbreviatedCommandName abbreviatedCommandName}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
  *       <td align="left" valign="top">Abbreviated name of the command.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getApplicationModlet applicationModlet}</td>
- *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@link #getApplicationModlet applicationModlet}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
  *       <td align="left" valign="top">Name of the 'shaded' application modlet.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getCommandName commandName}</td>
- *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@link #getCommandName commandName}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
  *       <td align="left" valign="top">Name of the command.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getModletExcludes modletExcludes}</td>
- *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@link #getModletExcludes modletExcludes}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
  *       <td align="left" valign="top">List of modlet names to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getProviderExcludes providerExcludes}</td>
- *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@link #getProviderExcludes providerExcludes}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
  *       <td align="left" valign="top">List of providers to exclude from any {@code META-INF/services} file separated by {@code :}.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getSchemaExcludes schemaExcludes}</td>
- *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@link #getSchemaExcludes schemaExcludes}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
  *       <td align="left" valign="top">List of schema context-ids to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getServiceExcludes serviceExcludes}</td>
- *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@link #getServiceExcludes serviceExcludes}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
  *       <td align="left" valign="top">List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</td>
  *     </tr>
  *   </table>
@@ -137,76 +137,76 @@ import org.jomc.modlet.ObjectFactory;
  *       <td align="left" scope="col" nowrap><b>Description</b></td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getClasspathOption ClasspathOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getClasspathOption ClasspathOption}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Classpath Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getDocumentEncodingOption DocumentEncodingOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getDocumentEncodingOption DocumentEncodingOption}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Document Encoding Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getDocumentOption DocumentOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getDocumentOption DocumentOption}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Document Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getDocumentsOption DocumentsOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getDocumentsOption DocumentsOption}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Documents Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getImplementationOption ImplementationOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getImplementationOption ImplementationOption}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Implementation Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getLocale Locale}</td>
- *       <td align="left">Dependency on {@code 'java.util.Locale'} {@code (java.util.Locale)} at specification level 1.1 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getLocale Locale}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'default'} object of the {@code 'java.util.Locale'} {@code (java.util.Locale)} specification at specification level 1.1 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getModelContextOption ModelContextOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getModelContextOption ModelContextOption}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI ModelContext Class Name Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getModelOption ModelOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getModelOption ModelOption}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Model Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getModletLocationOption ModletLocationOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getModletLocationOption ModletLocationOption}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Modlet Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getModletSchemaSystemIdOption ModletSchemaSystemIdOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getModletSchemaSystemIdOption ModletSchemaSystemIdOption}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Modlet Schema System Id Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getModuleLocationOption ModuleLocationOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getModuleLocationOption ModuleLocationOption}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Module Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getModuleNameOption ModuleNameOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getModuleNameOption ModuleNameOption}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Module Name Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getNoClasspathResolutionOption NoClasspathResolutionOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getNoClasspathResolutionOption NoClasspathResolutionOption}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI No Classpath Resolution Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getNoModelProcessingOption NoModelProcessingOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getNoModelProcessingOption NoModelProcessingOption}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI No Model Processing Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getPlatformProviderLocationOption PlatformProviderLocationOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getPlatformProviderLocationOption PlatformProviderLocationOption}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Platform Provider Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getProviderLocationOption ProviderLocationOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getProviderLocationOption ProviderLocationOption}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Provider Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getSpecificationOption SpecificationOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getSpecificationOption SpecificationOption}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Specification Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getTransformerLocationOption TransformerLocationOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getTransformerLocationOption TransformerLocationOption}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Transformer Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *   </table>
  * </p>
@@ -223,7 +223,7 @@ import org.jomc.modlet.ObjectFactory;
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getApplicationTitle applicationTitle}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
- *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-02-01T16:57:42+0100</code></pre></td>
+ *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-02-05T04:31:39+0100</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getCannotProcessMessage cannotProcessMessage}</td>
@@ -1001,7 +1001,7 @@ public final class ShowModelCommand extends AbstractModelCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-02-01T16:57:42+0100</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-02-05T04:31:39+0100</code></pre></td>
      *     </tr>
      *   </table>
      * </p>

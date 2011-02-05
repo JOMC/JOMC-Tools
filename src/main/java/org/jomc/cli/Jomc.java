@@ -67,23 +67,23 @@ import org.jomc.modlet.DefaultModletProvider;
  *       <td align="left" scope="col" nowrap><b>Documentation</b></td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getDescPad descPad}</td>
- *       <td align="left" nowrap>{@code int}</td>
+ *       <td align="left" valign="top" nowrap>{@link #getDescPad descPad}</td>
+ *       <td align="left" valign="top" nowrap>{@code int}</td>
  *       <td align="left" valign="top">The number of characters of padding to be prefixed to each description line.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getHelpCommandName helpCommandName}</td>
- *       <td align="left" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@link #getHelpCommandName helpCommandName}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
  *       <td align="left" valign="top">The name of the command used to request help.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getLeftPad leftPad}</td>
- *       <td align="left" nowrap>{@code int}</td>
+ *       <td align="left" valign="top" nowrap>{@link #getLeftPad leftPad}</td>
+ *       <td align="left" valign="top" nowrap>{@code int}</td>
  *       <td align="left" valign="top">The number of characters of padding to be prefixed to each line.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getWidth width}</td>
- *       <td align="left" nowrap>{@code int}</td>
+ *       <td align="left" valign="top" nowrap>{@link #getWidth width}</td>
+ *       <td align="left" valign="top" nowrap>{@code int}</td>
  *       <td align="left" valign="top">The number of characters per line for the usage statement.</td>
  *     </tr>
  *   </table>
@@ -98,28 +98,28 @@ import org.jomc.modlet.DefaultModletProvider;
  *       <td align="left" scope="col" nowrap><b>Description</b></td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getCommandLineParser CommandLineParser}</td>
- *       <td align="left">Dependency on {@code 'org.apache.commons.cli.CommandLineParser'} {@code (org.apache.commons.cli.CommandLineParser)}.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getCommandLineParser CommandLineParser}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'Commons CLI - GNU Command Line Parser'} object of the {@code 'org.apache.commons.cli.CommandLineParser'} {@code (org.apache.commons.cli.CommandLineParser)} specification.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getCommands Commands}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Command'} {@code (org.jomc.cli.Command)} at specification level 1.0.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getCommands Commands}</td>
+ *       <td align="left" valign="top">Dependency on any object of the {@code 'JOMC CLI Command'} {@code (org.jomc.cli.Command)} specification at specification level 1.0.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getDebugOption DebugOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getDebugOption DebugOption}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Debug Option'} object of the {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getFailOnWarningsOption FailOnWarningsOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getFailOnWarningsOption FailOnWarningsOption}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Fail-On-Warnings Option'} object of the {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getLocale Locale}</td>
- *       <td align="left">Dependency on {@code 'java.util.Locale'} {@code (java.util.Locale)} at specification level 1.1 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getLocale Locale}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'default'} object of the {@code 'java.util.Locale'} {@code (java.util.Locale)} specification at specification level 1.1 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" nowrap>{@link #getVerboseOption VerboseOption}</td>
- *       <td align="left">Dependency on {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} at specification level 1.2 bound to an instance.</td>
+ *       <td align="left" valign="top" nowrap>{@link #getVerboseOption VerboseOption}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Verbose Option'} object of the {@code 'JOMC CLI Application Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *   </table>
  * </p>
