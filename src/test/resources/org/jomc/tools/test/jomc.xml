@@ -69,6 +69,27 @@
     </specification>
 
     <!-- *********************************************************************************************************** -->
+    <specification identifier="SingletonSpecification" class="Specification" classDeclaration="true"
+                   scope="Singleton" vendor="${project.organization.name}" version="${project.version}">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Test singleton specification.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <properties>
+        <property name="Property">
+          <documentation defaultLanguage="en">
+            <text language="en">Test property.</text>
+          </documentation>
+        </property>
+      </properties>
+    </specification>
+
+    <!-- *********************************************************************************************************** -->
     <specification identifier="SpecificationWithSourceFilesModel" class="SpecificationWithSourceFilesModel"
                    classDeclaration="true" vendor="${project.organization.name}" version="${project.version}">
 
@@ -226,6 +247,52 @@
       <dependencies>
         <dependency name="Locale" identifier="java.util.Locale" version="1.1" bound="false"/>
         <dependency name="Dependency" identifier="Specification" version="${project.version}" bound="false">
+          <properties>
+            <property name="Property">
+              <documentation defaultLanguage="en">
+                <text language="en">Test property.</text>
+              </documentation>
+            </property>
+          </properties>
+        </dependency>
+      </dependencies>
+      <properties>
+        <property name="property" value="TEST">
+          <documentation defaultLanguage="en">
+            <text language="en">Test property.</text>
+          </documentation>
+        </property>
+      </properties>
+      <messages>
+        <message name="message">
+          <template defaultLanguage="en">
+            <text language="en">TEST ''{0}''.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="test"/>
+          </arguments>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="ImplementationOfSingletonSpecification" class="ImplementationOfSingletonSpecification"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}" final="true">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Test implementation of test singleton specification.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="SingletonSpecification" version="${project.version}"/>
+      </specifications>
+      <dependencies>
+        <dependency name="Locale" identifier="java.util.Locale" version="1.1" bound="false"/>
+        <dependency name="Dependency" identifier="SingletonSpecification" version="${project.version}" bound="false">
           <properties>
             <property name="Property">
               <documentation defaultLanguage="en">
