@@ -255,6 +255,35 @@
             </property>
           </properties>
         </dependency>
+        <dependency name="BoundDependency" identifier="Specification" version="${project.version}" bound="true">
+          <properties>
+            <property name="Property">
+              <documentation defaultLanguage="en">
+                <text language="en">Test property.</text>
+              </documentation>
+            </property>
+          </properties>
+        </dependency>
+        <dependency name="NamedDependency" identifier="Specification" version="${project.version}"
+                    implementationName="${project.name}" bound="false">
+          <properties>
+            <property name="Property">
+              <documentation defaultLanguage="en">
+                <text language="en">Test property.</text>
+              </documentation>
+            </property>
+          </properties>
+        </dependency>
+        <dependency name="NamedBoundDependency" identifier="Specification" version="${project.version}"
+                    implementationName="${project.name}" bound="true">
+          <properties>
+            <property name="Property">
+              <documentation defaultLanguage="en">
+                <text language="en">Test property.</text>
+              </documentation>
+            </property>
+          </properties>
+        </dependency>
       </dependencies>
       <properties>
         <property name="property" value="TEST">
@@ -293,6 +322,35 @@
       <dependencies>
         <dependency name="Locale" identifier="java.util.Locale" version="1.1" bound="false"/>
         <dependency name="Dependency" identifier="SingletonSpecification" version="${project.version}" bound="false">
+          <properties>
+            <property name="Property">
+              <documentation defaultLanguage="en">
+                <text language="en">Test property.</text>
+              </documentation>
+            </property>
+          </properties>
+        </dependency>
+        <dependency name="BoundDependency" identifier="SingletonSpecification" version="${project.version}" bound="true">
+          <properties>
+            <property name="Property">
+              <documentation defaultLanguage="en">
+                <text language="en">Test property.</text>
+              </documentation>
+            </property>
+          </properties>
+        </dependency>
+        <dependency name="NamedDependency" identifier="SingletonSpecification" version="${project.version}"
+                    implementationName="${project.name}" bound="false">
+          <properties>
+            <property name="Property">
+              <documentation defaultLanguage="en">
+                <text language="en">Test property.</text>
+              </documentation>
+            </property>
+          </properties>
+        </dependency>
+        <dependency name="NamedBoundDependency" identifier="SingletonSpecification" version="${project.version}"
+                    implementationName="${project.name}" bound="true">
           <properties>
             <property name="Property">
               <documentation defaultLanguage="en">
