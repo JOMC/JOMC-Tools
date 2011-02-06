@@ -452,6 +452,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
             }
 
             marshaller.setSchema( context.createSchema( ModletObject.MODEL_PUBLIC_ID ) );
+            marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
 
             if ( commandLine.hasOption( this.getDocumentEncodingOption().getOpt() ) )
             {
