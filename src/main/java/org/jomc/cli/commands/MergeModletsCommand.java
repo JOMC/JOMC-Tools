@@ -368,7 +368,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
                 modletVendor = commandLine.getOptionValue( this.getModletVendorOption().getOpt() );
             }
 
-            for ( Iterator<Modlet> it = modlets.getModlet().iterator(); it.hasNext(); )
+            for ( final Iterator<Modlet> it = modlets.getModlet().iterator(); it.hasNext(); )
             {
                 if ( this.getApplicationModlet().equals( it.next().getName() ) )
                 {

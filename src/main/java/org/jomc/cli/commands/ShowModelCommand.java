@@ -389,7 +389,7 @@ public final class ShowModelCommand extends AbstractModelCommand
 
             }
 
-            Model displayModel = new Model();
+            final Model displayModel = new Model();
             displayModel.setIdentifier( model.getIdentifier() );
 
             boolean displayModules = true;
