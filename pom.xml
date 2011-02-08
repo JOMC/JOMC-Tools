@@ -139,6 +139,9 @@
                     <modletVendor>${project.organization.name}</modletVendor>
                     <modletVersion>${project.version}</modletVersion>
                   </transformer>
+                  <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+                    <resource>META-INF/sun-jaxb.episode</resource>
+                  </transformer>
                   <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
                     <file>${project.build.directory}/maven-shared-archive-resources/META-INF/LIZENZ.txt</file>
                     <resource>META-INF/LIZENZ.txt</resource>
