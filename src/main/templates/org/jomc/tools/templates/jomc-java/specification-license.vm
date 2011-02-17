@@ -1,6 +1,6 @@
 ##
-##   Copyright (c) 2009 The JOMC Project
-##   Copyright (c) 2005 Christian Schulte <schulte2005@users.sourceforge.net>
+##   Copyright (C) 2009 The JOMC Project
+##   Copyright (C) 2005 Christian Schulte <schulte2005@users.sourceforge.net>
 ##   All rights reserved.
 ##
 ##   Redistribution and use in source and binary forms, with or without
@@ -49,18 +49,18 @@ ${tool.getIndentation(0)}// <editor-fold defaultstate="collapsed" desc=" Generat
 ${tool.getIndentation(0)}/*
 #if($specification.getVendor())
 #if($specification.getCreateDate())
-${tool.getIndentation(0)} *   Copyright (c) $tool.getYears($specification.getCreateDate().toGregorianCalendar(), $calendar) $specification.getVendor()
+${tool.getIndentation(0)} *   Copyright (C) $tool.getYears($specification.getCreateDate().toGregorianCalendar(), $calendar) $specification.getVendor()
 #else
-${tool.getIndentation(0)} *   Copyright (c) $year $specification.getVendor()
+${tool.getIndentation(0)} *   Copyright (C) $year $specification.getVendor()
 #end
 #end
 #if($specification.getAuthors())
 #foreach($author in $specification.getAuthors().getAuthor())
 #if($author.getCreateDate())
-${tool.getIndentation(0)} *   Copyright (c) $tool.getYears($author.getCreateDate().toGregorianCalendar(), $calendar) $author.getName()#if($author.getMail()) <$author.getMail()>#end
+${tool.getIndentation(0)} *   Copyright (C) $tool.getYears($author.getCreateDate().toGregorianCalendar(), $calendar) $author.getName()#if($author.getMail()) <$author.getMail()>#end
 
 #else
-${tool.getIndentation(0)} *   Copyright (c) $year $author.getName()#if($author.getMail()) <$author.getMail()>#end
+${tool.getIndentation(0)} *   Copyright (C) $year $author.getName()#if($author.getMail()) <$author.getMail()>#end
 
 #end
 #if($author.getDocumentation())
