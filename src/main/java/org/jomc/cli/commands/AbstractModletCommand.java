@@ -1,8 +1,8 @@
 // SECTION-START[License Header]
 // <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
- *   Copyright (c) 2009 - 2011 The JOMC Project
- *   Copyright (c) 2005 - 2011 Christian Schulte <schulte2005@users.sourceforge.net>
+ *   Copyright (C) 2009 - 2011 The JOMC Project
+ *   Copyright (C) 2005 - 2011 Christian Schulte <schulte2005@users.sourceforge.net>
  *   All rights reserved.
  *
  *   Redistribution and use in source and binary forms, with or without
