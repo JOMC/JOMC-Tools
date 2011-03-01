@@ -87,6 +87,7 @@ ${tool.getIndentation(0)} *
 #if($specification.getAuthors())
 #foreach($author in $specification.getAuthors().getAuthor())
 ${tool.getIndentation(0)} * @author #if($author.getMail())<a href="mailto:$author.getMail()">#end$tool.getHtmlString($author.getName())#if($author.getMail())</a>#end#if($author.getVersion()) $tool.getHtmlString($author.getVersion())#end
+
 #end
 #end
 #set($D = "$")
