@@ -55,6 +55,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+import javax.activation.MimeType;
+import javax.activation.MimeTypeParseException;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.Template;
@@ -1068,13 +1070,13 @@ public class JomcTool
 
         try
         {
-            String javadoc = text.getValue();
+            String javadoc = "";
 
-            if ( javadoc != null )
+            if ( text.getValue() != null )
             {
                 final String indent = this.getIndentation( indentationLevel );
-                final BufferedReader reader = new BufferedReader( new StringReader( javadoc ) );
-                final StringBuilder builder = new StringBuilder( javadoc.length() );
+                final BufferedReader reader = new BufferedReader( new StringReader( text.getValue() ) );
+                final StringBuilder builder = new StringBuilder( text.getValue().length() );
 
                 String line;
                 while ( ( line = reader.readLine() ) != null )
@@ -1084,12 +1086,23 @@ public class JomcTool
 
                 }
 
-                javadoc = builder.length() == 0 ? "" : StringEscapeUtils.escapeHtml(
-                    builder.substring( this.getLineSeparator().length() + indent.length() + linePrefix.length() ) );
+                if ( builder.length() > 0 )
+                {
+                    javadoc =
+                        builder.substring( this.getLineSeparator().length() + indent.length() + linePrefix.length() );
 
+                    if ( !new MimeType( text.getType() ).match( "text/html" ) )
+                    {
+                        javadoc = StringEscapeUtils.escapeHtml( javadoc );
+                    }
+                }
             }
 
             return javadoc;
+        }
+        catch ( final MimeTypeParseException e )
+        {
+            throw new AssertionError( e );
         }
         catch ( final IOException e )
         {
