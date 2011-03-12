@@ -250,7 +250,7 @@ import org.jomc.tools.ClassFileProcessor;
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getApplicationTitle applicationTitle}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
- *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-03-01T17:10:02+0100</code></pre></td>
+ *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-03-12T06:12:10+0100</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getCannotProcessMessage cannotProcessMessage}</td>
@@ -1000,7 +1000,7 @@ public abstract class AbstractClassFileProcessorCommand extends AbstractJomcTool
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-03-01T17:10:02+0100</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-03-12T06:12:10+0100</code></pre></td>
      *     </tr>
      *   </table>
      * </p>
