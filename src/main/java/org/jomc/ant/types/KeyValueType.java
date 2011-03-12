@@ -97,13 +97,13 @@ public class KeyValueType<K, V> implements Cloneable
     /**
      * Sets the value of the {@code key} property.
      *
-     * @param value The new value of the {@code value} property.
+     * @param v The new value of the {@code value} property.
      *
      * @see #getValue()
      */
-    public final void setValue( final V value )
+    public final void setValue( final V v )
     {
-        this.value = value;
+        this.value = v;
     }
 
     /**
