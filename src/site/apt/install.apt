@@ -62,7 +62,7 @@ Installing JOMC Ant Tasks
 
 ---
   <path id="jomc-tools.classpath">
-    <fileset dir="${jomc.home}" includes="lib/ext/*.jar"/>
+    <fileset dir="${jomc.home}" includes="lib/jdk5/ext/*.jar"/>
     <fileset dir="${jomc.home}" includes="lib/tools/*.jar"/>
     <fileset dir="${jomc.home}" includes="lib/ant/*.jar"/>
   </path>
