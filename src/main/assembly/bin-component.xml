@@ -178,7 +178,7 @@
       <directory>${project.build.directory}/jomc-endorsed</directory>
       <fileMode>0555</fileMode>
       <directoryMode>0755</directoryMode>
-      <outputDirectory>/lib/endorsed</outputDirectory>
+      <outputDirectory>/lib/jdk5/endorsed</outputDirectory>
     </fileSet>
     <fileSet>
       <directory>${project.build.directory}/jomc-ant-tasks</directory>
@@ -280,7 +280,7 @@
       <directoryMode>0755</directoryMode>
       <fileMode>0555</fileMode>
       <scope>provided</scope>
-      <outputDirectory>/lib/ext</outputDirectory>
+      <outputDirectory>/lib/jdk5/ext</outputDirectory>
     </dependencySet>
     <dependencySet>
       <directoryMode>0755</directoryMode>

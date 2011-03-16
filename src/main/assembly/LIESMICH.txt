@@ -41,22 +41,22 @@
 
   JDK 1.5
 
-    Das 'lib/ext' Verzeichnis enthält JDK-Erweiterungen zur Einbindung
+    Das 'lib/jdk5/ext' Verzeichnis enthält JDK-Erweiterungen zur Einbindung
     über die 'java.ext.dirs' System-Eigenschaft oder einem entsprechenden
     Mechanismus.
 
-    Das 'lib/endorsed' Verzeichnis enthält Aktualisierungen von im JDK
+    Das 'lib/jdk5/endorsed' Verzeichnis enthält Aktualisierungen von im JDK
     enthaltenen Bibliotheken zur Einbindung über die 'java.endorsed.dirs'
     System-Eigenschaft oder einem entsprechenden Mechanismus. Die Verwendung
     dieser Aktualisierungen kann erforderlich werden, sollte es zu Problemen mit
     den im JDK enthaltenen XML-Parsern kommen.
 
-    export JOMC_OPTS="-Djava.ext.dirs='Pfad des lib/ext Verzeichnisses' \
-                      -Djava.endorsed.dirs='Pfad des lib/endorsed Verzeichnisses'"
+    export JOMC_OPTS="-Djava.ext.dirs=lib/jdk5/ext \
+                      -Djava.endorsed.dirs=lib/jdk5/endorsed"
 
     bin/jomc (Unix)
     bin/jomc.bat (Windows)
 
-    java -Djava.ext.dirs=lib/ext \
-         -Djava.endorsed.dirs=lib/endorsed \
+    java -Djava.ext.dirs=lib/jdk5/ext \
+         -Djava.endorsed.dirs=lib/jdk5/endorsed \
          -jar bin/${project.build.finalName}.jar

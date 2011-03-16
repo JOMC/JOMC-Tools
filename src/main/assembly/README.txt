@@ -42,21 +42,21 @@
 
   JDK 1.5
 
-    The 'lib/ext' directory contains JDK extensions to setup using the
+    The 'lib/jdk5/ext' directory contains JDK extensions to setup using the
     'java.ext.dirs' system property or another mechanism compatible to the JDK
     in use.
 
-    The 'lib/endorsed' directory contains updates to libraries part of the JDK
-    to setup via the 'java.endorsed.dirs' system property or another mechanism
-    compatible to the JDK in use. Use of these libraries may become necessary
-    when encountering problems with the XML parsers of the JDK.
+    The 'lib/jdk5/endorsed' directory contains updates to libraries part of the
+    JDK to setup via the 'java.endorsed.dirs' system property or another
+    mechanism compatible to the JDK in use. Use of these libraries may become
+    necessary when encountering problems with the XML parsers of the JDK.
 
-    export JOMC_OPTS="-Djava.ext.dirs='path to lib/ext directory' \
-                      -Djava.endorsed.dirs='path to lib/endorsed directory'"
+    export JOMC_OPTS="-Djava.ext.dirs=lib/jdk5/ext \
+                      -Djava.endorsed.dirs=lib/jdk5/endorsed"
 
     bin/jomc (Unix)
     bin/jomc.bat (Windows)
 
-    java -Djava.ext.dirs=lib/ext \
-         -Djava.endorsed.dirs=lib/endorsed \
+    java -Djava.ext.dirs=lib/jdk5/ext \
+         -Djava.endorsed.dirs=lib/jdk5/endorsed \
          -jar bin/${project.build.finalName}.jar
