@@ -47,7 +47,13 @@ abstract class Messages
 
     /** Constant for the name of the resource bundle backing the tasks. */
     private static final String RESOURCE_BUNDLE_NAME =
-        Messages.class.getPackage().getName().replace( '.', '/' ) + "/messages";
+        Messages.class.getPackage().getName().replace( '.', '/' ) + "/Messages";
+
+    /** Creates a new {@code Messages} instance. */
+    Messages()
+    {
+        super();
+    }
 
     /**
      * Gets a message for a given key from the resource bundle backing the tasks formatted using the given arguments.
