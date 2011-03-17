@@ -34,11 +34,9 @@ package org.jomc.ant;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ResourceBundle;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.util.JAXBSource;
@@ -156,7 +154,7 @@ public final class CommitClassesTask extends ClassFileProcessorTask
     {
         try
         {
-            this.log( getMessage( "committingModelObjects", this.getModel() ) );
+            this.log( Messages.getMessage( "committingModelObjects", this.getModel() ) );
 
             final ProjectClassLoader classLoader = this.newProjectClassLoader();
             final ModelContext context = this.newModelContext( classLoader );
@@ -231,24 +229,24 @@ public final class CommitClassesTask extends ClassFileProcessorTask
             }
             else
             {
-                throw new ModelException( getMessage( "invalidModel", this.getModel() ) );
+                throw new ModelException( Messages.getMessage( "invalidModel", this.getModel() ) );
             }
         }
         catch ( final IOException e )
         {
-            throw new ClassProcessingException( getMessage( e ), e, this.getLocation() );
+            throw new ClassProcessingException( Messages.getMessage( e ), e, this.getLocation() );
         }
         catch ( final JAXBException e )
         {
-            throw new ClassProcessingException( getMessage( e ), e, this.getLocation() );
+            throw new ClassProcessingException( Messages.getMessage( e ), e, this.getLocation() );
         }
         catch ( final TransformerConfigurationException e )
         {
-            throw new ClassProcessingException( getMessage( e ), e, this.getLocation() );
+            throw new ClassProcessingException( Messages.getMessage( e ), e, this.getLocation() );
         }
         catch ( final ModelException e )
         {
-            throw new ClassProcessingException( getMessage( e ), e, this.getLocation() );
+            throw new ClassProcessingException( Messages.getMessage( e ), e, this.getLocation() );
         }
     }
 
@@ -261,18 +259,6 @@ public final class CommitClassesTask extends ClassFileProcessorTask
             this.classesDirectory != null ? new File( this.classesDirectory.getAbsolutePath() ) : null;
 
         return clone;
-    }
-
-    private static String getMessage( final String key, final Object... args )
-    {
-        return MessageFormat.format( ResourceBundle.getBundle(
-            CommitClassesTask.class.getName().replace( '.', '/' ) ).getString( key ), args );
-
-    }
-
-    private static String getMessage( final Throwable t )
-    {
-        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

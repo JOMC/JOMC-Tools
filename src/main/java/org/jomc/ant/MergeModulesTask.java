@@ -35,13 +35,11 @@ package org.jomc.ant;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStreamWriter;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.Set;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
@@ -353,7 +351,7 @@ public final class MergeModulesTask extends JomcModelTask
     {
         try
         {
-            this.log( getMessage( "mergingModules", this.getModel() ) );
+            this.log( Messages.getMessage( "mergingModules", this.getModel() ) );
 
             final ProjectClassLoader classLoader = this.newProjectClassLoader();
             final ModelContext context = this.newModelContext( classLoader );
@@ -368,11 +366,11 @@ public final class MergeModulesTask extends JomcModelTask
                 if ( !this.isModuleIncluded( module ) || this.isModuleExcluded( module ) )
                 {
                     it.remove();
-                    this.log( getMessage( "excludingModule", module.getName() ) );
+                    this.log( Messages.getMessage( "excludingModule", module.getName() ) );
                 }
                 else
                 {
-                    this.log( getMessage( "includingModule", module.getName() ) );
+                    this.log( Messages.getMessage( "includingModule", module.getName() ) );
                 }
             }
 
@@ -405,39 +403,41 @@ public final class MergeModulesTask extends JomcModelTask
                     }
                     else
                     {
-                        throw new BuildException( getMessage( "illegalTransformationResult", r.getLocation() ),
+                        throw new BuildException( Messages.getMessage( "illegalTransformationResult", r.getLocation() ),
                                                   this.getLocation() );
 
                     }
                 }
             }
 
-            this.log( getMessage( "writing", this.getModuleFile().getAbsolutePath(), this.getModuleEncoding() ) );
+            this.log( Messages.getMessage( "writingEncoded", this.getModuleFile().getAbsolutePath(),
+                                           this.getModuleEncoding() ) );
+
             marshaller.setProperty( Marshaller.JAXB_ENCODING, this.getModuleEncoding() );
             marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
             marshaller.marshal( new ObjectFactory().createModule( mergedModule ), this.getModuleFile() );
         }
         catch ( final JAXBException e )
         {
-            String message = getMessage( e );
+            String message = Messages.getMessage( e );
             if ( message == null )
             {
-                message = getMessage( e.getLinkedException() );
+                message = Messages.getMessage( e.getLinkedException() );
             }
 
             throw new BuildException( message, e, this.getLocation() );
         }
         catch ( final TransformerConfigurationException e )
         {
-            throw new BuildException( getMessage( e ), e, this.getLocation() );
+            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }
         catch ( final TransformerException e )
         {
-            throw new BuildException( getMessage( e ), e, this.getLocation() );
+            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }
         catch ( final ModelException e )
         {
-            throw new BuildException( getMessage( e ), e, this.getLocation() );
+            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }
     }
 
@@ -536,18 +536,6 @@ public final class MergeModulesTask extends JomcModelTask
         }
 
         return clone;
-    }
-
-    private static String getMessage( final String key, final Object... args )
-    {
-        return MessageFormat.format( ResourceBundle.getBundle(
-            MergeModulesTask.class.getName().replace( '.', '/' ) ).getString( key ), args );
-
-    }
-
-    private static String getMessage( final Throwable t )
-    {
-        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

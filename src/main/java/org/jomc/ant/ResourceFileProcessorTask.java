@@ -32,9 +32,7 @@
  */
 package org.jomc.ant;
 
-import java.text.MessageFormat;
 import java.util.Locale;
-import java.util.ResourceBundle;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.jomc.tools.ResourceFileProcessor;
@@ -168,11 +166,11 @@ public class ResourceFileProcessorTask extends JomcToolTask
         }
         catch ( final InstantiationException e )
         {
-            throw new BuildException( getMessage( e ), e, this.getLocation() );
+            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }
         catch ( final IllegalAccessException e )
         {
-            throw new BuildException( getMessage( e ), e, this.getLocation() );
+            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }
     }
 
@@ -189,11 +187,11 @@ public class ResourceFileProcessorTask extends JomcToolTask
         if ( this.isResourceProcessingEnabled() )
         {
             this.processResourceFiles();
-            this.log( getMessage( "resourceProcessingSuccess" ) );
+            this.log( Messages.getMessage( "resourceProcessingSuccess" ) );
         }
         else
         {
-            this.log( getMessage( "resourceProcessingDisabled" ) );
+            this.log( Messages.getMessage( "resourceProcessingDisabled" ) );
         }
     }
 
@@ -206,7 +204,9 @@ public class ResourceFileProcessorTask extends JomcToolTask
      */
     public void processResourceFiles() throws BuildException
     {
-        this.log( getMessage( "unimplementedTask", this.getClass().getName() ), Project.MSG_ERR );
+        this.log( Messages.getMessage( "unimplementedTask", this.getClass().getName(), "processResourceFiles" ),
+                  Project.MSG_ERR );
+
     }
 
     /** {@inheritDoc} */
@@ -214,18 +214,6 @@ public class ResourceFileProcessorTask extends JomcToolTask
     public ResourceFileProcessorTask clone()
     {
         return (ResourceFileProcessorTask) super.clone();
-    }
-
-    private static String getMessage( final String key, final Object... args )
-    {
-        return MessageFormat.format( ResourceBundle.getBundle(
-            ResourceFileProcessorTask.class.getName().replace( '.', '/' ) ).getString( key ), args );
-
-    }
-
-    private static String getMessage( final Throwable t )
-    {
-        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

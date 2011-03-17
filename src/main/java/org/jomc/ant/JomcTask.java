@@ -43,14 +43,12 @@ import java.net.SocketTimeoutException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -521,7 +519,7 @@ public class JomcTask extends Task
     public void preExecuteTask() throws BuildException
     {
         this.logSeparator();
-        this.log( getMessage( "title" ) );
+        this.log( Messages.getMessage( "title" ) );
         this.logSeparator();
 
         ModelContext.setModelContextClassName( this.getModelContextClassName() );
@@ -544,7 +542,9 @@ public class JomcTask extends Task
      */
     public void executeTask() throws BuildException
     {
-        this.getProject().log( getMessage( "unimplementedTask", this.getClass().getName() ), Project.MSG_WARN );
+        this.getProject().log( Messages.getMessage( "unimplementedTask", this.getClass().getName(), "executeTask" ),
+                               Project.MSG_WARN );
+
     }
 
     /**
@@ -655,10 +655,10 @@ public class JomcTask extends Task
         }
         catch ( final MalformedURLException e )
         {
-            String m = getMessage( e );
+            String m = Messages.getMessage( e );
             m = m == null ? "" : " " + m;
 
-            throw new BuildException( getMessage( "malformedLocation", location, m ), e, this.getLocation() );
+            throw new BuildException( Messages.getMessage( "malformedLocation", location, m ), e, this.getLocation() );
         }
     }
 
@@ -711,10 +711,10 @@ public class JomcTask extends Task
         }
         catch ( final MalformedURLException e )
         {
-            String m = getMessage( e );
+            String m = Messages.getMessage( e );
             m = m == null ? "" : " " + m;
 
-            throw new BuildException( getMessage( "malformedLocation", location, m ), e, this.getLocation() );
+            throw new BuildException( Messages.getMessage( "malformedLocation", location, m ), e, this.getLocation() );
         }
     }
 
@@ -752,7 +752,7 @@ public class JomcTask extends Task
                     {
                         if ( getProject() != null )
                         {
-                            getProject().log( getMessage( exception ), exception, Project.MSG_WARN );
+                            getProject().log( Messages.getMessage( exception ), exception, Project.MSG_WARN );
                         }
                     }
 
@@ -820,11 +820,11 @@ public class JomcTask extends Task
             }
             else if ( resource.isOptional() )
             {
-                this.log( getMessage( "transformerNotFound", resource.getLocation() ), Project.MSG_WARN );
+                this.log( Messages.getMessage( "transformerNotFound", resource.getLocation() ), Project.MSG_WARN );
             }
             else
             {
-                throw new BuildException( getMessage( "transformerNotFound", resource.getLocation() ),
+                throw new BuildException( Messages.getMessage( "transformerNotFound", resource.getLocation() ),
                                           this.getLocation() );
 
             }
@@ -880,12 +880,14 @@ public class JomcTask extends Task
             }
             else if ( propertiesResourceType.isOptional() )
             {
-                this.log( getMessage( "propertiesNotFound", propertiesResourceType.getLocation() ), Project.MSG_WARN );
+                this.log( Messages.getMessage( "propertiesNotFound", propertiesResourceType.getLocation() ),
+                          Project.MSG_WARN );
+
             }
             else
             {
-                throw new BuildException( getMessage( "propertiesNotFound", propertiesResourceType.getLocation() ),
-                                          this.getLocation() );
+                throw new BuildException( Messages.getMessage(
+                    "propertiesNotFound", propertiesResourceType.getLocation() ), this.getLocation() );
 
             }
         }
@@ -893,7 +895,7 @@ public class JomcTask extends Task
         {
             if ( propertiesResourceType.isOptional() )
             {
-                this.getProject().log( getMessage( e ), e, Project.MSG_WARN );
+                this.getProject().log( Messages.getMessage( e ), e, Project.MSG_WARN );
             }
             else
             {
@@ -904,7 +906,7 @@ public class JomcTask extends Task
         {
             if ( propertiesResourceType.isOptional() )
             {
-                this.getProject().log( getMessage( e ), e, Project.MSG_WARN );
+                this.getProject().log( Messages.getMessage( e ), e, Project.MSG_WARN );
             }
             else
             {
@@ -988,7 +990,7 @@ public class JomcTask extends Task
 
         if ( value == null )
         {
-            throw new BuildException( getMessage( "mandatoryAttribute", attributeName ), this.getLocation() );
+            throw new BuildException( Messages.getMessage( "mandatoryAttribute", attributeName ), this.getLocation() );
         }
     }
 
@@ -1072,7 +1074,7 @@ public class JomcTask extends Task
     /** Logs a separator string. */
     public final void logSeparator()
     {
-        this.log( getMessage( "separator" ) );
+        this.log( Messages.getMessage( "separator" ) );
     }
 
     /**
@@ -1113,7 +1115,7 @@ public class JomcTask extends Task
         }
         catch ( final IOException e )
         {
-            throw new BuildException( getMessage( e ), e, this.getLocation() );
+            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }
     }
 
@@ -1188,14 +1190,14 @@ public class JomcTask extends Task
         }
         catch ( final ModelException e )
         {
-            throw new BuildException( getMessage( e ), e, this.getLocation() );
+            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }
         catch ( final JAXBException e )
         {
-            String message = getMessage( e );
+            String message = Messages.getMessage( e );
             if ( message == null && e.getLinkedException() != null )
             {
-                message = getMessage( e.getLinkedException() );
+                message = Messages.getMessage( e.getLinkedException() );
             }
 
             throw new BuildException( message, e, this.getLocation() );
@@ -1220,18 +1222,6 @@ public class JomcTask extends Task
         {
             throw new AssertionError( e );
         }
-    }
-
-    private static String getMessage( final String key, final Object... args )
-    {
-        return MessageFormat.format( ResourceBundle.getBundle(
-            JomcTask.class.getName().replace( '.', '/' ) ).getString( key ), args );
-
-    }
-
-    private static String getMessage( final Throwable t )
-    {
-        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

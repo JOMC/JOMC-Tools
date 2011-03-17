@@ -40,13 +40,11 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.Set;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
@@ -173,15 +171,15 @@ public class ProjectClassLoader extends URLClassLoader
         }
         catch ( final IOException e )
         {
-            this.getProject().log( getMessage( e ), Project.MSG_ERR );
+            this.getProject().log( Messages.getMessage( e ), Project.MSG_ERR );
             return null;
         }
         catch ( final JAXBException e )
         {
-            String message = getMessage( e );
+            String message = Messages.getMessage( e );
             if ( message == null && e.getLinkedException() != null )
             {
-                message = getMessage( e.getLinkedException() );
+                message = Messages.getMessage( e.getLinkedException() );
             }
 
             this.getProject().log( message, Project.MSG_ERR );
@@ -189,7 +187,7 @@ public class ProjectClassLoader extends URLClassLoader
         }
         catch ( final ModelException e )
         {
-            this.getProject().log( getMessage( e ), Project.MSG_ERR );
+            this.getProject().log( Messages.getMessage( e ), Project.MSG_ERR );
             return null;
         }
     }
@@ -227,7 +225,7 @@ public class ProjectClassLoader extends URLClassLoader
                     }
                     catch ( final IOException e )
                     {
-                        getProject().log( getMessage( e ), Project.MSG_ERR );
+                        getProject().log( Messages.getMessage( e ), Project.MSG_ERR );
                         return null;
                     }
                 }
@@ -252,15 +250,15 @@ public class ProjectClassLoader extends URLClassLoader
                     }
                     catch ( final IOException e )
                     {
-                        getProject().log( getMessage( e ), Project.MSG_ERR );
+                        getProject().log( Messages.getMessage( e ), Project.MSG_ERR );
                         return null;
                     }
                     catch ( final JAXBException e )
                     {
-                        String message = getMessage( e );
+                        String message = Messages.getMessage( e );
                         if ( message == null && e.getLinkedException() != null )
                         {
-                            message = getMessage( e.getLinkedException() );
+                            message = Messages.getMessage( e.getLinkedException() );
                         }
 
                         getProject().log( message, Project.MSG_ERR );
@@ -268,7 +266,7 @@ public class ProjectClassLoader extends URLClassLoader
                     }
                     catch ( final ModelException e )
                     {
-                        getProject().log( getMessage( e ), Project.MSG_ERR );
+                        getProject().log( Messages.getMessage( e ), Project.MSG_ERR );
                         return null;
                     }
                 }
@@ -623,8 +621,8 @@ public class ProjectClassLoader extends URLClassLoader
                 else
                 {
                     this.getExcludedProviders().add( line.toString().trim() );
-                    this.getProject().log( getMessage( "providerExclusion", resource.toExternalForm(),
-                                                       line.toString().trim() ), Project.MSG_DEBUG );
+                    this.getProject().log( Messages.getMessage( "providerExclusion", resource.toExternalForm(),
+                                                                line.toString().trim() ), Project.MSG_DEBUG );
 
                 }
             }
@@ -700,8 +698,8 @@ public class ProjectClassLoader extends URLClassLoader
                         it.remove();
                         filtered = true;
                         this.getExcludedModlets().getModlet().add( m );
-                        this.getProject().log( getMessage( "modletExclusion", resource.toExternalForm(), m.getName() ),
-                                               Project.MSG_DEBUG );
+                        this.getProject().log( Messages.getMessage( "modletExclusion", resource.toExternalForm(),
+                                                                    m.getName() ), Project.MSG_DEBUG );
 
                         continue;
                     }
@@ -751,7 +749,7 @@ public class ProjectClassLoader extends URLClassLoader
                 }
                 else
                 {
-                    this.getProject().log( getMessage( "schemaExclusion", resourceInfo, s.getPublicId() ),
+                    this.getProject().log( Messages.getMessage( "schemaExclusion", resourceInfo, s.getPublicId() ),
                                            Project.MSG_DEBUG );
 
                     filteredSchemas = true;
@@ -776,7 +774,7 @@ public class ProjectClassLoader extends URLClassLoader
                 }
                 else
                 {
-                    this.getProject().log( getMessage( "serviceExclusion", resourceInfo, s.getClazz() ),
+                    this.getProject().log( Messages.getMessage( "serviceExclusion", resourceInfo, s.getClazz() ),
                                            Project.MSG_DEBUG );
 
                     filteredServices = true;
@@ -790,18 +788,6 @@ public class ProjectClassLoader extends URLClassLoader
         }
 
         return filteredSchemas || filteredServices;
-    }
-
-    private static String getMessage( final String key, final Object... args )
-    {
-        return MessageFormat.format( ResourceBundle.getBundle(
-            ProjectClassLoader.class.getName().replace( '.', '/' ) ).getString( key ), args );
-
-    }
-
-    private static String getMessage( final Throwable t )
-    {
-        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

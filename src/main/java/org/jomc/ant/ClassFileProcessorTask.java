@@ -32,8 +32,6 @@
  */
 package org.jomc.ant;
 
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.jomc.tools.ClassFileProcessor;
@@ -132,11 +130,11 @@ public class ClassFileProcessorTask extends JomcToolTask
         }
         catch ( final InstantiationException e )
         {
-            throw new BuildException( getMessage( e ), e, this.getLocation() );
+            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }
         catch ( final IllegalAccessException e )
         {
-            throw new BuildException( getMessage( e ), e, this.getLocation() );
+            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }
     }
 
@@ -153,11 +151,11 @@ public class ClassFileProcessorTask extends JomcToolTask
         if ( this.isClassProcessingEnabled() )
         {
             this.processClassFiles();
-            this.log( getMessage( "classProcessingSuccess" ) );
+            this.log( Messages.getMessage( "classProcessingSuccess" ) );
         }
         else
         {
-            this.log( getMessage( "classProcessingDisabled" ) );
+            this.log( Messages.getMessage( "classProcessingDisabled" ) );
         }
     }
 
@@ -170,7 +168,9 @@ public class ClassFileProcessorTask extends JomcToolTask
      */
     public void processClassFiles() throws BuildException
     {
-        this.log( getMessage( "unimplementedTask", this.getClass().getName() ), Project.MSG_ERR );
+        this.log( Messages.getMessage( "unimplementedTask", this.getClass().getName(), "processClassFiles" ),
+                  Project.MSG_ERR );
+
     }
 
     /** {@inheritDoc} */
@@ -178,18 +178,6 @@ public class ClassFileProcessorTask extends JomcToolTask
     public ClassFileProcessorTask clone()
     {
         return (ClassFileProcessorTask) super.clone();
-    }
-
-    private static String getMessage( final String key, final Object... args )
-    {
-        return MessageFormat.format( ResourceBundle.getBundle(
-            ClassFileProcessorTask.class.getName().replace( '.', '/' ) ).getString( key ), args );
-
-    }
-
-    private static String getMessage( final Throwable t )
-    {
-        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

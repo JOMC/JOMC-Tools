@@ -39,8 +39,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.util.JAXBSource;
@@ -195,7 +193,7 @@ public final class ShowModelTask extends JomcModelTask
 
             if ( s == null )
             {
-                this.log( getMessage( "specificationNotFound", this.getSpecification() ), Project.MSG_WARN );
+                this.log( Messages.getMessage( "specificationNotFound", this.getSpecification() ), Project.MSG_WARN );
             }
         }
 
@@ -257,7 +255,7 @@ public final class ShowModelTask extends JomcModelTask
 
             if ( i == null )
             {
-                this.log( getMessage( "implementationNotFound", this.getImplementation() ), Project.MSG_WARN );
+                this.log( Messages.getMessage( "implementationNotFound", this.getImplementation() ), Project.MSG_WARN );
             }
         }
 
@@ -319,7 +317,7 @@ public final class ShowModelTask extends JomcModelTask
 
             if ( m == null )
             {
-                this.log( getMessage( "moduleNotFound", this.getModule() ), Project.MSG_WARN );
+                this.log( Messages.getMessage( "moduleNotFound", this.getModule() ), Project.MSG_WARN );
             }
         }
 
@@ -371,14 +369,14 @@ public final class ShowModelTask extends JomcModelTask
 
             if ( this.getModelFile() != null )
             {
-                this.log( getMessage( "writing", this.getModel(), this.getModelFile().getAbsolutePath() ),
-                          Project.MSG_INFO );
+                this.log( Messages.getMessage( "writingModelObjects", this.getModel(),
+                                               this.getModelFile().getAbsolutePath() ), Project.MSG_INFO );
 
                 marshaller.marshal( new ObjectFactory().createModel( displayModel ), this.getModelFile() );
             }
             else
             {
-                this.log( getMessage( "showing", this.getModel() ), Project.MSG_INFO );
+                this.log( Messages.getMessage( "showingModelObjects", this.getModel() ), Project.MSG_INFO );
 
                 final StringWriter writer = new StringWriter();
                 marshaller.marshal( new ObjectFactory().createModel( displayModel ), writer );
@@ -394,21 +392,21 @@ public final class ShowModelTask extends JomcModelTask
         }
         catch ( final IOException e )
         {
-            throw new BuildException( getMessage( e ), e, this.getLocation() );
+            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }
         catch ( final JAXBException e )
         {
-            String message = getMessage( e );
+            String message = Messages.getMessage( e );
             if ( message == null )
             {
-                message = getMessage( e.getLinkedException() );
+                message = Messages.getMessage( e.getLinkedException() );
             }
 
             throw new BuildException( message, e, this.getLocation() );
         }
         catch ( final ModelException e )
         {
-            throw new BuildException( getMessage( e ), e, this.getLocation() );
+            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }
     }
 
@@ -417,18 +415,6 @@ public final class ShowModelTask extends JomcModelTask
     public ShowModelTask clone()
     {
         return (ShowModelTask) super.clone();
-    }
-
-    private static String getMessage( final String key, final Object... args )
-    {
-        return MessageFormat.format( ResourceBundle.getBundle(
-            ShowModelTask.class.getName().replace( '.', '/' ) ).getString( key ), args );
-
-    }
-
-    private static String getMessage( final Throwable t )
-    {
-        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

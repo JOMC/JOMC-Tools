@@ -34,13 +34,11 @@ package org.jomc.ant;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -338,7 +336,7 @@ public class JomcToolTask extends JomcModelTask
     {
         if ( this.locale != null )
         {
-            throw new BuildException( getMessage( "multipleElements", "locale" ), this.getLocation() );
+            throw new BuildException( Messages.getMessage( "multipleElements", "locale" ), this.getLocation() );
         }
 
         this.locale = new LocaleType();
@@ -400,7 +398,7 @@ public class JomcToolTask extends JomcModelTask
 
             if ( s == null )
             {
-                this.log( getMessage( "specificationNotFound", this.getSpecification() ), Project.MSG_WARN );
+                this.log( Messages.getMessage( "specificationNotFound", this.getSpecification() ), Project.MSG_WARN );
             }
         }
 
@@ -462,7 +460,7 @@ public class JomcToolTask extends JomcModelTask
 
             if ( i == null )
             {
-                this.log( getMessage( "implementationNotFound", this.getImplementation() ), Project.MSG_WARN );
+                this.log( Messages.getMessage( "implementationNotFound", this.getImplementation() ), Project.MSG_WARN );
             }
         }
 
@@ -524,7 +522,7 @@ public class JomcToolTask extends JomcModelTask
 
             if ( m == null )
             {
-                this.log( getMessage( "moduleNotFound", this.getModule() ), Project.MSG_WARN );
+                this.log( Messages.getMessage( "moduleNotFound", this.getModule() ), Project.MSG_WARN );
             }
         }
 
@@ -827,7 +825,9 @@ public class JomcToolTask extends JomcModelTask
 
                 if ( url == null )
                 {
-                    this.log( getMessage( "templateLocationNotFound", this.getTemplateLocation() ), Project.MSG_WARN );
+                    this.log( Messages.getMessage( "templateLocationNotFound", this.getTemplateLocation() ),
+                              Project.MSG_WARN );
+
                 }
             }
 
@@ -841,7 +841,7 @@ public class JomcToolTask extends JomcModelTask
         }
         catch ( final IOException e )
         {
-            throw new BuildException( getMessage( e ), e, this.getLocation() );
+            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }
     }
 
@@ -873,18 +873,6 @@ public class JomcToolTask extends JomcModelTask
         }
 
         return clone;
-    }
-
-    private static String getMessage( final String key, final Object... args )
-    {
-        return MessageFormat.format( ResourceBundle.getBundle(
-            JomcToolTask.class.getName().replace( '.', '/' ) ).getString( key ), args );
-
-    }
-
-    private static String getMessage( final Throwable t )
-    {
-        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

@@ -34,8 +34,6 @@ package org.jomc.ant;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.util.JAXBSource;
@@ -112,7 +110,7 @@ public final class ManageSourcesTask extends SourceFileProcessorTask
     {
         try
         {
-            this.log( getMessage( "managingSources", this.getModel() ) );
+            this.log( Messages.getMessage( "managingSources", this.getModel() ) );
 
             final ProjectClassLoader classLoader = this.newProjectClassLoader();
             final ModelContext context = this.newModelContext( classLoader );
@@ -153,20 +151,20 @@ public final class ManageSourcesTask extends SourceFileProcessorTask
             }
             else
             {
-                throw new ModelException( getMessage( "invalidModel", this.getModel() ) );
+                throw new ModelException( Messages.getMessage( "invalidModel", this.getModel() ) );
             }
         }
         catch ( final IOException e )
         {
-            throw new SourceProcessingException( getMessage( e ), e, this.getLocation() );
+            throw new SourceProcessingException( Messages.getMessage( e ), e, this.getLocation() );
         }
         catch ( final JAXBException e )
         {
-            throw new SourceProcessingException( getMessage( e ), e, this.getLocation() );
+            throw new SourceProcessingException( Messages.getMessage( e ), e, this.getLocation() );
         }
         catch ( final ModelException e )
         {
-            throw new SourceProcessingException( getMessage( e ), e, this.getLocation() );
+            throw new SourceProcessingException( Messages.getMessage( e ), e, this.getLocation() );
         }
     }
 
@@ -179,18 +177,6 @@ public final class ManageSourcesTask extends SourceFileProcessorTask
             this.sourcesDirectory != null ? new File( this.sourcesDirectory.getAbsolutePath() ) : null;
 
         return clone;
-    }
-
-    private static String getMessage( final String key, final Object... args )
-    {
-        return MessageFormat.format( ResourceBundle.getBundle(
-            ManageSourcesTask.class.getName().replace( '.', '/' ) ).getString( key ), args );
-
-    }
-
-    private static String getMessage( final Throwable t )
-    {
-        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

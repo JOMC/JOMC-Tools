@@ -32,8 +32,6 @@
  */
 package org.jomc.ant;
 
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
 import org.apache.tools.ant.BuildException;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
@@ -65,7 +63,7 @@ public final class ValidateModelTask extends JomcModelTask
     {
         try
         {
-            this.log( getMessage( "validatingModel", this.getModel() ) );
+            this.log( Messages.getMessage( "validatingModel", this.getModel() ) );
 
             final ClassLoader classLoader = this.newProjectClassLoader();
             final ModelContext context = this.newModelContext( classLoader );
@@ -75,14 +73,14 @@ public final class ValidateModelTask extends JomcModelTask
 
             if ( !report.isModelValid() )
             {
-                throw new BuildException( getMessage( "modelValidationFailure" ), this.getLocation() );
+                throw new BuildException( Messages.getMessage( "modelValidationFailure" ), this.getLocation() );
             }
 
-            this.log( getMessage( "modelValidationSuccess" ) );
+            this.log( Messages.getMessage( "modelValidationSuccess" ) );
         }
         catch ( final ModelException e )
         {
-            throw new BuildException( getMessage( e ), e, this.getLocation() );
+            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }
     }
 
@@ -91,18 +89,6 @@ public final class ValidateModelTask extends JomcModelTask
     public ValidateModelTask clone()
     {
         return (ValidateModelTask) super.clone();
-    }
-
-    private static String getMessage( final String key, final Object... args )
-    {
-        return MessageFormat.format( ResourceBundle.getBundle(
-            ValidateModelTask.class.getName().replace( '.', '/' ) ).getString( key ), args );
-
-    }
-
-    private static String getMessage( final Throwable t )
-    {
-        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }
