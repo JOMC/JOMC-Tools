@@ -33,7 +33,6 @@
 package org.jomc.mojo;
 
 import java.io.File;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.util.JAXBSource;
@@ -96,12 +95,12 @@ public abstract class AbstractSourcesManageMojo extends AbstractJomcMojo
             }
             else
             {
-                throw new MojoExecutionException( getMessage( "failed" ) );
+                throw new MojoExecutionException( Messages.getMessage( "sourceProcessingFailure" ) );
             }
         }
         else if ( this.isLoggable( Level.INFO ) )
         {
-            this.log( Level.INFO, getMessage( "disabled" ), null );
+            this.log( Level.INFO, Messages.getMessage( "sourceProcessingDisabled" ), null );
         }
     }
 
@@ -131,12 +130,5 @@ public abstract class AbstractSourcesManageMojo extends AbstractJomcMojo
      * @throws MojoExecutionException if getting the directory fails.
      */
     protected abstract File getSourcesDirectory() throws MojoExecutionException;
-
-    private static String getMessage( final String key )
-    {
-        return ResourceBundle.getBundle(
-            AbstractSourcesManageMojo.class.getName().replace( '.', '/' ) ).getString( key );
-
-    }
 
 }

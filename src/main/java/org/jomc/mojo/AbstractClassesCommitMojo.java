@@ -33,10 +33,8 @@
 package org.jomc.mojo;
 
 import java.io.File;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.util.JAXBSource;
@@ -246,12 +244,12 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
             }
             else
             {
-                throw new MojoExecutionException( getMessage( "failed" ) );
+                throw new MojoExecutionException( Messages.getMessage( "classFileProcessingFailure" ) );
             }
         }
         else if ( this.isLoggable( Level.INFO ) )
         {
-            this.log( Level.INFO, getMessage( "disabled" ), null );
+            this.log( Level.INFO, Messages.getMessage( "classFileProcessingDisabled" ), null );
         }
     }
 
@@ -281,12 +279,5 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
      * @throws MojoExecutionException if getting the directory fails.
      */
     protected abstract File getClassesDirectory() throws MojoExecutionException;
-
-    private static String getMessage( final String key, final Object... args )
-    {
-        return MessageFormat.format( ResourceBundle.getBundle(
-            AbstractClassesCommitMojo.class.getName().replace( '.', '/' ) ).getString( key ), args );
-
-    }
 
 }

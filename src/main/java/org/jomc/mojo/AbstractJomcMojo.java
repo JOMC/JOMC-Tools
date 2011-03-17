@@ -45,7 +45,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLConnection;
-import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -54,7 +53,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
-import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBException;
@@ -561,7 +559,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( this.isLoggable( Level.INFO ) )
             {
-                this.log( Level.INFO, getMessage( "title" ), null );
+                this.log( Level.INFO, Messages.getMessage( "title" ), null );
             }
 
             if ( this.isExecutionPermitted() )
@@ -570,12 +568,12 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
             else if ( this.isLoggable( Level.INFO ) )
             {
-                this.log( Level.INFO, getMessage( "executionSuppressed", this.getExecutionStrategy() ), null );
+                this.log( Level.INFO, Messages.getMessage( "executionSuppressed", this.getExecutionStrategy() ), null );
             }
         }
         catch ( final Exception e )
         {
-            throw new MojoExecutionException( getMessage( e ), e );
+            throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
         finally
         {
@@ -627,7 +625,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 if ( r.getLocation() == null )
                 {
-                    throw new MojoFailureException( getMessage( "mandatoryParameter", "location" ) );
+                    throw new MojoFailureException( Messages.getMessage( "mandatoryParameter", "location" ) );
                 }
 
                 if ( r instanceof PropertiesResourceType )
@@ -636,7 +634,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
                     if ( !PropertiesResourceType.isFormatSupported( p.getFormat() ) )
                     {
-                        throw new MojoFailureException( getMessage(
+                        throw new MojoFailureException( Messages.getMessage(
                             "illegalPropertiesFormat", p.getFormat(),
                             StringUtils.join( PropertiesResourceType.FORMAT_VALUES, ',' ) ) );
 
@@ -700,8 +698,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
                 if ( !this.getSessionDirectory().exists() && !this.getSessionDirectory().mkdirs() )
                 {
-                    throw new MojoExecutionException( getMessage( "failedCreatingDirectory",
-                                                                  this.getSessionDirectory().getAbsolutePath() ) );
+                    throw new MojoExecutionException( Messages.getMessage(
+                        "failedCreatingDirectory", this.getSessionDirectory().getAbsolutePath() ) );
 
                 }
 
@@ -712,7 +710,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         catch ( final IOException e )
         {
-            throw new MojoExecutionException( getMessage( e ), e );
+            throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
     }
 
@@ -787,8 +785,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         {
             if ( this.isLoggable( Level.WARNING ) )
             {
-                this.log( Level.WARNING,
-                          getMessage( "deprecationWarning", "classesDirectory", "outputDirectory" ), null );
+                this.log( Level.WARNING, Messages.getMessage(
+                    "deprecationWarning", "classesDirectory", "outputDirectory" ), null );
 
             }
 
@@ -796,7 +794,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 if ( this.isLoggable( Level.WARNING ) )
                 {
-                    this.log( Level.WARNING, getMessage( "ignoringParameter", "outputDirectory" ), null );
+                    this.log( Level.WARNING, Messages.getMessage( "ignoringParameter", "outputDirectory" ), null );
                 }
 
                 this.outputDirectory = this.classesDirectory;
@@ -808,7 +806,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         final File dir = this.getAbsoluteFile( this.outputDirectory );
         if ( !dir.exists() && !dir.mkdirs() )
         {
-            throw new MojoExecutionException( getMessage( "failedCreatingDirectory", dir.getAbsolutePath() ) );
+            throw new MojoExecutionException( Messages.getMessage( "failedCreatingDirectory", dir.getAbsolutePath() ) );
         }
 
         return dir;
@@ -829,8 +827,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         {
             if ( this.isLoggable( Level.WARNING ) )
             {
-                this.log( Level.WARNING,
-                          getMessage( "deprecationWarning", "testClassesDirectory", "testOutputDirectory" ), null );
+                this.log( Level.WARNING, Messages.getMessage(
+                    "deprecationWarning", "testClassesDirectory", "testOutputDirectory" ), null );
 
             }
 
@@ -838,7 +836,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 if ( this.isLoggable( Level.WARNING ) )
                 {
-                    this.log( Level.WARNING, getMessage( "ignoringParameter", "testOutputDirectory" ), null );
+                    this.log( Level.WARNING, Messages.getMessage( "ignoringParameter", "testOutputDirectory" ), null );
                 }
 
                 this.testOutputDirectory = this.testClassesDirectory;
@@ -850,7 +848,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         final File dir = this.getAbsoluteFile( this.testOutputDirectory );
         if ( !dir.exists() && !dir.mkdirs() )
         {
-            throw new MojoExecutionException( getMessage( "failedCreatingDirectory", dir.getAbsolutePath() ) );
+            throw new MojoExecutionException( Messages.getMessage( "failedCreatingDirectory", dir.getAbsolutePath() ) );
         }
 
         return dir;
@@ -937,7 +935,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( this.isLoggable( Level.FINEST ) )
             {
-                this.log( Level.FINEST, getMessage( "mainClasspathInfo" ), null );
+                this.log( Level.FINEST, Messages.getMessage( "mainClasspathInfo" ), null );
             }
 
             int i = 0;
@@ -956,7 +954,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         catch ( final IOException e )
         {
-            throw new MojoExecutionException( getMessage( e ), e );
+            throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
     }
 
@@ -985,7 +983,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( this.isLoggable( Level.FINEST ) )
             {
-                this.log( Level.FINEST, getMessage( "testClasspathInfo" ), null );
+                this.log( Level.FINEST, Messages.getMessage( "testClasspathInfo" ), null );
             }
 
             int i = 0;
@@ -1004,7 +1002,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         catch ( final IOException e )
         {
-            throw new MojoExecutionException( getMessage( e ), e );
+            throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
     }
 
@@ -1031,7 +1029,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 if ( this.isLoggable( Level.WARNING ) )
                 {
-                    this.log( Level.WARNING, getMessage( "ignored", a.toString() ), null );
+                    this.log( Level.WARNING, Messages.getMessage( "ignoringArtifact", a.toString() ), null );
                 }
 
                 continue;
@@ -1041,8 +1039,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 if ( this.isLoggable( Level.FINER ) )
                 {
-                    this.log( Level.FINER,
-                              getMessage( "ignoringPluginArtifact", a.toString(), pluginArtifact.toString() ), null );
+                    this.log( Level.FINER, Messages.getMessage(
+                        "ignoringPluginArtifact", a.toString(), pluginArtifact.toString() ), null );
 
                 }
 
@@ -1062,7 +1060,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 if ( this.isLoggable( Level.WARNING ) )
                 {
-                    this.log( Level.WARNING, getMessage( "ignored", a.toString() ), null );
+                    this.log( Level.WARNING, Messages.getMessage( "ignoringArtifact", a.toString() ), null );
                 }
 
                 continue;
@@ -1072,8 +1070,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 if ( this.isLoggable( Level.FINER ) )
                 {
-                    this.log( Level.FINER,
-                              getMessage( "ignoringPluginArtifact", a.toString(), pluginArtifact.toString() ), null );
+                    this.log( Level.FINER, Messages.getMessage(
+                        "ignoringPluginArtifact", a.toString(), pluginArtifact.toString() ), null );
 
                 }
 
@@ -1110,7 +1108,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 if ( this.isLoggable( Level.WARNING ) )
                 {
-                    this.log( Level.WARNING, getMessage( "ignored", a.toString() ), null );
+                    this.log( Level.WARNING, Messages.getMessage( "ignoringArtifact", a.toString() ), null );
                 }
 
                 continue;
@@ -1120,8 +1118,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 if ( this.isLoggable( Level.FINER ) )
                 {
-                    this.log( Level.FINER,
-                              getMessage( "ignoringPluginArtifact", a.toString(), pluginArtifact.toString() ), null );
+                    this.log( Level.FINER, Messages.getMessage(
+                        "ignoringPluginArtifact", a.toString(), pluginArtifact.toString() ), null );
 
                 }
 
@@ -1268,9 +1266,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
-     * Gets a flag indicating model object classpath resolution is enabled.
+     * Gets a flag indicating model object class path resolution is enabled.
      *
-     * @return {@code true} if model object classpath resolution is enabled; {@code false} else.
+     * @return {@code true} if model object class path resolution is enabled; {@code false} else.
      *
      * @throws MojoExecutionException if getting the flag fails.
      */
@@ -1280,10 +1278,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
-     * Sets the flag indicating model object classpath resolution is enabled.
+     * Sets the flag indicating model object class path resolution is enabled.
      *
-     * @param value {@code true} to enable model object classpath resolution; {@code false} to disable model object
-     * classpath resolution.
+     * @param value {@code true} to enable model object class path resolution; {@code false} to disable model object
+     * class path resolution.
      *
      * @throws MojoExecutionException if setting the flag fails.
      *
@@ -1372,7 +1370,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         catch ( final ModelException e )
         {
-            throw new MojoExecutionException( getMessage( e ), e );
+            throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
     }
 
@@ -1397,7 +1395,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         catch ( final ModelException e )
         {
-            throw new MojoExecutionException( getMessage( e ), e );
+            throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
     }
 
@@ -1538,19 +1536,19 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         catch ( final InstantiationException e )
         {
-            throw new MojoExecutionException( getMessage( "failedCreatingObject", className ), e );
+            throw new MojoExecutionException( Messages.getMessage( "failedCreatingObject", className ), e );
         }
         catch ( final IllegalAccessException e )
         {
-            throw new MojoExecutionException( getMessage( "failedCreatingObject", className ), e );
+            throw new MojoExecutionException( Messages.getMessage( "failedCreatingObject", className ), e );
         }
         catch ( final ClassNotFoundException e )
         {
-            throw new MojoExecutionException( getMessage( "failedCreatingObject", className ), e );
+            throw new MojoExecutionException( Messages.getMessage( "failedCreatingObject", className ), e );
         }
         catch ( final ClassCastException e )
         {
-            throw new MojoExecutionException( getMessage( "failedCreatingObject", className ), e );
+            throw new MojoExecutionException( Messages.getMessage( "failedCreatingObject", className ), e );
         }
     }
 
@@ -1598,7 +1596,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 {
                     if ( this.isLoggable( Level.FINEST ) )
                     {
-                        this.log( Level.FINEST, getMessage( e ), e );
+                        this.log( Level.FINEST, Messages.getMessage( e ), e );
                     }
 
                     resource = null;
@@ -1619,10 +1617,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         catch ( final MalformedURLException e )
         {
-            String m = getMessage( e );
+            String m = Messages.getMessage( e );
             m = m == null ? "" : " " + m;
 
-            throw new MojoExecutionException( getMessage( "malformedLocation", location, m ), e );
+            throw new MojoExecutionException( Messages.getMessage( "malformedLocation", location, m ), e );
         }
     }
 
@@ -1661,7 +1659,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 if ( this.isLoggable( Level.FINEST ) )
                 {
-                    this.log( Level.FINEST, getMessage( e ), e );
+                    this.log( Level.FINEST, Messages.getMessage( e ), e );
                 }
 
                 resource = null;
@@ -1681,10 +1679,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         catch ( final MalformedURLException e )
         {
-            String m = getMessage( e );
+            String m = Messages.getMessage( e );
             m = m == null ? "" : " " + m;
 
-            throw new MojoExecutionException( getMessage( "malformedLocation", location, m ), e );
+            throw new MojoExecutionException( Messages.getMessage( "malformedLocation", location, m ), e );
         }
     }
 
@@ -1719,7 +1717,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 {
                     try
                     {
-                        log( Level.WARNING, getMessage( exception ), exception );
+                        log( Level.WARNING, Messages.getMessage( exception ), exception );
                     }
                     catch ( final MojoExecutionException e )
                     {
@@ -1732,7 +1730,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 {
                     try
                     {
-                        log( Level.SEVERE, getMessage( exception ), exception );
+                        log( Level.SEVERE, Messages.getMessage( exception ), exception );
                     }
                     catch ( final MojoExecutionException e )
                     {
@@ -1747,7 +1745,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 {
                     try
                     {
-                        log( Level.SEVERE, getMessage( exception ), exception );
+                        log( Level.SEVERE, Messages.getMessage( exception ), exception );
                     }
                     catch ( final MojoExecutionException e )
                     {
@@ -1764,7 +1762,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 if ( this.isLoggable( Level.FINER ) )
                 {
-                    this.log( Level.FINER, getMessage( "loadingTransformer", url.toExternalForm() ), null );
+                    this.log( Level.FINER, Messages.getMessage( "loadingTransformer", url.toExternalForm() ), null );
                 }
 
                 final TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -1830,31 +1828,37 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 if ( this.isLoggable( Level.WARNING ) )
                 {
-                    this.log( Level.WARNING, getMessage( "transformerNotFound", resource.getLocation() ), null );
+                    this.log( Level.WARNING, Messages.getMessage(
+                        "transformerNotFound", resource.getLocation() ), null );
+
                 }
             }
             else
             {
-                throw new MojoExecutionException( getMessage( "transformerNotFound", resource.getLocation() ) );
+                throw new MojoExecutionException( Messages.getMessage(
+                    "transformerNotFound", resource.getLocation() ) );
+
             }
 
             return null;
         }
         catch ( final URISyntaxException e )
         {
-            throw new MojoExecutionException( getMessage( e ), e );
+            throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
         catch ( final TransformerConfigurationException e )
         {
-            String m = getMessage( e );
+            String m = Messages.getMessage( e );
             if ( m == null )
             {
-                m = getMessage( e.getException() );
+                m = Messages.getMessage( e.getException() );
             }
 
             m = m == null ? "" : " " + m;
 
-            throw new MojoExecutionException( getMessage( "failedCreatingTransformer", resource.getLocation(), m ), e );
+            throw new MojoExecutionException( Messages.getMessage(
+                "failedCreatingTransformer", resource.getLocation(), m ), e );
+
         }
     }
 
@@ -1889,7 +1893,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 if ( this.isLoggable( Level.FINER ) )
                 {
-                    this.log( Level.FINER, getMessage( "loadingProperties", url.toExternalForm() ), null );
+                    this.log( Level.FINER, Messages.getMessage( "loadingProperties", url.toExternalForm() ), null );
                 }
 
                 final URLConnection con = url.openConnection();
@@ -1912,50 +1916,58 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 if ( this.isLoggable( Level.WARNING ) )
                 {
-                    this.log( Level.WARNING,
-                              getMessage( "propertiesNotFound", propertiesResourceType.getLocation() ), null );
+                    this.log( Level.WARNING, Messages.getMessage(
+                        "propertiesNotFound", propertiesResourceType.getLocation() ), null );
 
                 }
             }
             else
             {
-                throw new MojoExecutionException( getMessage( "propertiesNotFound",
-                                                              propertiesResourceType.getLocation() ) );
+                throw new MojoExecutionException( Messages.getMessage(
+                    "propertiesNotFound", propertiesResourceType.getLocation() ) );
 
             }
         }
         catch ( final SocketTimeoutException e )
         {
-            String m = getMessage( e );
+            String m = Messages.getMessage( e );
             m = m == null ? "" : " " + m;
 
             if ( propertiesResourceType.isOptional() )
             {
                 if ( this.isLoggable( Level.WARNING ) )
                 {
-                    this.log( Level.WARNING, getMessage( "failedLoadingProperties", url.toExternalForm(), m ), e );
+                    this.log( Level.WARNING, Messages.getMessage(
+                        "failedLoadingProperties", url.toExternalForm(), m ), e );
+
                 }
             }
             else
             {
-                throw new MojoExecutionException( getMessage( "failedLoadingProperties", url.toExternalForm(), m ), e );
+                throw new MojoExecutionException( Messages.getMessage(
+                    "failedLoadingProperties", url.toExternalForm(), m ), e );
+
             }
         }
         catch ( final IOException e )
         {
-            String m = getMessage( e );
+            String m = Messages.getMessage( e );
             m = m == null ? "" : " " + m;
 
             if ( propertiesResourceType.isOptional() )
             {
                 if ( this.isLoggable( Level.WARNING ) )
                 {
-                    this.log( Level.WARNING, getMessage( "failedLoadingProperties", url.toExternalForm(), m ), e );
+                    this.log( Level.WARNING, Messages.getMessage(
+                        "failedLoadingProperties", url.toExternalForm(), m ), e );
+
                 }
             }
             else
             {
-                throw new MojoExecutionException( getMessage( "failedLoadingProperties", url.toExternalForm(), m ), e );
+                throw new MojoExecutionException( Messages.getMessage(
+                    "failedLoadingProperties", url.toExternalForm(), m ), e );
+
             }
         }
         finally
@@ -2035,7 +2047,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         if ( this.isLoggable( Level.INFO ) )
         {
-            this.log( Level.INFO, getMessage( "separator" ), null );
+            this.log( Level.INFO, Messages.getMessage( "separator" ), null );
         }
     }
 
@@ -2051,7 +2063,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         if ( this.isLoggable( Level.INFO ) )
         {
-            this.log( Level.INFO, getMessage( "processingModule", toolName, module ), null );
+            this.log( Level.INFO, Messages.getMessage( "processingModule", toolName, module ), null );
         }
     }
 
@@ -2069,7 +2081,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         if ( this.isLoggable( Level.INFO ) )
         {
-            this.log( Level.INFO, getMessage( "processingModel", toolName, model ), null );
+            this.log( Level.INFO, Messages.getMessage( "processingModel", toolName, model ), null );
         }
     }
 
@@ -2084,7 +2096,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         if ( this.isLoggable( Level.WARNING ) )
         {
-            this.log( Level.WARNING, getMessage( "missingModule", module ), null );
+            this.log( Level.WARNING, Messages.getMessage( "missingModule", module ), null );
         }
     }
 
@@ -2099,7 +2111,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         if ( this.isLoggable( Level.INFO ) )
         {
-            this.log( Level.INFO, getMessage( "toolSuccess", toolName ), null );
+            this.log( Level.INFO, Messages.getMessage( "toolSuccess", toolName ), null );
         }
     }
 
@@ -2143,14 +2155,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         catch ( final ModelException e )
         {
-            throw new MojoExecutionException( getMessage( e ), e );
+            throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
         catch ( final JAXBException e )
         {
-            String message = getMessage( e );
+            String message = Messages.getMessage( e );
             if ( message == null && e.getLinkedException() != null )
             {
-                message = getMessage( e.getLinkedException() );
+                message = Messages.getMessage( e.getLinkedException() );
             }
 
             throw new MojoExecutionException( message, e );
@@ -2180,8 +2192,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 while ( ( line = reader.readLine() ) != null )
                 {
                     final String mojoMessage =
-                        getMessage( this.getLog().isDebugEnabled() ? "debugMessage" : "logMessage", line,
-                                    Thread.currentThread().getName(), new Date( System.currentTimeMillis() ) );
+                        Messages.getMessage( this.getLog().isDebugEnabled() ? "debugMessage" : "logMessage", line,
+                                             Thread.currentThread().getName(), new Date( System.currentTimeMillis() ) );
 
                     if ( level.intValue() <= Level.CONFIG.intValue() )
                     {
@@ -2403,13 +2415,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
                 if ( url == null && this.isLoggable( Level.WARNING ) )
                 {
-                    this.log( Level.WARNING, getMessage( "locationNotFound", this.templateLocation ), null );
+                    this.log( Level.WARNING, Messages.getMessage( "locationNotFound", this.templateLocation ), null );
                 }
             }
         }
         catch ( final IOException e )
         {
-            throw new MojoExecutionException( getMessage( e ), e );
+            throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
     }
 
@@ -2430,18 +2442,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
 
         return null;
-    }
-
-    private static String getMessage( final String key, final Object... args )
-    {
-        return MessageFormat.format( ResourceBundle.getBundle(
-            AbstractJomcMojo.class.getName().replace( '.', '/' ) ).getString( key ), args );
-
-    }
-
-    private static String getMessage( final Throwable t )
-    {
-        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

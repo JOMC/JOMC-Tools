@@ -34,7 +34,6 @@ package org.jomc.mojo;
 
 import java.io.File;
 import java.util.Locale;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.util.JAXBSource;
@@ -111,12 +110,12 @@ public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo
             }
             else
             {
-                throw new MojoExecutionException( getMessage( "failed" ) );
+                throw new MojoExecutionException( Messages.getMessage( "resourceProcessingFailure" ) );
             }
         }
         else if ( this.isLoggable( Level.INFO ) )
         {
-            this.log( Level.INFO, getMessage( "disabled" ), null );
+            this.log( Level.INFO, Messages.getMessage( "resourceProcessingDisabled" ), null );
         }
     }
 
@@ -146,10 +145,5 @@ public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo
      * @throws MojoExecutionException if getting the directory fails.
      */
     protected abstract File getResourcesDirectory() throws MojoExecutionException;
-
-    private static String getMessage( final String key )
-    {
-        return ResourceBundle.getBundle( AbstractResourcesWriteMojo.class.getName().replace( '.', '/' ) ).getString( key );
-    }
 
 }

@@ -38,13 +38,11 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -237,23 +235,23 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
     {
         if ( StringUtils.isEmpty( this.model ) )
         {
-            throw new ArchiverException( getMessage( "mandatoryParameterMissing", "model" ) );
+            throw new ArchiverException( Messages.getMessage( "mandatoryParameter", "model" ) );
         }
         if ( StringUtils.isEmpty( this.modletName ) )
         {
-            throw new ArchiverException( getMessage( "mandatoryParameterMissing", "modletName" ) );
+            throw new ArchiverException( Messages.getMessage( "mandatoryParameter", "modletName" ) );
         }
         if ( StringUtils.isEmpty( this.modletResource ) )
         {
-            throw new ArchiverException( getMessage( "mandatoryParameterMissing", "modletResource" ) );
+            throw new ArchiverException( Messages.getMessage( "mandatoryParameter", "modletResource" ) );
         }
         if ( StringUtils.isEmpty( this.moduleName ) )
         {
-            throw new ArchiverException( getMessage( "mandatoryParameterMissing", "moduleName" ) );
+            throw new ArchiverException( Messages.getMessage( "mandatoryParameter", "moduleName" ) );
         }
         if ( StringUtils.isEmpty( this.moduleResource ) )
         {
-            throw new ArchiverException( getMessage( "mandatoryParameterMissing", "moduleResource" ) );
+            throw new ArchiverException( Messages.getMessage( "mandatoryParameter", "moduleResource" ) );
         }
 
         try
@@ -278,7 +276,9 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
 
                             if ( this.getLogger() != null && this.getLogger().isInfoEnabled() )
                             {
-                                this.getLogger().info( LOG_PREFIX + getMessage( "excludingModule", m.getName() ) );
+                                this.getLogger().info( LOG_PREFIX + Messages.getMessage(
+                                    "excludingModule", m.getName() ) );
+
                             }
                         }
                     }
@@ -296,8 +296,8 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
 
                             if ( this.getLogger() != null && this.getLogger().isInfoEnabled() )
                             {
-                                this.getLogger().info( LOG_PREFIX
-                                                       + getMessage( "excludingModule", excluded.getName() ) );
+                                this.getLogger().info( LOG_PREFIX + Messages.getMessage(
+                                    "excludingModule", excluded.getName() ) );
 
                             }
                         }
@@ -308,7 +308,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
                 {
                     for ( Module m : this.modules.getModule() )
                     {
-                        this.getLogger().info( LOG_PREFIX + getMessage( "includingModule", m.getName() ) );
+                        this.getLogger().info( LOG_PREFIX + Messages.getMessage( "includingModule", m.getName() ) );
                     }
                 }
 
@@ -341,7 +341,9 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
 
                             if ( this.getLogger() != null && this.getLogger().isInfoEnabled() )
                             {
-                                this.getLogger().info( LOG_PREFIX + getMessage( "excludingModlet", m.getName() ) );
+                                this.getLogger().info( LOG_PREFIX + Messages.getMessage(
+                                    "excludingModlet", m.getName() ) );
+
                             }
                         }
                     }
@@ -359,8 +361,8 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
 
                             if ( this.getLogger() != null && this.getLogger().isInfoEnabled() )
                             {
-                                this.getLogger().info( LOG_PREFIX
-                                                       + getMessage( "excludingModlet", excluded.getName() ) );
+                                this.getLogger().info( LOG_PREFIX + Messages.getMessage(
+                                    "excludingModlet", excluded.getName() ) );
 
                             }
                         }
@@ -371,7 +373,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
                 {
                     for ( Modlet m : this.modlets.getModlet() )
                     {
-                        this.getLogger().info( LOG_PREFIX + getMessage( "includingModlet", m.getName() ) );
+                        this.getLogger().info( LOG_PREFIX + Messages.getMessage( "includingModlet", m.getName() ) );
                     }
                 }
 
@@ -392,45 +394,45 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
         }
         catch ( final TransformerConfigurationException e )
         {
-            String message = getMessage( e );
+            String message = Messages.getMessage( e );
             if ( message == null && e.getException() != null )
             {
-                message = getMessage( e.getException() );
+                message = Messages.getMessage( e.getException() );
             }
 
             throw new ArchiverException( message, e );
         }
         catch ( final TransformerException e )
         {
-            String message = getMessage( e );
+            String message = Messages.getMessage( e );
             if ( message == null && e.getException() != null )
             {
-                message = getMessage( e.getException() );
+                message = Messages.getMessage( e.getException() );
             }
 
             throw new ArchiverException( message, e );
         }
         catch ( final JAXBException e )
         {
-            String message = getMessage( e );
+            String message = Messages.getMessage( e );
             if ( message == null && e.getLinkedException() != null )
             {
-                message = getMessage( e.getLinkedException() );
+                message = Messages.getMessage( e.getLinkedException() );
             }
 
             throw new ArchiverException( message, e );
         }
         catch ( final ModelException e )
         {
-            throw new ArchiverException( getMessage( e ), e );
+            throw new ArchiverException( Messages.getMessage( e ), e );
         }
         catch ( final IOException e )
         {
-            throw new ArchiverException( getMessage( e ), e );
+            throw new ArchiverException( Messages.getMessage( e ), e );
         }
         catch ( final URISyntaxException e )
         {
-            throw new ArchiverException( getMessage( e ), e );
+            throw new ArchiverException( Messages.getMessage( e ), e );
         }
         finally
         {
@@ -494,7 +496,9 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
 
                         if ( this.getLogger() != null && this.getLogger().isDebugEnabled() )
                         {
-                            this.getLogger().debug( LOG_PREFIX + getMessage( "processingModuleResource", name ) );
+                            this.getLogger().debug( LOG_PREFIX + Messages.getMessage(
+                                "processingModuleResource", name ) );
+
                         }
 
                         selected = false;
@@ -526,7 +530,9 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
 
                         if ( this.getLogger() != null && this.getLogger().isDebugEnabled() )
                         {
-                            this.getLogger().debug( LOG_PREFIX + getMessage( "processingModletResource", name ) );
+                            this.getLogger().debug( LOG_PREFIX + Messages.getMessage(
+                                "processingModletResource", name ) );
+
                         }
 
                         selected = false;
@@ -540,7 +546,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
             {
                 if ( this.getLogger() != null && this.getLogger().isWarnEnabled() )
                 {
-                    this.getLogger().warn( LOG_PREFIX + getMessage( "overridingResource", name ) );
+                    this.getLogger().warn( LOG_PREFIX + Messages.getMessage( "overridingResource", name ) );
                 }
 
                 selected = false;
@@ -550,17 +556,17 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
         }
         catch ( final JAXBException e )
         {
-            String message = getMessage( e );
+            String message = Messages.getMessage( e );
             if ( message == null && e.getLinkedException() != null )
             {
-                message = getMessage( e.getLinkedException() );
+                message = Messages.getMessage( e.getLinkedException() );
             }
 
             throw (IOException) new IOException( message ).initCause( e );
         }
         catch ( final ModelException e )
         {
-            throw (IOException) new IOException( getMessage( e ) ).initCause( e );
+            throw (IOException) new IOException( Messages.getMessage( e ) ).initCause( e );
         }
     }
 
@@ -605,7 +611,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
                 {
                     if ( this.getLogger() != null && this.getLogger().isDebugEnabled() )
                     {
-                        this.getLogger().debug( getMessage( e ), e );
+                        this.getLogger().debug( Messages.getMessage( e ), e );
                     }
 
                     resource = null;
@@ -624,17 +630,19 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
 
             if ( resource == null )
             {
-                throw new IOException( getMessage( "resourceNotFound", location ) );
+                throw new IOException( Messages.getMessage( "resourceNotFound", location ) );
             }
 
             return resource;
         }
         catch ( final MalformedURLException e )
         {
-            String m = getMessage( e );
+            String m = Messages.getMessage( e );
             m = m == null ? "" : " " + m;
 
-            throw (IOException) new IOException( getMessage( "malformedLocation", location, m ) ).initCause( e );
+            throw (IOException) new IOException( Messages.getMessage(
+                "malformedLocation", location, m ) ).initCause( e );
+
         }
     }
 
@@ -764,8 +772,8 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
                 }
                 else
                 {
-                    throw new ModelException( getMessage( "illegalModuleTransformationResult",
-                                                          this.modelObjectStylesheet ) );
+                    throw new ModelException( Messages.getMessage(
+                        "illegalModuleTransformationResult", this.modelObjectStylesheet ) );
 
                 }
             }
@@ -896,8 +904,8 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
                 }
                 else
                 {
-                    throw new ModelException( getMessage( "illegalModletTransformationResult",
-                                                          this.modletObjectStylesheet ) );
+                    throw new ModelException( Messages.getMessage(
+                        "illegalModletTransformationResult", this.modletObjectStylesheet ) );
 
                 }
             }
@@ -930,18 +938,6 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
         }
 
         return normalized;
-    }
-
-    private static String getMessage( final String key, final Object... args )
-    {
-        return MessageFormat.format( ResourceBundle.getBundle(
-            JomcContainerDescriptorHandler.class.getName().replace( '.', '/' ) ).getString( key ), args );
-
-    }
-
-    private static String getMessage( final Throwable t )
-    {
-        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

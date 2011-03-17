@@ -32,7 +32,6 @@
  */
 package org.jomc.mojo;
 
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.jomc.modlet.ModelContext;
@@ -82,7 +81,7 @@ public final class MainModelValidateMojo extends AbstractJomcMojo
 
         if ( !validationReport.isModelValid() )
         {
-            throw new MojoExecutionException( getMessage( "failed" ) );
+            throw new MojoExecutionException( Messages.getMessage( "failedValidatingMainModel" ) );
         }
 
         this.logToolSuccess( TOOLNAME );
@@ -98,11 +97,6 @@ public final class MainModelValidateMojo extends AbstractJomcMojo
     protected String getExecutionStrategy() throws MojoExecutionException
     {
         return this.validateMainModelExecutionStrategy;
-    }
-
-    private static String getMessage( final String key )
-    {
-        return ResourceBundle.getBundle( MainModelValidateMojo.class.getName().replace( '.', '/' ) ).getString( key );
     }
 
 }

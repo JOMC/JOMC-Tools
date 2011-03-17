@@ -34,8 +34,6 @@ package org.jomc.mojo;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.execution.MavenSession;
@@ -247,14 +245,14 @@ public abstract class AbstractAttachMojo extends AbstractMojo
                 {
                     if ( attachment.exists() && !attachment.delete() )
                     {
-                        this.getLog().warn( LOG_PREFIX
-                                            + getMessage( "failedDeletingFile", attachment.getAbsolutePath() ) );
+                        this.getLog().warn( LOG_PREFIX + Messages.getMessage(
+                            "failedDeletingFile", attachment.getAbsolutePath() ) );
 
                     }
                     if ( !attachment.getParentFile().exists() && !attachment.getParentFile().mkdirs() )
                     {
-                        throw new MojoExecutionException( getMessage( "failedCreatingDirectory",
-                                                                      attachment.getParentFile().getAbsolutePath() ) );
+                        throw new MojoExecutionException( Messages.getMessage(
+                            "failedCreatingDirectory", attachment.getParentFile().getAbsolutePath() ) );
 
                     }
 
@@ -264,7 +262,7 @@ public abstract class AbstractAttachMojo extends AbstractMojo
 
                     if ( this.isVerbose() )
                     {
-                        this.getLog().info( LOG_PREFIX + getMessage(
+                        this.getLog().info( LOG_PREFIX + Messages.getMessage(
                             "creatingAttachment", this.getArtifactFile().getAbsolutePath(),
                             this.getArtifactClassifier(), this.getArtifactType() ) );
 
@@ -272,36 +270,26 @@ public abstract class AbstractAttachMojo extends AbstractMojo
                 }
                 else if ( this.isVerbose() )
                 {
-                    this.getLog().info( LOG_PREFIX + getMessage( "executionSuppressed", this.getExecutionStrategy() ) );
+                    this.getLog().info( LOG_PREFIX + Messages.getMessage( "executionSuppressed",
+                                                                          this.getExecutionStrategy() ) );
+
                 }
             }
             else if ( this.getLog().isWarnEnabled() )
             {
-                this.getLog().warn( LOG_PREFIX
-                                    + getMessage( "artifactFileNotFound", this.getArtifactFile().getAbsolutePath() ) );
+                this.getLog().warn( LOG_PREFIX + Messages.getMessage(
+                    "artifactFileNotFound", this.getArtifactFile().getAbsolutePath() ) );
 
             }
         }
         catch ( final IOException e )
         {
-            final String message = getMessage( e );
-            throw new MojoExecutionException( getMessage( "failedCopying", this.getArtifactFile().getAbsolutePath(),
-                                                          attachment.getAbsolutePath(),
-                                                          message != null ? message : "" ), e );
+            final String message = Messages.getMessage( e );
+            throw new MojoExecutionException( Messages.getMessage(
+                "failedCopying", this.getArtifactFile().getAbsolutePath(), attachment.getAbsolutePath(),
+                message != null ? message : "" ), e );
 
         }
-    }
-
-    private static String getMessage( final String key, final Object... args )
-    {
-        return MessageFormat.format( ResourceBundle.getBundle(
-            AbstractAttachMojo.class.getName().replace( '.', '/' ) ).getString( key ), args );
-
-    }
-
-    private static String getMessage( final Throwable t )
-    {
-        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

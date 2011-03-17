@@ -34,8 +34,6 @@ package org.jomc.mojo;
 
 import java.io.File;
 import java.io.StringWriter;
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javax.xml.bind.Marshaller;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -114,12 +112,16 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
             {
                 if ( this.document.exists() && !this.document.delete() && this.isLoggable( Level.WARNING ) )
                 {
-                    this.log( Level.WARNING, getMessage( "failedDeleting", this.document.getAbsolutePath() ), null );
+                    this.log( Level.WARNING, Messages.getMessage(
+                        "failedDeletingFile", this.document.getAbsolutePath() ), null );
+
                 }
 
                 if ( this.isLoggable( Level.INFO ) )
                 {
-                    this.log( Level.INFO, getMessage( "writing", this.document.getAbsolutePath() ), null );
+                    this.log( Level.INFO, Messages.getMessage(
+                        "writingEncoded", this.document.getAbsolutePath(), this.documentEncoding ), null );
+
                 }
 
                 m.setProperty( Marshaller.JAXB_ENCODING, this.documentEncoding );
@@ -130,7 +132,7 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
         }
         else if ( this.isLoggable( Level.WARNING ) )
         {
-            this.log( Level.WARNING, getMessage( "modelObjectNotFound" ), null );
+            this.log( Level.WARNING, Messages.getMessage( "modelObjectNotFound" ), null );
         }
     }
 
@@ -153,12 +155,5 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
      * @throws MojoExecutionException if getting the class loader fails.
      */
     protected abstract ClassLoader getDisplayClassLoader() throws MojoExecutionException;
-
-    private static String getMessage( final String key, final Object... args )
-    {
-        return MessageFormat.format( ResourceBundle.getBundle(
-            AbstractModelShowMojo.class.getName().replace( '.', '/' ) ).getString( key ), args );
-
-    }
 
 }

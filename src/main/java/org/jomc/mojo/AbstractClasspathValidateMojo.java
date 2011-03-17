@@ -32,8 +32,6 @@
  */
 package org.jomc.mojo;
 
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.util.JAXBSource;
@@ -84,14 +82,14 @@ public abstract class AbstractClasspathValidateMojo extends AbstractJomcMojo
 
             if ( !validationReport.isModelValid() )
             {
-                throw new MojoExecutionException( getMessage( "failed" ) );
+                throw new MojoExecutionException( Messages.getMessage( "classFileValidationFailure" ) );
             }
 
             this.logToolSuccess( TOOLNAME );
         }
         else
         {
-            throw new MojoExecutionException( getMessage( "failed" ) );
+            throw new MojoExecutionException( Messages.getMessage( "classFileValidationFailure" ) );
         }
     }
 
@@ -103,12 +101,5 @@ public abstract class AbstractClasspathValidateMojo extends AbstractJomcMojo
      * @throws MojoExecutionException if getting the class loader fails.
      */
     protected abstract ClassLoader getClasspathClassLoader() throws MojoExecutionException;
-
-    private static String getMessage( final String key, final Object... args )
-    {
-        return MessageFormat.format( ResourceBundle.getBundle(
-            AbstractClasspathValidateMojo.class.getName().replace( '.', '/' ) ).getString( key ), args );
-
-    }
 
 }
