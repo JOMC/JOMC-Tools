@@ -106,6 +106,14 @@ ${tool.getIndentation(3)}}
 
 ${tool.getIndentation(3)}return builder.substring( lineSeparator.length() );
 ${tool.getIndentation(2)}}
+${tool.getIndentation(2)}catch( final java.lang.ClassCastException e )
+${tool.getIndentation(2)}{
+${tool.getIndentation(3)}throw new org.jomc.ObjectManagementException( e.getMessage(), e );
+${tool.getIndentation(2)}}
+${tool.getIndentation(2)}catch( final java.lang.IllegalArgumentException e )
+${tool.getIndentation(2)}{
+${tool.getIndentation(3)}throw new org.jomc.ObjectManagementException( e.getMessage(), e );
+${tool.getIndentation(2)}}
 ${tool.getIndentation(2)}catch( final java.util.MissingResourceException e )
 ${tool.getIndentation(2)}{
 ${tool.getIndentation(3)}throw new org.jomc.ObjectManagementException( e.getMessage(), e );
