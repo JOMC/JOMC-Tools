@@ -749,7 +749,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <message name="description" override="true">
           <template defaultLanguage="en">
             <text language="en">Locale variant.</text>
-            <text language="de">Standortvariante</text>
+            <text language="de">Standortvariante.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
