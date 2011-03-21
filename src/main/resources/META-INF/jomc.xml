@@ -2067,20 +2067,19 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <text language="de">Keine Details verfügbar.</text>
           </template>
         </message>
-        <message name="logMessage">
-          <template defaultLanguage="en">
-            <text language="en">[{0}] {1}</text>
-            <text language="de">[{0}] {1}</text>
-          </template>
-          <arguments>
-            <argument index="0" name="level"/>
-            <argument index="1" name="message"/>
-          </arguments>
-        </message>
         <message name="timeInfo">
           <template defaultLanguage="en">
             <text language="en">{0,time,HH:mm:ss.SSS}</text>
             <text language="de">{0,time,HH:mm:ss.SSS}</text>
+          </template>
+          <arguments>
+            <argument index="0" name="time" type="Time"/>
+          </arguments>
+        </message>
+        <message name="commandDurationInfo">
+          <template defaultLanguage="en">
+            <text language="en">Duration: {0,time,HH:mm:ss.SSS}.</text>
+            <text language="de">Dauer: {0,time,HH:mm:ss.SSS}.</text>
           </template>
           <arguments>
             <argument index="0" name="time" type="Time"/>
