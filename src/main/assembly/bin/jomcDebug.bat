@@ -57,17 +57,18 @@ cd %0\..\..
 set BASEDIR=%CD%
 cd %SAVEDIR%
 set SAVE_DIR=
+set JARNAME="%BASEDIR%"\bin\${project.build.finalName}.jar
 goto repoSetup
 
 :WinNTGetScriptDir
-set BASEDIR=%~dp0\..
+set BASEDIR="%~dp0"\..
+set JARNAME=%BASEDIR%\bin\${project.build.finalName}.jar
 
 :repoSetup
 
 
 if "%JAVACMD%"=="" set JAVACMD=java
 
-set JARNAME="%BASEDIR%"\bin\${project.build.finalName}.jar
 set EXTRA_JVM_ARGUMENTS=-Djava.compiler=NONE -Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000 -Dorg.jomc.modlet.ModelContext.defaultLogLevel=ALL -Dorg.jomc.ri.DefaultObjectManager.defaultLogLevel=ALL
 goto endInit
 
