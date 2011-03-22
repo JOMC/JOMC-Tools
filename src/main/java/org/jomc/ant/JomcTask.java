@@ -482,7 +482,7 @@ public class JomcTask extends Task
     /**
      * Called by the project to let the task do its work.
      *
-     * @throws BuildException if something goes wrong with the build.
+     * @throws BuildException if building fails.
      *
      * @see #getIf()
      * @see #getUnless()

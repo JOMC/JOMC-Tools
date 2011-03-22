@@ -229,7 +229,7 @@ public final class ShowModelTask extends JomcModelTask
      *
      * @param model The model to get the instance to show from.
      *
-     * @return The implementation to show or {@code null}.
+     * @return The instance to show or {@code null}.
      *
      * @throws NullPointerException if {@code model} is {@code null}.
      *
