@@ -1706,7 +1706,6 @@ public class JomcTool
                 engine.setProperty( "url.resource.loader.timeout", Integer.toString( 60000 ) );
             }
 
-            engine.init();
             this.velocityEngine = engine;
         }
 
