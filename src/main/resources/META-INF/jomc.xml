@@ -2076,15 +2076,6 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="0" name="time" type="Time"/>
           </arguments>
         </message>
-        <message name="commandDurationInfo">
-          <template defaultLanguage="en">
-            <text language="en">Duration: {0,time,HH:mm:ss.SSS}.</text>
-            <text language="de">Dauer: {0,time,HH:mm:ss.SSS}.</text>
-          </template>
-          <arguments>
-            <argument index="0" name="time" type="Time"/>
-          </arguments>
-        </message>
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->

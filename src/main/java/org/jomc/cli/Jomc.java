@@ -134,11 +134,6 @@ import org.jomc.modlet.DefaultModletProvider;
  *       <td align="left" scope="col" nowrap><b>Default Templates</b></td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" valign="top" nowrap>{@link #getCommandDurationInfo commandDurationInfo}</td>
- *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Duration: {0,time,HH:mm:ss.SSS}.</code></pre><hr/><pre><code>Dauer: {0,time,HH:mm:ss.SSS}.</code></pre></td>
- *     </tr>
- *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getDefaultExceptionMessage defaultExceptionMessage}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
  *       <td align="left" valign="top" nowrap><pre><code>No details available.</code></pre><hr/><pre><code>Keine Details verf&uuml;gbar.</code></pre></td>
@@ -337,7 +332,6 @@ public final class Jomc
     {
         Command cmd = null;
         this.severity = Level.ALL;
-        final long t0 = System.currentTimeMillis();
 
         try
         {
@@ -475,14 +469,6 @@ public final class Jomc
             DefaultModelProvider.setDefaultModuleLocation( null );
             DefaultModelProcessor.setDefaultTransformerLocation( null );
             DefaultModletProvider.setDefaultModletLocation( null );
-
-            if ( this.isLoggable( Level.FINE ) )
-            {
-                this.log( Level.FINE, this.getCommandDurationInfo(
-                    this.getLocale(), new Date( System.currentTimeMillis() - t0 ) ), null );
-
-            }
-
             this.getPrintWriter().flush();
             this.severity = Level.ALL;
         }
@@ -774,38 +760,6 @@ public final class Jomc
     // SECTION-END
     // SECTION-START[Messages]
     // <editor-fold defaultstate="collapsed" desc=" Generated Messages ">
-
-    /**
-     * Gets the text of the {@code commandDurationInfo} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Duration: {0,time,HH:mm:ss.SSS}.</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Dauer: {0,time,HH:mm:ss.SSS}.</code></pre></td>
-     *     </tr>
-     *   </table>
-     * </p>
-     *
-     * @param locale The locale of the message to return.
-     * @param time Format argument.
-     * @return The text of the {@code commandDurationInfo} message for {@code locale}.
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private String getCommandDurationInfo( final java.util.Locale locale, final java.util.Date time )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "commandDurationInfo", locale, time );
-        assert _m != null : "'commandDurationInfo' message not found.";
-        return _m;
-    }
 
     /**
      * Gets the text of the {@code defaultExceptionMessage} message.
