@@ -50,6 +50,29 @@ ${tool.getIndentation(0)}/**
 #if($implementation.getDocumentation())
 ${tool.getIndentation(0)} * $tool.getJavadocComment($implementation.getDocumentation(), 0, " * ")
 #end
+${tool.getIndentation(0)} * <p>
+${tool.getIndentation(0)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+${tool.getIndentation(0)} *     <tr class="TableHeadingColor">
+${tool.getIndentation(0)} *       <th align="left" scope="col" colspan="2" nowrap><font size="+2">Implementation</font></th>
+${tool.getIndentation(0)} *     </tr>
+${tool.getIndentation(0)} *     <tr>
+${tool.getIndentation(0)} *       <td class="TableSubHeadingColor" align="left" nowrap><b>Identifier:</b></td>
+${tool.getIndentation(0)} *       <td class="TableRowColor" align="left" nowrap>{@code $implementation.getIdentifier()}</td>
+${tool.getIndentation(0)} *     </tr>
+${tool.getIndentation(0)} *     <tr>
+${tool.getIndentation(0)} *       <td class="TableSubHeadingColor" align="left" nowrap><b>Name:</b></td>
+${tool.getIndentation(0)} *       <td class="TableRowColor" align="left" nowrap>{@code $implementation.getName()}</td>
+${tool.getIndentation(0)} *     </tr>
+${tool.getIndentation(0)} *     <tr>
+${tool.getIndentation(0)} *       <td class="TableSubHeadingColor" align="left" nowrap><b>Flags:</b></td>
+${tool.getIndentation(0)} *       <td class="TableRowColor" align="left" nowrap>#if($implementation.isAbstract()){@code abstract}#end#if($implementation.isFinal()) {@code final}#end#if($implementation.isStateless()) {@code stateless}#end#if(!$implementation.isAbstract() && !$implementation.isFinal() && !$implementation.isStateless()){@code none}#end</td>
+${tool.getIndentation(0)} *     </tr>
+${tool.getIndentation(0)} *     <tr>
+${tool.getIndentation(0)} *       <td class="TableSubHeadingColor" align="left" nowrap><b>Version:</b></td>
+${tool.getIndentation(0)} *       <td class="TableRowColor" align="left" nowrap>{@code#if($implementation.getVersion()) $implementation.getVersion()#else No version available.#end}</td>
+${tool.getIndentation(0)} *     </tr>
+${tool.getIndentation(0)} *   </table>
+${tool.getIndentation(0)} * </p>
 #set($specifications = $modules.getSpecifications($implementation.getIdentifier()))
 #if($specifications && !$specifications.getReference().isEmpty())
 ${tool.getIndentation(0)} * <p>
