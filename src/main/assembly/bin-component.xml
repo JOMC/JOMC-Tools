@@ -85,14 +85,6 @@
       <source>src/main/assembly/GPL-2-CPE.txt</source>
     </file>
     <file>
-      <destName>GNU LIBRARY GENERAL PUBLIC LICENSE Version 2.txt</destName>
-      <fileMode>0444</fileMode>
-      <filtered>false</filtered>
-      <lineEnding>dos</lineEnding>
-      <outputDirectory>/licenses</outputDirectory>
-      <source>src/main/assembly/LGPL-2.0.txt</source>
-    </file>
-    <file>
       <fileMode>0444</fileMode>
       <filtered>false</filtered>
       <lineEnding>dos</lineEnding>
