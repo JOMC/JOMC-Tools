@@ -49,6 +49,29 @@ import org.jomc.modlet.ModelValidationReport;
  * <p>
  *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
  *     <tr class="TableHeadingColor">
+ *       <th align="left" scope="col" colspan="2" nowrap><font size="+2">Implementation</font></th>
+ *     </tr>
+ *     <tr>
+ *       <td class="TableSubHeadingColor" align="left" nowrap><b>Identifier:</b></td>
+ *       <td class="TableRowColor" align="left" nowrap>{@code JOMC CLI validate-model Command}</td>
+ *     </tr>
+ *     <tr>
+ *       <td class="TableSubHeadingColor" align="left" nowrap><b>Name:</b></td>
+ *       <td class="TableRowColor" align="left" nowrap>{@code default-validate-model}</td>
+ *     </tr>
+ *     <tr>
+ *       <td class="TableSubHeadingColor" align="left" nowrap><b>Flags:</b></td>
+ *       <td class="TableRowColor" align="left" nowrap>{@code none}</td>
+ *     </tr>
+ *     <tr>
+ *       <td class="TableSubHeadingColor" align="left" nowrap><b>Version:</b></td>
+ *       <td class="TableRowColor" align="left" nowrap>{@code 1.2-SNAPSHOT}</td>
+ *     </tr>
+ *   </table>
+ * </p>
+ * <p>
+ *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+ *     <tr class="TableHeadingColor">
  *       <th align="left" scope="col" colspan="4" nowrap><font size="+2">Specifications</font></th>
  *     </tr>
  *     <tr class="TableSubHeadingColor">
@@ -188,7 +211,7 @@ import org.jomc.modlet.ModelValidationReport;
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getApplicationTitle applicationTitle}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
- *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-03-24T17:57:24+0100</code></pre></td>
+ *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-03-27T16:16:48+0200</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getCannotProcessMessage cannotProcessMessage}</td>
@@ -741,7 +764,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-03-24T17:57:24+0100</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-03-27T16:16:48+0200</code></pre></td>
      *     </tr>
      *   </table>
      * </p>
