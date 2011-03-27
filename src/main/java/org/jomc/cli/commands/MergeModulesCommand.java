@@ -261,7 +261,7 @@ import org.jomc.modlet.ModelValidationReport;
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getApplicationTitle applicationTitle}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
- *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-03-27T16:16:48+0200</code></pre></td>
+ *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-03-27T16:56:16+0200</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getCannotProcessMessage cannotProcessMessage}</td>
@@ -1165,7 +1165,7 @@ public final class MergeModulesCommand extends AbstractModelCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-03-27T16:16:48+0200</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-03-27T16:56:16+0200</code></pre></td>
      *     </tr>
      *   </table>
      * </p>
