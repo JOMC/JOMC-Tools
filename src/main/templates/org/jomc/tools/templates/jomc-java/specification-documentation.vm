@@ -50,38 +50,28 @@ ${tool.getIndentation(0)}/**
 #if($specification.getDocumentation())
 ${tool.getIndentation(0)} * $tool.getJavadocComment($specification.getDocumentation(), 0, " * ")
 #end
-${tool.getIndentation(0)} *
 ${tool.getIndentation(0)} * <p>
-${tool.getIndentation(0)} *   This specification declares a multiplicity of {@code $specification.getMultiplicity().value()}.
-#if($specification.getMultiplicity().value() == "One")
-${tool.getIndentation(0)} *   An application assembler may provide either no or one implementation of this specification.
-#end
-#if($specification.getMultiplicity().value() == "Many")
-${tool.getIndentation(0)} *   An application assembler may provide multiple implementations of this specification (including none).
-#end
-${tool.getIndentation(0)} * </p>
-${tool.getIndentation(0)} *
-${tool.getIndentation(0)} * <p>
-${tool.getIndentation(0)} *   Use of class {@link org.jomc.ObjectManager ObjectManager} is supported for accessing implementations.
-${tool.getIndentation(0)} *   <pre>
-#if($specification.getMultiplicity().value() == "One")
-${tool.getIndentation(0)} * ${tool.getJavaTypeName($specification,false)} object = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}.class );
-${tool.getIndentation(0)} * ${tool.getJavaTypeName($specification,false)} object = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}.class, "<i>implementation name</i>" );
-#end
-#if($specification.getMultiplicity().value() == "Many")
-${tool.getIndentation(0)} * ${tool.getJavaTypeName($specification,false)}[] objects = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}[].class );
-${tool.getIndentation(0)} * ${tool.getJavaTypeName($specification,false)} object = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getJavaTypeName($specification,false)}.class, "<i>implementation name</i>" );
-#end
-${tool.getIndentation(0)} *   </pre>
-${tool.getIndentation(0)} * </p>
-${tool.getIndentation(0)} *
-${tool.getIndentation(0)} * <p>
-#if($specification.getScope())
-${tool.getIndentation(0)} *   This specification applies to {@code $specification.getScope()} scope.
-${tool.getIndentation(0)} *   The same $tool.getHtmlString($specification.getScope().toLowerCase()) object is returned whenever requested.
-#else
-${tool.getIndentation(0)} *   This specification does not apply to any scope. A new object is returned whenever requested.
-#end
+${tool.getIndentation(0)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+${tool.getIndentation(0)} *     <tr class="TableHeadingColor">
+${tool.getIndentation(0)} *       <th align="left" scope="col" colspan="2" nowrap><font size="+2">Specification</font></th>
+${tool.getIndentation(0)} *     </tr>
+${tool.getIndentation(0)} *     <tr>
+${tool.getIndentation(0)} *       <td class="TableSubHeadingColor" align="left" nowrap><b>Identifier:</b></td>
+${tool.getIndentation(0)} *       <td class="TableRowColor" align="left" nowrap>{@code $specification.getIdentifier()}</td>
+${tool.getIndentation(0)} *     </tr>
+${tool.getIndentation(0)} *     <tr>
+${tool.getIndentation(0)} *       <td class="TableSubHeadingColor" align="left" nowrap><b>Multiplicity:</b></td>
+${tool.getIndentation(0)} *       <td class="TableRowColor" align="left" nowrap>{@code $specification.getMultiplicity().value()}</td>
+${tool.getIndentation(0)} *     </tr>
+${tool.getIndentation(0)} *     <tr>
+${tool.getIndentation(0)} *       <td class="TableSubHeadingColor" align="left" nowrap><b>Scope:</b></td>
+${tool.getIndentation(0)} *       <td class="TableRowColor" align="left" nowrap>{@code#if($specification.getScope()) $specification.getScope()#else Multiton#end}</td>
+${tool.getIndentation(0)} *     </tr>
+${tool.getIndentation(0)} *     <tr>
+${tool.getIndentation(0)} *       <td class="TableSubHeadingColor" align="left" nowrap><b>Version:</b></td>
+${tool.getIndentation(0)} *       <td class="TableRowColor" align="left" nowrap>{@code#if($specification.getVersion()) $specification.getVersion()#else No version available.#end}</td>
+${tool.getIndentation(0)} *     </tr>
+${tool.getIndentation(0)} *   </table>
 ${tool.getIndentation(0)} * </p>
 ${tool.getIndentation(0)} *
 #if($specification.getAuthors())
