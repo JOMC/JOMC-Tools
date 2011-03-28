@@ -2098,6 +2098,8 @@ public class JomcTool
      * @return The locale of the instance.
      *
      * @see #setLocale(java.util.Locale)
+     *
+     * @since 1.2
      */
     public final Locale getLocale()
     {
@@ -2120,6 +2122,8 @@ public class JomcTool
      * @param value The new locale of the instance or {@code null}.
      *
      * @see #getLocale()
+     *
+     * @since 1.2
      */
     public final void setLocale( final Locale value )
     {
