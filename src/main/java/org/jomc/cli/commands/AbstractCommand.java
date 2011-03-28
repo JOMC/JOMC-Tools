@@ -287,7 +287,6 @@ public abstract class AbstractCommand
         }
 
         int status;
-        final long t0 = System.currentTimeMillis();
 
         try
         {
