@@ -40,7 +40,7 @@ Task and Type Reference
 
 * <<<{commit-classes}>>>
 
-  This task commits model objects to class files.
+  This task commits model objects to class files. {{{M}[M]}}
 
   The <<<commit-classes>>> task supports the following attributes:
 
@@ -50,7 +50,7 @@ Task and Type Reference
 | <<<classesDirectory>>>                      | The directory holding the class files to   | <<Yes.>>               |
 |                                             | commit model objects to.                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<classFileProcessorClass>>>               | Class of the ClassFileProcessor backing    | No.                    |
+| <<<classFileProcessorClass>>>               | Class of the ClassFileProcessor backing    | No. {{{A}[A]}}         |
 |                                             | the task.                                  |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
@@ -62,7 +62,7 @@ Task and Type Reference
 | <<<classProcessingEnabled>>>                | A flag indicating the processing of        | No. Defaults to true.  |
 |                                             | classes is enabled.                        |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<defaultTemplateProfile>>>                | The default template profile to use when   | No.                    |
+| <<<defaultTemplateProfile>>>                | The default template profile to use when   | No. {{{B}[B]}}         |
 |                                             | accessing templates.                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<if>>>                                    | Object controlling the execution of the    | No.                    |
@@ -88,8 +88,9 @@ Task and Type Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
+|                                             |                                            | {{{C}[C]}}             |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modelContextClassName>>>                 | The name of the ModelContext               | No.                    |
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
 |                                             | implementation class backing the task.     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
@@ -98,10 +99,10 @@ Task and Type Reference
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
 |                                             | is enabled.                                |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modletLocation>>>                        | The class path location searched for       | No.                    |
+| <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
 |                                             | modlets.                                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No.                    |
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
 |                                             | schema system id.                          |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<module>>>                                | The identifier of a module to process.     | No. If the             |
@@ -112,17 +113,17 @@ Task and Type Reference
 |                                             |                                            | set, all modules will  |
 |                                             |                                            | be processed.          |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<moduleLocation>>>                        | The class path location searched for       | No.                    |
+| <<<moduleLocation>>>                        | The class path location searched for       | No. {{{G}[G]}}         |
 |                                             | modules.                                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<outputEncoding>>>                        | The encoding to use for writing files.     | No. Defaults to the    |
 |                                             |                                            | system's default       |
 |                                             |                                            | encoding.              |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<platformProviderLocation>>>              | The location searched for platform         | No.                    |
+| <<<platformProviderLocation>>>              | The location searched for platform         | No. {{{H}[H]}}         |
 |                                             | provider resources.                        |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<providerLocation>>>                      | The class path location searched for       | No.                    |
+| <<<providerLocation>>>                      | The class path location searched for       | No. {{{I}[I]}}         |
 |                                             | providers.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<specification>>>                         | The identifier of a specification to       | No. If the             |
@@ -146,10 +147,10 @@ Task and Type Reference
 |                                             | directory is used. Otherwise a warning     |                        |
 |                                             | message is logged.                         |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<templateProfile>>>                       | The template profile to use when accessing | No.                    |
+| <<<templateProfile>>>                       | The template profile to use when accessing | No. {{{B}[B]}}         |
 |                                             | templates.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
+| <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
 |                                             | transformers.                              |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<unless>>>                                | Object controlling the execution of the    | No.                    |
@@ -212,7 +213,7 @@ Task and Type Reference
 
 * <<<{generate-resources}>>>
 
-  This task generates resource files.
+  This task generates resource files. {{{N}[N]}}
 
   The <<<generate-resources>>> task supports the following attributes:
 
@@ -225,7 +226,7 @@ Task and Type Reference
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element is supported.  |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<defaultTemplateProfile>>>                | The default template profile to use when   | No.                    |
+| <<<defaultTemplateProfile>>>                | The default template profile to use when   | No. {{{B}[B]}}         |
 |                                             | accessing templates.                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<if>>>                                    | Object controlling the execution of the    | No.                    |
@@ -251,8 +252,9 @@ Task and Type Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
+|                                             |                                            | {{{C}[C]}}             |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modelContextClassName>>>                 | The name of the ModelContext               | No.                    |
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
 |                                             | implementation class backing the task.     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
@@ -261,10 +263,10 @@ Task and Type Reference
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
 |                                             | is enabled.                                |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modletLocation>>>                        | The class path location searched for       | No.                    |
+| <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
 |                                             | modlets.                                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No.                    |
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
 |                                             | schema system id.                          |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<module>>>                                | The identifier of a module to process.     | No. If the             |
@@ -275,24 +277,24 @@ Task and Type Reference
 |                                             |                                            | set, all modules will  |
 |                                             |                                            | be processed.          |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<moduleLocation>>>                        | The class path location searched for       | No.                    |
+| <<<moduleLocation>>>                        | The class path location searched for       | No. {{{G}[G]}}         |
 |                                             | modules.                                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<outputEncoding>>>                        | The encoding to use for writing files.     | No. Defaults to the    |
 |                                             |                                            | system's default       |
 |                                             |                                            | encoding.              |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<platformProviderLocation>>>              | The location searched for platform         | No.                    |
+| <<<platformProviderLocation>>>              | The location searched for platform         | No. {{{H}[H]}}         |
 |                                             | provider resources.                        |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<providerLocation>>>                      | The class path location searched for       | No.                    |
+| <<<providerLocation>>>                      | The class path location searched for       | No. {{{I}[I]}}         |
 |                                             | providers.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<resourceBundleDefaultLanguage>>>         | The language of the default language       | No.                    |
 |                                             | properties file of generated resource      |                        |
 |                                             | bundle resource files.                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<resourceFileProcessorClass>>>            | Class of the ResourceFileProcessor backing | No.                    |
+| <<<resourceFileProcessorClass>>>            | Class of the ResourceFileProcessor backing | No. {{{K}[K]}}         |
 |                                             | the task.                                  |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<resourceProcessingEnabled>>>             | A flag indicating the processing of        | No. Defaults to true.  |
@@ -322,10 +324,10 @@ Task and Type Reference
 |                                             | directory is used. Otherwise a warning     |                        |
 |                                             | message is logged.                         |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<templateProfile>>>                       | The template profile to use when accessing | No.                    |
+| <<<templateProfile>>>                       | The template profile to use when accessing | No. {{{B}[B]}}         |
 |                                             | templates.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
+| <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
 |                                             | transformers.                              |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<unless>>>                                | Object controlling the execution of the    | No.                    |
@@ -385,7 +387,7 @@ Task and Type Reference
 
 * <<<{manage-sources}>>>
 
-  This task manages source code files.
+  This task manages source code files. {{{O}[O]}}
 
   The <<<manage-sources>>> task supports the following attributes:
 
@@ -398,7 +400,7 @@ Task and Type Reference
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element is supported.  |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<defaultTemplateProfile>>>                | The default template profile to use when   | No.                    |
+| <<<defaultTemplateProfile>>>                | The default template profile to use when   | No. {{{B}[B]}}         |
 |                                             | accessing templates.                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<if>>>                                    | Object controlling the execution of the    | No.                    |
@@ -424,8 +426,9 @@ Task and Type Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
+|                                             |                                            | {{{C}[C]}}             |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modelContextClassName>>>                 | The name of the ModelContext               | No.                    |
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
 |                                             | implementation class backing the task.     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
@@ -434,10 +437,10 @@ Task and Type Reference
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
 |                                             | is enabled.                                |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modletLocation>>>                        | The class path location searched for       | No.                    |
+| <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
 |                                             | modlets.                                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No.                    |
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
 |                                             | schema system id.                          |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<module>>>                                | The identifier of a module to process.     | No. If the             |
@@ -448,23 +451,23 @@ Task and Type Reference
 |                                             |                                            | set, all modules will  |
 |                                             |                                            | be processed.          |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<moduleLocation>>>                        | The class path location searched for       | No.                    |
+| <<<moduleLocation>>>                        | The class path location searched for       | No. {{{G}[G]}}         |
 |                                             | modules.                                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<outputEncoding>>>                        | The encoding to use for writing files.     | No. Defaults to the    |
 |                                             |                                            | system's default       |
 |                                             |                                            | encoding.              |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<platformProviderLocation>>>              | The location searched for platform         | No.                    |
+| <<<platformProviderLocation>>>              | The location searched for platform         | No. {{{H}[H]}}         |
 |                                             | provider resources.                        |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<providerLocation>>>                      | The class path location searched for       | No.                    |
+| <<<providerLocation>>>                      | The class path location searched for       | No. {{{I}[I]}}         |
 |                                             | providers.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<sourcesDirectory>>>                      | The directory holding the source files to  | <<Yes.>>               |
 |                                             | manage.                                    |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<sourceFileProcessorClass>>>              | Class of the SourceFileProcessor backing   | No.                    |
+| <<<sourceFileProcessorClass>>>              | Class of the SourceFileProcessor backing   | No. {{{M}[M]}}         |
 |                                             | the task.                                  |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<sourceProcessingEnabled>>>               | A flag indicating the processing of source | No. Defaults to true.  |
@@ -491,10 +494,10 @@ Task and Type Reference
 |                                             | directory is used. Otherwise a warning     |                        |
 |                                             | message is logged.                         |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<templateProfile>>>                       | The template profile to use when accessing | No.                    |
+| <<<templateProfile>>>                       | The template profile to use when accessing | No. {{{B}[B]}}         |
 |                                             | templates.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
+| <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
 |                                             | transformers.                              |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<unless>>>                                | Object controlling the execution of the    | No.                    |
@@ -556,7 +559,7 @@ Task and Type Reference
 
 * <<<{validate-classes}>>>
 
-  This task validates class file model objects.
+  This task validates class file model objects. {{{P}[P]}}
 
   The <<<validate-classes>>> task supports the following attributes:
 
@@ -566,7 +569,7 @@ Task and Type Reference
 | <<<classesDirectory>>>                      | The directory holding the class files to   | <<Yes.>>               |
 |                                             | validate model objects of.                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<classFileProcessorClass>>>               | Class of the ClassFileProcessor backing    | No.                    |
+| <<<classFileProcessorClass>>>               | Class of the ClassFileProcessor backing    | No. {{{A}[A]}}         |
 |                                             | the task.                                  |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
@@ -578,7 +581,7 @@ Task and Type Reference
 | <<<classProcessingEnabled>>>                | A flag indicating the processing of        | No. Defaults to true.  |
 |                                             | classes is enabled.                        |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<defaultTemplateProfile>>>                | The default template profile to use when   | No.                    |
+| <<<defaultTemplateProfile>>>                | The default template profile to use when   | No. {{{B}[B]}}         |
 |                                             | accessing templates.                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<if>>>                                    | Object controlling the execution of the    | No.                    |
@@ -601,8 +604,9 @@ Task and Type Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
+|                                             |                                            | {{{C}[C]}}             |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modelContextClassName>>>                 | The name of the ModelContext               | No.                    |
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
 |                                             | implementation class backing the task.     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
@@ -611,10 +615,10 @@ Task and Type Reference
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
 |                                             | is enabled.                                |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modletLocation>>>                        | The class path location searched for       | No.                    |
+| <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
 |                                             | modlets.                                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No.                    |
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
 |                                             | schema system id.                          |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<module>>>                                | The identifier of a module to process.     | No. If the             |
@@ -625,17 +629,17 @@ Task and Type Reference
 |                                             |                                            | set, all modules will  |
 |                                             |                                            | be processed.          |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<moduleLocation>>>                        | The class path location searched for       | No.                    |
+| <<<moduleLocation>>>                        | The class path location searched for       | No. {{{G}[G]}}         |
 |                                             | modules.                                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<outputEncoding>>>                        | The encoding to use for writing files.     | No. Defaults to the    |
 |                                             |                                            | system's default       |
 |                                             |                                            | encoding.              |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<platformProviderLocation>>>              | The location searched for platform         | No.                    |
+| <<<platformProviderLocation>>>              | The location searched for platform         | No. {{{H}[H]}}         |
 |                                             | provider resources.                        |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<providerLocation>>>                      | The class path location searched for       | No.                    |
+| <<<providerLocation>>>                      | The class path location searched for       | No. {{{I}[I]}}         |
 |                                             | providers.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<specification>>>                         | The identifier of a specification to       | No. If the             |
@@ -659,10 +663,10 @@ Task and Type Reference
 |                                             | directory is used. Otherwise a warning     |                        |
 |                                             | message is logged.                         |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<templateProfile>>>                       | The template profile to use when accessing | No.                    |
+| <<<templateProfile>>>                       | The template profile to use when accessing | No. {{{B}[B]}}         |
 |                                             | templates.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
+| <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
 |                                             | transformers.                              |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<unless>>>                                | Object controlling the execution of the    | No.                    |
@@ -722,14 +726,14 @@ Task and Type Reference
 
 * <<<{validate-classpath}>>>
 
-  This task validates classpath class file model objects.
+  This task validates classpath class file model objects. {{{Q}[Q]}}
 
   The <<<validate-classpath>>> task supports the following attributes:
 
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<Attribute>>                               | <<Description>>                            | <<Required>>           |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<classFileProcessorClass>>>               | Class of the ClassFileProcessor backing    | No.                    |
+| <<<classFileProcessorClass>>>               | Class of the ClassFileProcessor backing    | No. {{{A}[A]}}         |
 |                                             | the task.                                  |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
@@ -741,7 +745,7 @@ Task and Type Reference
 | <<<classProcessingEnabled>>>                | A flag indicating the processing of        | No. Defaults to true.  |
 |                                             | classes is enabled.                        |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<defaultTemplateProfile>>>                | The default template profile to use when   | No.                    |
+| <<<defaultTemplateProfile>>>                | The default template profile to use when   | No. {{{B}[B]}}         |
 |                                             | accessing templates.                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<if>>>                                    | Object controlling the execution of the    | No.                    |
@@ -767,8 +771,9 @@ Task and Type Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
+|                                             |                                            | {{{C}[C]}}             |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modelContextClassName>>>                 | The name of the ModelContext               | No.                    |
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
 |                                             | implementation class backing the task.     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
@@ -777,10 +782,10 @@ Task and Type Reference
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
 |                                             | is enabled.                                |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modletLocation>>>                        | The class path location searched for       | No.                    |
+| <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
 |                                             | modlets.                                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No.                    |
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
 |                                             | schema system id.                          |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<module>>>                                | The identifier of a module to process.     | No. If the             |
@@ -791,17 +796,17 @@ Task and Type Reference
 |                                             |                                            | set, all modules will  |
 |                                             |                                            | be processed.          |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<moduleLocation>>>                        | The class path location searched for       | No.                    |
+| <<<moduleLocation>>>                        | The class path location searched for       | No. {{{G}[G]}}         |
 |                                             | modules.                                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<outputEncoding>>>                        | The encoding to use for writing files.     | No. Defaults to the    |
 |                                             |                                            | system's default       |
 |                                             |                                            | encoding.              |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<platformProviderLocation>>>              | The location searched for platform         | No.                    |
+| <<<platformProviderLocation>>>              | The location searched for platform         | No. {{{H}[H]}}         |
 |                                             | provider resources.                        |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<providerLocation>>>                      | The class path location searched for       | No.                    |
+| <<<providerLocation>>>                      | The class path location searched for       | No. {{{I}[I]}}         |
 |                                             | providers.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<specification>>>                         | The identifier of a specification to       | No. If the             |
@@ -825,10 +830,10 @@ Task and Type Reference
 |                                             | directory is used. Otherwise a warning     |                        |
 |                                             | message is logged.                         |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<templateProfile>>>                       | The template profile to use when accessing | No.                    |
+| <<<templateProfile>>>                       | The template profile to use when accessing | No. {{{B}[B]}}         |
 |                                             | templates.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
+| <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
 |                                             | transformers.                              |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<unless>>>                                | Object controlling the execution of the    | No.                    |
@@ -886,7 +891,7 @@ Task and Type Reference
 
 * <<<{validate-model}>>>
 
-  This task validates models.
+  This task validates models. {{{R}[R]}}
 
   The <<<validate-model>>> task supports the following attributes:
 
@@ -904,8 +909,9 @@ Task and Type Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
+|                                             |                                            | {{{C}[C]}}             |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modelContextClassName>>>                 | The name of the ModelContext               | No.                    |
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
 |                                             | implementation class backing the task.     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
@@ -914,22 +920,22 @@ Task and Type Reference
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
 |                                             | is enabled.                                |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modletLocation>>>                        | The class path location searched for       | No.                    |
+| <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
 |                                             | modlets.                                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No.                    |
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
 |                                             | schema system id.                          |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<moduleLocation>>>                        | The class path location searched for       | No.                    |
+| <<<moduleLocation>>>                        | The class path location searched for       | No. {{{G}[G]}}         |
 |                                             | modules.                                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<platformProviderLocation>>>              | The location searched for platform         | No.                    |
+| <<<platformProviderLocation>>>              | The location searched for platform         | No. {{{H}[H]}}         |
 |                                             | provider resources.                        |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<providerLocation>>>                      | The class path location searched for       | No.                    |
+| <<<providerLocation>>>                      | The class path location searched for       | No. {{{I}[I]}}         |
 |                                             | providers.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
+| <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
 |                                             | transformers.                              |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<unless>>>                                | Object controlling the execution of the    | No.                    |
@@ -966,7 +972,7 @@ Task and Type Reference
 
 * <<<{merge-modlets}>>>
 
-  This task merges modlet resources.
+  This task merges modlet resources. {{{S}[S]}}
 
   The <<<merge-modlets>>> task supports the following attributes:
 
@@ -984,8 +990,9 @@ Task and Type Reference
 *---------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                           | The public identifier of the model to      | No. Defaults to the    |
 |                                       | process.                                   | JOMC model public id.  |
+|                                       |                                            | {{{C}[C]}}             |
 *---------------------------------------+--------------------------------------------+------------------------+
-| <<<modelContextClassName>>>           | The name of the ModelContext               | No.                    |
+| <<<modelContextClassName>>>           | The name of the ModelContext               | No. {{{D}[D]}}         |
 |                                       | implementation class backing the task.     |                        |
 *---------------------------------------+--------------------------------------------+------------------------+
 | <<<modelProcessingEnabled>>>          | A flag indicating the processing of models | No. Defaults to true.  |
@@ -997,7 +1004,7 @@ Task and Type Reference
 *---------------------------------------+--------------------------------------------+------------------------+
 | <<<modletFile>>>                      | The file to write the merged modlet to.    | <<Yes.>>               |
 *---------------------------------------+--------------------------------------------+------------------------+
-| <<<modletLocation>>>                  | The class path location searched for       | No.                    |
+| <<<modletLocation>>>                  | The class path location searched for       | No. {{{E}[E]}}         |
 |                                       | modlets.                                   |                        |
 *---------------------------------------+--------------------------------------------+------------------------+
 | <<<modletName>>>                      | The name of the merged modlet.             | <<Yes.>>               |
@@ -1005,17 +1012,17 @@ Task and Type Reference
 | <<<modletObjectStylesheet>>>          | The location of a style sheet to transform | No.                    |
 |                                       | the merged modlet with.                    |                        |
 *---------------------------------------+--------------------------------------------+------------------------+
-| <<<modletSchemaSystemId>>>            | The http://jomc.org/modlet namespace       | No.                    |
+| <<<modletSchemaSystemId>>>            | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
 |                                       | schema system id.                          |                        |
 *---------------------------------------+--------------------------------------------+------------------------+
 | <<<modletVendor>>>                    | The vendor of the merged modlet.           | No.                    |
 *---------------------------------------+--------------------------------------------+------------------------+
 | <<<modletVersion>>>                   | The version of the merged modlet.          | No.                    |
 *---------------------------------------+--------------------------------------------+------------------------+
-| <<<platformProviderLocation>>>        | The location searched for platform         | No.                    |
+| <<<platformProviderLocation>>>        | The location searched for platform         | No. {{{H}[H]}}         |
 |                                       | provider resources.                        |                        |
 *---------------------------------------+--------------------------------------------+------------------------+
-| <<<providerLocation>>>                | The class path location searched for       | No.                    |
+| <<<providerLocation>>>                | The class path location searched for       | No. {{{I}[I]}}         |
 |                                       | providers.                                 |                        |
 *---------------------------------------+--------------------------------------------+------------------------+
 | <<<unless>>>                          | Object controlling the execution of the    | No.                    |
@@ -1061,7 +1068,7 @@ Task and Type Reference
 
 * <<<{merge-modules}>>>
 
-  This task merges module resources.
+  This task merges module resources. {{{T}[T]}}
 
   The <<<merge-modules>>> task supports the following attributes:
 
@@ -1079,8 +1086,9 @@ Task and Type Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
+|                                             |                                            | {{{C}[C]}}             |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modelContextClassName>>>                 | The name of the ModelContext               | No.                    |
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
 |                                             | implementation class backing the task.     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelObjectStylesheet>>>                 | The location of a style sheet to transform | No.                    |
@@ -1092,10 +1100,10 @@ Task and Type Reference
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
 |                                             | is enabled.                                |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modletLocation>>>                        | The class path location searched for       | No.                    |
+| <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
 |                                             | modlets.                                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No.                    |
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
 |                                             | schema system id.                          |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<moduleEncoding>>>                        | The encoding of the module resource.       | No. Defaults to the    |
@@ -1106,20 +1114,20 @@ Task and Type Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<moduleName>>>                            | The name of the merged module.             | <<Yes.>>               |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<moduleLocation>>>                        | The class path location searched for       | No.                    |
+| <<<moduleLocation>>>                        | The class path location searched for       | No. {{{G}[G]}}         |
 |                                             | modules.                                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<moduleVersion>>>                         | The version of the merged module.          | No.                    |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<moduleVendor>>>                          | The vendor of the merged module.           | No.                    |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<platformProviderLocation>>>              | The location searched for platform         | No.                    |
+| <<<platformProviderLocation>>>              | The location searched for platform         | No. {{{H}[H]}}         |
 |                                             | provider resources.                        |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<providerLocation>>>                      | The class path location searched for       | No.                    |
+| <<<providerLocation>>>                      | The class path location searched for       | No. {{{I}[I]}}         |
 |                                             | providers.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
+| <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
 |                                             | transformers.                              |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<unless>>>                                | Object controlling the execution of the    | No.                    |
@@ -1165,7 +1173,7 @@ Task and Type Reference
 
 * <<<{show-model}>>>
 
-  This task displays model objects.
+  This task displays model objects. {{{U}[U]}}
 
   The <<<show-model>>> task supports the following attributes:
 
@@ -1186,8 +1194,9 @@ Task and Type Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
+|                                             |                                            | {{{C}[C]}}             |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modelContextClassName>>>                 | The name of the ModelContext               | No.                    |
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
 |                                             | implementation class backing the task.     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modelEncoding>>>                         | The encoding to use when writing the       | No.                    |
@@ -1203,26 +1212,26 @@ Task and Type Reference
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
 |                                             | is enabled.                                |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modletLocation>>>                        | The class path location searched for       | No.                    |
+| <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
 |                                             | modlets.                                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No.                    |
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
 |                                             | schema system id.                          |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<module>>>                                | The name of a module to show.              | No.                    |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<moduleLocation>>>                        | The class path location searched for       | No.                    |
+| <<<moduleLocation>>>                        | The class path location searched for       | No. {{{G}[G]}}         |
 |                                             | modules.                                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<platformProviderLocation>>>              | The location searched for platform         | No.                    |
+| <<<platformProviderLocation>>>              | The location searched for platform         | No. {{{H}[H]}}         |
 |                                             | provider resources.                        |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<providerLocation>>>                      | The class path location searched for       | No.                    |
+| <<<providerLocation>>>                      | The class path location searched for       | No. {{{I}[I]}}         |
 |                                             | providers.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<specification>>>                         | The identifier of a specification to show. | No.                    |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<transformerLocation>>>                   | The class path location searched for       | No.                    |
+| <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
 |                                             | transformers.                              |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<unless>>>                                | Object controlling the execution of the    | No.                    |
@@ -1434,3 +1443,47 @@ Task and Type Reference
 | <<<transformationOutputProperty>>>          | Transformation output property to apply.   | No.                    |
 |                                             | Type: {{KeyValueType}}                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+
+* References
+
+  \[{A}\] {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/ClassFileProcessor.html}ClassFileProcessor class.}}
+
+  \[{B}\] {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/JomcTool.html#getDefaultTemplateProfile()}Default template profile.}}
+
+  \[{C}\] {{{${project.url}/../jomc-model/apidocs/org/jomc/model/ModelObject.html#MODEL_PUBLIC_ID}JOMC model public identifier.}}
+
+  \[{D}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/ModelContext.html}ModelContext class.}}
+
+  \[{E}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/DefaultModletProvider.html#getDefaultModletLocation()}Class path location searched for modlets.}}
+
+  \[{F}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/ModelContext.html#getDefaultModletSchemaSystemId()}<<<http://jomc.org/modlet>>> namespace schema system id.}}
+
+  \[{G}\] {{{${project.url}/../jomc-model/apidocs/org/jomc/model/modlet/DefaultModelProvider.html#getDefaultModuleLocation()}Class path location searched for modules.}}
+
+  \[{H}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/DefaultModelContext.html#getDefaultPlatformProviderLocation()}Location searched for platform provider resources.}}
+
+  \[{I}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/DefaultModelContext.html#getDefaultProviderLocation()}Class path location searched for providers.}}
+
+  \[{J}\] {{{${project.url}/../jomc-model/apidocs/org/jomc/model/modlet/DefaultModelProcessor.html#getDefaultTransformerLocation()}Class path location searched for transformers.}}
+
+  \[{K}\] {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/ResourceFileProcessor.html}ResourceFileProcessor class.}}
+
+  \[{L}\] {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/SourceFileProcessor.html}SourceFileProcessor class.}}
+
+  \[{M}\] {{{${project.url}/apidocs/org/jomc/ant/CommitClassesTask.html}<<<commit-classes>>> task.}}
+
+  \[{N}\] {{{${project.url}/apidocs/org/jomc/ant/GenerateResourcesTask.html}<<<generate-resources>>> task.}}
+
+  \[{O}\] {{{${project.url}/apidocs/org/jomc/ant/ManageSourcesTask.html}<<<manage-sources>>> task.}}
+
+  \[{P}\] {{{${project.url}/apidocs/org/jomc/ant/ValidateClassesTask.html}<<<validate-classes>>> task.}}
+
+  \[{Q}\] {{{${project.url}/apidocs/org/jomc/ant/ValidateClasspathTask.html}<<<validate-classpath>>> task.}}
+
+  \[{R}\] {{{${project.url}/apidocs/org/jomc/ant/ValidateModelTask.html}<<<validate-model>>> task.}}
+
+  \[{S}\] {{{${project.url}/apidocs/org/jomc/ant/MergeModletsTask.html}<<<merge-modlets>>> task.}}
+
+  \[{T}\] {{{${project.url}/apidocs/org/jomc/ant/MergeModulesTask.html}<<<merge-modules>>> task.}}
+
+  \[{U}\] {{{${project.url}/apidocs/org/jomc/ant/ShowModelTask.html}<<<show-model>>> task.}}
