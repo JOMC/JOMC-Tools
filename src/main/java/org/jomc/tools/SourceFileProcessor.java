@@ -388,10 +388,11 @@ public class SourceFileProcessor extends JomcTool
             s.setOptional( true );
             sourceFileType.getSourceSections().getSourceSection().add( s );
 
-            for ( String interfaceName : this.getImplementedJavaTypeNames( implementation, false ) )
+            final List<String> implementedJavaTypeNames = this.getImplementedJavaTypeNames( implementation, false );
+            for ( int i = implementedJavaTypeNames.size() - 1; i >= 0; i-- )
             {
                 s = new SourceSectionType();
-                s.setName( interfaceName );
+                s.setName( implementedJavaTypeNames.get( i ) );
                 s.setIndentationLevel( 1 );
                 s.setEditable( true );
                 sourceFileType.getSourceSections().getSourceSection().add( s );
@@ -565,9 +566,9 @@ public class SourceFileProcessor extends JomcTool
             throw new NullPointerException( "sourcesDirectory" );
         }
 
-        for ( Module m : this.getModules().getModule() )
+        for ( int i = this.getModules().getModule().size() - 1; i >= 0; i-- )
         {
-            this.manageSourceFiles( m, sourcesDirectory );
+            this.manageSourceFiles( this.getModules().getModule().get( i ), sourcesDirectory );
         }
     }
 
@@ -598,16 +599,16 @@ public class SourceFileProcessor extends JomcTool
 
         if ( module.getSpecifications() != null )
         {
-            for ( Specification s : module.getSpecifications().getSpecification() )
+            for ( int i = module.getSpecifications().getSpecification().size() - 1; i >= 0; i-- )
             {
-                this.manageSourceFiles( s, sourcesDirectory );
+                this.manageSourceFiles( module.getSpecifications().getSpecification().get( i ), sourcesDirectory );
             }
         }
         if ( module.getImplementations() != null )
         {
-            for ( Implementation i : module.getImplementations().getImplementation() )
+            for ( int i = module.getImplementations().getImplementation().size() - 1; i >= 0; i-- )
             {
-                this.manageSourceFiles( i, sourcesDirectory );
+                this.manageSourceFiles( module.getImplementations().getImplementation().get( i ), sourcesDirectory );
             }
         }
     }
@@ -645,11 +646,13 @@ public class SourceFileProcessor extends JomcTool
 
             if ( implementations != null )
             {
-                for ( Implementation i : implementations.getImplementation() )
+                for ( int i = implementations.getImplementation().size() - 1; i >= 0; i-- )
                 {
-                    if ( i.isClassDeclaration() && specification.getClazz().equals( i.getClazz() ) )
+                    final Implementation impl = implementations.getImplementation().get( i );
+
+                    if ( impl.isClassDeclaration() && specification.getClazz().equals( impl.getClazz() ) )
                     {
-                        this.manageSourceFiles( i, sourcesDirectory );
+                        this.manageSourceFiles( impl, sourcesDirectory );
                         manage = false;
                         break;
                     }
@@ -663,9 +666,9 @@ public class SourceFileProcessor extends JomcTool
 
                 if ( editor != null && model != null )
                 {
-                    for ( SourceFileType sourceFileType : model.getSourceFile() )
+                    for ( int i = model.getSourceFile().size() - 1; i >= 0; i-- )
                     {
-                        editor.edit( specification, sourceFileType, sourcesDirectory );
+                        editor.edit( specification, model.getSourceFile().get( i ), sourcesDirectory );
                     }
                 }
             }
@@ -706,9 +709,9 @@ public class SourceFileProcessor extends JomcTool
 
             if ( editor != null && model != null )
             {
-                for ( SourceFileType sourceFileType : model.getSourceFile() )
+                for ( int i = model.getSourceFile().size() - 1; i >= 0; i-- )
                 {
-                    editor.edit( implementation, sourceFileType, sourcesDirectory );
+                    editor.edit( implementation, model.getSourceFile().get( i ), sourcesDirectory );
                 }
             }
         }
@@ -726,8 +729,10 @@ public class SourceFileProcessor extends JomcTool
     {
         final SourceFilesType types = new SourceFilesType( sourceFilesType );
 
-        for ( SourceFileType s : types.getSourceFile() )
+        for ( int i = types.getSourceFile().size() - 1; i >= 0; i-- )
         {
+            final SourceFileType s = types.getSourceFile().get( i );
+
             if ( s.getTemplate() == null )
             {
                 s.setTemplate( SPECIFICATION_TEMPLATE );
@@ -759,8 +764,10 @@ public class SourceFileProcessor extends JomcTool
         {
             if ( sourceSectionsType != null )
             {
-                for ( SourceSectionType s : sourceSectionsType.getSourceSection() )
+                for ( int i = sourceSectionsType.getSourceSection().size() - 1; i >= 0; i-- )
                 {
+                    final SourceSectionType s = sourceSectionsType.getSourceSection().get( i );
+
                     if ( LICENSE_SECTION_NAME.equals( s.getName() ) )
                     {
                         if ( !isFieldSet( s, "optional" ) )
@@ -831,8 +838,10 @@ public class SourceFileProcessor extends JomcTool
     {
         final SourceFilesType types = new SourceFilesType( sourceFilesType );
 
-        for ( SourceFileType s : types.getSourceFile() )
+        for ( int i = types.getSourceFile().size() - 1; i >= 0; i-- )
         {
+            final SourceFileType s = types.getSourceFile().get( i );
+
             if ( s.getTemplate() == null )
             {
                 s.setTemplate( IMPLEMENTATION_TEMPLATE );
@@ -864,8 +873,10 @@ public class SourceFileProcessor extends JomcTool
         {
             if ( sourceSectionsType != null )
             {
-                for ( SourceSectionType s : sourceSectionsType.getSourceSection() )
+                for ( int i = sourceSectionsType.getSourceSection().size() - 1; i >= 0; i-- )
                 {
+                    final SourceSectionType s = sourceSectionsType.getSourceSection().get( i );
+
                     if ( LICENSE_SECTION_NAME.equals( s.getName() ) )
                     {
                         if ( !isFieldSet( s, "optional" ) )
@@ -994,8 +1005,13 @@ public class SourceFileProcessor extends JomcTool
                         }
                     }
 
-                    for ( String interfaceName : this.getImplementedJavaTypeNames( implementation, false ) )
+                    final List<String> implementedJavaTypeNames =
+                        this.getImplementedJavaTypeNames( implementation, false );
+
+                    for ( int j = implementedJavaTypeNames.size() - 1; j >= 0; j-- )
                     {
+                        final String interfaceName = implementedJavaTypeNames.get( j );
+
                         if ( interfaceName.equals( s.getName() ) )
                         {
                             if ( !isFieldSet( s, "editable" ) )
@@ -1556,8 +1572,9 @@ public class SourceFileProcessor extends JomcTool
         {
             if ( sourceSectionsType != null && section != null )
             {
-                for ( SourceSectionType sourceSectionType : sourceSectionsType.getSourceSection() )
+                for ( int i = sourceSectionsType.getSourceSection().size() - 1; i >= 0; i-- )
                 {
+                    final SourceSectionType sourceSectionType = sourceSectionsType.getSourceSection().get( i );
                     Section childSection = section.getSection( sourceSectionType.getName() );
 
                     if ( childSection == null && !sourceSectionType.isOptional() )

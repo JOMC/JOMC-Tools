@@ -587,8 +587,10 @@ public class JomcTool
 
         if ( specs != null )
         {
-            for ( Specification s : specs.getSpecification() )
+            for ( int i = specs.getSpecification().size() - 1; i >= 0; i-- )
             {
+                final Specification s = specs.getSpecification().get( i );
+
                 if ( s.getClazz() != null )
                 {
                     final String typeName = this.getJavaTypeName( s, qualified );
@@ -2223,9 +2225,9 @@ public class JomcTool
 
         if ( this.isLoggable( level ) )
         {
-            for ( Listener l : this.getListeners() )
+            for ( int i = this.getListeners().size() - 1; i >= 0; i-- )
             {
-                l.onLog( level, message, throwable );
+                this.getListeners().get( i ).onLog( level, message, throwable );
             }
         }
     }

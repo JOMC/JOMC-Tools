@@ -396,8 +396,10 @@ public class ClassFileProcessor extends JomcTool
             specifications = new Specifications();
         }
 
-        for ( SpecificationReference r : specifications.getReference() )
+        for ( int i = specifications.getReference().size() - 1; i >= 0; i-- )
         {
+            final SpecificationReference r = specifications.getReference().get( i );
+
             if ( specifications.getSpecification( r.getIdentifier() ) == null && this.isLoggable( Level.WARNING ) )
             {
                 this.log( Level.WARNING, getMessage( "unresolvedSpecification", r.getIdentifier(),
@@ -406,8 +408,9 @@ public class ClassFileProcessor extends JomcTool
             }
         }
 
-        for ( Dependency d : dependencies.getDependency() )
+        for ( int i = dependencies.getDependency().size() - 1; i >= 0; i-- )
         {
+            final Dependency d = dependencies.getDependency().get( i );
             final Specification s = this.getModules().getSpecification( d.getIdentifier() );
 
             if ( s != null )
@@ -955,8 +958,9 @@ public class ClassFileProcessor extends JomcTool
 
             if ( decodedDependencies != null )
             {
-                for ( Dependency decodedDependency : decodedDependencies.getDependency() )
+                for ( int i = decodedDependencies.getDependency().size() - 1; i >= 0; i-- )
                 {
+                    final Dependency decodedDependency = decodedDependencies.getDependency().get( i );
                     final Dependency dependency = dependencies.getDependency( decodedDependency.getName() );
                     final Specification s = this.getModules().getSpecification( decodedDependency.getIdentifier() );
 
@@ -1009,8 +1013,9 @@ public class ClassFileProcessor extends JomcTool
 
             if ( decodedProperties != null )
             {
-                for ( Property decodedProperty : decodedProperties.getProperty() )
+                for ( int i = decodedProperties.getProperty().size() - 1; i >= 0; i-- )
                 {
+                    final Property decodedProperty = decodedProperties.getProperty().get( i );
                     final Property property = properties.getProperty( decodedProperty.getName() );
 
                     if ( property == null )
@@ -1044,8 +1049,9 @@ public class ClassFileProcessor extends JomcTool
 
             if ( decodedMessages != null )
             {
-                for ( Message decodedMessage : decodedMessages.getMessage() )
+                for ( int i = decodedMessages.getMessage().size() - 1; i >= 0; i-- )
                 {
+                    final Message decodedMessage = decodedMessages.getMessage().get( i );
                     final Message message = messages.getMessage( decodedMessage.getName() );
 
                     if ( message == null )
@@ -1067,8 +1073,9 @@ public class ClassFileProcessor extends JomcTool
 
             if ( decodedSpecifications != null )
             {
-                for ( Specification decodedSpecification : decodedSpecifications.getSpecification() )
+                for ( int i = decodedSpecifications.getSpecification().size() - 1; i >= 0; i-- )
                 {
+                    final Specification decodedSpecification = decodedSpecifications.getSpecification().get( i );
                     final Specification specification =
                         this.getModules().getSpecification( decodedSpecification.getIdentifier() );
 
@@ -1121,8 +1128,9 @@ public class ClassFileProcessor extends JomcTool
                     }
                 }
 
-                for ( SpecificationReference decodedReference : decodedSpecifications.getReference() )
+                for ( int i = decodedSpecifications.getReference().size() - 1; i >= 0; i-- )
                 {
+                    final SpecificationReference decodedReference = decodedSpecifications.getReference().get( i );
                     final Specification specification =
                         specifications.getSpecification( decodedReference.getIdentifier() );
 
@@ -1455,13 +1463,13 @@ public class ClassFileProcessor extends JomcTool
 
             if ( decodedSpecification != null )
             {
-                for ( Transformer transformer : transformers )
+                for ( int i = 0, l = transformers.size(); i < l; i++ )
                 {
                     final JAXBSource source =
                         new JAXBSource( marshaller, objectFactory.createSpecification( decodedSpecification ) );
 
                     final JAXBResult result = new JAXBResult( unmarshaller );
-                    transformer.transform( source, result );
+                    transformers.get( i ).transform( source, result );
 
                     if ( result.getResult() instanceof JAXBElement<?>
                          && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Specification )
@@ -1575,8 +1583,10 @@ public class ClassFileProcessor extends JomcTool
             }
 
             final ObjectFactory of = new ObjectFactory();
-            for ( Transformer transformer : transformers )
+            for ( int i = 0, l = transformers.size(); i < l; i++ )
             {
+                final Transformer transformer = transformers.get( i );
+
                 if ( decodedDependencies != null )
                 {
                     final JAXBSource source =
@@ -1928,17 +1938,17 @@ public class ClassFileProcessor extends JomcTool
     {
         if ( specifications != null )
         {
-            for ( Specification s : specifications.getSpecification() )
+            for ( int i = specifications.getSpecification().size() - 1; i >= 0; i-- )
             {
-                this.commitModelObjects( s, marshaller, classesDirectory );
+                this.commitModelObjects( specifications.getSpecification().get( i ), marshaller, classesDirectory );
             }
         }
 
         if ( implementations != null )
         {
-            for ( Implementation i : implementations.getImplementation() )
+            for ( int i = implementations.getImplementation().size() - 1; i >= 0; i-- )
             {
-                this.commitModelObjects( i, marshaller, classesDirectory );
+                this.commitModelObjects( implementations.getImplementation().get( i ), marshaller, classesDirectory );
             }
         }
     }
@@ -2016,18 +2026,22 @@ public class ClassFileProcessor extends JomcTool
 
         if ( specifications != null )
         {
-            for ( Specification s : specifications.getSpecification() )
+            for ( int i = specifications.getSpecification().size() - 1; i >= 0; i-- )
             {
-                final ModelValidationReport current = this.validateModelObjects( s, unmarshaller, classesDirectory );
+                final ModelValidationReport current = this.validateModelObjects(
+                    specifications.getSpecification().get( i ), unmarshaller, classesDirectory );
+
                 report.getDetails().addAll( current.getDetails() );
             }
         }
 
         if ( implementations != null )
         {
-            for ( Implementation i : implementations.getImplementation() )
+            for ( int i = implementations.getImplementation().size() - 1; i >= 0; i-- )
             {
-                final ModelValidationReport current = this.validateModelObjects( i, unmarshaller, classesDirectory );
+                final ModelValidationReport current = this.validateModelObjects(
+                    implementations.getImplementation().get( i ), unmarshaller, classesDirectory );
+
                 report.getDetails().addAll( current.getDetails() );
             }
         }
@@ -2120,18 +2134,22 @@ public class ClassFileProcessor extends JomcTool
 
         if ( specifications != null )
         {
-            for ( Specification s : specifications.getSpecification() )
+            for ( int i = specifications.getSpecification().size() - 1; i >= 0; i-- )
             {
-                final ModelValidationReport current = this.validateModelObjects( s, unmarshaller, classLoader );
+                final ModelValidationReport current = this.validateModelObjects(
+                    specifications.getSpecification().get( i ), unmarshaller, classLoader );
+
                 report.getDetails().addAll( current.getDetails() );
             }
         }
 
         if ( implementations != null )
         {
-            for ( Implementation i : implementations.getImplementation() )
+            for ( int i = implementations.getImplementation().size() - 1; i >= 0; i-- )
             {
-                final ModelValidationReport current = this.validateModelObjects( i, unmarshaller, classLoader );
+                final ModelValidationReport current = this.validateModelObjects(
+                    implementations.getImplementation().get( i ), unmarshaller, classLoader );
+
                 report.getDetails().addAll( current.getDetails() );
             }
         }
@@ -2236,17 +2254,21 @@ public class ClassFileProcessor extends JomcTool
     {
         if ( specifications != null )
         {
-            for ( Specification s : specifications.getSpecification() )
+            for ( int i = specifications.getSpecification().size() - 1; i >= 0; i-- )
             {
-                this.transformModelObjects( s, marshaller, unmarshaller, classesDirectory, transformers );
+                this.transformModelObjects( specifications.getSpecification().get( i ), marshaller, unmarshaller,
+                                            classesDirectory, transformers );
+
             }
         }
 
         if ( implementations != null )
         {
-            for ( Implementation i : implementations.getImplementation() )
+            for ( int i = implementations.getImplementation().size() - 1; i >= 0; i-- )
             {
-                this.transformModelObjects( i, marshaller, unmarshaller, classesDirectory, transformers );
+                this.transformModelObjects( implementations.getImplementation().get( i ), marshaller, unmarshaller,
+                                            classesDirectory, transformers );
+
             }
         }
     }

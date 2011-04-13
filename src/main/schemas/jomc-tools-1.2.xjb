@@ -86,8 +86,10 @@
 
         javax.xml.bind.JAXBElement<?> anyElement = null;
 
-        for ( Object o : any )
+        for ( int i = any.size() - 1; i >= 0; i-- )
         {
+            final Object o = any.get( i );
+
             if ( o instanceof javax.xml.bind.JAXBElement<?> )
             {
                 final javax.xml.bind.JAXBElement<?> e = (javax.xml.bind.JAXBElement<?>) o;
@@ -161,8 +163,10 @@
         final java.util.List<javax.xml.bind.JAXBElement<T>> anyElements =
             new java.util.ArrayList<javax.xml.bind.JAXBElement<T>>( any.size() );
 
-        for ( Object o : any )
+        for ( int i = any.size() - 1; i >= 0; i-- )
         {
+            final Object o = any.get( i );
+
             if ( o instanceof javax.xml.bind.JAXBElement<?> )
             {
                 final javax.xml.bind.JAXBElement<?> e = (javax.xml.bind.JAXBElement<?>) o;
@@ -207,8 +211,10 @@
 
         T anyObject = null;
 
-        for ( Object o : any )
+        for ( int i = any.size() - 1; i >= 0; i-- )
         {
+            Object o = any.get( i );
+
             if ( o instanceof javax.xml.bind.JAXBElement<?> )
             {
                 o = ( (javax.xml.bind.JAXBElement<?>) o ).getValue();
@@ -258,8 +264,10 @@
 
         final java.util.List<T> anyElements = new java.util.ArrayList<T>( any.size() );
 
-        for ( Object o : any )
+        for ( int i = any.size() - 1; i >= 0; i-- )
         {
+            Object o = any.get( i );
+
             if ( o instanceof javax.xml.bind.JAXBElement<?> )
             {
                 o = ( (javax.xml.bind.JAXBElement<?>) o ).getValue();
@@ -303,8 +311,10 @@
             throw new NullPointerException( "identifier" );
         }
 
-        for ( SourceFileType s : this.getSourceFile() )
+        for ( int i = this.getSourceFile().size() - 1; i >= 0; i-- )
         {
+            final SourceFileType s = this.getSourceFile().get( i );
+
             if ( identifier.equals( s.getIdentifier() ) )
             {
                 return s;
@@ -428,8 +438,10 @@
     {
         if ( sourceSectionsType != null )
         {
-            for ( SourceSectionType s : sourceSectionsType.getSourceSection() )
+            for ( int i = sourceSectionsType.getSourceSection().size() - 1; i >= 0; i-- )
             {
+                final SourceSectionType s = sourceSectionsType.getSourceSection().get( i );
+
                 if ( name.equals( s.getName() ) )
                 {
                     return s;

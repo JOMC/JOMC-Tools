@@ -146,9 +146,9 @@ public class ResourceFileProcessor extends JomcTool
             throw new NullPointerException( "resourcesDirectory" );
         }
 
-        for ( Module m : this.getModules().getModule() )
+        for ( int i = this.getModules().getModule().size() - 1; i >= 0; i-- )
         {
-            this.writeResourceBundleResourceFiles( m, resourcesDirectory );
+            this.writeResourceBundleResourceFiles( this.getModules().getModule().get( i ), resourcesDirectory );
         }
     }
 
@@ -180,17 +180,21 @@ public class ResourceFileProcessor extends JomcTool
 
         if ( module.getSpecifications() != null )
         {
-            for ( Specification s : module.getSpecifications().getSpecification() )
+            for ( int i = module.getSpecifications().getSpecification().size() - 1; i >= 0; i-- )
             {
-                this.writeResourceBundleResourceFiles( s, resourcesDirectory );
+                this.writeResourceBundleResourceFiles( module.getSpecifications().getSpecification().get( i ),
+                                                       resourcesDirectory );
+
             }
         }
 
         if ( module.getImplementations() != null )
         {
-            for ( Implementation i : module.getImplementations().getImplementation() )
+            for ( int i = module.getImplementations().getImplementation().size() - 1; i >= 0; i-- )
             {
-                this.writeResourceBundleResourceFiles( i, resourcesDirectory );
+                this.writeResourceBundleResourceFiles( module.getImplementations().getImplementation().get( i ),
+                                                       resourcesDirectory );
+
             }
         }
     }
@@ -333,12 +337,15 @@ public class ResourceFileProcessor extends JomcTool
 
         if ( messages != null )
         {
-            for ( Message message : messages.getMessage() )
+            for ( int i = messages.getMessage().size() - 1; i >= 0; i-- )
             {
+                final Message message = messages.getMessage().get( i );
+
                 if ( message.getTemplate() != null )
                 {
-                    for ( Text text : message.getTemplate().getText() )
+                    for ( int j = message.getTemplate().getText().size() - 1; j >= 0; j-- )
                     {
+                        final Text text = message.getTemplate().getText().get( j );
                         final Locale locale = new Locale( text.getLanguage().toLowerCase() );
                         Properties bundleProperties = properties.get( locale );
 
@@ -477,13 +484,15 @@ public class ResourceFileProcessor extends JomcTool
 
         if ( messages != null )
         {
-            for ( Message m : messages.getMessage() )
+            for ( int i = messages.getMessage().size() - 1; i >= 0; i-- )
             {
+                final Message m = messages.getMessage().get( i );
+
                 if ( m.getTemplate() != null )
                 {
-                    for ( Text t : m.getTemplate().getText() )
+                    for ( int j = m.getTemplate().getText().size() - 1; j >= 0; j-- )
                     {
-                        new MessageFormat( t.getValue() );
+                        new MessageFormat( m.getTemplate().getText().get( j ).getValue() );
                     }
                 }
             }
