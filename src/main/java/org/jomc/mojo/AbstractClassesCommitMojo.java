@@ -182,9 +182,9 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
 
         if ( this.modelObjectStylesheetResources != null )
         {
-            for ( ModelObjectStylesheetResource r : this.modelObjectStylesheetResources )
+            for ( int i = this.modelObjectStylesheetResources.size() - 1; i >= 0; i-- )
             {
-                final Transformer transformer = this.getTransformer( r );
+                final Transformer transformer = this.getTransformer( this.modelObjectStylesheetResources.get( i ) );
 
                 if ( transformer != null )
                 {

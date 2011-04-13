@@ -103,9 +103,9 @@ public class PropertiesResourceType extends ResourceType
     {
         if ( value != null )
         {
-            for ( String format : FORMAT_VALUES )
+            for ( int i = FORMAT_VALUES.length - 1; i >= 0; i-- )
             {
-                if ( value.equalsIgnoreCase( format ) )
+                if ( value.equalsIgnoreCase( FORMAT_VALUES[i] ) )
                 {
                     return true;
                 }

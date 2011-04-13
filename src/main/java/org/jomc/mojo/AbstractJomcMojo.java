@@ -1787,9 +1787,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
                 if ( this.transformationParameterResources != null )
                 {
-                    for ( TransformationParameterResource r : this.transformationParameterResources )
+                    for ( int i = this.transformationParameterResources.size() - 1; i >= 0; i-- )
                     {
-                        for ( Map.Entry<Object, Object> e : this.getProperties( r ).entrySet() )
+                        for ( Map.Entry<Object, Object> e :
+                              this.getProperties( this.transformationParameterResources.get( i ) ).entrySet() )
                         {
                             transformer.setParameter( e.getKey().toString(), e.getValue() );
                         }
@@ -1804,9 +1805,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     }
                 }
 
-                for ( TransformationParameterResource r : resource.getTransformationParameterResources() )
+                for ( int i = resource.getTransformationParameterResources().size() - 1; i >= 0; i-- )
                 {
-                    for ( Map.Entry<Object, Object> e : this.getProperties( r ).entrySet() )
+                    for ( Map.Entry<Object, Object> e :
+                          this.getProperties( resource.getTransformationParameterResources().get( i ) ).entrySet() )
                     {
                         transformer.setParameter( e.getKey().toString(), e.getValue() );
                     }
@@ -2331,9 +2333,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( this.velocityPropertyResources != null )
             {
-                for ( VelocityPropertyResource r : this.velocityPropertyResources )
+                for ( int i = this.velocityPropertyResources.size() - 1; i >= 0; i-- )
                 {
-                    for ( Map.Entry<Object, Object> e : this.getProperties( r ).entrySet() )
+                    for ( Map.Entry<Object, Object> e :
+                          this.getProperties( this.velocityPropertyResources.get( i ) ).entrySet() )
                     {
                         if ( e.getValue() != null )
                         {
@@ -2377,9 +2380,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( this.templateParameterResources != null )
             {
-                for ( TemplateParameterResource r : this.templateParameterResources )
+                for ( int i = this.templateParameterResources.size() - 1; i >= 0; i-- )
                 {
-                    for ( Map.Entry<Object, Object> e : this.getProperties( r ).entrySet() )
+                    for ( Map.Entry<Object, Object> e :
+                          this.getProperties( this.templateParameterResources.get( i ) ).entrySet() )
                     {
                         if ( e.getValue() != null )
                         {
@@ -2427,9 +2431,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     private Artifact getPluginArtifact( final Artifact a )
     {
-        for ( final Iterator<Artifact> it = this.pluginArtifacts.iterator(); it.hasNext(); )
+        for ( int i = this.pluginArtifacts.size() - 1; i >= 0; i-- )
         {
-            final Artifact pluginArtifact = it.next();
+            final Artifact pluginArtifact = this.pluginArtifacts.get( i );
 
             if ( pluginArtifact.getGroupId().equals( a.getGroupId() )
                  && pluginArtifact.getArtifactId().equals( a.getArtifactId() )
