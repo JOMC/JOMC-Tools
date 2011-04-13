@@ -170,9 +170,10 @@ public final class CommitClassesTask extends ClassFileProcessorTask
             final List<Transformer> transformers =
                 new ArrayList<Transformer>( this.getModelObjectStylesheetResources().size() );
 
-            for ( TransformerResourceType r : this.getModelObjectStylesheetResources() )
+            for ( int i = this.getModelObjectStylesheetResources().size() - 1; i >= 0; i-- )
             {
-                final Transformer transformer = this.getTransformer( r );
+                final Transformer transformer =
+                    this.getTransformer( this.getModelObjectStylesheetResources().get( i ) );
 
                 if ( transformer != null )
                 {

@@ -392,9 +392,10 @@ public final class MergeModletsTask extends JomcTask
             marshaller.setSchema( schema );
             unmarshaller.setSchema( schema );
 
-            for ( TransformerResourceType r : this.getModletObjectStylesheetResources() )
+            for ( int i = this.getModletObjectStylesheetResources().size() - 1; i >= 0; i-- )
             {
-                final Transformer transformer = this.getTransformer( r );
+                final Transformer transformer =
+                    this.getTransformer( this.getModletObjectStylesheetResources().get( i ) );
 
                 if ( transformer != null )
                 {
@@ -411,8 +412,9 @@ public final class MergeModletsTask extends JomcTask
                     }
                     else
                     {
-                        throw new BuildException( Messages.getMessage( "illegalTransformationResult", r.getLocation() ),
-                                                  this.getLocation() );
+                        throw new BuildException( Messages.getMessage(
+                            "illegalTransformationResult",
+                            this.getModletObjectStylesheetResources().get( i ).getLocation() ), this.getLocation() );
 
                     }
                 }

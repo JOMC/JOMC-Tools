@@ -752,9 +752,10 @@ public class JomcToolTask extends JomcModelTask
 
             } );
 
-            for ( PropertiesResourceType r : this.getVelocityPropertyResources() )
+            for ( int i = this.getVelocityPropertyResources().size() - 1; i >= 0; i-- )
             {
-                for ( Map.Entry<Object, Object> e : this.getProperties( r ).entrySet() )
+                for ( Map.Entry<Object, Object> e :
+                      this.getProperties( this.getVelocityPropertyResources().get( i ) ).entrySet() )
                 {
                     if ( e.getValue() != null )
                     {
@@ -767,8 +768,10 @@ public class JomcToolTask extends JomcModelTask
                 }
             }
 
-            for ( KeyValueType<String, Object> p : this.getVelocityProperties() )
+            for ( int i = this.getVelocityProperties().size() - 1; i >= 0; i-- )
             {
+                final KeyValueType<String, Object> p = this.getVelocityProperties().get( i );
+
                 if ( p.getValue() != null )
                 {
                     tool.getVelocityEngine().setProperty( p.getKey(), p.getValue() );
@@ -791,9 +794,10 @@ public class JomcToolTask extends JomcModelTask
                 tool.getTemplateParameters().put( e.getKey().toString(), e.getValue() );
             }
 
-            for ( PropertiesResourceType r : this.getTemplateParameterResources() )
+            for ( int i = this.getTemplateParameterResources().size() - 1; i >= 0; i-- )
             {
-                for ( Map.Entry<Object, Object> e : this.getProperties( r ).entrySet() )
+                for ( Map.Entry<Object, Object> e :
+                      this.getProperties( this.getTemplateParameterResources().get( i ) ).entrySet() )
                 {
                     if ( e.getValue() != null )
                     {
@@ -806,8 +810,10 @@ public class JomcToolTask extends JomcModelTask
                 }
             }
 
-            for ( KeyValueType<String, Object> p : this.getTemplateParameters() )
+            for ( int i = this.getTemplateParameters().size() - 1; i >= 0; i-- )
             {
+                final KeyValueType<String, Object> p = this.getTemplateParameters().get( i );
+
                 if ( p.getValue() != null )
                 {
                     tool.getTemplateParameters().put( p.getKey(), p.getValue() );
