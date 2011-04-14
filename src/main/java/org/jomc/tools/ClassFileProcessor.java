@@ -396,7 +396,7 @@ public class ClassFileProcessor extends JomcTool
             specifications = new Specifications();
         }
 
-        for ( int i = specifications.getReference().size() - 1; i >= 0; i-- )
+        for ( int i = 0, s0 = specifications.getReference().size(); i < s0; i++ )
         {
             final SpecificationReference r = specifications.getReference().get( i );
 
@@ -408,7 +408,7 @@ public class ClassFileProcessor extends JomcTool
             }
         }
 
-        for ( int i = dependencies.getDependency().size() - 1; i >= 0; i-- )
+        for ( int i = 0, s0 = dependencies.getDependency().size(); i < s0; i++ )
         {
             final Dependency d = dependencies.getDependency().get( i );
             final Specification s = this.getModules().getSpecification( d.getIdentifier() );
@@ -958,7 +958,7 @@ public class ClassFileProcessor extends JomcTool
 
             if ( decodedDependencies != null )
             {
-                for ( int i = decodedDependencies.getDependency().size() - 1; i >= 0; i-- )
+                for ( int i = 0, s0 = decodedDependencies.getDependency().size(); i < s0; i++ )
                 {
                     final Dependency decodedDependency = decodedDependencies.getDependency().get( i );
                     final Dependency dependency = dependencies.getDependency( decodedDependency.getName() );
@@ -1013,7 +1013,7 @@ public class ClassFileProcessor extends JomcTool
 
             if ( decodedProperties != null )
             {
-                for ( int i = decodedProperties.getProperty().size() - 1; i >= 0; i-- )
+                for ( int i = 0, s0 = decodedProperties.getProperty().size(); i < s0; i++ )
                 {
                     final Property decodedProperty = decodedProperties.getProperty().get( i );
                     final Property property = properties.getProperty( decodedProperty.getName() );
@@ -1049,7 +1049,7 @@ public class ClassFileProcessor extends JomcTool
 
             if ( decodedMessages != null )
             {
-                for ( int i = decodedMessages.getMessage().size() - 1; i >= 0; i-- )
+                for ( int i = 0, s0 = decodedMessages.getMessage().size(); i < s0; i++ )
                 {
                     final Message decodedMessage = decodedMessages.getMessage().get( i );
                     final Message message = messages.getMessage( decodedMessage.getName() );
@@ -1073,7 +1073,7 @@ public class ClassFileProcessor extends JomcTool
 
             if ( decodedSpecifications != null )
             {
-                for ( int i = decodedSpecifications.getSpecification().size() - 1; i >= 0; i-- )
+                for ( int i = 0, s0 = decodedSpecifications.getSpecification().size(); i < s0; i++ )
                 {
                     final Specification decodedSpecification = decodedSpecifications.getSpecification().get( i );
                     final Specification specification =
@@ -1128,7 +1128,7 @@ public class ClassFileProcessor extends JomcTool
                     }
                 }
 
-                for ( int i = decodedSpecifications.getReference().size() - 1; i >= 0; i-- )
+                for ( int i = 0, s0 = decodedSpecifications.getReference().size(); i < s0; i++ )
                 {
                     final SpecificationReference decodedReference = decodedSpecifications.getReference().get( i );
                     final Specification specification =
@@ -2026,7 +2026,7 @@ public class ClassFileProcessor extends JomcTool
 
         if ( specifications != null )
         {
-            for ( int i = specifications.getSpecification().size() - 1; i >= 0; i-- )
+            for ( int i = 0, s0 = specifications.getSpecification().size(); i < s0; i++ )
             {
                 final ModelValidationReport current = this.validateModelObjects(
                     specifications.getSpecification().get( i ), unmarshaller, classesDirectory );
@@ -2037,7 +2037,7 @@ public class ClassFileProcessor extends JomcTool
 
         if ( implementations != null )
         {
-            for ( int i = implementations.getImplementation().size() - 1; i >= 0; i-- )
+            for ( int i = 0, s0 = implementations.getImplementation().size(); i < s0; i++ )
             {
                 final ModelValidationReport current = this.validateModelObjects(
                     implementations.getImplementation().get( i ), unmarshaller, classesDirectory );
@@ -2134,7 +2134,7 @@ public class ClassFileProcessor extends JomcTool
 
         if ( specifications != null )
         {
-            for ( int i = specifications.getSpecification().size() - 1; i >= 0; i-- )
+            for ( int i = 0, s0 = specifications.getSpecification().size(); i < s0; i++ )
             {
                 final ModelValidationReport current = this.validateModelObjects(
                     specifications.getSpecification().get( i ), unmarshaller, classLoader );
@@ -2145,7 +2145,7 @@ public class ClassFileProcessor extends JomcTool
 
         if ( implementations != null )
         {
-            for ( int i = implementations.getImplementation().size() - 1; i >= 0; i-- )
+            for ( int i = 0, s0 = implementations.getImplementation().size(); i < s0; i++ )
             {
                 final ModelValidationReport current = this.validateModelObjects(
                     implementations.getImplementation().get( i ), unmarshaller, classLoader );
@@ -2254,7 +2254,7 @@ public class ClassFileProcessor extends JomcTool
     {
         if ( specifications != null )
         {
-            for ( int i = specifications.getSpecification().size() - 1; i >= 0; i-- )
+            for ( int i = 0, s0 = specifications.getSpecification().size(); i < s0; i++ )
             {
                 this.transformModelObjects( specifications.getSpecification().get( i ), marshaller, unmarshaller,
                                             classesDirectory, transformers );
@@ -2264,7 +2264,7 @@ public class ClassFileProcessor extends JomcTool
 
         if ( implementations != null )
         {
-            for ( int i = implementations.getImplementation().size() - 1; i >= 0; i-- )
+            for ( int i = 0, s0 = implementations.getImplementation().size(); i < s0; i++ )
             {
                 this.transformModelObjects( implementations.getImplementation().get( i ), marshaller, unmarshaller,
                                             classesDirectory, transformers );

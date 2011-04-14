@@ -146,7 +146,7 @@ public class ResourceFileProcessor extends JomcTool
             throw new NullPointerException( "resourcesDirectory" );
         }
 
-        for ( int i = this.getModules().getModule().size() - 1; i >= 0; i-- )
+        for ( int i = 0, s0 = this.getModules().getModule().size(); i < s0; i++ )
         {
             this.writeResourceBundleResourceFiles( this.getModules().getModule().get( i ), resourcesDirectory );
         }
@@ -180,7 +180,7 @@ public class ResourceFileProcessor extends JomcTool
 
         if ( module.getSpecifications() != null )
         {
-            for ( int i = module.getSpecifications().getSpecification().size() - 1; i >= 0; i-- )
+            for ( int i = 0, s0 = module.getSpecifications().getSpecification().size(); i < s0; i++ )
             {
                 this.writeResourceBundleResourceFiles( module.getSpecifications().getSpecification().get( i ),
                                                        resourcesDirectory );
@@ -190,7 +190,7 @@ public class ResourceFileProcessor extends JomcTool
 
         if ( module.getImplementations() != null )
         {
-            for ( int i = module.getImplementations().getImplementation().size() - 1; i >= 0; i-- )
+            for ( int i = 0, s0 = module.getImplementations().getImplementation().size(); i < s0; i++ )
             {
                 this.writeResourceBundleResourceFiles( module.getImplementations().getImplementation().get( i ),
                                                        resourcesDirectory );
@@ -337,13 +337,13 @@ public class ResourceFileProcessor extends JomcTool
 
         if ( messages != null )
         {
-            for ( int i = messages.getMessage().size() - 1; i >= 0; i-- )
+            for ( int i = 0, s0 = messages.getMessage().size(); i < s0; i++ )
             {
                 final Message message = messages.getMessage().get( i );
 
                 if ( message.getTemplate() != null )
                 {
-                    for ( int j = message.getTemplate().getText().size() - 1; j >= 0; j-- )
+                    for ( int j = 0, s1 = message.getTemplate().getText().size(); j < s1; j++ )
                     {
                         final Text text = message.getTemplate().getText().get( j );
                         final Locale locale = new Locale( text.getLanguage().toLowerCase() );

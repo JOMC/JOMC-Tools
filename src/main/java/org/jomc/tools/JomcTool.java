@@ -587,7 +587,7 @@ public class JomcTool
 
         if ( specs != null )
         {
-            for ( int i = specs.getSpecification().size() - 1; i >= 0; i-- )
+            for ( int i = 0, s0 = specs.getSpecification().size(); i < s0; i++ )
             {
                 final Specification s = specs.getSpecification().get( i );
 

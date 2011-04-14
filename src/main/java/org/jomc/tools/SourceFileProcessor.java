@@ -389,7 +389,7 @@ public class SourceFileProcessor extends JomcTool
             sourceFileType.getSourceSections().getSourceSection().add( s );
 
             final List<String> implementedJavaTypeNames = this.getImplementedJavaTypeNames( implementation, false );
-            for ( int i = implementedJavaTypeNames.size() - 1; i >= 0; i-- )
+            for ( int i = 0, s0 = implementedJavaTypeNames.size(); i < s0; i++ )
             {
                 s = new SourceSectionType();
                 s.setName( implementedJavaTypeNames.get( i ) );
@@ -599,14 +599,14 @@ public class SourceFileProcessor extends JomcTool
 
         if ( module.getSpecifications() != null )
         {
-            for ( int i = module.getSpecifications().getSpecification().size() - 1; i >= 0; i-- )
+            for ( int i = 0, s0 = module.getSpecifications().getSpecification().size(); i < s0; i++ )
             {
                 this.manageSourceFiles( module.getSpecifications().getSpecification().get( i ), sourcesDirectory );
             }
         }
         if ( module.getImplementations() != null )
         {
-            for ( int i = module.getImplementations().getImplementation().size() - 1; i >= 0; i-- )
+            for ( int i = 0, s0 = module.getImplementations().getImplementation().size(); i < s0; i++ )
             {
                 this.manageSourceFiles( module.getImplementations().getImplementation().get( i ), sourcesDirectory );
             }
@@ -646,7 +646,7 @@ public class SourceFileProcessor extends JomcTool
 
             if ( implementations != null )
             {
-                for ( int i = implementations.getImplementation().size() - 1; i >= 0; i-- )
+                for ( int i = 0, s0 = implementations.getImplementation().size(); i < s0; i++ )
                 {
                     final Implementation impl = implementations.getImplementation().get( i );
 
@@ -666,7 +666,7 @@ public class SourceFileProcessor extends JomcTool
 
                 if ( editor != null && model != null )
                 {
-                    for ( int i = model.getSourceFile().size() - 1; i >= 0; i-- )
+                    for ( int i = 0, s0 = model.getSourceFile().size(); i < s0; i++ )
                     {
                         editor.edit( specification, model.getSourceFile().get( i ), sourcesDirectory );
                     }
@@ -709,7 +709,7 @@ public class SourceFileProcessor extends JomcTool
 
             if ( editor != null && model != null )
             {
-                for ( int i = model.getSourceFile().size() - 1; i >= 0; i-- )
+                for ( int i = 0, s0 = model.getSourceFile().size(); i < s0; i++ )
                 {
                     editor.edit( implementation, model.getSourceFile().get( i ), sourcesDirectory );
                 }
@@ -729,7 +729,7 @@ public class SourceFileProcessor extends JomcTool
     {
         final SourceFilesType types = new SourceFilesType( sourceFilesType );
 
-        for ( int i = types.getSourceFile().size() - 1; i >= 0; i-- )
+        for ( int i = 0, s0 = types.getSourceFile().size(); i < s0; i++ )
         {
             final SourceFileType s = types.getSourceFile().get( i );
 
@@ -764,7 +764,7 @@ public class SourceFileProcessor extends JomcTool
         {
             if ( sourceSectionsType != null )
             {
-                for ( int i = sourceSectionsType.getSourceSection().size() - 1; i >= 0; i-- )
+                for ( int i = 0, s0 = sourceSectionsType.getSourceSection().size(); i < s0; i++ )
                 {
                     final SourceSectionType s = sourceSectionsType.getSourceSection().get( i );
 
@@ -838,7 +838,7 @@ public class SourceFileProcessor extends JomcTool
     {
         final SourceFilesType types = new SourceFilesType( sourceFilesType );
 
-        for ( int i = types.getSourceFile().size() - 1; i >= 0; i-- )
+        for ( int i = 0, s0 = types.getSourceFile().size(); i < s0; i++ )
         {
             final SourceFileType s = types.getSourceFile().get( i );
 
@@ -873,7 +873,7 @@ public class SourceFileProcessor extends JomcTool
         {
             if ( sourceSectionsType != null )
             {
-                for ( int i = sourceSectionsType.getSourceSection().size() - 1; i >= 0; i-- )
+                for ( int i = 0, s0 = sourceSectionsType.getSourceSection().size(); i < s0; i++ )
                 {
                     final SourceSectionType s = sourceSectionsType.getSourceSection().get( i );
 
@@ -1008,7 +1008,7 @@ public class SourceFileProcessor extends JomcTool
                     final List<String> implementedJavaTypeNames =
                         this.getImplementedJavaTypeNames( implementation, false );
 
-                    for ( int j = implementedJavaTypeNames.size() - 1; j >= 0; j-- )
+                    for ( int j = 0, s1 = implementedJavaTypeNames.size(); j < s1; j++ )
                     {
                         final String interfaceName = implementedJavaTypeNames.get( j );
 
@@ -1572,7 +1572,7 @@ public class SourceFileProcessor extends JomcTool
         {
             if ( sourceSectionsType != null && section != null )
             {
-                for ( int i = sourceSectionsType.getSourceSection().size() - 1; i >= 0; i-- )
+                for ( int i = 0, s0 = sourceSectionsType.getSourceSection().size(); i < s0; i++ )
                 {
                     final SourceSectionType sourceSectionType = sourceSectionsType.getSourceSection().get( i );
                     Section childSection = section.getSection( sourceSectionType.getName() );

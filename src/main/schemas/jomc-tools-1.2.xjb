@@ -86,7 +86,7 @@
 
         javax.xml.bind.JAXBElement<?> anyElement = null;
 
-        for ( int i = any.size() - 1; i >= 0; i-- )
+        for ( int i = 0, s0 = any.size(); i < s0; i++ )
         {
             final Object o = any.get( i );
 
@@ -163,7 +163,7 @@
         final java.util.List<javax.xml.bind.JAXBElement<T>> anyElements =
             new java.util.ArrayList<javax.xml.bind.JAXBElement<T>>( any.size() );
 
-        for ( int i = any.size() - 1; i >= 0; i-- )
+        for ( int i = 0, s0 = any.size(); i < s0; i++ )
         {
             final Object o = any.get( i );
 
@@ -211,7 +211,7 @@
 
         T anyObject = null;
 
-        for ( int i = any.size() - 1; i >= 0; i-- )
+        for ( int i = 0, s0 = any.size(); i < s0; i++ )
         {
             Object o = any.get( i );
 
@@ -264,7 +264,7 @@
 
         final java.util.List<T> anyElements = new java.util.ArrayList<T>( any.size() );
 
-        for ( int i = any.size() - 1; i >= 0; i-- )
+        for ( int i = 0, s0 = any.size(); i < s0; i++ )
         {
             Object o = any.get( i );
 
@@ -311,7 +311,7 @@
             throw new NullPointerException( "identifier" );
         }
 
-        for ( int i = this.getSourceFile().size() - 1; i >= 0; i-- )
+        for ( int i = 0, s0 = this.getSourceFile().size(); i < s0; i++ )
         {
             final SourceFileType s = this.getSourceFile().get( i );
 
@@ -438,7 +438,7 @@
     {
         if ( sourceSectionsType != null )
         {
-            for ( int i = sourceSectionsType.getSourceSection().size() - 1; i >= 0; i-- )
+            for ( int i = 0, s0 = sourceSectionsType.getSourceSection().size(); i < s0; i++ )
             {
                 final SourceSectionType s = sourceSectionsType.getSourceSection().get( i );
 
