@@ -752,7 +752,7 @@ public class JomcToolTask extends JomcModelTask
 
             } );
 
-            for ( int i = this.getVelocityPropertyResources().size() - 1; i >= 0; i-- )
+            for ( int i = 0, s0 = this.getVelocityPropertyResources().size(); i < s0; i++ )
             {
                 for ( Map.Entry<Object, Object> e :
                       this.getProperties( this.getVelocityPropertyResources().get( i ) ).entrySet() )
@@ -768,7 +768,7 @@ public class JomcToolTask extends JomcModelTask
                 }
             }
 
-            for ( int i = this.getVelocityProperties().size() - 1; i >= 0; i-- )
+            for ( int i = 0, s0 = this.getVelocityProperties().size(); i < s0; i++ )
             {
                 final KeyValueType<String, Object> p = this.getVelocityProperties().get( i );
 
@@ -794,7 +794,7 @@ public class JomcToolTask extends JomcModelTask
                 tool.getTemplateParameters().put( e.getKey().toString(), e.getValue() );
             }
 
-            for ( int i = this.getTemplateParameterResources().size() - 1; i >= 0; i-- )
+            for ( int i = 0, s0 = this.getTemplateParameterResources().size(); i < s0; i++ )
             {
                 for ( Map.Entry<Object, Object> e :
                       this.getProperties( this.getTemplateParameterResources().get( i ) ).entrySet() )
@@ -810,7 +810,7 @@ public class JomcToolTask extends JomcModelTask
                 }
             }
 
-            for ( int i = this.getTemplateParameters().size() - 1; i >= 0; i-- )
+            for ( int i = 0, s0 = this.getTemplateParameters().size(); i < s0; i++ )
             {
                 final KeyValueType<String, Object> p = this.getTemplateParameters().get( i );
 

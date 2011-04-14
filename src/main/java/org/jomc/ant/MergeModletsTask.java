@@ -392,7 +392,7 @@ public final class MergeModletsTask extends JomcTask
             marshaller.setSchema( schema );
             unmarshaller.setSchema( schema );
 
-            for ( int i = this.getModletObjectStylesheetResources().size() - 1; i >= 0; i-- )
+            for ( int i = 0, s0 = this.getModletObjectStylesheetResources().size(); i < s0; i++ )
             {
                 final Transformer transformer =
                     this.getTransformer( this.getModletObjectStylesheetResources().get( i ) );

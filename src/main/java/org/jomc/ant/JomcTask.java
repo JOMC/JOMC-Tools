@@ -785,7 +785,7 @@ public class JomcTask extends Task
                     transformer.setParameter( e.getKey().toString(), e.getValue() );
                 }
 
-                for ( int i = this.getTransformationParameterResources().size() - 1; i >= 0; i-- )
+                for ( int i = 0, s0 = this.getTransformationParameterResources().size(); i < s0; i++ )
                 {
                     for ( Map.Entry<Object, Object> e :
                           this.getProperties( this.getTransformationParameterResources().get( i ) ).entrySet() )
@@ -794,13 +794,13 @@ public class JomcTask extends Task
                     }
                 }
 
-                for ( int i = this.getTransformationParameters().size() - 1; i >= 0; i-- )
+                for ( int i = 0, s0 = this.getTransformationParameters().size(); i < s0; i++ )
                 {
                     final KeyValueType<String, Object> p = this.getTransformationParameters().get( i );
                     transformer.setParameter( p.getKey(), p.getValue() );
                 }
 
-                for ( int i = resource.getTransformationParameterResources().size() - 1; i >= 0; i-- )
+                for ( int i = 0, s0 = resource.getTransformationParameterResources().size(); i < s0; i++ )
                 {
                     for ( Map.Entry<Object, Object> e :
                           this.getProperties( resource.getTransformationParameterResources().get( i ) ).entrySet() )
@@ -809,13 +809,13 @@ public class JomcTask extends Task
                     }
                 }
 
-                for ( int i = resource.getTransformationParameters().size() - 1; i >= 0; i-- )
+                for ( int i = 0, s0 = resource.getTransformationParameters().size(); i < s0; i++ )
                 {
                     final KeyValueType<String, Object> p = resource.getTransformationParameters().get( i );
                     transformer.setParameter( p.getKey(), p.getValue() );
                 }
 
-                for ( int i = resource.getTransformationOutputProperties().size() - 1; i >= 0; i-- )
+                for ( int i = 0, s0 = resource.getTransformationOutputProperties().size(); i < s0; i++ )
                 {
                     final KeyValueType<String, String> p = resource.getTransformationOutputProperties().get( i );
                     transformer.setOutputProperty( p.getKey(), p.getValue() );
