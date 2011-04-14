@@ -1787,7 +1787,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
                 if ( this.transformationParameterResources != null )
                 {
-                    for ( int i = this.transformationParameterResources.size() - 1; i >= 0; i-- )
+                    for ( int i = 0, s0 = this.transformationParameterResources.size(); i < s0; i++ )
                     {
                         for ( Map.Entry<Object, Object> e :
                               this.getProperties( this.transformationParameterResources.get( i ) ).entrySet() )
@@ -1805,7 +1805,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     }
                 }
 
-                for ( int i = resource.getTransformationParameterResources().size() - 1; i >= 0; i-- )
+                for ( int i = 0, s0 = resource.getTransformationParameterResources().size(); i < s0; i++ )
                 {
                     for ( Map.Entry<Object, Object> e :
                           this.getProperties( resource.getTransformationParameterResources().get( i ) ).entrySet() )
@@ -2333,7 +2333,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( this.velocityPropertyResources != null )
             {
-                for ( int i = this.velocityPropertyResources.size() - 1; i >= 0; i-- )
+                for ( int i = 0, s0 = this.velocityPropertyResources.size(); i < s0; i++ )
                 {
                     for ( Map.Entry<Object, Object> e :
                           this.getProperties( this.velocityPropertyResources.get( i ) ).entrySet() )
@@ -2380,7 +2380,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( this.templateParameterResources != null )
             {
-                for ( int i = this.templateParameterResources.size() - 1; i >= 0; i-- )
+                for ( int i = 0, s0 = this.templateParameterResources.size(); i < s0; i++ )
                 {
                     for ( Map.Entry<Object, Object> e :
                           this.getProperties( this.templateParameterResources.get( i ) ).entrySet() )
@@ -2431,7 +2431,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     private Artifact getPluginArtifact( final Artifact a )
     {
-        for ( int i = this.pluginArtifacts.size() - 1; i >= 0; i-- )
+        for ( int i = 0, s0 = this.pluginArtifacts.size(); i < s0; i++ )
         {
             final Artifact pluginArtifact = this.pluginArtifacts.get( i );
 
