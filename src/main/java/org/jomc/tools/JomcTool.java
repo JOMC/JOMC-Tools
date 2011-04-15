@@ -40,7 +40,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.lang.ref.Reference;
-import java.lang.ref.WeakReference;
+import java.lang.ref.SoftReference;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.Format;
@@ -2031,7 +2031,7 @@ public class JomcTool
         if ( map == null )
         {
             map = new HashMap<String, String>();
-            this.indentationCache = new WeakReference<Map<String, String>>( map );
+            this.indentationCache = new SoftReference<Map<String, String>>( map );
         }
 
         final String key = this.getIndentation() + "|" + level;
@@ -2177,7 +2177,7 @@ public class JomcTool
         if ( map == null )
         {
             map = new HashMap<String, String>( 32 );
-            this.templateLocationsCache = new WeakReference<Map<String, String>>( map );
+            this.templateLocationsCache = new SoftReference<Map<String, String>>( map );
         }
 
         location = map.get( key );
