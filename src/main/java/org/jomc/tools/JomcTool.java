@@ -39,6 +39,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.Format;
@@ -178,7 +180,10 @@ public class JomcTool
     private Locale locale;
 
     /** Cached indentation strings. */
-    private final Map<Integer, String> indentationCache = new HashMap<Integer, String>();
+    private volatile Reference<Map<String, String>> indentationCache;
+
+    /** Cached template locations. */
+    private volatile Reference<Map<String, String>> templateLocationsCache;
 
     /** Creates a new {@code JomcTool} instance. */
     public JomcTool()
@@ -2021,25 +2026,31 @@ public class JomcTool
             throw new IllegalArgumentException( Integer.toString( level ) );
         }
 
-        synchronized ( this.indentationCache )
+        Map<String, String> map = this.indentationCache == null ? null : this.indentationCache.get();
+
+        if ( map == null )
         {
-            String idt = this.indentationCache.get( level );
+            map = new HashMap<String, String>();
+            this.indentationCache = new WeakReference<Map<String, String>>( map );
+        }
 
-            if ( idt == null )
+        final String key = this.getIndentation() + "|" + level;
+        String idt = map.get( key );
+
+        if ( idt == null )
+        {
+            final StringBuilder b = new StringBuilder( this.getIndentation().length() * level );
+
+            for ( int i = level; i > 0; i-- )
             {
-                final StringBuilder b = new StringBuilder( this.getIndentation().length() * level );
-
-                for ( int i = level; i > 0; i-- )
-                {
-                    b.append( this.getIndentation() );
-                }
-
-                idt = b.toString();
-                this.indentationCache.put( level, idt );
+                b.append( this.getIndentation() );
             }
 
-            return idt;
+            idt = b.toString();
+            map.put( key, idt );
         }
+
+        return idt;
     }
 
     /**
@@ -2051,11 +2062,7 @@ public class JomcTool
      */
     public final void setIndentation( final String value )
     {
-        synchronized ( this.indentationCache )
-        {
-            this.indentation = value;
-            this.indentationCache.clear();
-        }
+        this.indentation = value;
     }
 
     /**
@@ -2162,32 +2169,56 @@ public class JomcTool
 
         String location = null;
         Template template = null;
+        final String key = this.getLocale() + "|" + this.getTemplateProfile() + "|" + getDefaultTemplateProfile()
+                           + "|" + templateName;
 
-        if ( !StringUtils.EMPTY.equals( this.getLocale().getLanguage() ) )
+        Map<String, String> map = this.templateLocationsCache == null ? null : this.templateLocationsCache.get();
+
+        if ( map == null )
         {
-            location =
-                TEMPLATE_PREFIX + this.getTemplateProfile() + "/" + this.getLocale().getLanguage() + "/" + templateName;
-
-            template = this.findVelocityTemplate( location );
+            map = new HashMap<String, String>( 32 );
+            this.templateLocationsCache = new WeakReference<Map<String, String>>( map );
         }
 
-        if ( template == null )
+        location = map.get( key );
+
+        if ( location == null )
         {
-            location = TEMPLATE_PREFIX + this.getTemplateProfile() + "/" + templateName;
-            template = this.findVelocityTemplate( location );
+            if ( !StringUtils.EMPTY.equals( this.getLocale().getLanguage() ) )
+            {
+                location = TEMPLATE_PREFIX + this.getTemplateProfile() + "/" + this.getLocale().getLanguage() + "/"
+                           + templateName;
+
+                template = this.findVelocityTemplate( location );
+            }
+
+            if ( template == null )
+            {
+                location = TEMPLATE_PREFIX + this.getTemplateProfile() + "/" + templateName;
+                template = this.findVelocityTemplate( location );
+            }
+
+            if ( template == null && !StringUtils.EMPTY.equals( this.getLocale().getLanguage() ) )
+            {
+                location = TEMPLATE_PREFIX + getDefaultTemplateProfile() + "/" + this.getLocale().getLanguage() + "/"
+                           + templateName;
+
+                template = this.findVelocityTemplate( location );
+            }
+
+            if ( template == null )
+            {
+                location = TEMPLATE_PREFIX + getDefaultTemplateProfile() + "/" + templateName;
+                template = this.findVelocityTemplate( location );
+            }
+
+            if ( template != null )
+            {
+                map.put( key, location );
+            }
         }
-
-        if ( template == null && !StringUtils.EMPTY.equals( this.getLocale().getLanguage() ) )
+        else
         {
-            location = TEMPLATE_PREFIX + getDefaultTemplateProfile() + "/" + this.getLocale().getLanguage() + "/"
-                       + templateName;
-
-            template = this.findVelocityTemplate( location );
-        }
-
-        if ( template == null )
-        {
-            location = TEMPLATE_PREFIX + getDefaultTemplateProfile() + "/" + templateName;
             template = this.findVelocityTemplate( location );
         }
 
