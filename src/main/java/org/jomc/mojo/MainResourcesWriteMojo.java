@@ -33,7 +33,9 @@
 package org.jomc.mojo;
 
 import java.io.File;
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProject;
 
 /**
  * Writes a projects' main resource files.
@@ -57,6 +59,15 @@ public final class MainResourcesWriteMojo extends AbstractResourcesWriteMojo
      */
     private String writeMainResourcesExecutionStrategy;
 
+    /**
+     * Directory to write resource files to.
+     *
+     * @parameter default-value="${project.build.directory}/generated-resources/jomc"
+     *            expression="${jomc.mainResourcesOutputDirectory}"
+     * @since 1.2
+     */
+    private File mainResourcesOutputDirectory;
+
     /** Creates a new {@code MainResourcesWriteMojo} instance. */
     public MainResourcesWriteMojo()
     {
@@ -78,7 +89,7 @@ public final class MainResourcesWriteMojo extends AbstractResourcesWriteMojo
     @Override
     protected File getResourcesDirectory() throws MojoExecutionException
     {
-        return this.getOutputDirectory();
+        return this.mainResourcesOutputDirectory;
     }
 
     @Override
@@ -91,6 +102,19 @@ public final class MainResourcesWriteMojo extends AbstractResourcesWriteMojo
     protected String getExecutionStrategy() throws MojoExecutionException
     {
         return this.writeMainResourcesExecutionStrategy;
+    }
+
+    @Override
+    protected File getResourcesOutputDirectory() throws MojoExecutionException
+    {
+        return this.getOutputDirectory();
+    }
+
+    @Override
+    protected void addMavenResource( final MavenProject mavenProject, final Resource resource )
+        throws MojoExecutionException
+    {
+        mavenProject.addResource( resource );
     }
 
 }

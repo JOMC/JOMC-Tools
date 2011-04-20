@@ -38,7 +38,10 @@ import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.Source;
+import org.apache.commons.io.FileUtils;
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProject;
 import org.jomc.model.Module;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelValidationReport;
@@ -100,6 +103,13 @@ public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo
 
                 if ( module != null )
                 {
+                    if ( !this.getResourcesDirectory().exists() && !this.getResourcesDirectory().mkdirs() )
+                    {
+                        throw new MojoExecutionException( Messages.getMessage(
+                            "failedCreatingDirectory", this.getResourcesDirectory().getAbsolutePath() ) );
+
+                    }
+
                     tool.writeResourceBundleResourceFiles( module, this.getResourcesDirectory() );
                     this.logToolSuccess( TOOLNAME );
                 }
@@ -112,6 +122,14 @@ public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo
             {
                 throw new MojoExecutionException( Messages.getMessage( "resourceProcessingFailure" ) );
             }
+
+            FileUtils.copyDirectory( this.getResourcesDirectory(), this.getResourcesOutputDirectory() );
+
+            final Resource resource = new Resource();
+            resource.setDirectory( this.getResourcesDirectory().getAbsolutePath() );
+            resource.setFiltering( false );
+
+            this.addMavenResource( this.getMavenProject(), resource );
         }
         else if ( this.isLoggable( Level.INFO ) )
         {
@@ -145,5 +163,29 @@ public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo
      * @throws MojoExecutionException if getting the directory fails.
      */
     protected abstract File getResourcesDirectory() throws MojoExecutionException;
+
+    /**
+     * Gets the directory to copy resource files to.
+     *
+     * @return The directory to copy resource files to.
+     *
+     * @throws MojoExecutionException if getting the directory fails.
+     *
+     * @since 1.2
+     */
+    protected abstract File getResourcesOutputDirectory() throws MojoExecutionException;
+
+    /**
+     * Adds a resource to a {@code MavenProjecŧ}.
+     *
+     * @param mavenProject The {@code MavenProject} to add a resource to.
+     * @param resource The {@code Resource} to add.
+     *
+     * @throws MojoExecutionException if adding the resource fails.
+     *
+     * @since 1.2
+     */
+    protected abstract void addMavenResource( MavenProject mavenProject, Resource resource )
+        throws MojoExecutionException;
 
 }

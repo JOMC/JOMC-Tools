@@ -165,6 +165,15 @@
       goals to goals <code>commit-main-classes</code> and <code>commit-test-classes</code> deprecating parameter
       <code>modelObjectStylesheet</code>.]]>
       </action>
+      <action dev="schulte2005" type="add"><![CDATA[Added parameter <code>mainResourcesOutputDirectory</code> to
+      the <code>write-main-resources</code> goal.]]>
+      </action>
+      <action dev="schulte2005" type="add"><![CDATA[Added parameter <code>testResourcesOutputDirectory</code> to
+      the <code>write-test-resources</code> goal.]]>
+      </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Corrected goals <code>write-main-resources</code> and
+      <code>write-test-resources</code> to add a corresponding resource to the maven project.]]>
+      </action>
       <action dev="schulte2005" type="fix"><![CDATA[Corrected goals <code>commit-main-classes</code> and
       <code>commit-test-classes</code> to create <code>Transformer</code>s supporting resolution of relative URIs
       based on the system id of model object style sheets.]]>

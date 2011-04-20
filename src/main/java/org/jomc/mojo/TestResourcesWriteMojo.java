@@ -33,7 +33,9 @@
 package org.jomc.mojo;
 
 import java.io.File;
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProject;
 
 /**
  * Writes a projects' test resource files.
@@ -57,6 +59,15 @@ public final class TestResourcesWriteMojo extends AbstractResourcesWriteMojo
      */
     private String writeTestResourcesExecutionStrategy;
 
+    /**
+     * Directory to write test resource files to.
+     *
+     * @parameter default-value="${project.build.directory}/generated-test-resources/jomc"
+     *            expression="${jomc.testResourcesOutputDirectory}"
+     * @since 1.2
+     */
+    private File testResourcesOutputDirectory;
+
     /** Creates a new {@code TestResourcesWriteMojo} instance. */
     public TestResourcesWriteMojo()
     {
@@ -78,7 +89,7 @@ public final class TestResourcesWriteMojo extends AbstractResourcesWriteMojo
     @Override
     protected File getResourcesDirectory() throws MojoExecutionException
     {
-        return this.getTestOutputDirectory();
+        return this.testResourcesOutputDirectory;
     }
 
     @Override
@@ -91,6 +102,19 @@ public final class TestResourcesWriteMojo extends AbstractResourcesWriteMojo
     protected String getExecutionStrategy() throws MojoExecutionException
     {
         return this.writeTestResourcesExecutionStrategy;
+    }
+
+    @Override
+    protected File getResourcesOutputDirectory() throws MojoExecutionException
+    {
+        return this.getTestOutputDirectory();
+    }
+
+    @Override
+    protected void addMavenResource( final MavenProject mavenProject, final Resource resource )
+        throws MojoExecutionException
+    {
+        mavenProject.addTestResource( resource );
     }
 
 }
