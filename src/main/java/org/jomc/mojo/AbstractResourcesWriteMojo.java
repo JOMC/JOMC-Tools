@@ -123,7 +123,10 @@ public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo
                 throw new MojoExecutionException( Messages.getMessage( "resourceProcessingFailure" ) );
             }
 
-            FileUtils.copyDirectory( this.getResourcesDirectory(), this.getResourcesOutputDirectory() );
+            if ( !this.getResourcesDirectory().equals( this.getResourcesOutputDirectory() ) )
+            {
+                FileUtils.copyDirectory( this.getResourcesDirectory(), this.getResourcesOutputDirectory() );
+            }
 
             final Resource resource = new Resource();
             resource.setDirectory( this.getResourcesDirectory().getAbsolutePath() );
