@@ -1421,7 +1421,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <message name="description" override="true">
           <template defaultLanguage="en">
             <text language="en">Line separator. (''\r\n'' for DOS, ''\r'' for Mac, ''\n'' for Unix). Defaults to the system''s line separator.</text>
-            <text language="de">Zeilenvorschub. (''\r\n'' für DOS, ''\r'' für Mac, ''\n'' für Unix). Verwendet den System-Zeilenvorschub standardmäßig.</text>
+            <text language="de">Zeilenvorschub. (''\r\n'' für DOS, ''\r'' für Mac, ''\n'' für Unix). Verwendet standardmäßig den System-Zeilenvorschub.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
@@ -1721,8 +1721,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Class name of the 'ClassFileProcessor' to use.</text>
-            <text language="de">Klassenname des zu verwendenden 'ClassFileProcessor's.</text>
+            <text language="en">Class name of the ''ClassFileProcessor'' to use.</text>
+            <text language="de">Klassenname des zu verwendenden ''ClassFileProcessor''s.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
@@ -1758,8 +1758,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Class name of the 'ResourceFileProcessor' to use.</text>
-            <text language="de">Klassenname des zu verwendenden 'ResourceFileProcessor's.</text>
+            <text language="en">Class name of the ''ResourceFileProcessor'' to use.</text>
+            <text language="de">Klassenname des zu verwendenden ''ResourceFileProcessor''s.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
@@ -1795,8 +1795,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Class name of the 'SourceFileProcessor' to use.</text>
-            <text language="de">Klassenname des zu verwendenden 'SourceFileProcessor's.</text>
+            <text language="en">Class name of the ''SourceFileProcessor'' to use.</text>
+            <text language="de">Klassenname des zu verwendenden ''SourceFileProcessor''s.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
@@ -1832,8 +1832,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Class name of the 'ModelContext' to use.</text>
-            <text language="de">Klassenname des zu verwendenden 'ModelContext'.</text>
+            <text language="en">Class name of the ''ModelContext'' to use.</text>
+            <text language="de">Klassenname des zu verwendenden ''ModelContext''.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
@@ -1869,8 +1869,8 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">System ID of the 'modlet' schema.</text>
-            <text language="de">System ID des 'modlet' schemas.</text>
+            <text language="en">System ID of the ''modlet'' schema.</text>
+            <text language="de">System ID des ''modlet'' schemas.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
