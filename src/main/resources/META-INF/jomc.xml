@@ -2910,6 +2910,12 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         </property>
       </properties>
       <messages>
+        <message name="invalidClassesMessage">
+          <template defaultLanguage="en">
+            <text language="en">Invalid class files.</text>
+            <text language="de">Ungültige Klassendateien.</text>
+          </template>
+        </message>
         <message name="shortDescriptionMessage" override="true">
           <template defaultLanguage="en">
             <text language="en">Validates model objects of class files.</text>
