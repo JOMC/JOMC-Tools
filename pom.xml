@@ -597,8 +597,22 @@
                 <configuration>
                   <classifier>javadoc</classifier>
                   <failOnMissingClassifierArtifact>true</failOnMissingClassifierArtifact>
-                  <includeGroupIds>org.jomc</includeGroupIds>
+                  <includeGroupIds>${project.groupId}</includeGroupIds>
                   <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
+                  <type>jar</type>
+                </configuration>
+              </execution>
+              <execution>
+                <id>copy-sources</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>copy-dependencies</goal>
+                </goals>
+                <configuration>
+                  <classifier>sources</classifier>
+                  <failOnMissingClassifierArtifact>true</failOnMissingClassifierArtifact>
+                  <includeGroupIds>${project.groupId}</includeGroupIds>
+                  <outputDirectory>${project.build.directory}/jomc-sources</outputDirectory>
                   <type>jar</type>
                 </configuration>
               </execution>
@@ -609,12 +623,18 @@
                   <goal>copy</goal>
                 </goals>
                 <configuration>
-                  <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                   <artifactItems>
                     <artifactItem>
                       <groupId>${project.groupId}</groupId>
                       <artifactId>jomc-ant-tasks</artifactId>
                       <classifier>javadoc</classifier>
+                      <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>${project.groupId}</groupId>
+                      <artifactId>jomc-ant-tasks</artifactId>
+                      <classifier>sources</classifier>
+                      <outputDirectory>${project.build.directory}/jomc-sources</outputDirectory>
                     </artifactItem>
                   </artifactItems>
                 </configuration>
