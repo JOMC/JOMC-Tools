@@ -482,8 +482,10 @@ public abstract class AbstractModletCommand extends AbstractCommand
             modelContext.getListeners().add( new ModelContext.Listener()
             {
 
+                @Override
                 public void onLog( final Level level, final String message, final Throwable t )
                 {
+                    super.onLog( level, message, t );
                     log( level, message, t );
                 }
 

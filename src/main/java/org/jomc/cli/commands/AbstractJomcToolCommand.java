@@ -527,8 +527,10 @@ public abstract class AbstractJomcToolCommand extends AbstractModelCommand
         tool.getListeners().add( new JomcTool.Listener()
         {
 
+            @Override
             public void onLog( final Level level, final String message, final Throwable throwable )
             {
+                super.onLog( level, message, throwable );
                 log( level, message, throwable );
             }
 
