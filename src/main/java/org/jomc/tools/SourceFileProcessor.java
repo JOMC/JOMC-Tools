@@ -180,7 +180,8 @@ public class SourceFileProcessor extends JomcTool
      * @see #getSourceFileType(org.jomc.model.Specification)
      * @see #getSourceFileType(org.jomc.model.Implementation)
      *
-     * @deprecated As of JOMC 1.2, please add source file models to {@code Specification}s and {@code Implementation}s directly.
+     * @deprecated As of JOMC 1.2, please add source file models to {@code Specification}s and {@code Implementation}s
+     * directly. This method will be removed in version 2.0.
      */
     @Deprecated
     public SourceFilesType getSourceFilesType()
@@ -202,7 +203,8 @@ public class SourceFileProcessor extends JomcTool
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
      *
-     * @deprecated As of JOMC 1.2, please use method {@link #getSourceFilesType(org.jomc.model.Specification)}.
+     * @deprecated As of JOMC 1.2, please use method {@link #getSourceFilesType(org.jomc.model.Specification)}. This
+     * method will be removed in version 2.0.
      */
     @Deprecated
     public SourceFileType getSourceFileType( final Specification specification )
@@ -322,7 +324,8 @@ public class SourceFileProcessor extends JomcTool
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      *
-     * @deprecated As of JOMC 1.2, please use method {@link #getSourceFilesType(org.jomc.model.Implementation)}.
+     * @deprecated As of JOMC 1.2, please use method {@link #getSourceFilesType(org.jomc.model.Implementation)}. This
+     * method will be removed in version 2.0.
      */
     @Deprecated
     public SourceFileType getSourceFileType( final Implementation implementation )
@@ -508,7 +511,8 @@ public class SourceFileProcessor extends JomcTool
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
      *
-     * @deprecated As of JOMC 1.2, please use method {@link #getSourceFileEditor()}.
+     * @deprecated As of JOMC 1.2, please use method {@link #getSourceFileEditor()}. This method will be removed in
+     * version 2.0.
      */
     @Deprecated
     public SourceFileEditor getSourceFileEditor( final Specification specification )
@@ -533,7 +537,8 @@ public class SourceFileProcessor extends JomcTool
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      *
-     * @deprecated As of JOMC 1.2, please use method {@link #getSourceFileEditor()}.
+     * @deprecated As of JOMC 1.2, please use method {@link #getSourceFileEditor()}. This method will be removed in
+     * version 2.0.
      */
     @Deprecated
     public SourceFileEditor getSourceFileEditor( final Implementation implementation )
@@ -1171,6 +1176,7 @@ public class SourceFileProcessor extends JomcTool
          * @param specification The specification to edit source code of.
          *
          * @deprecated As of JOMC 1.2, please use method {@link #edit(org.jomc.model.Specification, org.jomc.tools.model.SourceFileType, java.io.File)}.
+         * This constructor will be removed in version 2.0.
          */
         @Deprecated
         public SourceFileEditor( final Specification specification )
@@ -1186,6 +1192,7 @@ public class SourceFileProcessor extends JomcTool
          * @param lineSeparator The line separator of the editor.
          *
          * @deprecated As of JOMC 1.2, please use method {@link #edit(org.jomc.model.Specification, org.jomc.tools.model.SourceFileType, java.io.File)}.
+         * This constructor will be removed in version 2.0.
          */
         @Deprecated
         public SourceFileEditor( final Specification specification, final String lineSeparator )
@@ -1201,6 +1208,7 @@ public class SourceFileProcessor extends JomcTool
          * @param lineEditor The editor to chain.
          *
          * @deprecated As of JOMC 1.2, please use method {@link #edit(org.jomc.model.Specification, org.jomc.tools.model.SourceFileType, java.io.File)}.
+         * This constructor will be removed in version 2.0.
          */
         @Deprecated
         public SourceFileEditor( final Specification specification, final LineEditor lineEditor )
@@ -1217,6 +1225,7 @@ public class SourceFileProcessor extends JomcTool
          * @param lineSeparator The line separator of the editor.
          *
          * @deprecated As of JOMC 1.2, please use method {@link #edit(org.jomc.model.Specification, org.jomc.tools.model.SourceFileType, java.io.File)}.
+         * This constructor will be removed in version 2.0.
          */
         @Deprecated
         public SourceFileEditor( final Specification specification, final LineEditor lineEditor,
@@ -1237,6 +1246,7 @@ public class SourceFileProcessor extends JomcTool
          * @param implementation The implementation to edit source code of.
          *
          * @deprecated As of JOMC 1.2, please use method {@link #edit(org.jomc.model.Implementation, org.jomc.tools.model.SourceFileType, java.io.File)}.
+         * This constructor will be removed in version 2.0.
          */
         @Deprecated
         public SourceFileEditor( final Implementation implementation )
@@ -1252,6 +1262,7 @@ public class SourceFileProcessor extends JomcTool
          * @param lineSeparator The line separator of the editor.
          *
          * @deprecated As of JOMC 1.2, please use method {@link #edit(org.jomc.model.Implementation, org.jomc.tools.model.SourceFileType, java.io.File)}.
+         * This constructor will be removed in version 2.0.
          */
         @Deprecated
         public SourceFileEditor( final Implementation implementation, final String lineSeparator )
@@ -1267,6 +1278,7 @@ public class SourceFileProcessor extends JomcTool
          * @param lineEditor The editor to chain.
          *
          * @deprecated As of JOMC 1.2, please use method {@link #edit(org.jomc.model.Implementation, org.jomc.tools.model.SourceFileType, java.io.File)}.
+         * This constructor will be removed in version 2.0.
          */
         @Deprecated
         public SourceFileEditor( final Implementation implementation, final LineEditor lineEditor )
@@ -1283,6 +1295,7 @@ public class SourceFileProcessor extends JomcTool
          * @param lineSeparator The line separator of the editor.
          *
          * @deprecated As of JOMC 1.2, please use method {@link #edit(org.jomc.model.Implementation, org.jomc.tools.model.SourceFileType, java.io.File)}.
+         * This constructor will be removed in version 2.0.
          */
         @Deprecated
         public SourceFileEditor( final Implementation implementation, final LineEditor lineEditor,
@@ -1379,7 +1392,7 @@ public class SourceFileProcessor extends JomcTool
          *
          * @return A list of sections added to the input.
          *
-         * @deprecated As of JOMC 1.2, removed without replacement.
+         * @deprecated As of JOMC 1.2, deprecated without replacement. This method will be removed in version 2.0.
          */
         @Deprecated
         public List<Section> getAddedSections()
@@ -1400,7 +1413,7 @@ public class SourceFileProcessor extends JomcTool
          *
          * @return A list of sections without corresponding model entry.
          *
-         * @deprecated As of JOMC 1.2, removed without replacement.
+         * @deprecated As of JOMC 1.2, deprecated without replacement. This method will be removed in version 2.0.
          */
         @Deprecated
         public List<Section> getUnknownSections()

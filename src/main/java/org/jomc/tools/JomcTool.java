@@ -557,6 +557,7 @@ public class JomcTool
      * @throws NullPointerException if {@code implementation} is {@code null}.
      *
      * @deprecated As of JOMC 1.2, replaced by method {@link #getImplementedJavaTypeNames(org.jomc.model.Implementation, boolean)}.
+     * This method will be removed in version 2.0.
      */
     @Deprecated
     public List<String> getJavaInterfaceNames( final Implementation implementation, final boolean qualified )
