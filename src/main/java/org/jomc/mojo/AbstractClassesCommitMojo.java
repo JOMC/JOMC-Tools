@@ -70,9 +70,10 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
      * from that file. If no XSLT document is found at the given location, a build failure is produced.</p>
      * <p><b>Note:</b> When upgrading to version 1.2, any project dependencies holding XSLT documents referenced by this
      * parameter need to be added to the plugins' dependencies.</p>
+     * <p><strong>Deprecated:</strong> As of JOMC 1.2, please use the 'modelObjectStylesheetResources' parameter. This
+     * parameter will be removed in version 2.0.</p>
      *
      * @parameter
-     * @deprecated As of JOMC 1.2, please use parameter 'modelObjectStylesheetResources'.
      */
     @Deprecated
     private String modelObjectStylesheet;
@@ -140,7 +141,7 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
      * @throws MojoExecutionException if getting the transformers fails.
      *
      * @deprecated As of JOMC 1.2, the dependencies of the project are no longer searched for XSLT documents. Please
-     * use method {@link #getTransformers()}.
+     * use method {@link #getTransformers()}. This method will be removed in version 2.0.
      */
     @Deprecated
     protected List<Transformer> getTransformers( final ClassLoader classLoader ) throws MojoExecutionException

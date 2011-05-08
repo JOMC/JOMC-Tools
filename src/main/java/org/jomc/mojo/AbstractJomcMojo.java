@@ -285,7 +285,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     /**
      * Directory holding the compiled class files of the project.
-     * <p><strong>Deprecated:</strong> As of JOMC 1.1, please use the 'outputDirectory' parameter.</p>
+     * <p><strong>Deprecated:</strong> As of JOMC 1.1, please use the 'outputDirectory' parameter. This parameter will
+     * be removed in version 2.0.</p>
      *
      * @parameter
      */
@@ -294,7 +295,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     /**
      * Directory holding the compiled test class files of the project.
-     * <p><strong>Deprecated:</strong> As of JOMC 1.1, please use the 'testOutputDirectory' parameter.</p>
+     * <p><strong>Deprecated:</strong> As of JOMC 1.1, please use the 'testOutputDirectory' parameter. This parameter
+     * will be removed in version 2.0.</p>
      *
      * @parameter
      */
@@ -2030,7 +2032,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *
      * @throws MojoExecutionException if logging fails.
      *
-     * @deprecated As of JOMC 1.1, please use method {@link #logSeparator()}.
+     * @deprecated As of JOMC 1.1, please use method {@link #logSeparator()}. This method will be removed in version
+     * 2.0.
      */
     @Deprecated
     protected void logSeparator( final Level level ) throws MojoExecutionException
