@@ -112,7 +112,13 @@ public class JomcTool
          *
          * @throws NullPointerException if {@code level} is {@code null}.
          */
-        public abstract void onLog( Level level, String message, Throwable throwable );
+        public void onLog( final Level level, final String message, final Throwable throwable )
+        {
+            if ( level == null )
+            {
+                throw new NullPointerException( "level" );
+            }
+        }
 
     }
 

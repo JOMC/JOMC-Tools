@@ -121,6 +121,9 @@
       class <code>org.jomc.tools.ResourceBundleDefaultLocale</code> to default to the english locale, rather than to the
       system's default locale.]]>
       </action>
+      <action dev="schulte2005" type="remove"><![CDATA[Removed <code>abstract</code> modifier of method
+      <code>onLog</code> of class <code>org.jomc.tools.JomcTool.Listener</code>.]]>
+      </action>
     </release>
   </body>
 </document>

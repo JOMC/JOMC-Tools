@@ -226,8 +226,7 @@ public class JomcToolTest
                 @Override
                 public void onLog( final Level level, final String message, final Throwable throwable )
                 {
-                    assertNotNull( level );
-
+                    super.onLog( level, message, throwable );
                     System.out.println( "[" + level.getLocalizedName() + "] " + message );
 
                     if ( throwable != null )
@@ -273,8 +272,7 @@ public class JomcToolTest
                 @Override
                 public void onLog( final Level level, String message, Throwable t )
                 {
-                    assertNotNull( level );
-
+                    super.onLog( level, message, t );
                     System.out.println( "[" + level.getLocalizedName() + "] " + message );
 
                     if ( t != null )
