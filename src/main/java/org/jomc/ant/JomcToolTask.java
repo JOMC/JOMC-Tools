@@ -732,6 +732,8 @@ public class JomcToolTask extends JomcModelTask
                 @Override
                 public void onLog( final Level level, final String message, final Throwable throwable )
                 {
+                    super.onLog( level, message, throwable );
+
                     if ( level.intValue() >= Level.SEVERE.intValue() )
                     {
                         log( message, throwable, Project.MSG_ERR );

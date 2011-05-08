@@ -969,6 +969,7 @@ public class JomcTask extends Task
             @Override
             public void onLog( final Level level, final String message, final Throwable t )
             {
+                super.onLog( level, message, t );
                 logMessage( level, message, t );
             }
 
