@@ -2251,8 +2251,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         context.getListeners().add( new ModelContext.Listener()
         {
 
+            @Override
             public void onLog( final Level level, final String message, final Throwable t )
             {
+                super.onLog( level, message, t );
+
                 try
                 {
                     log( level, message, t );
@@ -2296,8 +2299,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             tool.getListeners().add( new JomcTool.Listener()
             {
 
+                @Override
                 public void onLog( final Level level, final String message, final Throwable t )
                 {
+                    super.onLog( level, message, t );
+
                     try
                     {
                         log( level, message, t );
