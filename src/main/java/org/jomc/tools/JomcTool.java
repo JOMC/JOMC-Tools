@@ -2163,6 +2163,7 @@ public class JomcTool
      * @throws NullPointerException if {@code templateName} is {@code null}.
      * @throws IOException if getting the template fails.
      *
+     * @see #getLocale()
      * @see #getTemplateProfile()
      * @see #getTemplateEncoding()
      * @see #getVelocityEngine()
