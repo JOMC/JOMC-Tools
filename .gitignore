@@ -1,0 +1,7 @@
+/dependency-reduced-pom.xml
+/.classpath
+/.project
+/target
+/jomc-cli.iml
+/catalog.xml
+/.settings
