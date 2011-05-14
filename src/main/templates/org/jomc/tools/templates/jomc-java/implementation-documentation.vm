@@ -103,17 +103,19 @@ ${tool.getIndentation(0)} * </p>
 ${tool.getIndentation(0)} * <p>
 ${tool.getIndentation(0)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
 ${tool.getIndentation(0)} *     <tr class="TableHeadingColor">
-${tool.getIndentation(0)} *       <th align="left" scope="col" colspan="3" nowrap><font size="+2">Properties</font></th>
+${tool.getIndentation(0)} *       <th align="left" scope="col" colspan="4" nowrap><font size="+2">Properties</font></th>
 ${tool.getIndentation(0)} *     </tr>
 ${tool.getIndentation(0)} *     <tr class="TableSubHeadingColor">
 ${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Name</b></td>
 ${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Type</b></td>
+${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Flags</b></td>
 ${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Documentation</b></td>
 ${tool.getIndentation(0)} *     </tr>
 #foreach($property in $properties.getProperty())
 ${tool.getIndentation(0)} *     <tr class="TableRowColor">
 ${tool.getIndentation(0)} *       <td align="left" valign="top" nowrap>{@link #$tool.getJavaGetterMethodName($property) $tool.getHtmlString($property.getName())}</td>
 ${tool.getIndentation(0)} *       <td align="left" valign="top" nowrap>{@code $tool.getJavaTypeName($property,false)}</td>
+${tool.getIndentation(0)} *       <td align="left" valign="top" nowrap>#if($property.isFinal()){@code final}#end#if($property.isOverride()) {@code override}#end#if(!$property.isFinal() && !$property.isOverride()){@code none}#end</td>
 ${tool.getIndentation(0)} *       <td align="left" valign="top">#if($property.getDocumentation())$tool.getJavadocComment($property.getDocumentation(), 0, " *                        ")#end</td>
 ${tool.getIndentation(0)} *     </tr>
 #end
@@ -125,16 +127,18 @@ ${tool.getIndentation(0)} * </p>
 ${tool.getIndentation(0)} * <p>
 ${tool.getIndentation(0)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
 ${tool.getIndentation(0)} *     <tr class="TableHeadingColor">
-${tool.getIndentation(0)} *       <th align="left" scope="col" colspan="2" nowrap><font size="+2">Dependencies</font></th>
+${tool.getIndentation(0)} *       <th align="left" scope="col" colspan="3" nowrap><font size="+2">Dependencies</font></th>
 ${tool.getIndentation(0)} *     </tr>
 ${tool.getIndentation(0)} *     <tr class="TableSubHeadingColor">
 ${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Name</b></td>
+${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Flags</b></td>
 ${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Description</b></td>
 ${tool.getIndentation(0)} *     </tr>
 #foreach($dependency in $dependencies.getDependency())
 #set($specification = $modules.getSpecification($dependency.getIdentifier()))
 ${tool.getIndentation(0)} *     <tr class="TableRowColor">
 ${tool.getIndentation(0)} *       <td align="left" valign="top" nowrap>{@link #$tool.getJavaGetterMethodName($dependency) $tool.getHtmlString($dependency.getName())}</td>
+${tool.getIndentation(0)} *       <td align="left" valign="top" nowrap>#if($dependency.isFinal()){@code final}#end#if($dependency.isOverride()) {@code override}#end#if(!$dependency.isFinal() && !$dependency.isOverride()){@code none}#end</td>
 #if($dependency.getImplementationName())
 ${tool.getIndentation(0)} *       <td align="left" valign="top">Dependency on the {@code '$dependency.getImplementationName()'} object of the {@code '$dependency.getIdentifier()'}#if($specification && $specification.getClazz()) {@code ($specification.getClazz())}#end specification#if($dependency.getVersion()) at specification level $tool.getHtmlString($dependency.getVersion())#end#if($specification && $specification.getScope()) applying to {@code $specification.getScope()} scope#end#if($dependency.isBound()) bound to an instance#end.</td>
 #else
@@ -150,16 +154,18 @@ ${tool.getIndentation(0)} * </p>
 ${tool.getIndentation(0)} * <p>
 ${tool.getIndentation(0)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
 ${tool.getIndentation(0)} *     <tr class="TableHeadingColor">
-${tool.getIndentation(0)} *       <th align="left" scope="col" colspan="3" nowrap><font size="+2">Messages</font></th>
+${tool.getIndentation(0)} *       <th align="left" scope="col" colspan="4" nowrap><font size="+2">Messages</font></th>
 ${tool.getIndentation(0)} *     </tr>
 ${tool.getIndentation(0)} *     <tr class="TableSubHeadingColor">
 ${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Name</b></td>
+${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Flags</b></td>
 ${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Languages</b></td>
 ${tool.getIndentation(0)} *       <td align="left" scope="col" nowrap><b>Default Templates</b></td>
 ${tool.getIndentation(0)} *     </tr>
 #foreach($message in $messages.getMessage())
 ${tool.getIndentation(0)} *     <tr class="TableRowColor">
 ${tool.getIndentation(0)} *       <td align="left" valign="top" nowrap>{@link #$tool.getJavaGetterMethodName($message) $tool.getHtmlString($message.getName())}</td>
+${tool.getIndentation(0)} *       <td align="left" valign="top" nowrap>#if($message.isFinal()){@code final}#end#if($message.isOverride()) {@code override}#end#if(!$message.isFinal() && !$message.isOverride()){@code none}#end</td>
 ${tool.getIndentation(0)} *       <td align="left" valign="top" nowrap>#set($size = $message.getTemplate().getText().size())#foreach($text in $message.getTemplate().getText())$tool.getHtmlString($tool.getDisplayLanguage($text.getLanguage()))#if($text.getLanguage() == $message.getTemplate().getDefaultLanguage()) (default)#end#set($size = $size - 1)#if($size > 0),&nbsp;#end#end</td>
 ${tool.getIndentation(0)} *       <td align="left" valign="top" nowrap>#set($i = $message.getTemplate().getText().size())#foreach($text in $message.getTemplate().getText())#set($i = $i - 1)<pre><code>$tool.getJavadocComment($text, 0, " * ")</code></pre>#if($i > 0)<hr/>#end#end</td>
 ${tool.getIndentation(0)} *     </tr>
