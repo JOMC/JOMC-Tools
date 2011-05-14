@@ -34,7 +34,7 @@ package org.jomc.ant.types;
 
 /**
  * Enumeration of Java properties file formats.
- * 
+ *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
