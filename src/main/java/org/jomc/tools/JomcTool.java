@@ -103,8 +103,14 @@ public class JomcTool
     public abstract static class Listener
     {
 
+        /** Creates a new {@code Listener} instance. */
+        public Listener()
+        {
+            super();
+        }
+
         /**
-         * Get called on logging.
+         * Gets called on logging.
          *
          * @param level The level of the event.
          * @param message The message of the event or {@code null}.
