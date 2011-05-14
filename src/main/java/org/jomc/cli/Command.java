@@ -89,7 +89,7 @@ public interface Command
     {
 
         /**
-         * Get called on logging.
+         * Gets called on logging.
          *
          * @param level The level of the event.
          * @param message The message of the event or {@code null}.
