@@ -56,6 +56,14 @@ public abstract class AbstractSourcesManageMojo extends AbstractJomcMojo
     /** Constant for the name of the tool backing the class. */
     private static final String TOOLNAME = "SourceFileProcessor";
 
+    /**
+     * The default source file name extension to use when accessing source files.
+     *
+     * @parameter expression="${jomc.defaultSourceFileNameExtension}"
+     * @since 1.2
+     */
+    private String defaultSourceFileNameExtension;
+
     /** Creates a new {@code AbstractSourcesManageMojo} instance. */
     public AbstractSourcesManageMojo()
     {
@@ -76,6 +84,11 @@ public abstract class AbstractSourcesManageMojo extends AbstractJomcMojo
             final JAXBContext jaxbContext = context.createContext( this.getModel() );
             final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModel( tool.getModel() ) );
             final ModelValidationReport validationReport = context.validateModel( this.getModel(), source );
+
+            if ( this.defaultSourceFileNameExtension != null )
+            {
+                tool.setDefaultSourceFileNameExtension( this.defaultSourceFileNameExtension );
+            }
 
             this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 
