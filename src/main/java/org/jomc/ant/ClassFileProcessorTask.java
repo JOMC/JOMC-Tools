@@ -124,9 +124,9 @@ public class ClassFileProcessorTask extends JomcToolTask
     {
         try
         {
-            final ClassFileProcessor tool = this.getClassFileProcessorClass().newInstance();
-            this.configureJomcTool( tool );
-            return tool;
+            final ClassFileProcessor classFileProcessor = this.getClassFileProcessorClass().newInstance();
+            this.configureClassFileProcessor( classFileProcessor );
+            return classFileProcessor;
         }
         catch ( final InstantiationException e )
         {
@@ -136,6 +136,26 @@ public class ClassFileProcessorTask extends JomcToolTask
         {
             throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }
+    }
+
+    /**
+     * Configures a given {@code ClassFileProcessor} instance using the properties of the instance.
+     *
+     * @param classFileProcessor The class file processor to configure.
+     *
+     * @throws NullPointerException if {@code classFileProcessor} is {@code null}.
+     * @throws BuildException if configuring {@code classFileProcessor} fails.
+     *
+     * @see #configureJomcTool(org.jomc.tools.JomcTool)
+     */
+    public void configureClassFileProcessor( final ClassFileProcessor classFileProcessor ) throws BuildException
+    {
+        if ( classFileProcessor == null )
+        {
+            throw new NullPointerException( "classFileProcessor" );
+        }
+
+        this.configureJomcTool( classFileProcessor );
     }
 
     /**

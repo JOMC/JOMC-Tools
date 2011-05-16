@@ -154,15 +154,9 @@ public class ResourceFileProcessorTask extends JomcToolTask
     {
         try
         {
-            final ResourceFileProcessor tool = this.getResourceFileProcessorClass().newInstance();
-            this.configureJomcTool( tool );
-
-            if ( this.getResourceBundleDefaultLanguage() != null )
-            {
-                tool.setResourceBundleDefaultLocale( new Locale( this.getResourceBundleDefaultLanguage() ) );
-            }
-
-            return tool;
+            final ResourceFileProcessor resourceFileProcessor = this.getResourceFileProcessorClass().newInstance();
+            this.configureResourceFileProcessor( resourceFileProcessor );
+            return resourceFileProcessor;
         }
         catch ( final InstantiationException e )
         {
@@ -171,6 +165,34 @@ public class ResourceFileProcessorTask extends JomcToolTask
         catch ( final IllegalAccessException e )
         {
             throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
+        }
+    }
+
+    /**
+     * Configures a given {@code ResourceFileProcessor} instance using the properties of the instance.
+     *
+     * @param resourceFileProcessor The resource file processor to configure.
+     *
+     * @throws NullPointerException if {@code resourceFileProcessor} is {@code null}.
+     * @throws BuildException if configuring {@code resourceFileProcessor} fails.
+     *
+     * @see #configureJomcTool(org.jomc.tools.JomcTool)
+     */
+    public void configureResourceFileProcessor( final ResourceFileProcessor resourceFileProcessor )
+        throws BuildException
+    {
+        if ( resourceFileProcessor == null )
+        {
+            throw new NullPointerException( "resourceFileProcessor" );
+        }
+
+        this.configureJomcTool( resourceFileProcessor );
+
+        if ( this.getResourceBundleDefaultLanguage() != null )
+        {
+            resourceFileProcessor.setResourceBundleDefaultLocale(
+                new Locale( this.getResourceBundleDefaultLanguage() ) );
+
         }
     }
 
