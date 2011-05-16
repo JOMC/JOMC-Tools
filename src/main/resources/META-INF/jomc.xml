@@ -1991,12 +1991,19 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <properties>
         <property name="opt" value="sfne" override="true"/>
         <property name="longOpt" value="source-file-name-extension" override="true"/>
+        <property name="numberOfArgs" type="int" value="1" override="true"/>
       </properties>
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
             <text language="en">Default source file name extension.</text>
             <text language="de">Standard Quelltext-Dateinamen-Endung.</text>
+          </template>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">extension</text>
+            <text language="de">Endung</text>
           </template>
         </message>
       </messages>
