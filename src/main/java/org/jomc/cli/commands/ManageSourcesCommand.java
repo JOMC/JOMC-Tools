@@ -176,6 +176,11 @@ import org.jomc.tools.SourceFileProcessor;
  *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Country Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getDefaultSourceFileNameExtensionOption DefaultSourceFileNameExtensionOption}</td>
+ *       <td align="left" valign="top" nowrap>{@code none}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Default Source File Name Extension Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
+ *     </tr>
+ *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getDefaultTemplateProfileOption DefaultTemplateProfileOption}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Default Template Profile Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
@@ -332,7 +337,7 @@ import org.jomc.tools.SourceFileProcessor;
  *       <td align="left" valign="top" nowrap>{@link #getApplicationTitle applicationTitle}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
- *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-05-14T19:23:28+0200</code></pre></td>
+ *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-05-16T16:18:29+0200</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getCannotProcessMessage cannotProcessMessage}</td>
@@ -613,6 +618,10 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Default Source File Name Extension Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Default Template Profile Option</td>
      *     </tr>
      *     <tr class="TableRow">
@@ -730,6 +739,7 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
         final org.apache.commons.cli.Options options = new org.apache.commons.cli.Options();
         options.addOption( this.getClasspathOption() );
         options.addOption( this.getCountryOption() );
+        options.addOption( this.getDefaultSourceFileNameExtensionOption() );
         options.addOption( this.getDefaultTemplateProfileOption() );
         options.addOption( this.getDocumentsOption() );
         options.addOption( this.getImplementationOption() );
@@ -791,6 +801,21 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "CountryOption" );
         assert _d != null : "'CountryOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code DefaultSourceFileNameExtensionOption} dependency.
+     * <p>This method returns the {@code 'JOMC CLI Default Source File Name Extension Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code DefaultSourceFileNameExtensionOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private org.apache.commons.cli.Option getDefaultSourceFileNameExtensionOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "DefaultSourceFileNameExtensionOption" );
+        assert _d != null : "'DefaultSourceFileNameExtensionOption' dependency not found.";
         return _d;
     }
 
@@ -1337,7 +1362,7 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-05-14T19:23:28+0200</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-05-16T16:18:29+0200</code></pre></td>
      *     </tr>
      *   </table>
      * </p>
