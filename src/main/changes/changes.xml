@@ -85,6 +85,9 @@
       <code>org.jomc.tools.JomcTool</code> and updated templates to use the value of that property when producing
       documentation.]]>
       </action>
+      <action dev="schulte2005" type="add"><![CDATA[Added property <code>defaultSourceFileNameExtension</code> to class
+      <code>org.jomc.tools.SourceFileProcessor</code>.]]>
+      </action>
       <action dev="schulte2005" type="fix"><![CDATA[Corrected method <code>getModules</code> of class
       <code>org.jomc.tools.JomcTool</code> to initialize the modules of the instance if the model of the instance does
       not hold modules.]]>

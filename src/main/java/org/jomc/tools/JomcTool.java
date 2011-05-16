@@ -140,22 +140,22 @@ public class JomcTool
     /** Constant for the default template profile. */
     private static final String DEFAULT_TEMPLATE_PROFILE = "jomc-java";
 
-    /** Default template profile. */
+    /** The default template profile. */
     private static volatile String defaultTemplateProfile;
 
     /**
-     * Log level events are logged at by default.
+     * The log level events are logged at by default.
      * @see #getDefaultLogLevel()
      */
     private static final Level DEFAULT_LOG_LEVEL = Level.WARNING;
 
-    /** Default log level. */
+    /** The default log level. */
     private static volatile Level defaultLogLevel;
 
     /** The model of the instance. */
     private Model model;
 
-    /** {@code VelocityEngine} of the generator. */
+    /** The {@code VelocityEngine} of the instance. */
     private VelocityEngine velocityEngine;
 
     /** The encoding to use for reading templates. */
@@ -185,7 +185,7 @@ public class JomcTool
     /** The listeners of the instance. */
     private List<Listener> listeners;
 
-    /** Log level of the instance. */
+    /** The log level of the instance. */
     private Level logLevel;
 
     /** The locale of the instance. */
@@ -592,6 +592,8 @@ public class JomcTool
      * @return An unmodifiable list of names of all Java types implemented by {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
+     *
+     * @since 1.2
      */
     public List<String> getImplementedJavaTypeNames( final Implementation implementation, final boolean qualified )
     {

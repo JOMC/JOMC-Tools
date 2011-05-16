@@ -149,6 +149,12 @@ public class SourceFileProcessor extends JomcTool
     @Deprecated
     private SourceFilesType sourceFilesType;
 
+    /**
+     * The default source file name extension of the instance.
+     * @since 1.2
+     */
+    private String defaultSourceFileNameExtension;
+
     /** Creates a new {@code SourceFileProcessor} instance. */
     public SourceFileProcessor()
     {
@@ -168,6 +174,41 @@ public class SourceFileProcessor extends JomcTool
     {
         super( tool );
         this.sourceFilesType = tool.sourceFilesType != null ? new SourceFilesType( tool.sourceFilesType ) : null;
+        this.defaultSourceFileNameExtension = tool.defaultSourceFileNameExtension;
+    }
+
+    /**
+     * Gets the default source file name extension of the instance.
+     *
+     * @return The default source file name extension of the instance or {@code java}, if no value has been set.
+     *
+     * @see SourceFileType#getLocation()
+     * @see #setDefaultSourceFileNameExtension(java.lang.String)
+     *
+     * @since 1.2
+     */
+    public final String getDefaultSourceFileNameExtension()
+    {
+        if ( this.defaultSourceFileNameExtension == null )
+        {
+            this.defaultSourceFileNameExtension = "java";
+        }
+
+        return this.defaultSourceFileNameExtension;
+    }
+
+    /**
+     * Sets the default source file name extension of the instance.
+     *
+     * @param value The new default source file name extension of the instance or {@code null}.
+     *
+     * @see #getDefaultSourceFileNameExtension()
+     *
+     * @since 1.2
+     */
+    public final void setDefaultSourceFileNameExtension( final String value )
+    {
+        this.defaultSourceFileNameExtension = value;
     }
 
     /**
@@ -228,7 +269,7 @@ public class SourceFileProcessor extends JomcTool
                 if ( sourceFileType.getLocation() == null )
                 {
                     // As of version 1.2, the 'location' attribute got updated from 'required' to 'optional'.
-                    sourceFileType.setLocation( specification.getClazz().replace( '.', '/' ) + ".java" );
+                    sourceFileType.setLocation( this.getDefaultSourceFileLocation( specification ) );
                 }
 
                 if ( sourceFileType.getHeadComment() == null )
@@ -243,7 +284,7 @@ public class SourceFileProcessor extends JomcTool
         {
             sourceFileType = new SourceFileType();
             sourceFileType.setIdentifier( specification.getIdentifier() );
-            sourceFileType.setLocation( specification.getClazz().replace( '.', '/' ) + ".java" );
+            sourceFileType.setLocation( this.getDefaultSourceFileLocation( specification ) );
             sourceFileType.setTemplate( SPECIFICATION_TEMPLATE );
             sourceFileType.setHeadComment( "//" );
             sourceFileType.setSourceSections( new SourceSectionsType() );
@@ -349,7 +390,7 @@ public class SourceFileProcessor extends JomcTool
                 if ( sourceFileType.getLocation() == null )
                 {
                     // As of version 1.2, the 'location' attribute got updated from 'required' to 'optional'.
-                    sourceFileType.setLocation( implementation.getClazz().replace( '.', '/' ) + ".java" );
+                    sourceFileType.setLocation( this.getDefaultSourceFileLocation( implementation ) );
                 }
 
                 if ( sourceFileType.getHeadComment() == null )
@@ -369,7 +410,7 @@ public class SourceFileProcessor extends JomcTool
 
             sourceFileType = new SourceFileType();
             sourceFileType.setIdentifier( implementation.getIdentifier() );
-            sourceFileType.setLocation( implementation.getClazz().replace( '.', '/' ) + ".java" );
+            sourceFileType.setLocation( this.getDefaultSourceFileLocation( implementation ) );
             sourceFileType.setTemplate( IMPLEMENTATION_TEMPLATE );
             sourceFileType.setHeadComment( "//" );
             sourceFileType.setSourceSections( new SourceSectionsType() );
@@ -744,7 +785,7 @@ public class SourceFileProcessor extends JomcTool
             }
             if ( s.getLocation() == null )
             {
-                s.setLocation( specification.getClazz().replace( '.', '/' ) + ".java" );
+                s.setLocation( this.getDefaultSourceFileLocation( specification ) );
             }
             if ( s.getHeadComment() == null )
             {
@@ -853,7 +894,7 @@ public class SourceFileProcessor extends JomcTool
             }
             if ( s.getLocation() == null )
             {
-                s.setLocation( implementation.getClazz().replace( '.', '/' ) + ".java" );
+                s.setLocation( this.getDefaultSourceFileLocation( implementation ) );
             }
             if ( s.getHeadComment() == null )
             {
@@ -1054,6 +1095,22 @@ public class SourceFileProcessor extends JomcTool
         {
             throw new AssertionError( e );
         }
+    }
+
+    private String getDefaultSourceFileLocation( final Specification spec )
+    {
+        return new StringBuilder( spec.getClazz().length() + this.getDefaultSourceFileNameExtension().length() ).
+            append( spec.getClazz().replace( '.', '/' ) ).append( '.' ).
+            append( this.getDefaultSourceFileNameExtension() ).toString();
+
+    }
+
+    private String getDefaultSourceFileLocation( final Implementation impl )
+    {
+        return new StringBuilder( impl.getClazz().length() + this.getDefaultSourceFileNameExtension().length() ).
+            append( impl.getClazz().replace( '.', '/' ) ).append( '.' ).
+            append( this.getDefaultSourceFileNameExtension() ).toString();
+
     }
 
     private static boolean isFieldSet( final Object object, final String fieldName ) throws NoSuchFieldException
