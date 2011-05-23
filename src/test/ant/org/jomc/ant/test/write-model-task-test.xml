@@ -72,56 +72,56 @@
 
   <!-- ************************************************************************************************************* -->
   <target name="test-specification-not-found">
-    <jomc:show-model specification="DOES NOT EXIST"/>
+    <jomc:write-model specification="DOES NOT EXIST"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-implementation-not-found">
-    <jomc:show-model implementation="DOES NOT EXIST"/>
+    <jomc:write-model implementation="DOES NOT EXIST"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-module-not-found">
-    <jomc:show-model module="DOES NOT EXIST"/>
+    <jomc:write-model module="DOES NOT EXIST"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-write-model-all-attributes">
-    <jomc:show-model modelEncoding="US-ASCII"
-                     modelFile="${empty.dir}/jomc-model.xml"
-                     specification="TEST"
-                     implementation="TEST"
-                     module="TEST"
-                     moduleLocation="TEST"
-                     transformerLocation="TEST"
-                     modelObjectClasspathResolutionEnabled="false"
-                     model="TEST"
-                     modelContextClassName="org.jomc.modlet.DefaultModelContext"
-                     modelProcessingEnabled="false"
-                     modletLocation="TEST"
-                     modletSchemaSystemId="TEST"
-                     providerLocation="TEST"
-                     platformProviderLocation="TEST">
+    <jomc:write-model modelEncoding="US-ASCII"
+                      modelFile="${empty.dir}/jomc-model.xml"
+                      specification="TEST"
+                      implementation="TEST"
+                      module="TEST"
+                      moduleLocation="TEST"
+                      transformerLocation="TEST"
+                      modelObjectClasspathResolutionEnabled="false"
+                      model="TEST"
+                      modelContextClassName="org.jomc.modlet.DefaultModelContext"
+                      modelProcessingEnabled="false"
+                      modletLocation="TEST"
+                      modletSchemaSystemId="TEST"
+                      providerLocation="TEST"
+                      platformProviderLocation="TEST">
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>
       </jomc:classpath>
       <jomc:transformationParameter key="test" value="test"/>
-    </jomc:show-model>
+    </jomc:write-model>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-execute-task">
-    <jomc:show-model/>
+    <jomc:write-model/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-execute-task-if">
-    <jomc:show-model if="on"/>
+    <jomc:write-model if="on"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-execute-task-unless">
-    <jomc:show-model unless="off"/>
+    <jomc:write-model unless="off"/>
   </target>
 
 </project>
