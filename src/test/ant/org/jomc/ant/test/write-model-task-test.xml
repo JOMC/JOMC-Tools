@@ -32,7 +32,7 @@
    $Id$
 
 -->
-<project name="show-model-test" xmlns:jomc="antlib:org.jomc.ant">
+<project name="write-model-test" xmlns:jomc="antlib:org.jomc.ant">
 
   <!-- ************************************************************************************************************* -->
   <property name="jomc.enabled" value="on"/>
@@ -86,7 +86,7 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-show-model-all-attributes">
+  <target name="test-write-model-all-attributes">
     <jomc:show-model modelEncoding="US-ASCII"
                      modelFile="${empty.dir}/jomc-model.xml"
                      specification="TEST"

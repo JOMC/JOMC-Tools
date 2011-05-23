@@ -38,7 +38,7 @@
   <typedef name="manage-sources" classname="org.jomc.ant.ManageSourcesTask"/>
   <typedef name="merge-modlets" classname="org.jomc.ant.MergeModletsTask"/>
   <typedef name="merge-modules" classname="org.jomc.ant.MergeModulesTask"/>
-  <typedef name="show-model" classname="org.jomc.ant.ShowModelTask"/>
+  <typedef name="write-model" classname="org.jomc.ant.WriteModelTask"/>
   <typedef name="validate-classes" classname="org.jomc.ant.ValidateClassesTask"/>
   <typedef name="validate-classpath" classname="org.jomc.ant.ValidateClasspathTask"/>
   <typedef name="validate-model" classname="org.jomc.ant.ValidateModelTask"/>

@@ -1174,11 +1174,11 @@ Task and Type Reference
 
 ---
 
-* <<<{show-model}>>>
+* <<<{write-model}>>>
 
-  This task displays model objects. {{{U}[U]}}
+  This task writes model objects. {{{U}[U]}}
 
-  The <<<show-model>>> task supports the following attributes:
+  The <<<write-model>>> task supports the following attributes:
 
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<Attribute>>                               | <<Description>>                            | <<Required>>           |
@@ -1193,7 +1193,7 @@ Task and Type Reference
 |                                             | task.                                      |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<implementation>>>                        | The identifier of an implementation to     | No.                    |
-|                                             | show.                                      |                        |
+|                                             | write.                                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
@@ -1221,7 +1221,7 @@ Task and Type Reference
 | <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
 |                                             | schema system id.                          |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<module>>>                                | The name of a module to show.              | No.                    |
+| <<<module>>>                                | The name of a module to write.             | No.                    |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<moduleLocation>>>                        | The class path location searched for       | No. {{{G}[G]}}         |
 |                                             | modules.                                   |                        |
@@ -1232,7 +1232,8 @@ Task and Type Reference
 | <<<providerLocation>>>                      | The class path location searched for       | No. {{{I}[I]}}         |
 |                                             | providers.                                 |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<specification>>>                         | The identifier of a specification to show. | No.                    |
+| <<<specification>>>                         | The identifier of a specification to       | No.                    |
+|                                             | write.                                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
 |                                             | transformers.                              |                        |
@@ -1241,7 +1242,7 @@ Task and Type Reference
 |                                             | task.                                      |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 
-  The <<<show-model>>> task supports the following nested elements:
+  The <<<write-model>>> task supports the following nested elements:
 
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<Element>>                                 | <<Description>>                            | <<Required>>           |
@@ -1261,10 +1262,10 @@ Task and Type Reference
 |                                             | Type: {{KeyValueType}}                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 
-** Example: Showing a model.
+** Example: Writing a model.
 
 ---
-<jomc:show-model xmlns:jomc="antlib:org.jomc.ant"
+<jomc:write-model xmlns:jomc="antlib:org.jomc.ant"
       classpathRef="this.module.runtime.classpath"/>
 
 ---
@@ -1489,6 +1490,6 @@ Task and Type Reference
 
   \[{T}\] {{{${project.url}/apidocs/org/jomc/ant/MergeModulesTask.html}<<<merge-modules>>> task.}}
 
-  \[{U}\] {{{${project.url}/apidocs/org/jomc/ant/ShowModelTask.html}<<<show-model>>> task.}}
+  \[{U}\] {{{${project.url}/apidocs/org/jomc/ant/WriteModelTask.html}<<<write-model>>> task.}}
 
   \[{V}\] {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/SourceFileProcessor.html#getDefaultSourceFileNameExtension()}Default source file name extension.}}

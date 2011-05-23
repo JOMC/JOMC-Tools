@@ -33,46 +33,46 @@
 package org.jomc.ant.test;
 
 import org.apache.tools.ant.Project;
-import org.jomc.ant.ShowModelTask;
+import org.jomc.ant.WriteModelTask;
 import org.junit.Test;
 import static org.jomc.ant.test.Assert.assertMessageLogged;
 import static org.jomc.ant.test.Assert.assertMessageLoggedContaining;
 import static org.jomc.ant.test.Assert.assertNoException;
 
 /**
- * Test cases for class {@code org.jomc.ant.ShowModelTask}.
+ * Test cases for class {@code org.jomc.ant.WriteModelTask}.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public class ShowModelTaskTest extends JomcModelTaskTest
+public class WriteModelTaskTest extends JomcModelTaskTest
 {
 
-    /** Creates a new {@code ShowModelTaskTest} instance. */
-    public ShowModelTaskTest()
+    /** Creates a new {@code WriteModelTaskTest} instance. */
+    public WriteModelTaskTest()
     {
         super();
     }
 
     /** {@inheritDoc} */
     @Override
-    public ShowModelTask getJomcTask()
+    public WriteModelTask getJomcTask()
     {
-        return (ShowModelTask) super.getJomcTask();
+        return (WriteModelTask) super.getJomcTask();
     }
 
     /** {@inheritDoc} */
     @Override
-    protected ShowModelTask newJomcTask()
+    protected WriteModelTask newJomcTask()
     {
-        return new ShowModelTask();
+        return new WriteModelTask();
     }
 
     /** {@inheritDoc} */
     @Override
     protected String getBuildFileName()
     {
-        return "show-model-task-test.xml";
+        return "write-model-task-test.xml";
     }
 
     @Test
@@ -100,9 +100,9 @@ public class ShowModelTaskTest extends JomcModelTaskTest
     }
 
     @Test
-    public final void testShowModelAllAttributes() throws Exception
+    public final void testWriteModelAllAttributes() throws Exception
     {
-        final AntExecutionResult r = this.executeTarget( "test-show-model-all-attributes" );
+        final AntExecutionResult r = this.executeTarget( "test-write-model-all-attributes" );
         assertNoException( r );
         assertMessageLoggedContaining( r, "Writing", Project.MSG_INFO );
     }

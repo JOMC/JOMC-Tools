@@ -56,21 +56,21 @@ import org.jomc.modlet.ModelValidationReport;
 import org.jomc.modlet.ObjectFactory;
 
 /**
- * Task for displaying model objects.
+ * Task for writing model objects.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public final class ShowModelTask extends JomcModelTask
+public final class WriteModelTask extends JomcModelTask
 {
 
-    /** The identifier of a specification to show. */
+    /** The identifier of a specification to write. */
     private String specification;
 
-    /** The identifier of an implementation to show. */
+    /** The identifier of an implementation to write. */
     private String implementation;
 
-    /** The name of a module to show. */
+    /** The name of a module to write. */
     private String module;
 
     /** The encoding to use when writing the model. */
@@ -79,8 +79,8 @@ public final class ShowModelTask extends JomcModelTask
     /** File to write the model to. */
     private File modelFile;
 
-    /** Creates a new {@code ShowModelTask} instance. */
-    public ShowModelTask()
+    /** Creates a new {@code WriteModelTask} instance. */
+    public WriteModelTask()
     {
         super();
     }
@@ -139,9 +139,9 @@ public final class ShowModelTask extends JomcModelTask
     }
 
     /**
-     * Gets the identifier of a specification to show.
+     * Gets the identifier of a specification to write.
      *
-     * @return The identifier of a specification to show or {@code null}.
+     * @return The identifier of a specification to write or {@code null}.
      *
      * @see #setSpecification(java.lang.String)
      */
@@ -151,9 +151,9 @@ public final class ShowModelTask extends JomcModelTask
     }
 
     /**
-     * Sets the identifier of a specification to show.
+     * Sets the identifier of a specification to write.
      *
-     * @param value The new identifier of a specification to show or {@code null}.
+     * @param value The new identifier of a specification to write or {@code null}.
      *
      * @see #getSpecification()
      */
@@ -163,11 +163,11 @@ public final class ShowModelTask extends JomcModelTask
     }
 
     /**
-     * Gets the specification to show from a given model.
+     * Gets the specification to write from a given model.
      *
-     * @param model The model to get the specification to show from.
+     * @param model The model to get the specification to write from.
      *
-     * @return The specification to show or {@code null}.
+     * @return The specification to write or {@code null}.
      *
      * @throws NullPointerException if {@code model} is {@code null}.
      *
@@ -201,9 +201,9 @@ public final class ShowModelTask extends JomcModelTask
     }
 
     /**
-     * Gets the identifier of an implementation to show.
+     * Gets the identifier of an implementation to write.
      *
-     * @return The identifier of an implementation to show or {@code null}.
+     * @return The identifier of an implementation to write or {@code null}.
      *
      * @see #setImplementation(java.lang.String)
      */
@@ -213,9 +213,9 @@ public final class ShowModelTask extends JomcModelTask
     }
 
     /**
-     * Sets the identifier of an implementation to show.
+     * Sets the identifier of an implementation to write.
      *
-     * @param value The new identifier of an implementation to show or {@code null}.
+     * @param value The new identifier of an implementation to write or {@code null}.
      *
      * @see #getImplementation()
      */
@@ -225,11 +225,11 @@ public final class ShowModelTask extends JomcModelTask
     }
 
     /**
-     * Gets the instance to show from a given model.
+     * Gets the instance to write from a given model.
      *
-     * @param model The model to get the instance to show from.
+     * @param model The model to get the instance to write from.
      *
-     * @return The instance to show or {@code null}.
+     * @return The instance to write or {@code null}.
      *
      * @throws NullPointerException if {@code model} is {@code null}.
      *
@@ -263,9 +263,9 @@ public final class ShowModelTask extends JomcModelTask
     }
 
     /**
-     * Gets the identifier of a module to show.
+     * Gets the identifier of a module to write.
      *
-     * @return The identifier of a module to show or {@code null}.
+     * @return The identifier of a module to write or {@code null}.
      *
      * @see #setModule(java.lang.String)
      */
@@ -275,9 +275,9 @@ public final class ShowModelTask extends JomcModelTask
     }
 
     /**
-     * Sets the identifier of a module to show.
+     * Sets the identifier of a module to write.
      *
-     * @param value The new identifier of a module to show or {@code null}.
+     * @param value The new identifier of a module to write or {@code null}.
      *
      * @see #getModule()
      */
@@ -287,11 +287,11 @@ public final class ShowModelTask extends JomcModelTask
     }
 
     /**
-     * Gets the module to show from a given model.
+     * Gets the module to write from a given model.
      *
-     * @param model The model to get the module to show from.
+     * @param model The model to get the module to write from.
      *
-     * @return The module to show or {@code null}.
+     * @return The module to write or {@code null}.
      *
      * @throws NullPointerException if {@code model} is {@code null}.
      *
@@ -412,9 +412,9 @@ public final class ShowModelTask extends JomcModelTask
 
     /** {@inheritDoc} */
     @Override
-    public ShowModelTask clone()
+    public WriteModelTask clone()
     {
-        return (ShowModelTask) super.clone();
+        return (WriteModelTask) super.clone();
     }
 
 }
