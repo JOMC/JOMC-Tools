@@ -630,12 +630,12 @@ public class JomcTest
         assertNotNull( merged.getSchemas() );
         assertNotNull( merged.getServices() );
         assertEquals( 2, merged.getSchemas().getSchema().size() );
-        assertEquals( 3, merged.getServices().getService().size() );
+        assertEquals( 6, merged.getServices().getService().size() );
         assertNotNull( merged.getSchemas().getSchemaByPublicId( "http://jomc.org/model" ) );
         assertNotNull( merged.getSchemas().getSchemaByPublicId( "http://jomc.org/tools/model" ) );
-        assertEquals( 1, merged.getServices().getServices( "org.jomc.modlet.ModelProvider" ).size() );
-        assertEquals( 1, merged.getServices().getServices( "org.jomc.modlet.ModelProcessor" ).size() );
-        assertEquals( 1, merged.getServices().getServices( "org.jomc.modlet.ModelValidator" ).size() );
+        assertEquals( 2, merged.getServices().getServices( "org.jomc.modlet.ModelProvider" ).size() );
+        assertEquals( 2, merged.getServices().getServices( "org.jomc.modlet.ModelProcessor" ).size() );
+        assertEquals( 2, merged.getServices().getServices( "org.jomc.modlet.ModelValidator" ).size() );
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( includeArgs ) );
         merged = unmarshaller.unmarshal(

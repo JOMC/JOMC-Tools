@@ -1972,43 +1972,6 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="${project.name} Default Source File Name Extension Option"
-                    name="${project.name} Default Source File Name Extension Option"
-                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
-                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
-
-      <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
-                createDate="2005-07-25T19:56:45Z"/>
-
-      </authors>
-      <specifications>
-        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
-      </specifications>
-      <implementations>
-        <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
-      </implementations>
-      <properties>
-        <property name="opt" value="sfne" override="true"/>
-        <property name="longOpt" value="source-file-name-extension" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
-      </properties>
-      <messages>
-        <message name="description" override="true">
-          <template defaultLanguage="en">
-            <text language="en">Default source file name extension.</text>
-            <text language="de">Standard Quelltext-Dateinamen-Endung.</text>
-          </template>
-        </message>
-        <message name="argumentDescription" override="true">
-          <template defaultLanguage="en">
-            <text language="en">extension</text>
-            <text language="de">Endung</text>
-          </template>
-        </message>
-      </messages>
-    </implementation>
-    <!-- *********************************************************************************************************** -->
     <!--                                                                                                             -->
     <!-- Application                                                                                                 -->
     <!--                                                                                                             -->
@@ -2317,7 +2280,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <text language="en">List of schema context-ids to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</text>
           </documentation>
         </property>
-        <property name="serviceExcludes" value="org.jomc.model.modlet.DefaultModelProcessor:org.jomc.model.modlet.DefaultModelProvider:org.jomc.model.modlet.DefaultModelValidator" final="true">
+        <property name="serviceExcludes" value="org.jomc.model.modlet.DefaultModelProvider:org.jomc.model.modlet.DefaultModelProcessor:org.jomc.model.modlet.DefaultModelValidator:org.jomc.tools.modlet.ToolsModelProvider:org.jomc.tools.modlet.ToolsModelProcessor:org.jomc.tools.modlet.ToolsModelValidator" final="true">
           <documentation defaultLanguage="en">
             <text language="en">List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</text>
           </documentation>
@@ -2642,10 +2605,6 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="${project.name} JomcTool Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="DefaultSourceFileNameExtensionOption" identifier="${project.name} Command Option"
-                    version="${jomc.cli.command.option.version}"
-                    implementationName="${project.name} Default Source File Name Extension Option"/>
-
         <dependency name="SourceFileProcessorOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} SourceFileProcessor Class Name Option"/>
 
