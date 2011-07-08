@@ -171,9 +171,6 @@
       <action dev="schulte2005" type="add"><![CDATA[Added parameter <code>testResourcesOutputDirectory</code> to
       the <code>write-test-resources</code> goal.]]>
       </action>
-      <action dev="schulte2005" type="add"><![CDATA[Added parameter <code>defaultSourceFileNameExtension</code> to
-      the <code>manage-main-sources</code> and <code>manage-test-sources</code> goals.]]>
-      </action>
       <action dev="schulte2005" type="fix"><![CDATA[Corrected goals <code>write-main-resources</code> and
       <code>write-test-resources</code> to add a corresponding resource to the maven project.]]>
       </action>
