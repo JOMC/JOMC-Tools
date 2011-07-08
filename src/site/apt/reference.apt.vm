@@ -400,9 +400,6 @@ Task and Type Reference
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element is supported.  |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<defaultSourceFileNameExtension>>>        | The default source file name extension to  | No. {{{V}[V]}}         |
-|                                             | use when accessing source files.           |                        |
-*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<defaultTemplateProfile>>>                | The default template profile to use when   | No. {{{B}[B]}}         |
 |                                             | accessing templates.                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -1491,5 +1488,3 @@ Task and Type Reference
   \[{T}\] {{{${project.url}/apidocs/org/jomc/ant/MergeModulesTask.html}<<<merge-modules>>> task.}}
 
   \[{U}\] {{{${project.url}/apidocs/org/jomc/ant/WriteModelTask.html}<<<write-model>>> task.}}
-
-  \[{V}\] {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/SourceFileProcessor.html#getDefaultSourceFileNameExtension()}Default source file name extension.}}

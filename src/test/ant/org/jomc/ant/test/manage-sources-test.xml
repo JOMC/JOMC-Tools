@@ -181,8 +181,7 @@
                          platformProviderLocation="TEST"
                          if="${jomc.enabled}"
                          sourceFileProcessorClass="org.jomc.tools.SourceFileProcessor"
-                         templateLocation="${empty.dir}"
-                         defaultSourceFileNameExtension="java">
+                         templateLocation="${empty.dir}">
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>
       </jomc:classpath>

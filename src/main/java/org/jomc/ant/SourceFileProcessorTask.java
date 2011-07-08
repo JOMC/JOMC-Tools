@@ -51,9 +51,6 @@ public class SourceFileProcessorTask extends JomcToolTask
     /** Class of the {@code SourceFileProcessor} backing the task. */
     private Class<? extends SourceFileProcessor> sourceFileProcessorClass;
 
-    /** Default source file name extension. */
-    private String defaultSourceFileNameExtension;
-
     /** Creates a new {@code SourceFileProcessorTask} instance. */
     public SourceFileProcessorTask()
     {
@@ -115,26 +112,6 @@ public class SourceFileProcessorTask extends JomcToolTask
     }
 
     /**
-     * Gets the default source file name extension of the instance.
-     *
-     * @return The default source file name extension of the instance or {@code null}.
-     */
-    public final String getDefaultSourceFileNameExtension()
-    {
-        return this.defaultSourceFileNameExtension;
-    }
-
-    /**
-     * Sets the default source file name extension of the instance.
-     *
-     * @param value The new default source file name extension of the instance or {@code null}.
-     */
-    public final void setDefaultSourceFileNameExtension( final String value )
-    {
-        this.defaultSourceFileNameExtension = value;
-    }
-
-    /**
      * Creates a new {@code SourceFileProcessor} instance setup using the properties of the instance.
      *
      * @return A new {@code SourceFileProcessor} instance.
@@ -180,11 +157,6 @@ public class SourceFileProcessorTask extends JomcToolTask
         }
 
         this.configureJomcTool( sourceFileProcessor );
-
-        if ( this.getDefaultSourceFileNameExtension() != null )
-        {
-            sourceFileProcessor.setDefaultSourceFileNameExtension( this.getDefaultSourceFileNameExtension() );
-        }
     }
 
     /**
