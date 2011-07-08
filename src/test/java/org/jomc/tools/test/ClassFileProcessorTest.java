@@ -43,8 +43,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Transformer;
@@ -65,6 +63,7 @@ import org.jomc.model.Multiplicity;
 import org.jomc.model.Property;
 import org.jomc.model.Specification;
 import org.jomc.model.modlet.ModelHelper;
+import org.jomc.model.modlet.DefaultModelProvider;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelException;
@@ -84,9 +83,6 @@ import static org.junit.Assert.fail;
  */
 public class ClassFileProcessorTest extends JomcToolTest
 {
-
-    /** Constant to prefix relative resource names with. */
-    private static final String ABSOLUTE_RESOURCE_NAME_PREFIX = "/org/jomc/tools/test/";
 
     /** Creates a new {@code ClassFileProcessorTest} instance. */
     public ClassFileProcessorTest()
@@ -114,36 +110,38 @@ public class ClassFileProcessorTest extends JomcToolTest
     {
         try
         {
-            final Unmarshaller u = this.getModelContext().createUnmarshaller( ModelObject.MODEL_PUBLIC_ID );
-            u.setSchema( this.getModelContext().createSchema( ModelObject.MODEL_PUBLIC_ID ) );
+            DefaultModelProvider.setDefaultModuleLocation( this.getClass().getPackage().getName().replace( '.', '/' )
+                                                           + "/jomc-tools.xml" );
 
-            final JAXBElement<Module> m = (JAXBElement<Module>) u.unmarshal( this.getClass().getResource(
-                ABSOLUTE_RESOURCE_NAME_PREFIX + "jomc-tools.xml" ) );
+            Model m = this.getModelContext().findModel( ModelObject.MODEL_PUBLIC_ID );
 
-            final Modules modules = new Modules();
-            modules.getModule().add( m.getValue() );
-
-            final Module cp = modules.getClasspathModule(
-                Modules.getDefaultClasspathModuleName(), this.getClass().getClassLoader() );
-
-            if ( cp != null )
+            if ( m != null )
             {
-                modules.getModule().add( cp );
+                final Modules modules = ModelHelper.getModules( m );
+
+                if ( modules != null )
+                {
+                    final Module cp = modules.getClasspathModule( Modules.getDefaultClasspathModuleName(),
+                                                                  this.getClass().getClassLoader() );
+
+                    if ( cp != null )
+                    {
+                        modules.getModule().add( cp );
+                    }
+                }
+
+                m = this.getModelContext().processModel( m );
             }
 
-            final Model model = new Model();
-            model.setIdentifier( ModelObject.MODEL_PUBLIC_ID );
-            ModelHelper.setModules( model, modules );
-
-            return model;
-        }
-        catch ( final JAXBException e )
-        {
-            throw new AssertionError( e );
+            return m;
         }
         catch ( final ModelException e )
         {
             throw new AssertionError( e );
+        }
+        finally
+        {
+            DefaultModelProvider.setDefaultModuleLocation( null );
         }
     }
 

@@ -35,7 +35,6 @@ package org.jomc.tools;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.lang.reflect.Field;
 import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,14 +45,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.exception.VelocityException;
-import org.jomc.model.Dependencies;
 import org.jomc.model.Implementation;
 import org.jomc.model.Implementations;
-import org.jomc.model.Messages;
 import org.jomc.model.Module;
-import org.jomc.model.Properties;
 import org.jomc.model.Specification;
-import org.jomc.model.Specifications;
 import org.jomc.tools.model.SourceFileType;
 import org.jomc.tools.model.SourceFilesType;
 import org.jomc.tools.model.SourceSectionType;
@@ -79,81 +74,12 @@ import org.jomc.util.TrailingWhitespaceEditor;
 public class SourceFileProcessor extends JomcTool
 {
 
-    /** Constant for the name of the constructors source code section. */
-    private static final String CONSTRUCTORS_SECTION_NAME = "Constructors";
-
-    /** Constant for the name of the default constructor source code section. */
-    private static final String DEFAULT_CONSTRUCTOR_SECTION_NAME = "Default Constructor";
-
-    /** Constant for the name of the dependencies source code section. */
-    private static final String DEPENDENCIES_SECTION_NAME = "Dependencies";
-
-    /** Constant for the name of the properties source code section. */
-    private static final String PROPERTIES_SECTION_NAME = "Properties";
-
-    /** Constant for the name of the messages source code section. */
-    private static final String MESSAGES_SECTION_NAME = "Messages";
-
-    /** Constant for the name of the license source code section. */
-    private static final String LICENSE_SECTION_NAME = "License Header";
-
-    /** Constant for the name of the documentation source code section. */
-    private static final String DOCUMENTATION_SECTION_NAME = "Documentation";
-
-    /** Constant for the name of the implementation annotations source code section. */
-    private static final String ANNOTATIONS_SECTION_NAME = "Annotations";
-
-    /** Name of the {@code implementation-constructors-head.vm} template. */
-    private static final String CONSTRUCTORS_HEAD_TEMPLATE = "implementation-constructors-head.vm";
-
-    /** Name of the {@code implementation-constructors-tail.vm} template. */
-    private static final String CONSTRUCTORS_TAIL_TEMPLATE = "implementation-constructors-tail.vm";
-
-    /** Name of the {@code implementation-default-constructor.vm} template. */
-    private static final String DEFAULT_CONSTRUCTOR_TEMPLATE = "implementation-default-constructor.vm";
-
-    /** Name of the {@code implementation-dependencies.vm} template. */
-    private static final String DEPENDENCIES_TEMPLATE = "implementation-dependencies.vm";
-
-    /** Name of the {@code implementation-properties.vm} template. */
-    private static final String PROPERTIES_TEMPLATE = "implementation-properties.vm";
-
-    /** Name of the {@code implementation-messages.vm} template. */
-    private static final String MESSAGES_TEMPLATE = "implementation-messages.vm";
-
-    /** Name of the {@code specification-license.vm} template. */
-    private static final String SPECIFICATION_LICENSE_TEMPLATE = "specification-license.vm";
-
-    /** Name of the {@code implementation-license.vm} template. */
-    private static final String IMPLEMENTATION_LICENSE_TEMPLATE = "implementation-license.vm";
-
-    /** Name of the {@code specification-documentation.vm} template. */
-    private static final String SPECIFICATION_DOCUMENTATION_TEMPLATE = "specification-documentation.vm";
-
-    /** Name of the {@code implementation-documentation.vm} template. */
-    private static final String IMPLEMENTATION_DOCUMENTATION_TEMPLATE = "implementation-documentation.vm";
-
-    /** Name of the {@code Implementation.java.vm} template. */
-    private static final String IMPLEMENTATION_TEMPLATE = "Implementation.java.vm";
-
-    /** Name of the {@code Specification.java.vm} template. */
-    private static final String SPECIFICATION_TEMPLATE = "Specification.java.vm";
-
-    /** Name of the {@code specification-annotations.vm} template. */
-    private static final String SPECIFICATION_ANNOTATIONS_TEMPLATE = "specification-annotations.vm";
-
-    /** Name of the {@code implementation-annotations.vm} template. */
-    private static final String IMPLEMENTATION_ANNOTATIONS_TEMPLATE = "implementation-annotations.vm";
+    /** The source file editor of the instance. */
+    private SourceFileEditor sourceFileEditor;
 
     /** Source files model. */
     @Deprecated
     private SourceFilesType sourceFilesType;
-
-    /**
-     * The default source file name extension of the instance.
-     * @since 1.2
-     */
-    private String defaultSourceFileNameExtension;
 
     /** Creates a new {@code SourceFileProcessor} instance. */
     public SourceFileProcessor()
@@ -174,41 +100,7 @@ public class SourceFileProcessor extends JomcTool
     {
         super( tool );
         this.sourceFilesType = tool.sourceFilesType != null ? new SourceFilesType( tool.sourceFilesType ) : null;
-        this.defaultSourceFileNameExtension = tool.defaultSourceFileNameExtension;
-    }
-
-    /**
-     * Gets the default source file name extension of the instance.
-     *
-     * @return The default source file name extension of the instance or {@code java}, if no value has been set.
-     *
-     * @see SourceFileType#getLocation()
-     * @see #setDefaultSourceFileNameExtension(java.lang.String)
-     *
-     * @since 1.2
-     */
-    public final String getDefaultSourceFileNameExtension()
-    {
-        if ( this.defaultSourceFileNameExtension == null )
-        {
-            this.defaultSourceFileNameExtension = "java";
-        }
-
-        return this.defaultSourceFileNameExtension;
-    }
-
-    /**
-     * Sets the default source file name extension of the instance.
-     *
-     * @param value The new default source file name extension of the instance or {@code null}.
-     *
-     * @see #getDefaultSourceFileNameExtension()
-     *
-     * @since 1.2
-     */
-    public final void setDefaultSourceFileNameExtension( final String value )
-    {
-        this.defaultSourceFileNameExtension = value;
+        this.sourceFileEditor = tool.sourceFileEditor;
     }
 
     /**
@@ -240,7 +132,8 @@ public class SourceFileProcessor extends JomcTool
      *
      * @param specification The specification to get a source file model for.
      *
-     * @return The source file model for {@code specification}.
+     * @return The source file model for {@code specification}. As of JOMC 1.2, this method returns {@code null} if no
+     * source file model is found.
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
      *
@@ -263,58 +156,6 @@ public class SourceFileProcessor extends JomcTool
         if ( sourceFileType == null )
         {
             sourceFileType = specification.getAnyObject( SourceFileType.class );
-
-            if ( sourceFileType != null )
-            {
-                if ( sourceFileType.getLocation() == null )
-                {
-                    // As of version 1.2, the 'location' attribute got updated from 'required' to 'optional'.
-                    sourceFileType.setLocation( this.getDefaultSourceFileLocation( specification ) );
-                }
-
-                if ( sourceFileType.getHeadComment() == null )
-                {
-                    // The 'head-comment' and 'tail-comment' attributes got introduced in version 1.2.
-                    sourceFileType.setHeadComment( "//" );
-                }
-            }
-        }
-
-        if ( sourceFileType == null )
-        {
-            sourceFileType = new SourceFileType();
-            sourceFileType.setIdentifier( specification.getIdentifier() );
-            sourceFileType.setLocation( this.getDefaultSourceFileLocation( specification ) );
-            sourceFileType.setTemplate( SPECIFICATION_TEMPLATE );
-            sourceFileType.setHeadComment( "//" );
-            sourceFileType.setSourceSections( new SourceSectionsType() );
-
-            SourceSectionType s = new SourceSectionType();
-            s.setName( LICENSE_SECTION_NAME );
-            s.setHeadTemplate( SPECIFICATION_LICENSE_TEMPLATE );
-            s.setOptional( true );
-            sourceFileType.getSourceSections().getSourceSection().add( s );
-
-            s = new SourceSectionType();
-            s.setName( ANNOTATIONS_SECTION_NAME );
-            s.setHeadTemplate( SPECIFICATION_ANNOTATIONS_TEMPLATE );
-            sourceFileType.getSourceSections().getSourceSection().add( s );
-
-            s = new SourceSectionType();
-            s.setName( DOCUMENTATION_SECTION_NAME );
-            s.setHeadTemplate( SPECIFICATION_DOCUMENTATION_TEMPLATE );
-            s.setOptional( true );
-            sourceFileType.getSourceSections().getSourceSection().add( s );
-
-            final String javaTypeName = this.getJavaTypeName( specification, false );
-            if ( javaTypeName != null )
-            {
-                s = new SourceSectionType();
-                s.setName( javaTypeName );
-                s.setIndentationLevel( 1 );
-                s.setEditable( true );
-                sourceFileType.getSourceSections().getSourceSection().add( s );
-            }
         }
 
         return sourceFileType;
@@ -325,7 +166,7 @@ public class SourceFileProcessor extends JomcTool
      *
      * @param specification The specification to get a source files model for.
      *
-     * @return The source files model for {@code specification}.
+     * @return The source files model for {@code specification} or {@code null} if no source files model is found.
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
      *
@@ -341,16 +182,17 @@ public class SourceFileProcessor extends JomcTool
         assert this.getModules().getSpecification( specification.getIdentifier() ) != null :
             "Specification '" + specification.getIdentifier() + "' not found.";
 
-        SourceFilesType model = specification.getAnyObject( SourceFilesType.class );
+        SourceFilesType model = null;
+        final SourceFileType sourceFileType = this.getSourceFileType( specification );
 
-        if ( model == null )
+        if ( sourceFileType != null )
         {
             model = new SourceFilesType();
-            model.getSourceFile().add( this.getSourceFileType( specification ) );
+            model.getSourceFile().add( sourceFileType );
         }
         else
         {
-            model = this.applyDefaults( specification, model );
+            model = specification.getAnyObject( SourceFilesType.class );
         }
 
         return model;
@@ -361,7 +203,8 @@ public class SourceFileProcessor extends JomcTool
      *
      * @param implementation The implementation to get a source file model for.
      *
-     * @return The source file model for {@code implementation}.
+     * @return The source file model for {@code implementation}. As of JOMC 1.2, this method returns {@code null} if no
+     * source file model is found.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      *
@@ -384,112 +227,6 @@ public class SourceFileProcessor extends JomcTool
         if ( sourceFileType == null )
         {
             sourceFileType = implementation.getAnyObject( SourceFileType.class );
-
-            if ( sourceFileType != null )
-            {
-                if ( sourceFileType.getLocation() == null )
-                {
-                    // As of version 1.2, the 'location' attribute got updated from 'required' to 'optional'.
-                    sourceFileType.setLocation( this.getDefaultSourceFileLocation( implementation ) );
-                }
-
-                if ( sourceFileType.getHeadComment() == null )
-                {
-                    // The 'head-comment' and 'tail-comment' attributes got introduced in version 1.2.
-                    sourceFileType.setHeadComment( "//" );
-                }
-            }
-        }
-
-        if ( sourceFileType == null )
-        {
-            final Specifications specifications = this.getModules().getSpecifications( implementation.getIdentifier() );
-            final Dependencies dependencies = this.getModules().getDependencies( implementation.getIdentifier() );
-            final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
-            final Properties properties = this.getModules().getProperties( implementation.getIdentifier() );
-
-            sourceFileType = new SourceFileType();
-            sourceFileType.setIdentifier( implementation.getIdentifier() );
-            sourceFileType.setLocation( this.getDefaultSourceFileLocation( implementation ) );
-            sourceFileType.setTemplate( IMPLEMENTATION_TEMPLATE );
-            sourceFileType.setHeadComment( "//" );
-            sourceFileType.setSourceSections( new SourceSectionsType() );
-
-            SourceSectionType s = new SourceSectionType();
-            s.setName( LICENSE_SECTION_NAME );
-            s.setHeadTemplate( IMPLEMENTATION_LICENSE_TEMPLATE );
-            s.setOptional( true );
-            sourceFileType.getSourceSections().getSourceSection().add( s );
-
-            s = new SourceSectionType();
-            s.setName( ANNOTATIONS_SECTION_NAME );
-            s.setHeadTemplate( IMPLEMENTATION_ANNOTATIONS_TEMPLATE );
-            sourceFileType.getSourceSections().getSourceSection().add( s );
-
-            s = new SourceSectionType();
-            s.setName( DOCUMENTATION_SECTION_NAME );
-            s.setHeadTemplate( IMPLEMENTATION_DOCUMENTATION_TEMPLATE );
-            s.setOptional( true );
-            sourceFileType.getSourceSections().getSourceSection().add( s );
-
-            final List<String> implementedJavaTypeNames = this.getImplementedJavaTypeNames( implementation, false );
-            for ( int i = 0, s0 = implementedJavaTypeNames.size(); i < s0; i++ )
-            {
-                s = new SourceSectionType();
-                s.setName( implementedJavaTypeNames.get( i ) );
-                s.setIndentationLevel( 1 );
-                s.setEditable( true );
-                sourceFileType.getSourceSections().getSourceSection().add( s );
-            }
-
-            final String javaTypeName = this.getJavaTypeName( implementation, false );
-            if ( javaTypeName != null )
-            {
-                s = new SourceSectionType();
-                s.setName( javaTypeName );
-                s.setIndentationLevel( 1 );
-                s.setEditable( true );
-                sourceFileType.getSourceSections().getSourceSection().add( s );
-            }
-
-            s = new SourceSectionType();
-            s.setName( CONSTRUCTORS_SECTION_NAME );
-            s.setIndentationLevel( 1 );
-            s.setHeadTemplate( CONSTRUCTORS_HEAD_TEMPLATE );
-            s.setTailTemplate( CONSTRUCTORS_TAIL_TEMPLATE );
-            s.setOptional( specifications == null || ( specifications.getSpecification().isEmpty()
-                                                       && specifications.getReference().isEmpty() ) );
-
-            s.setSourceSections( new SourceSectionsType() );
-            sourceFileType.getSourceSections().getSourceSection().add( s );
-
-            final SourceSectionType defaultCtor = new SourceSectionType();
-            defaultCtor.setName( DEFAULT_CONSTRUCTOR_SECTION_NAME );
-            defaultCtor.setIndentationLevel( 2 );
-            defaultCtor.setHeadTemplate( DEFAULT_CONSTRUCTOR_TEMPLATE );
-            defaultCtor.setEditable( true );
-            s.getSourceSections().getSourceSection().add( defaultCtor );
-
-            s = new SourceSectionType();
-            s.setName( DEPENDENCIES_SECTION_NAME );
-            s.setIndentationLevel( 1 );
-            s.setHeadTemplate( DEPENDENCIES_TEMPLATE );
-            s.setOptional( dependencies == null || dependencies.getDependency().isEmpty() );
-            sourceFileType.getSourceSections().getSourceSection().add( s );
-
-            s = new SourceSectionType();
-            s.setName( PROPERTIES_SECTION_NAME );
-            s.setIndentationLevel( 1 );
-            s.setHeadTemplate( PROPERTIES_TEMPLATE );
-            s.setOptional( properties == null || properties.getProperty().isEmpty() );
-            sourceFileType.getSourceSections().getSourceSection().add( s );
-
-            s = new SourceSectionType();
-            s.setName( MESSAGES_SECTION_NAME );
-            s.setIndentationLevel( 1 );
-            s.setHeadTemplate( MESSAGES_TEMPLATE );
-            s.setOptional( messages == null || messages.getMessage().isEmpty() );
-            sourceFileType.getSourceSections().getSourceSection().add( s );
         }
 
         return sourceFileType;
@@ -500,7 +237,7 @@ public class SourceFileProcessor extends JomcTool
      *
      * @param implementation The implementation to get a source files model for.
      *
-     * @return The source files model for {@code implementation}.
+     * @return The source files model for {@code implementation} or {@code null} if no source files model is found.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      *
@@ -516,31 +253,55 @@ public class SourceFileProcessor extends JomcTool
         assert this.getModules().getImplementation( implementation.getIdentifier() ) != null :
             "Implementation '" + implementation.getIdentifier() + "' not found.";
 
-        SourceFilesType model = implementation.getAnyObject( SourceFilesType.class );
+        SourceFilesType model = null;
+        SourceFileType sourceFileType = this.getSourceFileType( implementation );
 
-        if ( model == null )
+        if ( sourceFileType != null )
         {
             model = new SourceFilesType();
-            model.getSourceFile().add( this.getSourceFileType( implementation ) );
+            model.getSourceFile().add( sourceFileType );
         }
         else
         {
-            model = this.applyDefaults( implementation, model );
+            model = implementation.getAnyObject( SourceFilesType.class );
         }
 
         return model;
     }
 
     /**
-     * Gets a new editor for editing source code files.
+     * Gets the source file editor of the instance.
      *
-     * @return A new editor for editing source code files.
+     * @return The source file editor of the instance.
      *
      * @since 1.2
+     *
+     * @see #setSourceFileEditor(org.jomc.tools.SourceFileProcessor.SourceFileEditor)
      */
-    public SourceFileEditor getSourceFileEditor()
+    public final SourceFileEditor getSourceFileEditor()
     {
-        return new SourceFileEditor( new TrailingWhitespaceEditor( this.getLineSeparator() ), this.getLineSeparator() );
+        if ( this.sourceFileEditor == null )
+        {
+            this.sourceFileEditor = new SourceFileEditor( new TrailingWhitespaceEditor( this.getLineSeparator() ),
+                                                          this.getLineSeparator() );
+
+        }
+
+        return this.sourceFileEditor;
+    }
+
+    /**
+     * Sets the source file editor of the instance.
+     *
+     * @param value The new source file editor of the instance or {@code null}.
+     *
+     * @since 1.2
+     *
+     * @see #getSourceFileEditor()
+     */
+    public final void setSourceFileEditor( final SourceFileEditor value )
+    {
+        this.sourceFileEditor = value;
     }
 
     /**
@@ -760,376 +521,6 @@ public class SourceFileProcessor extends JomcTool
                     editor.edit( implementation, model.getSourceFile().get( i ), sourcesDirectory );
                 }
             }
-        }
-    }
-
-    /**
-     * Updates any optional attributes to default values.
-     *
-     * @param specification The specification corresponding to {@code sourceFilesType}.
-     * @param sourceFilesType The model to update.
-     *
-     * @return A copy of {@code sourceFilesType} with optional attributes updated to default values.
-     */
-    private SourceFilesType applyDefaults( final Specification specification, final SourceFilesType sourceFilesType )
-    {
-        final SourceFilesType types = new SourceFilesType( sourceFilesType );
-
-        for ( int i = 0, s0 = types.getSourceFile().size(); i < s0; i++ )
-        {
-            final SourceFileType s = types.getSourceFile().get( i );
-
-            if ( s.getTemplate() == null )
-            {
-                s.setTemplate( SPECIFICATION_TEMPLATE );
-            }
-            if ( s.getLocation() == null )
-            {
-                s.setLocation( this.getDefaultSourceFileLocation( specification ) );
-            }
-            if ( s.getHeadComment() == null )
-            {
-                s.setHeadComment( "//" );
-            }
-
-            this.applyDefaults( specification, s.getSourceSections() );
-        }
-
-        return types;
-    }
-
-    /**
-     * Updates any optional attributes to default values.
-     *
-     * @param specification The specification corresponding to {@code sourceSectionsType}.
-     * @param sourceSectionsType The model to update or {@code null}.
-     */
-    private void applyDefaults( final Specification specification, final SourceSectionsType sourceSectionsType )
-    {
-        try
-        {
-            if ( sourceSectionsType != null )
-            {
-                for ( int i = 0, s0 = sourceSectionsType.getSourceSection().size(); i < s0; i++ )
-                {
-                    final SourceSectionType s = sourceSectionsType.getSourceSection().get( i );
-
-                    if ( LICENSE_SECTION_NAME.equals( s.getName() ) )
-                    {
-                        if ( !isFieldSet( s, "optional" ) )
-                        {
-                            s.setOptional( true );
-                        }
-                        if ( s.getHeadTemplate() == null )
-                        {
-                            s.setHeadTemplate( SPECIFICATION_LICENSE_TEMPLATE );
-                        }
-                    }
-
-                    if ( ANNOTATIONS_SECTION_NAME.equals( s.getName() ) )
-                    {
-                        if ( s.getHeadTemplate() == null )
-                        {
-                            s.setHeadTemplate( SPECIFICATION_ANNOTATIONS_TEMPLATE );
-                        }
-                    }
-
-                    if ( DOCUMENTATION_SECTION_NAME.equals( s.getName() ) )
-                    {
-                        if ( !isFieldSet( s, "optional" ) )
-                        {
-                            s.setOptional( true );
-                        }
-                        if ( s.getHeadTemplate() == null )
-                        {
-                            s.setHeadTemplate( SPECIFICATION_DOCUMENTATION_TEMPLATE );
-                        }
-                    }
-
-                    final String javaTypeName = this.getJavaTypeName( specification, false );
-                    if ( javaTypeName != null )
-                    {
-                        if ( javaTypeName.equals( s.getName() ) )
-                        {
-                            if ( !isFieldSet( s, "editable" ) )
-                            {
-                                s.setEditable( true );
-                            }
-                            if ( !isFieldSet( s, "indentationLevel" ) )
-                            {
-                                s.setIndentationLevel( 1 );
-                            }
-                        }
-                    }
-
-                    this.applyDefaults( specification, s.getSourceSections() );
-                }
-            }
-        }
-        catch ( final NoSuchFieldException e )
-        {
-            throw new AssertionError( e );
-        }
-    }
-
-    /**
-     * Updates any optional attributes to default values.
-     *
-     * @param implementation The implementation corresponding to {@code sourceFilesType}.
-     * @param sourceFilesType The model to update.
-     *
-     * @return A copy of {@code sourceFilesType} with optional attributes updated to default values.
-     */
-    private SourceFilesType applyDefaults( final Implementation implementation, final SourceFilesType sourceFilesType )
-    {
-        final SourceFilesType types = new SourceFilesType( sourceFilesType );
-
-        for ( int i = 0, s0 = types.getSourceFile().size(); i < s0; i++ )
-        {
-            final SourceFileType s = types.getSourceFile().get( i );
-
-            if ( s.getTemplate() == null )
-            {
-                s.setTemplate( IMPLEMENTATION_TEMPLATE );
-            }
-            if ( s.getLocation() == null )
-            {
-                s.setLocation( this.getDefaultSourceFileLocation( implementation ) );
-            }
-            if ( s.getHeadComment() == null )
-            {
-                s.setHeadComment( "//" );
-            }
-
-            this.applyDefaults( implementation, s.getSourceSections() );
-        }
-
-        return types;
-    }
-
-    /**
-     * Updates any optional attributes to default values.
-     *
-     * @param implementation The implementation corresponding to {@code sourceSectionsType}.
-     * @param sourceSectionsType The model to update or {@code null}.
-     */
-    private void applyDefaults( final Implementation implementation, final SourceSectionsType sourceSectionsType )
-    {
-        try
-        {
-            if ( sourceSectionsType != null )
-            {
-                for ( int i = 0, s0 = sourceSectionsType.getSourceSection().size(); i < s0; i++ )
-                {
-                    final SourceSectionType s = sourceSectionsType.getSourceSection().get( i );
-
-                    if ( LICENSE_SECTION_NAME.equals( s.getName() ) )
-                    {
-                        if ( !isFieldSet( s, "optional" ) )
-                        {
-                            s.setOptional( true );
-                        }
-                        if ( s.getHeadTemplate() == null )
-                        {
-                            s.setHeadTemplate( IMPLEMENTATION_LICENSE_TEMPLATE );
-                        }
-                    }
-
-                    if ( ANNOTATIONS_SECTION_NAME.equals( s.getName() ) )
-                    {
-                        if ( s.getHeadTemplate() == null )
-                        {
-                            s.setHeadTemplate( IMPLEMENTATION_ANNOTATIONS_TEMPLATE );
-                        }
-                    }
-
-                    if ( DOCUMENTATION_SECTION_NAME.equals( s.getName() ) )
-                    {
-                        if ( !isFieldSet( s, "optional" ) )
-                        {
-                            s.setOptional( true );
-                        }
-                        if ( s.getHeadTemplate() == null )
-                        {
-                            s.setHeadTemplate( IMPLEMENTATION_DOCUMENTATION_TEMPLATE );
-                        }
-                    }
-
-                    if ( CONSTRUCTORS_SECTION_NAME.equals( s.getName() ) )
-                    {
-                        if ( !isFieldSet( s, "indentationLevel" ) )
-                        {
-                            s.setIndentationLevel( 1 );
-                        }
-                        if ( s.getHeadTemplate() == null )
-                        {
-                            s.setHeadTemplate( CONSTRUCTORS_HEAD_TEMPLATE );
-                        }
-                        if ( s.getTailTemplate() == null )
-                        {
-                            s.setTailTemplate( CONSTRUCTORS_TAIL_TEMPLATE );
-                        }
-                        if ( !isFieldSet( s, "optional" ) )
-                        {
-                            final Specifications specifications =
-                                this.getModules().getSpecifications( implementation.getIdentifier() );
-
-                            s.setOptional( specifications == null || ( specifications.getSpecification().isEmpty()
-                                                                       && specifications.getReference().isEmpty() ) );
-
-                        }
-                    }
-
-                    if ( DEFAULT_CONSTRUCTOR_SECTION_NAME.equals( s.getName() ) )
-                    {
-                        if ( !isFieldSet( s, "editable" ) )
-                        {
-                            s.setEditable( true );
-                        }
-                        if ( !isFieldSet( s, "indentationLevel" ) )
-                        {
-                            s.setIndentationLevel( 2 );
-                        }
-                        if ( s.getHeadTemplate() == null )
-                        {
-                            s.setHeadTemplate( DEFAULT_CONSTRUCTOR_TEMPLATE );
-                        }
-                    }
-
-                    if ( DEPENDENCIES_SECTION_NAME.equals( s.getName() ) )
-                    {
-                        if ( !isFieldSet( s, "optional" ) )
-                        {
-                            final Dependencies dependencies =
-                                this.getModules().getDependencies( implementation.getIdentifier() );
-
-                            s.setOptional( dependencies == null || dependencies.getDependency().isEmpty() );
-                        }
-                        if ( !isFieldSet( s, "indentationLevel" ) )
-                        {
-                            s.setIndentationLevel( 1 );
-                        }
-                        if ( s.getHeadTemplate() == null )
-                        {
-                            s.setHeadTemplate( DEPENDENCIES_TEMPLATE );
-                        }
-                    }
-
-                    if ( PROPERTIES_SECTION_NAME.equals( s.getName() ) )
-                    {
-                        if ( !isFieldSet( s, "optional" ) )
-                        {
-                            final Properties properties =
-                                this.getModules().getProperties( implementation.getIdentifier() );
-
-                            s.setOptional( properties == null || properties.getProperty().isEmpty() );
-                        }
-                        if ( !isFieldSet( s, "indentationLevel" ) )
-                        {
-                            s.setIndentationLevel( 1 );
-                        }
-                        if ( s.getHeadTemplate() == null )
-                        {
-                            s.setHeadTemplate( PROPERTIES_TEMPLATE );
-                        }
-                    }
-
-                    if ( MESSAGES_SECTION_NAME.equals( s.getName() ) )
-                    {
-                        if ( !isFieldSet( s, "optional" ) )
-                        {
-                            final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
-                            s.setOptional( messages == null || messages.getMessage().isEmpty() );
-                        }
-                        if ( !isFieldSet( s, "indentationLevel" ) )
-                        {
-                            s.setIndentationLevel( 1 );
-                        }
-                        if ( s.getHeadTemplate() == null )
-                        {
-                            s.setHeadTemplate( MESSAGES_TEMPLATE );
-                        }
-                    }
-
-                    final List<String> implementedJavaTypeNames =
-                        this.getImplementedJavaTypeNames( implementation, false );
-
-                    for ( int j = 0, s1 = implementedJavaTypeNames.size(); j < s1; j++ )
-                    {
-                        final String interfaceName = implementedJavaTypeNames.get( j );
-
-                        if ( interfaceName.equals( s.getName() ) )
-                        {
-                            if ( !isFieldSet( s, "editable" ) )
-                            {
-                                s.setEditable( true );
-                            }
-                            if ( !isFieldSet( s, "indentationLevel" ) )
-                            {
-                                s.setIndentationLevel( 1 );
-                            }
-                        }
-                    }
-
-                    final String javaTypeName = this.getJavaTypeName( implementation, false );
-                    if ( javaTypeName != null )
-                    {
-                        if ( javaTypeName.equals( s.getName() ) )
-                        {
-                            if ( !isFieldSet( s, "editable" ) )
-                            {
-                                s.setEditable( true );
-                            }
-                            if ( !isFieldSet( s, "indentationLevel" ) )
-                            {
-                                s.setIndentationLevel( 1 );
-                            }
-                        }
-                    }
-
-                    this.applyDefaults( implementation, s.getSourceSections() );
-                }
-            }
-        }
-        catch ( final NoSuchFieldException e )
-        {
-            throw new AssertionError( e );
-        }
-    }
-
-    private String getDefaultSourceFileLocation( final Specification spec )
-    {
-        return new StringBuilder( spec.getClazz().length() + this.getDefaultSourceFileNameExtension().length() ).
-            append( spec.getClazz().replace( '.', '/' ) ).append( '.' ).
-            append( this.getDefaultSourceFileNameExtension() ).toString();
-
-    }
-
-    private String getDefaultSourceFileLocation( final Implementation impl )
-    {
-        return new StringBuilder( impl.getClazz().length() + this.getDefaultSourceFileNameExtension().length() ).
-            append( impl.getClazz().replace( '.', '/' ) ).append( '.' ).
-            append( this.getDefaultSourceFileNameExtension() ).toString();
-
-    }
-
-    private static boolean isFieldSet( final Object object, final String fieldName ) throws NoSuchFieldException
-    {
-        final Field field = object.getClass().getDeclaredField( fieldName );
-        final boolean accessible = field.isAccessible();
-
-        try
-        {
-            field.setAccessible( true );
-            return field.get( object ) != null;
-        }
-        catch ( final IllegalAccessException e )
-        {
-            throw new AssertionError( e );
-        }
-        finally
-        {
-            field.setAccessible( accessible );
         }
     }
 

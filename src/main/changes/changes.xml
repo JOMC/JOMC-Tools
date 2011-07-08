@@ -85,8 +85,9 @@
       <code>org.jomc.tools.JomcTool</code> and updated templates to use the value of that property when producing
       documentation.]]>
       </action>
-      <action dev="schulte2005" type="add"><![CDATA[Added property <code>defaultSourceFileNameExtension</code> to class
-      <code>org.jomc.tools.SourceFileProcessor</code>.]]>
+      <action dev="schulte2005" type="add"><![CDATA[Added classes <code>org.jomc.tools.modlet.ToolsModelProvider</code>,
+      <code>org.jomc.tools.modlet.ToolsModelProcessor</code> and <code>org.jomc.tools.modlet.ToolsModelValidator</code>.
+      ]]>
       </action>
       <action dev="schulte2005" type="fix"><![CDATA[Corrected method <code>getModules</code> of class
       <code>org.jomc.tools.JomcTool</code> to initialize the modules of the instance if the model of the instance does
@@ -123,6 +124,9 @@
       <action dev="schulte2005" type="update"><![CDATA[Updated method <code>getResourceBundleDefaultLocale</code> of
       class <code>org.jomc.tools.ResourceBundleDefaultLocale</code> to default to the english locale, rather than to the
       system's default locale.]]>
+      </action>
+      <action dev="schulte2005" type="update"><![CDATA[Updated <code>getSourceFileType</code> methods of class
+      <code>org.jomc.tools.SourceFileProcessor</code> to no longer create default source file models.]]>
       </action>
       <action dev="schulte2005" type="remove"><![CDATA[Removed <code>abstract</code> modifier of method
       <code>onLog</code> of class <code>org.jomc.tools.JomcTool.Listener</code>.]]>

@@ -219,37 +219,15 @@ public class SourceFileProcessorTest extends JomcToolTest
     }
 
     @Test
-    @SuppressWarnings( "deprecation" )
     public final void testSourceFileProcessorNotNull() throws Exception
     {
-        final Implementation i = new Implementation();
-        i.setIdentifier( "TEST" );
-        i.setClazz( "TEST" );
-
-        final Specification s = new Specification();
-        s.setIdentifier( "TEST" );
-        s.setClazz( "TEST" );
-
-        assertNotNull( this.getJomcTool().getSourceFileType(
-            this.getJomcTool().getModules().getImplementation( "Implementation" ) ) );
-
         assertNotNull( this.getJomcTool().getSourceFilesType(
             this.getJomcTool().getModules().getImplementation( "Implementation" ) ) );
-
-        assertNotNull( this.getJomcTool().getSourceFileType(
-            this.getJomcTool().getModules().getSpecification( "Specification" ) ) );
 
         assertNotNull( this.getJomcTool().getSourceFilesType(
             this.getJomcTool().getModules().getSpecification( "Specification" ) ) );
 
         assertNotNull( this.getJomcTool().getSourceFileEditor() );
-
-        assertNotNull( this.getJomcTool().getSourceFileEditor(
-            this.getJomcTool().getModules().getImplementation( "Implementation" ) ) );
-
-        assertNotNull( this.getJomcTool().getSourceFileEditor(
-            this.getJomcTool().getModules().getSpecification( "Specification" ) ) );
-
     }
 
     @Test
