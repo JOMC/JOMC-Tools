@@ -308,7 +308,7 @@ public class ToolsModelValidatorTest
         assertModelValidationReportDetail( report, "IMPLEMENTATION_SOURCE_FILES_MULTIPLICITY_CONSTRAINT", 1 );
         assertModelValidationReportDetail( report, "IMPLEMENTATION_SOURCE_SECTION_CONSTRAINT", 6 );
         assertModelValidationReportDetail( report, "IMPLEMENTATION_SOURCE_SECTIONS_CONSTRAINT", 1 );
-        assertModelValidationReportDetail( report, "IMPLEMENTATION_SOURCE_FILE_DEPRECATION", 1 );
+        assertModelValidationReportDetail( report, "IMPLEMENTATION_SOURCE_FILE_INFORMATION", 1 );
         assertModelValidationReportDetail( report, "IMPLEMENTATION_DEPENDENCY_SOURCE_FILE_CONSTRAINT", 6 );
         assertModelValidationReportDetail( report, "IMPLEMENTATION_DEPENDENCY_SOURCE_FILES_CONSTRAINT", 1 );
         assertModelValidationReportDetail( report, "IMPLEMENTATION_DEPENDENCY_SOURCE_SECTION_CONSTRAINT", 6 );
@@ -321,7 +321,7 @@ public class ToolsModelValidatorTest
         assertModelValidationReportDetail( report, "SPECIFICATION_SOURCE_FILES_MULTIPLICITY_CONSTRAINT", 1 );
         assertModelValidationReportDetail( report, "SPECIFICATION_SOURCE_SECTION_CONSTRAINT", 6 );
         assertModelValidationReportDetail( report, "SPECIFICATION_SOURCE_SECTIONS_CONSTRAINT", 1 );
-        assertModelValidationReportDetail( report, "SPECIFICATION_SOURCE_FILE_DEPRECATION", 1 );
+        assertModelValidationReportDetail( report, "SPECIFICATION_SOURCE_FILE_INFORMATION", 1 );
     }
 
     private static void assertValidModel( final ModelValidationReport report )

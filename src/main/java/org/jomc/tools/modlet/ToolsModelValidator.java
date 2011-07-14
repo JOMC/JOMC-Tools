@@ -304,8 +304,8 @@ public class ToolsModelValidator implements ModelValidator
             else if ( sourceFileType.size() == 1 )
             {
                 report.getDetails().add( new ModelValidationReport.Detail(
-                    "IMPLEMENTATION_SOURCE_FILE_DEPRECATION", Level.WARNING, getMessage(
-                    "implementationSourceFileDeprecation", implementation.getIdentifier(),
+                    "IMPLEMENTATION_SOURCE_FILE_INFORMATION", Level.INFO, getMessage(
+                    "implementationSourceFileInfo", implementation.getIdentifier(),
                     sourceFileType.get( 0 ).getIdentifier() ),
                     new org.jomc.model.ObjectFactory().createImplementation( implementation ) ) );
 
@@ -569,8 +569,8 @@ public class ToolsModelValidator implements ModelValidator
             else if ( sourceFileType.size() == 1 )
             {
                 report.getDetails().add( new ModelValidationReport.Detail(
-                    "SPECIFICATION_SOURCE_FILE_DEPRECATION", Level.WARNING, getMessage(
-                    "specificationSourceFileDeprecation", specification.getIdentifier(),
+                    "SPECIFICATION_SOURCE_FILE_INFORMATION", Level.INFO, getMessage(
+                    "specificationSourceFileInfo", specification.getIdentifier(),
                     sourceFileType.get( 0 ).getIdentifier() ),
                     new org.jomc.model.ObjectFactory().createSpecification( specification ) ) );
 
