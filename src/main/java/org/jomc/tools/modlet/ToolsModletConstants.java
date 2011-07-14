@@ -32,14 +32,11 @@
  */
 package org.jomc.tools.modlet;
 
-import org.jomc.modlet.ModelContext;
-
 /**
  * Object management and configuration tools modlet constants.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
- * @see ModelContext#processModel(org.jomc.modlet.Model)
  */
 interface ToolsModletConstants
 {
