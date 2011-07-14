@@ -739,6 +739,7 @@ public class JomcTask extends Task
             throw new NullPointerException( "resource" );
         }
 
+        InputStream in = null;
         final URL url = this.getResource( resource.getLocation() );
 
         try
@@ -768,9 +769,15 @@ public class JomcTask extends Task
 
                 };
 
+                final URLConnection con = url.openConnection();
+                con.setConnectTimeout( resource.getConnectTimeout() );
+                con.setReadTimeout( resource.getReadTimeout() );
+                con.connect();
+                in = con.getInputStream();
+
                 final TransformerFactory f = TransformerFactory.newInstance();
                 f.setErrorListener( errorListener );
-                final Transformer transformer = f.newTransformer( new StreamSource( url.toURI().toASCIIString() ) );
+                final Transformer transformer = f.newTransformer( new StreamSource( in, url.toURI().toASCIIString() ) );
                 transformer.setErrorListener( errorListener );
 
                 for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
@@ -833,13 +840,39 @@ public class JomcTask extends Task
                                           this.getLocation() );
 
             }
-
-            return null;
         }
         catch ( final URISyntaxException e )
         {
             throw new BuildException( e, this.getLocation() );
         }
+        catch ( final SocketTimeoutException e )
+        {
+            if ( resource.isOptional() )
+            {
+                this.getProject().log( Messages.getMessage( e ), e, Project.MSG_WARN );
+            }
+            else
+            {
+                throw new BuildException( e, this.getLocation() );
+            }
+        }
+        catch ( final IOException e )
+        {
+            if ( resource.isOptional() )
+            {
+                this.getProject().log( Messages.getMessage( e ), e, Project.MSG_WARN );
+            }
+            else
+            {
+                throw new BuildException( e, this.getLocation() );
+            }
+        }
+        finally
+        {
+            IOUtils.closeQuietly( in );
+        }
+
+        return null;
     }
 
     /**
