@@ -1709,57 +1709,58 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             throw new NullPointerException( "resource" );
         }
 
+        InputStream in = null;
+        final URL url = this.getResource( resource.getLocation() );
+        final ErrorListener errorListener = new ErrorListener()
+        {
+
+            public void warning( final TransformerException exception ) throws TransformerException
+            {
+                try
+                {
+                    log( Level.WARNING, Messages.getMessage( exception ), exception );
+                }
+                catch ( final MojoExecutionException e )
+                {
+                    getLog().warn( exception );
+                    getLog().error( e );
+                }
+            }
+
+            public void error( final TransformerException exception ) throws TransformerException
+            {
+                try
+                {
+                    log( Level.SEVERE, Messages.getMessage( exception ), exception );
+                }
+                catch ( final MojoExecutionException e )
+                {
+                    getLog().error( exception );
+                    getLog().error( e );
+                }
+
+                throw exception;
+            }
+
+            public void fatalError( final TransformerException exception ) throws TransformerException
+            {
+                try
+                {
+                    log( Level.SEVERE, Messages.getMessage( exception ), exception );
+                }
+                catch ( final MojoExecutionException e )
+                {
+                    getLog().error( exception );
+                    getLog().error( e );
+                }
+
+                throw exception;
+            }
+
+        };
+
         try
         {
-            final URL url = this.getResource( resource.getLocation() );
-            final ErrorListener errorListener = new ErrorListener()
-            {
-
-                public void warning( final TransformerException exception ) throws TransformerException
-                {
-                    try
-                    {
-                        log( Level.WARNING, Messages.getMessage( exception ), exception );
-                    }
-                    catch ( final MojoExecutionException e )
-                    {
-                        getLog().warn( exception );
-                        getLog().error( e );
-                    }
-                }
-
-                public void error( final TransformerException exception ) throws TransformerException
-                {
-                    try
-                    {
-                        log( Level.SEVERE, Messages.getMessage( exception ), exception );
-                    }
-                    catch ( final MojoExecutionException e )
-                    {
-                        getLog().error( exception );
-                        getLog().error( e );
-                    }
-
-                    throw exception;
-                }
-
-                public void fatalError( final TransformerException exception ) throws TransformerException
-                {
-                    try
-                    {
-                        log( Level.SEVERE, Messages.getMessage( exception ), exception );
-                    }
-                    catch ( final MojoExecutionException e )
-                    {
-                        getLog().error( exception );
-                        getLog().error( e );
-                    }
-
-                    throw exception;
-                }
-
-            };
-
             if ( url != null )
             {
                 if ( this.isLoggable( Level.FINER ) )
@@ -1767,10 +1768,16 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     this.log( Level.FINER, Messages.getMessage( "loadingTransformer", url.toExternalForm() ), null );
                 }
 
+                final URLConnection con = url.openConnection();
+                con.setConnectTimeout( resource.getConnectTimeout() );
+                con.setReadTimeout( resource.getReadTimeout() );
+                con.connect();
+                in = con.getInputStream();
+
                 final TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 transformerFactory.setErrorListener( errorListener );
                 final Transformer transformer =
-                    transformerFactory.newTransformer( new StreamSource( url.toURI().toASCIIString() ) );
+                    transformerFactory.newTransformer( new StreamSource( in, url.toURI().toASCIIString() ) );
 
                 transformer.setErrorListener( errorListener );
 
@@ -1843,8 +1850,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     "transformerNotFound", resource.getLocation() ) );
 
             }
-
-            return null;
         }
         catch ( final URISyntaxException e )
         {
@@ -1864,6 +1869,54 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 "failedCreatingTransformer", resource.getLocation(), m ), e );
 
         }
+        catch ( final SocketTimeoutException e )
+        {
+            String m = Messages.getMessage( e );
+            m = m == null ? "" : " " + m;
+
+            if ( resource.isOptional() )
+            {
+                if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, Messages.getMessage(
+                        "failedLoadingTransformer", url.toExternalForm(), m ), e );
+
+                }
+            }
+            else
+            {
+                throw new MojoExecutionException( Messages.getMessage(
+                    "failedLoadingTransformer", url.toExternalForm(), m ), e );
+
+            }
+        }
+        catch ( final IOException e )
+        {
+            String m = Messages.getMessage( e );
+            m = m == null ? "" : " " + m;
+
+            if ( resource.isOptional() )
+            {
+                if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, Messages.getMessage(
+                        "failedLoadingTransformer", url.toExternalForm(), m ), e );
+
+                }
+            }
+            else
+            {
+                throw new MojoExecutionException( Messages.getMessage(
+                    "failedLoadingTransformer", url.toExternalForm(), m ), e );
+
+            }
+        }
+        finally
+        {
+            IOUtils.closeQuietly( in );
+        }
+
+        return null;
     }
 
     /**
