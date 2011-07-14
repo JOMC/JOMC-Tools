@@ -1972,6 +1972,46 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} Resources Option"
+                    name="${project.name} Resources Option"
+                    class="org.jomc.cli.model.OptionFactory" version="${project.version}"
+                    vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}" final="true"/>
+      </specifications>
+      <implementations>
+        <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="opt" value="rn" override="true"/>
+        <property name="longOpt" value="resource-names" override="true"/>
+        <property name="numberOfArgs" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
+      </properties>
+      <messages>
+        <message name="description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Resource names separated by ''{0}'' of resources to include.</text>
+            <text language="de">Ressourcen-Namen einzuschließender Ressourcen mit ''{0}'' getrennt.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="valueSeparator"/>
+          </arguments>
+        </message>
+        <message name="argumentDescription" override="true">
+          <template defaultLanguage="en">
+            <text language="en">names</text>
+            <text language="de">Namen</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
     <!--                                                                                                             -->
     <!-- Application                                                                                                 -->
     <!--                                                                                                             -->
@@ -2245,6 +2285,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <dependency name="ClasspathOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Classpath Option"/>
 
+        <dependency name="DocumentsOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
+                    implementationName="${project.name} Documents Option"/>
+
         <dependency name="ModelContextOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ModelContext Class Name Option"/>
 
@@ -2310,6 +2353,24 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="0" name="fileName"/>
           </arguments>
         </message>
+        <message name="documentFileInfo">
+          <template defaultLanguage="en">
+            <text language="en">Document file: ''{0}''</text>
+            <text language="de">Dokument-Datei: ''{0}''</text>
+          </template>
+          <arguments>
+            <argument index="0" name="documentFile"/>
+          </arguments>
+        </message>
+        <message name="documentFileNotFoundWarning">
+          <template defaultLanguage="en">
+            <text language="en">Document file ''{0}'' ignored. File not found.</text>
+            <text language="de">Dokument-Datei ''{0}'' ignoriert. Datei nicht gefunden.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="fileName"/>
+          </arguments>
+        </message>
         <message name="excludedProviderInfo">
           <template defaultLanguage="en">
             <text language="en">Provider ''{1}'' from class path resource ''{0}'' ignored.</text>
@@ -2359,6 +2420,25 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
             <argument index="0" name="modelIdentifier"/>
           </arguments>
         </message>
+        <message name="cannotProcessMessage">
+          <template defaultLanguage="en">
+            <text language="en">Cannot process ''{0}'': {1}</text>
+            <text language="de">Kann ''{0}'' nicht verarbeiten: {1}</text>
+          </template>
+          <arguments>
+            <argument index="0" name="itemInfo"/>
+            <argument index="1" name="detailMessage"/>
+          </arguments>
+        </message>
+        <message name="readingMessage">
+          <template defaultLanguage="en">
+            <text language="en">Reading ''{0}''.</text>
+            <text language="de">Ließt ''{0}''.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="locationInfo"/>
+          </arguments>
+        </message>
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
@@ -2379,9 +2459,6 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference identifier="${project.name} Modlet Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="DocumentsOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
-                    implementationName="${project.name} Documents Option"/>
-
         <dependency name="ModuleLocationOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Module Location Option"/>
 
@@ -2395,55 +2472,6 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     implementationName="${project.name} No Model Processing Option"/>
 
       </dependencies>
-      <messages>
-        <message name="documentFileInfo">
-          <template defaultLanguage="en">
-            <text language="en">Document file: ''{0}''</text>
-            <text language="de">Dokument-Datei: ''{0}''</text>
-          </template>
-          <arguments>
-            <argument index="0" name="documentFile"/>
-          </arguments>
-        </message>
-        <message name="documentFileNotFoundWarning">
-          <template defaultLanguage="en">
-            <text language="en">Document file ''{0}'' ignored. File not found.</text>
-            <text language="de">Dokument-Datei ''{0}'' ignoriert. Datei nicht gefunden.</text>
-          </template>
-          <arguments>
-            <argument index="0" name="fileName"/>
-          </arguments>
-        </message>
-        <message name="excludedModuleFromClasspathInfo">
-          <template defaultLanguage="en">
-            <text language="en">Module ''{0}'' from class path ignored. Module with identical name already loaded.</text>
-            <text language="de">Modul ''{0}'' aus Klassenpfad ignoriert. Modul mit identischem Namen bereits geladen.</text>
-          </template>
-          <arguments>
-            <argument index="0" name="moduleName"/>
-          </arguments>
-        </message>
-        <message name="moduleInfo">
-          <template defaultLanguage="en">
-            <text language="en">Found module ''{0} {1}''.</text>
-            <text language="de">Modul ''{0} {1}'' gefunden.</text>
-          </template>
-          <arguments>
-            <argument index="0" name="moduleName"/>
-            <argument index="1" name="moduleVersion"/>
-          </arguments>
-        </message>
-        <message name="cannotProcessMessage">
-          <template defaultLanguage="en">
-            <text language="en">Cannot process ''{0}'': {1}</text>
-            <text language="de">Kann ''{0}'' nicht verarbeiten: {1}</text>
-          </template>
-          <arguments>
-            <argument index="0" name="itemInfo"/>
-            <argument index="1" name="detailMessage"/>
-          </arguments>
-        </message>
-      </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} JomcTool Command"
@@ -3075,8 +3103,10 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <dependency name="ModuleExcludesOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Module Excludes Option"/>
 
-      </dependencies>
+        <dependency name="ResourcesOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
+                    implementationName="${project.name} Resources Option"/>
 
+      </dependencies>
       <properties>
         <property name="commandName" value="merge-modules" override="true">
           <documentation defaultLanguage="en">
@@ -3205,6 +3235,9 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
         <dependency name="ModletExcludesOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Modlet Excludes Option"/>
+
+        <dependency name="ResourcesOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
+                    implementationName="${project.name} Resources Option"/>
 
       </dependencies>
       <properties>

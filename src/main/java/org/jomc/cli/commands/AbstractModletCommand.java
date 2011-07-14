@@ -59,6 +59,7 @@ import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.PropertyException;
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -199,6 +200,11 @@ import org.jomc.modlet.Services;
  *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Classpath Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getDocumentsOption DocumentsOption}</td>
+ *       <td align="left" valign="top" nowrap>{@code none}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Documents Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
+ *     </tr>
+ *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getLocale Locale}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top">Dependency on the {@code 'default'} object of the {@code 'java.util.Locale'} {@code (java.util.Locale)} specification at specification level 1.1 bound to an instance.</td>
@@ -250,7 +256,13 @@ import org.jomc.modlet.Services;
  *       <td align="left" valign="top" nowrap>{@link #getApplicationTitle applicationTitle}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
- *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-08T14:28:13+0200</code></pre></td>
+ *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-14T09:56:53+0200</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getCannotProcessMessage cannotProcessMessage}</td>
+ *       <td align="left" valign="top" nowrap>{@code none}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Cannot process ''{0}'': {1}</code></pre><hr/><pre><code>Kann ''{0}'' nicht verarbeiten: {1}</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getClasspathElementInfo classpathElementInfo}</td>
@@ -289,6 +301,18 @@ import org.jomc.modlet.Services;
  *       <td align="left" valign="top" nowrap><pre><code>Default log level: ''{0}''</code></pre><hr/><pre><code>Standard-Protokollierungsstufe: ''{0}''</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getDocumentFileInfo documentFileInfo}</td>
+ *       <td align="left" valign="top" nowrap>{@code none}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Document file: ''{0}''</code></pre><hr/><pre><code>Dokument-Datei: ''{0}''</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getDocumentFileNotFoundWarning documentFileNotFoundWarning}</td>
+ *       <td align="left" valign="top" nowrap>{@code none}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Document file ''{0}'' ignored. File not found.</code></pre><hr/><pre><code>Dokument-Datei ''{0}'' ignoriert. Datei nicht gefunden.</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getExcludedModletInfo excludedModletInfo}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
@@ -323,6 +347,12 @@ import org.jomc.modlet.Services;
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
  *       <td align="left" valign="top" nowrap><pre><code></code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getReadingMessage readingMessage}</td>
+ *       <td align="left" valign="top" nowrap>{@code none}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Reading ''{0}''.</code></pre><hr/><pre><code>Lie&szlig;t ''{0}''.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getSeparator separator}</td>
@@ -565,9 +595,21 @@ public abstract class AbstractModletCommand extends AbstractCommand
     protected void log( final ModelValidationReport validationReport, final Marshaller marshaller )
         throws CommandExecutionException
     {
+        Object jaxbFormattedOutput = null;
         try
         {
+            jaxbFormattedOutput = marshaller.getProperty( Marshaller.JAXB_FORMATTED_OUTPUT );
             marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
+        }
+        catch ( final PropertyException e )
+        {
+            this.log( Level.INFO, null, e );
+            jaxbFormattedOutput = null;
+        }
+
+        try
+        {
+
             for ( ModelValidationReport.Detail d : validationReport.getDetails() )
             {
                 if ( this.isLoggable( d.getLevel() ) )
@@ -592,6 +634,114 @@ public abstract class AbstractModletCommand extends AbstractCommand
             }
 
             throw new CommandExecutionException( message, e );
+        }
+        finally
+        {
+            try
+            {
+                marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, jaxbFormattedOutput );
+            }
+            catch ( final PropertyException e )
+            {
+                this.log( Level.INFO, null, e );
+            }
+        }
+    }
+
+    /**
+     * Gets the document files specified by a given command line.
+     *
+     * @param commandLine The command line specifying the document files to get.
+     *
+     * @return The document files specified by {@code commandLine}.
+     *
+     * @throws CommandExecutionException if getting the document files fails.
+     */
+    protected Set<File> getDocumentFiles( final CommandLine commandLine ) throws CommandExecutionException
+    {
+        try
+        {
+            final Set<File> files = new HashSet<File>();
+
+            if ( commandLine.hasOption( this.getDocumentsOption().getOpt() ) )
+            {
+                final String[] elements = commandLine.getOptionValues( this.getDocumentsOption().getOpt() );
+                if ( elements != null )
+                {
+                    for ( String e : elements )
+                    {
+                        if ( e.startsWith( "@" ) )
+                        {
+                            String line = null;
+                            final File file = new File( e.substring( 1 ) );
+                            BufferedReader reader = null;
+
+                            try
+                            {
+                                reader = new BufferedReader( new FileReader( file ) );
+                                while ( ( line = reader.readLine() ) != null )
+                                {
+                                    line = line.trim();
+                                    if ( !line.startsWith( "#" ) )
+                                    {
+                                        final File f = new File( line );
+
+                                        if ( f.exists() )
+                                        {
+                                            if ( this.isLoggable( Level.FINER ) )
+                                            {
+                                                this.log( Level.FINER, this.getDocumentFileInfo(
+                                                    this.getLocale(), f.getAbsolutePath() ), null );
+
+                                            }
+
+                                            files.add( f );
+                                        }
+                                        else if ( this.isLoggable( Level.WARNING ) )
+                                        {
+                                            this.log( Level.WARNING, this.getDocumentFileNotFoundWarning(
+                                                this.getLocale(), f.getAbsolutePath() ), null );
+
+                                        }
+                                    }
+                                }
+                            }
+                            finally
+                            {
+                                IOUtils.closeQuietly( reader );
+                            }
+                        }
+                        else
+                        {
+                            final File file = new File( e );
+
+                            if ( file.exists() )
+                            {
+                                if ( this.isLoggable( Level.FINER ) )
+                                {
+                                    this.log( Level.FINER, this.getDocumentFileInfo(
+                                        this.getLocale(), file.getAbsolutePath() ), null );
+
+                                }
+
+                                files.add( file );
+                            }
+                            else if ( this.isLoggable( Level.WARNING ) )
+                            {
+                                this.log( Level.WARNING, this.getDocumentFileNotFoundWarning(
+                                    this.getLocale(), file.getAbsolutePath() ), null );
+
+                            }
+                        }
+                    }
+                }
+            }
+
+            return files;
+        }
+        catch ( final IOException e )
+        {
+            throw new CommandExecutionException( getExceptionMessage( e ), e );
         }
     }
 
@@ -893,11 +1043,12 @@ public abstract class AbstractModletCommand extends AbstractCommand
             URL filteredResource = resource;
             final List<String> excludedModlets = Arrays.asList( getModletExcludes().split( ":" ) );
             final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
-            final InputStream in = resource.openStream();
-            final JAXBElement<?> e =
-                (JAXBElement<?>) modelContext.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID ).unmarshal( in );
+            Object o = modelContext.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID ).unmarshal( resource );
+            if ( o instanceof JAXBElement<?> )
+            {
+                o = ( (JAXBElement<?>) o ).getValue();
+            }
 
-            final Object o = e.getValue();
             Modlets modlets = null;
             boolean filtered = false;
 
@@ -1035,6 +1186,21 @@ public abstract class AbstractModletCommand extends AbstractCommand
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ClasspathOption" );
         assert _d != null : "'ClasspathOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code DocumentsOption} dependency.
+     * <p>This method returns the {@code 'JOMC CLI Documents Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code DocumentsOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private org.apache.commons.cli.Option getDocumentsOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "DocumentsOption" );
+        assert _d != null : "'DocumentsOption' dependency not found.";
         return _d;
     }
 
@@ -1252,7 +1418,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-08T14:28:13+0200</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-14T09:56:53+0200</code></pre></td>
      *     </tr>
      *   </table>
      * </p>
@@ -1266,6 +1432,39 @@ public abstract class AbstractModletCommand extends AbstractCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "applicationTitle", locale );
         assert _m != null : "'applicationTitle' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code cannotProcessMessage} message.
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" scope="col" nowrap><b>Language</b></th>
+     *       <th align="left" scope="col" nowrap><b>Template</b></th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Cannot process ''{0}'': {1}</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Kann ''{0}'' nicht verarbeiten: {1}</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
+     * @param locale The locale of the message to return.
+     * @param itemInfo Format argument.
+     * @param detailMessage Format argument.
+     * @return The text of the {@code cannotProcessMessage} message for {@code locale}.
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private String getCannotProcessMessage( final java.util.Locale locale, final java.lang.String itemInfo, final java.lang.String detailMessage )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "cannotProcessMessage", locale, itemInfo, detailMessage );
+        assert _m != null : "'cannotProcessMessage' message not found.";
         return _m;
     }
 
@@ -1462,6 +1661,70 @@ public abstract class AbstractModletCommand extends AbstractCommand
     }
 
     /**
+     * Gets the text of the {@code documentFileInfo} message.
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" scope="col" nowrap><b>Language</b></th>
+     *       <th align="left" scope="col" nowrap><b>Template</b></th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Document file: ''{0}''</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Dokument-Datei: ''{0}''</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
+     * @param locale The locale of the message to return.
+     * @param documentFile Format argument.
+     * @return The text of the {@code documentFileInfo} message for {@code locale}.
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private String getDocumentFileInfo( final java.util.Locale locale, final java.lang.String documentFile )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentFileInfo", locale, documentFile );
+        assert _m != null : "'documentFileInfo' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code documentFileNotFoundWarning} message.
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" scope="col" nowrap><b>Language</b></th>
+     *       <th align="left" scope="col" nowrap><b>Template</b></th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Document file ''{0}'' ignored. File not found.</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Dokument-Datei ''{0}'' ignoriert. Datei nicht gefunden.</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
+     * @param locale The locale of the message to return.
+     * @param fileName Format argument.
+     * @return The text of the {@code documentFileNotFoundWarning} message for {@code locale}.
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private String getDocumentFileNotFoundWarning( final java.util.Locale locale, final java.lang.String fileName )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentFileNotFoundWarning", locale, fileName );
+        assert _m != null : "'documentFileNotFoundWarning' message not found.";
+        return _m;
+    }
+
+    /**
      * Gets the text of the {@code excludedModletInfo} message.
      * <p><strong>Templates:</strong>
      *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
@@ -1649,6 +1912,38 @@ public abstract class AbstractModletCommand extends AbstractCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "longDescriptionMessage", locale );
         assert _m != null : "'longDescriptionMessage' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code readingMessage} message.
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" scope="col" nowrap><b>Language</b></th>
+     *       <th align="left" scope="col" nowrap><b>Template</b></th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Reading ''{0}''.</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Lie&szlig;t ''{0}''.</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
+     * @param locale The locale of the message to return.
+     * @param locationInfo Format argument.
+     * @return The text of the {@code readingMessage} message for {@code locale}.
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private String getReadingMessage( final java.util.Locale locale, final java.lang.String locationInfo )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "readingMessage", locale, locationInfo );
+        assert _m != null : "'readingMessage' message not found.";
         return _m;
     }
 

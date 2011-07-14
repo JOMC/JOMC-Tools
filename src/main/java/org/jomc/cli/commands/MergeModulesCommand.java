@@ -37,7 +37,10 @@
 package org.jomc.cli.commands;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -54,8 +57,7 @@ import org.apache.commons.cli.CommandLine;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.ObjectFactory;
-import org.jomc.model.modlet.ModelHelper;
-import org.jomc.modlet.Model;
+import org.jomc.model.modlet.DefaultModelProvider;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelException;
 import org.jomc.modlet.ModelValidationReport;
@@ -267,6 +269,11 @@ import org.jomc.modlet.ModelValidationReport;
  *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Provider Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getResourcesOption ResourcesOption}</td>
+ *       <td align="left" valign="top" nowrap>{@code none}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Resources Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
+ *     </tr>
+ *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getStylesheetOption StylesheetOption}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Stylesheet Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
@@ -293,7 +300,7 @@ import org.jomc.modlet.ModelValidationReport;
  *       <td align="left" valign="top" nowrap>{@link #getApplicationTitle applicationTitle}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
- *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-08T14:28:13+0200</code></pre></td>
+ *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-14T09:56:53+0200</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getCannotProcessMessage cannotProcessMessage}</td>
@@ -356,12 +363,6 @@ import org.jomc.modlet.ModelValidationReport;
  *       <td align="left" valign="top" nowrap><pre><code>Modlet ''{1}'' from class path resource ''{0}'' ignored.</code></pre><hr/><pre><code>Modlet ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" valign="top" nowrap>{@link #getExcludedModuleFromClasspathInfo excludedModuleFromClasspathInfo}</td>
- *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Module ''{0}'' from class path ignored. Module with identical name already loaded.</code></pre><hr/><pre><code>Modul ''{0}'' aus Klassenpfad ignoriert. Modul mit identischem Namen bereits geladen.</code></pre></td>
- *     </tr>
- *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getExcludedProviderInfo excludedProviderInfo}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
@@ -422,10 +423,10 @@ import org.jomc.modlet.ModelValidationReport;
  *                      -v</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" valign="top" nowrap>{@link #getModuleInfo moduleInfo}</td>
+ *       <td align="left" valign="top" nowrap>{@link #getReadingMessage readingMessage}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Found module ''{0} {1}''.</code></pre><hr/><pre><code>Modul ''{0} {1}'' gefunden.</code></pre></td>
+ *       <td align="left" valign="top" nowrap><pre><code>Reading ''{0}''.</code></pre><hr/><pre><code>Lie&szlig;t ''{0}''.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getSeparator separator}</td>
@@ -471,28 +472,12 @@ public final class MergeModulesCommand extends AbstractModelCommand
 
         try
         {
+            final Modules modules = new Modules();
             final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
             final ModelContext context = this.createModelContext( classLoader );
-            final Model model = this.getModel( context, commandLine );
-            final Marshaller marshaller = context.createMarshaller( model.getIdentifier() );
-            final Unmarshaller unmarshaller = context.createUnmarshaller( model.getIdentifier() );
-            final ModelValidationReport validationReport = context.validateModel( model );
-            this.log( validationReport, marshaller );
-
-            if ( !validationReport.isModelValid() )
-            {
-                throw new CommandExecutionException( this.getInvalidModelMessage(
-                    this.getLocale(), this.getModel( commandLine ) ) );
-
-            }
-
-            final Modules modules = ModelHelper.getModules( model );
-            final Module classpathModule = modules.getModule( Modules.getDefaultClasspathModuleName() );
-
-            if ( classpathModule != null )
-            {
-                modules.getModule().remove( classpathModule );
-            }
+            final String model = this.getModel( commandLine );
+            final Marshaller marshaller = context.createMarshaller( model );
+            final Unmarshaller unmarshaller = context.createUnmarshaller( model );
 
             File stylesheetFile = null;
             if ( commandLine.hasOption( this.getStylesheetOption().getOpt() ) )
@@ -510,6 +495,92 @@ public final class MergeModulesCommand extends AbstractModelCommand
             if ( commandLine.hasOption( this.getModuleVendorOption().getOpt() ) )
             {
                 moduleVendor = commandLine.getOptionValue( this.getModuleVendorOption().getOpt() );
+            }
+
+            if ( commandLine.hasOption( this.getDocumentsOption().getOpt() ) )
+            {
+                for ( File f : this.getDocumentFiles( commandLine ) )
+                {
+                    if ( this.isLoggable( Level.FINEST ) )
+                    {
+                        this.log( Level.FINEST, this.getReadingMessage( this.getLocale(), f.getAbsolutePath() ), null );
+                    }
+
+                    Object o = unmarshaller.unmarshal( f );
+                    if ( o instanceof JAXBElement<?> )
+                    {
+                        o = ( (JAXBElement<?>) o ).getValue();
+                    }
+
+                    if ( o instanceof Module )
+                    {
+                        modules.getModule().add( (Module) o );
+                    }
+                    else if ( o instanceof Modules )
+                    {
+                        modules.getModule().addAll( ( (Modules) o ).getModule() );
+                    }
+                    else if ( this.isLoggable( Level.WARNING ) )
+                    {
+                        this.log( Level.WARNING, this.getCannotProcessMessage(
+                            this.getLocale(), f.getAbsolutePath(), o.toString() ), null );
+
+                    }
+                }
+            }
+
+            if ( commandLine.hasOption( this.getClasspathOption().getOpt() ) )
+            {
+                String[] resourceNames = null;
+
+                if ( commandLine.hasOption( this.getResourcesOption().getOpt() ) )
+                {
+                    resourceNames = commandLine.getOptionValues( this.getResourcesOption().getOpt() );
+                }
+
+                if ( resourceNames == null )
+                {
+                    resourceNames = new String[]
+                    {
+                        DefaultModelProvider.getDefaultModuleLocation()
+                    };
+                }
+
+                for ( String resource : resourceNames )
+                {
+                    for ( final Enumeration<URL> e = classLoader.getResources( resource ); e.hasMoreElements(); )
+                    {
+                        final URL url = e.nextElement();
+
+                        if ( this.isLoggable( Level.FINEST ) )
+                        {
+                            this.log( Level.FINEST, this.getReadingMessage( this.getLocale(), url.toExternalForm() ),
+                                      null );
+
+                        }
+
+                        Object o = unmarshaller.unmarshal( url );
+                        if ( o instanceof JAXBElement<?> )
+                        {
+                            o = ( (JAXBElement<?>) o ).getValue();
+                        }
+
+                        if ( o instanceof Module )
+                        {
+                            modules.getModule().add( (Module) o );
+                        }
+                        else if ( o instanceof Modules )
+                        {
+                            modules.getModule().addAll( ( (Modules) o ).getModule() );
+                        }
+                        else if ( this.isLoggable( Level.WARNING ) )
+                        {
+                            this.log( Level.WARNING, this.getCannotProcessMessage(
+                                this.getLocale(), url.toExternalForm(), o.toString() ), null );
+
+                        }
+                    }
+                }
             }
 
             if ( commandLine.hasOption( this.getModuleIncludesOption().getOpt() ) )
@@ -555,6 +626,16 @@ public final class MergeModulesCommand extends AbstractModelCommand
                 }
             }
 
+            final ModelValidationReport validationReport = context.validateModel(
+                model, new JAXBSource( marshaller, new ObjectFactory().createModules( modules ) ) );
+
+            this.log( validationReport, marshaller );
+
+            if ( !validationReport.isModelValid() )
+            {
+                throw new CommandExecutionException( this.getInvalidModelMessage( this.getLocale(), model ) );
+            }
+
             Module mergedModule =
                 modules.getMergedModule( commandLine.getOptionValue( this.getModuleNameOption().getOpt() ) );
 
@@ -585,7 +666,7 @@ public final class MergeModulesCommand extends AbstractModelCommand
                 }
             }
 
-            marshaller.setSchema( context.createSchema( model.getIdentifier() ) );
+            marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
 
             if ( commandLine.hasOption( this.getDocumentEncodingOption().getOpt() ) )
             {
@@ -594,12 +675,17 @@ public final class MergeModulesCommand extends AbstractModelCommand
 
             }
 
+            marshaller.setSchema( context.createSchema( model ) );
             marshaller.marshal( new ObjectFactory().createModule( mergedModule ), moduleFile );
 
             if ( this.isLoggable( Level.INFO ) )
             {
                 this.log( Level.INFO, this.getWriteInfo( this.getLocale(), moduleFile.getAbsolutePath() ), null );
             }
+        }
+        catch ( final IOException e )
+        {
+            throw new CommandExecutionException( getExceptionMessage( e ), e );
         }
         catch ( final TransformerException e )
         {
@@ -726,6 +812,10 @@ public final class MergeModulesCommand extends AbstractModelCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Resources Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Stylesheet Option</td>
      *     </tr>
      *     <tr class="TableRow">
@@ -759,6 +849,7 @@ public final class MergeModulesCommand extends AbstractModelCommand
         options.addOption( this.getNoModelProcessingOption() );
         options.addOption( this.getPlatformProviderLocationOption() );
         options.addOption( this.getProviderLocationOption() );
+        options.addOption( this.getResourcesOption() );
         options.addOption( this.getStylesheetOption() );
         options.addOption( this.getTransformerLocationOption() );
         return options;
@@ -1082,6 +1173,21 @@ public final class MergeModulesCommand extends AbstractModelCommand
     }
 
     /**
+     * Gets the {@code ResourcesOption} dependency.
+     * <p>This method returns the {@code 'JOMC CLI Resources Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code ResourcesOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private org.apache.commons.cli.Option getResourcesOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ResourcesOption" );
+        assert _d != null : "'ResourcesOption' dependency not found.";
+        return _d;
+    }
+
+    /**
      * Gets the {@code StylesheetOption} dependency.
      * <p>This method returns the {@code 'JOMC CLI Stylesheet Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
@@ -1220,7 +1326,7 @@ public final class MergeModulesCommand extends AbstractModelCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-08T14:28:13+0200</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-14T09:56:53+0200</code></pre></td>
      *     </tr>
      *   </table>
      * </p>
@@ -1560,38 +1666,6 @@ public final class MergeModulesCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the text of the {@code excludedModuleFromClasspathInfo} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Module ''{0}'' from class path ignored. Module with identical name already loaded.</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Modul ''{0}'' aus Klassenpfad ignoriert. Modul mit identischem Namen bereits geladen.</code></pre></td>
-     *     </tr>
-     *   </table>
-     * </p>
-     *
-     * @param locale The locale of the message to return.
-     * @param moduleName Format argument.
-     * @return The text of the {@code excludedModuleFromClasspathInfo} message for {@code locale}.
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private String getExcludedModuleFromClasspathInfo( final java.util.Locale locale, final java.lang.String moduleName )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "excludedModuleFromClasspathInfo", locale, moduleName );
-        assert _m != null : "'excludedModuleFromClasspathInfo' message not found.";
-        return _m;
-    }
-
-    /**
      * Gets the text of the {@code excludedProviderInfo} message.
      * <p><strong>Templates:</strong>
      *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
@@ -1862,7 +1936,7 @@ public final class MergeModulesCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the text of the {@code moduleInfo} message.
+     * Gets the text of the {@code readingMessage} message.
      * <p><strong>Templates:</strong>
      *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
      *     <tr class="TableSubHeadingColor">
@@ -1871,26 +1945,25 @@ public final class MergeModulesCommand extends AbstractModelCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Found module ''{0} {1}''.</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>Reading ''{0}''.</code></pre></td>
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Modul ''{0} {1}'' gefunden.</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>Lie&szlig;t ''{0}''.</code></pre></td>
      *     </tr>
      *   </table>
      * </p>
      *
      * @param locale The locale of the message to return.
-     * @param moduleName Format argument.
-     * @param moduleVersion Format argument.
-     * @return The text of the {@code moduleInfo} message for {@code locale}.
+     * @param locationInfo Format argument.
+     * @return The text of the {@code readingMessage} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private String getModuleInfo( final java.util.Locale locale, final java.lang.String moduleName, final java.lang.String moduleVersion )
+    private String getReadingMessage( final java.util.Locale locale, final java.lang.String locationInfo )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleInfo", locale, moduleName, moduleVersion );
-        assert _m != null : "'moduleInfo' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "readingMessage", locale, locationInfo );
+        assert _m != null : "'readingMessage' message not found.";
         return _m;
     }
 

@@ -36,21 +36,12 @@
 // SECTION-END
 package org.jomc.cli.commands;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.io.IOUtils;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.modlet.DefaultModelProcessor;
@@ -253,7 +244,7 @@ import org.jomc.modlet.ModelException;
  *       <td align="left" valign="top" nowrap>{@link #getApplicationTitle applicationTitle}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
- *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-08T14:28:13+0200</code></pre></td>
+ *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-14T09:56:53+0200</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getCannotProcessMessage cannotProcessMessage}</td>
@@ -316,12 +307,6 @@ import org.jomc.modlet.ModelException;
  *       <td align="left" valign="top" nowrap><pre><code>Modlet ''{1}'' from class path resource ''{0}'' ignored.</code></pre><hr/><pre><code>Modlet ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" valign="top" nowrap>{@link #getExcludedModuleFromClasspathInfo excludedModuleFromClasspathInfo}</td>
- *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Module ''{0}'' from class path ignored. Module with identical name already loaded.</code></pre><hr/><pre><code>Modul ''{0}'' aus Klassenpfad ignoriert. Modul mit identischem Namen bereits geladen.</code></pre></td>
- *     </tr>
- *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getExcludedProviderInfo excludedProviderInfo}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
@@ -352,10 +337,10 @@ import org.jomc.modlet.ModelException;
  *       <td align="left" valign="top" nowrap><pre><code></code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
- *       <td align="left" valign="top" nowrap>{@link #getModuleInfo moduleInfo}</td>
+ *       <td align="left" valign="top" nowrap>{@link #getReadingMessage readingMessage}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Found module ''{0} {1}''.</code></pre><hr/><pre><code>Modul ''{0} {1}'' gefunden.</code></pre></td>
+ *       <td align="left" valign="top" nowrap><pre><code>Reading ''{0}''.</code></pre><hr/><pre><code>Lie&szlig;t ''{0}''.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getSeparator separator}</td>
@@ -438,103 +423,6 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
     }
 
     /**
-     * Gets the document files specified by a given command line.
-     *
-     * @param commandLine The command line specifying the document files to get.
-     *
-     * @return The document files specified by {@code commandLine}.
-     *
-     * @throws CommandExecutionException if getting the document files fails.
-     */
-    protected Set<File> getDocumentFiles( final CommandLine commandLine ) throws CommandExecutionException
-    {
-        try
-        {
-            final Set<File> files = new HashSet<File>();
-
-            if ( commandLine.hasOption( this.getDocumentsOption().getOpt() ) )
-            {
-                final String[] elements = commandLine.getOptionValues( this.getDocumentsOption().getOpt() );
-                if ( elements != null )
-                {
-                    for ( String e : elements )
-                    {
-                        if ( e.startsWith( "@" ) )
-                        {
-                            String line = null;
-                            final File file = new File( e.substring( 1 ) );
-                            BufferedReader reader = null;
-
-                            try
-                            {
-                                reader = new BufferedReader( new FileReader( file ) );
-                                while ( ( line = reader.readLine() ) != null )
-                                {
-                                    line = line.trim();
-                                    if ( !line.startsWith( "#" ) )
-                                    {
-                                        final File f = new File( line );
-
-                                        if ( f.exists() )
-                                        {
-                                            if ( this.isLoggable( Level.FINER ) )
-                                            {
-                                                this.log( Level.FINER, this.getDocumentFileInfo(
-                                                    this.getLocale(), f.getAbsolutePath() ), null );
-
-                                            }
-
-                                            files.add( f );
-                                        }
-                                        else if ( this.isLoggable( Level.WARNING ) )
-                                        {
-                                            this.log( Level.WARNING, this.getDocumentFileNotFoundWarning(
-                                                this.getLocale(), f.getAbsolutePath() ), null );
-
-                                        }
-                                    }
-                                }
-                            }
-                            finally
-                            {
-                                IOUtils.closeQuietly( reader );
-                            }
-                        }
-                        else
-                        {
-                            final File file = new File( e );
-
-                            if ( file.exists() )
-                            {
-                                if ( this.isLoggable( Level.FINER ) )
-                                {
-                                    this.log( Level.FINER, this.getDocumentFileInfo(
-                                        this.getLocale(), file.getAbsolutePath() ), null );
-
-                                }
-
-                                files.add( file );
-                            }
-                            else if ( this.isLoggable( Level.WARNING ) )
-                            {
-                                this.log( Level.WARNING, this.getDocumentFileNotFoundWarning(
-                                    this.getLocale(), file.getAbsolutePath() ), null );
-
-                            }
-                        }
-                    }
-                }
-            }
-
-            return files;
-        }
-        catch ( final IOException e )
-        {
-            throw new CommandExecutionException( getExceptionMessage( e ), e );
-        }
-    }
-
-    /**
      * Gets the model as specified by a given command line.
      *
      * @param context The context to use for getting the model.
@@ -552,48 +440,26 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
             Model model = new Model();
             model.setIdentifier( this.getModel( commandLine ) );
             Modules modules = new Modules();
+            ModelHelper.setModules( model, modules );
 
             if ( commandLine.hasOption( this.getDocumentsOption().getOpt() ) )
             {
                 final Unmarshaller u = context.createUnmarshaller( model.getIdentifier() );
                 for ( File f : this.getDocumentFiles( commandLine ) )
                 {
-                    final InputStream in = new FileInputStream( f );
-                    Object o = u.unmarshal( new StreamSource( in ) );
+                    Object o = u.unmarshal( f );
                     if ( o instanceof JAXBElement<?> )
                     {
                         o = ( (JAXBElement<?>) o ).getValue();
                     }
 
-                    IOUtils.closeQuietly( in );
-
                     if ( o instanceof Module )
                     {
-                        final Module m = (Module) o;
-
-                        if ( this.isLoggable( Level.FINEST ) )
-                        {
-                            this.log( Level.FINEST, this.getModuleInfo(
-                                this.getLocale(), m.getName(), m.getVersion() != null ? m.getVersion() : "" ), null );
-
-                        }
-
                         modules.getModule().add( (Module) o );
                     }
                     else if ( o instanceof Modules )
                     {
-                        for ( Module m : ( (Modules) o ).getModule() )
-                        {
-                            if ( this.isLoggable( Level.FINEST ) )
-                            {
-                                this.log( Level.FINEST, this.getModuleInfo(
-                                    this.getLocale(), m.getName(),
-                                    m.getVersion() != null ? m.getVersion() : "" ), null );
-
-                            }
-
-                            modules.getModule().add( m );
-                        }
+                        modules.getModule().addAll( ( (Modules) o ).getModule() );
                     }
                     else if ( this.isLoggable( Level.WARNING ) )
                     {
@@ -606,28 +472,11 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
 
             if ( commandLine.hasOption( this.getClasspathOption().getOpt() ) )
             {
-                final Model foundModel = context.findModel( model.getIdentifier() );
-                final Modules modelModules = ModelHelper.getModules( foundModel );
-
-                if ( modelModules != null )
-                {
-                    for ( Module m : modelModules.getModule() )
-                    {
-                        if ( modules.getModule( m.getName() ) == null )
-                        {
-                            modules.getModule().add( m );
-                        }
-                        else if ( this.isLoggable( Level.FINEST ) )
-                        {
-                            this.log( Level.FINEST,
-                                      this.getExcludedModuleFromClasspathInfo( this.getLocale(), m.getName() ), null );
-
-                        }
-                    }
-                }
+                model = context.findModel( model );
+                modules = ModelHelper.getModules( model );
             }
 
-            if ( !commandLine.hasOption( this.getNoClasspathResolutionOption().getOpt() ) )
+            if ( modules != null && !commandLine.hasOption( this.getNoClasspathResolutionOption().getOpt() ) )
             {
                 final Module classpathModule = modules.getClasspathModule(
                     Modules.getDefaultClasspathModuleName(), context.getClassLoader() );
@@ -638,8 +487,6 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
                 }
             }
 
-            ModelHelper.setModules( model, modules );
-
             if ( !commandLine.hasOption( this.getNoModelProcessingOption().getOpt() ) )
             {
                 model = context.processModel( model );
@@ -648,10 +495,6 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
 
             assert modules != null : "Modules '" + this.getModel( commandLine ) + "' not found.";
             return model;
-        }
-        catch ( final IOException e )
-        {
-            throw new CommandExecutionException( getExceptionMessage( e ), e );
         }
         catch ( final ModelException e )
         {
@@ -990,7 +833,7 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-08T14:28:13+0200</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-14T09:56:53+0200</code></pre></td>
      *     </tr>
      *   </table>
      * </p>
@@ -1330,38 +1173,6 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
     }
 
     /**
-     * Gets the text of the {@code excludedModuleFromClasspathInfo} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Module ''{0}'' from class path ignored. Module with identical name already loaded.</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Modul ''{0}'' aus Klassenpfad ignoriert. Modul mit identischem Namen bereits geladen.</code></pre></td>
-     *     </tr>
-     *   </table>
-     * </p>
-     *
-     * @param locale The locale of the message to return.
-     * @param moduleName Format argument.
-     * @return The text of the {@code excludedModuleFromClasspathInfo} message for {@code locale}.
-     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
-     */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private String getExcludedModuleFromClasspathInfo( final java.util.Locale locale, final java.lang.String moduleName )
-    {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "excludedModuleFromClasspathInfo", locale, moduleName );
-        assert _m != null : "'excludedModuleFromClasspathInfo' message not found.";
-        return _m;
-    }
-
-    /**
      * Gets the text of the {@code excludedProviderInfo} message.
      * <p><strong>Templates:</strong>
      *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
@@ -1520,7 +1331,7 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
     }
 
     /**
-     * Gets the text of the {@code moduleInfo} message.
+     * Gets the text of the {@code readingMessage} message.
      * <p><strong>Templates:</strong>
      *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
      *     <tr class="TableSubHeadingColor">
@@ -1529,26 +1340,25 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Found module ''{0} {1}''.</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>Reading ''{0}''.</code></pre></td>
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Modul ''{0} {1}'' gefunden.</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>Lie&szlig;t ''{0}''.</code></pre></td>
      *     </tr>
      *   </table>
      * </p>
      *
      * @param locale The locale of the message to return.
-     * @param moduleName Format argument.
-     * @param moduleVersion Format argument.
-     * @return The text of the {@code moduleInfo} message for {@code locale}.
+     * @param locationInfo Format argument.
+     * @return The text of the {@code readingMessage} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private String getModuleInfo( final java.util.Locale locale, final java.lang.String moduleName, final java.lang.String moduleVersion )
+    private String getReadingMessage( final java.util.Locale locale, final java.lang.String locationInfo )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "moduleInfo", locale, moduleName, moduleVersion );
-        assert _m != null : "'moduleInfo' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "readingMessage", locale, locationInfo );
+        assert _m != null : "'readingMessage' message not found.";
         return _m;
     }
 

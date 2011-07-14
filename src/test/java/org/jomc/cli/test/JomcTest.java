@@ -138,6 +138,12 @@ import static org.junit.Assert.assertTrue;
  *       <td align="left" valign="top"></td>
  *     </tr>
  *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getTestModelDocumentIllegalSchemaConstraints testModelDocumentIllegalSchemaConstraints}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@code none}</td>
+ *       <td align="left" valign="top"></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getTestModelDocumentNonExistentClasses testModelDocumentNonExistentClasses}</td>
  *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
@@ -245,6 +251,7 @@ public class JomcTest
         "modlet-relocations.xsl",
         "jomc.xml",
         "illegal-module.xml",
+        "illegal-module-document.xml",
         "module-nonexistent-classes.xml"
     };
 
@@ -422,8 +429,7 @@ public class JomcTest
 
         final String[] validateArgs = new String[]
         {
-            "validate-classes", "-df", '"' + this.getTestModelDocument() + '"', "-cp",
-            '"' + this.getClassesDirectory() + '"', "-D"
+            "validate-classes", "-cp", '"' + this.getClassesDirectory() + '"', "-D"
         };
 
         final String[] validateArgsNonExistentClasses = new String[]
@@ -518,7 +524,7 @@ public class JomcTest
 
         final String[] illegalDoc = new String[]
         {
-            "merge-modules", "-df", '"' + this.getTestModelDocumentIllegal() + '"', "-xs",
+            "merge-modules", "-df", '"' + this.getTestModelDocumentIllegalSchemaConstraints() + '"', "-xs",
             '"' + this.getTestModelStylesheet() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-d",
             '"' + this.getTestModelOutputDocument() + '"', "-D"
         };
@@ -596,21 +602,23 @@ public class JomcTest
         final String[] args = new String[]
         {
             "merge-modlets", "-xs", '"' + this.getTestModletStylesheet() + '"', "-mdn",
-            '"' + this.getTestModletName() + '"', "-d", '"' + this.getTestModletOutputDocument() + '"'
+            '"' + this.getTestModletName() + '"', "-d", '"' + this.getTestModletOutputDocument() + '"',
+            "-cp", "."
         };
 
         final String[] includeArgs = new String[]
         {
             "merge-modlets", "-xs", '"' + this.getTestModletStylesheet() + '"', "-mdn",
             '"' + this.getTestModletName() + '"', "-d", '"' + this.getTestModletOutputDocument() + '"',
-            "-mdinc", "JOMC Model"
+            "-mdinc", "JOMC Model", "-cp", "."
         };
 
         final String[] excludeArgs = new String[]
         {
             "merge-modlets", "-xs", '"' + this.getTestModletStylesheet() + '"', "-mdn",
             '"' + this.getTestModletName() + '"', "-d", '"' + this.getTestModletOutputDocument() + '"',
-            "-mdexc", "JOMC Model" + File.pathSeparatorChar + "JOMC Tools" + File.pathSeparatorChar + "JOMC Modlet"
+            "-mdexc", "JOMC Model" + File.pathSeparatorChar + "JOMC Tools" + File.pathSeparatorChar + "JOMC Modlet",
+            "-cp", "."
         };
 
         final String[] unsupportedOption = new String[]
@@ -756,7 +764,7 @@ public class JomcTest
         {
             final URL rsrc = this.getClass().getResource( ABSOLUTE_RESOURCE_NAME_PREFIX + testResourceName );
             assertNotNull( rsrc );
-            FileUtils.copyInputStreamToFile( rsrc.openStream(), new File( resourcesDirectory, testResourceName ) );
+            FileUtils.copyURLToFile( rsrc, new File( resourcesDirectory, testResourceName ) );
         }
 
         final File classesDirectory = new File( this.getClassesDirectory() );
@@ -897,6 +905,19 @@ public class JomcTest
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocumentIllegal" );
         assert _p != null : "'testModelDocumentIllegal' property not found.";
+        return _p;
+    }
+
+    /**
+     * Gets the value of the {@code testModelDocumentIllegalSchemaConstraints} property.
+     * @return The value of the {@code testModelDocumentIllegalSchemaConstraints} property.
+     * @throws org.jomc.ObjectManagementException if getting the property instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private java.lang.String getTestModelDocumentIllegalSchemaConstraints()
+    {
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocumentIllegalSchemaConstraints" );
+        assert _p != null : "'testModelDocumentIllegalSchemaConstraints' property not found.";
         return _p;
     }
 

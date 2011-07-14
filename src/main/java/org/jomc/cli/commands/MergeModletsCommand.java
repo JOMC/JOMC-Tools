@@ -37,7 +37,10 @@
 package org.jomc.cli.commands;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -51,8 +54,10 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.cli.CommandLine;
+import org.jomc.modlet.DefaultModletProvider;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelException;
+import org.jomc.modlet.ModelValidationReport;
 import org.jomc.modlet.Modlet;
 import org.jomc.modlet.ModletObject;
 import org.jomc.modlet.Modlets;
@@ -185,6 +190,11 @@ import org.jomc.modlet.ObjectFactory;
  *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Document Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getDocumentsOption DocumentsOption}</td>
+ *       <td align="left" valign="top" nowrap>{@code none}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Documents Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
+ *     </tr>
+ *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getLocale Locale}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top">Dependency on the {@code 'default'} object of the {@code 'java.util.Locale'} {@code (java.util.Locale)} specification at specification level 1.1 bound to an instance.</td>
@@ -245,6 +255,11 @@ import org.jomc.modlet.ObjectFactory;
  *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Provider Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getResourcesOption ResourcesOption}</td>
+ *       <td align="left" valign="top" nowrap>{@code none}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Resources Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
+ *     </tr>
+ *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getStylesheetOption StylesheetOption}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Stylesheet Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
@@ -266,7 +281,13 @@ import org.jomc.modlet.ObjectFactory;
  *       <td align="left" valign="top" nowrap>{@link #getApplicationTitle applicationTitle}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
- *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-08T14:28:13+0200</code></pre></td>
+ *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-14T09:56:53+0200</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getCannotProcessMessage cannotProcessMessage}</td>
+ *       <td align="left" valign="top" nowrap>{@code none}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Cannot process ''{0}'': {1}</code></pre><hr/><pre><code>Kann ''{0}'' nicht verarbeiten: {1}</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getClasspathElementInfo classpathElementInfo}</td>
@@ -303,6 +324,18 @@ import org.jomc.modlet.ObjectFactory;
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
  *       <td align="left" valign="top" nowrap><pre><code>Default log level: ''{0}''</code></pre><hr/><pre><code>Standard-Protokollierungsstufe: ''{0}''</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getDocumentFileInfo documentFileInfo}</td>
+ *       <td align="left" valign="top" nowrap>{@code none}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Document file: ''{0}''</code></pre><hr/><pre><code>Dokument-Datei: ''{0}''</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getDocumentFileNotFoundWarning documentFileNotFoundWarning}</td>
+ *       <td align="left" valign="top" nowrap>{@code none}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Document file ''{0}'' ignored. File not found.</code></pre><hr/><pre><code>Dokument-Datei ''{0}'' ignoriert. Datei nicht gefunden.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getExcludedModletInfo excludedModletInfo}</td>
@@ -369,6 +402,12 @@ import org.jomc.modlet.ObjectFactory;
  *                      -v</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getReadingMessage readingMessage}</td>
+ *       <td align="left" valign="top" nowrap>{@code none}</td>
+ *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
+ *       <td align="left" valign="top" nowrap><pre><code>Reading ''{0}''.</code></pre><hr/><pre><code>Lie&szlig;t ''{0}''.</code></pre></td>
+ *     </tr>
+ *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getSeparator separator}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
@@ -412,9 +451,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
 
         try
         {
+            final Modlets modlets = new Modlets();
             final CommandLineClassLoader classLoader = new CommandLineClassLoader( commandLine );
             final ModelContext context = this.createModelContext( classLoader );
-            final Modlets modlets = new Modlets( context.getModlets() );
             final Marshaller marshaller = context.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
             final Unmarshaller unmarshaller = context.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
 
@@ -434,6 +473,92 @@ public final class MergeModletsCommand extends AbstractModletCommand
             if ( commandLine.hasOption( this.getModletVendorOption().getOpt() ) )
             {
                 modletVendor = commandLine.getOptionValue( this.getModletVendorOption().getOpt() );
+            }
+
+            if ( commandLine.hasOption( this.getDocumentsOption().getOpt() ) )
+            {
+                for ( File f : this.getDocumentFiles( commandLine ) )
+                {
+                    if ( this.isLoggable( Level.FINEST ) )
+                    {
+                        this.log( Level.FINEST, this.getReadingMessage( this.getLocale(), f.getAbsolutePath() ), null );
+                    }
+
+                    Object o = unmarshaller.unmarshal( f );
+                    if ( o instanceof JAXBElement<?> )
+                    {
+                        o = ( (JAXBElement<?>) o ).getValue();
+                    }
+
+                    if ( o instanceof Modlet )
+                    {
+                        modlets.getModlet().add( (Modlet) o );
+                    }
+                    else if ( o instanceof Modlets )
+                    {
+                        modlets.getModlet().addAll( ( (Modlets) o ).getModlet() );
+                    }
+                    else if ( this.isLoggable( Level.WARNING ) )
+                    {
+                        this.log( Level.WARNING, this.getCannotProcessMessage(
+                            this.getLocale(), f.getAbsolutePath(), o.toString() ), null );
+
+                    }
+                }
+            }
+
+            if ( commandLine.hasOption( this.getClasspathOption().getOpt() ) )
+            {
+                String[] resourceNames = null;
+
+                if ( commandLine.hasOption( this.getResourcesOption().getOpt() ) )
+                {
+                    resourceNames = commandLine.getOptionValues( this.getResourcesOption().getOpt() );
+                }
+
+                if ( resourceNames == null )
+                {
+                    resourceNames = new String[]
+                    {
+                        DefaultModletProvider.getDefaultModletLocation()
+                    };
+                }
+
+                for ( String resource : resourceNames )
+                {
+                    for ( final Enumeration<URL> e = classLoader.getResources( resource ); e.hasMoreElements(); )
+                    {
+                        final URL url = e.nextElement();
+
+                        if ( this.isLoggable( Level.FINEST ) )
+                        {
+                            this.log( Level.FINEST, this.getReadingMessage( this.getLocale(), url.toExternalForm() ),
+                                      null );
+
+                        }
+
+                        Object o = unmarshaller.unmarshal( url );
+                        if ( o instanceof JAXBElement<?> )
+                        {
+                            o = ( (JAXBElement<?>) o ).getValue();
+                        }
+
+                        if ( o instanceof Modlet )
+                        {
+                            modlets.getModlet().add( (Modlet) o );
+                        }
+                        else if ( o instanceof Modlets )
+                        {
+                            modlets.getModlet().addAll( ( (Modlets) o ).getModlet() );
+                        }
+                        else if ( this.isLoggable( Level.WARNING ) )
+                        {
+                            this.log( Level.WARNING, this.getCannotProcessMessage(
+                                this.getLocale(), url.toExternalForm(), o.toString() ), null );
+
+                        }
+                    }
+                }
             }
 
             for ( final Iterator<Modlet> it = modlets.getModlet().iterator(); it.hasNext(); )
@@ -489,6 +614,19 @@ public final class MergeModletsCommand extends AbstractModletCommand
                 }
             }
 
+            final ModelValidationReport validationReport =
+                context.validateModel( ModletObject.MODEL_PUBLIC_ID,
+                                       new JAXBSource( marshaller, new ObjectFactory().createModlets( modlets ) ) );
+
+            this.log( validationReport, marshaller );
+
+            if ( !validationReport.isModelValid() )
+            {
+                throw new CommandExecutionException( this.getInvalidModelMessage(
+                    this.getLocale(), ModletObject.MODEL_PUBLIC_ID ) );
+
+            }
+
             Modlet mergedModlet = modlets.getMergedModlet(
                 commandLine.getOptionValue( this.getModletNameOption().getOpt() ), this.getModel( commandLine ) );
 
@@ -519,7 +657,6 @@ public final class MergeModletsCommand extends AbstractModletCommand
                 }
             }
 
-            marshaller.setSchema( context.createSchema( ModletObject.MODEL_PUBLIC_ID ) );
             marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
 
             if ( commandLine.hasOption( this.getDocumentEncodingOption().getOpt() ) )
@@ -529,12 +666,17 @@ public final class MergeModletsCommand extends AbstractModletCommand
 
             }
 
+            marshaller.setSchema( context.createSchema( ModletObject.MODEL_PUBLIC_ID ) );
             marshaller.marshal( new ObjectFactory().createModlet( mergedModlet ), modletFile );
 
             if ( this.isLoggable( Level.INFO ) )
             {
                 this.log( Level.INFO, this.getWriteInfo( this.getLocale(), modletFile.getAbsolutePath() ), null );
             }
+        }
+        catch ( final IOException e )
+        {
+            throw new CommandExecutionException( getExceptionMessage( e ), e );
         }
         catch ( final TransformerException e )
         {
@@ -601,6 +743,10 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Documents Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI ModelContext Class Name Option</td>
      *     </tr>
      *     <tr class="TableRow">
@@ -645,6 +791,10 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Resources Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Stylesheet Option</td>
      *     </tr>
      *   </table>
@@ -659,6 +809,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
         options.addOption( this.getClasspathOption() );
         options.addOption( this.getDocumentEncodingOption() );
         options.addOption( this.getDocumentOption() );
+        options.addOption( this.getDocumentsOption() );
         options.addOption( this.getModelContextOption() );
         options.addOption( this.getModelOption() );
         options.addOption( this.getModletExcludesOption() );
@@ -670,6 +821,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
         options.addOption( this.getModletVersionOption() );
         options.addOption( this.getPlatformProviderLocationOption() );
         options.addOption( this.getProviderLocationOption() );
+        options.addOption( this.getResourcesOption() );
         options.addOption( this.getStylesheetOption() );
         return options;
     }
@@ -734,6 +886,21 @@ public final class MergeModletsCommand extends AbstractModletCommand
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "DocumentOption" );
         assert _d != null : "'DocumentOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code DocumentsOption} dependency.
+     * <p>This method returns the {@code 'JOMC CLI Documents Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code DocumentsOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private org.apache.commons.cli.Option getDocumentsOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "DocumentsOption" );
+        assert _d != null : "'DocumentsOption' dependency not found.";
         return _d;
     }
 
@@ -932,6 +1099,21 @@ public final class MergeModletsCommand extends AbstractModletCommand
     }
 
     /**
+     * Gets the {@code ResourcesOption} dependency.
+     * <p>This method returns the {@code 'JOMC CLI Resources Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code ResourcesOption} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private org.apache.commons.cli.Option getResourcesOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ResourcesOption" );
+        assert _d != null : "'ResourcesOption' dependency not found.";
+        return _d;
+    }
+
+    /**
      * Gets the {@code StylesheetOption} dependency.
      * <p>This method returns the {@code 'JOMC CLI Stylesheet Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
      * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
@@ -1055,7 +1237,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-08T14:28:13+0200</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-14T09:56:53+0200</code></pre></td>
      *     </tr>
      *   </table>
      * </p>
@@ -1069,6 +1251,39 @@ public final class MergeModletsCommand extends AbstractModletCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "applicationTitle", locale );
         assert _m != null : "'applicationTitle' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code cannotProcessMessage} message.
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" scope="col" nowrap><b>Language</b></th>
+     *       <th align="left" scope="col" nowrap><b>Template</b></th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Cannot process ''{0}'': {1}</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Kann ''{0}'' nicht verarbeiten: {1}</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
+     * @param locale The locale of the message to return.
+     * @param itemInfo Format argument.
+     * @param detailMessage Format argument.
+     * @return The text of the {@code cannotProcessMessage} message for {@code locale}.
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private String getCannotProcessMessage( final java.util.Locale locale, final java.lang.String itemInfo, final java.lang.String detailMessage )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "cannotProcessMessage", locale, itemInfo, detailMessage );
+        assert _m != null : "'cannotProcessMessage' message not found.";
         return _m;
     }
 
@@ -1261,6 +1476,70 @@ public final class MergeModletsCommand extends AbstractModletCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "defaultLogLevelInfo", locale, defaultLogLevel );
         assert _m != null : "'defaultLogLevelInfo' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code documentFileInfo} message.
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" scope="col" nowrap><b>Language</b></th>
+     *       <th align="left" scope="col" nowrap><b>Template</b></th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Document file: ''{0}''</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Dokument-Datei: ''{0}''</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
+     * @param locale The locale of the message to return.
+     * @param documentFile Format argument.
+     * @return The text of the {@code documentFileInfo} message for {@code locale}.
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private String getDocumentFileInfo( final java.util.Locale locale, final java.lang.String documentFile )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentFileInfo", locale, documentFile );
+        assert _m != null : "'documentFileInfo' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code documentFileNotFoundWarning} message.
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" scope="col" nowrap><b>Language</b></th>
+     *       <th align="left" scope="col" nowrap><b>Template</b></th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Document file ''{0}'' ignored. File not found.</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Dokument-Datei ''{0}'' ignoriert. Datei nicht gefunden.</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
+     * @param locale The locale of the message to return.
+     * @param fileName Format argument.
+     * @return The text of the {@code documentFileNotFoundWarning} message for {@code locale}.
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private String getDocumentFileNotFoundWarning( final java.util.Locale locale, final java.lang.String fileName )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "documentFileNotFoundWarning", locale, fileName );
+        assert _m != null : "'documentFileNotFoundWarning' message not found.";
         return _m;
     }
 
@@ -1562,6 +1841,38 @@ public final class MergeModletsCommand extends AbstractModletCommand
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "longDescriptionMessage", locale );
         assert _m != null : "'longDescriptionMessage' message not found.";
+        return _m;
+    }
+
+    /**
+     * Gets the text of the {@code readingMessage} message.
+     * <p><strong>Templates:</strong>
+     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+     *     <tr class="TableSubHeadingColor">
+     *       <th align="left" scope="col" nowrap><b>Language</b></th>
+     *       <th align="left" scope="col" nowrap><b>Template</b></th>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>English (default)</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Reading ''{0}''.</code></pre></td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>Deutsch</td>
+     *       <td align="left" valign="top" nowrap><pre><code>Lie&szlig;t ''{0}''.</code></pre></td>
+     *     </tr>
+     *   </table>
+     * </p>
+     *
+     * @param locale The locale of the message to return.
+     * @param locationInfo Format argument.
+     * @return The text of the {@code readingMessage} message for {@code locale}.
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private String getReadingMessage( final java.util.Locale locale, final java.lang.String locationInfo )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "readingMessage", locale, locationInfo );
+        assert _m != null : "'readingMessage' message not found.";
         return _m;
     }
 
