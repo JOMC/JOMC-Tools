@@ -128,7 +128,8 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
         /** Model object resource. */
         MODEL_OBJECT_RESOURCE,
         /** Modlet object resource. */
-        MODLET_OBJECT_RESOURCE,
+        MODLET_OBJECT_RESOURCE
+
     }
 
     /** Prefix prepended to log messages. */
@@ -680,7 +681,6 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
                 this.setupJomc();
                 final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
                 this.jomcUnmarshaller = modelContext.createUnmarshaller( this.model );
-                this.jomcUnmarshaller.setSchema( modelContext.createSchema( this.model ) );
             }
             finally
             {
@@ -754,12 +754,8 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
                 final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
                 final Marshaller marshaller = modelContext.createMarshaller( this.model );
                 final Unmarshaller unmarshaller = modelContext.createUnmarshaller( this.model );
-                final javax.xml.validation.Schema schema = modelContext.createSchema( this.model );
                 final JAXBSource source = new JAXBSource( marshaller, element );
                 final JAXBResult result = new JAXBResult( unmarshaller );
-                marshaller.setSchema( schema );
-                marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
-                unmarshaller.setSchema( schema );
 
                 for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
                 {
@@ -802,12 +798,10 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
             try
             {
                 this.setupJomc();
-
                 final ModelContext modletContext =
                     ModelContext.createModelContext( this.getClass().getClassLoader() );
 
                 this.modletUnmarshaller = modletContext.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
-                this.modletUnmarshaller.setSchema( modletContext.createSchema( ModletObject.MODEL_PUBLIC_ID ) );
             }
             finally
             {
@@ -886,12 +880,8 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
 
                 final Marshaller marshaller = modletContext.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
                 final Unmarshaller unmarshaller = modletContext.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
-                final javax.xml.validation.Schema schema = modletContext.createSchema( ModletObject.MODEL_PUBLIC_ID );
                 final JAXBSource source = new JAXBSource( marshaller, element );
                 final JAXBResult result = new JAXBResult( unmarshaller );
-                marshaller.setSchema( schema );
-                marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
-                unmarshaller.setSchema( schema );
 
                 for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
                 {
