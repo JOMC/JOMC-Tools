@@ -447,6 +447,11 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
                 final Unmarshaller u = context.createUnmarshaller( model.getIdentifier() );
                 for ( File f : this.getDocumentFiles( commandLine ) )
                 {
+                    if ( this.isLoggable( Level.FINEST ) )
+                    {
+                        this.log( Level.FINEST, this.getReadingMessage( this.getLocale(), f.getAbsolutePath() ), null );
+                    }
+
                     Object o = u.unmarshal( f );
                     if ( o instanceof JAXBElement<?> )
                     {
