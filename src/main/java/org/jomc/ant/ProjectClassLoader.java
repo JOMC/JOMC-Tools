@@ -64,6 +64,9 @@ import org.jomc.modlet.Schema;
 import org.jomc.modlet.Schemas;
 import org.jomc.modlet.Service;
 import org.jomc.modlet.Services;
+import org.jomc.util.ParseException;
+import org.jomc.util.TokenMgrError;
+import org.jomc.util.VersionParser;
 
 /**
  * Class loader supporting JOMC resources backed by a project.
@@ -697,7 +700,7 @@ public class ProjectClassLoader extends URLClassLoader
                     {
                         it.remove();
                         filtered = true;
-                        this.getExcludedModlets().getModlet().add( m );
+                        this.addExcludedModlet( m );
                         this.getProject().log( Messages.getMessage( "modletExclusion", resource.toExternalForm(),
                                                                     m.getName() ), Project.MSG_DEBUG );
 
@@ -752,6 +755,7 @@ public class ProjectClassLoader extends URLClassLoader
                     this.getProject().log( Messages.getMessage( "schemaExclusion", resourceInfo, s.getPublicId() ),
                                            Project.MSG_DEBUG );
 
+                    this.addExcludedSchema( s );
                     filteredSchemas = true;
                 }
             }
@@ -777,6 +781,7 @@ public class ProjectClassLoader extends URLClassLoader
                     this.getProject().log( Messages.getMessage( "serviceExclusion", resourceInfo, s.getClazz() ),
                                            Project.MSG_DEBUG );
 
+                    this.addExcludedService( s );
                     filteredServices = true;
                 }
             }
@@ -788,6 +793,59 @@ public class ProjectClassLoader extends URLClassLoader
         }
 
         return filteredSchemas || filteredServices;
+    }
+
+    private void addExcludedModlet( final Modlet modlet )
+    {
+        try
+        {
+            final Modlet m = this.getExcludedModlets().getModlet( modlet.getName() );
+
+            if ( m != null )
+            {
+                if ( m.getVersion() != null && modlet.getVersion() != null
+                     && VersionParser.compare( m.getVersion(), modlet.getVersion() ) < 0 )
+                {
+                    this.getExcludedModlets().getModlet().remove( m );
+                    this.getExcludedModlets().getModlet().add( modlet );
+                }
+            }
+            else
+            {
+                this.getExcludedModlets().getModlet().add( modlet );
+            }
+        }
+        catch ( final ParseException e )
+        {
+            this.getProject().log( Messages.getMessage( e ), e, Project.MSG_WARN );
+        }
+        catch ( final TokenMgrError e )
+        {
+            this.getProject().log( Messages.getMessage( e ), e, Project.MSG_WARN );
+        }
+    }
+
+    private void addExcludedSchema( final Schema schema )
+    {
+        if ( this.getExcludedSchemas().getSchemaByPublicId( schema.getPublicId() ) == null )
+        {
+            this.getExcludedSchemas().getSchema().add( schema );
+        }
+    }
+
+    private void addExcludedService( final Service service )
+    {
+        for ( int i = 0, s0 = this.getExcludedServices().getService().size(); i < s0; i++ )
+        {
+            final Service s = this.getExcludedServices().getService().get( i );
+
+            if ( s.getIdentifier().equals( service.getIdentifier() ) && s.getClazz().equals( service.getClazz() ) )
+            {
+                return;
+            }
+        }
+
+        this.getExcludedServices().getService().add( service );
     }
 
 }
