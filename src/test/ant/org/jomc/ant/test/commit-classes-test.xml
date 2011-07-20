@@ -117,6 +117,13 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-module-resource-missing-location">
+    <jomc:commit-classes classesDirectory="${empty.dir}" if="${jomc.enabled}">
+      <jomc:moduleResource/>
+    </jomc:commit-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-stylesheet-not-found">
     <jomc:commit-classes classesDirectory="${empty.dir}" if="${jomc.enabled}">
       <jomc:modelObjectStylesheetResource location="DOES_NOT_EXIST" optional="false" connectTimeout="0"
@@ -277,9 +284,9 @@
                          specification="TEST"
                          implementation="TEST"
                          module="TEST"
-                         model="TEST"
-                         modletLocation="TEST"
-                         providerLocation="TEST"
+                         model="http://jomc.org/model"
+                         modletLocation="META-INF/jomc-modlet.xml"
+                         providerLocation="META-INF/services"
                          platformProviderLocation="TEST"
                          if="${jomc.enabled}"
                          classFileProcessorClass="org.jomc.tools.ClassFileProcessor"

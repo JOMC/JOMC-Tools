@@ -32,9 +32,12 @@
  */
 package org.jomc.ant.test;
 
+import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.jomc.ant.WriteModelTask;
 import org.junit.Test;
+import static org.jomc.ant.test.Assert.assertException;
+import static org.jomc.ant.test.Assert.assertExceptionMessage;
 import static org.jomc.ant.test.Assert.assertMessageLogged;
 import static org.jomc.ant.test.Assert.assertMessageLoggedContaining;
 import static org.jomc.ant.test.Assert.assertNoException;
@@ -73,6 +76,14 @@ public class WriteModelTaskTest extends JomcModelTaskTest
     protected String getBuildFileName()
     {
         return "write-model-task-test.xml";
+    }
+
+    @Test
+    public final void testModuleResourceMissingLocation() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-module-resource-missing-location" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'location' is missing a value." );
     }
 
     @Test

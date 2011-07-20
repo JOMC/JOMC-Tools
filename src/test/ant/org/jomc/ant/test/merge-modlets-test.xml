@@ -38,6 +38,7 @@
   <property name="jomc.enabled" value="on"/>
   <property name="no.op.stylesheet" value="org/jomc/ant/test/no-op.xsl"/>
   <property name="modlets.stylesheet" value="org/jomc/ant/test/modlets.xsl"/>
+  <property name="unsupported.modlet" value="org/jomc/ant/test/unsupported-modlet.xml"/>
 
   <!-- ************************************************************************************************************* -->
   <target name="before-test">
@@ -97,6 +98,13 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-modlet-resource-missing-locatiom">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" if="${jomc.enabled}">
+      <jomc:modletResource/>
+    </jomc:merge-modlets>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-merge-modlets">
     <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" if="${jomc.enabled}"/>
   </target>
@@ -120,6 +128,14 @@
     <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" if="${jomc.enabled}">
       <jomc:modletObjectStylesheetResource location="${modlets.stylesheet}" optional="false" connectTimeout="0"
                                            readTimeout="0"/>
+    </jomc:merge-modlets>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-merge-modlets-unsupported-resource">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" classpathref="redundant.classpath"
+                        if="${jomc.enabled}">
+      <jomc:modletResource location="${unsupported.modlet}"/>
     </jomc:merge-modlets>
   </target>
 
@@ -150,6 +166,7 @@
       <jomc:classpath>
         <pathelement location="${empty.dir}"/>
       </jomc:classpath>
+      <jomc:modletResource location="DOES_NOT_EXIST" optional="true"/>
       <jomc:modletExclude name="JOMC Tools"/>
       <jomc:modletInclude name="JOMC Tools"/>
     </jomc:merge-modlets>

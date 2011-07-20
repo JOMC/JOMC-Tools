@@ -171,6 +171,9 @@ Task and Type Reference
 | <<<locale>>>                                | Locale of the task.                        | No.                    |
 |                                             | Type: {{LocaleType}}                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleResource>>>                        | Additional module resource.                | No.                    |
+|                                             | Type: {{ResourceType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
 |                                             | to be used to configure the Velocity       |                        |
 |                                             | engine backing the task.                   |                        |
@@ -348,6 +351,9 @@ Task and Type Reference
 | <<<locale>>>                                | Locale of the task.                        | No.                    |
 |                                             | Type: {{LocaleType}}                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleResource>>>                        | Additional module resource.                | No.                    |
+|                                             | Type: {{ResourceType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
 |                                             | to be used to configure the Velocity       |                        |
 |                                             | engine backing the task.                   |                        |
@@ -518,6 +524,9 @@ Task and Type Reference
 | <<<locale>>>                                | Locale of the task.                        | No.                    |
 |                                             | Type: {{LocaleType}}                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleResource>>>                        | Additional module resource.                | No.                    |
+|                                             | Type: {{ResourceType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
 |                                             | to be used to configure the Velocity       |                        |
 |                                             | engine backing the task.                   |                        |
@@ -687,6 +696,9 @@ Task and Type Reference
 | <<<locale>>>                                | Locale of the task.                        | No.                    |
 |                                             | Type: {{LocaleType}}                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleResource>>>                        | Additional module resource.                | No.                    |
+|                                             | Type: {{ResourceType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
 |                                             | to be used to configure the Velocity       |                        |
 |                                             | engine backing the task.                   |                        |
@@ -854,6 +866,9 @@ Task and Type Reference
 | <<<locale>>>                                | Locale of the task.                        | No.                    |
 |                                             | Type: {{LocaleType}}                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleResource>>>                        | Additional module resource.                | No.                    |
+|                                             | Type: {{ResourceType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
 |                                             | to be used to configure the Velocity       |                        |
 |                                             | engine backing the task.                   |                        |
@@ -953,6 +968,9 @@ Task and Type Reference
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element can be used.   |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleResource>>>                        | Additional module resource.                | No.                    |
+|                                             | Type: {{ResourceType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
 |                                             | be passed to all transformers of the task. |                        |
 |                                             | Type: {{PropertiesResourceType}}           |                        |
@@ -1039,6 +1057,9 @@ Task and Type Reference
 |                                             |                                            | attribute or the       |
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletResource>>>                        | Modlet resources to merge.                 | No.                    |
+|                                             | Type: {{ResourceType}}                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
 |                                             | be passed to all transformers of the task. |                        |
@@ -1145,6 +1166,9 @@ Task and Type Reference
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element can be used.   |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleResource>>>                        | Module resources to merge.                 | No.                    |
+|                                             | Type: {{ResourceType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
 |                                             | be passed to all transformers of the task. |                        |
 |                                             | Type: {{PropertiesResourceType}}           |                        |
@@ -1249,6 +1273,9 @@ Task and Type Reference
 |                                             |                                            | attribute or the       |
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleResource>>>                        | Additional module resource.                | No.                    |
+|                                             | Type: {{ResourceType}}                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
 |                                             | be passed to all transformers of the task. |                        |

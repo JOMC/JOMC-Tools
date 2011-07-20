@@ -32,7 +32,24 @@
  */
 package org.jomc.ant;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.SocketTimeoutException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Level;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import org.apache.commons.io.IOUtils;
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
+import org.jomc.ant.types.ResourceType;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.modlet.DefaultModelProcessor;
@@ -51,7 +68,7 @@ import org.jomc.modlet.ModelException;
 public class JomcModelTask extends JomcTask
 {
 
-    /** Controls model object classpath resolution. */
+    /** Controls model object class path resolution. */
     private boolean modelObjectClasspathResolutionEnabled = true;
 
     /** The location to search for modules. */
@@ -59,6 +76,9 @@ public class JomcModelTask extends JomcTask
 
     /** The location to search for transformers. */
     private String transformerLocation;
+
+    /** Module resources. */
+    private Set<ResourceType> moduleResources;
 
     /** Creates a new {@code JomcModelTask} instance. */
     public JomcModelTask()
@@ -140,6 +160,40 @@ public class JomcModelTask extends JomcTask
     }
 
     /**
+     * Gets a set of module resources.
+     * <p>This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
+     * to the returned set will be present inside the object. This is why there is no {@code set} method for the
+     * module resources property.</p>
+     *
+     * @return A set of module resources.
+     *
+     * @see #createModuleResource()
+     */
+    public Set<ResourceType> getModuleResources()
+    {
+        if ( this.moduleResources == null )
+        {
+            this.moduleResources = new HashSet<ResourceType>();
+        }
+
+        return this.moduleResources;
+    }
+
+    /**
+     * Creates a new {@code moduleResource} element instance.
+     *
+     * @return A new {@code moduleResource} element instance.
+     *
+     * @see #getModuleResources()
+     */
+    public ResourceType createModuleResource()
+    {
+        final ResourceType moduleResource = new ResourceType();
+        this.getModuleResources().add( moduleResource );
+        return moduleResource;
+    }
+
+    /**
      * Gets a {@code Model} from a given {@code ModelContext}.
      *
      * @param context The context to get a {@code Model} from.
@@ -162,30 +216,140 @@ public class JomcModelTask extends JomcTask
             throw new NullPointerException( "context" );
         }
 
-        Model model = context.findModel( this.getModel() );
+        Model model = new Model();
+        model.setIdentifier( this.getModel() );
+        Modules modules = new Modules();
+        ModelHelper.setModules( model, modules );
+        Unmarshaller unmarshaller = null;
 
-        if ( model != null )
+        for ( ResourceType resource : this.getModuleResources() )
         {
-            if ( this.isModelObjectClasspathResolutionEnabled() )
+            final URL[] urls = this.getResources( resource.getLocation(), context.getClassLoader() );
+
+            if ( urls.length == 0 )
             {
-                final Modules modules = ModelHelper.getModules( model );
-
-                if ( modules != null )
+                if ( resource.isOptional() )
                 {
-                    final Module classpathModule =
-                        modules.getClasspathModule( Modules.getDefaultClasspathModuleName(), context.getClassLoader() );
+                    this.logMessage( Level.WARNING, Messages.getMessage( "moduleResourceNotFound",
+                                                                         resource.getLocation() ) );
 
-                    if ( classpathModule != null )
-                    {
-                        modules.getModule().add( classpathModule );
-                    }
+                }
+                else
+                {
+                    throw new BuildException( Messages.getMessage( "moduleResourceNotFound", resource.getLocation() ),
+                                              this.getLocation() );
+
                 }
             }
 
-            if ( this.isModelProcessingEnabled() )
+            for ( int i = urls.length - 1; i >= 0; i-- )
             {
-                model = context.processModel( model );
+                InputStream in = null;
+
+                try
+                {
+                    this.logMessage( Level.FINEST, Messages.getMessage( "reading", urls[i].toExternalForm() ) );
+
+                    final URLConnection con = urls[i].openConnection();
+                    con.setConnectTimeout( resource.getConnectTimeout() );
+                    con.setReadTimeout( resource.getReadTimeout() );
+                    con.connect();
+                    in = con.getInputStream();
+
+                    final Source source = new StreamSource( in, urls[i].toURI().toASCIIString() );
+
+                    if ( unmarshaller == null )
+                    {
+                        unmarshaller = context.createUnmarshaller( this.getModel() );
+                    }
+
+                    Object o = unmarshaller.unmarshal( source );
+                    if ( o instanceof JAXBElement<?> )
+                    {
+                        o = ( (JAXBElement<?>) o ).getValue();
+                    }
+
+                    if ( o instanceof Module )
+                    {
+                        modules.getModule().add( (Module) o );
+                    }
+                    else if ( o instanceof Modules )
+                    {
+                        modules.getModule().addAll( ( (Modules) o ).getModule() );
+                    }
+                    else
+                    {
+                        this.log( Messages.getMessage( "unsupportedModuleResource", urls[i].toExternalForm() ),
+                                  Project.MSG_WARN );
+
+                    }
+                }
+                catch ( final SocketTimeoutException e )
+                {
+                    String message = Messages.getMessage( e );
+                    message = Messages.getMessage( "resourceTimeout", message != null ? " " + message : "" );
+
+                    if ( resource.isOptional() )
+                    {
+                        this.getProject().log( message, e, Project.MSG_WARN );
+                    }
+                    else
+                    {
+                        throw new BuildException( message, e, this.getLocation() );
+                    }
+                }
+                catch ( final IOException e )
+                {
+                    String message = Messages.getMessage( e );
+                    message = Messages.getMessage( "resourceFailure", message != null ? " " + message : "" );
+
+                    if ( resource.isOptional() )
+                    {
+                        this.getProject().log( message, e, Project.MSG_WARN );
+                    }
+                    else
+                    {
+                        throw new BuildException( message, e, this.getLocation() );
+                    }
+                }
+                catch ( final URISyntaxException e )
+                {
+                    throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
+                }
+                catch ( final JAXBException e )
+                {
+                    String message = Messages.getMessage( e );
+                    if ( message == null )
+                    {
+                        message = Messages.getMessage( e.getLinkedException() );
+                    }
+
+                    throw new BuildException( message, e, this.getLocation() );
+                }
+                finally
+                {
+                    IOUtils.closeQuietly( in );
+                }
             }
+        }
+
+        model = context.findModel( model );
+        modules = ModelHelper.getModules( model );
+
+        if ( modules != null && this.isModelObjectClasspathResolutionEnabled() )
+        {
+            final Module classpathModule =
+                modules.getClasspathModule( Modules.getDefaultClasspathModuleName(), context.getClassLoader() );
+
+            if ( classpathModule != null && modules.getModule( Modules.getDefaultClasspathModuleName() ) == null )
+            {
+                modules.getModule().add( classpathModule );
+            }
+        }
+
+        if ( this.isModelProcessingEnabled() )
+        {
+            model = context.processModel( model );
         }
 
         return model;
@@ -199,6 +363,8 @@ public class JomcModelTask extends JomcTask
 
         DefaultModelProvider.setDefaultModuleLocation( this.getModuleLocation() );
         DefaultModelProcessor.setDefaultTransformerLocation( this.getTransformerLocation() );
+
+        this.assertLocationsNotNull( this.getModuleResources() );
     }
 
     /** {@inheritDoc} */

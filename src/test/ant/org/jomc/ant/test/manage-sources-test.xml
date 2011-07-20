@@ -98,6 +98,13 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-module-resource-missing-location">
+    <jomc:manage-sources sourcesDirectory="${empty.dir}">
+      <jomc:moduleResource/>
+    </jomc:manage-sources>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-source-processing-disabled">
     <jomc:manage-sources sourcesDirectory="${empty.dir}" sourceProcessingEnabled="false" if="${jomc.enabled}"/>
   </target>
@@ -175,9 +182,9 @@
                          specification="TEST"
                          implementation="TEST"
                          module="TEST"
-                         model="TEST"
-                         modletLocation="TEST"
-                         providerLocation="TEST"
+                         model="http://jomc.org/model"
+                         modletLocation="META-INF/jomc-modlet.xml"
+                         providerLocation="META-INF/services"
                          platformProviderLocation="TEST"
                          if="${jomc.enabled}"
                          sourceFileProcessorClass="org.jomc.tools.SourceFileProcessor"

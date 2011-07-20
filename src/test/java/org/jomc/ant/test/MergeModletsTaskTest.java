@@ -114,6 +114,14 @@ public class MergeModletsTaskTest extends JomcTaskTest
     }
 
     @Test
+    public final void testModletResourceMissingLocation() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-modlet-resource-missing-locatiom" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'location' is missing a value." );
+    }
+
+    @Test
     public final void testMergeModlets() throws Exception
     {
         final AntExecutionResult r = this.executeTarget( "test-merge-modlets" );
@@ -145,6 +153,14 @@ public class MergeModletsTaskTest extends JomcTaskTest
 
         assertException( r, BuildException.class );
         assertExceptionMessageContaining( r, "Illegal transformation result" );
+    }
+
+    @Test
+    public final void testMergeModletsUnsupportedResource() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-merge-modlets-unsupported-resource" );
+        assertNoException( r );
+        assertMessageLoggedContaining( r, "not supported.", Project.MSG_WARN );
     }
 
     @Test

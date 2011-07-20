@@ -98,6 +98,13 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-module-resource-missing-location">
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" if="${jomc.enabled}">
+      <jomc:moduleResource/>
+    </jomc:generate-resources>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-resource-processing-disabled">
     <jomc:generate-resources resourcesDirectory="${empty.dir}" resourceProcessingEnabled="false" if="${jomc.enabled}"/>
   </target>
@@ -176,9 +183,9 @@
                              specification="TEST"
                              implementation="TEST"
                              module="TEST"
-                             model="TEST"
-                             modletLocation="TEST"
-                             providerLocation="TEST"
+                             model="http://jomc.org/model"
+                             modletLocation="META-INF/jomc-modlet.xml"
+                             providerLocation="META-INF/services"
                              platformProviderLocation="TEST"
                              if="${jomc.enabled}"
                              resourceFileProcessorClass="org.jomc.tools.ResourceFileProcessor"

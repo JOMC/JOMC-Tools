@@ -98,6 +98,13 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-module-resource-missing-location">
+    <jomc:validate-classes classesDirectory="${empty.dir}">
+      <jomc:moduleResource/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-class-processing-disabled">
     <jomc:validate-classes classesDirectory="${empty.dir}" classProcessingEnabled="false" if="${jomc.enabled}"/>
   </target>
@@ -218,9 +225,9 @@
                          specification="TEST"
                          implementation="TEST"
                          module="TEST"
-                         model="TEST"
-                         modletLocation="TEST"
-                         providerLocation="TEST"
+                         model="http://jomc.org/model"
+                         modletLocation="META-INF/jomc-modlet.xml"
+                         providerLocation="META-INF/services"
                          platformProviderLocation="TEST"
                          if="${jomc.enabled}"
                          classFileProcessorClass="org.jomc.tools.ClassFileProcessor"
@@ -244,9 +251,9 @@
                            specification="TEST"
                            implementation="TEST"
                            module="TEST"
-                           model="TEST"
-                           modletLocation="TEST"
-                           providerLocation="TEST"
+                           model="http://jomc.org/model"
+                           modletLocation="META-INF/jomc-modlet.xml"
+                           providerLocation="META-INF/services"
                            platformProviderLocation="TEST"
                            if="${jomc.enabled}"
                            classFileProcessorClass="org.jomc.tools.ClassFileProcessor"

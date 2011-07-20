@@ -38,6 +38,7 @@
   <property name="jomc.enabled" value="on"/>
   <property name="no.op.stylesheet" value="org/jomc/ant/test/no-op.xsl"/>
   <property name="modules.stylesheet" value="org/jomc/ant/test/modules.xsl"/>
+  <property name="unsupported.module" value="org/jomc/ant/test/unsupported-module.xml"/>
 
   <!-- ************************************************************************************************************* -->
   <target name="before-test">
@@ -97,6 +98,13 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-module-resource-missing-location">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST" if="${jomc.enabled}">
+      <jomc:moduleResource/>
+    </jomc:merge-modules>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-merge-modules">
     <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST" if="${jomc.enabled}"/>
   </target>
@@ -120,6 +128,13 @@
     <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST" if="${jomc.enabled}">
       <jomc:modelObjectStylesheetResource location="${modules.stylesheet}" optional="false" connectTimeout="0"
                                           readTimeout="0"/>
+    </jomc:merge-modules>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-merge-modules-unsupported-resource">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST" if="${jomc.enabled}">
+      <jomc:moduleResource location="${unsupported.module}"/>
     </jomc:merge-modules>
   </target>
 
@@ -148,6 +163,7 @@
       <jomc:classpath>
         <pathelement location="${empty.dir}"/>
       </jomc:classpath>
+      <jomc:moduleResource location="DOES_NOT_EXIST" optional="true"/>
       <jomc:moduleExclude name="JOMC Ant Tasks Tests"/>
       <jomc:moduleInclude name="JOMC Ant Tasks Tests"/>
     </jomc:merge-modules>

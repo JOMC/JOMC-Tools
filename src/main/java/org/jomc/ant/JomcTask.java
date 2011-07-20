@@ -40,15 +40,19 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -660,6 +664,101 @@ public class JomcTask extends Task
 
             throw new BuildException( Messages.getMessage( "malformedLocation", location, m ), e, this.getLocation() );
         }
+    }
+
+    /**
+     * Creates an array of {@code URL}s for a given resource location.
+     * <p>This method first searches the given class loader for resources matching {@code location}. If such a resources
+     * are found, an array of URLs of those resources is returned. If no such resources are found, an attempt is made
+     * to parse the given location to an URL. On successful parsing, that URL is returned. Failing that, the given
+     * location is interpreted as a file name relative to the project's base directory. If that file is found, the URL
+     * of that file is returned. Otherwise an empty array is returned.</p>
+     *
+     * @param location The resource location to create an array of {@code URL}s from.
+     * @param classLoader The class loader to search for resources.
+     *
+     * @return An array of {@code URL}s for {@code location} or an empty array if parsing {@code location} to an URL
+     * fails and {@code location} points to non-existent resources.
+     *
+     * @throws NullPointerException if {@code location} or {@code classLoader} is {@code null}.
+     * @throws BuildException if creating an URL fails.
+     */
+    public URL[] getResources( final String location, final ClassLoader classLoader ) throws BuildException
+    {
+        if ( location == null )
+        {
+            throw new NullPointerException( "location" );
+        }
+        if ( classLoader == null )
+        {
+            throw new NullPointerException( "classLoader" );
+        }
+
+        final Set<URI> uris = new HashSet<URI>();
+
+        try
+        {
+            for ( final Enumeration<URL> e = classLoader.getResources( location ); e.hasMoreElements(); )
+            {
+                uris.add( e.nextElement().toURI() );
+            }
+        }
+        catch ( final URISyntaxException e )
+        {
+            this.log( e, Project.MSG_DEBUG );
+        }
+        catch ( final IOException e )
+        {
+            this.log( e, Project.MSG_DEBUG );
+        }
+
+        if ( uris.isEmpty() )
+        {
+            try
+            {
+                uris.add( new URL( location ).toURI() );
+            }
+            catch ( final MalformedURLException e )
+            {
+                this.log( e, Project.MSG_DEBUG );
+            }
+            catch ( final URISyntaxException e )
+            {
+                this.log( e, Project.MSG_DEBUG );
+            }
+        }
+
+        if ( uris.isEmpty() )
+        {
+            final File f = this.getProject().resolveFile( location );
+
+            if ( f.isFile() )
+            {
+                uris.add( f.toURI() );
+            }
+        }
+
+        int i = 0;
+        final URL[] urls = new URL[ uris.size() ];
+
+        for ( URI uri : uris )
+        {
+            try
+            {
+                urls[i++] = uri.toURL();
+            }
+            catch ( final MalformedURLException e )
+            {
+                String m = Messages.getMessage( e );
+                m = m == null ? "" : " " + m;
+
+                throw new BuildException( Messages.getMessage( "malformedLocation", uri.toASCIIString(), m ), e,
+                                          this.getLocation() );
+
+            }
+        }
+
+        return urls;
     }
 
     /**

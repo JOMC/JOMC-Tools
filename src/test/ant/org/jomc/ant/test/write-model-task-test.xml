@@ -71,6 +71,13 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-module-resource-missing-location">
+    <jomc:write-model specification="DOES NOT EXIST">
+      <jomc:moduleResource/>
+    </jomc:write-model>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-specification-not-found">
     <jomc:write-model specification="DOES NOT EXIST"/>
   </target>
@@ -95,12 +102,12 @@
                       moduleLocation="TEST"
                       transformerLocation="TEST"
                       modelObjectClasspathResolutionEnabled="false"
-                      model="TEST"
+                      model="http://jomc.org/model"
                       modelContextClassName="org.jomc.modlet.DefaultModelContext"
                       modelProcessingEnabled="false"
-                      modletLocation="TEST"
+                      modletLocation="META-INF/jomc-modlet.xml"
+                      providerLocation="META-INF/services"
                       modletSchemaSystemId="TEST"
-                      providerLocation="TEST"
                       platformProviderLocation="TEST">
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>

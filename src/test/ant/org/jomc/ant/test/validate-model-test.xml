@@ -71,6 +71,13 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-module-resource-missing-location">
+    <jomc:validate-model if="${jomc.enabled}">
+      <jomc:moduleResource/>
+    </jomc:validate-model>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-validate-model">
     <jomc:validate-model if="${jomc.enabled}"/>
   </target>

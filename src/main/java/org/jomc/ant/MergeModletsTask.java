@@ -34,28 +34,41 @@ package org.jomc.ant;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.net.SocketTimeoutException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.util.JAXBResult;
 import javax.xml.bind.util.JAXBSource;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
-import javax.xml.validation.Schema;
+import javax.xml.transform.stream.StreamSource;
+import org.apache.commons.io.IOUtils;
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
 import org.jomc.ant.types.NameType;
+import org.jomc.ant.types.ResourceType;
 import org.jomc.ant.types.TransformerResourceType;
+import org.jomc.modlet.DefaultModletProvider;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelException;
+import org.jomc.modlet.ModelValidationReport;
 import org.jomc.modlet.Modlet;
 import org.jomc.modlet.ModletObject;
 import org.jomc.modlet.Modlets;
@@ -84,6 +97,9 @@ public final class MergeModletsTask extends JomcTask
 
     /** The vendor of the merged modlet. */
     private String modletVendor;
+
+    /** Resources to merge. */
+    private Set<ResourceType> modletResources;
 
     /** Included modlets. */
     private Set<NameType> modletIncludes;
@@ -226,6 +242,40 @@ public final class MergeModletsTask extends JomcTask
     }
 
     /**
+     * Gets a set of resource names to merge.
+     * <p>This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
+     * to the returned set will be present inside the object. This is why there is no {@code set} method for the
+     * modlet resources property.</p>
+     *
+     * @return A set of names of resources to merge.
+     *
+     * @see #createModletResource()
+     */
+    public Set<ResourceType> getModletResources()
+    {
+        if ( this.modletResources == null )
+        {
+            this.modletResources = new HashSet<ResourceType>();
+        }
+
+        return this.modletResources;
+    }
+
+    /**
+     * Creates a new {@code modletResource} element instance.
+     *
+     * @return A new {@code modletResource} element instance.
+     *
+     * @see #getModletResources()
+     */
+    public ResourceType createModletResource()
+    {
+        final ResourceType modletResource = new ResourceType();
+        this.getModletResources().add( modletResource );
+        return modletResource;
+    }
+
+    /**
      * Gets a set of modlet names to include.
      * <p>This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
      * to the returned set will be present inside the object. This is why there is no {@code set} method for the
@@ -337,6 +387,7 @@ public final class MergeModletsTask extends JomcTask
         this.assertNotNull( "modletName", this.getModletName() );
         this.assertNamesNotNull( this.getModletExcludes() );
         this.assertNamesNotNull( this.getModletIncludes() );
+        this.assertLocationsNotNull( this.getModletResources() );
         this.assertLocationsNotNull( this.getModletObjectStylesheetResources() );
     }
 
@@ -352,9 +403,111 @@ public final class MergeModletsTask extends JomcTask
         {
             this.log( Messages.getMessage( "mergingModlets", this.getModel() ) );
 
+            final Modlets modlets = new Modlets();
+            final Set<ResourceType> resources = new HashSet<ResourceType>( this.getModletResources() );
             final ProjectClassLoader classLoader = this.newProjectClassLoader();
             final ModelContext context = this.newModelContext( classLoader );
-            final Modlets modlets = new Modlets( context.getModlets() );
+            final Marshaller marshaller = context.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
+            final Unmarshaller unmarshaller = context.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
+
+            if ( resources.isEmpty() )
+            {
+                final ResourceType defaultResource = new ResourceType();
+                defaultResource.setLocation( DefaultModletProvider.getDefaultModletLocation() );
+                defaultResource.setOptional( true );
+                resources.add( defaultResource );
+            }
+
+            for ( ResourceType resource : resources )
+            {
+                final URL[] urls = this.getResources( resource.getLocation(), classLoader );
+
+                if ( urls.length == 0 )
+                {
+                    if ( resource.isOptional() )
+                    {
+                        this.logMessage( Level.WARNING, Messages.getMessage( "modletResourceNotFound",
+                                                                             resource.getLocation() ) );
+
+                    }
+                    else
+                    {
+                        throw new BuildException( Messages.getMessage( "modletResourceNotFound",
+                                                                       resource.getLocation() ) );
+
+                    }
+                }
+
+                for ( int i = urls.length - 1; i >= 0; i-- )
+                {
+                    InputStream in = null;
+
+                    try
+                    {
+                        this.logMessage( Level.FINEST, Messages.getMessage( "reading", urls[i].toExternalForm() ) );
+
+                        final URLConnection con = urls[i].openConnection();
+                        con.setConnectTimeout( resource.getConnectTimeout() );
+                        con.setReadTimeout( resource.getReadTimeout() );
+                        con.connect();
+                        in = con.getInputStream();
+
+                        final Source source = new StreamSource( in, urls[i].toURI().toASCIIString() );
+                        Object o = unmarshaller.unmarshal( source );
+                        if ( o instanceof JAXBElement<?> )
+                        {
+                            o = ( (JAXBElement<?>) o ).getValue();
+                        }
+
+                        if ( o instanceof Modlet )
+                        {
+                            modlets.getModlet().add( (Modlet) o );
+                        }
+                        else if ( o instanceof Modlets )
+                        {
+                            modlets.getModlet().addAll( ( (Modlets) o ).getModlet() );
+                        }
+                        else
+                        {
+                            this.logMessage( Level.WARNING, Messages.getMessage( "unsupportedModletResource",
+                                                                                 urls[i].toExternalForm() ) );
+
+                        }
+                    }
+                    catch ( final SocketTimeoutException e )
+                    {
+                        String message = Messages.getMessage( e );
+                        message = Messages.getMessage( "resourceTimeout", message != null ? " " + message : "" );
+
+                        if ( resource.isOptional() )
+                        {
+                            this.getProject().log( message, e, Project.MSG_WARN );
+                        }
+                        else
+                        {
+                            throw new BuildException( message, e, this.getLocation() );
+                        }
+                    }
+                    catch ( final IOException e )
+                    {
+                        String message = Messages.getMessage( e );
+                        message = Messages.getMessage( "resourceFailure", message != null ? " " + message : "" );
+
+                        if ( resource.isOptional() )
+                        {
+                            this.getProject().log( message, e, Project.MSG_WARN );
+                        }
+                        else
+                        {
+                            throw new BuildException( message, e, this.getLocation() );
+                        }
+                    }
+                    finally
+                    {
+                        IOUtils.closeQuietly( in );
+                    }
+                }
+            }
 
             for ( String defaultExclude : classLoader.getModletExcludes() )
             {
@@ -382,15 +535,20 @@ public final class MergeModletsTask extends JomcTask
                 }
             }
 
+            final ModelValidationReport validationReport =
+                context.validateModel( ModletObject.MODEL_PUBLIC_ID,
+                                       new JAXBSource( marshaller, new ObjectFactory().createModlets( modlets ) ) );
+
+            this.logValidationReport( context, validationReport );
+
+            if ( !validationReport.isModelValid() )
+            {
+                throw new ModelException( Messages.getMessage( "invalidModel", ModletObject.MODEL_PUBLIC_ID ) );
+            }
+
             Modlet mergedModlet = modlets.getMergedModlet( this.getModletName(), this.getModel() );
             mergedModlet.setVendor( this.getModletVendor() );
             mergedModlet.setVersion( this.getModletVersion() );
-
-            final Marshaller marshaller = context.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
-            final Unmarshaller unmarshaller = context.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
-            final Schema schema = context.createSchema( ModletObject.MODEL_PUBLIC_ID );
-            marshaller.setSchema( schema );
-            unmarshaller.setSchema( schema );
 
             for ( int i = 0, s0 = this.getModletObjectStylesheetResources().size(); i < s0; i++ )
             {
@@ -425,7 +583,12 @@ public final class MergeModletsTask extends JomcTask
 
             marshaller.setProperty( Marshaller.JAXB_ENCODING, this.getModletEncoding() );
             marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
+            marshaller.setSchema( context.createSchema( ModletObject.MODEL_PUBLIC_ID ) );
             marshaller.marshal( new ObjectFactory().createModlet( mergedModlet ), this.getModletFile() );
+        }
+        catch ( final URISyntaxException e )
+        {
+            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }
         catch ( final JAXBException e )
         {
@@ -515,6 +678,15 @@ public final class MergeModletsTask extends JomcTask
     {
         final MergeModletsTask clone = (MergeModletsTask) super.clone();
         clone.modletFile = this.modletFile != null ? new File( this.modletFile.getAbsolutePath() ) : null;
+
+        if ( this.modletResources != null )
+        {
+            clone.modletResources = new HashSet<ResourceType>( this.modletResources.size() );
+            for ( ResourceType t : this.modletResources )
+            {
+                clone.modletResources.add( t.clone() );
+            }
+        }
 
         if ( this.modletExcludes != null )
         {
