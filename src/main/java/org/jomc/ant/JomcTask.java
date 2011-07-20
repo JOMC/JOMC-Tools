@@ -847,24 +847,36 @@ public class JomcTask extends Task
         }
         catch ( final SocketTimeoutException e )
         {
+            String message = Messages.getMessage( e );
+
             if ( resource.isOptional() )
             {
-                this.getProject().log( Messages.getMessage( e ), e, Project.MSG_WARN );
+                this.getProject().log( Messages.getMessage( "resourceTimeout", message != null ? " " + message : "" ),
+                                       e, Project.MSG_WARN );
+
             }
             else
             {
-                throw new BuildException( e, this.getLocation() );
+                throw new BuildException( Messages.getMessage( "resourceTimeout", message != null ? " " + message : "" ),
+                                          e, this.getLocation() );
+
             }
         }
         catch ( final IOException e )
         {
+            String message = Messages.getMessage( e );
+
             if ( resource.isOptional() )
             {
-                this.getProject().log( Messages.getMessage( e ), e, Project.MSG_WARN );
+                this.getProject().log( Messages.getMessage( "resourceFailure", message != null ? " " + message : "" ),
+                                       e, Project.MSG_WARN );
+
             }
             else
             {
-                throw new BuildException( e, this.getLocation() );
+                throw new BuildException( Messages.getMessage( "resourceFailure", message != null ? " " + message : "" ),
+                                          e, this.getLocation() );
+
             }
         }
         finally
@@ -931,24 +943,36 @@ public class JomcTask extends Task
         }
         catch ( final SocketTimeoutException e )
         {
+            String message = Messages.getMessage( e );
+
             if ( propertiesResourceType.isOptional() )
             {
-                this.getProject().log( Messages.getMessage( e ), e, Project.MSG_WARN );
+                this.getProject().log( Messages.getMessage( "resourceTimeout", message != null ? " " + message : "" ),
+                                       e, Project.MSG_WARN );
+
             }
             else
             {
-                throw new BuildException( e, this.getLocation() );
+                throw new BuildException( Messages.getMessage( "resourceTimeout", message != null ? " " + message : "" ),
+                                          e, this.getLocation() );
+
             }
         }
         catch ( final IOException e )
         {
+            String message = Messages.getMessage( e );
+
             if ( propertiesResourceType.isOptional() )
             {
-                this.getProject().log( Messages.getMessage( e ), e, Project.MSG_WARN );
+                this.getProject().log( Messages.getMessage( "resourceFailure", message != null ? " " + message : "" ),
+                                       e, Project.MSG_WARN );
+
             }
             else
             {
-                throw new BuildException( e, this.getLocation() );
+                throw new BuildException( Messages.getMessage( "resourceFailure", message != null ? " " + message : "" ),
+                                          e, this.getLocation() );
+
             }
         }
         finally
