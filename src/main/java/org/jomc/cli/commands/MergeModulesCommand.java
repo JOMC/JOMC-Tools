@@ -626,6 +626,20 @@ public final class MergeModulesCommand extends AbstractModelCommand
                 }
             }
 
+            Module classpathModule = null;
+            if ( !commandLine.hasOption( this.getNoClasspathResolutionOption().getOpt() ) )
+            {
+                classpathModule = modules.getClasspathModule( Modules.getDefaultClasspathModuleName(), classLoader );
+                if ( classpathModule != null && modules.getModule( Modules.getDefaultClasspathModuleName() ) == null )
+                {
+                    modules.getModule().add( classpathModule );
+                }
+                else
+                {
+                    classpathModule = null;
+                }
+            }
+
             final ModelValidationReport validationReport = context.validateModel(
                 model, new JAXBSource( marshaller, new ObjectFactory().createModules( modules ) ) );
 
@@ -634,6 +648,11 @@ public final class MergeModulesCommand extends AbstractModelCommand
             if ( !validationReport.isModelValid() )
             {
                 throw new CommandExecutionException( this.getInvalidModelMessage( this.getLocale(), model ) );
+            }
+
+            if ( classpathModule != null )
+            {
+                modules.getModule().remove( classpathModule );
             }
 
             Module mergedModule =
