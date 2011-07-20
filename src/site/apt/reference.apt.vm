@@ -1058,7 +1058,13 @@ Task and Type Reference
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element can be used.   |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modletResource>>>                        | Modlet resources to merge.                 | No.                    |
+| <<<modletExclude>>>                         | Modlet to exclude.                         | No.                    |
+|                                             | Type: {{NameType}}                         |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletInclude>>>                         | Modlet to include.                         | No.                    |
+|                                             | Type: {{NameType}}                         |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletResource>>>                        | Modlet resource to merge.                  | No.                    |
 |                                             | Type: {{ResourceType}}                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
@@ -1068,12 +1074,6 @@ Task and Type Reference
 | <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
 |                                             | all transformers of the task.              |                        |
 |                                             | Type: {{KeyValueType}}                     |                        |
-*---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modletInclude>>>                         | Modlet to include.                         | No.                    |
-|                                             | Type: {{NameType}}                         |                        |
-*---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modletExclude>>>                         | Modlet to exclude.                         | No.                    |
-|                                             | Type: {{NameType}}                         |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 
 ** Example: Merging modlets.
@@ -1166,7 +1166,13 @@ Task and Type Reference
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element can be used.   |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<moduleResource>>>                        | Module resources to merge.                 | No.                    |
+| <<<moduleExclude>>>                         | Module to exclude.                         | No.                    |
+|                                             | Type: {{NameType}}                         |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleInclude>>>                         | Module to include.                         | No.                    |
+|                                             | Type: {{NameType}}                         |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleResource>>>                        | Module resource to merge.                  | No.                    |
 |                                             | Type: {{ResourceType}}                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
@@ -1176,12 +1182,6 @@ Task and Type Reference
 | <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
 |                                             | all transformers of the task.              |                        |
 |                                             | Type: {{KeyValueType}}                     |                        |
-*---------------------------------------------+--------------------------------------------+------------------------+
-| <<<moduleInclude>>>                         | Module to include.                         | No.                    |
-|                                             | Type: {{NameType}}                         |                        |
-*---------------------------------------------+--------------------------------------------+------------------------+
-| <<<moduleExclude>>>                         | Module to exclude.                         | No.                    |
-|                                             | Type: {{NameType}}                         |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 
 ** Example: Merging modules.
