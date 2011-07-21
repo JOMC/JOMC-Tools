@@ -68,7 +68,7 @@ set BASEDIR=%~dp0\..
 if "%JAVACMD%"=="" set JAVACMD=java
 
 set JARNAME="%BASEDIR%"\bin\${project.build.finalName}.jar
-set EXTRA_JVM_ARGUMENTS=-Djava.compiler=NONE -Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000 -Dorg.jomc.modlet.ModelContext.defaultLogLevel=ALL -Dorg.jomc.ri.DefaultObjectManager.defaultLogLevel=ALL
+set EXTRA_JVM_ARGUMENTS=-Djava.compiler=NONE -Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000 -Dorg.jomc.modlet.ModelContext.defaultLogLevel=ALL -Dorg.jomc.ri.DefaultObjectManager.defaultLogLevel=ALL -Djava.net.useSystemProxies=true
 goto endInit
 
 @REM Reaching here means variables are defined and arguments have been captured

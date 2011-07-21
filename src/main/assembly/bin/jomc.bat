@@ -68,7 +68,7 @@ set BASEDIR=%~dp0\..
 if "%JAVACMD%"=="" set JAVACMD=java
 
 set JARNAME="%BASEDIR%"\bin\${project.build.finalName}.jar
-set EXTRA_JVM_ARGUMENTS=-enableassertions
+set EXTRA_JVM_ARGUMENTS=-enableassertions -Djava.net.useSystemProxies=true
 goto endInit
 
 @REM Reaching here means variables are defined and arguments have been captured

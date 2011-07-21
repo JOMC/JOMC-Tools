@@ -73,7 +73,7 @@ if [ ! -x "$JAVACMD" ] ; then
 fi
 
 JARNAME="$BASEDIR"/bin/${project.build.finalName}.jar
-EXTRA_JVM_ARGUMENTS="-Djava.compiler=NONE -Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000 -Dorg.jomc.modlet.ModelContext.defaultLogLevel=ALL -Dorg.jomc.ri.DefaultObjectManager.defaultLogLevel=ALL"
+EXTRA_JVM_ARGUMENTS="-Djava.compiler=NONE -Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000 -Dorg.jomc.modlet.ModelContext.defaultLogLevel=ALL -Dorg.jomc.ri.DefaultObjectManager.defaultLogLevel=ALL -Djava.net.useSystemProxies=true"
 
 # For Cygwin, switch paths to Windows format before running java
 if $cygwin; then

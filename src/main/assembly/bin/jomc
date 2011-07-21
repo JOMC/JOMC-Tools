@@ -73,7 +73,7 @@ if [ ! -x "$JAVACMD" ] ; then
 fi
 
 JARNAME="$BASEDIR"/bin/${project.build.finalName}.jar
-EXTRA_JVM_ARGUMENTS="-enableassertions"
+EXTRA_JVM_ARGUMENTS="-enableassertions -Djava.net.useSystemProxies=true"
 
 # For Cygwin, switch paths to Windows format before running java
 if $cygwin; then
