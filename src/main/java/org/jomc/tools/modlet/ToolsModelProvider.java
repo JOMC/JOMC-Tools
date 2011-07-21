@@ -188,7 +188,7 @@ public class ToolsModelProvider implements ModelProvider
                         final SourceFileType sourceFileType = specification.getAnyObject( SourceFileType.class );
                         final SourceFilesType sourceFilesType = specification.getAnyObject( SourceFilesType.class );
 
-                        if ( sourceFileType == null && sourceFilesType == null )
+                        if ( sourceFileType == null && sourceFilesType == null && specification.isClassDeclaration() )
                         {
                             specification.getAny().add( new ObjectFactory().createSourceFiles(
                                 this.getDefaultSourceFilesType( tool, specification ) ) );
@@ -205,7 +205,7 @@ public class ToolsModelProvider implements ModelProvider
                         final SourceFileType sourceFileType = implementation.getAnyObject( SourceFileType.class );
                         final SourceFilesType sourceFilesType = implementation.getAnyObject( SourceFilesType.class );
 
-                        if ( sourceFileType == null && sourceFilesType == null )
+                        if ( sourceFileType == null && sourceFilesType == null && implementation.isClassDeclaration() )
                         {
                             implementation.getAny().add( new ObjectFactory().createSourceFiles(
                                 this.getDefaultSourceFilesType( tool, implementation ) ) );
