@@ -161,43 +161,37 @@ import org.jomc.modlet.DefaultModletProvider;
  * <p>
  *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
  *     <tr class="TableHeadingColor">
- *       <th align="left" scope="col" colspan="4" nowrap><font size="+2">Messages</font></th>
+ *       <th align="left" scope="col" colspan="3" nowrap><font size="+2">Messages</font></th>
  *     </tr>
  *     <tr class="TableSubHeadingColor">
  *       <td align="left" scope="col" nowrap><b>Name</b></td>
  *       <td align="left" scope="col" nowrap><b>Flags</b></td>
  *       <td align="left" scope="col" nowrap><b>Languages</b></td>
- *       <td align="left" scope="col" nowrap><b>Default Templates</b></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getDefaultExceptionMessage defaultExceptionMessage}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>No details available.</code></pre><hr/><pre><code>Keine Details verf&uuml;gbar.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getDefaultLogLevelInfo defaultLogLevelInfo}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Default log level: ''{0}''</code></pre><hr/><pre><code>Standard Protokollierungsstufe: ''{0}''</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getIllegalArgumentsInfo illegalArgumentsInfo}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Illegal arguments. Type &raquo;jomc {0} {1}&laquo; for further information.</code></pre><hr/><pre><code>Ung&uuml;ltige Argumente. Geben Sie &raquo;jomc {0} {1}&laquo; f&uuml;r weitere Informationen ein.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getTimeInfo timeInfo}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>{0,time,HH:mm:ss.SSS}</code></pre><hr/><pre><code>{0,time,HH:mm:ss.SSS}</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getUsage usage}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Type &raquo;jomc &lt;command&gt; {0}&laquo; for further information.</code></pre><hr/><pre><code>Geben Sie &raquo;jomc &lt;Befehl&gt; {0}&laquo; f&uuml;r weitere Informationen ein.</code></pre></td>
  *     </tr>
  *   </table>
  * </p>

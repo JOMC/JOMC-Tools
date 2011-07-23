@@ -263,157 +263,127 @@ import org.jomc.modlet.ObjectFactory;
  * <p>
  *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
  *     <tr class="TableHeadingColor">
- *       <th align="left" scope="col" colspan="4" nowrap><font size="+2">Messages</font></th>
+ *       <th align="left" scope="col" colspan="3" nowrap><font size="+2">Messages</font></th>
  *     </tr>
  *     <tr class="TableSubHeadingColor">
  *       <td align="left" scope="col" nowrap><b>Name</b></td>
  *       <td align="left" scope="col" nowrap><b>Flags</b></td>
  *       <td align="left" scope="col" nowrap><b>Languages</b></td>
- *       <td align="left" scope="col" nowrap><b>Default Templates</b></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getApplicationTitle applicationTitle}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
- *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-14T09:56:53+0200</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getCannotProcessMessage cannotProcessMessage}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Cannot process ''{0}'': {1}</code></pre><hr/><pre><code>Kann ''{0}'' nicht verarbeiten: {1}</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getClasspathElementInfo classpathElementInfo}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Classpath element: ''{0}''</code></pre><hr/><pre><code>Klassenpfad-Element: ''{0}''</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getClasspathElementNotFoundWarning classpathElementNotFoundWarning}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Classpath element ''{0}'' ignored. File not found.</code></pre><hr/><pre><code>Klassenpfad-Element ''{0}'' ignoriert. Datei nicht gefunden.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getCommandFailureMessage commandFailureMessage}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>{0} failure.</code></pre><hr/><pre><code>{0} fehlgeschlagen.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getCommandInfoMessage commandInfoMessage}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Executing command {0} ...</code></pre><hr/><pre><code>F&uuml;hrt Befehl {0} aus ... </code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getCommandSuccessMessage commandSuccessMessage}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>{0} successful.</code></pre><hr/><pre><code>{0} erfolgreich.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getDefaultLogLevelInfo defaultLogLevelInfo}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Default log level: ''{0}''</code></pre><hr/><pre><code>Standard-Protokollierungsstufe: ''{0}''</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getDocumentFileInfo documentFileInfo}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Document file: ''{0}''</code></pre><hr/><pre><code>Dokument-Datei: ''{0}''</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getDocumentFileNotFoundWarning documentFileNotFoundWarning}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Document file ''{0}'' ignored. File not found.</code></pre><hr/><pre><code>Dokument-Datei ''{0}'' ignoriert. Datei nicht gefunden.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getExcludedModletInfo excludedModletInfo}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Modlet ''{1}'' from class path resource ''{0}'' ignored.</code></pre><hr/><pre><code>Modlet ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getExcludedProviderInfo excludedProviderInfo}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Provider ''{1}'' from class path resource ''{0}'' ignored.</code></pre><hr/><pre><code>Provider ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getExcludedSchemaInfo excludedSchemaInfo}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Context ''{1}'' from class path resource ''{0}'' ignored.</code></pre><hr/><pre><code>Kontext ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getExcludedServiceInfo excludedServiceInfo}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Service ''{1}'' from class path resource ''{0}'' ignored.</code></pre><hr/><pre><code>Service ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getImplementationNotFoundWarning implementationNotFoundWarning}</td>
  *       <td align="left" valign="top" nowrap>{@code final}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Implementation ''{0}'' not found.</code></pre><hr/><pre><code>Implementierung ''{0}'' nicht gefunden.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getInvalidModelMessage invalidModelMessage}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Invalid ''{0}'' model.</code></pre><hr/><pre><code>Ung&uuml;ltiges ''{0}'' Modell.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getLongDescriptionMessage longDescriptionMessage}</td>
  *       <td align="left" valign="top" nowrap> {@code override}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Example:
- *   jomc show-model -cp examples/lib/commons-cli-1.2.jar \
- *                   -df examples/xml/jomc-cli.xml \
- *                   -v</code></pre><hr/><pre><code>Beispiel:
- *   jomc show-model -cp examples/lib/commons-cli-1.2.jar \
- *                   -df examples/xml/jomc-cli.xml \
- *                   -v</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getModuleNotFoundWarning moduleNotFoundWarning}</td>
  *       <td align="left" valign="top" nowrap>{@code final}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Module ''{0}'' not found.</code></pre><hr/><pre><code>Modul ''{0}'' nicht gefunden.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getReadingMessage readingMessage}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Reading ''{0}''.</code></pre><hr/><pre><code>Lie&szlig;t ''{0}''.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getSeparator separator}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top" nowrap>English (default)</td>
- *       <td align="left" valign="top" nowrap><pre><code>--------------------------------------------------------------------------------</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getShortDescriptionMessage shortDescriptionMessage}</td>
  *       <td align="left" valign="top" nowrap> {@code override}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Displays model information.</code></pre><hr/><pre><code>Zeigt Modell-Informationen.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getSpecificationNotFoundWarning specificationNotFoundWarning}</td>
  *       <td align="left" valign="top" nowrap>{@code final}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Specification ''{0}'' not found.</code></pre><hr/><pre><code>Spezifikation ''{0}'' nicht gefunden.</code></pre></td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getWriteInfo writeInfo}</td>
  *       <td align="left" valign="top" nowrap>{@code final}</td>
  *       <td align="left" valign="top" nowrap>English (default),&nbsp;Deutsch</td>
- *       <td align="left" valign="top" nowrap><pre><code>Writing ''{0}''.</code></pre><hr/><pre><code>Schreibt ''{0}''.</code></pre></td>
  *     </tr>
  *   </table>
  * </p>
@@ -1070,7 +1040,7 @@ public final class ShowModelCommand extends AbstractModelCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-14T09:56:53+0200</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-23T21:50:26+0200</code></pre></td>
      *     </tr>
      *   </table>
      * </p>
