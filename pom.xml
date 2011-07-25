@@ -370,7 +370,7 @@
       </plugin>
       <plugin>
         <groupId>org.jomc</groupId>
-        <artifactId>jomc-maven-plugin</artifactId>
+        <artifactId>maven-jomc-plugin</artifactId>
         <executions>
           <execution>
             <id>main-default</id>
@@ -543,7 +543,7 @@
         <plugins>
           <plugin>
             <groupId>org.jomc</groupId>
-            <artifactId>jomc-maven-plugin</artifactId>
+            <artifactId>maven-jomc-plugin</artifactId>
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
