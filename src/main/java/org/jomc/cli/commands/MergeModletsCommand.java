@@ -1203,7 +1203,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-25T12:17:44+0200</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-25T12:36:20+0200</code></pre></td>
      *     </tr>
      *   </table>
      * </p>
