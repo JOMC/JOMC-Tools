@@ -1,0 +1,124 @@
+ ------
+ Introduction
+ ------
+ Christian Schulte
+ ------
+ 22 March 2010
+ ------
+
+ ~~ Copyright (C) 2009 The JOMC Project
+ ~~ Copyright (C) 2005 Christian Schulte <schulte2005@users.sourceforge.net>
+ ~~ All rights reserved.
+ ~~
+ ~~ Redistribution and use in source and binary forms, with or without
+ ~~ modification, are permitted provided that the following conditions
+ ~~ are met:
+ ~~
+ ~~   o Redistributions of source code must retain the above copyright
+ ~~        notice, this list of conditions and the following disclaimer.
+ ~~
+ ~~   o Redistributions in binary form must reproduce the above copyright
+ ~~     notice, this list of conditions and the following disclaimer in
+ ~~     the documentation and/or other materials provided with the
+ ~~     distribution.
+ ~~
+ ~~ THIS SOFTWARE IS PROVIDED BY THE JOMC PROJECT AND CONTRIBUTORS "AS IS"
+ ~~ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ ~~ THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ ~~ PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE JOMC PROJECT OR
+ ~~ CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ ~~ EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ ~~ PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ ~~ OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ ~~ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ ~~ OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ ~~ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ ~~
+ ~~ $Id$
+
+Maven JOMC Plugin
+
+  Object management and configuration tools for Apache Maven.
+
+* Goals Overview
+
+  * {{{./attach-main-module-mojo.html}jomc:attach-main-module}} Attaches a project's main module artifact.
+
+  * {{{./attach-test-module-mojo.html}jomc:attach-test-module}} Attaches a project's test module artifact.
+
+  * {{{./write-main-resources-mojo.html}jomc:write-main-resources}} Writes a projects' main resource files.
+
+  * {{{./write-test-resources-mojo.html}jomc:write-test-resources}} Writes a projects' test resource files.
+
+  * {{{./manage-main-sources-mojo.html}jomc:manage-main-sources}} Manages a projects' main source files.
+
+  * {{{./manage-test-sources-mojo.html}jomc:manage-test-sources}} Manages a projects' test source files.
+
+  * {{{./commit-main-classes-mojo.html}jomc:commit-main-classes}} Commits model objects to a projects' main classes.
+
+  * {{{./commit-test-classes-mojo.html}jomc:commit-test-classes}} Commits model objects to a projects' test classes.
+
+  * {{{./validate-main-classes-mojo.html}jomc:validate-main-classes}} Validates a projects' main class file model objects.
+
+  * {{{./validate-test-classes-mojo.html}jomc:validate-test-classes}} Validates a projects' test class file model objects.
+
+  * {{{./validate-main-classpath-mojo.html}jomc:validate-main-classpath}} Validates a projects' main classpath class file model objects.
+
+  * {{{./validate-test-classpath-mojo.html}jomc:validate-test-classpath}} Validates a projects' test classpath class file model objects.
+
+  * {{{./validate-main-model-mojo.html}jomc:validate-main-model}} Validates a project's main model.
+
+  * {{{./validate-test-model-mojo.html}jomc:validate-test-model}} Validates a project's test model.
+
+  * {{{./show-main-model-mojo.html}jomc:show-main-model}} Displays a project's main model.
+
+  * {{{./show-test-model-mojo.html}jomc:show-test-model}} Displays a project's test model.
+
+  * {{{./show-main-instance-mojo.html}jomc:show-main-instance}} Displays a project's main instance.
+
+  * {{{./show-test-instance-mojo.html}jomc:show-test-instance}} Displays a project's test instance.
+
+  * {{{./show-main-specification-mojo.html}jomc:show-main-specification}} Displays a project's main specification.
+
+  * {{{./show-test-specification-mojo.html}jomc:show-test-specification}} Displays a project's test specification.
+
+  []
+
+* Usage
+
+  General instructions on how to use the JOMC Plugin can be found on the {{{./usage.html}usage page}}. Some more
+  specific use cases are described in the examples given below.
+
+  In case you still have questions regarding the plugin's usage, please have a look at the {{{./faq.html}FAQ}} and feel
+  free to contact the {{{./mail-lists.html}user mailing list}}. The posts to the mailing list are archived and could
+  already contain the answer to your question as part of an older thread. Hence, it is also worth browsing/searching
+  the {{{./mail-lists.html}mail archive}}.
+
+  If you feel like the plugin is missing a feature or has a defect, you can file a feature request or bug report with
+  the {{{./issue-tracking.html}issue tracker}}. When creating a new issue, please provide a comprehensive description of
+  your concern. Especially for fixing bugs it is crucial that a developer can reproduce your problem. For this reason,
+  entire debug logs, POMs or most preferably little demo projects attached to the issue are very much appreciated.
+  Of course, patches are welcome, too.
+
+* Examples
+
+  To provide you with better understanding of some usages of the JOMC Plugin, you can take a look at the following
+  examples:
+
+  * {{{./examples/assemble-artifacts.html}'Assembling' JOMC artifacts.}}
+
+  * {{{./examples/customize-templates.html}Customizing JOMC code generation.}}
+
+  * {{{./examples/show-model.html}Displaying model information.}}
+
+  * {{{./examples/manage-artifacts.html}Managing JOMC artifacts.}}
+
+  * {{{./examples/release-project.html}Performing a release of a project using the JOMC Plugin.}}
+
+  * {{{./examples/shade-artifacts.html}'Shading' JOMC artifacts.}}
+
+  * {{{./examples/validate-classpaths.html}Validating project classpaths using the JOMC Plugin.}}
+
+  * {{{./examples/validate-models.html}Validating project models using the JOMC Plugin.}}
+
+  []
