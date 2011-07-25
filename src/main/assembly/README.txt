@@ -38,7 +38,7 @@
 
   Apache Maven 2 Plugin
 
-    See ${jomc.artifacts.url}/maven-jomc-plugin-${maven-jomc-plugin.version}
+    See ${jomc.artifacts.url}/jomc-maven-plugin-${jomc-maven-plugin.version}
 
   JDK 1.5
 
