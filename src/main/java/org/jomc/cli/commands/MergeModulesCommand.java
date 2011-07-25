@@ -1309,7 +1309,7 @@ public final class MergeModulesCommand extends AbstractModelCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-25T12:36:20+0200</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-25T14:13:49+0200</code></pre></td>
      *     </tr>
      *   </table>
      * </p>
