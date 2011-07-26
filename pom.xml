@@ -359,6 +359,13 @@
                 <artifactItem>
                   <groupId>${project.groupId}</groupId>
                   <artifactId>jomc-ant-tasks</artifactId>
+                  <classifier>installer</classifier>
+                  <type>xml</type>
+                  <outputDirectory>${project.build.directory}/jomc-ant-tasks</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>jomc-ant-tasks</artifactId>
                   <classifier>changes</classifier>
                   <type>xhtml</type>
                   <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
