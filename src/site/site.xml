@@ -79,6 +79,7 @@ _gaq.push(['_trackPageview']);
       <item name="validate-classes" href="reference.html#validate-classes"/>
       <item name="validate-classpath" href="reference.html#validate-classpath"/>
       <item name="validate-model" href="reference.html#validate-model"/>
+      <item name="write-model" href="reference.html#write-model"/>
     </menu>
     <menu name="Examples">
       <item name="Customizing code generation" href="examples/customize-templates.html"/>
