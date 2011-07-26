@@ -214,6 +214,17 @@
       </includes>
     </fileSet>
     <fileSet>
+      <directory>${project.build.directory}/jomc-ant-tasks</directory>
+      <fileMode>0444</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/lib/ant</outputDirectory>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <includes>
+        <include>build.xml</include>
+      </includes>
+    </fileSet>
+    <fileSet>
       <directory>${project.build.directory}/jomc-ant-tasks/META-INF</directory>
       <fileMode>0444</fileMode>
       <directoryMode>0755</directoryMode>

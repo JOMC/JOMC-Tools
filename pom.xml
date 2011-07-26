@@ -362,6 +362,7 @@
                   <classifier>installer</classifier>
                   <type>xml</type>
                   <outputDirectory>${project.build.directory}/jomc-ant-tasks</outputDirectory>
+                  <destFileName>build.xml</destFileName>
                 </artifactItem>
                 <artifactItem>
                   <groupId>${project.groupId}</groupId>
