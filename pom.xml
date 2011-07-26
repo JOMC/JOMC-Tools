@@ -311,7 +311,6 @@
                   <groupId>${project.groupId}</groupId>
                   <artifactId>jomc-ant-tasks</artifactId>
                   <type>jar</type>
-                  <version>${jomc-ant-tasks.version}</version>
                   <outputDirectory>${project.build.directory}/jomc-ant-tasks</outputDirectory>
                 </artifactItem>
               </artifactItems>
