@@ -51,5 +51,5 @@ Customizing code generation
 
   See class {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/SourceFileProcessor.html}SourceFileProcessor}} for
   details, especially the {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/JomcTool.html#getVelocityTemplate(java.lang.String)}getVelocityTemplate}}
-  method and the {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/SourceFileProcessor.html#getSourceFilesType(org.jomc.model.Implementation)}getSourceFilesType}}
+  method and the {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/SourceFileProcessor.html#getSourceFilesType(org.jomc.model.Specification)}getSourceFilesType}}
   methods.
