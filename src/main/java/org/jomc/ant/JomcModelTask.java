@@ -274,10 +274,6 @@ public class JomcModelTask extends JomcTask
                     {
                         modules.getModule().add( (Module) o );
                     }
-                    else if ( o instanceof Modules )
-                    {
-                        modules.getModule().addAll( ( (Modules) o ).getModule() );
-                    }
                     else
                     {
                         this.log( Messages.getMessage( "unsupportedModuleResource", urls[i].toExternalForm() ),
