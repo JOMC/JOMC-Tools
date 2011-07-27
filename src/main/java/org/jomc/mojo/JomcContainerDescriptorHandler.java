@@ -82,6 +82,11 @@ import org.codehaus.plexus.util.StringUtils;
  *   &lt;handlerName&gt;JOMC&lt;/handlerName&gt;
  *   &lt;configuration&gt;
  *     &lt;model&gt;http://jomc.org/model&lt;/model&gt;
+ *     &lt;modelContextClassName&gt;class name&lt;/modelContextClassName&gt;
+ *     &lt;modelContextAttributes&gt;
+ *       &lt;key/&gt;
+ *       &lt;key&gt;value&lt;/key&gt;
+ *     &lt;/modelContextAttributes/&gt;
  *     &lt;moduleEncoding&gt;${project.build.sourceEncoding}&lt;/moduleEncoding&gt;
  *     &lt;moduleName&gt;${project.name}&lt;/moduleName&gt;
  *     &lt;moduleVersion&gt;${project.version}&lt;/moduleVersion&gt;
@@ -206,6 +211,12 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
 
     /** The location to search for modlets. */
     private String modletLocation;
+
+    /** Name of the {@code ModelContext} implementation class. */
+    private String modelContextClassName;
+
+    /** {@code ModelContext} attributes to apply. */
+    private Map<String, Object> modelContextAttributes;
 
     /** Modlet resources. */
     private Modlets modlets = new Modlets();
@@ -649,6 +660,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
     private void setupJomc()
     {
         ModelContext.setDefaultModletSchemaSystemId( this.modletSchemaSystemId );
+        ModelContext.setModelContextClassName( this.modelContextClassName );
         DefaultModelContext.setDefaultPlatformProviderLocation( this.platformProviderLocation );
         DefaultModelContext.setDefaultProviderLocation( this.providerLocation );
         DefaultModletProvider.setDefaultModletLocation( this.modletLocation );
@@ -657,6 +669,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
     private void resetJomc()
     {
         ModelContext.setDefaultModletSchemaSystemId( null );
+        ModelContext.setModelContextClassName( null );
         DefaultModelContext.setDefaultPlatformProviderLocation( null );
         DefaultModelContext.setDefaultProviderLocation( null );
         DefaultModletProvider.setDefaultModletLocation( null );
@@ -674,8 +687,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
             try
             {
                 this.setupJomc();
-                final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
-                this.jomcUnmarshaller = modelContext.createUnmarshaller( this.model );
+                this.jomcUnmarshaller = this.createModelContext().createUnmarshaller( this.model );
             }
             finally
             {
@@ -703,7 +715,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
             try
             {
                 this.setupJomc();
-                final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
+                final ModelContext modelContext = this.createModelContext();
                 this.jomcMarshaller = modelContext.createMarshaller( this.model );
                 this.jomcMarshaller.setSchema( modelContext.createSchema( this.model ) );
                 this.jomcMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
@@ -746,7 +758,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
                 final Transformer transformer = TransformerFactory.newInstance().newTransformer(
                     new StreamSource( this.getResource( this.modelObjectStylesheet ).toURI().toASCIIString() ) );
 
-                final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
+                final ModelContext modelContext = this.createModelContext();
                 final Marshaller marshaller = modelContext.createMarshaller( this.model );
                 final Unmarshaller unmarshaller = modelContext.createUnmarshaller( this.model );
                 final JAXBSource source = new JAXBSource( marshaller, element );
@@ -793,11 +805,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
             try
             {
                 this.setupJomc();
-
-                final ModelContext modletContext =
-                    ModelContext.createModelContext( this.getClass().getClassLoader() );
-
-                this.modletUnmarshaller = modletContext.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
+                this.modletUnmarshaller = this.createModelContext().createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
             }
             finally
             {
@@ -825,10 +833,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
             try
             {
                 this.setupJomc();
-
-                final ModelContext modletContext =
-                    ModelContext.createModelContext( this.getClass().getClassLoader() );
-
+                final ModelContext modletContext = this.createModelContext();
                 this.modletMarshaller = modletContext.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
                 this.modletMarshaller.setSchema( modletContext.createSchema( ModletObject.MODEL_PUBLIC_ID ) );
                 this.modletMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
@@ -871,9 +876,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
                 final Transformer transformer = TransformerFactory.newInstance().newTransformer(
                     new StreamSource( this.getResource( this.modletObjectStylesheet ).toURI().toASCIIString() ) );
 
-                final ModelContext modletContext =
-                    ModelContext.createModelContext( this.getClass().getClassLoader() );
-
+                final ModelContext modletContext = this.createModelContext();
                 final Marshaller marshaller = modletContext.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
                 final Unmarshaller unmarshaller = modletContext.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
                 final JAXBSource source = new JAXBSource( marshaller, element );
@@ -928,6 +931,28 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
         }
 
         return normalized;
+    }
+
+    private ModelContext createModelContext() throws ModelException
+    {
+        final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
+
+        if ( this.modelContextAttributes != null )
+        {
+            for ( Map.Entry<String, Object> e : this.modelContextAttributes.entrySet() )
+            {
+                if ( e.getValue() != null )
+                {
+                    modelContext.setAttribute( e.getKey(), e.getValue() );
+                }
+                else
+                {
+                    modelContext.clearAttribute( e.getKey() );
+                }
+            }
+        }
+
+        return modelContext;
     }
 
 }
