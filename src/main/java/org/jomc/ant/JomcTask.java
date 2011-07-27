@@ -272,7 +272,7 @@ public class JomcTask extends Task
     }
 
     /**
-     * Gets the {@code ModelContext} attreibutes to apply.
+     * Gets the {@code ModelContext} attributes to apply.
      * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
      * model context attributes property.</p>
