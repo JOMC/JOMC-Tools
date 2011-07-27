@@ -503,6 +503,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private String sourceFileProcessorClassName;
 
     /**
+     * {@code ModelContext} attributes.
+     *
+     * @parameter
+     * @since 1.2
+     */
+    private Map<String, Object> modelContextAttributes;
+
+    /**
      * The Maven project of the instance.
      *
      * @parameter expression="${project}"
@@ -2320,6 +2328,21 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
 
         } );
+
+        if ( this.modelContextAttributes != null )
+        {
+            for ( Map.Entry<String, Object> e : this.modelContextAttributes.entrySet() )
+            {
+                if ( e.getValue() != null )
+                {
+                    context.setAttribute( e.getKey(), e.getValue() );
+                }
+                else
+                {
+                    context.clearAttribute( e.getKey() );
+                }
+            }
+        }
     }
 
     /**
