@@ -41,6 +41,7 @@ import org.jomc.tools.SourceFileProcessor;
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
+ * @see #processSourceFiles()
  */
 public class SourceFileProcessorTask extends JomcToolTask
 {

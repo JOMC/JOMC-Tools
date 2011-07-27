@@ -41,6 +41,7 @@ import org.jomc.tools.ClassFileProcessor;
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
+ * @see #processClassFiles()
  */
 public class ClassFileProcessorTask extends JomcToolTask
 {

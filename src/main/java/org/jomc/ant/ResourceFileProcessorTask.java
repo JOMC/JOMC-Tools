@@ -42,6 +42,7 @@ import org.jomc.tools.ResourceFileProcessor;
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
+ * @see #processResourceFiles()
  */
 public class ResourceFileProcessorTask extends JomcToolTask
 {
