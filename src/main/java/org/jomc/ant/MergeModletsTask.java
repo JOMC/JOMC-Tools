@@ -62,6 +62,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.io.IOUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
+import org.jomc.ant.types.ModletResourceType;
 import org.jomc.ant.types.NameType;
 import org.jomc.ant.types.ResourceType;
 import org.jomc.ant.types.TransformerResourceType;
@@ -99,7 +100,7 @@ public final class MergeModletsTask extends JomcTask
     private String modletVendor;
 
     /** Resources to merge. */
-    private Set<ResourceType> modletResources;
+    private Set<ModletResourceType> modletResources;
 
     /** Included modlets. */
     private Set<NameType> modletIncludes;
@@ -251,11 +252,11 @@ public final class MergeModletsTask extends JomcTask
      *
      * @see #createModletResource()
      */
-    public Set<ResourceType> getModletResources()
+    public Set<ModletResourceType> getModletResources()
     {
         if ( this.modletResources == null )
         {
-            this.modletResources = new HashSet<ResourceType>();
+            this.modletResources = new HashSet<ModletResourceType>();
         }
 
         return this.modletResources;
@@ -268,9 +269,9 @@ public final class MergeModletsTask extends JomcTask
      *
      * @see #getModletResources()
      */
-    public ResourceType createModletResource()
+    public ModletResourceType createModletResource()
     {
-        final ResourceType modletResource = new ResourceType();
+        final ModletResourceType modletResource = new ModletResourceType();
         this.getModletResources().add( modletResource );
         return modletResource;
     }
@@ -681,8 +682,8 @@ public final class MergeModletsTask extends JomcTask
 
         if ( this.modletResources != null )
         {
-            clone.modletResources = new HashSet<ResourceType>( this.modletResources.size() );
-            for ( ResourceType t : this.modletResources )
+            clone.modletResources = new HashSet<ModletResourceType>( this.modletResources.size() );
+            for ( ModletResourceType t : this.modletResources )
             {
                 clone.modletResources.add( t.clone() );
             }

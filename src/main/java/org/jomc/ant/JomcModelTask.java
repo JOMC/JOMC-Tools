@@ -49,6 +49,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.io.IOUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
+import org.jomc.ant.types.ModuleResourceType;
 import org.jomc.ant.types.ResourceType;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
@@ -78,7 +79,7 @@ public class JomcModelTask extends JomcTask
     private String transformerLocation;
 
     /** Module resources. */
-    private Set<ResourceType> moduleResources;
+    private Set<ModuleResourceType> moduleResources;
 
     /** Creates a new {@code JomcModelTask} instance. */
     public JomcModelTask()
@@ -169,11 +170,11 @@ public class JomcModelTask extends JomcTask
      *
      * @see #createModuleResource()
      */
-    public Set<ResourceType> getModuleResources()
+    public Set<ModuleResourceType> getModuleResources()
     {
         if ( this.moduleResources == null )
         {
-            this.moduleResources = new HashSet<ResourceType>();
+            this.moduleResources = new HashSet<ModuleResourceType>();
         }
 
         return this.moduleResources;
@@ -186,9 +187,9 @@ public class JomcModelTask extends JomcTask
      *
      * @see #getModuleResources()
      */
-    public ResourceType createModuleResource()
+    public ModuleResourceType createModuleResource()
     {
-        final ResourceType moduleResource = new ResourceType();
+        final ModuleResourceType moduleResource = new ModuleResourceType();
         this.getModuleResources().add( moduleResource );
         return moduleResource;
     }
@@ -381,7 +382,18 @@ public class JomcModelTask extends JomcTask
     @Override
     public JomcModelTask clone()
     {
-        return (JomcModelTask) super.clone();
+        final JomcModelTask clone = (JomcModelTask) super.clone();
+
+        if ( this.moduleResources != null )
+        {
+            clone.moduleResources = new HashSet<ModuleResourceType>( this.moduleResources.size() );
+            for ( ModuleResourceType t : this.moduleResources )
+            {
+                clone.moduleResources.add( t.clone() );
+            }
+        }
+
+        return clone;
     }
 
 }
