@@ -104,6 +104,10 @@
       of class <code>org.jomc.tools.JomcTool</code> to not initialize new engine instances adding support for on-demand
       initialization.]]>
       </action>
+      <action dev="schulte2005" type="update"><![CDATA[Updated method <code>getVelocityEngine</code>
+      of class <code>org.jomc.tools.JomcTool</code> to set velocity runtime property
+      <code>runtime.strict.math</code>.]]>
+      </action>
       <action dev="schulte2005" type="update"><![CDATA[Removed <code>abstract</code> modifier of class
       <code>org.jomc.tools.JomcTool</code>.]]>
       </action>

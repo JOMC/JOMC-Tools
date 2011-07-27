@@ -1713,6 +1713,7 @@ public class JomcTool
             final VelocityEngine engine = new VelocityEngine();
             engine.setProperty( RuntimeConstants.RUNTIME_REFERENCES_STRICT, Boolean.TRUE.toString() );
             engine.setProperty( RuntimeConstants.VM_ARGUMENTS_STRICT, Boolean.TRUE.toString() );
+            engine.setProperty( RuntimeConstants.STRICT_MATH, Boolean.TRUE.toString() );
             engine.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, new JomcLogChute() );
 
             engine.setProperty( RuntimeConstants.RESOURCE_LOADER, "class" );
