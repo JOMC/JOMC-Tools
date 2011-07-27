@@ -100,6 +100,13 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-model-context-attribute-missing-key">
+    <jomc:validate-classpath>
+      <jomc:modelContextAttribute/>
+    </jomc:validate-classpath>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-class-processing-disabled">
     <jomc:validate-classpath classProcessingEnabled="false" if="${jomc.enabled}"/>
   </target>

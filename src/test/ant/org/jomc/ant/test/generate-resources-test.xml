@@ -105,6 +105,13 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-model-context-attribute-missing-key">
+    <jomc:generate-resources resourcesDirectory="${empty.dir}" if="${jomc.enabled}">
+      <jomc:modelContextAttribute/>
+    </jomc:generate-resources>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-resource-processing-disabled">
     <jomc:generate-resources resourcesDirectory="${empty.dir}" resourceProcessingEnabled="false" if="${jomc.enabled}"/>
   </target>

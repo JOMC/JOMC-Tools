@@ -171,6 +171,9 @@ Task and Type Reference
 | <<<locale>>>                                | Locale of the task.                        | No.                    |
 |                                             | Type: {{LocaleType}}                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextAttribute>>>                 | ModelContext attribute to apply.           | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<moduleResource>>>                        | Additional module resource.                | No.                    |
 |                                             | Type: {{ModuleResourceType}}               |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -351,6 +354,9 @@ Task and Type Reference
 | <<<locale>>>                                | Locale of the task.                        | No.                    |
 |                                             | Type: {{LocaleType}}                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextAttribute>>>                 | ModelContext attribute to apply.           | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<moduleResource>>>                        | Additional module resource.                | No.                    |
 |                                             | Type: {{ModuleResourceType}}               |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -524,6 +530,9 @@ Task and Type Reference
 | <<<locale>>>                                | Locale of the task.                        | No.                    |
 |                                             | Type: {{LocaleType}}                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextAttribute>>>                 | ModelContext attribute to apply.           | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<moduleResource>>>                        | Additional module resource.                | No.                    |
 |                                             | Type: {{ModuleResourceType}}               |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -696,6 +705,9 @@ Task and Type Reference
 | <<<locale>>>                                | Locale of the task.                        | No.                    |
 |                                             | Type: {{LocaleType}}                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextAttribute>>>                 | ModelContext attribute to apply.           | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<moduleResource>>>                        | Additional module resource.                | No.                    |
 |                                             | Type: {{ModuleResourceType}}               |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -866,6 +878,9 @@ Task and Type Reference
 | <<<locale>>>                                | Locale of the task.                        | No.                    |
 |                                             | Type: {{LocaleType}}                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextAttribute>>>                 | ModelContext attribute to apply.           | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<moduleResource>>>                        | Additional module resource.                | No.                    |
 |                                             | Type: {{ModuleResourceType}}               |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -968,6 +983,9 @@ Task and Type Reference
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element can be used.   |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextAttribute>>>                 | ModelContext attribute to apply.           | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<moduleResource>>>                        | Additional module resource.                | No.                    |
 |                                             | Type: {{ModuleResourceType}}               |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -1057,6 +1075,9 @@ Task and Type Reference
 |                                             |                                            | attribute or the       |
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextAttribute>>>                 | ModelContext attribute to apply.           | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletExclude>>>                         | Modlet to exclude.                         | No.                    |
 |                                             | Type: {{NameType}}                         |                        |
@@ -1166,6 +1187,9 @@ Task and Type Reference
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element can be used.   |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextAttribute>>>                 | ModelContext attribute to apply.           | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<moduleExclude>>>                         | Module to exclude.                         | No.                    |
 |                                             | Type: {{NameType}}                         |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -1273,6 +1297,9 @@ Task and Type Reference
 |                                             |                                            | attribute or the       |
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextAttribute>>>                 | ModelContext attribute to apply.           | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<moduleResource>>>                        | Additional module resource.                | No.                    |
 |                                             | Type: {{ModuleResourceType}}               |                        |

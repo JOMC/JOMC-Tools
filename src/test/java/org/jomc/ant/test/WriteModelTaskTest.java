@@ -87,6 +87,14 @@ public class WriteModelTaskTest extends JomcModelTaskTest
     }
 
     @Test
+    public final void testModelContextAttributeMissingKey() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-model-context-attribute-missing-key" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
+    }
+
+    @Test
     public final void testSpecificationNotFound() throws Exception
     {
         final AntExecutionResult r = this.executeTarget( "test-specification-not-found" );

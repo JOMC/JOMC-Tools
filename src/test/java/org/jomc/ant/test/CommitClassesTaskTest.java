@@ -136,6 +136,14 @@ public class CommitClassesTaskTest extends ClassFileProcessorTaskTest
     }
 
     @Test
+    public final void testModelContextAttributeMissingKey() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-model-context-attribute-missing-key" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
+    }
+
+    @Test
     public final void testStylesheetNotFound() throws Exception
     {
         final AntExecutionResult r = this.executeTarget( "test-stylesheet-not-found" );

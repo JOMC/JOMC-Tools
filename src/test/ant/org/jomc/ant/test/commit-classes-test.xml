@@ -124,6 +124,13 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-model-context-attribute-missing-key">
+    <jomc:commit-classes classesDirectory="${empty.dir}" if="${jomc.enabled}">
+      <jomc:modelContextAttribute/>
+    </jomc:commit-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-stylesheet-not-found">
     <jomc:commit-classes classesDirectory="${empty.dir}" if="${jomc.enabled}">
       <jomc:modelObjectStylesheetResource location="DOES_NOT_EXIST" optional="false" connectTimeout="0"

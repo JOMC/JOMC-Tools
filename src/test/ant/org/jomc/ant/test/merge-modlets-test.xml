@@ -105,6 +105,13 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-model-context-attribute-missing-key">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" if="${jomc.enabled}">
+      <jomc:modelContextAttribute/>
+    </jomc:merge-modlets>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-merge-modlets">
     <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" if="${jomc.enabled}"/>
   </target>

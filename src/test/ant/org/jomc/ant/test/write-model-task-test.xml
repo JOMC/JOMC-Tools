@@ -78,6 +78,13 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-model-context-attribute-missing-key">
+    <jomc:write-model specification="DOES NOT EXIST">
+      <jomc:modelContextAttribute/>
+    </jomc:write-model>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-specification-not-found">
     <jomc:write-model specification="DOES NOT EXIST"/>
   </target>

@@ -78,6 +78,13 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-model-context-attribute-missing-key">
+    <jomc:validate-model if="${jomc.enabled}">
+      <jomc:modelContextAttribute/>
+    </jomc:validate-model>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-validate-model">
     <jomc:validate-model if="${jomc.enabled}"/>
   </target>

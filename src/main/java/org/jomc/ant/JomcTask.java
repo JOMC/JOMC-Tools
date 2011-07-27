@@ -99,6 +99,9 @@ public class JomcTask extends Task
     /** The identifier of the model to process. */
     private String model;
 
+    /** {@code ModelContext} attributes to apply. */
+    private List<KeyValueType<String, Object>> modelContextAttributes;
+
     /** The name of the {@code ModelContext} implementation class backing the task. */
     private String modelContextClassName;
 
@@ -266,6 +269,41 @@ public class JomcTask extends Task
     public final void setModel( final String value )
     {
         this.model = value;
+    }
+
+    /**
+     * Gets the {@code ModelContext} attreibutes to apply.
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * to the returned list will be present inside the object. This is why there is no {@code set} method for the
+     * model context attributes property.</p>
+     *
+     * @return The  {@code ModelContext} attributes to apply.
+     *
+     * @see #createModelContextAttribute()
+     * @see #newModelContext(java.lang.ClassLoader)
+     */
+    public final List<KeyValueType<String, Object>> getModelContextAttributes()
+    {
+        if ( this.modelContextAttributes == null )
+        {
+            this.modelContextAttributes = new LinkedList<KeyValueType<String, Object>>();
+        }
+
+        return this.modelContextAttributes;
+    }
+
+    /**
+     * Creates a new {@code modelContextAttribute} element instance.
+     *
+     * @return A new {@code modelContextAttribute} element instance.
+     *
+     * @see #getModelContextAttributes()
+     */
+    public KeyValueType<String, Object> createModelContextAttribute()
+    {
+        final KeyValueType<String, Object> modelContextAttribute = new KeyValueType<String, Object>();
+        this.getModelContextAttributes().add( modelContextAttribute );
+        return modelContextAttribute;
     }
 
     /**
@@ -534,6 +572,7 @@ public class JomcTask extends Task
         DefaultModletProvider.setDefaultModletLocation( this.getModletLocation() );
 
         this.assertNotNull( "model", this.getModel() );
+        this.assertKeysNotNull( this.getModelContextAttributes() );
         this.assertKeysNotNull( this.getTransformationParameters() );
         this.assertLocationsNotNull( this.getTransformationParameterResources() );
     }
@@ -1120,6 +1159,21 @@ public class JomcTask extends Task
     {
         final ModelContext modelContext = ModelContext.createModelContext( classLoader );
         modelContext.setLogLevel( Level.ALL );
+
+        for ( int i = 0, s0 = this.getModelContextAttributes().size(); i < s0; i++ )
+        {
+            final KeyValueType<String, Object> kv = this.getModelContextAttributes().get( i );
+
+            if ( kv.getValue() != null )
+            {
+                modelContext.setAttribute( kv.getKey(), kv.getValue() );
+            }
+            else
+            {
+                modelContext.clearAttribute( kv.getKey() );
+            }
+        }
+
         modelContext.getListeners().add( new ModelContext.Listener()
         {
 

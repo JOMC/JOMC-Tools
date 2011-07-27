@@ -105,6 +105,13 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-model-context-attribute-missing-key">
+    <jomc:validate-classes classesDirectory="${empty.dir}">
+      <jomc:modelContextAttribute/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-class-processing-disabled">
     <jomc:validate-classes classesDirectory="${empty.dir}" classProcessingEnabled="false" if="${jomc.enabled}"/>
   </target>
