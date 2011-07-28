@@ -41,6 +41,7 @@ import java.util.logging.Level;
 import org.jomc.model.Dependencies;
 import org.jomc.model.Implementation;
 import org.jomc.model.Messages;
+import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.Properties;
 import org.jomc.model.Specification;
@@ -69,17 +70,66 @@ public class ToolsModelProcessor implements ModelProcessor
 {
 
     /**
+     * Constant for the name of the model context attribute backing property {@code enabled}.
+     * @see #processModel(org.jomc.modlet.ModelContext, org.jomc.modlet.Model)
+     * @see ModelContext#getAttribute(java.lang.String)
+     * @see ModelContext#getAttribute(java.lang.String, java.lang.Object)
+     * @see ModelContext#setAttribute(java.lang.String, java.lang.Object)
+     * @see ModelContext#clearAttribute(java.lang.String)
+     */
+    public static final String ENABLED_ATTRIBUTE_NAME = "org.jomc.tools.modlet.ToolsModelProcessor.enabledAttribute";
+
+    /**
+     * Constant for the name of the model context attribute backing property
+     * {@code modelObjectClasspathResolutionEnabled}.
+     *
+     * @see #processModel(org.jomc.modlet.ModelContext, org.jomc.modlet.Model)
+     * @see ModelContext#getAttribute(java.lang.String)
+     * @see ModelContext#getAttribute(java.lang.String, java.lang.Object)
+     * @see ModelContext#setAttribute(java.lang.String, java.lang.Object)
+     * @see ModelContext#clearAttribute(java.lang.String)
+     */
+    public static final String MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME =
+        "org.jomc.tools.modlet.ToolsModelProcessor.modelObjectClasspathResolutionEnabledAttribute";
+
+    /**
      * Constant for the name of the system property controlling property {@code defaultEnabled}.
      * @see #isDefaultEnabled()
      */
     private static final String DEFAULT_ENABLED_PROPERTY_NAME =
         "org.jomc.tools.modlet.ToolsModelProcessor.defaultEnabled";
 
+    /**
+     * Constant for the name of the system property controlling property
+     * {@code defaultModelObjectClasspathResolutionEnabled}.
+     * @see #isDefaultModelObjectClasspathResolutionEnabled()
+     */
+    private static final String DEFAULT_MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_PROPERTY_NAME =
+        "org.jomc.tools.modlet.ToolsModelProcessor.defaultModelObjectClasspathResolutionEnabled";
+
+    /**
+     * Default value of the flag indicating the processor is enabled by default.
+     * @see #isDefaultEnabled()
+     */
+    private static final Boolean DEFAULT_ENABLED = Boolean.TRUE;
+
+    /**
+     * Default value of the flag indicating model object class path resolution is enabled by default.
+     * @see #isDefaultModelObjectClasspathResolutionEnabled()
+     */
+    private static final Boolean DEFAULT_MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED = Boolean.TRUE;
+
     /** Flag indicating the processor is enabled by default. */
     private static volatile Boolean defaultEnabled;
 
+    /** Flag indicating model object class path resolution is enabled by default. */
+    private static volatile Boolean defaultModelObjectClasspathResolutionEnabled;
+
     /** Flag indicating the processor is enabled. */
     private Boolean enabled;
+
+    /** Flag indicating model object class path resolution is enabled. */
+    private Boolean modelObjectClasspathResolutionEnabled;
 
     /** Creates a new {@code ToolsModelProcessor} instance. */
     public ToolsModelProcessor()
@@ -102,8 +152,8 @@ public class ToolsModelProcessor implements ModelProcessor
     {
         if ( defaultEnabled == null )
         {
-            defaultEnabled =
-                Boolean.valueOf( System.getProperty( DEFAULT_ENABLED_PROPERTY_NAME, Boolean.toString( true ) ) );
+            defaultEnabled = Boolean.valueOf( System.getProperty( DEFAULT_ENABLED_PROPERTY_NAME,
+                                                                  Boolean.toString( DEFAULT_ENABLED ) ) );
 
         }
 
@@ -153,9 +203,81 @@ public class ToolsModelProcessor implements ModelProcessor
     }
 
     /**
+     * Gets a flag indicating model object class path resolution is enabled by default.
+     * <p>The model object class path resolution default enabled flag is controlled by system property
+     * {@code org.jomc.tools.modlet.ToolsModelProcessor.defaultModelObjectClasspathResolutionEnabled} holding a value
+     * indicating model object class path resolution is enabled by default. If that property is not set, the
+     * {@code true} default is returned.</p>
+     *
+     * @return {@code true} if model object class path resolution is enabled by default; {@code false} if model object
+     * class path resolution is disabled by default.
+     *
+     * @see #setDefaultModelObjectClasspathResolutionEnabled(java.lang.Boolean)
+     */
+    public static boolean isDefaultModelObjectClasspathResolutionEnabled()
+    {
+        if ( defaultModelObjectClasspathResolutionEnabled == null )
+        {
+            defaultModelObjectClasspathResolutionEnabled = Boolean.valueOf( System.getProperty(
+                DEFAULT_MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_PROPERTY_NAME,
+                Boolean.toString( DEFAULT_MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED ) ) );
+
+        }
+
+        return defaultModelObjectClasspathResolutionEnabled;
+    }
+
+    /**
+     * Sets the flag indicating model object class path resolution is enabled by default.
+     *
+     * @param value The new value of the flag indicating model object class path resolution is enabled by default or
+     * {@code null}.
+     *
+     * @see #isDefaultModelObjectClasspathResolutionEnabled()
+     */
+    public static void setDefaultModelObjectClasspathResolutionEnabled( final Boolean value )
+    {
+        defaultModelObjectClasspathResolutionEnabled = value;
+    }
+
+    /**
+     * Gets a flag indicating model object class path resolution is enabled.
+     *
+     * @return {@code true} if model object class path resolution is enabled; {@code false} if model object class path
+     * resolution is disabled.
+     *
+     * @see #isDefaultModelObjectClasspathResolutionEnabled()
+     * @see #setModelObjectClasspathResolutionEnabled(java.lang.Boolean)
+     */
+    public final boolean isModelObjectClasspathResolutionEnabled()
+    {
+        if ( this.modelObjectClasspathResolutionEnabled == null )
+        {
+            this.modelObjectClasspathResolutionEnabled = isDefaultModelObjectClasspathResolutionEnabled();
+        }
+
+        return this.modelObjectClasspathResolutionEnabled;
+    }
+
+    /**
+     * Sets the flag indicating model object class path resolution is is enabled.
+     *
+     * @param value The new value of the flag indicating model object class path resolution is enabled or {@code null}.
+     *
+     * @see #isModelObjectClasspathResolutionEnabled()
+     */
+    public final void setModelObjectClasspathResolutionEnabled( final Boolean value )
+    {
+        this.modelObjectClasspathResolutionEnabled = value;
+    }
+
+    /**
      * {@inheritDoc}
      *
      * @see #isEnabled()
+     * @see #isModelObjectClasspathResolutionEnabled()
+     * @see #ENABLED_ATTRIBUTE_NAME
+     * @see #MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME
      */
     public Model processModel( final ModelContext context, final Model model ) throws ModelException
     {
@@ -170,13 +292,45 @@ public class ToolsModelProcessor implements ModelProcessor
 
         Model processed = null;
 
-        if ( this.isEnabled() )
+        boolean contextEnabled = this.isEnabled();
+        if ( DEFAULT_ENABLED == contextEnabled && context.getAttribute( ENABLED_ATTRIBUTE_NAME ) != null )
+        {
+            contextEnabled = (Boolean) context.getAttribute( ENABLED_ATTRIBUTE_NAME );
+        }
+
+        boolean contextModelObjectClasspathResolutionEnabled = this.isModelObjectClasspathResolutionEnabled();
+        if ( contextModelObjectClasspathResolutionEnabled == DEFAULT_MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED
+             && context.getAttribute( MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME ) != null )
+        {
+            contextModelObjectClasspathResolutionEnabled =
+                (Boolean) context.getAttribute( MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME );
+
+        }
+
+        if ( contextEnabled )
         {
             processed = new Model( model );
             final Modules modules = ModelHelper.getModules( processed );
 
             if ( modules != null )
             {
+                Module classpathModule = null;
+                if ( contextModelObjectClasspathResolutionEnabled )
+                {
+                    classpathModule = modules.getClasspathModule( Modules.getDefaultClasspathModuleName(),
+                                                                  context.getClassLoader() );
+
+                    if ( classpathModule != null
+                         && modules.getModule( Modules.getDefaultClasspathModuleName() ) == null )
+                    {
+                        modules.getModule().add( classpathModule );
+                    }
+                    else
+                    {
+                        classpathModule = null;
+                    }
+                }
+
                 final JomcTool tool = new JomcTool();
                 tool.setModel( processed );
 
@@ -244,6 +398,11 @@ public class ToolsModelProcessor implements ModelProcessor
                             this.applyDefaults( tool, implementation, sourceFilesType );
                         }
                     }
+                }
+
+                if ( classpathModule != null )
+                {
+                    modules.getModule().remove( classpathModule );
                 }
             }
         }
