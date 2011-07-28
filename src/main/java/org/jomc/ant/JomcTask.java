@@ -565,8 +565,6 @@ public class JomcTask extends Task
         this.log( Messages.getMessage( "title" ) );
         this.logSeparator();
 
-        ModelContext.setModelContextClassName( this.getModelContextClassName() );
-        ModelContext.setDefaultModletSchemaSystemId( this.getModletSchemaSystemId() );
         DefaultModelContext.setDefaultProviderLocation( this.getProviderLocation() );
         DefaultModelContext.setDefaultPlatformProviderLocation( this.getPlatformProviderLocation() );
         DefaultModletProvider.setDefaultModletLocation( this.getModletLocation() );
@@ -601,8 +599,6 @@ public class JomcTask extends Task
      */
     public void postExecuteTask() throws BuildException
     {
-        ModelContext.setModelContextClassName( null );
-        ModelContext.setDefaultModletSchemaSystemId( null );
         DefaultModelContext.setDefaultProviderLocation( null );
         DefaultModelContext.setDefaultPlatformProviderLocation( null );
         DefaultModletProvider.setDefaultModletLocation( null );
@@ -1157,8 +1153,13 @@ public class JomcTask extends Task
      */
     public ModelContext newModelContext( final ClassLoader classLoader ) throws ModelException
     {
-        final ModelContext modelContext = ModelContext.createModelContext( classLoader );
+        final ModelContext modelContext =
+            this.getModelContextClassName() == null
+            ? ModelContext.createModelContext( classLoader )
+            : ModelContext.createModelContext( this.getModelContextClassName(), classLoader );
+
         modelContext.setLogLevel( Level.ALL );
+        modelContext.setModletSchemaSystemId( this.getModletSchemaSystemId() );
 
         for ( int i = 0, s0 = this.getModelContextAttributes().size(); i < s0; i++ )
         {
