@@ -478,7 +478,7 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         try
         {
             final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
-            final ModelContext context = this.createModelContext( classLoader );
+            final ModelContext context = this.createModelContext( commandLine, classLoader );
             final Model model = this.getModel( context, commandLine );
             final JAXBContext jaxbContext = context.createContext( model.getIdentifier() );
             final Marshaller marshaller = context.createMarshaller( model.getIdentifier() );

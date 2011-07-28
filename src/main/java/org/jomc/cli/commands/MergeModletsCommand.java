@@ -419,7 +419,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
         {
             final Modlets modlets = new Modlets();
             final CommandLineClassLoader classLoader = new CommandLineClassLoader( commandLine );
-            final ModelContext context = this.createModelContext( classLoader );
+            final ModelContext context = this.createModelContext( commandLine, classLoader );
             final Marshaller marshaller = context.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
             final Unmarshaller unmarshaller = context.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
 

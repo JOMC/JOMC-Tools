@@ -412,7 +412,7 @@ public final class ShowModelCommand extends AbstractModelCommand
         try
         {
             final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
-            final ModelContext context = this.createModelContext( classLoader );
+            final ModelContext context = this.createModelContext( commandLine, classLoader );
             final Model model = this.getModel( context, commandLine );
             final JAXBContext jaxbContext = context.createContext( model.getIdentifier() );
             final Marshaller marshaller = context.createMarshaller( model.getIdentifier() );

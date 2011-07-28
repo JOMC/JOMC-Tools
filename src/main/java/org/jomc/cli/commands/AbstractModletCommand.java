@@ -376,28 +376,6 @@ public abstract class AbstractModletCommand extends AbstractCommand
 
         super.preExecuteCommand( commandLine );
 
-        if ( commandLine.hasOption( this.getModelContextOption().getOpt() ) )
-        {
-            ModelContext.setModelContextClassName(
-                commandLine.getOptionValue( this.getModelContextOption().getOpt() ) );
-
-        }
-        else
-        {
-            ModelContext.setModelContextClassName( null );
-        }
-
-        if ( commandLine.hasOption( this.getModletSchemaSystemIdOption().getOpt() ) )
-        {
-            ModelContext.setDefaultModletSchemaSystemId(
-                commandLine.getOptionValue( this.getModletSchemaSystemIdOption().getOpt() ) );
-
-        }
-        else
-        {
-            ModelContext.setDefaultModletSchemaSystemId( null );
-        }
-
         if ( commandLine.hasOption( this.getProviderLocationOption().getOpt() ) )
         {
             DefaultModelContext.setDefaultProviderLocation(
@@ -441,8 +419,6 @@ public abstract class AbstractModletCommand extends AbstractCommand
             throw new NullPointerException( "commandLine" );
         }
 
-        ModelContext.setModelContextClassName( null );
-        ModelContext.setDefaultModletSchemaSystemId( null );
         DefaultModelContext.setDefaultPlatformProviderLocation( null );
         DefaultModelContext.setDefaultProviderLocation( null );
         DefaultModletProvider.setDefaultModletLocation( null );
@@ -508,19 +484,39 @@ public abstract class AbstractModletCommand extends AbstractCommand
     }
 
     /**
-     * Creates a new {@code ModelContext} for a given {@code ClassLoader}.
+     * Creates a new {@code ModelContext} for a given {@code CommandLine} and {@code ClassLoader}.
      *
+     * @param commandLine The {@code CommandLine} to create a new {@code ModelContext} with.
      * @param classLoader The {@code ClassLoader} to create a new {@code ModelContext} with.
      *
-     * @return A new {@code ModelContext} for {@code classLoader}.
+     * @return A new {@code ModelContext} for {@code classLoader} setup using {@code commandLine}.
      *
+     * @throws NullPointerException if {@code commandLine} is {@code null}.
      * @throws CommandExecutionException if creating an new {@code ModelContext} fails.
      */
-    protected ModelContext createModelContext( final ClassLoader classLoader ) throws CommandExecutionException
+    protected ModelContext createModelContext( final CommandLine commandLine, final ClassLoader classLoader )
+        throws CommandExecutionException
     {
+        if ( commandLine == null )
+        {
+            throw new NullPointerException( "commandLine" );
+        }
+
         try
         {
-            final ModelContext modelContext = ModelContext.createModelContext( classLoader );
+            final ModelContext modelContext =
+                commandLine.hasOption( this.getModelContextOption().getOpt() )
+                ? ModelContext.createModelContext( commandLine.getOptionValue( this.getModelContextOption().getOpt() ),
+                                                   classLoader )
+                : ModelContext.createModelContext( classLoader );
+
+            if ( commandLine.hasOption( this.getModletSchemaSystemIdOption().getOpt() ) )
+            {
+                modelContext.setModletSchemaSystemId(
+                    commandLine.getOptionValue( this.getModletSchemaSystemIdOption().getOpt() ) );
+
+            }
+
             modelContext.setLogLevel( this.getLogLevel() );
             modelContext.getListeners().add( new ModelContext.Listener()
             {

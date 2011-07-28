@@ -438,7 +438,7 @@ public final class MergeModulesCommand extends AbstractModelCommand
         {
             final Modules modules = new Modules();
             final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
-            final ModelContext context = this.createModelContext( classLoader );
+            final ModelContext context = this.createModelContext( commandLine, classLoader );
             final String model = this.getModel( commandLine );
             final Marshaller marshaller = context.createMarshaller( model );
             final Unmarshaller unmarshaller = context.createUnmarshaller( model );
