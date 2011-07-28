@@ -49,6 +49,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.io.IOUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
+import org.jomc.ant.types.KeyValueType;
 import org.jomc.ant.types.ModuleResourceType;
 import org.jomc.ant.types.ResourceType;
 import org.jomc.model.Module;
@@ -59,6 +60,8 @@ import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelException;
+import org.jomc.tools.modlet.ToolsModelProcessor;
+import org.jomc.tools.modlet.ToolsModelProvider;
 
 /**
  * Base class for executing model based tasks.
@@ -357,21 +360,49 @@ public class JomcModelTask extends JomcTask
     public void preExecuteTask() throws BuildException
     {
         super.preExecuteTask();
-
-        DefaultModelProvider.setDefaultModuleLocation( this.getModuleLocation() );
-        DefaultModelProcessor.setDefaultTransformerLocation( this.getTransformerLocation() );
-
         this.assertLocationsNotNull( this.getModuleResources() );
     }
 
     /** {@inheritDoc} */
     @Override
-    public void postExecuteTask() throws BuildException
+    public ModelContext newModelContext( final ClassLoader classLoader ) throws ModelException
     {
-        DefaultModelProvider.setDefaultModuleLocation( null );
-        DefaultModelProcessor.setDefaultTransformerLocation( null );
+        final ModelContext modelContext = super.newModelContext( classLoader );
 
-        super.postExecuteTask();
+        if ( this.getTransformerLocation() != null )
+        {
+            modelContext.setAttribute( DefaultModelProcessor.TRANSFORMER_LOCATION_ATTRIBUTE_NAME,
+                                       this.getTransformerLocation() );
+
+        }
+
+        if ( this.getModuleLocation() != null )
+        {
+            modelContext.setAttribute( DefaultModelProvider.MODULE_LOCATION_ATTRIBUTE_NAME, this.getModuleLocation() );
+        }
+
+        modelContext.setAttribute( ToolsModelProvider.MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME,
+                                   this.isModelObjectClasspathResolutionEnabled() );
+
+        modelContext.setAttribute( ToolsModelProcessor.MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME,
+                                   this.isModelObjectClasspathResolutionEnabled() );
+
+        for ( int i = 0, s0 = this.getModelContextAttributes().size(); i < s0; i++ )
+        {
+            final KeyValueType<String, Object> kv = this.getModelContextAttributes().get( i );
+
+            if ( kv.getValue() != null )
+            {
+                modelContext.setAttribute( kv.getKey(), kv.getValue() );
+            }
+            else
+            {
+                modelContext.clearAttribute( kv.getKey() );
+            }
+        }
+
+
+        return modelContext;
     }
 
     /** {@inheritDoc} */

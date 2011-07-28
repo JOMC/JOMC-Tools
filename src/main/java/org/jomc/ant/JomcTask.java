@@ -565,10 +565,6 @@ public class JomcTask extends Task
         this.log( Messages.getMessage( "title" ) );
         this.logSeparator();
 
-        DefaultModelContext.setDefaultProviderLocation( this.getProviderLocation() );
-        DefaultModelContext.setDefaultPlatformProviderLocation( this.getPlatformProviderLocation() );
-        DefaultModletProvider.setDefaultModletLocation( this.getModletLocation() );
-
         this.assertNotNull( "model", this.getModel() );
         this.assertKeysNotNull( this.getModelContextAttributes() );
         this.assertKeysNotNull( this.getTransformationParameters() );
@@ -599,10 +595,6 @@ public class JomcTask extends Task
      */
     public void postExecuteTask() throws BuildException
     {
-        DefaultModelContext.setDefaultProviderLocation( null );
-        DefaultModelContext.setDefaultPlatformProviderLocation( null );
-        DefaultModletProvider.setDefaultModletLocation( null );
-
         this.logSeparator();
     }
 
@@ -1161,6 +1153,37 @@ public class JomcTask extends Task
         modelContext.setLogLevel( Level.ALL );
         modelContext.setModletSchemaSystemId( this.getModletSchemaSystemId() );
 
+        modelContext.getListeners().add( new ModelContext.Listener()
+        {
+
+            @Override
+            public void onLog( final Level level, final String message, final Throwable t )
+            {
+                super.onLog( level, message, t );
+                logMessage( level, message, t );
+            }
+
+        } );
+
+        if ( this.getProviderLocation() != null )
+        {
+            modelContext.setAttribute( DefaultModelContext.PROVIDER_LOCATION_ATTRIBUTE_NAME,
+                                       this.getProviderLocation() );
+
+        }
+
+        if ( this.getPlatformProviderLocation() != null )
+        {
+            modelContext.setAttribute( DefaultModelContext.PLATFORM_PROVIDER_LOCATION_ATTRIBUTE_NAME,
+                                       this.getPlatformProviderLocation() );
+
+        }
+
+        if ( this.getModletLocation() != null )
+        {
+            modelContext.setAttribute( DefaultModletProvider.MODLET_LOCATION_ATTRIBUTE_NAME, this.getModletLocation() );
+        }
+
         for ( int i = 0, s0 = this.getModelContextAttributes().size(); i < s0; i++ )
         {
             final KeyValueType<String, Object> kv = this.getModelContextAttributes().get( i );
@@ -1174,18 +1197,6 @@ public class JomcTask extends Task
                 modelContext.clearAttribute( kv.getKey() );
             }
         }
-
-        modelContext.getListeners().add( new ModelContext.Listener()
-        {
-
-            @Override
-            public void onLog( final Level level, final String message, final Throwable t )
-            {
-                super.onLog( level, message, t );
-                logMessage( level, message, t );
-            }
-
-        } );
 
         return modelContext;
     }
