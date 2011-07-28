@@ -1293,7 +1293,7 @@ public final class ManageSourcesCommand extends AbstractSourceFileProcessorComma
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-27T12:27:43+0200</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-28T21:26:13+0200</code></pre></td>
      *     </tr>
      *   </table>
      * </p>
