@@ -556,8 +556,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
         try
         {
-            ModelContext.setModelContextClassName( this.modelContextClassName );
-            ModelContext.setDefaultModletSchemaSystemId( this.modletSchemaSystemId );
             DefaultModletProvider.setDefaultModletLocation( this.modletLocation );
             DefaultModelContext.setDefaultProviderLocation( this.providerLocation );
             DefaultModelContext.setDefaultPlatformProviderLocation( this.platformProviderLocation );
@@ -587,8 +585,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         finally
         {
-            ModelContext.setModelContextClassName( null );
-            ModelContext.setDefaultModletSchemaSystemId( null );
             DefaultModletProvider.setDefaultModletLocation( null );
             DefaultModelContext.setDefaultProviderLocation( null );
             DefaultModelContext.setDefaultPlatformProviderLocation( null );
@@ -1399,7 +1395,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     {
         try
         {
-            final ModelContext context = ModelContext.createModelContext( classLoader );
+            final ModelContext context = this.modelContextClassName == null
+                                         ? ModelContext.createModelContext( classLoader )
+                                         : ModelContext.createModelContext( this.modelContextClassName, classLoader );
+
             this.setupModelContext( context );
             return context;
         }
@@ -2309,6 +2308,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             context.setLogLevel( this.getLog().isDebugEnabled() ? Level.ALL : Level.INFO );
         }
 
+        context.setModletSchemaSystemId( this.modletSchemaSystemId );
         context.getListeners().add( new ModelContext.Listener()
         {
 

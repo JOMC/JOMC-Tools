@@ -670,8 +670,6 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
 
     private void setupJomc()
     {
-        ModelContext.setDefaultModletSchemaSystemId( this.modletSchemaSystemId );
-        ModelContext.setModelContextClassName( this.modelContextClassName );
         DefaultModelContext.setDefaultPlatformProviderLocation( this.platformProviderLocation );
         DefaultModelContext.setDefaultProviderLocation( this.providerLocation );
         DefaultModletProvider.setDefaultModletLocation( this.modletLocation );
@@ -679,8 +677,6 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
 
     private void resetJomc()
     {
-        ModelContext.setDefaultModletSchemaSystemId( null );
-        ModelContext.setModelContextClassName( null );
         DefaultModelContext.setDefaultPlatformProviderLocation( null );
         DefaultModelContext.setDefaultProviderLocation( null );
         DefaultModletProvider.setDefaultModletLocation( null );
@@ -946,7 +942,12 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
 
     private ModelContext createModelContext() throws ModelException
     {
-        final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
+        final ModelContext modelContext =
+            this.modelContextClassName == null
+            ? ModelContext.createModelContext( this.getClass().getClassLoader() )
+            : ModelContext.createModelContext( this.modelContextClassName, this.getClass().getClassLoader() );
+
+        modelContext.setModletSchemaSystemId( this.modletSchemaSystemId );
 
         if ( this.modelContextAttributes != null )
         {
