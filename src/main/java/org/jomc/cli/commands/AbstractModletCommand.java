@@ -365,67 +365,6 @@ public abstract class AbstractModletCommand extends AbstractCommand
     // SECTION-END
     // SECTION-START[AbstractModletCommand]
 
-    /** {@inheritDoc} */
-    @Override
-    protected void preExecuteCommand( final CommandLine commandLine ) throws CommandExecutionException
-    {
-        if ( commandLine == null )
-        {
-            throw new NullPointerException( "commandLine" );
-        }
-
-        super.preExecuteCommand( commandLine );
-
-        if ( commandLine.hasOption( this.getProviderLocationOption().getOpt() ) )
-        {
-            DefaultModelContext.setDefaultProviderLocation(
-                commandLine.getOptionValue( this.getProviderLocationOption().getOpt() ) );
-
-        }
-        else
-        {
-            DefaultModelContext.setDefaultProviderLocation( null );
-        }
-
-        if ( commandLine.hasOption( this.getPlatformProviderLocationOption().getOpt() ) )
-        {
-            DefaultModelContext.setDefaultPlatformProviderLocation(
-                commandLine.getOptionValue( this.getPlatformProviderLocationOption().getOpt() ) );
-
-        }
-        else
-        {
-            DefaultModelContext.setDefaultPlatformProviderLocation( null );
-        }
-
-        if ( commandLine.hasOption( this.getModletLocationOption().getOpt() ) )
-        {
-            DefaultModletProvider.setDefaultModletLocation(
-                commandLine.getOptionValue( this.getModletLocationOption().getOpt() ) );
-
-        }
-        else
-        {
-            DefaultModletProvider.setDefaultModletLocation( null );
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void postExecuteCommand( final CommandLine commandLine ) throws CommandExecutionException
-    {
-        if ( commandLine == null )
-        {
-            throw new NullPointerException( "commandLine" );
-        }
-
-        DefaultModelContext.setDefaultPlatformProviderLocation( null );
-        DefaultModelContext.setDefaultProviderLocation( null );
-        DefaultModletProvider.setDefaultModletLocation( null );
-
-        super.postExecuteCommand( commandLine );
-    }
-
     /**
      * Creates a new {@code Transformer} from a given {@code Source}.
      *
@@ -529,6 +468,28 @@ public abstract class AbstractModletCommand extends AbstractCommand
                 }
 
             } );
+
+            if ( commandLine.hasOption( this.getProviderLocationOption().getOpt() ) )
+            {
+                modelContext.setAttribute( DefaultModelContext.PROVIDER_LOCATION_ATTRIBUTE_NAME,
+                                           commandLine.getOptionValue( this.getProviderLocationOption().getOpt() ) );
+
+            }
+
+            if ( commandLine.hasOption( this.getPlatformProviderLocationOption().getOpt() ) )
+            {
+                modelContext.setAttribute(
+                    DefaultModelContext.PLATFORM_PROVIDER_LOCATION_ATTRIBUTE_NAME,
+                    commandLine.getOptionValue( this.getPlatformProviderLocationOption().getOpt() ) );
+
+            }
+
+            if ( commandLine.hasOption( this.getModletLocationOption().getOpt() ) )
+            {
+                modelContext.setAttribute( DefaultModletProvider.MODLET_LOCATION_ATTRIBUTE_NAME,
+                                           commandLine.getOptionValue( this.getModletLocationOption().getOpt() ) );
+
+            }
 
             return modelContext;
         }

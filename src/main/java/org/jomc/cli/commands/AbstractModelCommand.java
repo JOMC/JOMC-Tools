@@ -50,6 +50,8 @@ import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelException;
+import org.jomc.tools.modlet.ToolsModelProcessor;
+import org.jomc.tools.modlet.ToolsModelProvider;
 
 // SECTION-START[Documentation]
 // <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
@@ -355,51 +357,41 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
 
     /** {@inheritDoc} */
     @Override
-    protected void preExecuteCommand( final CommandLine commandLine ) throws CommandExecutionException
+    protected ModelContext createModelContext( final CommandLine commandLine, final ClassLoader classLoader )
+        throws CommandExecutionException
     {
         if ( commandLine == null )
         {
             throw new NullPointerException( "commandLine" );
         }
 
-        super.preExecuteCommand( commandLine );
+        final ModelContext modelContext = super.createModelContext( commandLine, classLoader );
 
         if ( commandLine.hasOption( this.getTransformerLocationOption().getOpt() ) )
         {
-            DefaultModelProcessor.setDefaultTransformerLocation(
-                commandLine.getOptionValue( this.getTransformerLocationOption().getOpt() ) );
+            modelContext.setAttribute( DefaultModelProcessor.TRANSFORMER_LOCATION_ATTRIBUTE_NAME,
+                                       commandLine.getOptionValue( this.getTransformerLocationOption().getOpt() ) );
 
-        }
-        else
-        {
-            DefaultModelProcessor.setDefaultTransformerLocation( null );
         }
 
         if ( commandLine.hasOption( this.getModuleLocationOption().getOpt() ) )
         {
-            DefaultModelProvider.setDefaultModuleLocation(
-                commandLine.getOptionValue( this.getModuleLocationOption().getOpt() ) );
+            modelContext.setAttribute( DefaultModelProvider.MODULE_LOCATION_ATTRIBUTE_NAME,
+                                       commandLine.getOptionValue( this.getModuleLocationOption().getOpt() ) );
 
         }
-        else
+
+        if ( commandLine.hasOption( this.getNoClasspathResolutionOption().getOpt() ) )
         {
-            DefaultModelProvider.setDefaultModuleLocation( null );
-        }
-    }
+            modelContext.setAttribute( ToolsModelProvider.MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME,
+                                       Boolean.FALSE );
 
-    /** {@inheritDoc} */
-    @Override
-    protected void postExecuteCommand( final CommandLine commandLine ) throws CommandExecutionException
-    {
-        if ( commandLine == null )
-        {
-            throw new NullPointerException( "commandLine" );
+            modelContext.setAttribute( ToolsModelProcessor.MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME,
+                                       Boolean.FALSE );
+
         }
 
-        DefaultModelProcessor.setDefaultTransformerLocation( null );
-        DefaultModelProvider.setDefaultModuleLocation( null );
-
-        super.postExecuteCommand( commandLine );
+        return modelContext;
     }
 
     /**
