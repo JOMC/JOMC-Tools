@@ -668,20 +668,6 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
         }
     }
 
-    private void setupJomc()
-    {
-        DefaultModelContext.setDefaultPlatformProviderLocation( this.platformProviderLocation );
-        DefaultModelContext.setDefaultProviderLocation( this.providerLocation );
-        DefaultModletProvider.setDefaultModletLocation( this.modletLocation );
-    }
-
-    private void resetJomc()
-    {
-        DefaultModelContext.setDefaultPlatformProviderLocation( null );
-        DefaultModelContext.setDefaultProviderLocation( null );
-        DefaultModletProvider.setDefaultModletLocation( null );
-    }
-
     private Object unmarshalModelObject( final InputStream in ) throws ModelException, JAXBException
     {
         if ( in == null )
@@ -691,15 +677,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
 
         if ( this.jomcUnmarshaller == null )
         {
-            try
-            {
-                this.setupJomc();
-                this.jomcUnmarshaller = this.createModelContext().createUnmarshaller( this.model );
-            }
-            finally
-            {
-                this.resetJomc();
-            }
+            this.jomcUnmarshaller = this.createModelContext().createUnmarshaller( this.model );
         }
 
         return this.jomcUnmarshaller.unmarshal( in );
@@ -719,22 +697,14 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
 
         if ( this.jomcMarshaller == null )
         {
-            try
-            {
-                this.setupJomc();
-                final ModelContext modelContext = this.createModelContext();
-                this.jomcMarshaller = modelContext.createMarshaller( this.model );
-                this.jomcMarshaller.setSchema( modelContext.createSchema( this.model ) );
-                this.jomcMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
+            final ModelContext modelContext = this.createModelContext();
+            this.jomcMarshaller = modelContext.createMarshaller( this.model );
+            this.jomcMarshaller.setSchema( modelContext.createSchema( this.model ) );
+            this.jomcMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
 
-                if ( this.moduleEncoding != null )
-                {
-                    this.jomcMarshaller.setProperty( Marshaller.JAXB_ENCODING, this.moduleEncoding );
-                }
-            }
-            finally
+            if ( this.moduleEncoding != null )
             {
-                this.resetJomc();
+                this.jomcMarshaller.setProperty( Marshaller.JAXB_ENCODING, this.moduleEncoding );
             }
         }
 
@@ -759,41 +729,33 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
 
         if ( this.modelObjectStylesheet != null )
         {
-            try
+            final Transformer transformer = TransformerFactory.newInstance().newTransformer(
+                new StreamSource( this.getResource( this.modelObjectStylesheet ).toURI().toASCIIString() ) );
+
+            final ModelContext modelContext = this.createModelContext();
+            final Marshaller marshaller = modelContext.createMarshaller( this.model );
+            final Unmarshaller unmarshaller = modelContext.createUnmarshaller( this.model );
+            final JAXBSource source = new JAXBSource( marshaller, element );
+            final JAXBResult result = new JAXBResult( unmarshaller );
+
+            for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
             {
-                this.setupJomc();
-                final Transformer transformer = TransformerFactory.newInstance().newTransformer(
-                    new StreamSource( this.getResource( this.modelObjectStylesheet ).toURI().toASCIIString() ) );
-
-                final ModelContext modelContext = this.createModelContext();
-                final Marshaller marshaller = modelContext.createMarshaller( this.model );
-                final Unmarshaller unmarshaller = modelContext.createUnmarshaller( this.model );
-                final JAXBSource source = new JAXBSource( marshaller, element );
-                final JAXBResult result = new JAXBResult( unmarshaller );
-
-                for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
-                {
-                    transformer.setParameter( e.getKey().toString(), e.getValue() );
-                }
-
-                transformer.transform( source, result );
-
-                if ( result.getResult() instanceof JAXBElement<?>
-                     && boundType.isInstance( ( (JAXBElement<?>) result.getResult() ).getValue() ) )
-                {
-                    @SuppressWarnings( "unchecked" ) final JAXBElement<T> e = (JAXBElement<T>) result.getResult();
-                    transformed = e;
-                }
-                else
-                {
-                    throw new ModelException( Messages.getMessage(
-                        "illegalModuleTransformationResult", this.modelObjectStylesheet ) );
-
-                }
+                transformer.setParameter( e.getKey().toString(), e.getValue() );
             }
-            finally
+
+            transformer.transform( source, result );
+
+            if ( result.getResult() instanceof JAXBElement<?>
+                 && boundType.isInstance( ( (JAXBElement<?>) result.getResult() ).getValue() ) )
             {
-                this.resetJomc();
+                @SuppressWarnings( "unchecked" ) final JAXBElement<T> e = (JAXBElement<T>) result.getResult();
+                transformed = e;
+            }
+            else
+            {
+                throw new ModelException( Messages.getMessage(
+                    "illegalModuleTransformationResult", this.modelObjectStylesheet ) );
+
             }
         }
 
@@ -809,15 +771,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
 
         if ( this.modletUnmarshaller == null )
         {
-            try
-            {
-                this.setupJomc();
-                this.modletUnmarshaller = this.createModelContext().createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
-            }
-            finally
-            {
-                this.resetJomc();
-            }
+            this.modletUnmarshaller = this.createModelContext().createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
         }
 
         return this.modletUnmarshaller.unmarshal( in );
@@ -837,22 +791,14 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
 
         if ( this.modletMarshaller == null )
         {
-            try
-            {
-                this.setupJomc();
-                final ModelContext modletContext = this.createModelContext();
-                this.modletMarshaller = modletContext.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
-                this.modletMarshaller.setSchema( modletContext.createSchema( ModletObject.MODEL_PUBLIC_ID ) );
-                this.modletMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
+            final ModelContext modletContext = this.createModelContext();
+            this.modletMarshaller = modletContext.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
+            this.modletMarshaller.setSchema( modletContext.createSchema( ModletObject.MODEL_PUBLIC_ID ) );
+            this.modletMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
 
-                if ( this.modletEncoding != null )
-                {
-                    this.modletMarshaller.setProperty( Marshaller.JAXB_ENCODING, this.modletEncoding );
-                }
-            }
-            finally
+            if ( this.modletEncoding != null )
             {
-                this.resetJomc();
+                this.modletMarshaller.setProperty( Marshaller.JAXB_ENCODING, this.modletEncoding );
             }
         }
 
@@ -877,41 +823,33 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
 
         if ( this.modletObjectStylesheet != null )
         {
-            try
+            final Transformer transformer = TransformerFactory.newInstance().newTransformer(
+                new StreamSource( this.getResource( this.modletObjectStylesheet ).toURI().toASCIIString() ) );
+
+            final ModelContext modletContext = this.createModelContext();
+            final Marshaller marshaller = modletContext.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
+            final Unmarshaller unmarshaller = modletContext.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
+            final JAXBSource source = new JAXBSource( marshaller, element );
+            final JAXBResult result = new JAXBResult( unmarshaller );
+
+            for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
             {
-                this.setupJomc();
-                final Transformer transformer = TransformerFactory.newInstance().newTransformer(
-                    new StreamSource( this.getResource( this.modletObjectStylesheet ).toURI().toASCIIString() ) );
-
-                final ModelContext modletContext = this.createModelContext();
-                final Marshaller marshaller = modletContext.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
-                final Unmarshaller unmarshaller = modletContext.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
-                final JAXBSource source = new JAXBSource( marshaller, element );
-                final JAXBResult result = new JAXBResult( unmarshaller );
-
-                for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
-                {
-                    transformer.setParameter( e.getKey().toString(), e.getValue() );
-                }
-
-                transformer.transform( source, result );
-
-                if ( result.getResult() instanceof JAXBElement<?>
-                     && boundType.isInstance( ( (JAXBElement<?>) result.getResult() ).getValue() ) )
-                {
-                    @SuppressWarnings( "unchecked" ) final JAXBElement<T> e = (JAXBElement<T>) result.getResult();
-                    transformed = e;
-                }
-                else
-                {
-                    throw new ModelException( Messages.getMessage(
-                        "illegalModletTransformationResult", this.modletObjectStylesheet ) );
-
-                }
+                transformer.setParameter( e.getKey().toString(), e.getValue() );
             }
-            finally
+
+            transformer.transform( source, result );
+
+            if ( result.getResult() instanceof JAXBElement<?>
+                 && boundType.isInstance( ( (JAXBElement<?>) result.getResult() ).getValue() ) )
             {
-                this.resetJomc();
+                @SuppressWarnings( "unchecked" ) final JAXBElement<T> e = (JAXBElement<T>) result.getResult();
+                transformed = e;
+            }
+            else
+            {
+                throw new ModelException( Messages.getMessage(
+                    "illegalModletTransformationResult", this.modletObjectStylesheet ) );
+
             }
         }
 
@@ -948,6 +886,23 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
             : ModelContext.createModelContext( this.modelContextClassName, this.getClass().getClassLoader() );
 
         modelContext.setModletSchemaSystemId( this.modletSchemaSystemId );
+
+        if ( this.providerLocation != null )
+        {
+            modelContext.setAttribute( DefaultModelContext.PROVIDER_LOCATION_ATTRIBUTE_NAME, this.providerLocation );
+        }
+
+        if ( this.platformProviderLocation != null )
+        {
+            modelContext.setAttribute( DefaultModelContext.PLATFORM_PROVIDER_LOCATION_ATTRIBUTE_NAME,
+                                       this.platformProviderLocation );
+
+        }
+
+        if ( this.modletLocation != null )
+        {
+            modelContext.setAttribute( DefaultModletProvider.MODLET_LOCATION_ATTRIBUTE_NAME, this.modletLocation );
+        }
 
         if ( this.modelContextAttributes != null )
         {

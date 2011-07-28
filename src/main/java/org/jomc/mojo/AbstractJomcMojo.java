@@ -89,6 +89,8 @@ import org.jomc.tools.ClassFileProcessor;
 import org.jomc.tools.JomcTool;
 import org.jomc.tools.ResourceFileProcessor;
 import org.jomc.tools.SourceFileProcessor;
+import org.jomc.tools.modlet.ToolsModelProcessor;
+import org.jomc.tools.modlet.ToolsModelProvider;
 
 /**
  * Base class for executing {@code JomcTool}s.
@@ -556,11 +558,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
         try
         {
-            DefaultModletProvider.setDefaultModletLocation( this.modletLocation );
-            DefaultModelContext.setDefaultProviderLocation( this.providerLocation );
-            DefaultModelContext.setDefaultPlatformProviderLocation( this.platformProviderLocation );
-            DefaultModelProvider.setDefaultModuleLocation( this.moduleLocation );
-            DefaultModelProcessor.setDefaultTransformerLocation( this.transformerLocation );
             JomcTool.setDefaultTemplateProfile( this.defaultTemplateProfile );
 
             this.logSeparator();
@@ -585,11 +582,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         finally
         {
-            DefaultModletProvider.setDefaultModletLocation( null );
-            DefaultModelContext.setDefaultProviderLocation( null );
-            DefaultModelContext.setDefaultPlatformProviderLocation( null );
-            DefaultModelProvider.setDefaultModuleLocation( null );
-            DefaultModelProcessor.setDefaultTransformerLocation( null );
             JomcTool.setDefaultTemplateProfile( null );
             this.logSeparator();
         }
@@ -2328,6 +2320,39 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
 
         } );
+
+        if ( this.providerLocation != null )
+        {
+            context.setAttribute( DefaultModelContext.PROVIDER_LOCATION_ATTRIBUTE_NAME, this.providerLocation );
+        }
+
+        if ( this.platformProviderLocation != null )
+        {
+            context.setAttribute( DefaultModelContext.PLATFORM_PROVIDER_LOCATION_ATTRIBUTE_NAME,
+                                  this.platformProviderLocation );
+
+        }
+
+        if ( this.modletLocation != null )
+        {
+            context.setAttribute( DefaultModletProvider.MODLET_LOCATION_ATTRIBUTE_NAME, this.modletLocation );
+        }
+
+        if ( this.transformerLocation != null )
+        {
+            context.setAttribute( DefaultModelProcessor.TRANSFORMER_LOCATION_ATTRIBUTE_NAME, this.transformerLocation );
+        }
+
+        if ( this.moduleLocation != null )
+        {
+            context.setAttribute( DefaultModelProvider.MODULE_LOCATION_ATTRIBUTE_NAME, this.moduleLocation );
+        }
+
+        context.setAttribute( ToolsModelProvider.MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME,
+                              this.modelObjectClasspathResolutionEnabled );
+
+        context.setAttribute( ToolsModelProcessor.MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME,
+                              this.modelObjectClasspathResolutionEnabled );
 
         if ( this.modelContextAttributes != null )
         {
