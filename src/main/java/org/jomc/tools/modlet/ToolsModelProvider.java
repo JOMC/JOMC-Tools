@@ -70,7 +70,7 @@ public class ToolsModelProvider implements ModelProvider
 {
 
     /**
-     * Constant for the name of the attribute backing property {@code enabled}.
+     * Constant for the name of the model context attribute backing property {@code enabled}.
      * @see #findModel(org.jomc.modlet.ModelContext, org.jomc.modlet.Model)
      * @see ModelContext#getAttribute(java.lang.String)
      * @see ModelContext#getAttribute(java.lang.String, java.lang.Object)
