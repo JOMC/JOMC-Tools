@@ -73,9 +73,6 @@ public class ToolsModelProcessor implements ModelProcessor
      * Constant for the name of the model context attribute backing property {@code enabled}.
      * @see #processModel(org.jomc.modlet.ModelContext, org.jomc.modlet.Model)
      * @see ModelContext#getAttribute(java.lang.String)
-     * @see ModelContext#getAttribute(java.lang.String, java.lang.Object)
-     * @see ModelContext#setAttribute(java.lang.String, java.lang.Object)
-     * @see ModelContext#clearAttribute(java.lang.String)
      */
     public static final String ENABLED_ATTRIBUTE_NAME = "org.jomc.tools.modlet.ToolsModelProcessor.enabledAttribute";
 
@@ -85,9 +82,6 @@ public class ToolsModelProcessor implements ModelProcessor
      *
      * @see #processModel(org.jomc.modlet.ModelContext, org.jomc.modlet.Model)
      * @see ModelContext#getAttribute(java.lang.String)
-     * @see ModelContext#getAttribute(java.lang.String, java.lang.Object)
-     * @see ModelContext#setAttribute(java.lang.String, java.lang.Object)
-     * @see ModelContext#clearAttribute(java.lang.String)
      */
     public static final String MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME =
         "org.jomc.tools.modlet.ToolsModelProcessor.modelObjectClasspathResolutionEnabledAttribute";
