@@ -153,7 +153,7 @@
       <code>classFileProcessorClassName</code>, <code>resourceFileProcessorClassName</code>,
       <code>sourceFileProcessorClassName</code>, <code>templateLocation</code>, <code>velocityPropertyResources</code>,
       <code>templateParameterResources</code>, <code>transformationParameterResources</code>, <code>locale</code>,
-      <code>modletResourceValidation</code>, <code>modelResourceValidation</code> and
+      <code>modletResourceValidationEnabled</code>, <code>modelResourceValidationEnabled</code> and
       <code>modelContextAttributes</code> to goals <code>commit-main-classes</code>, <code>commit-test-classes</code>,
       <code>validate-main-classes</code>, <code>validate-test-classes</code>, <code>validate-main-classpath</code>,
       <code>validate-test-classpath</code>, <code>show-main-instance</code>, <code>show-test-instance</code>,
