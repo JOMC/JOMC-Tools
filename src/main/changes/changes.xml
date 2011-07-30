@@ -124,6 +124,16 @@
       <action dev="schulte2005" type="add"><![CDATA[Added option <code>resource-names</code> to the
       <code>merge-modlets</code> and <code>merge-modules</code> commands of the command line application.]]>
       </action>
+      <action dev="schulte2005" type="add"><![CDATA[Added option <code>no-modlet-resource-validation</code> to the
+      <code>commit-classes</code>, <code>generate-resources</code>, <code>manage-sources</code>,
+      <code>merge-modlets</code>, <code>merge-modules</code>, <code>show-model</code>, <code>validate-classes</code>
+      and <code>validate-model</code> commands of the command line application.]]>
+      </action>
+      <action dev="schulte2005" type="add"><![CDATA[Added option <code>no-modlet-resource-validation</code> to the
+      <code>commit-classes</code>, <code>generate-resources</code>, <code>manage-sources</code>,
+      <code>merge-modules</code>, <code>show-model</code>, <code>validate-classes</code> and
+      <code>validate-model</code> commands of the command line application.]]>
+      </action>
       <action dev="schulte2005" type="remove"><![CDATA[Removed optional <code>oro</code> Java archive from
       distribution.]]>
       </action>

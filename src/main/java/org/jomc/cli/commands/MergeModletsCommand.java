@@ -245,6 +245,11 @@ import org.jomc.modlet.ObjectFactory;
  *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Modlet Version Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getNoModletResourceValidation NoModletResourceValidation}</td>
+ *       <td align="left" valign="top" nowrap>{@code none}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI No Modlet Resource Validation Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
+ *     </tr>
+ *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getPlatformProviderLocationOption PlatformProviderLocationOption}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Platform Provider Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
@@ -749,6 +754,10 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI No Modlet Resource Validation Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Platform Provider Location Option</td>
      *     </tr>
      *     <tr class="TableRow">
@@ -785,6 +794,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
         options.addOption( this.getModletSchemaSystemIdOption() );
         options.addOption( this.getModletVendorOption() );
         options.addOption( this.getModletVersionOption() );
+        options.addOption( this.getNoModletResourceValidation() );
         options.addOption( this.getPlatformProviderLocationOption() );
         options.addOption( this.getProviderLocationOption() );
         options.addOption( this.getResourcesOption() );
@@ -1031,6 +1041,21 @@ public final class MergeModletsCommand extends AbstractModletCommand
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModletVersionOption" );
         assert _d != null : "'ModletVersionOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code NoModletResourceValidation} dependency.
+     * <p>This method returns the {@code 'JOMC CLI No Modlet Resource Validation Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code NoModletResourceValidation} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private org.apache.commons.cli.Option getNoModletResourceValidation()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "NoModletResourceValidation" );
+        assert _d != null : "'NoModletResourceValidation' dependency not found.";
         return _d;
     }
 

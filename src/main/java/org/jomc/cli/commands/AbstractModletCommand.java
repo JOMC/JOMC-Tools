@@ -230,6 +230,11 @@ import org.jomc.modlet.Services;
  *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Modlet Schema System Id Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
  *     </tr>
  *     <tr class="TableRowColor">
+ *       <td align="left" valign="top" nowrap>{@link #getNoModletResourceValidation NoModletResourceValidation}</td>
+ *       <td align="left" valign="top" nowrap>{@code none}</td>
+ *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI No Modlet Resource Validation Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
+ *     </tr>
+ *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getPlatformProviderLocationOption PlatformProviderLocationOption}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
  *       <td align="left" valign="top">Dependency on the {@code 'JOMC CLI Platform Provider Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2 bound to an instance.</td>
@@ -490,6 +495,9 @@ public abstract class AbstractModletCommand extends AbstractCommand
                                            commandLine.getOptionValue( this.getModletLocationOption().getOpt() ) );
 
             }
+
+            modelContext.setAttribute( DefaultModletProvider.VALIDATING_ATTRIBUTE_NAME,
+                                       !commandLine.hasOption( this.getNoModletResourceValidation().getOpt() ) );
 
             return modelContext;
         }
@@ -1213,6 +1221,21 @@ public abstract class AbstractModletCommand extends AbstractCommand
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModletSchemaSystemIdOption" );
         assert _d != null : "'ModletSchemaSystemIdOption' dependency not found.";
+        return _d;
+    }
+
+    /**
+     * Gets the {@code NoModletResourceValidation} dependency.
+     * <p>This method returns the {@code 'JOMC CLI No Modlet Resource Validation Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
+     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
+     * @return The {@code NoModletResourceValidation} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private org.apache.commons.cli.Option getNoModletResourceValidation()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "NoModletResourceValidation" );
+        assert _d != null : "'NoModletResourceValidation' dependency not found.";
         return _d;
     }
 
