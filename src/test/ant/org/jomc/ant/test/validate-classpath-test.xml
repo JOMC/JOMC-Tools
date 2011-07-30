@@ -257,7 +257,9 @@
                              platformProviderLocation="TEST"
                              if="${jomc.enabled}"
                              classFileProcessorClass="org.jomc.tools.ClassFileProcessor"
-                             templateLocation="${empty.dir}">
+                             templateLocation="${empty.dir}"
+                             modletResourceValidationEnabled="false"
+                             modelResourceValidationEnabled="false">
       <jomc:classpath>
         <pathelement location="${classes.dir}"/>
       </jomc:classpath>

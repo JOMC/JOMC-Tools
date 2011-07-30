@@ -84,6 +84,9 @@ public class JomcModelTask extends JomcTask
     /** Module resources. */
     private Set<ModuleResourceType> moduleResources;
 
+    /** The flag indicating JAXP schema validation of model resources is enabled. */
+    private boolean modelResourceValidationEnabled = true;
+
     /** Creates a new {@code JomcModelTask} instance. */
     public JomcModelTask()
     {
@@ -195,6 +198,31 @@ public class JomcModelTask extends JomcTask
         final ModuleResourceType moduleResource = new ModuleResourceType();
         this.getModuleResources().add( moduleResource );
         return moduleResource;
+    }
+
+    /**
+     * Gets a flag indicating JAXP schema validation of model resources is enabled.
+     *
+     * @return {@code true} if JAXP schema validation of model resources is enabled; {@code false} else.
+     *
+     * @see #setModelResourceValidationEnabled(boolean)
+     */
+    public final boolean isModelResourceValidationEnabled()
+    {
+        return this.modelResourceValidationEnabled;
+    }
+
+    /**
+     * Sets the flag indicating JAXP schema validation of model resources is enabled.
+     *
+     * @param value {@code true} to enable JAXP schema validation of model resources; {@code false} to disable JAXP
+     * schema validation of model resources.
+     *
+     * @see #isModelResourceValidationEnabled()
+     */
+    public final void setModelResourceValidationEnabled( final boolean value )
+    {
+        this.modelResourceValidationEnabled = value;
     }
 
     /**
@@ -386,6 +414,9 @@ public class JomcModelTask extends JomcTask
 
         modelContext.setAttribute( ToolsModelProcessor.MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME,
                                    this.isModelObjectClasspathResolutionEnabled() );
+
+        modelContext.setAttribute( DefaultModelProvider.VALIDATING_ATTRIBUTE_NAME,
+                                   this.isModelResourceValidationEnabled() );
 
         for ( int i = 0, s0 = this.getModelContextAttributes().size(); i < s0; i++ )
         {

@@ -115,7 +115,9 @@
                       modletLocation="META-INF/jomc-modlet.xml"
                       providerLocation="META-INF/services"
                       modletSchemaSystemId="TEST"
-                      platformProviderLocation="TEST">
+                      platformProviderLocation="TEST"
+                      modletResourceValidationEnabled="false"
+                      modelResourceValidationEnabled="false">
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>
       </jomc:classpath>

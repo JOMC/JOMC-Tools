@@ -99,8 +99,14 @@ Task and Type Reference
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
 |                                             | is enabled.                                |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelResourceValidationEnabled>>>        | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of model resources is enabled.             |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
 |                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletResourceValidationEnabled>>>       | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of modlet resources is enabled.            |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
 |                                             | schema system id.                          |                        |
@@ -174,17 +180,12 @@ Task and Type Reference
 | <<<modelContextAttribute>>>                 | ModelContext attribute to apply.           | No.                    |
 |                                             | Type: {{KeyValueType}}                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectStylesheetResource>>>         | XSLT document to use for transforming      | No.                    |
+|                                             | model objects.                             |                        |
+|                                             | Type: {{TransformerResourceType}}          |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<moduleResource>>>                        | Additional module resource.                | No.                    |
 |                                             | Type: {{ModuleResourceType}}               |                        |
-*---------------------------------------------+--------------------------------------------+------------------------+
-| <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
-|                                             | to be used to configure the Velocity       |                        |
-|                                             | engine backing the task.                   |                        |
-|                                             | Type: {{PropertiesResourceType}}           |                        |
-*---------------------------------------------+--------------------------------------------+------------------------+
-| <<<velocityProperty>>>                      | Property to be used to configure the       | No.                    |
-|                                             | Velocity engine backing the task.          |                        |
-|                                             | Type: {{KeyValueType}}                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateParameterResource>>>             | Properties resource holding properties     | No.                    |
 |                                             | passed to the template engine backing the  |                        |
@@ -203,9 +204,14 @@ Task and Type Reference
 |                                             | all transformers of the task.              |                        |
 |                                             | Type: {{KeyValueType}}                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<modelObjectStylesheetResource>>>         | XSLT document to use for transforming      | No.                    |
-|                                             | model objects.                             |                        |
-|                                             | Type: {{TransformerResourceType}}          |                        |
+| <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
+|                                             | to be used to configure the Velocity       |                        |
+|                                             | engine backing the task.                   |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityProperty>>>                      | Property to be used to configure the       | No.                    |
+|                                             | Velocity engine backing the task.          |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 
 ** Example: Committing model objects to class files.
@@ -269,8 +275,14 @@ Task and Type Reference
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
 |                                             | is enabled.                                |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelResourceValidationEnabled>>>        | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of model resources is enabled.             |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
 |                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletResourceValidationEnabled>>>       | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of modlet resources is enabled.            |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
 |                                             | schema system id.                          |                        |
@@ -360,15 +372,6 @@ Task and Type Reference
 | <<<moduleResource>>>                        | Additional module resource.                | No.                    |
 |                                             | Type: {{ModuleResourceType}}               |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
-|                                             | to be used to configure the Velocity       |                        |
-|                                             | engine backing the task.                   |                        |
-|                                             | Type: {{PropertiesResourceType}}           |                        |
-*---------------------------------------------+--------------------------------------------+------------------------+
-| <<<velocityProperty>>>                      | Property to be used to configure the       | No.                    |
-|                                             | Velocity engine backing the task.          |                        |
-|                                             | Type: {{KeyValueType}}                     |                        |
-*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateParameterResource>>>             | Properties resource holding properties     | No.                    |
 |                                             | passed to the template engine backing the  |                        |
 |                                             | task.                                      |                        |
@@ -384,6 +387,15 @@ Task and Type Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
 |                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
+|                                             | to be used to configure the Velocity       |                        |
+|                                             | engine backing the task.                   |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityProperty>>>                      | Property to be used to configure the       | No.                    |
+|                                             | Velocity engine backing the task.          |                        |
 |                                             | Type: {{KeyValueType}}                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 
@@ -449,8 +461,14 @@ Task and Type Reference
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
 |                                             | is enabled.                                |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelResourceValidationEnabled>>>        | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of model resources is enabled.             |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
 |                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletResourceValidationEnabled>>>       | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of modlet resources is enabled.            |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
 |                                             | schema system id.                          |                        |
@@ -536,15 +554,6 @@ Task and Type Reference
 | <<<moduleResource>>>                        | Additional module resource.                | No.                    |
 |                                             | Type: {{ModuleResourceType}}               |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
-|                                             | to be used to configure the Velocity       |                        |
-|                                             | engine backing the task.                   |                        |
-|                                             | Type: {{PropertiesResourceType}}           |                        |
-*---------------------------------------------+--------------------------------------------+------------------------+
-| <<<velocityProperty>>>                      | Property to be used to configure the       | No.                    |
-|                                             | Velocity engine backing the task.          |                        |
-|                                             | Type: {{KeyValueType}}                     |                        |
-*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateParameterResource>>>             | Properties resource holding properties     | No.                    |
 |                                             | passed to the template engine backing the  |                        |
 |                                             | task.                                      |                        |
@@ -560,6 +569,15 @@ Task and Type Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
 |                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
+|                                             | to be used to configure the Velocity       |                        |
+|                                             | engine backing the task.                   |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityProperty>>>                      | Property to be used to configure the       | No.                    |
+|                                             | Velocity engine backing the task.          |                        |
 |                                             | Type: {{KeyValueType}}                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 
@@ -633,8 +651,14 @@ Task and Type Reference
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
 |                                             | is enabled.                                |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelResourceValidationEnabled>>>        | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of model resources is enabled.             |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
 |                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletResourceValidationEnabled>>>       | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of modlet resources is enabled.            |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
 |                                             | schema system id.                          |                        |
@@ -711,15 +735,6 @@ Task and Type Reference
 | <<<moduleResource>>>                        | Additional module resource.                | No.                    |
 |                                             | Type: {{ModuleResourceType}}               |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
-|                                             | to be used to configure the Velocity       |                        |
-|                                             | engine backing the task.                   |                        |
-|                                             | Type: {{PropertiesResourceType}}           |                        |
-*---------------------------------------------+--------------------------------------------+------------------------+
-| <<<velocityProperty>>>                      | Property to be used to configure the       | No.                    |
-|                                             | Velocity engine backing the task.          |                        |
-|                                             | Type: {{KeyValueType}}                     |                        |
-*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateParameterResource>>>             | Properties resource holding properties     | No.                    |
 |                                             | passed to the template engine backing the  |                        |
 |                                             | task.                                      |                        |
@@ -735,6 +750,15 @@ Task and Type Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
 |                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
+|                                             | to be used to configure the Velocity       |                        |
+|                                             | engine backing the task.                   |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityProperty>>>                      | Property to be used to configure the       | No.                    |
+|                                             | Velocity engine backing the task.          |                        |
 |                                             | Type: {{KeyValueType}}                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 
@@ -806,8 +830,14 @@ Task and Type Reference
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
 |                                             | is enabled.                                |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelResourceValidationEnabled>>>        | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of model resources is enabled.             |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
 |                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletResourceValidationEnabled>>>       | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of modlet resources is enabled.            |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
 |                                             | schema system id.                          |                        |
@@ -884,15 +914,6 @@ Task and Type Reference
 | <<<moduleResource>>>                        | Additional module resource.                | No.                    |
 |                                             | Type: {{ModuleResourceType}}               |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
-|                                             | to be used to configure the Velocity       |                        |
-|                                             | engine backing the task.                   |                        |
-|                                             | Type: {{PropertiesResourceType}}           |                        |
-*---------------------------------------------+--------------------------------------------+------------------------+
-| <<<velocityProperty>>>                      | Property to be used to configure the       | No.                    |
-|                                             | Velocity engine backing the task.          |                        |
-|                                             | Type: {{KeyValueType}}                     |                        |
-*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateParameterResource>>>             | Properties resource holding properties     | No.                    |
 |                                             | passed to the template engine backing the  |                        |
 |                                             | task.                                      |                        |
@@ -908,6 +929,15 @@ Task and Type Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
 |                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
+|                                             | to be used to configure the Velocity       |                        |
+|                                             | engine backing the task.                   |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityProperty>>>                      | Property to be used to configure the       | No.                    |
+|                                             | Velocity engine backing the task.          |                        |
 |                                             | Type: {{KeyValueType}}                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 
@@ -950,8 +980,14 @@ Task and Type Reference
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
 |                                             | is enabled.                                |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelResourceValidationEnabled>>>        | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of model resources is enabled.             |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
 |                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletResourceValidationEnabled>>>       | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of modlet resources is enabled.            |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
 |                                             | schema system id.                          |                        |
@@ -1042,6 +1078,9 @@ Task and Type Reference
 *---------------------------------------+--------------------------------------------+------------------------+
 | <<<modletLocation>>>                  | The class path location searched for       | No. {{{E}[E]}}         |
 |                                       | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------+
+| <<<modletResourceValidationEnabled>>> | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                       | of modlet resources is enabled.            |                        |
 *---------------------------------------+--------------------------------------------+------------------------+
 | <<<modletName>>>                      | The name of the merged modlet.             | <<Yes.>>               |
 *---------------------------------------+--------------------------------------------+------------------------+
@@ -1142,8 +1181,14 @@ Task and Type Reference
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
 |                                             | is enabled.                                |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelResourceValidationEnabled>>>        | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of model resources is enabled.             |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
 |                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletResourceValidationEnabled>>>       | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of modlet resources is enabled.            |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
 |                                             | schema system id.                          |                        |
@@ -1260,8 +1305,14 @@ Task and Type Reference
 | <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
 |                                             | is enabled.                                |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelResourceValidationEnabled>>>        | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of model resources is enabled.             |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
 |                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletResourceValidationEnabled>>>       | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of modlet resources is enabled.            |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
 |                                             | schema system id.                          |                        |

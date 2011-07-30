@@ -126,6 +126,9 @@ public class JomcTask extends Task
     /** The global transformation parameter resources to apply. */
     private List<PropertiesResourceType> transformationParameterResources;
 
+    /** The flag indicating JAXP schema validation of modlet resources is enabled. */
+    private boolean modletResourceValidationEnabled = true;
+
     /** Property controlling the execution of the task. */
     private Object _if;
 
@@ -520,6 +523,31 @@ public class JomcTask extends Task
         final PropertiesResourceType transformationParameterResource = new PropertiesResourceType();
         this.getTransformationParameterResources().add( transformationParameterResource );
         return transformationParameterResource;
+    }
+
+    /**
+     * Gets a flag indicating JAXP schema validation of modlet resources is enabled.
+     *
+     * @return {@code true} if JAXP schema validation of modlet resources is enabled; {@code false} else.
+     *
+     * @see #setModletResourceValidationEnabled(boolean)
+     */
+    public final boolean isModletResourceValidationEnabled()
+    {
+        return this.modletResourceValidationEnabled;
+    }
+
+    /**
+     * Sets the flag indicating JAXP schema validation of modlet resources is enabled.
+     *
+     * @param value {@code true} to enable JAXP schema validation of modlet resources; {@code false} to disable JAXP
+     * schema validation of modlet resources.
+     *
+     * @see #isModletResourceValidationEnabled()
+     */
+    public final void setModletResourceValidationEnabled( final boolean value )
+    {
+        this.modletResourceValidationEnabled = value;
     }
 
     /**
@@ -1183,6 +1211,9 @@ public class JomcTask extends Task
         {
             modelContext.setAttribute( DefaultModletProvider.MODLET_LOCATION_ATTRIBUTE_NAME, this.getModletLocation() );
         }
+
+        modelContext.setAttribute( DefaultModletProvider.VALIDATING_ATTRIBUTE_NAME,
+                                   this.isModletResourceValidationEnabled() );
 
         for ( int i = 0, s0 = this.getModelContextAttributes().size(); i < s0; i++ )
         {
