@@ -513,6 +513,24 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private Map<String, Object> modelContextAttributes;
 
     /**
+     * Flag controlling JAXP schema validation of model resources.
+     *
+     * @parameter default-value="true" expression="${jomc.modelResourceValidation}"
+     *
+     * @since 1.2
+     */
+    private boolean modelResourceValidation;
+
+    /**
+     * Flag controlling JAXP schema validation of modlet resources.
+     *
+     * @parameter default-value="true" expression="${jomc.modletResourceValidation}"
+     *
+     * @since 1.2
+     */
+    private boolean modletResourceValidation;
+
+    /**
      * The Maven project of the instance.
      *
      * @parameter expression="${project}"
@@ -2353,6 +2371,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
         context.setAttribute( ToolsModelProcessor.MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME,
                               this.modelObjectClasspathResolutionEnabled );
+
+        context.setAttribute( DefaultModletProvider.VALIDATING_ATTRIBUTE_NAME, this.modletResourceValidation );
+        context.setAttribute( DefaultModelProvider.VALIDATING_ATTRIBUTE_NAME, this.modelResourceValidation );
 
         if ( this.modelContextAttributes != null )
         {
