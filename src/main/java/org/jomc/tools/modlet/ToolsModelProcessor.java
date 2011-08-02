@@ -284,7 +284,7 @@ public class ToolsModelProcessor implements ModelProcessor
             throw new NullPointerException( "model" );
         }
 
-        Model processed = null;
+        Model processed = model;
 
         boolean contextEnabled = this.isEnabled();
         if ( DEFAULT_ENABLED == contextEnabled && context.getAttribute( ENABLED_ATTRIBUTE_NAME ) != null )
