@@ -44,6 +44,7 @@
 
   <xsl:param name="jomc.test.resourceEncoding" required="yes"/>
   <xsl:param name="jomc.test.outputDirectory" required="yes"/>
+  <xsl:param name="file.separator" required="yes"/>
 
   <xsl:template match="node()|@*">
     <xsl:copy>
@@ -56,10 +57,10 @@
     <xsl:attribute name="{name()}">
       <xsl:choose>
         <xsl:when test="starts-with($value, '${jomc.test.resourceEncoding}')">
-          <xsl:value-of select="concat($jomc.test.resourceEncoding, substring-after($value, '${jomc.test.resourceEncoding}'))"/>
+          <xsl:value-of select="translate(concat($jomc.test.resourceEncoding, substring-after($value, '${jomc.test.resourceEncoding}')), '/', $file.separator)"/>
         </xsl:when>
         <xsl:when test="starts-with($value, '${jomc.test.outputDirectory}')">
-          <xsl:value-of select="concat($jomc.test.outputDirectory, substring-after($value, '${jomc.test.outputDirectory}'))"/>
+          <xsl:value-of select="translate(concat($jomc.test.outputDirectory, substring-after($value, '${jomc.test.outputDirectory}')), '/', $file.separator)"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="."/>

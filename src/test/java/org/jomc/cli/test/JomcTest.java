@@ -103,123 +103,123 @@ import static org.junit.Assert.assertTrue;
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getClassesDirectory classesDirectory}</td>
- *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.io.File}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top"></td>
+ *       <td align="left" valign="top">Directory holding class files.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getResourcesDirectory resourcesDirectory}</td>
- *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.io.File}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top"></td>
+ *       <td align="left" valign="top">Directory holding resources.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getTemplatesDirectory templatesDirectory}</td>
- *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.io.File}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top"></td>
+ *       <td align="left" valign="top">Directory holding templates.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getTestClassesDirectory testClassesDirectory}</td>
- *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.io.File}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top"></td>
+ *       <td align="left" valign="top">Directory holding class files to commit to and to validate.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getTestModelDocument testModelDocument}</td>
- *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.io.File}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top"></td>
+ *       <td align="left" valign="top">Valid model document.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getTestModelDocumentIllegal testModelDocumentIllegal}</td>
- *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.io.File}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top"></td>
+ *       <td align="left" valign="top">Model document with invalid model.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getTestModelDocumentIllegalSchemaConstraints testModelDocumentIllegalSchemaConstraints}</td>
- *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.io.File}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top"></td>
+ *       <td align="left" valign="top">Model document not valid to the JOMC JAXP schema.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getTestModelDocumentNonExistentClasses testModelDocumentNonExistentClasses}</td>
- *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.io.File}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top"></td>
+ *       <td align="left" valign="top">Model document referencing non-existent classes.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getTestModelOutputDocument testModelOutputDocument}</td>
- *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.io.File}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top"></td>
+ *       <td align="left" valign="top">File to write a transformed model to.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getTestModelStylesheet testModelStylesheet}</td>
- *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.io.File}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top"></td>
+ *       <td align="left" valign="top">Valid model object stylesheet.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getTestModletName testModletName}</td>
  *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top"></td>
+ *       <td align="left" valign="top">Test module name.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getTestModletOutputDocument testModletOutputDocument}</td>
- *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.io.File}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top"></td>
+ *       <td align="left" valign="top">File to write a transformed modlet to.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getTestModletStylesheet testModletStylesheet}</td>
- *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.io.File}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top"></td>
+ *       <td align="left" valign="top">Valid modlet object stylesheet.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getTestModuleName testModuleName}</td>
  *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top"></td>
+ *       <td align="left" valign="top">Test module name.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getTestResourcesDirectory testResourcesDirectory}</td>
- *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.io.File}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top"></td>
+ *       <td align="left" valign="top">Directory to generate resources to.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getTestShowInstanceOutputDocument testShowInstanceOutputDocument}</td>
- *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.io.File}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top"></td>
+ *       <td align="left" valign="top">File to write an instance to.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getTestShowModelOutputDocument testShowModelOutputDocument}</td>
- *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.io.File}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top"></td>
+ *       <td align="left" valign="top">File to write a model to.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getTestShowSpecificationAndInstanceOutputDocument testShowSpecificationAndInstanceOutputDocument}</td>
- *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.io.File}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top"></td>
+ *       <td align="left" valign="top">File to write a model holding a specification and an instance to.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getTestShowSpecificationOutputDocument testShowSpecificationOutputDocument}</td>
- *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.io.File}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top"></td>
+ *       <td align="left" valign="top">File to write a specification to.</td>
  *     </tr>
  *     <tr class="TableRowColor">
  *       <td align="left" valign="top" nowrap>{@link #getTestSourcesDirectory testSourcesDirectory}</td>
- *       <td align="left" valign="top" nowrap>{@code java.lang.String}</td>
+ *       <td align="left" valign="top" nowrap>{@code java.io.File}</td>
  *       <td align="left" valign="top" nowrap>{@code none}</td>
- *       <td align="left" valign="top"></td>
+ *       <td align="left" valign="top">Directory holding source code files to manage.</td>
  *     </tr>
  *   </table>
  * </p>
@@ -310,7 +310,7 @@ public class JomcTest
     @Test
     public final void testGenerateResources() throws Exception
     {
-        final File testResourcesDirectory = new File( this.getTestResourcesDirectory() );
+        final File testResourcesDirectory = this.getTestResourcesDirectory();
         assertTrue( testResourcesDirectory.isAbsolute() );
 
         if ( testResourcesDirectory.exists() )
@@ -325,8 +325,8 @@ public class JomcTest
 
         final String[] args = new String[]
         {
-            "generate-resources", "-rd", '"' + this.getTestResourcesDirectory() + '"', "-df",
-            '"' + this.getTestModelDocument() + '"', "-D"
+            "generate-resources", "-rd", '"' + this.getTestResourcesDirectory().getAbsolutePath() + '"', "-df",
+            '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-D"
         };
 
         final String[] unsupportedOption = new String[]
@@ -336,8 +336,9 @@ public class JomcTest
 
         final String[] failOnWarnings = new String[]
         {
-            "generate-resources", "-rd", '"' + this.getTestResourcesDirectory() + '"', "-df",
-            '"' + this.getTestModelDocument() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
+            "generate-resources", "-rd", '"' + this.getTestResourcesDirectory().getAbsolutePath() + '"', "-df",
+            '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings",
+            "-D"
         };
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
@@ -352,7 +353,7 @@ public class JomcTest
     @Test
     public final void testManageSources() throws Exception
     {
-        final File testSourcesDirectory = new File( this.getTestSourcesDirectory() );
+        final File testSourcesDirectory = this.getTestSourcesDirectory();
         assertTrue( testSourcesDirectory.isAbsolute() );
 
         if ( testSourcesDirectory.exists() )
@@ -367,9 +368,10 @@ public class JomcTest
 
         final String[] args = new String[]
         {
-            "manage-sources", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-df",
-            '"' + this.getTestModelDocument() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-D",
-            "-ls", "\r\n", "-idt", "\t", "-tp", "jomc-cli", "-tl", '"' + this.getTemplatesDirectory() + '"'
+            "manage-sources", "-sd", '"' + this.getTestSourcesDirectory().getAbsolutePath() + '"', "-df",
+            '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-mn", '"' + this.getTestModuleName() + '"',
+            "-D", "-ls", "\r\n", "-idt", "\t", "-tp", "jomc-cli", "-tl",
+            '"' + this.getTemplatesDirectory().getAbsolutePath() + '"'
         };
 
         final String[] unsupportedOption = new String[]
@@ -379,9 +381,9 @@ public class JomcTest
 
         final String[] failOnWarnings = new String[]
         {
-            "manage-sources", "-sd", '"' + this.getTestSourcesDirectory() + '"', "-df",
-            '"' + this.getTestModelDocument() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings", "-D",
-            "-tp", "jomc-cli", "-tl", '"' + this.getTemplatesDirectory() + '"'
+            "manage-sources", "-sd", '"' + this.getTestSourcesDirectory().getAbsolutePath() + '"', "-df",
+            '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings",
+            "-D", "-tp", "jomc-cli", "-tl", '"' + this.getTemplatesDirectory().getAbsolutePath() + '"'
         };
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
@@ -396,7 +398,7 @@ public class JomcTest
     @Test
     public final void testCommitValidateClasses() throws Exception
     {
-        final File testClassesDirectory = new File( this.getTestClassesDirectory() );
+        final File testClassesDirectory = this.getTestClassesDirectory();
         assertTrue( testClassesDirectory.isAbsolute() );
 
         if ( testClassesDirectory.exists() )
@@ -416,26 +418,27 @@ public class JomcTest
 
         final String[] commitArgs = new String[]
         {
-            "commit-classes", "-df", '"' + this.getTestModelDocument() + '"', "-cd",
-            '"' + this.getClassesDirectory() + '"', "-mn",
+            "commit-classes", "-df", '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-cd",
+            '"' + this.getClassesDirectory().getAbsolutePath() + '"', "-mn",
             '"' + this.getTestModuleName() + '"', "-D"
         };
 
         final String[] commitArgsNoDirectory = new String[]
         {
-            "commit-classes", "-df", '"' + this.getTestModelDocument() + '"', "-cd",
-            '"' + this.getTestClassesDirectory() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-D"
+            "commit-classes", "-df", '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-cd",
+            '"' + this.getTestClassesDirectory().getAbsolutePath() + '"', "-mn", '"' + this.getTestModuleName() + '"',
+            "-D"
         };
 
         final String[] validateArgs = new String[]
         {
-            "validate-classes", "-cp", '"' + this.getClassesDirectory() + '"', "-D"
+            "validate-classes", "-cp", '"' + this.getClassesDirectory().getAbsolutePath() + '"', "-D"
         };
 
         final String[] validateArgsNonExistentClasses = new String[]
         {
-            "validate-classes", "-df", '"' + this.getTestModelDocumentNonExistentClasses() + '"', "-cp",
-            '"' + this.getClassesDirectory() + '"', "-D"
+            "validate-classes", "-df", '"' + this.getTestModelDocumentNonExistentClasses().getAbsolutePath() + '"',
+            "-cp", '"' + this.getClassesDirectory().getAbsolutePath() + '"', "-D"
         };
 
         final String[] commitUnsupportedOption = new String[]
@@ -450,23 +453,23 @@ public class JomcTest
 
         final String[] commitFailOnWarnings = new String[]
         {
-            "commit-classes", "-df", '"' + this.getTestModelDocument() + '"', "-cd",
-            '"' + this.getClassesDirectory() + '"', "-mn",
-            "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
+            "commit-classes", "-df", '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-cd",
+            '"' + this.getClassesDirectory().getAbsolutePath() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings",
+            "-D"
         };
 
         final String[] validateFailOnWarnings = new String[]
         {
-            "validate-classes", "-df", '"' + this.getTestModelDocument() + '"', "-cp",
-            '"' + this.getClassesDirectory() + '"', "-mn",
-            "DOES_NOT_EXIST", "--fail-on-warnings", "-D"
+            "validate-classes", "-df", '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-cp",
+            '"' + this.getClassesDirectory().getAbsolutePath() + '"', "-mn", "DOES_NOT_EXIST", "--fail-on-warnings",
+            "-D"
         };
 
         final String[] commitWithStylesheet = new String[]
         {
-            "commit-classes", "-df", '"' + this.getTestModelDocument() + '"', "-cd",
-            '"' + this.getClassesDirectory() + '"', "-mn",
-            '"' + this.getTestModuleName() + '"', "-D", "-stylesheet", '"' + this.getTestModelStylesheet() + '"'
+            "commit-classes", "-df", '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-cd",
+            '"' + this.getClassesDirectory().getAbsolutePath() + '"', "-mn", '"' + this.getTestModuleName() + '"',
+            "-D", "-stylesheet", '"' + this.getTestModelStylesheet().getAbsolutePath() + '"'
         };
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( commitHelp ) );
@@ -498,23 +501,23 @@ public class JomcTest
 
         final String[] args = new String[]
         {
-            "merge-modules", "-df", '"' + this.getTestModelDocument() + '"', "-xs",
-            '"' + this.getTestModelStylesheet() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-d",
-            '"' + this.getTestModelOutputDocument() + '"', "-D"
+            "merge-modules", "-df", '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-xs",
+            '"' + this.getTestModelStylesheet().getAbsolutePath() + '"', "-mn", '"' + this.getTestModuleName() + '"',
+            "-d", '"' + this.getTestModelOutputDocument().getAbsolutePath() + '"', "-D"
         };
 
         final String[] includesArg = new String[]
         {
-            "merge-modules", "-df", '"' + this.getTestModelDocument() + '"', "-xs",
-            '"' + this.getTestModelStylesheet() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-d",
-            '"' + this.getTestModelOutputDocument() + '"', "-minc", "\"JOMC CLI\"", "-D"
+            "merge-modules", "-df", '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-xs",
+            '"' + this.getTestModelStylesheet().getAbsolutePath() + '"', "-mn", '"' + this.getTestModuleName() + '"',
+            "-d", '"' + this.getTestModelOutputDocument().getAbsolutePath() + '"', "-minc", "\"JOMC CLI\"", "-D"
         };
 
         final String[] excludesArg = new String[]
         {
-            "merge-modules", "-df", '"' + this.getTestModelDocument() + '"', "-xs",
-            '"' + this.getTestModelStylesheet() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-d",
-            '"' + this.getTestModelOutputDocument() + '"', "-mexc", "\"JOMC CLI\"", "-D"
+            "merge-modules", "-df", '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-xs",
+            '"' + this.getTestModelStylesheet().getAbsolutePath() + '"', "-mn", '"' + this.getTestModuleName() + '"',
+            "-d", '"' + this.getTestModelOutputDocument().getAbsolutePath() + '"', "-mexc", "\"JOMC CLI\"", "-D"
         };
 
         final String[] unsupportedOption = new String[]
@@ -524,20 +527,21 @@ public class JomcTest
 
         final String[] illegalDoc = new String[]
         {
-            "merge-modules", "-df", '"' + this.getTestModelDocumentIllegalSchemaConstraints() + '"', "-xs",
-            '"' + this.getTestModelStylesheet() + '"', "-mn", '"' + this.getTestModuleName() + '"', "-d",
-            '"' + this.getTestModelOutputDocument() + '"', "-D"
+            "merge-modules", "-df", '"' + this.getTestModelDocumentIllegalSchemaConstraints().getAbsolutePath() + '"',
+            "-xs", '"' + this.getTestModelStylesheet().getAbsolutePath() + '"', "-mn",
+            '"' + this.getTestModuleName() + '"', "-d", '"' + this.getTestModelOutputDocument().getAbsolutePath() + '"',
+            "-D"
         };
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
 
-        unmarshaller.unmarshal( new StreamSource( new File( this.getTestModelOutputDocument() ) ), Module.class );
+        unmarshaller.unmarshal( new StreamSource( this.getTestModelOutputDocument() ), Module.class );
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( includesArg ) );
 
         final JAXBElement<Module> includedModule =
-            unmarshaller.unmarshal( new StreamSource( new File( this.getTestModelOutputDocument() ) ), Module.class );
+            unmarshaller.unmarshal( new StreamSource( this.getTestModelOutputDocument() ), Module.class );
 
         assertNotNull( "Merged module does not contain any included specifications.",
                        includedModule.getValue().getSpecifications() );
@@ -548,7 +552,7 @@ public class JomcTest
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( excludesArg ) );
 
         final JAXBElement<Module> excludedModule =
-            unmarshaller.unmarshal( new StreamSource( new File( this.getTestModelOutputDocument() ) ), Module.class );
+            unmarshaller.unmarshal( new StreamSource( this.getTestModelOutputDocument() ), Module.class );
 
         assertNull( "Merged module contains excluded specifications.",
                     excludedModule.getValue().getSpecifications() );
@@ -567,7 +571,7 @@ public class JomcTest
 
         final String[] args = new String[]
         {
-            "validate-model", "-df", '"' + this.getTestModelDocument() + '"', "-D"
+            "validate-model", "-df", '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-D"
         };
 
         final String[] unsupportedOption = new String[]
@@ -577,7 +581,7 @@ public class JomcTest
 
         final String[] illegalDoc = new String[]
         {
-            "validate-model", "-df", '"' + this.getTestModelDocumentIllegal() + '"', "-D"
+            "validate-model", "-df", '"' + this.getTestModelDocumentIllegal().getAbsolutePath() + '"', "-D"
         };
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( help ) );
@@ -601,24 +605,24 @@ public class JomcTest
 
         final String[] args = new String[]
         {
-            "merge-modlets", "-xs", '"' + this.getTestModletStylesheet() + '"', "-mdn",
-            '"' + this.getTestModletName() + '"', "-d", '"' + this.getTestModletOutputDocument() + '"',
-            "-cp", "."
+            "merge-modlets", "-xs", '"' + this.getTestModletStylesheet().getAbsolutePath() + '"', "-mdn",
+            '"' + this.getTestModletName() + '"', "-d",
+            '"' + this.getTestModletOutputDocument().getAbsolutePath() + '"', "-cp", "."
         };
 
         final String[] includeArgs = new String[]
         {
-            "merge-modlets", "-xs", '"' + this.getTestModletStylesheet() + '"', "-mdn",
-            '"' + this.getTestModletName() + '"', "-d", '"' + this.getTestModletOutputDocument() + '"',
-            "-mdinc", "JOMC Model", "-cp", "."
+            "merge-modlets", "-xs", '"' + this.getTestModletStylesheet().getAbsolutePath() + '"', "-mdn",
+            '"' + this.getTestModletName() + '"', "-d",
+            '"' + this.getTestModletOutputDocument().getAbsolutePath() + '"', "-mdinc", "JOMC Model", "-cp", "."
         };
 
         final String[] excludeArgs = new String[]
         {
-            "merge-modlets", "-xs", '"' + this.getTestModletStylesheet() + '"', "-mdn",
-            '"' + this.getTestModletName() + '"', "-d", '"' + this.getTestModletOutputDocument() + '"',
-            "-mdexc", "JOMC Model" + File.pathSeparatorChar + "JOMC Tools" + File.pathSeparatorChar + "JOMC Modlet",
-            "-cp", "."
+            "merge-modlets", "-xs", '"' + this.getTestModletStylesheet().getAbsolutePath() + '"', "-mdn",
+            '"' + this.getTestModletName() + '"', "-d",
+            '"' + this.getTestModletOutputDocument().getAbsolutePath() + '"', "-mdexc",
+            "JOMC Model" + File.pathSeparatorChar + "JOMC Tools" + File.pathSeparatorChar + "JOMC Modlet", "-cp", "."
         };
 
         final String[] unsupportedOption = new String[]
@@ -631,7 +635,7 @@ public class JomcTest
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( args ) );
         Modlet merged = unmarshaller.unmarshal(
-            new StreamSource( new File( this.getTestModletOutputDocument() ) ), Modlet.class ).getValue();
+            new StreamSource( this.getTestModletOutputDocument() ), Modlet.class ).getValue();
 
         assertNotNull( merged );
         assertEquals( this.getTestModletName(), merged.getName() );
@@ -647,7 +651,7 @@ public class JomcTest
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( includeArgs ) );
         merged = unmarshaller.unmarshal(
-            new StreamSource( new File( this.getTestModletOutputDocument() ) ), Modlet.class ).getValue();
+            new StreamSource( this.getTestModletOutputDocument() ), Modlet.class ).getValue();
 
         assertNotNull( merged );
         assertEquals( this.getTestModletName(), merged.getName() );
@@ -662,7 +666,7 @@ public class JomcTest
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( excludeArgs ) );
         merged = unmarshaller.unmarshal(
-            new StreamSource( new File( this.getTestModletOutputDocument() ) ), Modlet.class ).getValue();
+            new StreamSource( this.getTestModletOutputDocument() ), Modlet.class ).getValue();
 
         assertNotNull( merged );
         assertEquals( this.getTestModletName(), merged.getName() );
@@ -688,7 +692,7 @@ public class JomcTest
         final String[] writeModel = new String[]
         {
             "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-d",
-            '"' + this.getTestShowModelOutputDocument() + '"'
+            '"' + this.getTestShowModelOutputDocument().getAbsolutePath() + '"'
         };
 
         final String[] showSpecification = new String[]
@@ -699,7 +703,7 @@ public class JomcTest
         final String[] writeSpecification = new String[]
         {
             "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-spec", "JOMC CLI Command", "-d",
-            '"' + this.getTestShowSpecificationOutputDocument() + '"'
+            '"' + this.getTestShowSpecificationOutputDocument().getAbsolutePath() + '"'
         };
 
         final String[] showInstance = new String[]
@@ -711,7 +715,7 @@ public class JomcTest
         {
             "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-impl", "JOMC CLI show-model Command",
             "-d",
-            '"' + this.getTestShowInstanceOutputDocument() + '"'
+            '"' + this.getTestShowInstanceOutputDocument().getAbsolutePath() + '"'
         };
 
         final String[] showSpecificationAndInstance = new String[]
@@ -723,7 +727,8 @@ public class JomcTest
         final String[] writeSpecificationAndInstance = new String[]
         {
             "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-spec", "JOMC CLI Command", "-impl",
-            "JOMC CLI show-model Command", "-d", '"' + this.getTestShowSpecificationAndInstanceOutputDocument() + '"'
+            "JOMC CLI show-model Command", "-d",
+            '"' + this.getTestShowSpecificationAndInstanceOutputDocument().getAbsolutePath() + '"'
         };
 
         final String[] unsupportedOption = new String[]
@@ -755,7 +760,7 @@ public class JomcTest
             assertTrue( f.mkdirs() );
         }
 
-        final File resourcesDirectory = new File( this.getResourcesDirectory() );
+        final File resourcesDirectory = this.getResourcesDirectory();
         assertTrue( resourcesDirectory.isAbsolute() );
         FileUtils.deleteDirectory( resourcesDirectory );
         assertTrue( resourcesDirectory.mkdirs() );
@@ -767,10 +772,10 @@ public class JomcTest
             FileUtils.copyURLToFile( rsrc, new File( resourcesDirectory, testResourceName ) );
         }
 
-        final File classesDirectory = new File( this.getClassesDirectory() );
+        final File classesDirectory = this.getClassesDirectory();
         this.unzipResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "classfiles.zip", classesDirectory );
 
-        final File templatesDirectory = new File( this.getTemplatesDirectory() );
+        final File templatesDirectory = this.getTemplatesDirectory();
         this.unzipResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "templates.zip", templatesDirectory );
     }
 
@@ -832,137 +837,137 @@ public class JomcTest
 
     /**
      * Gets the value of the {@code classesDirectory} property.
-     * @return The value of the {@code classesDirectory} property.
+     * @return Directory holding class files.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private java.lang.String getClassesDirectory()
+    private java.io.File getClassesDirectory()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "classesDirectory" );
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "classesDirectory" );
         assert _p != null : "'classesDirectory' property not found.";
         return _p;
     }
 
     /**
      * Gets the value of the {@code resourcesDirectory} property.
-     * @return The value of the {@code resourcesDirectory} property.
+     * @return Directory holding resources.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private java.lang.String getResourcesDirectory()
+    private java.io.File getResourcesDirectory()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "resourcesDirectory" );
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "resourcesDirectory" );
         assert _p != null : "'resourcesDirectory' property not found.";
         return _p;
     }
 
     /**
      * Gets the value of the {@code templatesDirectory} property.
-     * @return The value of the {@code templatesDirectory} property.
+     * @return Directory holding templates.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private java.lang.String getTemplatesDirectory()
+    private java.io.File getTemplatesDirectory()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "templatesDirectory" );
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "templatesDirectory" );
         assert _p != null : "'templatesDirectory' property not found.";
         return _p;
     }
 
     /**
      * Gets the value of the {@code testClassesDirectory} property.
-     * @return The value of the {@code testClassesDirectory} property.
+     * @return Directory holding class files to commit to and to validate.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private java.lang.String getTestClassesDirectory()
+    private java.io.File getTestClassesDirectory()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testClassesDirectory" );
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testClassesDirectory" );
         assert _p != null : "'testClassesDirectory' property not found.";
         return _p;
     }
 
     /**
      * Gets the value of the {@code testModelDocument} property.
-     * @return The value of the {@code testModelDocument} property.
+     * @return Valid model document.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private java.lang.String getTestModelDocument()
+    private java.io.File getTestModelDocument()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocument" );
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocument" );
         assert _p != null : "'testModelDocument' property not found.";
         return _p;
     }
 
     /**
      * Gets the value of the {@code testModelDocumentIllegal} property.
-     * @return The value of the {@code testModelDocumentIllegal} property.
+     * @return Model document with invalid model.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private java.lang.String getTestModelDocumentIllegal()
+    private java.io.File getTestModelDocumentIllegal()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocumentIllegal" );
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocumentIllegal" );
         assert _p != null : "'testModelDocumentIllegal' property not found.";
         return _p;
     }
 
     /**
      * Gets the value of the {@code testModelDocumentIllegalSchemaConstraints} property.
-     * @return The value of the {@code testModelDocumentIllegalSchemaConstraints} property.
+     * @return Model document not valid to the JOMC JAXP schema.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private java.lang.String getTestModelDocumentIllegalSchemaConstraints()
+    private java.io.File getTestModelDocumentIllegalSchemaConstraints()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocumentIllegalSchemaConstraints" );
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocumentIllegalSchemaConstraints" );
         assert _p != null : "'testModelDocumentIllegalSchemaConstraints' property not found.";
         return _p;
     }
 
     /**
      * Gets the value of the {@code testModelDocumentNonExistentClasses} property.
-     * @return The value of the {@code testModelDocumentNonExistentClasses} property.
+     * @return Model document referencing non-existent classes.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private java.lang.String getTestModelDocumentNonExistentClasses()
+    private java.io.File getTestModelDocumentNonExistentClasses()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocumentNonExistentClasses" );
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocumentNonExistentClasses" );
         assert _p != null : "'testModelDocumentNonExistentClasses' property not found.";
         return _p;
     }
 
     /**
      * Gets the value of the {@code testModelOutputDocument} property.
-     * @return The value of the {@code testModelOutputDocument} property.
+     * @return File to write a transformed model to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private java.lang.String getTestModelOutputDocument()
+    private java.io.File getTestModelOutputDocument()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelOutputDocument" );
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelOutputDocument" );
         assert _p != null : "'testModelOutputDocument' property not found.";
         return _p;
     }
 
     /**
      * Gets the value of the {@code testModelStylesheet} property.
-     * @return The value of the {@code testModelStylesheet} property.
+     * @return Valid model object stylesheet.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private java.lang.String getTestModelStylesheet()
+    private java.io.File getTestModelStylesheet()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelStylesheet" );
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelStylesheet" );
         assert _p != null : "'testModelStylesheet' property not found.";
         return _p;
     }
 
     /**
      * Gets the value of the {@code testModletName} property.
-     * @return The value of the {@code testModletName} property.
+     * @return Test module name.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -975,33 +980,33 @@ public class JomcTest
 
     /**
      * Gets the value of the {@code testModletOutputDocument} property.
-     * @return The value of the {@code testModletOutputDocument} property.
+     * @return File to write a transformed modlet to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private java.lang.String getTestModletOutputDocument()
+    private java.io.File getTestModletOutputDocument()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModletOutputDocument" );
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModletOutputDocument" );
         assert _p != null : "'testModletOutputDocument' property not found.";
         return _p;
     }
 
     /**
      * Gets the value of the {@code testModletStylesheet} property.
-     * @return The value of the {@code testModletStylesheet} property.
+     * @return Valid modlet object stylesheet.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private java.lang.String getTestModletStylesheet()
+    private java.io.File getTestModletStylesheet()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModletStylesheet" );
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModletStylesheet" );
         assert _p != null : "'testModletStylesheet' property not found.";
         return _p;
     }
 
     /**
      * Gets the value of the {@code testModuleName} property.
-     * @return The value of the {@code testModuleName} property.
+     * @return Test module name.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1014,78 +1019,78 @@ public class JomcTest
 
     /**
      * Gets the value of the {@code testResourcesDirectory} property.
-     * @return The value of the {@code testResourcesDirectory} property.
+     * @return Directory to generate resources to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private java.lang.String getTestResourcesDirectory()
+    private java.io.File getTestResourcesDirectory()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testResourcesDirectory" );
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testResourcesDirectory" );
         assert _p != null : "'testResourcesDirectory' property not found.";
         return _p;
     }
 
     /**
      * Gets the value of the {@code testShowInstanceOutputDocument} property.
-     * @return The value of the {@code testShowInstanceOutputDocument} property.
+     * @return File to write an instance to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private java.lang.String getTestShowInstanceOutputDocument()
+    private java.io.File getTestShowInstanceOutputDocument()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testShowInstanceOutputDocument" );
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testShowInstanceOutputDocument" );
         assert _p != null : "'testShowInstanceOutputDocument' property not found.";
         return _p;
     }
 
     /**
      * Gets the value of the {@code testShowModelOutputDocument} property.
-     * @return The value of the {@code testShowModelOutputDocument} property.
+     * @return File to write a model to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private java.lang.String getTestShowModelOutputDocument()
+    private java.io.File getTestShowModelOutputDocument()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testShowModelOutputDocument" );
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testShowModelOutputDocument" );
         assert _p != null : "'testShowModelOutputDocument' property not found.";
         return _p;
     }
 
     /**
      * Gets the value of the {@code testShowSpecificationAndInstanceOutputDocument} property.
-     * @return The value of the {@code testShowSpecificationAndInstanceOutputDocument} property.
+     * @return File to write a model holding a specification and an instance to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private java.lang.String getTestShowSpecificationAndInstanceOutputDocument()
+    private java.io.File getTestShowSpecificationAndInstanceOutputDocument()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testShowSpecificationAndInstanceOutputDocument" );
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testShowSpecificationAndInstanceOutputDocument" );
         assert _p != null : "'testShowSpecificationAndInstanceOutputDocument' property not found.";
         return _p;
     }
 
     /**
      * Gets the value of the {@code testShowSpecificationOutputDocument} property.
-     * @return The value of the {@code testShowSpecificationOutputDocument} property.
+     * @return File to write a specification to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private java.lang.String getTestShowSpecificationOutputDocument()
+    private java.io.File getTestShowSpecificationOutputDocument()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testShowSpecificationOutputDocument" );
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testShowSpecificationOutputDocument" );
         assert _p != null : "'testShowSpecificationOutputDocument' property not found.";
         return _p;
     }
 
     /**
      * Gets the value of the {@code testSourcesDirectory} property.
-     * @return The value of the {@code testSourcesDirectory} property.
+     * @return Directory holding source code files to manage.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private java.lang.String getTestSourcesDirectory()
+    private java.io.File getTestSourcesDirectory()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testSourcesDirectory" );
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testSourcesDirectory" );
         assert _p != null : "'testSourcesDirectory' property not found.";
         return _p;
     }
