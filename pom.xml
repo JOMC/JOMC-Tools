@@ -138,6 +138,11 @@
   <dependencies>
     <dependency>
       <groupId>org.jomc</groupId>
+      <artifactId>jomc-util</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jomc</groupId>
       <artifactId>jomc-modlet</artifactId>
       <scope>compile</scope>
     </dependency>
