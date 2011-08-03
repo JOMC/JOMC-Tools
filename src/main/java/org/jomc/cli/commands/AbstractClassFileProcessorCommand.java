@@ -1096,7 +1096,7 @@ public abstract class AbstractClassFileProcessorCommand extends AbstractJomcTool
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-07-31T01:20:48+0200</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-08-03T10:08:47+0200</code></pre></td>
      *     </tr>
      *   </table>
      * </p>
