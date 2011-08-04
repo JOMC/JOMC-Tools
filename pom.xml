@@ -624,6 +624,20 @@
                 </configuration>
               </execution>
               <execution>
+                <id>copy-site</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>copy-dependencies</goal>
+                </goals>
+                <configuration>
+                  <classifier>site</classifier>
+                  <failOnMissingClassifierArtifact>true</failOnMissingClassifierArtifact>
+                  <includeGroupIds>${project.groupId}</includeGroupIds>
+                  <outputDirectory>${project.build.directory}/jomc-site</outputDirectory>
+                  <type>jar</type>
+                </configuration>
+              </execution>
+              <execution>
                 <id>copy-tasks-javadoc</id>
                 <phase>package</phase>
                 <goals>
@@ -642,6 +656,12 @@
                       <artifactId>jomc-ant-tasks</artifactId>
                       <classifier>sources</classifier>
                       <outputDirectory>${project.build.directory}/jomc-sources</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>${project.groupId}</groupId>
+                      <artifactId>jomc-ant-tasks</artifactId>
+                      <classifier>site</classifier>
+                      <outputDirectory>${project.build.directory}/jomc-site</outputDirectory>
                     </artifactItem>
                   </artifactItems>
                 </configuration>
@@ -688,6 +708,21 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-shade-plugin</artifactId>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-site-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-site</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+                <configuration>
+                  <relativizeDecorationLinks>false</relativizeDecorationLinks>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
