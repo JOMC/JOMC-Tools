@@ -237,6 +237,38 @@
       </includes>
     </fileSet>
     <fileSet>
+      <directory>${project.build.directory}/maven-jomc-plugin</directory>
+      <fileMode>0555</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/lib/maven</outputDirectory>
+      <includes>
+        <include>*.jar</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${project.build.directory}/maven-jomc-plugin</directory>
+      <fileMode>0444</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/lib/maven</outputDirectory>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <includes>
+        <include>*.pom</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${project.build.directory}/maven-jomc-plugin/META-INF</directory>
+      <fileMode>0444</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/lib/maven</outputDirectory>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <includes>
+        <include>PROJECT.txt</include>
+        <include>PROJEKT.txt</include>
+      </includes>
+    </fileSet>
+    <fileSet>
       <directory>${project.build.directory}/jomc-changes</directory>
       <fileMode>0444</fileMode>
       <directoryMode>0755</directoryMode>
