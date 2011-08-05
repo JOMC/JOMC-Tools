@@ -303,6 +303,22 @@
                 <artifactItem>
                   <groupId>${project.groupId}</groupId>
                   <artifactId>jomc-tools</artifactId>
+                  <version>1.0</version>
+                  <classifier>schemas</classifier>
+                  <type>jar</type>
+                  <outputDirectory>${project.build.directory}/jomc-schemas</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>jomc-model</artifactId>
+                  <version>1.0</version>
+                  <classifier>schemas</classifier>
+                  <type>jar</type>
+                  <outputDirectory>${project.build.directory}/jomc-schemas</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>jomc-tools</artifactId>
                   <classifier>templates</classifier>
                   <type>jar</type>
                   <outputDirectory>${project.build.directory}/jomc-templates</outputDirectory>
@@ -652,6 +668,20 @@
                 </configuration>
               </execution>
               <execution>
+                <id>copy-project</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>copy-dependencies</goal>
+                </goals>
+                <configuration>
+                  <classifier>project</classifier>
+                  <failOnMissingClassifierArtifact>true</failOnMissingClassifierArtifact>
+                  <includeGroupIds>${project.groupId}</includeGroupIds>
+                  <outputDirectory>${project.build.directory}/jomc-project</outputDirectory>
+                  <type>jar</type>
+                </configuration>
+              </execution>
+              <execution>
                 <id>copy-release-artifacts</id>
                 <phase>package</phase>
                 <goals>
@@ -679,6 +709,12 @@
                     </artifactItem>
                     <artifactItem>
                       <groupId>${project.groupId}</groupId>
+                      <artifactId>jomc-ant-tasks</artifactId>
+                      <classifier>project</classifier>
+                      <outputDirectory>${project.build.directory}/jomc-project</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>${project.groupId}</groupId>
                       <artifactId>maven-jomc-plugin</artifactId>
                       <classifier>javadoc</classifier>
                       <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
@@ -694,6 +730,12 @@
                       <artifactId>maven-jomc-plugin</artifactId>
                       <classifier>site</classifier>
                       <outputDirectory>${project.build.directory}/jomc-site</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>${project.groupId}</groupId>
+                      <artifactId>maven-jomc-plugin</artifactId>
+                      <classifier>project</classifier>
+                      <outputDirectory>${project.build.directory}/jomc-project</outputDirectory>
                     </artifactItem>
                   </artifactItems>
                 </configuration>
@@ -736,6 +778,23 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-project</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+                <configuration>
+                  <classesDirectory>${project.basedir}</classesDirectory>
+                  <classifier>project</classifier>
+                  <excludes>
+                    <exclude>**/.*/**</exclude>
+                    <exclude>**/target/**</exclude>
+                  </excludes>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
