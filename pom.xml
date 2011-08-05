@@ -317,7 +317,7 @@
             </configuration>
           </execution>
           <execution>
-            <id>copy-endorsed</id>
+            <id>copy-artifacts</id>
             <phase>package</phase>
             <goals>
               <goal>copy</goal>
@@ -338,17 +338,6 @@
                   <type>jar</type>
                   <outputDirectory>${project.build.directory}/jomc-endorsed</outputDirectory>
                 </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-          <execution>
-            <id>copy-ant-tasks</id>
-            <phase>package</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
                 <artifactItem>
                   <groupId>${project.groupId}</groupId>
                   <artifactId>jomc-ant-tasks</artifactId>
@@ -638,7 +627,7 @@
                 </configuration>
               </execution>
               <execution>
-                <id>copy-tasks-javadoc</id>
+                <id>copy-release-artifacts</id>
                 <phase>package</phase>
                 <goals>
                   <goal>copy</goal>
