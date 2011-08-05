@@ -59,7 +59,7 @@
       <directory>${project.build.directory}/jomc-sources</directory>
       <fileMode>0444</fileMode>
       <directoryMode>0755</directoryMode>
-      <outputDirectory>/src</outputDirectory>
+      <outputDirectory>/doc</outputDirectory>
       <filtered>false</filtered>
       <includes>
         <include>**/*.jar</include>
@@ -70,6 +70,16 @@
       <fileMode>0444</fileMode>
       <directoryMode>0755</directoryMode>
       <outputDirectory>/doc</outputDirectory>
+      <filtered>false</filtered>
+      <includes>
+        <include>**/*.jar</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${project.build.directory}/jomc-project</directory>
+      <fileMode>0444</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/src</outputDirectory>
       <filtered>false</filtered>
       <includes>
         <include>**/*.jar</include>
