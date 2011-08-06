@@ -111,7 +111,7 @@
         <executions>
           <execution>
             <id>copy-templates</id>
-            <phase>package</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>copy-resources</goal>
             </goals>
@@ -137,7 +137,7 @@
           </execution>
           <execution>
             <id>copy-schemas</id>
-            <phase>package</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>copy-resources</goal>
             </goals>
@@ -164,7 +164,7 @@
           </execution>
           <execution>
             <id>copy-modlet</id>
-            <phase>compile</phase>
+            <phase>process-resources</phase>
             <goals>
               <goal>copy-resources</goal>
             </goals>
@@ -211,7 +211,7 @@
         <executions>
           <execution>
             <id>attach-templates</id>
-            <phase>package</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>jar</goal>
             </goals>
@@ -222,7 +222,7 @@
           </execution>
           <execution>
             <id>attach-schemas</id>
-            <phase>package</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>jar</goal>
             </goals>
