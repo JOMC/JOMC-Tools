@@ -117,7 +117,7 @@
         <executions>
           <execution>
             <id>attach-installer</id>
-            <phase>generate-resources</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>attach-artifact</goal>
             </goals>
