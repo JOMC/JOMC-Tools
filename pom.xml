@@ -52,7 +52,7 @@
           <executions>
             <execution>
               <id>shade</id>
-              <phase>package</phase>
+              <phase>prepare-package</phase>
               <goals>
                 <goal>shade</goal>
               </goals>
@@ -224,7 +224,7 @@
         <executions>
           <execution>
             <id>copy-templates</id>
-            <phase>generate-test-resources</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>copy-resources</goal>
             </goals>
@@ -256,7 +256,7 @@
         <executions>
           <execution>
             <id>attach-templates</id>
-            <phase>package</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>jar</goal>
             </goals>
@@ -273,7 +273,7 @@
         <executions>
           <execution>
             <id>unpack-schemas</id>
-            <phase>package</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>unpack-dependencies</goal>
             </goals>
@@ -288,7 +288,7 @@
           </execution>
           <execution>
             <id>unpack-artifacts</id>
-            <phase>package</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>unpack</goal>
             </goals>
@@ -340,7 +340,7 @@
           </execution>
           <execution>
             <id>copy-artifacts</id>
-            <phase>package</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>copy</goal>
             </goals>
@@ -627,7 +627,7 @@
             <executions>
               <execution>
                 <id>copy-javadoc</id>
-                <phase>package</phase>
+                <phase>prepare-package</phase>
                 <goals>
                   <goal>copy-dependencies</goal>
                 </goals>
@@ -641,7 +641,7 @@
               </execution>
               <execution>
                 <id>copy-sources</id>
-                <phase>package</phase>
+                <phase>prepare-package</phase>
                 <goals>
                   <goal>copy-dependencies</goal>
                 </goals>
@@ -655,7 +655,7 @@
               </execution>
               <execution>
                 <id>copy-site</id>
-                <phase>package</phase>
+                <phase>prepare-package</phase>
                 <goals>
                   <goal>copy-dependencies</goal>
                 </goals>
@@ -669,7 +669,7 @@
               </execution>
               <execution>
                 <id>copy-project</id>
-                <phase>package</phase>
+                <phase>prepare-package</phase>
                 <goals>
                   <goal>copy-dependencies</goal>
                 </goals>
@@ -683,7 +683,7 @@
               </execution>
               <execution>
                 <id>copy-release-artifacts</id>
-                <phase>package</phase>
+                <phase>prepare-package</phase>
                 <goals>
                   <goal>copy</goal>
                 </goals>
@@ -755,6 +755,7 @@
             <executions>
               <execution>
                 <id>attach-sources</id>
+                <phase>prepare-package</phase>
                 <goals>
                   <goal>jar-no-fork</goal>
                   <goal>test-jar-no-fork</goal>
@@ -768,6 +769,7 @@
             <executions>
               <execution>
                 <id>attach-javadocs</id>
+                <phase>prepare-package</phase>
                 <goals>
                   <goal>jar</goal>
                   <goal>test-jar</goal>
@@ -781,7 +783,7 @@
             <executions>
               <execution>
                 <id>attach-project</id>
-                <phase>package</phase>
+                <phase>prepare-package</phase>
                 <goals>
                   <goal>jar</goal>
                 </goals>
@@ -806,6 +808,7 @@
             <executions>
               <execution>
                 <id>attach-site</id>
+                <phase>prepare-package</phase>
                 <goals>
                   <goal>jar</goal>
                 </goals>
