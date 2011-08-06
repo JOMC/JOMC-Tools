@@ -683,7 +683,7 @@
               </execution>
               <execution>
                 <id>copy-release-artifacts</id>
-                <phase>prepare-package</phase>
+                <phase>package</phase>
                 <goals>
                   <goal>copy</goal>
                 </goals>
@@ -734,6 +734,44 @@
                     <artifactItem>
                       <groupId>${project.groupId}</groupId>
                       <artifactId>maven-jomc-plugin</artifactId>
+                      <classifier>project</classifier>
+                      <outputDirectory>${project.build.directory}/jomc-project</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>${project.groupId}</groupId>
+                      <artifactId>jomc-cli</artifactId>
+                      <classifier>javadoc</classifier>
+                      <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>${project.groupId}</groupId>
+                      <artifactId>jomc-cli</artifactId>
+                      <classifier>sources</classifier>
+                      <outputDirectory>${project.build.directory}/jomc-sources</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>${project.groupId}</groupId>
+                      <artifactId>jomc-cli</artifactId>
+                      <classifier>site</classifier>
+                      <outputDirectory>${project.build.directory}/jomc-site</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>${project.groupId}</groupId>
+                      <artifactId>jomc-cli</artifactId>
+                      <classifier>project</classifier>
+                      <outputDirectory>${project.build.directory}/jomc-project</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>${project.groupId}</groupId>
+                      <artifactId>jomc-parent</artifactId>
+                      <version>${project.parent.version}</version>
+                      <classifier>site</classifier>
+                      <outputDirectory>${project.build.directory}/jomc-site</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>${project.groupId}</groupId>
+                      <artifactId>jomc-parent</artifactId>
+                      <version>${project.parent.version}</version>
                       <classifier>project</classifier>
                       <outputDirectory>${project.build.directory}/jomc-project</outputDirectory>
                     </artifactItem>
