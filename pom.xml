@@ -185,6 +185,10 @@
         <filtering>true</filtering>
         <directory>src/main/resources</directory>
       </resource>
+      <resource>
+        <filtering>false</filtering>
+        <directory>src/main/templates</directory>
+      </resource>
     </resources>
     <testResources>
       <testResource>
@@ -254,6 +258,14 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <executions>
+          <execution>
+            <id>default-jar</id>
+            <configuration>
+              <excludes>
+                <exclude>**/tools/**</exclude>
+              </excludes>
+            </configuration>
+          </execution>
           <execution>
             <id>attach-templates</id>
             <phase>prepare-package</phase>

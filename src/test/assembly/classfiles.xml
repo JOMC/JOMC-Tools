@@ -47,6 +47,9 @@
       <fileMode>0444</fileMode>
       <filtered>false</filtered>
       <outputDirectory>/org/jomc/cli</outputDirectory>
+      <excludes>
+        <exclude>**/templates/**</exclude>
+      </excludes>
     </fileSet>
   </fileSets>
 </assembly>
