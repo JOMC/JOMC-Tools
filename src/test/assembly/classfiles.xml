@@ -47,6 +47,11 @@
       <fileMode>0444</fileMode>
       <filtered>false</filtered>
       <outputDirectory>/org/jomc/tools</outputDirectory>
+      <excludes>
+        <exclude>**/templates/**</exclude>
+        <exclude>**/*.properties/**</exclude>
+        <exclude>**/*.xsd/**</exclude>
+      </excludes>
     </fileSet>
   </fileSets>
 </assembly>

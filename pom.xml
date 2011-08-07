@@ -51,10 +51,22 @@
       </resource>
       <resource>
         <filtering>false</filtering>
+        <directory>src/main/templates</directory>
+      </resource>
+      <resource>
+        <filtering>false</filtering>
         <directory>src/main/schemas</directory>
         <targetPath>org/jomc/tools/model</targetPath>
         <includes>
           <include>jomc-tools-1.2.xsd</include>
+        </includes>
+      </resource>
+      <resource>
+        <filtering>false</filtering>
+        <directory>${project.build.directory}/deprecated-schemas</directory>
+        <targetPath>org/jomc/tools/model</targetPath>
+        <includes>
+          <include>*.xsd</include>
         </includes>
       </resource>
     </resources>
@@ -62,10 +74,6 @@
       <testResource>
         <filtering>true</filtering>
         <directory>src/test/resources</directory>
-      </testResource>
-      <testResource>
-        <filtering>false</filtering>
-        <directory>src/main/templates</directory>
       </testResource>
       <testResource>
         <filtering>false</filtering>
@@ -162,53 +170,20 @@
               </resources>
             </configuration>
           </execution>
-          <execution>
-            <id>copy-modlet</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <resources>
-                <resource>
-                  <directory>${basedir}/src/main/modlet</directory>
-                  <filtering>true</filtering>
-                </resource>
-              </resources>
-              <delimiters>
-                <delimiter>${*}</delimiter>
-              </delimiters>
-              <useDefaultDelimiters>false</useDefaultDelimiters>
-              <escapeWindowsPaths>true</escapeWindowsPaths>
-              <outputDirectory>${project.build.outputDirectory}/META-INF</outputDirectory>
-            </configuration>
-          </execution>
-          <execution>
-            <id>copy-deprecated-schemas</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${project.build.directory}/deprecated-schemas</directory>
-                  <filtering>false</filtering>
-                  <targetPath>org/jomc/tools/model</targetPath>
-                  <includes>
-                    <include>*.xsd</include>
-                  </includes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
         </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <executions>
+          <execution>
+            <id>default-jar</id>
+            <configuration>
+              <excludes>
+                <exclude>**/templates/**</exclude>
+              </excludes>
+            </configuration>
+          </execution>
           <execution>
             <id>attach-templates</id>
             <phase>prepare-package</phase>
