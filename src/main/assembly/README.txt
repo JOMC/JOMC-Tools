@@ -1,6 +1,6 @@
 
   ${project.organization.name} - ${project.name} - README.txt
-  Version ${project.version} Build ${maven.build.timestamp}
+  Version ${project.version} Build ${buildNumber}
   ${project.url}
 
   ${project.description}
