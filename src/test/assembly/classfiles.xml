@@ -47,6 +47,9 @@
       <fileMode>0444</fileMode>
       <filtered>false</filtered>
       <outputDirectory>/org/jomc/ant/test</outputDirectory>
+      <includes>
+        <include>**/*.class/**</include>
+      </includes>
     </fileSet>
   </fileSets>
 </assembly>

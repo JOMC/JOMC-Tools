@@ -176,7 +176,7 @@ public class MergeModletsTaskTest extends JomcTaskTest
     {
         final AntExecutionResult r = this.executeTarget( "test-merge-modlets-exclusion" );
         assertNoException( r );
-        assertMessageLogged( r, "Excluding modlet 'JOMC Tools'.", Project.MSG_INFO );
+        assertMessageLogged( r, "Excluding modlet 'JOMC Ant Tasks Tests'.", Project.MSG_INFO );
     }
 
     @Test
@@ -184,7 +184,7 @@ public class MergeModletsTaskTest extends JomcTaskTest
     {
         final AntExecutionResult r = this.executeTarget( "test-merge-modlets-inclusion" );
         assertNoException( r );
-        assertMessageLogged( r, "Including modlet 'JOMC Tools'.", Project.MSG_INFO );
+        assertMessageLogged( r, "Including modlet 'JOMC Ant Tasks Tests'.", Project.MSG_INFO );
     }
 
     @Test

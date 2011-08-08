@@ -41,18 +41,15 @@
   <target name="before-test">
     <property name="empty.dir" location="${test.output.dir}/EMPTY"/>
     <property name="no.dir" location="${test.output.dir}/DOES_NOT_EXIST"/>
-    <property name="classes.dir" location="${test.output.dir}/classfiles"/>
-    <property name="dependencies.dir" location="${test.output.dir}/dependencies"/>
+    <tempfile property="classes.dir" destdir="${test.output.dir}/classfiles" prefix="cp"/>
 
     <delete dir="${no.dir}" includeemptydirs="true"/>
     <delete dir="${classes.dir}" includeemptydirs="true"/>
     <mkdir dir="${empty.dir}"/>
     <mkdir dir="${classes.dir}"/>
-    <mkdir dir="${dependencies.dir}"/>
     <mkdir dir="${test.output.dir}"/>
 
     <unzip src="${output.dir}/classfiles.zip" dest="${classes.dir}"/>
-    <unzip src="${output.dir}/dependencies.zip" dest="${dependencies.dir}"/>
 
     <path id="empty.classpath">
       <pathelement path="${empty.dir}"/>
@@ -63,10 +60,12 @@
     </path>
 
     <path id="redundant.classpath">
+      <pathelement location="${test.classpath.dir}"/>
+    </path>
+
+    <path id="redundant.classpath.with.classes">
       <pathelement location="${classes.dir}"/>
-      <fileset dir="${dependencies.dir}">
-        <include name="**/*.jar"/>
-      </fileset>
+      <pathelement location="${test.classpath.dir}"/>
     </path>
   </target>
 
@@ -134,8 +133,10 @@
 
   <!-- ************************************************************************************************************* -->
   <target name="test-validate-ant-tasks-with-redundant-resources">
-    <jomc:commit-classes classesDirectory="${classes.dir}" classpathref="redundant.classpath" if="${jomc.enabled}"/>
-    <jomc:validate-classpath classpathref="redundant.classpath" if="${jomc.enabled}"/>
+    <jomc:commit-classes classesDirectory="${classes.dir}" classpathref="redundant.classpath.with.classes"
+                         if="${jomc.enabled}"/>
+
+    <jomc:validate-classpath classpathref="redundant.classpath.with.classes" if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->

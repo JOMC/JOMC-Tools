@@ -39,6 +39,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Properties;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.tools.ant.BuildEvent;
@@ -50,6 +52,13 @@ import org.jomc.ant.types.KeyValueType;
 import org.jomc.ant.types.NameType;
 import org.jomc.ant.types.PropertiesResourceType;
 import org.jomc.ant.types.TransformerResourceType;
+import org.jomc.model.ModelObject;
+import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelException;
+import org.jomc.modlet.Modlet;
+import org.jomc.modlet.ModletObject;
+import org.jomc.modlet.Modlets;
+import org.jomc.modlet.ObjectFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -191,15 +200,7 @@ public class JomcTaskTest
             assertNotNull( "Expected '" + this.getBuildFileName() + "' resource not found.", buildFileResource );
             final File buildFile = new File( this.getOutputDirectory(), this.getBuildFileName() );
             assertTrue( buildFile.isAbsolute() );
-            FileUtils.copyInputStreamToFile( buildFileResource.openStream(), buildFile );
-
-            final URL dependenciesResource =
-                this.getClass().getResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "dependencies.zip" );
-
-            assertNotNull( "Expected 'dependencies.zip' resource not found.", dependenciesResource );
-            final File dependenciesZip = new File( this.getOutputDirectory(), "dependencies.zip" );
-            assertTrue( dependenciesZip.isAbsolute() );
-            FileUtils.copyInputStreamToFile( dependenciesResource.openStream(), dependenciesZip );
+            FileUtils.copyURLToFile( buildFileResource, buildFile );
 
             final URL classfilesResource =
                 this.getClass().getResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "classfiles.zip" );
@@ -207,16 +208,54 @@ public class JomcTaskTest
             assertNotNull( "Expected 'classfiles.zip' resource not found.", classfilesResource );
             final File classfilesZip = new File( this.getOutputDirectory(), "classfiles.zip" );
             assertTrue( classfilesZip.isAbsolute() );
-            FileUtils.copyInputStreamToFile( classfilesResource.openStream(), classfilesZip );
+            FileUtils.copyURLToFile( classfilesResource, classfilesZip );
+
+            final File classpathDirectory = new File( new File( this.getOutputDirectory(), "redundant" ), "META-INF" );
+            assertTrue( classpathDirectory.isAbsolute() );
+
+            if ( !classpathDirectory.exists() )
+            {
+                assertTrue( classpathDirectory.mkdirs() );
+            }
+
+            final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
+            final Modlets modlets = modelContext.getModlets();
+            final Modlet redundantModlet =
+                modlets.getMergedModlet( "JOMC Ant Tasks Tests", ModelObject.MODEL_PUBLIC_ID );
+
+            final Marshaller marshaller = modelContext.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
+            marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
+            marshaller.marshal( new ObjectFactory().createModlet( redundantModlet ),
+                                new File( classpathDirectory, "jomc-modlet.xml" ) );
+
+            final File servicesDir = new File( classpathDirectory, "services" );
+            assertTrue( servicesDir.isAbsolute() );
+
+            if ( !servicesDir.exists() )
+            {
+                assertTrue( servicesDir.mkdirs() );
+            }
+
+            final File modletProviderService = new File( servicesDir, "org.jomc.modlet.ModletProvider" );
+            FileUtils.writeStringToFile( modletProviderService, "org.jomc.modlet.DefaultModletProvider\n", "UTF-8" );
 
             p.setProperty( "basedir", buildFile.getParentFile().getAbsolutePath() );
             p.setUserProperty( "ant.file", buildFile.getAbsolutePath() );
             p.setUserProperty( "output.dir", this.getOutputDirectory().getAbsolutePath() );
             p.setUserProperty( "test.output.dir", new File( this.getOutputDirectory(), "work" ).getAbsolutePath() );
+            p.setUserProperty( "test.classpath.dir", classpathDirectory.getParentFile().getAbsolutePath() );
             ProjectHelper.configureProject( p, buildFile );
             return p;
         }
         catch ( final IOException e )
+        {
+            throw new AssertionError( e );
+        }
+        catch ( final ModelException e )
+        {
+            throw new AssertionError( e );
+        }
+        catch ( final JAXBException e )
         {
             throw new AssertionError( e );
         }
