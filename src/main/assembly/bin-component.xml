@@ -106,14 +106,6 @@
       <outputDirectory>/examples/xml</outputDirectory>
       <source>${project.build.outputDirectory}/META-INF/jomc.xml</source>
     </file>
-    <file>
-      <destName>Changelog.html</destName>
-      <fileMode>0444</fileMode>
-      <filtered>false</filtered>
-      <lineEnding>dos</lineEnding>
-      <outputDirectory>/</outputDirectory>
-      <source>${project.build.directory}/generated-resources/xml/xslt/changes.xml</source>
-    </file>
   </files>
   <fileSets>
     <fileSet>
