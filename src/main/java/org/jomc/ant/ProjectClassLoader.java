@@ -746,7 +746,7 @@ public class ProjectClassLoader extends URLClassLoader
 
             for ( Schema s : modlet.getSchemas().getSchema() )
             {
-                if ( !this.getModletExcludes().contains( s.getPublicId() ) )
+                if ( !this.getSchemaExcludes().contains( s.getPublicId() ) )
                 {
                     schemas.getSchema().add( s );
                 }
