@@ -611,8 +611,8 @@
               <artifactId>maven-scm-plugin</artifactId>
               <executions>
                 <execution>
-                  <id>default-initialize</id>
-                  <phase>initialize</phase>
+                  <id>default-generate-resources</id>
+                  <phase>generate-resources</phase>
                   <goals>
                     <goal>update</goal>
                   </goals>
@@ -621,15 +621,20 @@
                   <id>default-process-resources</id>
                   <phase>process-resources</phase>
                   <goals>
-                    <goal>update</goal>
                     <goal>checkin</goal>
+                  </goals>
+                </execution>
+                <execution>
+                  <id>default-generate-test-resources</id>
+                  <phase>generate-test-resources</phase>
+                  <goals>
+                    <goal>update</goal>
                   </goals>
                 </execution>
                 <execution>
                   <id>default-process-test-resources</id>
                   <phase>process-test-resources</phase>
                   <goals>
-                    <goal>update</goal>
                     <goal>checkin</goal>
                   </goals>
                 </execution>
