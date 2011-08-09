@@ -73,49 +73,53 @@
         </includes>
       </testResource>
     </testResources>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>default-classfiles-single</id>
+              <phase>generate-test-resources</phase>
+              <goals>
+                <goal>single</goal>
+              </goals>
+              <configuration>
+                <attach>false</attach>
+                <appendAssemblyId>false</appendAssemblyId>
+                <finalName>classfiles</finalName>
+                <descriptors>
+                  <descriptor>src/test/assembly/classfiles.xml</descriptor>
+                </descriptors>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>default-attach-artifact</id>
+              <configuration>
+                <artifacts combine.children="append">
+                  <artifact>
+                    <file>src/site/resources/build.xml</file>
+                    <type>xml</type>
+                    <classifier>installer</classifier>
+                  </artifact>
+                </artifacts>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>assemble-test-classfiles</id>
-            <phase>generate-test-resources</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-            <configuration>
-              <attach>false</attach>
-              <appendAssemblyId>false</appendAssemblyId>
-              <finalName>classfiles</finalName>
-              <descriptors>
-                <descriptor>src/test/assembly/classfiles.xml</descriptor>
-              </descriptors>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-installer</id>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>attach-artifact</goal>
-            </goals>
-            <configuration>
-              <artifacts>
-                <artifact>
-                  <file>src/site/resources/build.xml</file>
-                  <type>xml</type>
-                  <classifier>installer</classifier>
-                </artifact>
-              </artifacts>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
