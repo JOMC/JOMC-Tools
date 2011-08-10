@@ -53,7 +53,7 @@ Validating a project's main model
         <version>${project.version}</version>
         <executions>
           <execution>
-            <id>main-default</id>
+            <id>default-main</id>
             <goals>
               <goal>validate-main-model</goal>
             </goals>
@@ -84,7 +84,7 @@ Validating a project's test model
         <version>${project.version}</version>
         <executions>
           <execution>
-            <id>test-default</id>
+            <id>default-test</id>
             <goals>
               <goal>validate-test-model</goal>
             </goals>

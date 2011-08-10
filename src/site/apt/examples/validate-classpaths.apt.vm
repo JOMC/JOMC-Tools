@@ -53,7 +53,7 @@ Validating a project's main classpath
         <version>${project.version}</version>
         <executions>
           <execution>
-            <id>main-default</id>
+            <id>default-main</id>
             <goals>
               <goal>validate-main-classpath</goal>
             </goals>
@@ -84,7 +84,7 @@ Validating a project's test classpath
         <version>${project.version}</version>
         <executions>
           <execution>
-            <id>test-default</id>
+            <id>default-test</id>
             <goals>
               <goal>validate-test-classpath</goal>
             </goals>
