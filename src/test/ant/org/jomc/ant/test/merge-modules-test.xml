@@ -44,22 +44,13 @@
   <target name="before-test">
     <property name="empty.dir" location="${test.output.dir}/EMPTY"/>
     <property name="no.dir" location="${test.output.dir}/DOES_NOT_EXIST"/>
-    <tempfile property="classes.dir" destdir="${test.output.dir}/classfiles" prefix="cp"/>
 
     <delete dir="${no.dir}" includeemptydirs="true"/>
-    <delete dir="${classes.dir}" includeemptydirs="true"/>
     <mkdir dir="${empty.dir}"/>
-    <mkdir dir="${classes.dir}"/>
     <mkdir dir="${test.output.dir}"/>
-
-    <unzip src="${output.dir}/classfiles.zip" dest="${classes.dir}"/>
 
     <path id="empty.classpath">
       <pathelement path="${empty.dir}"/>
-    </path>
-
-    <path id="classes.classpath">
-      <pathelement location="${classes.dir}"/>
     </path>
 
     <path id="redundant.classpath">
