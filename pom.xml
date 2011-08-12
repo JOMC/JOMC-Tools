@@ -805,9 +805,6 @@
                 <execution>
                   <id>default-package-copy</id>
                   <phase>pre-integration-test</phase>
-                  <goals>
-                    <goal>copy</goal>
-                  </goals>
                   <configuration>
                     <artifactItems combine.children="append">
                       <artifactItem>
