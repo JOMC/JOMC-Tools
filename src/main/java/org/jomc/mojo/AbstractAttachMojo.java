@@ -53,6 +53,9 @@ import org.apache.maven.project.MavenProjectHelper;
 public abstract class AbstractAttachMojo extends AbstractMojo
 {
 
+    /** Constant for the name of the tool backing the mojo. */
+    private static final String TOOLNAME = "MavenProjectHelper";
+
     /** Prefix prepended to log messages. */
     private static final String LOG_PREFIX = "[JOMC] ";
 
@@ -238,10 +241,26 @@ public abstract class AbstractAttachMojo extends AbstractMojo
 
         try
         {
-            if ( this.getArtifactFile().isFile() )
+            if ( this.isVerbose() && this.getLog().isInfoEnabled() )
             {
-                if ( MojoDescriptor.MULTI_PASS_EXEC_STRATEGY.equals( this.getExecutionStrategy() )
-                     || !attachment.exists() )
+                this.getLog().info( LOG_PREFIX + Messages.getMessage( "separator" ) );
+                this.getLog().info( LOG_PREFIX + Messages.getMessage( "title" ) );
+            }
+
+            if ( MojoDescriptor.MULTI_PASS_EXEC_STRATEGY.equals( this.getExecutionStrategy() )
+                 || !attachment.exists() )
+            {
+                if ( this.isVerbose() && this.getLog().isInfoEnabled() )
+                {
+                    this.getLog().info( LOG_PREFIX + Messages.getMessage( "separator" ) );
+                    this.getLog().info( LOG_PREFIX + Messages.getMessage(
+                        "processingProject", TOOLNAME, this.getMavenProject().getName() == null
+                                                       ? this.getMavenProject().getArtifactId()
+                                                       : this.getMavenProject().getName() ) );
+
+                }
+
+                if ( this.getArtifactFile().isFile() )
                 {
                     if ( attachment.exists() && !attachment.delete() )
                     {
@@ -260,25 +279,26 @@ public abstract class AbstractAttachMojo extends AbstractMojo
                     this.getMavenProjectHelper().attachArtifact( this.getMavenProject(), this.getArtifactType(),
                                                                  this.getArtifactClassifier(), attachment );
 
-                    if ( this.isVerbose() )
+                    if ( this.isVerbose() && this.getLog().isInfoEnabled() )
                     {
                         this.getLog().info( LOG_PREFIX + Messages.getMessage(
                             "creatingAttachment", this.getArtifactFile().getAbsolutePath(),
                             this.getArtifactClassifier(), this.getArtifactType() ) );
 
+                        this.getLog().info( LOG_PREFIX + Messages.getMessage( "toolSuccess", TOOLNAME ) );
                     }
                 }
-                else if ( this.isVerbose() )
+                else if ( this.getLog().isWarnEnabled() )
                 {
-                    this.getLog().info( LOG_PREFIX + Messages.getMessage( "executionSuppressed",
-                                                                          this.getExecutionStrategy() ) );
+                    this.getLog().warn( LOG_PREFIX + Messages.getMessage(
+                        "artifactFileNotFound", this.getArtifactFile().getAbsolutePath() ) );
 
                 }
             }
-            else if ( this.getLog().isWarnEnabled() )
+            else if ( this.isVerbose() && this.getLog().isInfoEnabled() )
             {
-                this.getLog().warn( LOG_PREFIX + Messages.getMessage(
-                    "artifactFileNotFound", this.getArtifactFile().getAbsolutePath() ) );
+                this.getLog().info( LOG_PREFIX + Messages.getMessage( "executionSuppressed",
+                                                                      this.getExecutionStrategy() ) );
 
             }
         }
@@ -289,6 +309,13 @@ public abstract class AbstractAttachMojo extends AbstractMojo
                 "failedCopying", this.getArtifactFile().getAbsolutePath(), attachment.getAbsolutePath(),
                 message != null ? message : "" ), e );
 
+        }
+        finally
+        {
+            if ( this.isVerbose() && this.getLog().isInfoEnabled() )
+            {
+                this.getLog().info( LOG_PREFIX + Messages.getMessage( "separator" ) );
+            }
         }
     }
 
