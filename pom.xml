@@ -375,6 +375,14 @@
                     <type>xhtml</type>
                     <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
                   </artifactItem>
+                  <artifactItem>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>jomc-parent</artifactId>
+                    <version>${project.parent.version}</version>
+                    <classifier>changes</classifier>
+                    <type>xhtml</type>
+                    <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
+                  </artifactItem>
                 </artifactItems>
               </configuration>
             </execution>
