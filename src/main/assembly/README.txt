@@ -34,11 +34,11 @@
 
   Apache Ant Tasks
 
-    See ${jomc.artifacts.url}/jomc-ant-tasks-${jomc-ant-tasks.version}
+    See ${project.parent.url}/jomc-ant-tasks
 
   Apache Maven 2 Plugin
 
-    See ${jomc.artifacts.url}/maven-jomc-plugin-${maven-jomc-plugin.version}
+    See ${project.parent.url}/maven-jomc-plugin
 
   JDK 1.5
 
