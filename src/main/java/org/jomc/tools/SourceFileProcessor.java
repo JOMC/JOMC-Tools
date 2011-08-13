@@ -61,7 +61,7 @@ import org.jomc.util.TrailingWhitespaceEditor;
 /**
  * Processes source code files.
  *
- * <p><b>Use cases</b><br/><ul>
+ * <p><b>Use Cases:</b><br/><ul>
  * <li>{@link #manageSourceFiles(File) }</li>
  * <li>{@link #manageSourceFiles(Module, File) }</li>
  * <li>{@link #manageSourceFiles(Specification, File) }</li>
