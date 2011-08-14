@@ -62,8 +62,7 @@ ${tool.getIndentation(0)} *   multiplicity {@code $specification.getMultiplicity
 #end
 #if($specification.getScope())
 ${tool.getIndentation(0)} *   This specification applies to {@code $tool.getHtmlString($specification.getScope())} scope.
-${tool.getIndentation(0)} *   The same $tool.getHtmlString($specification.getScope().toLowerCase($tool.getLocale())) object is
-${tool.getIndentation(0)} *   returned whenever requested.
+${tool.getIndentation(0)} *   The same $tool.getHtmlString($specification.getScope().toLowerCase($tool.getLocale())) object is returned whenever requested.
 #else
 ${tool.getIndentation(0)} *   This specification does not apply to any scope. A new object is returned whenever requested.
 #end
