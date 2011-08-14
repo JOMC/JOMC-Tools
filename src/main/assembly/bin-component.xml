@@ -213,7 +213,7 @@
       <filtered>false</filtered>
       <lineEnding>dos</lineEnding>
       <includes>
-        <include>build.xml</include>
+        <include>*.xml</include>
       </includes>
     </fileSet>
     <fileSet>
