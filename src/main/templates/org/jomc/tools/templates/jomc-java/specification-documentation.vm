@@ -50,28 +50,35 @@ ${tool.getIndentation(0)}/**
 #if($specification.getDocumentation())
 ${tool.getIndentation(0)} * $tool.getJavadocComment($specification.getDocumentation(), 0, " * ")
 #end
+${tool.getIndentation(0)} *
 ${tool.getIndentation(0)} * <p>
-${tool.getIndentation(0)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-${tool.getIndentation(0)} *     <tr class="TableHeadingColor">
-${tool.getIndentation(0)} *       <th align="left" scope="col" colspan="2" nowrap><font size="+2">Specification</font></th>
-${tool.getIndentation(0)} *     </tr>
-${tool.getIndentation(0)} *     <tr>
-${tool.getIndentation(0)} *       <td class="TableSubHeadingColor" align="left" nowrap><b>Identifier:</b></td>
-${tool.getIndentation(0)} *       <td class="TableRowColor" align="left" nowrap>{@code $specification.getIdentifier()}</td>
-${tool.getIndentation(0)} *     </tr>
-${tool.getIndentation(0)} *     <tr>
-${tool.getIndentation(0)} *       <td class="TableSubHeadingColor" align="left" nowrap><b>Multiplicity:</b></td>
-${tool.getIndentation(0)} *       <td class="TableRowColor" align="left" nowrap>{@code $specification.getMultiplicity().value()}</td>
-${tool.getIndentation(0)} *     </tr>
-${tool.getIndentation(0)} *     <tr>
-${tool.getIndentation(0)} *       <td class="TableSubHeadingColor" align="left" nowrap><b>Scope:</b></td>
-${tool.getIndentation(0)} *       <td class="TableRowColor" align="left" nowrap>{@code#if($specification.getScope()) $specification.getScope()#else Multiton#end}</td>
-${tool.getIndentation(0)} *     </tr>
-${tool.getIndentation(0)} *     <tr>
-${tool.getIndentation(0)} *       <td class="TableSubHeadingColor" align="left" nowrap><b>Version:</b></td>
-${tool.getIndentation(0)} *       <td class="TableRowColor" align="left" nowrap>{@code#if($specification.getVersion()) $specification.getVersion()#else No version available.#end}</td>
-${tool.getIndentation(0)} *     </tr>
-${tool.getIndentation(0)} *   </table>
+${tool.getIndentation(0)} *   This specification is identified by identifier {@code $specification.getIdentifier()}.
+#if($specification.getMultiplicity().value() == "One")
+${tool.getIndentation(0)} *   An application assembler may provide either no or one implementation of this specification due to
+${tool.getIndentation(0)} *   multiplicity {@code $specification.getMultiplicity().value()}.
+#elseif($specification.getMultiplicity().value() == "Many")
+${tool.getIndentation(0)} *   An application assembler may provide multiple implementations of this specification (including none) due to
+${tool.getIndentation(0)} *   multiplicity {@code $specification.getMultiplicity().value()}.
+#end
+#if($specification.getScope())
+${tool.getIndentation(0)} *   This specification applies to {@code $tool.getHtmlString($specification.getScope())} scope.
+${tool.getIndentation(0)} *   The same $tool.getHtmlString($specification.getScope().toLowerCase($tool.getLocale())) object is
+${tool.getIndentation(0)} *   returned whenever requested.
+#else
+${tool.getIndentation(0)} *   This specification does not apply to any scope. A new object is returned whenever requested.
+#end
+${tool.getIndentation(0)} * </p>
+${tool.getIndentation(0)} *
+${tool.getIndentation(0)} * <p>
+${tool.getIndentation(0)} *   Use of class {@code ObjectManager} is supported for accessing implementations.
+${tool.getIndentation(0)} *   <blockquote><pre>
+#if($specification.getMultiplicity().value() == "One")
+${tool.getIndentation(0)} * $tool.getJavaTypeName($specification,false) object = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getHtmlString($tool.getJavaTypeName($specification,false))}.class );
+#elseif($specification.getMultiplicity().value() == "Many")
+${tool.getIndentation(0)} * ${tool.getJavaTypeName($specification,false)}[] objects = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getHtmlString($tool.getJavaTypeName($specification,false))}[].class );
+#end
+${tool.getIndentation(0)} * $tool.getJavaTypeName($specification,false) object = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getHtmlString($tool.getJavaTypeName($specification,false))}.class, "<i>implementation name</i>" );
+${tool.getIndentation(0)} *   </pre></blockquote>
 ${tool.getIndentation(0)} * </p>
 ${tool.getIndentation(0)} *
 #if($specification.getAuthors())
@@ -80,7 +87,12 @@ ${tool.getIndentation(0)} * @author #if($author.getMail())<a href="mailto:$autho
 
 #end
 #end
-#set($D = "$")
-${tool.getIndentation(0)} * @version ${D}Id${D}
+#if($specification.getVersion())
+${tool.getIndentation(0)} * @version $specification.getVersion()
+#else
+${tool.getIndentation(0)} * @version This specification does not support versioning.
+#end
+${tool.getIndentation(0)} * @see org.jomc.ObjectManagerFactory
+${tool.getIndentation(0)} * @see org.jomc.ObjectManager
 ${tool.getIndentation(0)} */
 ${tool.getIndentation(0)}// </editor-fold>
