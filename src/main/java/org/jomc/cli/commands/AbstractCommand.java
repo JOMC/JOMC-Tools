@@ -445,7 +445,7 @@ public abstract class AbstractCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-08-14T23:28:14+0000</code></pre></td>
+     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-08-16T00:38:17+0000</code></pre></td>
      *     </tr>
      *   </table>
      * </p>
