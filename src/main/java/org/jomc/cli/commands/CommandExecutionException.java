@@ -42,7 +42,7 @@ package org.jomc.cli.commands;
  * Command execution exception.
  *
  * <p>
- *   This implementation is identified by identifier {@code JOMC CLI Command Execution Exception}.
+ *   This implementation is identified by identifier {@code <JOMC CLI Command Execution Exception>}.
  *   It does not provide any specified objects.
  * </p>
  *

@@ -48,9 +48,9 @@ import org.apache.commons.cli.Options;
  * Command.
  *
  * <p>
- *   This specification is identified by identifier {@code JOMC CLI Command}.
+ *   This specification is identified by identifier {@code <JOMC CLI Command>}.
  *   An application assembler may provide multiple implementations of this specification (including none) due to
- *   multiplicity {@code Many}.
+ *   multiplicity {@code <Many>}.
  *   This specification does not apply to any scope. A new object is returned whenever requested.
  * </p>
  *

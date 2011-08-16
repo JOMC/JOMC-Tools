@@ -48,11 +48,11 @@ import org.apache.commons.cli.CommandLine;
  * JOMC CLI command implementation.
  *
  * <p>
- *   This implementation is identified by identifier {@code JOMC CLI Command}.
- *   It provides objects named {@code JOMC CLI Command} of the following specifications:
+ *   This implementation is identified by identifier {@code <JOMC CLI Command>}.
+ *   It provides objects named {@code <JOMC CLI Command>} of the following specifications:
  *
  *   <ul>
- *     <li>{@code JOMC CLI Command} at specification level {@code 1.0}.</li>
+ *     <li>{@code <JOMC CLI Command>} at specification level 1.0.</li>
  *   </ul>
  *
  * </p>
@@ -387,10 +387,12 @@ public abstract class AbstractCommand
     // <editor-fold defaultstate="collapsed" desc=" Generated Dependencies ">
 
     /**
-     * Gets the {@code Locale} dependency.
-     * <p>This method returns the {@code 'default'} object of the {@code 'java.util.Locale'} {@code (java.util.Locale)} specification at specification level 1.1.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code Locale} dependency.
+     * Gets the {@code <Locale>} dependency.
+     * <p>
+     *   This method returns the {@code <default>} object of the {@code <java.util.Locale>} specification at specification level 1.1.
+     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
+     * </p>
+     * @return The {@code <Locale>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -406,7 +408,7 @@ public abstract class AbstractCommand
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
 
     /**
-     * Gets the value of the {@code abbreviatedCommandName} property.
+     * Gets the value of the {@code <abbreviatedCommandName>} property.
      * @return Abbreviated name of the command.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -419,7 +421,7 @@ public abstract class AbstractCommand
     }
 
     /**
-     * Gets the value of the {@code commandName} property.
+     * Gets the value of the {@code <commandName>} property.
      * @return Name of the command.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -436,22 +438,15 @@ public abstract class AbstractCommand
     // <editor-fold defaultstate="collapsed" desc=" Generated Messages ">
 
     /**
-     * Gets the text of the {@code applicationTitle} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-08-16T00:38:17+0000</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <applicationTitle>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
-     * @return The text of the {@code applicationTitle} message for {@code locale}.
+     * @return The text of the {@code <applicationTitle>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -463,27 +458,17 @@ public abstract class AbstractCommand
     }
 
     /**
-     * Gets the text of the {@code commandFailureMessage} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>{0} failure.</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>{0} fehlgeschlagen.</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <commandFailureMessage>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
-     * @return The text of the {@code commandFailureMessage} message for {@code locale}.
+     * @return The text of the {@code <commandFailureMessage>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -495,27 +480,17 @@ public abstract class AbstractCommand
     }
 
     /**
-     * Gets the text of the {@code commandInfoMessage} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Executing command {0} ...</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>F&uuml;hrt Befehl {0} aus ... </code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <commandInfoMessage>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
-     * @return The text of the {@code commandInfoMessage} message for {@code locale}.
+     * @return The text of the {@code <commandInfoMessage>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -527,27 +502,17 @@ public abstract class AbstractCommand
     }
 
     /**
-     * Gets the text of the {@code commandSuccessMessage} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>{0} successful.</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>{0} erfolgreich.</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <commandSuccessMessage>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
-     * @return The text of the {@code commandSuccessMessage} message for {@code locale}.
+     * @return The text of the {@code <commandSuccessMessage>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -559,27 +524,17 @@ public abstract class AbstractCommand
     }
 
     /**
-     * Gets the text of the {@code defaultLogLevelInfo} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Default log level: ''{0}''</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Standard-Protokollierungsstufe: ''{0}''</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <defaultLogLevelInfo>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
      * @param defaultLogLevel Format argument.
-     * @return The text of the {@code defaultLogLevelInfo} message for {@code locale}.
+     * @return The text of the {@code <defaultLogLevelInfo>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -591,22 +546,15 @@ public abstract class AbstractCommand
     }
 
     /**
-     * Gets the text of the {@code longDescriptionMessage} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code></code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <longDescriptionMessage>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
-     * @return The text of the {@code longDescriptionMessage} message for {@code locale}.
+     * @return The text of the {@code <longDescriptionMessage>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -618,22 +566,15 @@ public abstract class AbstractCommand
     }
 
     /**
-     * Gets the text of the {@code separator} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>--------------------------------------------------------------------------------</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <separator>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
-     * @return The text of the {@code separator} message for {@code locale}.
+     * @return The text of the {@code <separator>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -645,22 +586,15 @@ public abstract class AbstractCommand
     }
 
     /**
-     * Gets the text of the {@code shortDescriptionMessage} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code></code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <shortDescriptionMessage>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
-     * @return The text of the {@code shortDescriptionMessage} message for {@code locale}.
+     * @return The text of the {@code <shortDescriptionMessage>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )

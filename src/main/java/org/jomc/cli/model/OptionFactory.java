@@ -48,7 +48,7 @@ import org.apache.commons.cli.Option;
  *
  *
  * <p>
- *   This implementation is identified by identifier {@code JOMC CLI Option Factory}.
+ *   This implementation is identified by identifier {@code <JOMC CLI Option Factory>}.
  *   It does not provide any specified objects.
  * </p>
  *
@@ -110,10 +110,12 @@ public final class OptionFactory
     // <editor-fold defaultstate="collapsed" desc=" Generated Dependencies ">
 
     /**
-     * Gets the {@code Locale} dependency.
-     * <p>This method returns the {@code 'default'} object of the {@code 'java.util.Locale'} {@code (java.util.Locale)} specification at specification level 1.1.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code Locale} dependency.
+     * Gets the {@code <Locale>} dependency.
+     * <p>
+     *   This method returns the {@code <default>} object of the {@code <java.util.Locale>} specification at specification level 1.1.
+     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
+     * </p>
+     * @return The {@code <Locale>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -129,7 +131,7 @@ public final class OptionFactory
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
 
     /**
-     * Gets the value of the {@code longOpt} property.
+     * Gets the value of the {@code <longOpt>} property.
      * @return Long name of the option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -142,7 +144,7 @@ public final class OptionFactory
     }
 
     /**
-     * Gets the value of the {@code numberOfArgs} property.
+     * Gets the value of the {@code <numberOfArgs>} property.
      * @return Number of argument values the option can take.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -155,7 +157,7 @@ public final class OptionFactory
     }
 
     /**
-     * Gets the value of the {@code opt} property.
+     * Gets the value of the {@code <opt>} property.
      * @return Name of the option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -168,7 +170,7 @@ public final class OptionFactory
     }
 
     /**
-     * Gets the value of the {@code optionalArg} property.
+     * Gets the value of the {@code <optionalArg>} property.
      * @return Query to see if the option can have an optional argument.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -181,7 +183,7 @@ public final class OptionFactory
     }
 
     /**
-     * Gets the value of the {@code required} property.
+     * Gets the value of the {@code <required>} property.
      * @return Query to see if the option is required.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -194,7 +196,7 @@ public final class OptionFactory
     }
 
     /**
-     * Gets the value of the {@code valueSeparator} property.
+     * Gets the value of the {@code <valueSeparator>} property.
      * @return Value separator of the option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -211,18 +213,11 @@ public final class OptionFactory
     // <editor-fold defaultstate="collapsed" desc=" Generated Messages ">
 
     /**
-     * Gets the text of the {@code argumentDescription} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code></code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <argumentDescription>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
@@ -238,18 +233,11 @@ public final class OptionFactory
     }
 
     /**
-     * Gets the text of the {@code description} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code></code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <description>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.

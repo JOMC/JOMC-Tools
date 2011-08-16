@@ -48,11 +48,11 @@ import org.jomc.modlet.ModelValidationReport;
  * JOMC CLI {@code validate-model} command implementation.
  *
  * <p>
- *   This implementation is identified by identifier {@code JOMC CLI validate-model Command}.
- *   It provides objects named {@code default-validate-model} of the following specifications:
+ *   This implementation is identified by identifier {@code <JOMC CLI validate-model Command>}.
+ *   It provides objects named {@code <default-validate-model>} of the following specifications:
  *
  *   <ul>
- *     <li>{@code JOMC CLI Command} at specification level {@code 1.0}.</li>
+ *     <li>{@code <JOMC CLI Command>} at specification level 1.0.</li>
  *   </ul>
  *
  * </p>
@@ -211,10 +211,12 @@ public final class ValidateModelCommand extends AbstractModelCommand
     // <editor-fold defaultstate="collapsed" desc=" Generated Dependencies ">
 
     /**
-     * Gets the {@code ClasspathOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Classpath Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code ClasspathOption} dependency.
+     * Gets the {@code <ClasspathOption>} dependency.
+     * <p>
+     *   This method returns the {@code <JOMC CLI Classpath Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
+     * </p>
+     * @return The {@code <ClasspathOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -226,10 +228,12 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the {@code DocumentsOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Documents Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code DocumentsOption} dependency.
+     * Gets the {@code <DocumentsOption>} dependency.
+     * <p>
+     *   This method returns the {@code <JOMC CLI Documents Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
+     * </p>
+     * @return The {@code <DocumentsOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -241,10 +245,12 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the {@code Locale} dependency.
-     * <p>This method returns the {@code 'default'} object of the {@code 'java.util.Locale'} {@code (java.util.Locale)} specification at specification level 1.1.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code Locale} dependency.
+     * Gets the {@code <Locale>} dependency.
+     * <p>
+     *   This method returns the {@code <default>} object of the {@code <java.util.Locale>} specification at specification level 1.1.
+     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
+     * </p>
+     * @return The {@code <Locale>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -256,10 +262,12 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the {@code ModelContextOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI ModelContext Class Name Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code ModelContextOption} dependency.
+     * Gets the {@code <ModelContextOption>} dependency.
+     * <p>
+     *   This method returns the {@code <JOMC CLI ModelContext Class Name Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
+     * </p>
+     * @return The {@code <ModelContextOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -271,10 +279,12 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the {@code ModelOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Model Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code ModelOption} dependency.
+     * Gets the {@code <ModelOption>} dependency.
+     * <p>
+     *   This method returns the {@code <JOMC CLI Model Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
+     * </p>
+     * @return The {@code <ModelOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -286,10 +296,12 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the {@code ModletLocationOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Modlet Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code ModletLocationOption} dependency.
+     * Gets the {@code <ModletLocationOption>} dependency.
+     * <p>
+     *   This method returns the {@code <JOMC CLI Modlet Location Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
+     * </p>
+     * @return The {@code <ModletLocationOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -301,10 +313,12 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the {@code ModletSchemaSystemIdOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Modlet Schema System Id Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code ModletSchemaSystemIdOption} dependency.
+     * Gets the {@code <ModletSchemaSystemIdOption>} dependency.
+     * <p>
+     *   This method returns the {@code <JOMC CLI Modlet Schema System Id Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
+     * </p>
+     * @return The {@code <ModletSchemaSystemIdOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -316,10 +330,12 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the {@code ModuleLocationOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Module Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code ModuleLocationOption} dependency.
+     * Gets the {@code <ModuleLocationOption>} dependency.
+     * <p>
+     *   This method returns the {@code <JOMC CLI Module Location Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
+     * </p>
+     * @return The {@code <ModuleLocationOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -331,10 +347,12 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the {@code NoClasspathResolutionOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI No Classpath Resolution Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code NoClasspathResolutionOption} dependency.
+     * Gets the {@code <NoClasspathResolutionOption>} dependency.
+     * <p>
+     *   This method returns the {@code <JOMC CLI No Classpath Resolution Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
+     * </p>
+     * @return The {@code <NoClasspathResolutionOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -346,10 +364,12 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the {@code NoModelProcessingOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI No Model Processing Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code NoModelProcessingOption} dependency.
+     * Gets the {@code <NoModelProcessingOption>} dependency.
+     * <p>
+     *   This method returns the {@code <JOMC CLI No Model Processing Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
+     * </p>
+     * @return The {@code <NoModelProcessingOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -361,10 +381,12 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the {@code NoModelResourceValidation} dependency.
-     * <p>This method returns the {@code 'JOMC CLI No Model Resource Validation Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code NoModelResourceValidation} dependency.
+     * Gets the {@code <NoModelResourceValidation>} dependency.
+     * <p>
+     *   This method returns the {@code <JOMC CLI No Model Resource Validation Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
+     * </p>
+     * @return The {@code <NoModelResourceValidation>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -376,10 +398,12 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the {@code NoModletResourceValidation} dependency.
-     * <p>This method returns the {@code 'JOMC CLI No Modlet Resource Validation Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code NoModletResourceValidation} dependency.
+     * Gets the {@code <NoModletResourceValidation>} dependency.
+     * <p>
+     *   This method returns the {@code <JOMC CLI No Modlet Resource Validation Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
+     * </p>
+     * @return The {@code <NoModletResourceValidation>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -391,10 +415,12 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the {@code PlatformProviderLocationOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Platform Provider Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code PlatformProviderLocationOption} dependency.
+     * Gets the {@code <PlatformProviderLocationOption>} dependency.
+     * <p>
+     *   This method returns the {@code <JOMC CLI Platform Provider Location Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
+     * </p>
+     * @return The {@code <PlatformProviderLocationOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -406,10 +432,12 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the {@code ProviderLocationOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Provider Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code ProviderLocationOption} dependency.
+     * Gets the {@code <ProviderLocationOption>} dependency.
+     * <p>
+     *   This method returns the {@code <JOMC CLI Provider Location Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
+     * </p>
+     * @return The {@code <ProviderLocationOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -421,10 +449,12 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the {@code TransformerLocationOption} dependency.
-     * <p>This method returns the {@code 'JOMC CLI Transformer Location Option'} object of the {@code 'JOMC CLI Command Option'} {@code (org.apache.commons.cli.Option)} specification at specification level 1.2.</p>
-     * <p>That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.</p>
-     * @return The {@code TransformerLocationOption} dependency.
+     * Gets the {@code <TransformerLocationOption>} dependency.
+     * <p>
+     *   This method returns the {@code <JOMC CLI Transformer Location Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
+     * </p>
+     * @return The {@code <TransformerLocationOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -440,7 +470,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
 
     /**
-     * Gets the value of the {@code abbreviatedCommandName} property.
+     * Gets the value of the {@code <abbreviatedCommandName>} property.
      * @return Abbreviated name of the command.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -453,7 +483,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the value of the {@code applicationModlet} property.
+     * Gets the value of the {@code <applicationModlet>} property.
      * @return Name of the 'shaded' application modlet.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -466,7 +496,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the value of the {@code commandName} property.
+     * Gets the value of the {@code <commandName>} property.
      * @return Name of the command.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -479,7 +509,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the value of the {@code modletExcludes} property.
+     * Gets the value of the {@code <modletExcludes>} property.
      * @return List of modlet names to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -492,7 +522,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the value of the {@code providerExcludes} property.
+     * Gets the value of the {@code <providerExcludes>} property.
      * @return List of providers to exclude from any {@code META-INF/services} file separated by {@code :}.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -505,7 +535,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the value of the {@code schemaExcludes} property.
+     * Gets the value of the {@code <schemaExcludes>} property.
      * @return List of schema context-ids to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -518,7 +548,7 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the value of the {@code serviceExcludes} property.
+     * Gets the value of the {@code <serviceExcludes>} property.
      * @return List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -535,22 +565,15 @@ public final class ValidateModelCommand extends AbstractModelCommand
     // <editor-fold defaultstate="collapsed" desc=" Generated Messages ">
 
     /**
-     * Gets the text of the {@code applicationTitle} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>JOMC CLI Version 1.2-SNAPSHOT Build 2011-08-16T00:38:17+0000</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <applicationTitle>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
-     * @return The text of the {@code applicationTitle} message for {@code locale}.
+     * @return The text of the {@code <applicationTitle>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -562,28 +585,18 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the text of the {@code cannotProcessMessage} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Cannot process ''{0}'': {1}</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Kann ''{0}'' nicht verarbeiten: {1}</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <cannotProcessMessage>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
      * @param itemInfo Format argument.
      * @param detailMessage Format argument.
-     * @return The text of the {@code cannotProcessMessage} message for {@code locale}.
+     * @return The text of the {@code <cannotProcessMessage>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -595,27 +608,17 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the text of the {@code classpathElementInfo} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Classpath element: ''{0}''</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Klassenpfad-Element: ''{0}''</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <classpathElementInfo>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
      * @param classpathElement Format argument.
-     * @return The text of the {@code classpathElementInfo} message for {@code locale}.
+     * @return The text of the {@code <classpathElementInfo>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -627,27 +630,17 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the text of the {@code classpathElementNotFoundWarning} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Classpath element ''{0}'' ignored. File not found.</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Klassenpfad-Element ''{0}'' ignoriert. Datei nicht gefunden.</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <classpathElementNotFoundWarning>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
      * @param fileName Format argument.
-     * @return The text of the {@code classpathElementNotFoundWarning} message for {@code locale}.
+     * @return The text of the {@code <classpathElementNotFoundWarning>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -659,27 +652,17 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the text of the {@code commandFailureMessage} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>{0} failure.</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>{0} fehlgeschlagen.</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <commandFailureMessage>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
-     * @return The text of the {@code commandFailureMessage} message for {@code locale}.
+     * @return The text of the {@code <commandFailureMessage>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -691,27 +674,17 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the text of the {@code commandInfoMessage} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Executing command {0} ...</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>F&uuml;hrt Befehl {0} aus ... </code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <commandInfoMessage>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
-     * @return The text of the {@code commandInfoMessage} message for {@code locale}.
+     * @return The text of the {@code <commandInfoMessage>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -723,27 +696,17 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the text of the {@code commandSuccessMessage} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>{0} successful.</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>{0} erfolgreich.</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <commandSuccessMessage>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
-     * @return The text of the {@code commandSuccessMessage} message for {@code locale}.
+     * @return The text of the {@code <commandSuccessMessage>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -755,27 +718,17 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the text of the {@code defaultLogLevelInfo} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Default log level: ''{0}''</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Standard-Protokollierungsstufe: ''{0}''</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <defaultLogLevelInfo>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
      * @param defaultLogLevel Format argument.
-     * @return The text of the {@code defaultLogLevelInfo} message for {@code locale}.
+     * @return The text of the {@code <defaultLogLevelInfo>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -787,27 +740,17 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the text of the {@code documentFileInfo} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Document file: ''{0}''</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Dokument-Datei: ''{0}''</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <documentFileInfo>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
      * @param documentFile Format argument.
-     * @return The text of the {@code documentFileInfo} message for {@code locale}.
+     * @return The text of the {@code <documentFileInfo>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -819,27 +762,17 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the text of the {@code documentFileNotFoundWarning} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Document file ''{0}'' ignored. File not found.</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Dokument-Datei ''{0}'' ignoriert. Datei nicht gefunden.</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <documentFileNotFoundWarning>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
      * @param fileName Format argument.
-     * @return The text of the {@code documentFileNotFoundWarning} message for {@code locale}.
+     * @return The text of the {@code <documentFileNotFoundWarning>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -851,28 +784,18 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the text of the {@code excludedModletInfo} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Modlet ''{1}'' from class path resource ''{0}'' ignored.</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Modlet ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <excludedModletInfo>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
      * @param modletIdentifier Format argument.
-     * @return The text of the {@code excludedModletInfo} message for {@code locale}.
+     * @return The text of the {@code <excludedModletInfo>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -884,28 +807,18 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the text of the {@code excludedProviderInfo} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Provider ''{1}'' from class path resource ''{0}'' ignored.</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Provider ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <excludedProviderInfo>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
      * @param providerName Format argument.
-     * @return The text of the {@code excludedProviderInfo} message for {@code locale}.
+     * @return The text of the {@code <excludedProviderInfo>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -917,28 +830,18 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the text of the {@code excludedSchemaInfo} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Context ''{1}'' from class path resource ''{0}'' ignored.</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Kontext ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <excludedSchemaInfo>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
      * @param contextId Format argument.
-     * @return The text of the {@code excludedSchemaInfo} message for {@code locale}.
+     * @return The text of the {@code <excludedSchemaInfo>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -950,28 +853,18 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the text of the {@code excludedServiceInfo} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Service ''{1}'' from class path resource ''{0}'' ignored.</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Service ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <excludedServiceInfo>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
      * @param serviceName Format argument.
-     * @return The text of the {@code excludedServiceInfo} message for {@code locale}.
+     * @return The text of the {@code <excludedServiceInfo>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -983,27 +876,17 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the text of the {@code invalidModelMessage} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Invalid ''{0}'' model.</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Ung&uuml;ltiges ''{0}'' Modell.</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <invalidModelMessage>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
      * @param modelIdentifier Format argument.
-     * @return The text of the {@code invalidModelMessage} message for {@code locale}.
+     * @return The text of the {@code <invalidModelMessage>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1015,32 +898,16 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the text of the {@code longDescriptionMessage} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Example:
-     *   jomc validate-model -cp examples/lib/commons-cli-1.2.jar \
-     *                       -df examples/xml/jomc-cli.xml \
-     *                       -v</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Beispiel:
-     *   jomc validate-model -cp examples/lib/commons-cli-1.2.jar \
-     *                       -df examples/xml/jomc-cli.xml \
-     *                       -v</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <longDescriptionMessage>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
-     * @return The text of the {@code longDescriptionMessage} message for {@code locale}.
+     * @return The text of the {@code <longDescriptionMessage>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1052,27 +919,17 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the text of the {@code readingMessage} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Reading ''{0}''.</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Lie&szlig;t ''{0}''.</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <readingMessage>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
      * @param locationInfo Format argument.
-     * @return The text of the {@code readingMessage} message for {@code locale}.
+     * @return The text of the {@code <readingMessage>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1084,22 +941,15 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the text of the {@code separator} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>--------------------------------------------------------------------------------</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <separator>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
-     * @return The text of the {@code separator} message for {@code locale}.
+     * @return The text of the {@code <separator>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1111,26 +961,16 @@ public final class ValidateModelCommand extends AbstractModelCommand
     }
 
     /**
-     * Gets the text of the {@code shortDescriptionMessage} message.
-     * <p><strong>Templates:</strong>
-     *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
-     *     <tr class="TableSubHeadingColor">
-     *       <th align="left" scope="col" nowrap><b>Language</b></th>
-     *       <th align="left" scope="col" nowrap><b>Template</b></th>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>English (default)</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Validates a model.</code></pre></td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>Deutsch</td>
-     *       <td align="left" valign="top" nowrap><pre><code>Pr&uuml;ft ein Modell.</code></pre></td>
-     *     </tr>
-     *   </table>
+     * Gets the text of the {@code <shortDescriptionMessage>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
      * </p>
      *
      * @param locale The locale of the message to return.
-     * @return The text of the {@code shortDescriptionMessage} message for {@code locale}.
+     * @return The text of the {@code <shortDescriptionMessage>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
