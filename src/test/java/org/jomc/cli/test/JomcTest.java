@@ -69,7 +69,7 @@ import static org.junit.Assert.assertTrue;
  * Tests the {@code Jomc} CLI class.
  *
  * <p>
- *   This implementation is identified by identifier {@code org.jomc.cli.test.JomcTest}.
+ *   This implementation is identified by identifier {@code <org.jomc.cli.test.JomcTest>}.
  *   It does not provide any specified objects.
  * </p>
  *
@@ -685,7 +685,7 @@ public class JomcTest
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
 
     /**
-     * Gets the value of the {@code classesDirectory} property.
+     * Gets the value of the {@code <classesDirectory>} property.
      * @return Directory holding class files.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -698,7 +698,7 @@ public class JomcTest
     }
 
     /**
-     * Gets the value of the {@code resourcesDirectory} property.
+     * Gets the value of the {@code <resourcesDirectory>} property.
      * @return Directory holding resources.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -711,7 +711,7 @@ public class JomcTest
     }
 
     /**
-     * Gets the value of the {@code templatesDirectory} property.
+     * Gets the value of the {@code <templatesDirectory>} property.
      * @return Directory holding templates.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -724,7 +724,7 @@ public class JomcTest
     }
 
     /**
-     * Gets the value of the {@code testClassesDirectory} property.
+     * Gets the value of the {@code <testClassesDirectory>} property.
      * @return Directory holding class files to commit to and to validate.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -737,7 +737,7 @@ public class JomcTest
     }
 
     /**
-     * Gets the value of the {@code testModelDocument} property.
+     * Gets the value of the {@code <testModelDocument>} property.
      * @return Valid model document.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -750,7 +750,7 @@ public class JomcTest
     }
 
     /**
-     * Gets the value of the {@code testModelDocumentIllegal} property.
+     * Gets the value of the {@code <testModelDocumentIllegal>} property.
      * @return Model document with invalid model.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -763,7 +763,7 @@ public class JomcTest
     }
 
     /**
-     * Gets the value of the {@code testModelDocumentIllegalSchemaConstraints} property.
+     * Gets the value of the {@code <testModelDocumentIllegalSchemaConstraints>} property.
      * @return Model document not valid to the JOMC JAXP schema.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -776,7 +776,7 @@ public class JomcTest
     }
 
     /**
-     * Gets the value of the {@code testModelDocumentNonExistentClasses} property.
+     * Gets the value of the {@code <testModelDocumentNonExistentClasses>} property.
      * @return Model document referencing non-existent classes.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -789,7 +789,7 @@ public class JomcTest
     }
 
     /**
-     * Gets the value of the {@code testModelOutputDocument} property.
+     * Gets the value of the {@code <testModelOutputDocument>} property.
      * @return File to write a transformed model to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -802,7 +802,7 @@ public class JomcTest
     }
 
     /**
-     * Gets the value of the {@code testModelStylesheet} property.
+     * Gets the value of the {@code <testModelStylesheet>} property.
      * @return Valid model object stylesheet.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -815,7 +815,7 @@ public class JomcTest
     }
 
     /**
-     * Gets the value of the {@code testModletName} property.
+     * Gets the value of the {@code <testModletName>} property.
      * @return Test module name.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -828,7 +828,7 @@ public class JomcTest
     }
 
     /**
-     * Gets the value of the {@code testModletOutputDocument} property.
+     * Gets the value of the {@code <testModletOutputDocument>} property.
      * @return File to write a transformed modlet to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -841,7 +841,7 @@ public class JomcTest
     }
 
     /**
-     * Gets the value of the {@code testModletStylesheet} property.
+     * Gets the value of the {@code <testModletStylesheet>} property.
      * @return Valid modlet object stylesheet.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -854,7 +854,7 @@ public class JomcTest
     }
 
     /**
-     * Gets the value of the {@code testModuleName} property.
+     * Gets the value of the {@code <testModuleName>} property.
      * @return Test module name.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -867,7 +867,7 @@ public class JomcTest
     }
 
     /**
-     * Gets the value of the {@code testResourcesDirectory} property.
+     * Gets the value of the {@code <testResourcesDirectory>} property.
      * @return Directory to generate resources to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -880,7 +880,7 @@ public class JomcTest
     }
 
     /**
-     * Gets the value of the {@code testShowInstanceOutputDocument} property.
+     * Gets the value of the {@code <testShowInstanceOutputDocument>} property.
      * @return File to write an instance to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -893,7 +893,7 @@ public class JomcTest
     }
 
     /**
-     * Gets the value of the {@code testShowModelOutputDocument} property.
+     * Gets the value of the {@code <testShowModelOutputDocument>} property.
      * @return File to write a model to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -906,7 +906,7 @@ public class JomcTest
     }
 
     /**
-     * Gets the value of the {@code testShowSpecificationAndInstanceOutputDocument} property.
+     * Gets the value of the {@code <testShowSpecificationAndInstanceOutputDocument>} property.
      * @return File to write a model holding a specification and an instance to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -919,7 +919,7 @@ public class JomcTest
     }
 
     /**
-     * Gets the value of the {@code testShowSpecificationOutputDocument} property.
+     * Gets the value of the {@code <testShowSpecificationOutputDocument>} property.
      * @return File to write a specification to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -932,7 +932,7 @@ public class JomcTest
     }
 
     /**
-     * Gets the value of the {@code testSourcesDirectory} property.
+     * Gets the value of the {@code <testSourcesDirectory>} property.
      * @return Directory holding source code files to manage.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
