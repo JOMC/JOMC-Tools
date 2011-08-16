@@ -52,16 +52,16 @@ ${tool.getIndentation(0)} * $tool.getJavadocComment($specification.getDocumentat
 #end
 ${tool.getIndentation(0)} *
 ${tool.getIndentation(0)} * <p>
-${tool.getIndentation(0)} *   This specification is identified by identifier {@code $specification.getIdentifier()}.
+${tool.getIndentation(0)} *   This specification is identified by identifier {@code <$specification.getIdentifier()>}.
 #if($specification.getMultiplicity().value() == "One")
 ${tool.getIndentation(0)} *   An application assembler may provide either no or one implementation of this specification due to
-${tool.getIndentation(0)} *   multiplicity {@code $specification.getMultiplicity().value()}.
+${tool.getIndentation(0)} *   multiplicity {@code <$specification.getMultiplicity().value()>}.
 #elseif($specification.getMultiplicity().value() == "Many")
 ${tool.getIndentation(0)} *   An application assembler may provide multiple implementations of this specification (including none) due to
-${tool.getIndentation(0)} *   multiplicity {@code $specification.getMultiplicity().value()}.
+${tool.getIndentation(0)} *   multiplicity {@code <$specification.getMultiplicity().value()>}.
 #end
 #if($specification.getScope())
-${tool.getIndentation(0)} *   This specification applies to {@code $tool.getHtmlString($specification.getScope())} scope.
+${tool.getIndentation(0)} *   This specification applies to {@code <$specification.getScope()>} scope.
 ${tool.getIndentation(0)} *   The same $tool.getHtmlString($specification.getScope().toLowerCase($tool.getLocale())) object is returned whenever requested.
 #else
 ${tool.getIndentation(0)} *   This specification does not apply to any scope. A new object is returned whenever requested.
@@ -87,7 +87,7 @@ ${tool.getIndentation(0)} * @author #if($author.getMail())<a href="mailto:$autho
 #end
 #end
 #if($specification.getVersion())
-${tool.getIndentation(0)} * @version $specification.getVersion()
+${tool.getIndentation(0)} * @version $tool.getHtmlString($specification.getVersion())
 #else
 ${tool.getIndentation(0)} * @version This specification does not support versioning.
 #end

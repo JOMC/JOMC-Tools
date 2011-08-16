@@ -52,17 +52,19 @@ ${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generat
 #set($specification = $modules.getSpecification($dependency.getIdentifier()))
 
 ${tool.getIndentation(1)}/**
-${tool.getIndentation(1)} * Gets the {@code $dependency.getName()} dependency.
+${tool.getIndentation(1)} * Gets the {@code <$dependency.getName()>} dependency.
+${tool.getIndentation(1)} * <p>
 #if($dependency.getImplementationName())
-${tool.getIndentation(1)} * <p>This method returns the {@code '$dependency.getImplementationName()'} object of the {@code '$dependency.getIdentifier()'}#if($specification && $specification.getClazz()) {@code ($specification.getClazz())}#end specification#if($dependency.getVersion()) at specification level $tool.getHtmlString($dependency.getVersion())#end.</p>
+${tool.getIndentation(1)} *   This method returns the {@code <$dependency.getImplementationName()>} object of the {@code <$dependency.getIdentifier()>} specification#if($dependency.getVersion()) at specification level $tool.getHtmlString($dependency.getVersion())#else at any specification level#end.
 #else
-${tool.getIndentation(1)} * <p>This method returns any available object of the {@code '$dependency.getIdentifier()'}#if($specification && $specification.getClazz()) {@code ($specification.getClazz())}#end specification#if($dependency.getVersion()) at specification level $tool.getHtmlString($dependency.getVersion())#end.</p>
+${tool.getIndentation(1)} *   This method returns any available object of the {@code <$dependency.getIdentifier()>} specification#if($dependency.getVersion()) at specification level $tool.getHtmlString($dependency.getVersion())#else at any specification level#end.
 #end
 #if($specification.getScope())
-${tool.getIndentation(1)} * <p>That specification applies to {@code $specification.getScope()} scope. The $tool.getHtmlString($specification.getScope().toLowerCase()) object is returned whenever requested#if($dependency.isBound()) and bound to this instance#end.</p>
+${tool.getIndentation(1)} *   That specification applies to {@code <$specification.getScope()>} scope. The $tool.getHtmlString($specification.getScope().toLowerCase($tool.getLocale())) object is returned whenever requested#if($dependency.isBound()) and bound to this instance#end.
 #else
-${tool.getIndentation(1)} * <p>That specification does not apply to any scope. A new object is returned whenever requested#if($dependency.isBound()) and bound to this instance#end.</p>
+${tool.getIndentation(1)} *   That specification does not apply to any scope. A new object is returned whenever requested#if($dependency.isBound()) and bound to this instance#end.
 #end
+${tool.getIndentation(1)} * </p>
 #if($dependency.getProperties())
 ${tool.getIndentation(1)} * <p><strong>Properties:</strong>
 ${tool.getIndentation(1)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
@@ -73,7 +75,7 @@ ${tool.getIndentation(1)} *       <th align="left" scope="col" nowrap><b>Documen
 ${tool.getIndentation(1)} *     </tr>
 #foreach($property in $dependency.getProperties().getProperty())
 ${tool.getIndentation(1)} *     <tr class="TableRow">
-${tool.getIndentation(1)} *       <td align="left" valign="top" nowrap>{@code $property.getName()}</td>
+${tool.getIndentation(1)} *       <td align="left" valign="top" nowrap>{@code <$property.getName()>}</td>
 ${tool.getIndentation(1)} *       <td align="left" valign="top" nowrap>{@code $tool.getJavaTypeName($property,false)}</td>
 ${tool.getIndentation(1)} *       <td align="left" valign="top">#if($property.getDocumentation())$tool.getJavadocComment($property.getDocumentation(), 1, " * ")#end</td>
 ${tool.getIndentation(1)} *     </tr>
@@ -84,7 +86,7 @@ ${tool.getIndentation(1)} * </p>
 #if($dependency.getDocumentation())
 ${tool.getIndentation(1)} * @return $tool.getJavadocComment($dependency.getDocumentation(), 1, " * ")
 #else
-${tool.getIndentation(1)} * @return The {@code $dependency.getName()} dependency.
+${tool.getIndentation(1)} * @return The {@code <$dependency.getName()>} dependency.
 #end
 #if($dependency.isOptional())
 ${tool.getIndentation(1)} * {@code null} if no object is available.

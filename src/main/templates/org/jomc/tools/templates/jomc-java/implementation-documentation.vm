@@ -52,15 +52,15 @@ ${tool.getIndentation(0)} * $tool.getJavadocComment($implementation.getDocumenta
 #end
 ${tool.getIndentation(0)} *
 ${tool.getIndentation(0)} * <p>
-${tool.getIndentation(0)} *   This implementation is identified by identifier {@code $implementation.getIdentifier()}.
+${tool.getIndentation(0)} *   This implementation is identified by identifier {@code <$implementation.getIdentifier()>}.
 #set($specifications = $modules.getSpecifications($implementation.getIdentifier()))
 #if($specifications && !$specifications.getReference().isEmpty())
-${tool.getIndentation(0)} *   It provides objects named {@code $implementation.getName()} of the following specifications:
+${tool.getIndentation(0)} *   It provides objects named {@code <$implementation.getName()>} of the following specifications:
 ${tool.getIndentation(0)} *
 ${tool.getIndentation(0)} *   <ul>
 #foreach($reference in $specifications.getReference())
 #set($specification = $specifications.getSpecification($reference.getIdentifier()))
-${tool.getIndentation(0)} *     <li>{@code $reference.getIdentifier()}#if($reference.getVersion()) at specification level {@code $reference.getVersion()}#else at any specification level#end.</li>
+${tool.getIndentation(0)} *     <li>{@code <$reference.getIdentifier()>}#if($reference.getVersion()) at specification level $tool.getHtmlString($reference.getVersion())#else at any specification level#end.</li>
 #end
 ${tool.getIndentation(0)} *   </ul>
 ${tool.getIndentation(0)} *
@@ -76,7 +76,7 @@ ${tool.getIndentation(0)} * @author #if($author.getMail())<a href="mailto:$autho
 #end
 #end
 #if($implementation.getVersion())
-${tool.getIndentation(0)} * @version $implementation.getVersion()
+${tool.getIndentation(0)} * @version $tool.getHtmlString($implementation.getVersion())
 #else
 ${tool.getIndentation(0)} * @version This implementation does not support versioning.
 #end
