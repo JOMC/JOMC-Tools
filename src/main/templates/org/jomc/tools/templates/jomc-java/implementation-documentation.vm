@@ -54,7 +54,9 @@ ${tool.getIndentation(0)} *
 ${tool.getIndentation(0)} * <p>
 ${tool.getIndentation(0)} *   This implementation is identified by identifier {@code <$implementation.getIdentifier()>}.
 #set($specifications = $modules.getSpecifications($implementation.getIdentifier()))
-#if($specifications && !$specifications.getReference().isEmpty())
+#if($implementation.isAbstract())
+${tool.getIndentation(0)} *   It does not provide any objects due to flag {@code <abstract>}.
+#elseif($specifications && !$specifications.getReference().isEmpty())
 ${tool.getIndentation(0)} *   It provides objects named {@code <$implementation.getName()>} of the following specifications:
 ${tool.getIndentation(0)} *
 ${tool.getIndentation(0)} *   <ul>
@@ -66,6 +68,12 @@ ${tool.getIndentation(0)} *   </ul>
 ${tool.getIndentation(0)} *
 #else
 ${tool.getIndentation(0)} *   It does not provide any specified objects.
+#end
+#if($implementation.isFinal())
+${tool.getIndentation(0)} *   This implementation is flagged the {@code <final>} node in an inheritance hierarchy.
+#end
+#if($implementation.isStateless())
+${tool.getIndentation(0)} *   No state is retained across operations due to flag {@code <stateless>}.
 #end
 ${tool.getIndentation(0)} * </p>
 ${tool.getIndentation(0)} *
