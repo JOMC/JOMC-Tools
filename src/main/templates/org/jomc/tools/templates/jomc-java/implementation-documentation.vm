@@ -55,7 +55,7 @@ ${tool.getIndentation(0)} * <p>
 ${tool.getIndentation(0)} *   This implementation is identified by identifier {@code <$implementation.getIdentifier()>}.
 #set($specifications = $modules.getSpecifications($implementation.getIdentifier()))
 #if($implementation.isAbstract())
-${tool.getIndentation(0)} *   It does not provide any objects due to flag {@code <abstract>}.
+${tool.getIndentation(0)} *   It does not provide any specified objects due to flag {@code <abstract>}.
 #elseif($specifications && !$specifications.getReference().isEmpty())
 ${tool.getIndentation(0)} *   It provides objects named {@code <$implementation.getName()>} of the following specifications:
 ${tool.getIndentation(0)} *
