@@ -60,12 +60,7 @@ import org.jomc.tools.modlet.ToolsModelProvider;
  *
  * <p>
  *   This implementation is identified by identifier {@code <JOMC CLI Model Command>}.
- *   It provides objects named {@code <JOMC CLI Model Command>} of the following specifications:
- *
- *   <ul>
- *     <li>{@code <JOMC CLI Command>} at specification level 1.0.</li>
- *   </ul>
- *
+ *   It does not provide any objects due to flag {@code <abstract>}.
  * </p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
