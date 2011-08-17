@@ -40,7 +40,7 @@ Customizing code generation
 
   If you need to customize the generated code, simply provide custom templates to the JOMC Plugin. This
   is done by adding a template artifact as a plugin dependency and setting the <<<templateProfile>>> parameter of the
-  JOMC Plugin. As a starting point you can copy the default templates from the {{{./../../jomc-tools}JOMC Tools}}
+  JOMC Plugin. As a starting point you can copy the default templates from the {{{${project.url}/../jomc-tools}JOMC Tools}}
   artifact from directory
   {{{${project.scm.url}/../jomc-tools/src/main/templates/org/jomc/tools/templates}org/jomc/tools/templates/jomc-java}}
   to a <<<org/jomc/tools/templates/sub-directory>>> of your template artifact.
