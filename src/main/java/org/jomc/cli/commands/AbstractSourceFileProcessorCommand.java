@@ -47,7 +47,7 @@ import org.jomc.tools.SourceFileProcessor;
  *
  * <p>
  *   This implementation is identified by identifier {@code <JOMC CLI SourceFileProcessor Command>}.
- *   It does not provide any objects due to flag {@code <abstract>}.
+ *   It does not provide any specified objects due to flag {@code <abstract>}.
  * </p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.2
