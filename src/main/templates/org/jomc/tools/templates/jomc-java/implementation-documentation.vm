@@ -62,18 +62,18 @@ ${tool.getIndentation(0)} *
 ${tool.getIndentation(0)} *   <ul>
 #foreach($reference in $specifications.getReference())
 #set($specification = $specifications.getSpecification($reference.getIdentifier()))
-${tool.getIndentation(0)} *     <li>{@code <$reference.getIdentifier()>}#if($reference.getVersion()) at specification level $tool.getHtmlString($reference.getVersion())#else at any specification level#end.</li>
+${tool.getIndentation(0)} *     <li>{@code <$reference.getIdentifier()>}#if($reference.getVersion()) at specification level $tool.getHtmlString($reference.getVersion())#else at any specification level#end#if($specification && $specification.getScope()) applying to {@code <$specification.getScope()>} scope#end.</li>
 #end
 ${tool.getIndentation(0)} *   </ul>
 ${tool.getIndentation(0)} *
+#if($implementation.isStateless())
+${tool.getIndentation(0)} *   No state is retained across operations due to flag {@code <stateless>}.
+#end
 #else
 ${tool.getIndentation(0)} *   It does not provide any specified objects.
 #end
 #if($implementation.isFinal())
 ${tool.getIndentation(0)} *   This implementation is flagged the {@code <final>} node in an inheritance hierarchy.
-#end
-#if($implementation.isStateless())
-${tool.getIndentation(0)} *   No state is retained across operations due to flag {@code <stateless>}.
 #end
 ${tool.getIndentation(0)} * </p>
 ${tool.getIndentation(0)} *
