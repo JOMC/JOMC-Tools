@@ -1133,6 +1133,28 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
 
     /**
+     * Gets the text of the {@code <failedCreatingObjectMessage>} message.
+     * <p><strong>Languages:</strong>
+     *   <ul>
+     *     <li>English (default)</li>
+     *     <li>Deutsch</li>
+     *   </ul>
+     * </p>
+     *
+     * @param locale The locale of the message to return.
+     * @param objectInfo Format argument.
+     * @return The text of the {@code <failedCreatingObjectMessage>} message for {@code locale}.
+     * @throws org.jomc.ObjectManagementException if getting the message instance fails.
+     */
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
+    private String getFailedCreatingObjectMessage( final java.util.Locale locale, final java.lang.String objectInfo )
+    {
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "failedCreatingObjectMessage", locale, objectInfo );
+        assert _m != null : "'failedCreatingObjectMessage' message not found.";
+        return _m;
+    }
+
+    /**
      * Gets the text of the {@code <implementationNotFoundWarning>} message.
      * <p><strong>Languages:</strong>
      *   <ul>

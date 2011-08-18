@@ -2601,6 +2601,15 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
 
       </dependencies>
       <messages>
+        <message name="failedCreatingObjectMessage">
+          <template defaultLanguage="en">
+            <text language="en">Failure creating a new ''{0}'' object.</text>
+            <text language="de">Fehler bei der Erstellung eines neuen ''{0}'' Objekts.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="objectInfo"/>
+          </arguments>
+        </message>
         <reference name="moduleNotFoundWarning" final="true"/>
         <reference name="implementationNotFoundWarning" final="true"/>
         <reference name="specificationNotFoundWarning" final="true"/>
