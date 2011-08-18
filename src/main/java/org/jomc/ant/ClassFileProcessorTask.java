@@ -131,11 +131,17 @@ public class ClassFileProcessorTask extends JomcToolTask
         }
         catch ( final InstantiationException e )
         {
-            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
+            throw new BuildException( Messages.getMessage( "failedCreatingObject",
+                                                           this.getClassFileProcessorClass().getName() ),
+                                      e, this.getLocation() );
+
         }
         catch ( final IllegalAccessException e )
         {
-            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
+            throw new BuildException( Messages.getMessage( "failedCreatingObject",
+                                                           this.getClassFileProcessorClass().getName() ),
+                                      e, this.getLocation() );
+
         }
     }
 
