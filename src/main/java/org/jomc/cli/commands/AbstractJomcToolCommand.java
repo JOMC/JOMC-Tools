@@ -80,29 +80,6 @@ public abstract class AbstractJomcToolCommand extends AbstractModelCommand
 
     /** {@inheritDoc} */
     @Override
-    protected void preExecuteCommand( final CommandLine commandLine ) throws CommandExecutionException
-    {
-        if ( commandLine == null )
-        {
-            throw new NullPointerException( "commandLine" );
-        }
-
-        super.preExecuteCommand( commandLine );
-
-        if ( commandLine.hasOption( this.getDefaultTemplateProfileOption().getOpt() ) )
-        {
-            JomcTool.setDefaultTemplateProfile(
-                commandLine.getOptionValue( this.getDefaultTemplateProfileOption().getOpt() ) );
-
-        }
-        else
-        {
-            JomcTool.setDefaultTemplateProfile( null );
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
     protected void postExecuteCommand( final CommandLine commandLine ) throws CommandExecutionException
     {
         if ( commandLine == null )
@@ -214,6 +191,12 @@ public abstract class AbstractJomcToolCommand extends AbstractModelCommand
 
         } );
 
+        if ( commandLine.hasOption( this.getDefaultTemplateProfileOption().getOpt() ) )
+        {
+            tool.setDefaultTemplateProfile(
+                commandLine.getOptionValue( this.getDefaultTemplateProfileOption().getOpt() ) );
+
+        }
         if ( commandLine.hasOption( this.getTemplateProfileOption().getOpt() ) )
         {
             tool.setTemplateProfile( commandLine.getOptionValue( this.getTemplateProfileOption().getOpt() ) );
