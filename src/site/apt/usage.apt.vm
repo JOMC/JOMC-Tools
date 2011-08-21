@@ -152,4 +152,10 @@ mvn ... -Djomc.sourceProcessing=false
 mvn ... -Djomc.classProcessing=false
 +-----------------+
 
+* How to skip tests
+
++-----------------+
+mvn ... -Dmaven.test.skip=true -Djomc.classProcessing=false
++-----------------+
+
   For full documentation, please see the respective {{{./plugin-info.html}goal documentation}}.
