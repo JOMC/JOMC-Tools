@@ -685,8 +685,6 @@ public class JomcToolTask extends JomcModelTask
     {
         super.preExecuteTask();
 
-        JomcTool.setDefaultTemplateProfile( this.getDefaultTemplateProfile() );
-
         this.assertKeysNotNull( this.getVelocityProperties() );
         this.assertKeysNotNull( this.getTemplateParameters() );
         this.assertLocationsNotNull( this.getTemplateParameterResources() );
@@ -725,6 +723,7 @@ public class JomcToolTask extends JomcModelTask
             tool.setLineSeparator( StringEscapeUtils.unescapeJava( this.getLineSeparator() ) );
             tool.setOutputEncoding( this.getOutputEncoding() );
             tool.setTemplateEncoding( this.getTemplateEncoding() );
+            tool.setDefaultTemplateProfile( this.getDefaultTemplateProfile() );
             tool.setTemplateProfile( this.getTemplateProfile() );
             tool.getListeners().add( new JomcTool.Listener()
             {
