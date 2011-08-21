@@ -74,16 +74,21 @@
       <code>URLResourceLoader</code> to search for templates at that location in addition to searching the class
       path.]]>
       </action>
+      <action dev="schulte2005" type="add"><![CDATA[Added property <code>locale</code> to class
+      <code>org.jomc.tools.JomcTool</code> and updated templates to use the value of that property when producing
+      documentation.]]>
+      </action>
+      <action dev="schulte2005" type="add"><![CDATA[Added methods <code>getDefaultDefaultTemplateProfile</code> and
+      <code>setDefaultDefaultTemplateProfile</code> to class <code>org.jomc.tools.JomcTool</code> and updated method
+      <code>getDefaultTemplateProfile</code> to initialize the <code>defaultTemplateProfile</code> property with the
+      value returned by method <code>getDefaultDefaultTemplateProfile</code>.]]>
+      </action>
       <action dev="schulte2005" type="add"><![CDATA[Added <code>head-comment</code> and <code>tail-comment</code>
       attributes to the <code>SourceFileType</code> complex type of the <code>jomc-tools-1.2.xsd</code> schema and
       updated class <code>org.jomc.tools.SourceFileProcessor</code> to support those attributes.]]>
       </action>
       <action dev="schulte2005" type="add"><![CDATA[Added <code>ToolsType</code> complex type to the
       <code>jomc-tools-1.2.xsd</code> schema and updated all complex types to extend that base type.]]>
-      </action>
-      <action dev="schulte2005" type="add"><![CDATA[Added property <code>locale</code> to class
-      <code>org.jomc.tools.JomcTool</code> and updated templates to use the value of that property when producing
-      documentation.]]>
       </action>
       <action dev="schulte2005" type="add"><![CDATA[Added classes <code>org.jomc.tools.modlet.ToolsModelProvider</code>,
       <code>org.jomc.tools.modlet.ToolsModelProcessor</code> and <code>org.jomc.tools.modlet.ToolsModelValidator</code>.
@@ -108,9 +113,6 @@
       of class <code>org.jomc.tools.JomcTool</code> to set velocity runtime property
       <code>runtime.strict.math</code>.]]>
       </action>
-      <action dev="schulte2005" type="update"><![CDATA[Removed <code>abstract</code> modifier of class
-      <code>org.jomc.tools.JomcTool</code>.]]>
-      </action>
       <action dev="schulte2005" type="update"><![CDATA[Updated class <code>org.jomc.tools.SourceFileProcessor</code>
       to support multiple source files per specification and implementation.
       See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2/clirr-report.html">CLIRR</a> report.]]>
@@ -131,6 +133,9 @@
       </action>
       <action dev="schulte2005" type="update"><![CDATA[Updated <code>getSourceFileType</code> methods of class
       <code>org.jomc.tools.SourceFileProcessor</code> to no longer create default source file models.]]>
+      </action>
+      <action dev="schulte2005" type="remove"><![CDATA[Removed <code>abstract</code> modifier of class
+      <code>org.jomc.tools.JomcTool</code>.]]>
       </action>
       <action dev="schulte2005" type="remove"><![CDATA[Removed <code>abstract</code> modifier of method
       <code>onLog</code> of class <code>org.jomc.tools.JomcTool.Listener</code>.]]>

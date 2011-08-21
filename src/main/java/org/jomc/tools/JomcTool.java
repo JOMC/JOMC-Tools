@@ -137,8 +137,11 @@ public class JomcTool
     private static final String TEMPLATE_PREFIX =
         JomcTool.class.getPackage().getName().replace( '.', '/' ) + "/templates/";
 
-    /** Constant for the default template profile. */
-    private static final String DEFAULT_TEMPLATE_PROFILE = "jomc-java";
+    /** Constant for the default default template profile. */
+    private static final String DEFAULT_DEFAULT_TEMPLATE_PROFILE = "jomc-java";
+
+    /** The default default template profile. */
+    private static volatile String defaultDefaultTemplateProfile;
 
     /** The default template profile. */
     private static volatile String defaultTemplateProfile;
@@ -1932,22 +1935,68 @@ public class JomcTool
     }
 
     /**
+     * Gets the default default template profile.
+     * <p>The default default template profile is controlled by system property
+     * {@code org.jomc.tools.JomcTool.defaultDefaultTemplateProfile} holding the name of the default default template
+     * profile to use by default. If that property is not set, the {@code jomc-java} default is returned.</p>
+     *
+     * @return The default default template profile.
+     *
+     * @see #getDefaultTemplateProfile()
+     * @see #setDefaultDefaultTemplateProfile(java.lang.String)
+     *
+     * @since 1.2
+     */
+    public static String getDefaultDefaultTemplateProfile()
+    {
+        if ( defaultDefaultTemplateProfile == null )
+        {
+            defaultDefaultTemplateProfile =
+                System.getProperty( "org.jomc.tools.JomcTool.defaultDefaultTemplateProfile",
+                                    System.getProperty( "org.jomc.tools.JomcTool.defaultTemplateProfile",
+                                                        DEFAULT_DEFAULT_TEMPLATE_PROFILE ) );
+
+        }
+
+        return defaultDefaultTemplateProfile;
+    }
+
+    /**
+     * Sets the default default template profile.
+     *
+     * @param value The new default default template profile or {@code null}.
+     *
+     * @see #getDefaultDefaultTemplateProfile()
+     *
+     * @since 1.2
+     */
+    public static void setDefaultDefaultTemplateProfile( final String value )
+    {
+        defaultDefaultTemplateProfile = value;
+    }
+
+    /**
      * Gets the default template profile.
-     * <p>The default template profile is controlled by system property
-     * {@code org.jomc.tools.JomcTool.defaultTemplateProfile} holding the name of the template profile to use by
-     * default. If that property is not set, the {@code jomc-java} default is returned.</p>
      *
      * @return The default template profile.
      *
+     * @see #getDefaultDefaultTemplateProfile()
      * @see #setDefaultTemplateProfile(java.lang.String)
+     *
+     * @deprecated As of JOMC 1.2, replaced by method {@link #getDefaultDefaultTemplateProfile()}. The {@code static}
+     * modifier of this method will be removed in JOMC 2.0.
      */
+    @Deprecated
     public static String getDefaultTemplateProfile()
     {
         if ( defaultTemplateProfile == null )
         {
-            defaultTemplateProfile = System.getProperty( "org.jomc.tools.JomcTool.defaultTemplateProfile",
-                                                         DEFAULT_TEMPLATE_PROFILE );
+            defaultTemplateProfile = getDefaultDefaultTemplateProfile();
 
+//            if ( this.isLoggable( Level.CONFIG ) )
+//            {
+//                this.log( Level.CONFIG, getMessage( "defaultDefaultTemplateProfile", defaultTemplateProfile ), null );
+//            }
         }
 
         return defaultTemplateProfile;
@@ -1959,7 +2008,11 @@ public class JomcTool
      * @param value The new default template profile or {@code null}.
      *
      * @see #getDefaultTemplateProfile()
+     *
+     * @deprecated As of JOMC 1.2, replaced by method {@link #setDefaultDefaultTemplateProfile()}. The {@code static}
+     * modifier of this method will be removed in JOMC 2.0.
      */
+    @Deprecated
     public static void setDefaultTemplateProfile( final String value )
     {
         defaultTemplateProfile = value;

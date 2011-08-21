@@ -1044,28 +1044,61 @@ public class JomcToolTest
     }
 
     @Test
-    public final void testDefaultTemplateProfile() throws Exception
+    public final void testDefaultDefaultTemplateProfile() throws Exception
     {
-        assertNotNull( JomcTool.getDefaultTemplateProfile() );
+        JomcTool.setDefaultDefaultTemplateProfile( null );
+        assertNotNull( JomcTool.getDefaultDefaultTemplateProfile() );
+
+        JomcTool.setDefaultDefaultTemplateProfile( null );
         System.setProperty( "org.jomc.tools.JomcTool.defaultTemplateProfile", "TEST" );
-        JomcTool.setDefaultTemplateProfile( null );
-        assertEquals( "TEST", JomcTool.getDefaultTemplateProfile() );
+        assertEquals( "TEST", JomcTool.getDefaultDefaultTemplateProfile() );
         System.clearProperty( "org.jomc.tools.JomcTool.defaultTemplateProfile" );
-        JomcTool.setDefaultTemplateProfile( null );
+
+        JomcTool.setDefaultDefaultTemplateProfile( null );
+        System.setProperty( "org.jomc.tools.JomcTool.defaultDefaultTemplateProfile", "TEST 2" );
+        assertEquals( "TEST 2", JomcTool.getDefaultDefaultTemplateProfile() );
+        System.clearProperty( "org.jomc.tools.JomcTool.defaultDefaultTemplateProfile" );
+
+        JomcTool.setDefaultDefaultTemplateProfile( null );
     }
 
     @Test
+    @SuppressWarnings( "deprecation" )
+    public final void testDefaultTemplateProfile() throws Exception
+    {
+        JomcTool.setDefaultDefaultTemplateProfile( null );
+        this.getJomcTool().setDefaultTemplateProfile( null );
+        assertNotNull( this.getJomcTool().getDefaultTemplateProfile() );
+
+        JomcTool.setDefaultDefaultTemplateProfile( null );
+        this.getJomcTool().setDefaultTemplateProfile( null );
+        System.setProperty( "org.jomc.tools.JomcTool.defaultTemplateProfile", "TEST" );
+        assertEquals( "TEST", this.getJomcTool().getDefaultTemplateProfile() );
+        System.clearProperty( "org.jomc.tools.JomcTool.defaultTemplateProfile" );
+
+        JomcTool.setDefaultDefaultTemplateProfile( null );
+        this.getJomcTool().setDefaultTemplateProfile( null );
+        System.setProperty( "org.jomc.tools.JomcTool.defaultDefaultTemplateProfile", "TEST 2" );
+        assertEquals( "TEST 2", this.getJomcTool().getDefaultTemplateProfile() );
+        System.clearProperty( "org.jomc.tools.JomcTool.defaultDefaultTemplateProfile" );
+
+        JomcTool.setDefaultDefaultTemplateProfile( null );
+        this.getJomcTool().setDefaultTemplateProfile( null );
+    }
+
+    @Test
+    @SuppressWarnings( "deprecation" )
     public final void testTemplateProfile() throws Exception
     {
-        JomcTool.setDefaultTemplateProfile( null );
+        this.getJomcTool().setDefaultTemplateProfile( null );
         this.getJomcTool().setTemplateProfile( null );
         assertNotNull( this.getJomcTool().getTemplateProfile() );
 
-        JomcTool.setDefaultTemplateProfile( "TEST" );
+        this.getJomcTool().setDefaultTemplateProfile( "TEST" );
         this.getJomcTool().setTemplateProfile( null );
         assertEquals( "TEST", this.getJomcTool().getTemplateProfile() );
 
-        JomcTool.setDefaultTemplateProfile( null );
+        this.getJomcTool().setDefaultTemplateProfile( null );
         this.getJomcTool().setTemplateProfile( null );
     }
 
