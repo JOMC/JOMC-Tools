@@ -576,8 +576,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
         try
         {
-            JomcTool.setDefaultTemplateProfile( this.defaultTemplateProfile );
-
             this.logSeparator();
 
             if ( this.isLoggable( Level.INFO ) )
@@ -2441,6 +2439,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             tool.setTemplateEncoding( this.templateEncoding );
             tool.setInputEncoding( this.sourceEncoding );
             tool.setOutputEncoding( this.sourceEncoding );
+            tool.setDefaultTemplateProfile( this.defaultTemplateProfile );
             tool.setTemplateProfile( this.templateProfile );
             tool.setModel( this.getModel( context ) );
 
