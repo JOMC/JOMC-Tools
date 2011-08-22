@@ -240,6 +240,20 @@
           <artifactId>maven-dependency-plugin</artifactId>
           <executions>
             <execution>
+              <id>default-copy-tests</id>
+              <phase>prepare-package</phase>
+              <goals>
+                <goal>copy-dependencies</goal>
+              </goals>
+              <configuration>
+                <classifier>tests</classifier>
+                <failOnMissingClassifierArtifact>true</failOnMissingClassifierArtifact>
+                <includeGroupIds>org.jomc</includeGroupIds>
+                <outputDirectory>${project.build.directory}/jomc-tests</outputDirectory>
+                <type>jar</type>
+              </configuration>
+            </execution>
+            <execution>
               <id>default-schemas-unpack</id>
               <phase>prepare-package</phase>
               <goals>
@@ -350,9 +364,23 @@
                   </artifactItem>
                   <artifactItem>
                     <groupId>${project.groupId}</groupId>
+                    <artifactId>jomc-ant-tasks</artifactId>
+                    <classifier>tests</classifier>
+                    <type>jar</type>
+                    <outputDirectory>${project.build.directory}/jomc-tests</outputDirectory>
+                  </artifactItem>
+                  <artifactItem>
+                    <groupId>${project.groupId}</groupId>
                     <artifactId>maven-jomc-plugin</artifactId>
                     <type>jar</type>
                     <outputDirectory>${project.build.directory}/maven-jomc-plugin</outputDirectory>
+                  </artifactItem>
+                  <artifactItem>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>maven-jomc-plugin</artifactId>
+                    <classifier>tests</classifier>
+                    <type>jar</type>
+                    <outputDirectory>${project.build.directory}/jomc-tests</outputDirectory>
                   </artifactItem>
                   <artifactItem>
                     <groupId>${project.groupId}</groupId>
@@ -373,6 +401,13 @@
                     <classifier>changes</classifier>
                     <type>xhtml</type>
                     <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
+                  </artifactItem>
+                  <artifactItem>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>jomc-cli</artifactId>
+                    <classifier>tests</classifier>
+                    <type>jar</type>
+                    <outputDirectory>${project.build.directory}/jomc-tests</outputDirectory>
                   </artifactItem>
                   <artifactItem>
                     <groupId>${project.groupId}</groupId>
@@ -768,6 +803,20 @@
                   </configuration>
                 </execution>
                 <execution>
+                  <id>default-test-javadoc-copy</id>
+                  <phase>prepare-package</phase>
+                  <goals>
+                    <goal>copy-dependencies</goal>
+                  </goals>
+                  <configuration>
+                    <classifier>test-javadoc</classifier>
+                    <failOnMissingClassifierArtifact>false</failOnMissingClassifierArtifact>
+                    <includeGroupIds>${project.groupId}</includeGroupIds>
+                    <outputDirectory>${project.build.directory}/jomc-tests/doc</outputDirectory>
+                    <type>jar</type>
+                  </configuration>
+                </execution>
+                <execution>
                   <id>default-sources-copy</id>
                   <phase>prepare-package</phase>
                   <goals>
@@ -778,6 +827,20 @@
                     <failOnMissingClassifierArtifact>true</failOnMissingClassifierArtifact>
                     <includeGroupIds>${project.groupId}</includeGroupIds>
                     <outputDirectory>${project.build.directory}/jomc-sources</outputDirectory>
+                    <type>jar</type>
+                  </configuration>
+                </execution>
+                <execution>
+                  <id>default-test-sources-copy</id>
+                  <phase>prepare-package</phase>
+                  <goals>
+                    <goal>copy-dependencies</goal>
+                  </goals>
+                  <configuration>
+                    <classifier>test-sources</classifier>
+                    <failOnMissingClassifierArtifact>true</failOnMissingClassifierArtifact>
+                    <includeGroupIds>${project.groupId}</includeGroupIds>
+                    <outputDirectory>${project.build.directory}/jomc-tests/doc</outputDirectory>
                     <type>jar</type>
                   </configuration>
                 </execution>
@@ -823,8 +886,20 @@
                       <artifactItem>
                         <groupId>${project.groupId}</groupId>
                         <artifactId>jomc-ant-tasks</artifactId>
+                        <classifier>test-javadoc</classifier>
+                        <outputDirectory>${project.build.directory}/jomc-tests/doc</outputDirectory>
+                      </artifactItem>
+                      <artifactItem>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>jomc-ant-tasks</artifactId>
                         <classifier>sources</classifier>
                         <outputDirectory>${project.build.directory}/jomc-sources</outputDirectory>
+                      </artifactItem>
+                      <artifactItem>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>jomc-ant-tasks</artifactId>
+                        <classifier>test-sources</classifier>
+                        <outputDirectory>${project.build.directory}/jomc-tests/doc</outputDirectory>
                       </artifactItem>
                       <artifactItem>
                         <groupId>${project.groupId}</groupId>
@@ -853,6 +928,12 @@
                       <artifactItem>
                         <groupId>${project.groupId}</groupId>
                         <artifactId>maven-jomc-plugin</artifactId>
+                        <classifier>test-sources</classifier>
+                        <outputDirectory>${project.build.directory}/jomc-tests/doc</outputDirectory>
+                      </artifactItem>
+                      <artifactItem>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>maven-jomc-plugin</artifactId>
                         <classifier>site</classifier>
                         <outputDirectory>${project.build.directory}/jomc-site</outputDirectory>
                       </artifactItem>
@@ -871,8 +952,20 @@
                       <artifactItem>
                         <groupId>${project.groupId}</groupId>
                         <artifactId>jomc-cli</artifactId>
+                        <classifier>test-javadoc</classifier>
+                        <outputDirectory>${project.build.directory}/jomc-tests/doc</outputDirectory>
+                      </artifactItem>
+                      <artifactItem>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>jomc-cli</artifactId>
                         <classifier>sources</classifier>
                         <outputDirectory>${project.build.directory}/jomc-sources</outputDirectory>
+                      </artifactItem>
+                      <artifactItem>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>jomc-cli</artifactId>
+                        <classifier>test-sources</classifier>
+                        <outputDirectory>${project.build.directory}/jomc-tests/doc</outputDirectory>
                       </artifactItem>
                       <artifactItem>
                         <groupId>${project.groupId}</groupId>
