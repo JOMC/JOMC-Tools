@@ -1002,7 +1002,7 @@ public class JomcTask extends Task
         }
         catch ( final SocketTimeoutException e )
         {
-            String message = Messages.getMessage( e );
+            final String message = Messages.getMessage( e );
 
             if ( resource.isOptional() )
             {
@@ -1019,7 +1019,7 @@ public class JomcTask extends Task
         }
         catch ( final IOException e )
         {
-            String message = Messages.getMessage( e );
+            final String message = Messages.getMessage( e );
 
             if ( resource.isOptional() )
             {
@@ -1098,7 +1098,7 @@ public class JomcTask extends Task
         }
         catch ( final SocketTimeoutException e )
         {
-            String message = Messages.getMessage( e );
+            final String message = Messages.getMessage( e );
 
             if ( propertiesResourceType.isOptional() )
             {
@@ -1115,7 +1115,7 @@ public class JomcTask extends Task
         }
         catch ( final IOException e )
         {
-            String message = Messages.getMessage( e );
+            final String message = Messages.getMessage( e );
 
             if ( propertiesResourceType.isOptional() )
             {
