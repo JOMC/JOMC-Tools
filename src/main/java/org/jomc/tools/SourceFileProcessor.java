@@ -254,7 +254,7 @@ public class SourceFileProcessor extends JomcTool
             "Implementation '" + implementation.getIdentifier() + "' not found.";
 
         SourceFilesType model = null;
-        SourceFileType sourceFileType = this.getSourceFileType( implementation );
+        final SourceFileType sourceFileType = this.getSourceFileType( implementation );
 
         if ( sourceFileType != null )
         {
