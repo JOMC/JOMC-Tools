@@ -30,7 +30,7 @@
  *   $Id$
  *
  */
-package org.jomc.ant.test;
+package org.jomc.ant.test.support;
 
 import java.io.PrintStream;
 import java.io.StringWriter;

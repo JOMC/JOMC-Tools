@@ -36,12 +36,13 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.jomc.ant.ClassProcessingException;
 import org.jomc.ant.ValidateClassesTask;
+import org.jomc.ant.test.support.AntExecutionResult;
 import org.junit.Test;
-import static org.jomc.ant.test.Assert.assertException;
-import static org.jomc.ant.test.Assert.assertExceptionMessage;
-import static org.jomc.ant.test.Assert.assertMessageLogged;
-import static org.jomc.ant.test.Assert.assertMessageNotLogged;
-import static org.jomc.ant.test.Assert.assertNoException;
+import static org.jomc.ant.test.support.Assert.assertException;
+import static org.jomc.ant.test.support.Assert.assertExceptionMessage;
+import static org.jomc.ant.test.support.Assert.assertMessageLogged;
+import static org.jomc.ant.test.support.Assert.assertMessageNotLogged;
+import static org.jomc.ant.test.support.Assert.assertNoException;
 
 /**
  * Test cases for class {@code org.jomc.ant.ValidateClassesTask}.

@@ -30,7 +30,7 @@
  *   $Id$
  *
  */
-package org.jomc.ant.test;
+package org.jomc.ant.test.support;
 
 import java.util.LinkedList;
 import java.util.List;

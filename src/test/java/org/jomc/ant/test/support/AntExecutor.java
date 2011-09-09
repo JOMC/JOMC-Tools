@@ -30,56 +30,27 @@
  *   $Id$
  *
  */
-package org.jomc.ant.test;
-
-import org.apache.tools.ant.Project;
+package org.jomc.ant.test.support;
 
 /**
- * Request to execute a target on an Ant project.
+ * Interface to Ant.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $Id$
  */
-public class AntExecutionRequest
+public interface AntExecutor
 {
 
-    /** The {@code Project} to execute a target of. */
-    private final Project project;
-
-    /** The identifier of the target to execute. */
-    private final String target;
-
     /**
-     * Creates a new {@code AntExecutionRequest} taking a project and a target.
+     * Executes Ant.
      *
-     * @param project The {@code Project} to execute {@code target} of.
-     * @param target The identifier of the target to execute.
-     */
-    public AntExecutionRequest( final Project project, final String target )
-    {
-        super();
-        this.project = project;
-        this.target = target;
-    }
-
-    /**
-     * Gets the {@code Project} to execute a target of.
+     * @param request The request to execute.
      *
-     * @return The {@code Project} to execute a target of or {@code null}.
-     */
-    public Project getProject()
-    {
-        return this.project;
-    }
-
-    /**
-     * Gets the identifier of the target to execute.
+     * @return The result of the execution.
      *
-     * @return The identifier of the target to execute or {@code null}.
+     * @throws NullPointerException if {@code request} is {@code null}.
+     * @throws IllegalArgumentException if {@code request} holds illegal values.
      */
-    public String getTarget()
-    {
-        return this.target;
-    }
+    AntExecutionResult executeAnt( AntExecutionRequest request );
 
 }
