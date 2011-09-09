@@ -69,6 +69,14 @@
       <source>src/main/assembly/CDDL-1.0.txt</source>
     </file>
     <file>
+      <destName>COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.1.txt</destName>
+      <fileMode>0444</fileMode>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <outputDirectory>/licenses</outputDirectory>
+      <source>src/main/assembly/CDDL-1.1.txt</source>
+    </file>
+    <file>
       <destName>GNU GENERAL PUBLIC LICENSE Version 2.txt</destName>
       <fileMode>0444</fileMode>
       <filtered>false</filtered>
