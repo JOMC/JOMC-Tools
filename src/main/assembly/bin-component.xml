@@ -93,6 +93,14 @@
       <source>src/main/assembly/GPL-2-CPE.txt</source>
     </file>
     <file>
+      <destName>Common Public License Version 1.0.txt</destName>
+      <fileMode>0444</fileMode>
+      <filtered>false</filtered>
+      <lineEnding>dos</lineEnding>
+      <outputDirectory>/licenses</outputDirectory>
+      <source>src/main/assembly/CPL1.0.txt</source>
+    </file>
+    <file>
       <fileMode>0444</fileMode>
       <filtered>false</filtered>
       <lineEnding>dos</lineEnding>
@@ -314,11 +322,12 @@
     </fileSet>
     <fileSet>
       <directory>${project.build.directory}/jomc-tests</directory>
-      <fileMode>0444</fileMode>
+      <fileMode>0555</fileMode>
       <directoryMode>0755</directoryMode>
-      <outputDirectory>/test</outputDirectory>
-      <filtered>false</filtered>
-      <lineEnding>keep</lineEnding>
+      <outputDirectory>/lib/test</outputDirectory>
+      <includes>
+        <include>*.jar</include>
+      </includes>
     </fileSet>
   </fileSets>
   <dependencySets>
@@ -380,6 +389,15 @@
       <outputDirectory>/examples/lib</outputDirectory>
       <includes>
         <include>commons-cli:commons-cli</include>
+      </includes>
+    </dependencySet>
+    <dependencySet>
+      <directoryMode>0755</directoryMode>
+      <fileMode>0555</fileMode>
+      <scope>test</scope>
+      <outputDirectory>/lib/test</outputDirectory>
+      <includes>
+        <include>junit:junit</include>
       </includes>
     </dependencySet>
   </dependencySets>

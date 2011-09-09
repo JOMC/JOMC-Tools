@@ -812,7 +812,7 @@
                     <classifier>test-javadoc</classifier>
                     <failOnMissingClassifierArtifact>false</failOnMissingClassifierArtifact>
                     <includeGroupIds>${project.groupId}</includeGroupIds>
-                    <outputDirectory>${project.build.directory}/jomc-tests/doc</outputDirectory>
+                    <outputDirectory>${project.build.directory}/jomc-test-javadoc</outputDirectory>
                     <type>jar</type>
                   </configuration>
                 </execution>
@@ -840,7 +840,7 @@
                     <classifier>test-sources</classifier>
                     <failOnMissingClassifierArtifact>true</failOnMissingClassifierArtifact>
                     <includeGroupIds>${project.groupId}</includeGroupIds>
-                    <outputDirectory>${project.build.directory}/jomc-tests/doc</outputDirectory>
+                    <outputDirectory>${project.build.directory}/jomc-test-sources</outputDirectory>
                     <type>jar</type>
                   </configuration>
                 </execution>
@@ -887,7 +887,7 @@
                         <groupId>${project.groupId}</groupId>
                         <artifactId>jomc-ant-tasks</artifactId>
                         <classifier>test-javadoc</classifier>
-                        <outputDirectory>${project.build.directory}/jomc-tests/doc</outputDirectory>
+                        <outputDirectory>${project.build.directory}/jomc-test-javadoc</outputDirectory>
                       </artifactItem>
                       <artifactItem>
                         <groupId>${project.groupId}</groupId>
@@ -899,7 +899,7 @@
                         <groupId>${project.groupId}</groupId>
                         <artifactId>jomc-ant-tasks</artifactId>
                         <classifier>test-sources</classifier>
-                        <outputDirectory>${project.build.directory}/jomc-tests/doc</outputDirectory>
+                        <outputDirectory>${project.build.directory}/jomc-test-sources</outputDirectory>
                       </artifactItem>
                       <artifactItem>
                         <groupId>${project.groupId}</groupId>
@@ -929,7 +929,7 @@
                         <groupId>${project.groupId}</groupId>
                         <artifactId>maven-jomc-plugin</artifactId>
                         <classifier>test-sources</classifier>
-                        <outputDirectory>${project.build.directory}/jomc-tests/doc</outputDirectory>
+                        <outputDirectory>${project.build.directory}/jomc-test-sources</outputDirectory>
                       </artifactItem>
                       <artifactItem>
                         <groupId>${project.groupId}</groupId>
@@ -953,7 +953,7 @@
                         <groupId>${project.groupId}</groupId>
                         <artifactId>jomc-cli</artifactId>
                         <classifier>test-javadoc</classifier>
-                        <outputDirectory>${project.build.directory}/jomc-tests/doc</outputDirectory>
+                        <outputDirectory>${project.build.directory}/jomc-test-javadoc</outputDirectory>
                       </artifactItem>
                       <artifactItem>
                         <groupId>${project.groupId}</groupId>
@@ -965,7 +965,7 @@
                         <groupId>${project.groupId}</groupId>
                         <artifactId>jomc-cli</artifactId>
                         <classifier>test-sources</classifier>
-                        <outputDirectory>${project.build.directory}/jomc-tests/doc</outputDirectory>
+                        <outputDirectory>${project.build.directory}/jomc-test-sources</outputDirectory>
                       </artifactItem>
                       <artifactItem>
                         <groupId>${project.groupId}</groupId>
