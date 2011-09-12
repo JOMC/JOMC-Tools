@@ -1,3 +1,6 @@
 /target
 /catalog.xml
 /*.iml
+/.settings
+/.classpath
+/.project
