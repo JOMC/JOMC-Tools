@@ -45,7 +45,9 @@ Releasing a project
 
 +-----------------+
 mvn ... -Djomc.verbose=true -Djomc.sourceProcessing=false
++-----------------+
 
++-----------------+
 ...
 <profile>
   <id>jomc-release</id>
