@@ -46,20 +46,16 @@ Releasing a project
 +-----------------+
 mvn ... -Djomc.verbose=true -Djomc.sourceProcessing=false
 
-<project>
-  ...
-  <profiles>
-    <profile>
-      <id>jomc-release</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-      <properties>
-        <jomc.verbose>true</jomc.verbose>
-        <jomc.sourceProcessing>false</jomc.sourceProcessing>
-      </properties>
-    </profile>
-  </profiles>
-  ...
-</project>
+...
+<profile>
+  <id>jomc-release</id>
+  <activation>
+    <activeByDefault>false</activeByDefault>
+  </activation>
+  <properties>
+    <jomc.verbose>true</jomc.verbose>
+    <jomc.sourceProcessing>false</jomc.sourceProcessing>
+  </properties>
+</profile>
+...
 +-----------------+
