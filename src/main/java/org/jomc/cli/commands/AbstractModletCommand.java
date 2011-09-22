@@ -441,6 +441,12 @@ public abstract class AbstractModletCommand extends AbstractCommand
         /** {@code Modlets} excluded by the instance. */
         private Modlets excludedModlets;
 
+        /** Set of provider resource locations to filter. */
+        private final Set<String> providerResourceLocations = new HashSet<String>();
+
+        /** Set of modlet resource locations to filter. */
+        private final Set<String> modletResourceLocations = new HashSet<String>();
+
         /**
          * Creates a new {@code CommandLineClassLoader} taking a command line backing the class loader.
          *
@@ -525,6 +531,28 @@ public abstract class AbstractModletCommand extends AbstractCommand
 
                         this.addURL( uri.toURL() );
                     }
+
+                    if ( commandLine.hasOption( getProviderLocationOption().getOpt() ) )
+                    {
+                        this.providerResourceLocations.add(
+                            commandLine.getOptionValue( getProviderLocationOption().getOpt() ) );
+
+                    }
+                    else
+                    {
+                        this.providerResourceLocations.add( DefaultModelContext.getDefaultProviderLocation() );
+                    }
+
+                    if ( commandLine.hasOption( getModletLocationOption().getOpt() ) )
+                    {
+                        this.modletResourceLocations.add(
+                            commandLine.getOptionValue( getModletLocationOption().getOpt() ) );
+
+                    }
+                    else
+                    {
+                        this.modletResourceLocations.add( DefaultModletProvider.getDefaultModletLocation() );
+                    }
                 }
             }
             catch ( final IOException e )
@@ -564,11 +592,11 @@ public abstract class AbstractModletCommand extends AbstractCommand
 
                 if ( resource != null )
                 {
-                    if ( name.contains( DefaultModelContext.getDefaultProviderLocation() ) )
+                    if ( this.providerResourceLocations.contains( name ) )
                     {
                         resource = this.filterProviders( resource );
                     }
-                    else if ( name.contains( DefaultModletProvider.getDefaultModletLocation() ) )
+                    else if ( this.modletResourceLocations.contains( name ) )
                     {
                         resource = this.filterModlets( resource );
                     }
@@ -610,7 +638,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
 
             Enumeration<URL> enumeration = allResources;
 
-            if ( name.contains( DefaultModelContext.getDefaultProviderLocation() ) )
+            if ( this.providerResourceLocations.contains( name ) )
             {
                 enumeration = new Enumeration<URL>()
                 {
@@ -635,7 +663,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
 
                 };
             }
-            else if ( name.contains( DefaultModletProvider.getDefaultModletLocation() ) )
+            else if ( this.modletResourceLocations.contains( name ) )
             {
                 enumeration = new Enumeration<URL>()
                 {
