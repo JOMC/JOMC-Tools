@@ -52,8 +52,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Path;
-import org.jomc.modlet.DefaultModelContext;
-import org.jomc.modlet.DefaultModletProvider;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelException;
 import org.jomc.modlet.Modlet;
@@ -112,6 +110,12 @@ public class ProjectClassLoader extends URLClassLoader
     /** The project the class loader is associated with. */
     private final Project project;
 
+    /** Set of modlet resource locations to filter. */
+    private Set<String> modletResourceLocations;
+
+    /** Set of provider resource locations to filter. */
+    private Set<String> providerResourceLocations;
+
     /**
      * Creates a new {@code ProjectClassLoader} instance taking a project and a class path.
      *
@@ -160,11 +164,11 @@ public class ProjectClassLoader extends URLClassLoader
 
             if ( resource != null )
             {
-                if ( name.contains( DefaultModelContext.getDefaultProviderLocation() ) )
+                if ( this.getProviderResourceLocations().contains( name ) )
                 {
                     resource = this.filterProviders( resource );
                 }
-                else if ( name.contains( DefaultModletProvider.getDefaultModletLocation() ) )
+                else if ( this.getModletResourceLocations().contains( name ) )
                 {
                     resource = this.filterModlets( resource );
                 }
@@ -210,7 +214,7 @@ public class ProjectClassLoader extends URLClassLoader
         final Enumeration<URL> allResources = super.findResources( name );
         Enumeration<URL> enumeration = allResources;
 
-        if ( name.contains( DefaultModelContext.getDefaultProviderLocation() ) )
+        if ( this.getProviderResourceLocations().contains( name ) )
         {
             enumeration = new Enumeration<URL>()
             {
@@ -235,7 +239,7 @@ public class ProjectClassLoader extends URLClassLoader
 
             };
         }
-        else if ( name.contains( DefaultModletProvider.getDefaultModletLocation() ) )
+        else if ( this.getModletResourceLocations().contains( name ) )
         {
             enumeration = new Enumeration<URL>()
             {
@@ -278,6 +282,42 @@ public class ProjectClassLoader extends URLClassLoader
         }
 
         return enumeration;
+    }
+
+    /**
+     * Gets a set of modlet resource locations to filter.
+     * <p>This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
+     * to the returned set will be present inside the object. This is why there is no {@code set} method for the
+     * modlet resource locations property.</p>
+     *
+     * @return A set of modlet resource locations to filter.
+     */
+    public final Set<String> getModletResourceLocations()
+    {
+        if ( this.modletResourceLocations == null )
+        {
+            this.modletResourceLocations = new HashSet<String>();
+        }
+
+        return this.modletResourceLocations;
+    }
+
+    /**
+     * Gets a set of provider resource locations to filter.
+     * <p>This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
+     * to the returned set will be present inside the object. This is why there is no {@code set} method for the
+     * provider resource locations property.</p>
+     *
+     * @return A set of provider resource locations to filter.
+     */
+    public final Set<String> getProviderResourceLocations()
+    {
+        if ( this.providerResourceLocations == null )
+        {
+            this.providerResourceLocations = new HashSet<String>();
+        }
+
+        return this.providerResourceLocations;
     }
 
     /**

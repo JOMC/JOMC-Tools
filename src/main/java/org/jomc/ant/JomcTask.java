@@ -1154,6 +1154,25 @@ public class JomcTask extends Task
             classLoader.getProviderExcludes().addAll( ProjectClassLoader.getDefaultProviderExcludes() );
             classLoader.getSchemaExcludes().addAll( ProjectClassLoader.getDefaultSchemaExcludes() );
             classLoader.getServiceExcludes().addAll( ProjectClassLoader.getDefaultServiceExcludes() );
+
+            if ( this.getModletLocation() != null )
+            {
+                classLoader.getModletResourceLocations().add( this.getModletLocation() );
+            }
+            else
+            {
+                classLoader.getModletResourceLocations().add( DefaultModletProvider.getDefaultModletLocation() );
+            }
+
+            if ( this.getProviderLocation() != null )
+            {
+                classLoader.getProviderResourceLocations().add( this.getProviderLocation() );
+            }
+            else
+            {
+                classLoader.getProviderResourceLocations().add( DefaultModelContext.getDefaultProviderLocation() );
+            }
+
             return classLoader;
         }
         catch ( final IOException e )
