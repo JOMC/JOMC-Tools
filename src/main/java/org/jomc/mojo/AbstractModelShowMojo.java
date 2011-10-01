@@ -27,7 +27,7 @@
  *   OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  *   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- *   $Id$
+ *   $JOMC$
  *
  */
 package org.jomc.mojo;
@@ -45,7 +45,7 @@ import org.jomc.modlet.ObjectFactory;
  * Base class for displaying and dumping model objects.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
- * @version $Id$
+ * @version $JOMC$
  * @since 1.1
  */
 public abstract class AbstractModelShowMojo extends AbstractJomcMojo
