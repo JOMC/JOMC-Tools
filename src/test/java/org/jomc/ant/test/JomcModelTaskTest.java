@@ -27,7 +27,7 @@
  *   OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  *   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- *   $Id$
+ *   $JOMC$
  *
  */
 package org.jomc.ant.test;
@@ -38,7 +38,7 @@ import org.jomc.ant.JomcModelTask;
  * Test cases for class {@code org.jomc.ant.JomcModelTask}.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
- * @version $Id$
+ * @version $JOMC$
  */
 public class JomcModelTaskTest extends JomcTaskTest
 {

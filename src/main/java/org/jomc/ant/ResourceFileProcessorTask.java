@@ -27,7 +27,7 @@
  *   OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  *   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- *   $Id$
+ *   $JOMC$
  *
  */
 package org.jomc.ant;
@@ -41,7 +41,7 @@ import org.jomc.tools.ResourceFileProcessor;
  * Base class for executing resource file processor based tasks.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
- * @version $Id$
+ * @version $JOMC$
  * @see #processResourceFiles()
  */
 public class ResourceFileProcessorTask extends JomcToolTask

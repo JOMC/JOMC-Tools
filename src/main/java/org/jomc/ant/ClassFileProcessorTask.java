@@ -27,7 +27,7 @@
  *   OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  *   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- *   $Id$
+ *   $JOMC$
  *
  */
 package org.jomc.ant;
@@ -40,7 +40,7 @@ import org.jomc.tools.ClassFileProcessor;
  * Base class for executing class file processor based tasks.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
- * @version $Id$
+ * @version $JOMC$
  * @see #processClassFiles()
  */
 public class ClassFileProcessorTask extends JomcToolTask
