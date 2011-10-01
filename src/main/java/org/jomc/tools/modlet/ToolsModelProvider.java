@@ -27,7 +27,7 @@
  *   OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  *   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- *   $Id$
+ *   $JOMC$
  *
  */
 package org.jomc.tools.modlet;
@@ -62,7 +62,7 @@ import static org.jomc.tools.modlet.ToolsModletConstants.*;
  * Object management and configuration tools {@code ModelProvider} implementation.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
- * @version $Id$
+ * @version $JOMC$
  * @see ModelContext#findModel(java.lang.String)
  * @since 1.2
  */
