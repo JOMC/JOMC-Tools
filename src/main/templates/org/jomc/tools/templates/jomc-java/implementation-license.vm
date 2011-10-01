@@ -45,21 +45,19 @@
 ## @param implementation The implementation to render.
 ${tool.getIndentation(0)}// <editor-fold defaultstate="collapsed" desc=" Generated License ">
 ${tool.getIndentation(0)}/*
-#if($implementation.getVendor())
+#if(!$licenseSkipVendorCopyright && $implementation.getVendor())
 #if($implementation.getCreateDate())
-${tool.getIndentation(0)} *   Copyright (C) $tool.getYears($implementation.getCreateDate().toGregorianCalendar(), $calendar) $implementation.getVendor()
+${tool.getIndentation(0)} *   Copyright (C) $implementation.getVendor(), $tool.getCalendarString($implementation.getCreateDate().toGregorianCalendar(), "yyyy'-'MM'-'dd")
 #else
-${tool.getIndentation(0)} *   Copyright (C) $year $implementation.getVendor()
+${tool.getIndentation(0)} *   Copyright (C) $implementation.getVendor(), ${year}-${month}-${day}
 #end
 #end
 #if($implementation.getAuthors())
 #foreach($author in $implementation.getAuthors().getAuthor())
 #if($author.getCreateDate())
-${tool.getIndentation(0)} *   Copyright (C) $tool.getYears($author.getCreateDate().toGregorianCalendar(), $calendar) $author.getName()#if($author.getMail()) <$author.getMail()>#end
-
+${tool.getIndentation(0)} *   Copyright (C) $author.getName()#if($author.getMail()) ($author.getMail())#end, $tool.getCalendarString($author.getCreateDate().toGregorianCalendar(), "yyyy'-'MM'-'dd")
 #else
-${tool.getIndentation(0)} *   Copyright (C) $year $author.getName()#if($author.getMail()) <$author.getMail()>#end
-
+${tool.getIndentation(0)} *   Copyright (C) $author.getName()#if($author.getMail()) ($author.getMail())#end, ${year}-${month}-${day}
 #end
 #if($author.getDocumentation())
 ${tool.getIndentation(0)} *     $tool.getJavadocComment($author.getDocumentation(), 0, " *     ")
@@ -92,8 +90,12 @@ ${tool.getIndentation(0)} *   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT L
 ${tool.getIndentation(0)} *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 ${tool.getIndentation(0)} *   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ${tool.getIndentation(0)} *
+#if($licenseRevisionKeyword)
+${tool.getIndentation(0)} *   $licenseRevisionKeyword
+#else
 #set($D = "$")
 ${tool.getIndentation(0)} *   ${D}Id${D}
+#end
 ${tool.getIndentation(0)} *
 ${tool.getIndentation(0)} */
 ${tool.getIndentation(0)}// </editor-fold>
