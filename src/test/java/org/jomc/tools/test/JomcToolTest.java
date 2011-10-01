@@ -881,6 +881,25 @@ public class JomcToolTest
         {
             assertNullPointerException( e );
         }
+
+        try
+        {
+            this.getJomcTool().getCalendarString( null, "Y" );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+        try
+        {
+            this.getJomcTool().getCalendarString( Calendar.getInstance(), null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
     }
 
     @Test

@@ -1614,6 +1614,34 @@ public class JomcTool
     }
 
     /**
+     * Formats a calendar instance to a string.
+     *
+     * @param calendar The calendar to format.
+     * @param pattern The pattern to format {@code calendar} with.
+     *
+     * @return {@code calendar} formatted using {@code pattern}.
+     *
+     * @throws NullPointerException if {@code calendar} or {@code pattern} is {@code null}.
+     *
+     * @see SimpleDateFormat
+     *
+     * @since 1.2
+     */
+    public String getCalendarString( final Calendar calendar, final String pattern )
+    {
+        if ( calendar == null )
+        {
+            throw new NullPointerException( "calendar" );
+        }
+        if ( pattern == null )
+        {
+            throw new NullPointerException( "pattern" );
+        }
+
+        return new SimpleDateFormat( pattern, this.getLocale() ).format( calendar.getTime() );
+    }
+
+    /**
      * Gets the model of the instance.
      *
      * @return The model of the instance.
