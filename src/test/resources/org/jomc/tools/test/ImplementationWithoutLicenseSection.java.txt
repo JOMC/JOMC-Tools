@@ -23,7 +23,7 @@ import java.lang.*;
  * </ul></p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
- * @version $Id$
+ * @version $JOMC$
  */
 // SECTION-END
 // SECTION-START[Annotations]

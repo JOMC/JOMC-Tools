@@ -17,7 +17,7 @@ import java.lang.*;
  * <p>This specification does not apply to any scope. A new object is returned whenever requested.</p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
- * @version $Id$
+ * @version $JOMC$
  */
 // SECTION-END
 // SECTION-START[Annotations]
