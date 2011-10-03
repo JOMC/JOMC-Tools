@@ -291,6 +291,10 @@ public class JomcModelTask extends JomcTask
                     if ( unmarshaller == null )
                     {
                         unmarshaller = context.createUnmarshaller( this.getModel() );
+                        if ( this.isModelResourceValidationEnabled() )
+                        {
+                            unmarshaller.setSchema( context.createSchema( this.getModel() ) );
+                        }
                     }
 
                     Object o = unmarshaller.unmarshal( source );

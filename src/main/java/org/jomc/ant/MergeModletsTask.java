@@ -409,6 +409,11 @@ public final class MergeModletsTask extends JomcTask
             final Marshaller marshaller = context.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
             final Unmarshaller unmarshaller = context.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
 
+            if ( this.isModletResourceValidationEnabled() )
+            {
+                unmarshaller.setSchema( context.createSchema( ModletObject.MODEL_PUBLIC_ID ) );
+            }
+
             if ( resources.isEmpty() )
             {
                 final ResourceType defaultResource = new ResourceType();

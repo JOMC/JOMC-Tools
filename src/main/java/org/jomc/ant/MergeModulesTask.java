@@ -369,6 +369,11 @@ public final class MergeModulesTask extends JomcModelTask
             final Marshaller marshaller = context.createMarshaller( this.getModel() );
             final Unmarshaller unmarshaller = context.createUnmarshaller( this.getModel() );
 
+            if ( this.isModelResourceValidationEnabled() )
+            {
+                unmarshaller.setSchema( context.createSchema( this.getModel() ) );
+            }
+
             if ( resources.isEmpty() )
             {
                 final ResourceType defaultResource = new ResourceType();
