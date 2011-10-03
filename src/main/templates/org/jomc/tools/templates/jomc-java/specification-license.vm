@@ -90,10 +90,10 @@ ${tool.getIndentation(0)} *   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT L
 ${tool.getIndentation(0)} *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 ${tool.getIndentation(0)} *   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ${tool.getIndentation(0)} *
-#if($licenseRevisionKeyword)
-${tool.getIndentation(0)} *   $licenseRevisionKeyword
-#else
 #set($D = "$")
+#if($licenseRevisionKeyword)
+${tool.getIndentation(0)} *   ${D}$licenseRevisionKeyword${D}
+#else
 ${tool.getIndentation(0)} *   ${D}Id${D}
 #end
 ${tool.getIndentation(0)} *
