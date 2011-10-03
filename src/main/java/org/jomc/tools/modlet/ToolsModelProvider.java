@@ -75,6 +75,25 @@ public class ToolsModelProvider implements ModelProvider
     public static final String ENABLED_ATTRIBUTE_NAME = "org.jomc.tools.modlet.ToolsModelProvider.enabledAttribute";
 
     /**
+     * Constant for the name of the system property controlling property {@code defaultEnabled}.
+     * @see #isDefaultEnabled()
+     */
+    private static final String DEFAULT_ENABLED_PROPERTY_NAME =
+        "org.jomc.tools.modlet.ToolsModelProvider.defaultEnabled";
+
+    /**
+     * Default value of the flag indicating the provider is enabled by default.
+     * @see #isDefaultEnabled()
+     */
+    private static final Boolean DEFAULT_ENABLED = Boolean.TRUE;
+
+    /** Flag indicating the provider is enabled by default. */
+    private static volatile Boolean defaultEnabled;
+
+    /** Flag indicating the provider is enabled. */
+    private Boolean enabled;
+
+    /**
      * Constant for the name of the model context attribute backing property
      * {@code modelObjectClasspathResolutionEnabled}.
      *
@@ -85,13 +104,6 @@ public class ToolsModelProvider implements ModelProvider
         "org.jomc.tools.modlet.ToolsModelProvider.modelObjectClasspathResolutionEnabledAttribute";
 
     /**
-     * Constant for the name of the system property controlling property {@code defaultEnabled}.
-     * @see #isDefaultEnabled()
-     */
-    private static final String DEFAULT_ENABLED_PROPERTY_NAME =
-        "org.jomc.tools.modlet.ToolsModelProvider.defaultEnabled";
-
-    /**
      * Constant for the name of the system property controlling property
      * {@code defaultModelObjectClasspathResolutionEnabled}.
      * @see #isDefaultModelObjectClasspathResolutionEnabled()
@@ -100,25 +112,13 @@ public class ToolsModelProvider implements ModelProvider
         "org.jomc.tools.modlet.ToolsModelProvider.defaultModelObjectClasspathResolutionEnabled";
 
     /**
-     * Default value of the flag indicating the provider is enabled by default.
-     * @see #isDefaultEnabled()
-     */
-    private static final Boolean DEFAULT_ENABLED = Boolean.TRUE;
-
-    /**
      * Default value of the flag indicating model object class path resolution is enabled by default.
      * @see #isDefaultModelObjectClasspathResolutionEnabled()
      */
     private static final Boolean DEFAULT_MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED = Boolean.TRUE;
 
-    /** Flag indicating the provider is enabled by default. */
-    private static volatile Boolean defaultEnabled;
-
     /** Flag indicating model object class path resolution is enabled by default. */
     private static volatile Boolean defaultModelObjectClasspathResolutionEnabled;
-
-    /** Flag indicating the provider is enabled. */
-    private Boolean enabled;
 
     /** Flag indicating model object class path resolution is enabled. */
     private Boolean modelObjectClasspathResolutionEnabled;
