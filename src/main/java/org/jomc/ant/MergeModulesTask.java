@@ -307,7 +307,7 @@ public final class MergeModulesTask extends JomcModelTask
      * Gets the XSLT documents to use for transforming model objects.
      * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * model object stylesheets resources property.</p>
+     * model object stylesheet resources property.</p>
      *
      * @return The XSLT documents to use for transforming model objects.
      *
@@ -584,11 +584,11 @@ public final class MergeModulesTask extends JomcModelTask
     }
 
     /**
-     * Tests a given module to be included based on property {@code moduleIncludes}.
+     * Tests inclusion of a given module based on property {@code moduleIncludes}.
      *
      * @param module The module to test.
      *
-     * @return {@code true} if {@code module} is included based on property {@code moduleIncludes}.
+     * @return {@code true}, if {@code module} is included based on property {@code moduleIncludes}.
      *
      * @throws NullPointerException if {@code module} is {@code null}.
      *
@@ -613,11 +613,11 @@ public final class MergeModulesTask extends JomcModelTask
     }
 
     /**
-     * Test a given module to be excluded based on property {@code moduleExcludes}.
+     * Tests exclusion of a given module based on property {@code moduleExcludes}.
      *
      * @param module The module to test.
      *
-     * @return {@code true} if {@code module} is excluded based on property {@code moduleExcludes}.
+     * @return {@code true}, if {@code module} is excluded based on property {@code moduleExcludes}.
      *
      * @throws NullPointerException if {@code module} is {@code null}.
      *

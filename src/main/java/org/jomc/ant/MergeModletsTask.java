@@ -346,7 +346,7 @@ public final class MergeModletsTask extends JomcTask
      * Gets the XSLT documents to use for transforming modlet objects.
      * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * modlet object stylesheets resources property.</p>
+     * modlet object stylesheet resources property.</p>
      *
      * @return The XSLT documents to use for transforming modlet objects.
      *
@@ -614,11 +614,11 @@ public final class MergeModletsTask extends JomcTask
     }
 
     /**
-     * Tests a given modlet to be included based on property {@code modletIncludes}.
+     * Tests inclusion of a given modlet based on property {@code modletIncludes}.
      *
      * @param modlet The modlet to test.
      *
-     * @return {@code true} if {@code modlet} is included based on property {@code modletIncludes}.
+     * @return {@code true}, if {@code modlet} is included based on property {@code modletIncludes}.
      *
      * @throws NullPointerException if {@code modlet} is {@code null}.
      *
@@ -643,11 +643,11 @@ public final class MergeModletsTask extends JomcTask
     }
 
     /**
-     * Test a given modlet to be excluded based on property {@code modletExcludes}.
+     * Tests exclusion of a given modlet based on property {@code modletExcludes}.
      *
      * @param modlet The modlet to test.
      *
-     * @return {@code true} if {@code modlet} is excluded based on property {@code modletExcludes}.
+     * @return {@code true}, if {@code modlet} is excluded based on property {@code modletExcludes}.
      *
      * @throws NullPointerException if {@code modlet} is {@code null}.
      *

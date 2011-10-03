@@ -86,7 +86,7 @@ public class ResourceType implements Cloneable
     /**
      * Gets a flag indicating the resource is optional.
      *
-     * @return {@code true} if the resource is optional; {@code false} if the build fails when the resource is not
+     * @return {@code true}, if the resource is optional; {@code false}, if the build fails when the resource is not
      * found.
      *
      * @see #setOptional(boolean)
@@ -99,8 +99,8 @@ public class ResourceType implements Cloneable
     /**
      * Sets the flag indicating the resource is optional.
      *
-     * @param value {@code true} to flag the resource optional; {@code false} to fail the build when the resource is not
-     * found.
+     * @param value {@code true}, to flag the resource optional; {@code false}, to fail the build when the resource is
+     * not found.
      *
      * @see #isOptional()
      */

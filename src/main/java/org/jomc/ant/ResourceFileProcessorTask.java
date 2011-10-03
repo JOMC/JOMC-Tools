@@ -63,7 +63,7 @@ public class ResourceFileProcessorTask extends JomcToolTask
     /**
      * Gets a flag indicating the processing of resources is enabled.
      *
-     * @return {@code true} if processing of resources is enabled; {@code false} else.
+     * @return {@code true}, if processing of resources is enabled; {@code false}, else.
      *
      * @see #setResourceProcessingEnabled(boolean)
      */
@@ -75,7 +75,7 @@ public class ResourceFileProcessorTask extends JomcToolTask
     /**
      * Sets the flag indicating the processing of resources is enabled.
      *
-     * @param value {@code true} to enable processing of resources; {@code false} to disable processing of resources.
+     * @param value {@code true}, to enable processing of resources; {@code false}, to disable processing of resources.
      *
      * @see #isResourceProcessingEnabled()
      */
@@ -100,8 +100,8 @@ public class ResourceFileProcessorTask extends JomcToolTask
     /**
      * Sets the language of the default language properties file of generated resource bundle resource files.
      *
-     * @param value The language of the default language properties file of generated resource bundle resource files or
-     * {@code null}.
+     * @param value The new language of the default language properties file of generated resource bundle resource files
+     * or {@code null}.
      *
      * @see #getResourceBundleDefaultLanguage()
      */
@@ -146,8 +146,8 @@ public class ResourceFileProcessorTask extends JomcToolTask
      *
      * @throws BuildException if creating a new {@code ResourceFileProcessor} instance fails.
      *
-     * @see #configureJomcTool(org.jomc.tools.JomcTool)
      * @see #getResourceFileProcessorClass()
+     * @see #configureResourceFileProcessor(org.jomc.tools.ResourceFileProcessor)
      */
     public ResourceFileProcessor newResourceFileProcessor() throws BuildException
     {

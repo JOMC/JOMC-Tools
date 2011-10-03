@@ -102,7 +102,7 @@ public final class CommitClassesTask extends ClassFileProcessorTask
      * Gets the XSLT documents to use for transforming model objects.
      * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * model object stylesheets resources property.</p>
+     * model object stylesheet resources property.</p>
      *
      * @return The XSLT documents to use for transforming model objects.
      *

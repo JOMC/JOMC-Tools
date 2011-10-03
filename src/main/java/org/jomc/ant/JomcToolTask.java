@@ -528,9 +528,9 @@ public class JomcToolTask extends JomcModelTask
     }
 
     /**
-     * Gets a flag indicating that all modules are requested to be processed.
+     * Gets a flag indicating all modules are requested to be processed.
      *
-     * @return {@code true} if processing of all modules is requested; {@code false} else.
+     * @return {@code true}, if processing of all modules is requested; {@code false}, else.
      *
      * @see #getSpecification()
      * @see #getImplementation()

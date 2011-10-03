@@ -59,7 +59,7 @@ public class SourceFileProcessorTask extends JomcToolTask
     /**
      * Gets a flag indicating the processing of source files is enabled.
      *
-     * @return {@code true} if processing of source files is enabled; {@code false} else.
+     * @return {@code true}, if processing of source files is enabled; {@code false}, else.
      *
      * @see #setSourceProcessingEnabled(boolean)
      */
@@ -71,7 +71,7 @@ public class SourceFileProcessorTask extends JomcToolTask
     /**
      * Sets the flag indicating the processing of source files is enabled.
      *
-     * @param value {@code true} to enable processing of source files; {@code false} to disable processing of source
+     * @param value {@code true}, to enable processing of source files; {@code false}, to disable processing of source
      * files.
      *
      * @see #isSourceProcessingEnabled()
@@ -117,8 +117,8 @@ public class SourceFileProcessorTask extends JomcToolTask
      *
      * @throws BuildException if creating a new {@code SourceFileProcessor} instance fails.
      *
-     * @see #configureJomcTool(org.jomc.tools.JomcTool)
      * @see #getSourceFileProcessorClass()
+     * @see #configureSourceFileProcessor(org.jomc.tools.SourceFileProcessor)
      */
     public SourceFileProcessor newSourceFileProcessor() throws BuildException
     {

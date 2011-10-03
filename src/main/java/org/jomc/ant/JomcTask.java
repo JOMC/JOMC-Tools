@@ -193,9 +193,9 @@ public class JomcTask extends Task
     }
 
     /**
-     * Creates a new {@code Path} instance.
+     * Creates a new {@code classpath} element instance.
      *
-     * @return A new {@code Path} instance.
+     * @return A new {@code classpath} element instance.
      */
     public final Path createClasspath()
     {
@@ -334,7 +334,7 @@ public class JomcTask extends Task
     /**
      * Gets a flag indicating the processing of models is enabled.
      *
-     * @return {@code true} if processing of models is enabled; {@code false} else.
+     * @return {@code true}, if processing of models is enabled; {@code false}, else.
      *
      * @see #setModelProcessingEnabled(boolean)
      */
@@ -346,7 +346,7 @@ public class JomcTask extends Task
     /**
      * Sets the flag indicating the processing of models is enabled.
      *
-     * @param value {@code true} to enable processing of models; {@code false} to disable processing of models.
+     * @param value {@code true}, to enable processing of models; {@code false}, to disable processing of models.
      *
      * @see #isModelProcessingEnabled()
      */
@@ -459,7 +459,7 @@ public class JomcTask extends Task
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
      * transformation parameters property.</p>
      *
-     * @return The transformation parameters to apply.
+     * @return The global transformation parameters to apply.
      *
      * @see #createTransformationParameter()
      * @see #getTransformer(org.jomc.ant.types.TransformerResourceType)
@@ -494,7 +494,7 @@ public class JomcTask extends Task
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
      * transformation parameter resources property.</p>
      *
-     * @return The transformation parameter resources to apply.
+     * @return The global transformation parameter resources to apply.
      *
      * @see #createTransformationParameterResource()
      * @see #getTransformer(org.jomc.ant.types.TransformerResourceType)
@@ -526,7 +526,7 @@ public class JomcTask extends Task
     /**
      * Gets a flag indicating JAXP schema validation of modlet resources is enabled.
      *
-     * @return {@code true} if JAXP schema validation of modlet resources is enabled; {@code false} else.
+     * @return {@code true}, if JAXP schema validation of modlet resources is enabled; {@code false}, else.
      *
      * @see #setModletResourceValidationEnabled(boolean)
      */
@@ -538,7 +538,7 @@ public class JomcTask extends Task
     /**
      * Sets the flag indicating JAXP schema validation of modlet resources is enabled.
      *
-     * @param value {@code true} to enable JAXP schema validation of modlet resources; {@code false} to disable JAXP
+     * @param value {@code true}, to enable JAXP schema validation of modlet resources; {@code false}, to disable JAXP
      * schema validation of modlet resources.
      *
      * @see #isModletResourceValidationEnabled()
@@ -551,7 +551,7 @@ public class JomcTask extends Task
     /**
      * Called by the project to let the task do its work.
      *
-     * @throws BuildException if building fails.
+     * @throws BuildException if execution fails.
      *
      * @see #getIf()
      * @see #getUnless()
@@ -581,7 +581,7 @@ public class JomcTask extends Task
     /**
      * Called by the {@code execute} method prior to the {@code executeTask} method.
      *
-     * @throws BuildException if building fails.
+     * @throws BuildException if execution fails.
      *
      * @see #execute()
      */
@@ -600,7 +600,7 @@ public class JomcTask extends Task
     /**
      * Called by the {@code execute} method prior to the {@code postExecuteTask} method.
      *
-     * @throws BuildException if building fails.
+     * @throws BuildException if execution fails.
      *
      * @see #execute()
      */
@@ -615,7 +615,7 @@ public class JomcTask extends Task
      * Called by the {@code execute} method after the {@code preExecuteTask}/{@code executeTask} methods even if those
      * methods threw an exception.
      *
-     * @throws BuildException if building fails.
+     * @throws BuildException if execution fails.
      *
      * @see #execute()
      */
@@ -664,7 +664,7 @@ public class JomcTask extends Task
      *
      * @param location The resource location to create an {@code URL} from.
      *
-     * @return An {@code URL} for {@code location} or {@code null} if parsing {@code location} to an URL fails and
+     * @return An {@code URL} for {@code location} or {@code null}, if parsing {@code location} to an URL fails and
      * {@code location} points to a non-existent resource.
      *
      * @throws NullPointerException if {@code location} is {@code null}.
@@ -722,7 +722,7 @@ public class JomcTask extends Task
 
     /**
      * Creates an array of {@code URL}s for a given resource location.
-     * <p>This method first searches the given class loader for resources matching {@code location}. If such a resources
+     * <p>This method first searches the given class loader for resources matching {@code location}. If such resources
      * are found, an array of URLs of those resources is returned. If no such resources are found, an attempt is made
      * to parse the given location to an URL. On successful parsing, that URL is returned. Failing that, the given
      * location is interpreted as a file name relative to the project's base directory. If that file is found, the URL
@@ -735,7 +735,7 @@ public class JomcTask extends Task
      * fails and {@code location} points to non-existent resources.
      *
      * @throws NullPointerException if {@code location} or {@code classLoader} is {@code null}.
-     * @throws BuildException if creating an URL fails.
+     * @throws BuildException if creating an URL array fails.
      */
     public URL[] getResources( final String location, final ClassLoader classLoader ) throws BuildException
     {
@@ -823,7 +823,7 @@ public class JomcTask extends Task
      *
      * @param location The directory location to create an {@code URL} from.
      *
-     * @return An {@code URL} for {@code location} or {@code null} if parsing {@code location} to an URL fails and
+     * @return An {@code URL} for {@code location} or {@code null}, if parsing {@code location} to an URL fails and
      * {@code location} points to a non-existent directory.
      *
      * @throws NullPointerException if {@code location} is {@code null}.
@@ -876,7 +876,7 @@ public class JomcTask extends Task
      *
      * @param resource The resource to create a {@code Transformer} of.
      *
-     * @return A new {@code Transformer} for {@code resource} or {@code null} if {@code resource} is not found and
+     * @return A new {@code Transformer} for {@code resource} or {@code null}, if {@code resource} is not found and
      * flagged optional.
      *
      * @throws TransformerConfigurationException if creating a new {@code Transformer} fails.
@@ -1321,11 +1321,11 @@ public class JomcTask extends Task
      * Throws a {@code BuildException} on a {@code null} value of a {@code location} property of a given
      * {@code ResourceType} collection.
      *
-     * @param locations The collection holding the  {@code ResourceType} instances to test.
+     * @param locations The collection holding the {@code ResourceType} instances to test.
      *
      * @throws NullPointerException if {@code locations} is {@code null}.
-     * @throws BuildException if a {@code locations} property of a given {@code ResourceType} from the
-     * {@code locations} collection holds a {@code null} value.
+     * @throws BuildException if a {@code location} property of a given {@code ResourceType} from the {@code locations}
+     * collection holds a {@code null} value.
      */
     public final void assertLocationsNotNull( final Collection<? extends ResourceType> locations )
         throws BuildException

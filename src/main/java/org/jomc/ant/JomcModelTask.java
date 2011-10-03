@@ -142,7 +142,7 @@ public class JomcModelTask extends JomcTask
     /**
      * Gets a flag indicating model object class path resolution is enabled.
      *
-     * @return {@code true} if model object class path resolution is enabled; {@code false} else.
+     * @return {@code true}, if model object class path resolution is enabled; {@code false}, else.
      *
      * @see #setModelObjectClasspathResolutionEnabled(boolean)
      */
@@ -154,7 +154,7 @@ public class JomcModelTask extends JomcTask
     /**
      * Sets the flag indicating model object class path resolution is enabled.
      *
-     * @param value {@code true} to enable model object class path resolution; {@code false} to disable model object
+     * @param value {@code true}, to enable model object class path resolution; {@code false}, to disable model object
      * class path resolution.
      *
      * @see #isModelObjectClasspathResolutionEnabled()
@@ -201,7 +201,7 @@ public class JomcModelTask extends JomcTask
     /**
      * Gets a flag indicating JAXP schema validation of model resources is enabled.
      *
-     * @return {@code true} if JAXP schema validation of model resources is enabled; {@code false} else.
+     * @return {@code true}, if JAXP schema validation of model resources is enabled; {@code false}, else.
      *
      * @see #setModelResourceValidationEnabled(boolean)
      */
@@ -213,7 +213,7 @@ public class JomcModelTask extends JomcTask
     /**
      * Sets the flag indicating JAXP schema validation of model resources is enabled.
      *
-     * @param value {@code true} to enable JAXP schema validation of model resources; {@code false} to disable JAXP
+     * @param value {@code true}, to enable JAXP schema validation of model resources; {@code false}, to disable JAXP
      * schema validation of model resources.
      *
      * @see #isModelResourceValidationEnabled()

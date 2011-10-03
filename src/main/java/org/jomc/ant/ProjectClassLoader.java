@@ -150,7 +150,7 @@ public class ProjectClassLoader extends URLClassLoader
      *
      * @param name The name of the resource to search.
      *
-     * @return An {@code URL} object for reading the resource, or {@code null} if no resource matching {@code name} is
+     * @return An {@code URL} object for reading the resource or {@code null}, if no resource matching {@code name} is
      * found.
      */
     @Override

@@ -59,7 +59,7 @@ public class ClassFileProcessorTask extends JomcToolTask
     /**
      * Gets a flag indicating the processing of classes is enabled.
      *
-     * @return {@code true} if processing of classes is enabled; {@code false} else.
+     * @return {@code true}, if processing of classes is enabled; {@code false}, else.
      *
      * @see #setClassProcessingEnabled(boolean)
      */
@@ -71,7 +71,7 @@ public class ClassFileProcessorTask extends JomcToolTask
     /**
      * Sets the flag indicating the processing of classes is enabled.
      *
-     * @param value {@code true} to enable processing of classes; {@code false} to disable processing of classes.
+     * @param value {@code true}, to enable processing of classes; {@code false}, to disable processing of classes.
      *
      * @see #isClassProcessingEnabled()
      */
@@ -116,8 +116,8 @@ public class ClassFileProcessorTask extends JomcToolTask
      *
      * @throws BuildException if creating a new {@code ClassFileProcessor} instance fails.
      *
-     * @see #configureJomcTool(org.jomc.tools.JomcTool)
      * @see #getClassFileProcessorClass()
+     * @see #configureClassFileProcessor(org.jomc.tools.ClassFileProcessor)
      */
     public ClassFileProcessor newClassFileProcessor() throws BuildException
     {
