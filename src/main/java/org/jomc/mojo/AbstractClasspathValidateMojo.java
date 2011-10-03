@@ -41,7 +41,7 @@ import org.jomc.modlet.ObjectFactory;
 import org.jomc.tools.ClassFileProcessor;
 
 /**
- * Base class for validating classpath class file model objects.
+ * Base class for validating class path class file model objects.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $JOMC$
@@ -92,9 +92,9 @@ public abstract class AbstractClasspathValidateMojo extends AbstractJomcMojo
     }
 
     /**
-     * Gets the class loader to validate classpath model objects of.
+     * Gets the class loader to validate class path model objects of.
      *
-     * @return The class loader to validate classpath model objects of.
+     * @return The class loader to validate class path model objects of.
      *
      * @throws MojoExecutionException if getting the class loader fails.
      */

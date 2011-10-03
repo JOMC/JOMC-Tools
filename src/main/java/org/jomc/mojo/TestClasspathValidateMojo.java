@@ -33,7 +33,7 @@ package org.jomc.mojo;
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
- * Validates a projects' test classpath class file model objects.
+ * Validates a projects' test class path class file model objects.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $JOMC$

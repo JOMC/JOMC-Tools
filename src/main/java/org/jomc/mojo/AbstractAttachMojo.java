@@ -67,7 +67,7 @@ public abstract class AbstractAttachMojo extends AbstractMojo
     private MavenProject mavenProject;
 
     /**
-     * Maven ProjectHelper.
+     * The Maven ProjectHelper of the instance.
      *
      * @component
      * @required
@@ -173,7 +173,7 @@ public abstract class AbstractAttachMojo extends AbstractMojo
     /**
      * Gets a flag indicating verbose output is enabled.
      *
-     * @return {@code true} if verbose output is enabled; {@code false} if information messages are suppressed.
+     * @return {@code true}, if verbose output is enabled; {@code false}, if information messages are suppressed.
      *
      * @throws MojoExecutionException if getting the flag fails.
      *
@@ -185,9 +185,9 @@ public abstract class AbstractAttachMojo extends AbstractMojo
     }
 
     /**
-     * Gets a flag indicating verbose output is enabled.
+     * Sets the flag indicating verbose output is enabled.
      *
-     * @param value {@code true} if verbose output is enabled; {@code false} if information messages are suppressed.
+     * @param value {@code true}, to enable verbose output; {@code false}, to suppress information messages.
      *
      * @throws MojoExecutionException if setting the flag fails.
      *

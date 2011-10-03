@@ -93,7 +93,7 @@ public class PropertiesResourceType extends ResourceType
      *
      * @param value The format value to test.
      *
-     * @return {@code true} if the given format value is valid; {@code false} if the given format value is not valid.
+     * @return {@code true}, if the given format value is valid; {@code false}, if the given format value is not valid.
      *
      * @see #FORMAT_VALUES
      */

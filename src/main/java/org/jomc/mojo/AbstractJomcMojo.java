@@ -263,7 +263,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private boolean modelProcessingEnabled;
 
     /**
-     * Controls model object classpath resolution.
+     * Controls model object class path resolution.
      *
      * @parameter expression="${jomc.modelObjectClasspathResolution}" default-value="true"
      */
@@ -659,7 +659,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Executes this tool.
      *
-     * @throws Exception if execution of this tool fais.
+     * @throws Exception if execution of this tool fails.
      */
     protected abstract void executeTool() throws Exception;
 
@@ -686,7 +686,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Gets a flag indicating the current execution is permitted.
      *
-     * @return {@code true} if the current execution is permitted; {@code false} if the current execution is suppressed.
+     * @return {@code true}, if the current execution is permitted; {@code false}, if the current execution is
+     * suppressed.
      *
      * @throws MojoExecutionException if getting the flag fails.
      *
@@ -1019,11 +1020,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
-     * Gets the project's runtime classpath elements.
+     * Gets the project's runtime class path elements.
      *
-     * @return A set of classpath element strings.
+     * @return A set of class path element strings.
      *
-     * @throws MojoExecutionException if getting the classpath elements fails.
+     * @throws MojoExecutionException if getting the class path elements fails.
      */
     protected Set<String> getMainClasspathElements() throws MojoExecutionException
     {
@@ -1098,11 +1099,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
-     * Gets the project's test classpath elements.
+     * Gets the project's test class path elements.
      *
-     * @return A set of classpath element strings.
+     * @return A set of class path element strings.
      *
-     * @throws MojoExecutionException if getting the classpath elements fails.
+     * @throws MojoExecutionException if getting the class path elements fails.
      */
     protected Set<String> getTestClasspathElements() throws MojoExecutionException
     {
@@ -1148,7 +1149,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Gets a flag indicating verbose output is enabled.
      *
-     * @return {@code true} if verbose output is enabled; {@code false} if information messages are suppressed.
+     * @return {@code true}, if verbose output is enabled; {@code false}, if information messages are suppressed.
      *
      * @throws MojoExecutionException if getting the flag fails.
      *
@@ -1160,9 +1161,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
-     * Gets a flag indicating verbose output is enabled.
+     * Sets the flag indicating verbose output is enabled.
      *
-     * @param value {@code true} if verbose output is enabled; {@code false} if information messages are suppressed.
+     * @param value {@code true}, to enable verbose output; {@code false}, to suppress information messages.
      *
      * @throws MojoExecutionException if setting the flag fails.
      *
@@ -1176,7 +1177,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Gets a flag indicating the processing of sources is enabled.
      *
-     * @return {@code true} if processing of sources is enabled; {@code false} else.
+     * @return {@code true}, if processing of sources is enabled; {@code false}, else.
      *
      * @throws MojoExecutionException if getting the flag fails.
      */
@@ -1188,7 +1189,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Sets the flag indicating the processing of sources is enabled.
      *
-     * @param value {@code true} to enable processing of sources; {@code false} to disable processing of sources.
+     * @param value {@code true}, to enable processing of sources; {@code false}, to disable processing of sources.
      *
      * @throws MojoExecutionException if setting the flag fails.
      *
@@ -1202,7 +1203,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Gets a flag indicating the processing of resources is enabled.
      *
-     * @return {@code true} if processing of resources is enabled; {@code false} else.
+     * @return {@code true}, if processing of resources is enabled; {@code false}, else.
      *
      * @throws MojoExecutionException if getting the flag fails.
      */
@@ -1214,7 +1215,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Sets the flag indicating the processing of resources is enabled.
      *
-     * @param value {@code true} to enable processing of resources; {@code false} to disable processing of resources.
+     * @param value {@code true}, to enable processing of resources; {@code false}, to disable processing of resources.
      *
      * @throws MojoExecutionException if setting the flag fails.
      *
@@ -1228,7 +1229,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Gets a flag indicating the processing of classes is enabled.
      *
-     * @return {@code true} if processing of classes is enabled; {@code false} else.
+     * @return {@code true}, if processing of classes is enabled; {@code false}, else.
      *
      * @throws MojoExecutionException if getting the flag fails.
      */
@@ -1240,7 +1241,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Sets the flag indicating the processing of classes is enabled.
      *
-     * @param value {@code true} to enable processing of classes; {@code false} to disable processing of classes.
+     * @param value {@code true}, to enable processing of classes; {@code false}, to disable processing of classes.
      *
      * @throws MojoExecutionException if setting the flag fails.
      *
@@ -1254,7 +1255,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Gets a flag indicating the processing of models is enabled.
      *
-     * @return {@code true} if processing of models is enabled; {@code false} else.
+     * @return {@code true}, if processing of models is enabled; {@code false}, else.
      *
      * @throws MojoExecutionException if getting the flag fails.
      */
@@ -1266,7 +1267,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Sets the flag indicating the processing of models is enabled.
      *
-     * @param value {@code true} to enable processing of models; {@code false} to disable processing of models.
+     * @param value {@code true}, to enable processing of models; {@code false}, to disable processing of models.
      *
      * @throws MojoExecutionException if setting the flag fails.
      *
@@ -1280,7 +1281,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Gets a flag indicating model object class path resolution is enabled.
      *
-     * @return {@code true} if model object class path resolution is enabled; {@code false} else.
+     * @return {@code true}, if model object class path resolution is enabled; {@code false}, else.
      *
      * @throws MojoExecutionException if getting the flag fails.
      */
@@ -1292,7 +1293,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Sets the flag indicating model object class path resolution is enabled.
      *
-     * @param value {@code true} to enable model object class path resolution; {@code false} to disable model object
+     * @param value {@code true}, to enable model object class path resolution; {@code false}, to disable model object
      * class path resolution.
      *
      * @throws MojoExecutionException if setting the flag fails.
@@ -1415,14 +1416,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
-     * Creates a new tool instance for managing source files.
+     * Creates a new tool instance for processing source files.
      *
      * @param context The context of the tool.
      *
-     * @return A new tool instance for managing source files.
+     * @return A new tool instance for processing source files.
      *
      * @throws NullPointerException if {@code context} is {@code null}.
-     * @throws MojoExecutionException if getting the tool of the instance fails.
+     * @throws MojoExecutionException if creating a new tool instance fails.
      *
      * @see #createJomcTool(org.jomc.modlet.ModelContext, java.lang.String, java.lang.Class)
      */
@@ -1437,14 +1438,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
-     * Creates a new tool instance for managing resource files.
+     * Creates a new tool instance for processing resource files.
      *
      * @param context The context of the tool.
      *
-     * @return A new tool instance for managing resource files.
+     * @return A new tool instance for processing resource files.
      *
      * @throws NullPointerException if {@code context} is {@code null}.
-     * @throws MojoExecutionException if getting the tool of the instance fails.
+     * @throws MojoExecutionException if creating a new tool instance fails.
      *
      * @see #createJomcTool(org.jomc.modlet.ModelContext, java.lang.String, java.lang.Class)
      */
@@ -1460,14 +1461,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
-     * Creates a new tool instance for managing class files.
+     * Creates a new tool instance for processing class files.
      *
      * @param context The context of the tool.
      *
-     * @return A new tool instance for managing class files.
+     * @return A new tool instance for processing class files.
      *
      * @throws NullPointerException if {@code context} is {@code null}.
-     * @throws MojoExecutionException if getting the tool of the instance fails.
+     * @throws MojoExecutionException if creating a new tool instance fails.
      *
      * @see #createJomcTool(org.jomc.modlet.ModelContext, java.lang.String, java.lang.Class)
      */
@@ -1577,7 +1578,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *
      * @param location The location to create an {@code URL} from.
      *
-     * @return An {@code URL} for {@code location} or {@code null} if parsing {@code location} to an URL fails and
+     * @return An {@code URL} for {@code location} or {@code null}, if parsing {@code location} to an URL fails and
      * {@code location} points to a non-existent resource.
      *
      * @throws NullPointerException if {@code location} is {@code null}.
@@ -1647,7 +1648,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *
      * @param location The directory location to create an {@code URL} from.
      *
-     * @return An {@code URL} for {@code location} or {@code null} if parsing {@code location} to an URL fails and
+     * @return An {@code URL} for {@code location} or {@code null}, if parsing {@code location} to an URL fails and
      * {@code location} points to a non-existent directory.
      *
      * @throws NullPointerException if {@code location} is {@code null}.
@@ -1704,9 +1705,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Creates a new {@code Transformer} from a given {@code TransformerResourceType}.
      *
-     * @param resource The resource to initialise the transformer with.
+     * @param resource The resource to initialize the transformer with.
      *
-     * @return A {@code Transformer} for {@code resource} or {@code null} if {@code resource} is not found and flagged
+     * @return A {@code Transformer} for {@code resource} or {@code null}, if {@code resource} is not found and flagged
      * optional.
      *
      * @throws NullPointerException if {@code resource} is {@code null}.
@@ -2053,7 +2054,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *
      * @param level The level to test.
      *
-     * @return {@code true} if messages at {@code level} are logged; {@code false} if messages at {@code level} are
+     * @return {@code true}, if messages at {@code level} are logged; {@code false}, if messages at {@code level} are
      * suppressed.
      *
      * @throws NullPointerException if {@code level} is {@code null}.
@@ -2159,7 +2160,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * Logs a message stating that a module has not been found.
      *
-     * @param module The module which has not been found.
+     * @param module The module not having been found.
      *
      * @throws MojoExecutionException if logging fails.
      */

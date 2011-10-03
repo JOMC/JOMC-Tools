@@ -131,7 +131,7 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
     /**
      * Gets transformers to use for transforming model objects.
      *
-     * @param classLoader The class loader to use for loading a transformer classpath resource.
+     * @param classLoader The class loader to use for loading a transformer class path resource.
      *
      * @return A list of transformers to use for transforming model objects.
      *

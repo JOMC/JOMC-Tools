@@ -59,7 +59,7 @@ public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo
     private static final String TOOLNAME = "ResourceFileProcessor";
 
     /**
-     * The language of the default language properties file of generated resource bundle resources.
+     * The language of the default language properties file of generated resource bundle properties resources.
      *
      * @parameter expression="${jomc.resourceBundleDefaultLanguage}"
      */
