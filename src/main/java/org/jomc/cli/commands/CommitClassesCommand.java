@@ -1,7 +1,7 @@
 // SECTION-START[License Header]
 // <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
- *   Copyright (C) Christian Schulte (schulte2005@users.sourceforge.net), 2005-07-25
+ *   Copyright (C) Christian Schulte, 2005-07-25
  *   All rights reserved.
  *
  *   Redistribution and use in source and binary forms, with or without
