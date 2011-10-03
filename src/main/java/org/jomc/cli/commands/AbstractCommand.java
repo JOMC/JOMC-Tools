@@ -256,8 +256,8 @@ public abstract class AbstractCommand
      *
      * @param level The level to test.
      *
-     * @return {@code true} if messages at {@code level} are provided to the listeners of the instance;
-     * {@code false} if messages at {@code level} are not provided to the listeners of the instance.
+     * @return {@code true}, if messages at {@code level} are provided to the listeners of the instance;
+     * {@code false}, if messages at {@code level} are not provided to the listeners of the instance.
      *
      * @throws NullPointerException if {@code level} is {@code null}.
      *

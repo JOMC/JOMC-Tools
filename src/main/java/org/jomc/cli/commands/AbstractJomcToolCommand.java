@@ -382,7 +382,7 @@ public abstract class AbstractJomcToolCommand extends AbstractModelCommand
      *
      * @param commandLine The command line to process.
      *
-     * @return {@code true} if processing of all modules is requested; {@code false} else.
+     * @return {@code true}, if processing of all modules is requested; {@code false}, else.
      *
      * @throws NullPointerException if {@code commandLine} is {@code null}.
      *
@@ -408,7 +408,7 @@ public abstract class AbstractJomcToolCommand extends AbstractModelCommand
      *
      * @param commandLine The command line to get a locale from.
      *
-     * @return The locale from {@code commandLine} or {@code null} if {@code commandLine} does not hold options
+     * @return The locale from {@code commandLine} or {@code null}, if {@code commandLine} does not hold options
      * specifying a locale.
      */
     protected final Locale getLocale( final CommandLine commandLine )

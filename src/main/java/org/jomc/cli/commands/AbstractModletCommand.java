@@ -110,7 +110,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
     /**
      * Creates a new {@code Transformer} from a given {@code Source}.
      *
-     * @param source The source to initialise the transformer with.
+     * @param source The source to initialize the transformer with.
      *
      * @return A {@code Transformer} backed by {@code source}.
      *
@@ -247,7 +247,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
     /**
      * Gets the identifier of the model to process.
      *
-     * @param commandLine The command line to get the model identifier of the model to process from.
+     * @param commandLine The command line to get the identifier of the model to process from.
      *
      * @return The identifier of the model to process.
      *
@@ -579,7 +579,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
          *
          * @param name The name of the resource.
          *
-         * @return A {@code URL} for the resource, or {@code null} if the resource could not be found.
+         * @return A {@code URL} for the resource or {@code null}, if the resource could not be found.
          */
         @Override
         public URL findResource( final String name )

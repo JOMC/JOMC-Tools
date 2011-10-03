@@ -69,7 +69,7 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
      *
      * @param commandLine The command line to process.
      *
-     * @return A new {@code ResourceFileProcessor} instance as specified by the given command line or {@code null} if
+     * @return A new {@code ResourceFileProcessor} instance as specified by the given command line or {@code null}, if
      * creating a new instance fails.
      *
      * @throws NullPointerException if {@code commandLine} is {@code null}.
