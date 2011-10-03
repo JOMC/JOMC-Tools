@@ -138,6 +138,12 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
             if ( commandLine.hasOption( this.getDocumentsOption().getOpt() ) )
             {
                 final Unmarshaller u = context.createUnmarshaller( model.getIdentifier() );
+
+                if ( !commandLine.hasOption( this.getNoModelResourceValidation().getOpt() ) )
+                {
+                    u.setSchema( context.createSchema( model.getIdentifier() ) );
+                }
+
                 for ( File f : this.getDocumentFiles( commandLine ) )
                 {
                     if ( this.isLoggable( Level.FINEST ) )

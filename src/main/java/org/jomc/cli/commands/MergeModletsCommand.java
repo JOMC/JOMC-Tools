@@ -105,6 +105,11 @@ public final class MergeModletsCommand extends AbstractModletCommand
             final Marshaller marshaller = context.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
             final Unmarshaller unmarshaller = context.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
 
+            if ( !commandLine.hasOption( this.getNoModletResourceValidation().getOpt() ) )
+            {
+                unmarshaller.setSchema( context.createSchema( ModletObject.MODEL_PUBLIC_ID ) );
+            }
+
             File stylesheetFile = null;
             if ( commandLine.hasOption( this.getStylesheetOption().getOpt() ) )
             {
@@ -290,6 +295,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
                     new JAXBSource( marshaller, new ObjectFactory().createModlet( mergedModlet ) );
 
                 final JAXBResult result = new JAXBResult( unmarshaller );
+                unmarshaller.setSchema( null );
                 transformer.transform( source, result );
 
                 if ( result.getResult() instanceof JAXBElement<?>
