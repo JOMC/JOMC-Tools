@@ -135,7 +135,7 @@ public class ToolsModelProcessor implements ModelProcessor
      * {@code org.jomc.tools.modlet.ToolsModelProcessor.defaultEnabled} holding a value indicating the processor is
      * enabled by default. If that property is not set, the {@code true} default is returned.</p>
      *
-     * @return {@code true} if the processor is enabled by default; {@code false} if the processor is disabled by
+     * @return {@code true}, if the processor is enabled by default; {@code false}, if the processor is disabled by
      * default.
      *
      * @see #setDefaultEnabled(java.lang.Boolean)
@@ -167,7 +167,7 @@ public class ToolsModelProcessor implements ModelProcessor
     /**
      * Gets a flag indicating the processor is enabled.
      *
-     * @return {@code true} if the processor is enabled; {@code false} if the processor is disabled.
+     * @return {@code true}, if the processor is enabled; {@code false}, if the processor is disabled.
      *
      * @see #isDefaultEnabled()
      * @see #setEnabled(java.lang.Boolean)
@@ -201,7 +201,7 @@ public class ToolsModelProcessor implements ModelProcessor
      * indicating model object class path resolution is enabled by default. If that property is not set, the
      * {@code true} default is returned.</p>
      *
-     * @return {@code true} if model object class path resolution is enabled by default; {@code false} if model object
+     * @return {@code true}, if model object class path resolution is enabled by default; {@code false}, if model object
      * class path resolution is disabled by default.
      *
      * @see #setDefaultModelObjectClasspathResolutionEnabled(java.lang.Boolean)
@@ -235,7 +235,7 @@ public class ToolsModelProcessor implements ModelProcessor
     /**
      * Gets a flag indicating model object class path resolution is enabled.
      *
-     * @return {@code true} if model object class path resolution is enabled; {@code false} if model object class path
+     * @return {@code true}, if model object class path resolution is enabled; {@code false}, if model object class path
      * resolution is disabled.
      *
      * @see #isDefaultModelObjectClasspathResolutionEnabled()

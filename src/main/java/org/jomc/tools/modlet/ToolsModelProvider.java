@@ -135,7 +135,7 @@ public class ToolsModelProvider implements ModelProvider
      * {@code org.jomc.tools.modlet.ToolsModelProvider.defaultEnabled} holding a value indicating the provider is
      * enabled by default. If that property is not set, the {@code true} default is returned.</p>
      *
-     * @return {@code true} if the provider is enabled by default; {@code false} if the provider is disabled by
+     * @return {@code true}, if the provider is enabled by default; {@code false}, if the provider is disabled by
      * default.
      *
      * @see #setDefaultEnabled(java.lang.Boolean)
@@ -167,7 +167,7 @@ public class ToolsModelProvider implements ModelProvider
     /**
      * Gets a flag indicating the provider is enabled.
      *
-     * @return {@code true} if the provider is enabled; {@code false} if the provider is disabled.
+     * @return {@code true}, if the provider is enabled; {@code false}, if the provider is disabled.
      *
      * @see #isDefaultEnabled()
      * @see #setEnabled(java.lang.Boolean)
@@ -201,7 +201,7 @@ public class ToolsModelProvider implements ModelProvider
      * indicating model object class path resolution is enabled by default. If that property is not set, the
      * {@code true} default is returned.</p>
      *
-     * @return {@code true} if model object class path resolution is enabled by default; {@code false} if model object
+     * @return {@code true}, if model object class path resolution is enabled by default; {@code false}, if model object
      * class path resolution is disabled by default.
      *
      * @see #setDefaultModelObjectClasspathResolutionEnabled(java.lang.Boolean)
@@ -235,7 +235,7 @@ public class ToolsModelProvider implements ModelProvider
     /**
      * Gets a flag indicating model object class path resolution is enabled.
      *
-     * @return {@code true} if model object class path resolution is enabled; {@code false} if model object class path
+     * @return {@code true}, if model object class path resolution is enabled; {@code false}, if model object class path
      * resolution is disabled.
      *
      * @see #isDefaultModelObjectClasspathResolutionEnabled()

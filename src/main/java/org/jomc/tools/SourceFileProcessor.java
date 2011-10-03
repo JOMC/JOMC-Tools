@@ -164,7 +164,7 @@ public class SourceFileProcessor extends JomcTool
      *
      * @param specification The specification to get a source files model for.
      *
-     * @return The source files model for {@code specification} or {@code null} if no source files model is found.
+     * @return The source files model for {@code specification} or {@code null}, if no source files model is found.
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
      *
@@ -235,7 +235,7 @@ public class SourceFileProcessor extends JomcTool
      *
      * @param implementation The implementation to get a source files model for.
      *
-     * @return The source files model for {@code implementation} or {@code null} if no source files model is found.
+     * @return The source files model for {@code implementation} or {@code null}, if no source files model is found.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      *
@@ -313,6 +313,8 @@ public class SourceFileProcessor extends JomcTool
      *
      * @deprecated As of JOMC 1.2, please use method {@link #getSourceFileEditor()}. This method will be removed in
      * version 2.0.
+     *
+     * @see SourceFileEditor#edit(org.jomc.model.Specification, org.jomc.tools.model.SourceFileType, java.io.File)
      */
     @Deprecated
     public SourceFileEditor getSourceFileEditor( final Specification specification )
@@ -339,6 +341,8 @@ public class SourceFileProcessor extends JomcTool
      *
      * @deprecated As of JOMC 1.2, please use method {@link #getSourceFileEditor()}. This method will be removed in
      * version 2.0.
+     *
+     * @see SourceFileEditor#edit(org.jomc.model.Implementation, org.jomc.tools.model.SourceFileType, java.io.File)
      */
     @Deprecated
     public SourceFileEditor getSourceFileEditor( final Implementation implementation )
@@ -757,11 +761,11 @@ public class SourceFileProcessor extends JomcTool
         }
 
         /**
-         * Edits the source code of a given specification.
+         * Edits a source file of a given specification.
          *
-         * @param specification The specification to edit source code of.
-         * @param sourceFileType The source code file to edit.
-         * @param sourcesDirectory The directory holding the source code file to edit.
+         * @param specification The specification to edit a source file of.
+         * @param sourceFileType The model of the source file to edit.
+         * @param sourcesDirectory The directory holding the source file to edit.
          *
          * @throws NullPointerException if {@code specification}, {@code sourceFileType} or {@code sourcesDirectory} is
          * {@code null}.
@@ -794,11 +798,11 @@ public class SourceFileProcessor extends JomcTool
         }
 
         /**
-         * Edits the source code of a given implementation.
+         * Edits a source file of a given implementation.
          *
-         * @param implementation The implementation to edit source code of.
-         * @param sourceFileType The source code file model.
-         * @param sourcesDirectory The directory holding the source code file to edit.
+         * @param implementation The implementation to edit a source file of.
+         * @param sourceFileType The model of the source file to edit.
+         * @param sourcesDirectory The directory holding the source file to edit.
          *
          * @throws NullPointerException if {@code implementation}, {@code sourceFileType} or {@code sourcesDirectory} is
          * {@code null}.
@@ -919,7 +923,7 @@ public class SourceFileProcessor extends JomcTool
 
         /**
          * {@inheritDoc}
-         * <p>This method creates any sections declared in the model of the editor as returned by method
+         * <p>This method creates any sections declared in the model of the source file as returned by method
          * {@code getSourceFileType} prior to rendering the output of the editor.</p>
          *
          * @param section The section to start rendering the editor's output with.
@@ -944,7 +948,7 @@ public class SourceFileProcessor extends JomcTool
 
         /**
          * {@inheritDoc}
-         * <p>This method searches the model of the editor for a section matching {@code s} and updates properties
+         * <p>This method searches the model of the source file for a section matching {@code s} and updates properties
          * {@code headContent} and {@code tailContent} of {@code s} according to the templates declared in the model
          * as returned by method {@code getSourceFileType}.</p>
          *

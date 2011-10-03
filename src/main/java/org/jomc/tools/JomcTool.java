@@ -334,8 +334,8 @@ public class JomcTool
      *
      * @param level The level to test.
      *
-     * @return {@code true} if messages at {@code level} are provided to the listeners of the instance;
-     * {@code false} if messages at {@code level} are not provided to the listeners of the instance.
+     * @return {@code true}, if messages at {@code level} are provided to the listeners of the instance;
+     * {@code false}, if messages at {@code level} are not provided to the listeners of the instance.
      *
      * @throws NullPointerException if {@code level} is {@code null}.
      *
@@ -376,8 +376,8 @@ public class JomcTool
      * Gets the Java type name of a specification.
      *
      * @param specification The specification to get the Java type name of.
-     * @param qualified {@code true} to return the fully qualified type name (with package name prepended);
-     * {@code false} to return the short type name (without package name prepended).
+     * @param qualified {@code true}, to return the fully qualified type name (with package name prepended);
+     * {@code false}, to return the short type name (without package name prepended).
      *
      * @return The Java type name of {@code specification} or {@code null}.
      *
@@ -457,8 +457,8 @@ public class JomcTool
      * Gets the name of a Java type of a given specification reference.
      *
      * @param reference The specification reference to get a Java type name of.
-     * @param qualified {@code true} to return the fully qualified type name (with package name prepended);
-     * {@code false} to return the short type name (without package name prepended).
+     * @param qualified {@code true}, to return the fully qualified type name (with package name prepended);
+     * {@code false}, to return the short type name (without package name prepended).
      *
      * @return The Java type name of {@code reference} or {@code null}.
      *
@@ -499,8 +499,8 @@ public class JomcTool
      * Gets the Java type name of an implementation.
      *
      * @param implementation The implementation to get the Java type name of.
-     * @param qualified {@code true} to return the fully qualified type name (with package name prepended);
-     * {@code false} to return the short type name (without package name prepended).
+     * @param qualified {@code true}, to return the fully qualified type name (with package name prepended);
+     * {@code false}, to return the short type name (without package name prepended).
      *
      * @return The Java type name of {@code implementation} or {@code null}.
      *
@@ -559,8 +559,8 @@ public class JomcTool
      * Gets a list of names of all Java types an implementation implements.
      *
      * @param implementation The implementation to get names of all implemented Java types of.
-     * @param qualified {@code true} to return the fully qualified type names (with package name prepended);
-     * {@code false} to return the short type names (without package name prepended).
+     * @param qualified {@code true}, to return the fully qualified type names (with package name prepended);
+     * {@code false}, to return the short type names (without package name prepended).
      *
      * @return An unmodifiable list of names of all Java types implemented by {@code implementation}.
      *
@@ -584,8 +584,8 @@ public class JomcTool
      * Gets a list of names of all Java types an implementation implements.
      *
      * @param implementation The implementation to get names of all implemented Java types of.
-     * @param qualified {@code true} to return the fully qualified type names (with package name prepended);
-     * {@code false} to return the short type names (without package name prepended).
+     * @param qualified {@code true}, to return the fully qualified type names (with package name prepended);
+     * {@code false}, to return the short type names (without package name prepended).
      *
      * @return An unmodifiable list of names of all Java types implemented by {@code implementation}.
      *
@@ -678,8 +678,8 @@ public class JomcTool
      * Gets the Java type name of a property.
      *
      * @param property The property to get the Java type name of.
-     * @param boxify {@code true} to return the name of the Java wrapper class when the type is a Java primitive type;
-     * {@code false} to return the exact binary name (unboxed name) of the Java type.
+     * @param boxify {@code true}, to return the name of the Java wrapper class when the type is a Java primitive type;
+     * {@code false}, to return the exact binary name (unboxed name) of the Java type.
      *
      * @return The Java type name of {@code property}.
      *
@@ -739,11 +739,11 @@ public class JomcTool
     }
 
     /**
-     * Gets a flag indicating if the type of a given property is a Java primitive.
+     * Gets a flag indicating the type of a given property is a Java primitive.
      *
      * @param property The property to query.
      *
-     * @return {@code true} if the type of {@code property} is a Java primitive; {@code false} if not.
+     * @return {@code true}, if the Java type of {@code property} is primitive; {@code false}, if not.
      *
      * @throws NullPointerException if {@code property} is {@code null}.
      */
@@ -982,9 +982,9 @@ public class JomcTool
     }
 
     /**
-     * Gets the name of a Java modifier of a dependency of a given implementation.
+     * Gets the Java modifier name of a dependency of a given implementation.
      *
-     * @param implementation The implementation to get a dependency Java modifier name of.
+     * @param implementation The implementation declaring the dependency to get a Java modifier name of.
      * @param dependency The dependency to get a Java modifier name of.
      *
      * @return The Java modifier name of {@code dependency} of {@code implementation}.
@@ -1006,9 +1006,9 @@ public class JomcTool
     }
 
     /**
-     * Gets the name of a Java modifier of a message of a given implementation.
+     * Gets the Java modifier name of a message of a given implementation.
      *
-     * @param implementation The implementation to get a message Java modifier name of.
+     * @param implementation The implementation declaring the message to get a Java modifier name of.
      * @param message The message to get a Java modifier name of.
      *
      * @return The Java modifier name of {@code message} of {@code implementation}.
@@ -1030,12 +1030,12 @@ public class JomcTool
     }
 
     /**
-     * Gets the name of a Java modifier for a given property of a given implementation.
+     * Gets the Java modifier name of a property of a given implementation.
      *
-     * @param implementation The implementation declaring {@code property}.
-     * @param property The property to get a Java modifier name for.
+     * @param implementation The implementation declaring the property to get a Java modifier name of.
+     * @param property The property to get a Java modifier name of.
      *
-     * @return The Java modifier name for {@code property} of {@code implementation}.
+     * @return The Java modifier name of {@code property} of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} or {@code property} is {@code null}.
      */
@@ -1068,7 +1068,7 @@ public class JomcTool
      * @param indentationLevel The indentation level of the comment.
      * @param linePrefix The text to prepend lines with.
      *
-     * @return {@code text} formatted as a Javadoc comment.
+     * @return {@code text} formatted to a Javadoc comment.
      *
      * @throws NullPointerException if {@code text} or {@code linePrefix} is {@code null}.
      * @throws IllegalArgumentException if {@code indentationLevel} is negative.
@@ -1183,10 +1183,10 @@ public class JomcTool
      * Formats a string to a Java identifier.
      *
      * @param str The string to format or {@code null}.
-     * @param capitalize {@code true} to return an identifier with the first character upper cased; {@code false} to
+     * @param capitalize {@code true}, to return an identifier with the first character upper cased; {@code false}, to
      * return an identifier with the first character lower cased.
      *
-     * @return {@code str} formatted to a Java identifier.
+     * @return {@code str} formatted to a Java identifier or {@code null}.
      *
      * @since 1.2
      */
@@ -1224,12 +1224,12 @@ public class JomcTool
     }
 
     /**
-     * Gets a flag indicating if the class of a given specification is located in the Java default package.
+     * Gets a flag indicating the class of a given specification is located in the Java default package.
      *
-     * @param specification The specification to test.
+     * @param specification The specification to query.
      *
-     * @return {@code true} if the class of {@code specification} is located in the Java default package; {@code false}
-     * if not.
+     * @return {@code true}, if the class of {@code specification} is located in the Java default package;
+     * {@code false}, else.
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
      */
@@ -1244,12 +1244,12 @@ public class JomcTool
     }
 
     /**
-     * Gets a flag indicating if the class of a given implementation is located in the Java default package.
+     * Gets a flag indicating the class of a given implementation is located in the Java default package.
      *
-     * @param implementation The implementation to test.
+     * @param implementation The implementation to query.
      *
-     * @return {@code true} if the class of {@code implementation} is located in the Java default package; {@code false}
-     * if not.
+     * @return {@code true}, if the class of {@code implementation} is located in the Java default package;
+     * {@code false}, else.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      */
@@ -1366,9 +1366,9 @@ public class JomcTool
     /**
      * Formats a calendar instance to a string.
      *
-     * @param calendar The calendar to format.
+     * @param calendar The calendar to format to a string.
      *
-     * @return Date of {@code calendar} formatted using a short format style pattern.
+     * @return The date of {@code calendar} formatted using a short format style pattern.
      *
      * @throws NullPointerException if {@code calendar} is {@code null}.
      *
@@ -1387,9 +1387,9 @@ public class JomcTool
     /**
      * Formats a calendar instance to a string.
      *
-     * @param calendar The calendar to format.
+     * @param calendar The calendar to format to a string.
      *
-     * @return Date of {@code calendar} formatted using a medium format style pattern.
+     * @return The date of {@code calendar} formatted using a medium format style pattern.
      *
      * @throws NullPointerException if {@code calendar} is {@code null}.
      *
@@ -1410,9 +1410,9 @@ public class JomcTool
     /**
      * Formats a calendar instance to a string.
      *
-     * @param calendar The calendar to format.
+     * @param calendar The calendar to format to a string.
      *
-     * @return Date of {@code calendar} formatted using a long format style pattern.
+     * @return The date of {@code calendar} formatted using a long format style pattern.
      *
      * @throws NullPointerException if {@code calendar} is {@code null}.
      *
@@ -1431,9 +1431,9 @@ public class JomcTool
     /**
      * Formats a calendar instance to a string.
      *
-     * @param calendar The calendar to format.
+     * @param calendar The calendar to format to a string.
      *
-     * @return Time of {@code calendar} formatted using a short format style pattern.
+     * @return The time of {@code calendar} formatted using a short format style pattern.
      *
      * @throws NullPointerException if {@code calendar} is {@code null}.
      *
@@ -1452,9 +1452,9 @@ public class JomcTool
     /**
      * Formats a calendar instance to a string.
      *
-     * @param calendar The calendar to format.
+     * @param calendar The calendar to format to a string.
      *
-     * @return Time of {@code calendar} formatted using a medium format style pattern.
+     * @return The time of {@code calendar} formatted using a medium format style pattern.
      *
      * @throws NullPointerException if {@code calendar} is {@code null}.
      *
@@ -1475,9 +1475,9 @@ public class JomcTool
     /**
      * Formats a calendar instance to a string.
      *
-     * @param calendar The calendar to format.
+     * @param calendar The calendar to format to a string.
      *
-     * @return Time of {@code calendar} formatted using a long format style pattern.
+     * @return The time of {@code calendar} formatted using a long format style pattern.
      *
      * @throws NullPointerException if {@code calendar} is {@code null}.
      *
@@ -1496,9 +1496,9 @@ public class JomcTool
     /**
      * Formats a calendar instance to a string.
      *
-     * @param calendar The calendar to format.
+     * @param calendar The calendar to format to a string.
      *
-     * @return Date and time of {@code calendar} formatted using a short format style pattern.
+     * @return The date and time of {@code calendar} formatted using a short format style pattern.
      *
      * @throws NullPointerException if {@code calendar} is {@code null}.
      *
@@ -1519,9 +1519,9 @@ public class JomcTool
     /**
      * Formats a calendar instance to a string.
      *
-     * @param calendar The calendar to format.
+     * @param calendar The calendar to format to a string.
      *
-     * @return Date and time of {@code calendar} formatted using a medium format style pattern.
+     * @return The date and time of {@code calendar} formatted using a medium format style pattern.
      *
      * @throws NullPointerException if {@code calendar} is {@code null}.
      *
@@ -1544,9 +1544,9 @@ public class JomcTool
     /**
      * Formats a calendar instance to a string.
      *
-     * @param calendar The calendar to format.
+     * @param calendar The calendar to format to a string.
      *
-     * @return Date and time of {@code calendar} formatted using a long format style pattern.
+     * @return The date and time of {@code calendar} formatted using a long format style pattern.
      *
      * @throws NullPointerException if {@code calendar} is {@code null}.
      *
@@ -1570,7 +1570,7 @@ public class JomcTool
      * @param start The start of the range.
      * @param end The end of the range.
      *
-     * @return Formatted range of the years of {@code start} and {@code end}.
+     * @return Formatted range of the years of {@code start} and {@code end} (e.g. {@code "start - end"}).
      *
      * @throws NullPointerException if {@code start} or {@code end} is {@code null}.
      */
@@ -1616,7 +1616,7 @@ public class JomcTool
     /**
      * Formats a calendar instance to a string.
      *
-     * @param calendar The calendar to format.
+     * @param calendar The calendar to format to a string.
      * @param pattern The pattern to format {@code calendar} with.
      *
      * @return {@code calendar} formatted using {@code pattern}.
@@ -1663,7 +1663,7 @@ public class JomcTool
     /**
      * Sets the model of the instance.
      *
-     * @param value The new model of the instance.
+     * @param value The new model of the instance or {@code null}.
      *
      * @see #getModel()
      */
@@ -1764,7 +1764,7 @@ public class JomcTool
     /**
      * Sets the {@code VelocityEngine} of the instance.
      *
-     * @param value The new {@code VelocityEngine} of the instance.
+     * @param value The new {@code VelocityEngine} of the instance or {@code null}.
      *
      * @see #getVelocityEngine()
      */

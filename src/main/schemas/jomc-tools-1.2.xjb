@@ -191,7 +191,7 @@
      * @param clazz The class to return an instance of.
      * @param <T> The type of the object to return.
      *
-     * @return The instance of {@code clazz} from the {@code any} list or {@code null} if no such instance is found.
+     * @return The instance of {@code clazz} from the {@code any} list or {@code null}, if no such instance is found.
      *
      * @throws NullPointerException if {@code any} or {@code clazz} is {@code null}.
      * @throws IllegalStateException if {@code any} contains more than one matching object.
@@ -293,14 +293,16 @@
     <jaxb:bindings node="xs:complexType[@name='SourceFilesType']">
       <ci:code><![CDATA[
     /**
-     * Gets a source file model for a given name from the list.
+     * Gets a source file model for a given name from the list of source file models.
      *
      * @param identifier The identifier of the source file model to return.
      *
-     * @return The source file model matching {@code identifier} from the list or {@code null} if no such source file
-     * model is found.
+     * @return The first matching source file model or {@code null}, if no such source file model is found.
      *
      * @throws NullPointerException if {@code identifier} is {@code null}.
+     *
+     * @see #getSourceFile()
+     * @see SourceFileType#getIdentifier()
      */
     public SourceFileType getSourceFile( final String identifier )
     {
@@ -336,7 +338,7 @@
      * @param <T> The type the element is bound to.
      *
      * @return The {@code JAXBElement} matching {@code namespaceURI} and {@code localPart} from the {@code any} property
-     * of the instance or {@code null} if no such element is found.
+     * of the instance or {@code null}, if no such element is found.
      *
      * @throws NullPointerException if {@code namespaceURI}, {@code localPart} or {@code type} is {@code null}.
      * @throws IllegalStateException if the {@code any} property contains more than one matching element.
@@ -378,7 +380,7 @@
      * @param clazz The class to return an instance of.
      * @param <T> The type of the object to return.
      *
-     * @return The instance of {@code clazz} from the {@code any} property of the instance or {@code null} if no such
+     * @return The instance of {@code clazz} from the {@code any} property of the instance or {@code null}, if no such
      * instance is found.
      *
      * @throws NullPointerException if {@code clazz} is {@code null}.
@@ -414,13 +416,17 @@
     <jaxb:bindings node="xs:complexType[@name='SourceSectionsType']">
       <ci:code><![CDATA[
     /**
-     * Gets a section for a given name recursively.
+     * Gets a section for a given name recursively from the list of sections.
      *
      * @param name The name of the section to return.
      *
-     * @return The section with name {@code name} from the list or {@code null} if no such section is found.
+     * @return The first matching section or {@code null}, if no such section is found.
      *
      * @throws NullPointerException if {@code name} is {@code null}.
+     *
+     * @see #getSourceSection()
+     * @see SourceSectionType#getName()
+     * @see SourceSectionType#getSourceSections()
      */
     public SourceSectionType getSourceSection( final String name )
     {
@@ -470,7 +476,7 @@
      * @param <T> The type the element is bound to.
      *
      * @return The {@code JAXBElement} matching {@code namespaceURI} and {@code localPart} from the {@code any} property
-     * of the instance or {@code null} if no such element is found.
+     * of the instance or {@code null}, if no such element is found.
      *
      * @throws NullPointerException if {@code namespaceURI}, {@code localPart} or {@code type} is {@code null}.
      * @throws IllegalStateException if the {@code any} property contains more than one matching element.
@@ -512,7 +518,7 @@
      * @param clazz The class to return an instance of.
      * @param <T> The type of the object to return.
      *
-     * @return The instance of {@code clazz} from the {@code any} property of the instance or {@code null} if no such
+     * @return The instance of {@code clazz} from the {@code any} property of the instance or {@code null}, if no such
      * instance is found.
      *
      * @throws NullPointerException if {@code clazz} is {@code null}.

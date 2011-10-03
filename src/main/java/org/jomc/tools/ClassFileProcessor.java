@@ -124,7 +124,7 @@ public class ClassFileProcessor extends JomcTool
      * Creates a new {@code ClassFileProcessor} instance taking a {@code ClassFileProcessor} instance to initialize the
      * instance with.
      *
-     * @param tool The instance to initialize the new instance with,
+     * @param tool The instance to initialize the new instance with.
      *
      * @throws NullPointerException if {@code tool} is {@code null}.
      * @throws IOException if copying {@code tool} fails.
@@ -310,7 +310,7 @@ public class ClassFileProcessor extends JomcTool
      *
      * @param specification The specification to process.
      * @param marshaller The marshaller to use for committing the model objects.
-     * @param javaClass The java class to commit.
+     * @param javaClass The java class to commit to.
      *
      * @throws NullPointerException if {@code specification}, {@code marshaller} or {@code javaClass} is {@code null}.
      * @throws IOException if committing model objects fails.
@@ -344,7 +344,7 @@ public class ClassFileProcessor extends JomcTool
      *
      * @param implementation The implementation to process.
      * @param marshaller The marshaller to use for committing the model objects.
-     * @param javaClass The java class to commit.
+     * @param javaClass The java class to commit to.
      *
      * @throws NullPointerException if {@code implementation}, {@code marshaller} or {@code javaClass} is {@code null}.
      * @throws IOException if committing model objects fails.
@@ -1414,7 +1414,7 @@ public class ClassFileProcessor extends JomcTool
      * @param specification The specification to process.
      * @param marshaller The marshaller to use for transforming model objects.
      * @param unmarshaller The unmarshaller to use for transforming model objects.
-     * @param javaClass The java class to transform.
+     * @param javaClass The java class to transform model objects of.
      * @param transformers The transformers to use for transforming the model objects.
      *
      * @throws NullPointerException if {@code specification}, {@code marshaller}, {@code unmarshaller},
@@ -1515,7 +1515,7 @@ public class ClassFileProcessor extends JomcTool
      * @param implementation The implementation to process.
      * @param marshaller The marshaller to use for transforming model objects.
      * @param unmarshaller The unmarshaller to use for transforming model objects.
-     * @param javaClass The java class to transform.
+     * @param javaClass The java class to transform model object of.
      * @param transformers The transformers to use for transforming the model objects.
      *
      * @throws NullPointerException if {@code implementation}, {@code marshaller}, {@code unmarshaller},
@@ -1722,7 +1722,7 @@ public class ClassFileProcessor extends JomcTool
      * @param clazz The java class to get an attribute from.
      * @param attributeName The name of the attribute to get.
      *
-     * @return The value of attribute {@code attributeName} of {@code clazz} or {@code null} if no such attribute
+     * @return The value of attribute {@code attributeName} of {@code clazz} or {@code null}, if no such attribute
      * exists.
      *
      * @throws NullPointerException if {@code clazz} or {@code attributeName} is {@code null}.
@@ -1760,9 +1760,9 @@ public class ClassFileProcessor extends JomcTool
     /**
      * Adds or updates an attribute in a java class.
      *
-     * @param clazz The class to update.
+     * @param clazz The class to update an attribute of.
      * @param attributeName The name of the attribute to update.
-     * @param data The new data of the attribute to update the {@code classFile} with.
+     * @param data The new data of the attribute to update the {@code clazz} with.
      *
      * @throws NullPointerException if {@code clazz} or {@code attributeName} is {@code null}.
      * @throws IOException if updating the class file fails.
@@ -1841,7 +1841,7 @@ public class ClassFileProcessor extends JomcTool
      * @param marshaller The marshaller to use for encoding the object.
      * @param modelObject The model object to encode.
      *
-     * @return GZIP compressed XML document for {@code modelObject}.
+     * @return GZIP compressed XML document of {@code modelObject}.
      *
      * @throws NullPointerException if {@code marshaller} or {@code modelObject} is {@code null}.
      * @throws IOException if encoding {@code modelObject} fails.
@@ -1885,8 +1885,8 @@ public class ClassFileProcessor extends JomcTool
      *
      * @param unmarshaller The unmarshaller to use for decoding the object.
      * @param bytes The encoded model object to decode.
-     * @param type The type of the encoded model object.
-     * @param <T> The type of the decoded model object.
+     * @param type The class of the type of the encoded model object.
+     * @param <T> The type of the encoded model object.
      *
      * @return Model object decoded from {@code bytes}.
      *
