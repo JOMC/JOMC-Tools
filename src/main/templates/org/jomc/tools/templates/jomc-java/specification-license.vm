@@ -55,9 +55,9 @@ ${tool.getIndentation(0)} *   Copyright (C) $specification.getVendor(), ${year}-
 #if($specification.getAuthors())
 #foreach($author in $specification.getAuthors().getAuthor())
 #if($author.getCreateDate())
-${tool.getIndentation(0)} *   Copyright (C) $author.getName()#if($author.getMail()) ($author.getMail())#end, $tool.getCalendarString($author.getCreateDate().toGregorianCalendar(), "yyyy'-'MM'-'dd")
+${tool.getIndentation(0)} *   Copyright (C) $author.getName(), $tool.getCalendarString($author.getCreateDate().toGregorianCalendar(), "yyyy'-'MM'-'dd")
 #else
-${tool.getIndentation(0)} *   Copyright (C) $author.getName()#if($author.getMail()) ($author.getMail())#end, ${year}-${month}-${day}
+${tool.getIndentation(0)} *   Copyright (C) $author.getName(), ${year}-${month}-${day}
 #end
 #if($author.getDocumentation())
 ${tool.getIndentation(0)} *     $tool.getJavadocComment($author.getDocumentation(), 0, " *     ")
