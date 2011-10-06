@@ -751,7 +751,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
         private URL filterModlets( final URL resource ) throws ModelException, IOException, JAXBException
         {
             URL filteredResource = resource;
-            final List<String> excludedModlets = Arrays.asList( getModletExcludes().split( ":" ) );
+            final List<String> excludedModletNames = Arrays.asList( getModletExcludes().split( ":" ) );
             final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
             Object o = modelContext.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID ).unmarshal( resource );
             if ( o instanceof JAXBElement<?> )
@@ -764,12 +764,12 @@ public abstract class AbstractModletCommand extends AbstractCommand
 
             if ( o instanceof Modlets )
             {
-                modlets = new Modlets( (Modlets) o );
+                modlets = (Modlets) o;
             }
             else if ( o instanceof Modlet )
             {
                 modlets = new Modlets();
-                modlets.getModlet().add( new Modlet( (Modlet) o ) );
+                modlets.getModlet().add( (Modlet) o );
             }
 
             if ( modlets != null )
@@ -778,7 +778,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
                 {
                     final Modlet m = it.next();
 
-                    if ( excludedModlets.contains( m.getName() ) )
+                    if ( excludedModletNames.contains( m.getName() ) )
                     {
                         it.remove();
                         filtered = true;
