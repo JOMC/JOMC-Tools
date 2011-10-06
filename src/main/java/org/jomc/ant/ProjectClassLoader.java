@@ -720,12 +720,12 @@ public class ProjectClassLoader extends URLClassLoader
 
             if ( o instanceof Modlets )
             {
-                modlets = new Modlets( (Modlets) o );
+                modlets = (Modlets) o;
             }
             else if ( o instanceof Modlet )
             {
                 modlets = new Modlets();
-                modlets.getModlet().add( new Modlet( (Modlet) o ) );
+                modlets.getModlet().add( (Modlet) o );
             }
 
             if ( modlets != null )
