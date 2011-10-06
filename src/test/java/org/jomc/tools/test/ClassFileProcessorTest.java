@@ -1416,7 +1416,7 @@ public class ClassFileProcessorTest extends JomcToolTest
         this.getJomcTool().validateModelObjects( this.getModelContext(), uncommittedClasses );
 
         final Model model = this.getJomcTool().getModel();
-        final Model copy = new Model( model );
+        final Model copy = model.clone();
         final Modules modules = ModelHelper.getModules( copy );
         final Module testModule = modules.getModule( "JOMC Tools" );
         assertNotNull( testModule );

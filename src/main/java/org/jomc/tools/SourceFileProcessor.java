@@ -97,7 +97,7 @@ public class SourceFileProcessor extends JomcTool
     public SourceFileProcessor( final SourceFileProcessor tool ) throws IOException
     {
         super( tool );
-        this.sourceFilesType = tool.sourceFilesType != null ? new SourceFilesType( tool.sourceFilesType ) : null;
+        this.sourceFilesType = tool.sourceFilesType != null ? tool.sourceFilesType.clone() : null;
         this.sourceFileEditor = tool.sourceFileEditor;
     }
 

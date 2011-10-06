@@ -223,7 +223,7 @@ public class JomcTool
         this.lineSeparator = tool.lineSeparator;
         this.listeners = tool.listeners != null ? new LinkedList<Listener>( tool.listeners ) : null;
         this.logLevel = tool.logLevel;
-        this.model = tool.model != null ? new Model( tool.model ) : null;
+        this.model = tool.model != null ? tool.model.clone() : null;
         this.outputEncoding = tool.outputEncoding;
         this.templateEncoding = tool.templateEncoding;
         this.templateProfile = tool.templateProfile;
@@ -1786,8 +1786,8 @@ public class JomcTool
         final VelocityContext ctx = new VelocityContext( Collections.synchronizedMap(
             new HashMap<String, Object>( this.getTemplateParameters() ) ) );
 
-        ctx.put( "model", new Model( this.getModel() ) );
-        ctx.put( "modules", new Modules( this.getModules() ) );
+        ctx.put( "model", this.getModel().clone() );
+        ctx.put( "modules", this.getModules().clone() );
         ctx.put( "tool", this );
         ctx.put( "toolName", this.getClass().getName() );
         ctx.put( "toolVersion", getMessage( "projectVersion" ) );

@@ -301,7 +301,7 @@ public class ToolsModelProvider implements ModelProvider
 
         if ( contextEnabled )
         {
-            provided = new Model( model );
+            provided = model.clone();
             final Modules modules = ModelHelper.getModules( provided );
 
             if ( modules != null )

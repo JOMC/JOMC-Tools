@@ -301,7 +301,7 @@ public class ToolsModelProcessor implements ModelProcessor
 
         if ( contextEnabled )
         {
-            processed = new Model( model );
+            processed = model.clone();
             final Modules modules = ModelHelper.getModules( processed );
 
             if ( modules != null )
