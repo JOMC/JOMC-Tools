@@ -27,6 +27,9 @@
 ##
 ##   $JOMC$
 ##
+## @param model The model declaring the modules of the implementation to render.
+## @param modules The modules declaring the implementation to render.
+## @param implementation The implementation to render.
 ## @param tool The tool merging the template.
 ## @param toolName The name of the tool merging the template.
 ## @param toolVersion The version of the tool merging the template.
@@ -40,8 +43,17 @@
 ## @param minute The current minute formatted using the pattern "mm".
 ## @param second The current second formatted using the pattern "ss".
 ## @param timezone The current timezone formatted using the pattern "Z".
-## @param model The model declaring the modules of the implementation to render.
-## @param modules The modules declaring the implementation to render.
-## @param implementation The implementation to render.
+## @param shortDate The current date formatted using a 'SHORT' format style.
+## @param mediumDate The current date formatted using a 'MEDIUM' format style.
+## @param longDate The current date formatted using a 'LONG' format style.
+## @param isoDate The current date formatted using an ISO-8601 format style.
+## @param shortTime The current time formatted using a 'SHORT' format style.
+## @param mediumTime The current time formatted using a 'MEDIUM' format style.
+## @param longTime The current time formatted using a 'LONG' format style.
+## @param isoTime The current time formatted using an ISO-8601 format style.
+## @param shortDateTime The current date and time formatted using a 'SHORT' format style.
+## @param mediumDateTime The current date and time formatted using a 'MEDIUM' format style.
+## @param longDateTime The current date and time formatted using a 'LONG' format style.
+## @param isoDateTime The current date and time formatted using an ISO-8601 format style.
 ${tool.getIndentation(1)}}
 ${tool.getIndentation(1)}// </editor-fold>

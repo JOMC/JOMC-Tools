@@ -41,13 +41,13 @@ import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.DateFormatSymbols;
 import java.text.Format;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -1433,6 +1433,27 @@ public class JomcTool
      *
      * @param calendar The calendar to format to a string.
      *
+     * @return The date of {@code calendar} formatted using an ISO-8601 format style.
+     *
+     * @throws NullPointerException if {@code calendar} is {@code null}.
+     *
+     * @see SimpleDateFormat yyyy-DDD
+     */
+    public String getIsoDate( final Calendar calendar )
+    {
+        if ( calendar == null )
+        {
+            throw new NullPointerException( "calendar" );
+        }
+
+        return new SimpleDateFormat( "yyyy-DDD", this.getLocale() ).format( calendar.getTime() );
+    }
+
+    /**
+     * Formats a calendar instance to a string.
+     *
+     * @param calendar The calendar to format to a string.
+     *
      * @return The time of {@code calendar} formatted using a short format style pattern.
      *
      * @throws NullPointerException if {@code calendar} is {@code null}.
@@ -1491,6 +1512,27 @@ public class JomcTool
         }
 
         return DateFormat.getTimeInstance( DateFormat.LONG, this.getLocale() ).format( calendar.getTime() );
+    }
+
+    /**
+     * Formats a calendar instance to a string.
+     *
+     * @param calendar The calendar to format to a string.
+     *
+     * @return The time of {@code calendar} formatted using an ISO-8601 format style.
+     *
+     * @throws NullPointerException if {@code calendar} is {@code null}.
+     *
+     * @see SimpleDateFormat HH:mm
+     */
+    public String getIsoTime( final Calendar calendar )
+    {
+        if ( calendar == null )
+        {
+            throw new NullPointerException( "calendar" );
+        }
+
+        return new SimpleDateFormat( "HH:mm", this.getLocale() ).format( calendar.getTime() );
     }
 
     /**
@@ -1565,6 +1607,28 @@ public class JomcTool
     }
 
     /**
+     * Formats a calendar instance to a string.
+     *
+     * @param calendar The calendar to format to a string.
+     *
+     * @return The date and time of {@code calendar} formatted using a ISO-8601 format style.
+     *
+     * @throws NullPointerException if {@code calendar} is {@code null}.
+     *
+     * @see SimpleDateFormat yyyy-MM-dd'T'HH:mm:ssZ
+     */
+    public String getIsoDateTime( final Calendar calendar )
+    {
+        if ( calendar == null )
+        {
+            throw new NullPointerException( "calendar" );
+        }
+
+        // JDK 7: yyyy-MM-dd'T'HH:mm:ssXXX
+        return new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ", this.getLocale() ).format( calendar.getTime() );
+    }
+
+    /**
      * Gets a string describing the range of years for given calendars.
      *
      * @param start The start of the range.
@@ -1611,34 +1675,6 @@ public class JomcTool
         }
 
         return years.toString();
-    }
-
-    /**
-     * Formats a calendar instance to a string.
-     *
-     * @param calendar The calendar to format to a string.
-     * @param pattern The pattern to format {@code calendar} with.
-     *
-     * @return {@code calendar} formatted using {@code pattern}.
-     *
-     * @throws NullPointerException if {@code calendar} or {@code pattern} is {@code null}.
-     *
-     * @see SimpleDateFormat
-     *
-     * @since 1.2
-     */
-    public String getCalendarString( final Calendar calendar, final String pattern )
-    {
-        if ( calendar == null )
-        {
-            throw new NullPointerException( "calendar" );
-        }
-        if ( pattern == null )
-        {
-            throw new NullPointerException( "pattern" );
-        }
-
-        return new SimpleDateFormat( pattern, this.getLocale() ).format( calendar.getTime() );
     }
 
     /**
@@ -1782,7 +1818,7 @@ public class JomcTool
      */
     public VelocityContext getVelocityContext()
     {
-        final Date now = new Date();
+        final Calendar now = Calendar.getInstance();
         final VelocityContext ctx = new VelocityContext( Collections.synchronizedMap(
             new HashMap<String, Object>( this.getTemplateParameters() ) ) );
 
@@ -1792,15 +1828,31 @@ public class JomcTool
         ctx.put( "toolName", this.getClass().getName() );
         ctx.put( "toolVersion", getMessage( "projectVersion" ) );
         ctx.put( "toolUrl", getMessage( "projectUrl" ) );
-        ctx.put( "calendar", Calendar.getInstance() );
-        ctx.put( "now", new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSZ", this.getLocale() ).format( now ) );
-        ctx.put( "year", new SimpleDateFormat( "yyyy", this.getLocale() ).format( now ) );
-        ctx.put( "month", new SimpleDateFormat( "MM", this.getLocale() ).format( now ) );
-        ctx.put( "day", new SimpleDateFormat( "dd", this.getLocale() ).format( now ) );
-        ctx.put( "hour", new SimpleDateFormat( "HH", this.getLocale() ).format( now ) );
-        ctx.put( "minute", new SimpleDateFormat( "mm", this.getLocale() ).format( now ) );
-        ctx.put( "second", new SimpleDateFormat( "ss", this.getLocale() ).format( now ) );
-        ctx.put( "timezone", new SimpleDateFormat( "Z", this.getLocale() ).format( now ) );
+        ctx.put( "calendar", now.getTime() );
+
+        // JDK 7: yyyy-MM-dd'T'HH:mm:ss.SSSXXX
+        ctx.put( "now",
+                 new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSZ", this.getLocale() ).format( now.getTime() ) );
+
+        ctx.put( "year", new SimpleDateFormat( "yyyy", this.getLocale() ).format( now.getTime() ) );
+        ctx.put( "month", new SimpleDateFormat( "MM", this.getLocale() ).format( now.getTime() ) );
+        ctx.put( "day", new SimpleDateFormat( "dd", this.getLocale() ).format( now.getTime() ) );
+        ctx.put( "hour", new SimpleDateFormat( "HH", this.getLocale() ).format( now.getTime() ) );
+        ctx.put( "minute", new SimpleDateFormat( "mm", this.getLocale() ).format( now.getTime() ) );
+        ctx.put( "second", new SimpleDateFormat( "ss", this.getLocale() ).format( now.getTime() ) );
+        ctx.put( "timezone", new SimpleDateFormat( "Z", this.getLocale() ).format( now.getTime() ) );
+        ctx.put( "shortDate", this.getShortDate( now ) );
+        ctx.put( "mediumDate", this.getMediumDate( now ) );
+        ctx.put( "longDate", this.getLongDate( now ) );
+        ctx.put( "isoDate", this.getIsoDate( now ) );
+        ctx.put( "shortTime", this.getShortTime( now ) );
+        ctx.put( "mediumTime", this.getMediumTime( now ) );
+        ctx.put( "longTime", this.getLongTime( now ) );
+        ctx.put( "isoTime", this.getIsoTime( now ) );
+        ctx.put( "shortDateTime", this.getShortDateTime( now ) );
+        ctx.put( "mediumDateTime", this.getMediumDateTime( now ) );
+        ctx.put( "longDateTime", this.getLongDateTime( now ) );
+        ctx.put( "isoDateTime", this.getIsoDateTime( now ) );
         return ctx;
     }
 

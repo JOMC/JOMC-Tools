@@ -30,6 +30,7 @@
  */
 package org.jomc.tools.test;
 
+import java.text.SimpleDateFormat;
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
@@ -884,16 +885,27 @@ public class JomcToolTest
 
         try
         {
-            this.getJomcTool().getCalendarString( null, "Y" );
+            this.getJomcTool().getIsoDate( null );
             fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
         {
             assertNullPointerException( e );
         }
+
         try
         {
-            this.getJomcTool().getCalendarString( Calendar.getInstance(), null );
+            this.getJomcTool().getIsoTime( null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
+            this.getJomcTool().getIsoDateTime( null );
             fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -962,6 +974,9 @@ public class JomcToolTest
         assertNotNull( this.getJomcTool().getShortDate( now ) );
         assertNotNull( this.getJomcTool().getShortDateTime( now ) );
         assertNotNull( this.getJomcTool().getShortTime( now ) );
+        assertNotNull( this.getJomcTool().getIsoDate( now ) );
+        assertNotNull( this.getJomcTool().getIsoDateTime( now ) );
+        assertNotNull( this.getJomcTool().getIsoTime( now ) );
         assertNotNull( this.getJomcTool().getYears( now, now ) );
         assertNotNull( this.getJomcTool().getYears( now, nextYear ) );
         assertNotNull( this.getJomcTool().getYears( nextYear, now ) );
@@ -989,6 +1004,12 @@ public class JomcToolTest
         assertEquals( "java.util", this.getJomcTool().getJavaPackageName( d ) );
         assertEquals( "", this.getJomcTool().getJavaString( "" ) );
         assertEquals( this.getJomcTool().getIndentation(), this.getJomcTool().getIndentation( 1 ) );
+
+        System.out.println( "----------------------------------------------------------------------" );
+        System.out.println( new SimpleDateFormat( "yyyy-DDD" ).format(
+            new SimpleDateFormat( "yyyy-MM-dd" ).parse( "2005-07-25" ) ) );
+
+        System.out.println( "----------------------------------------------------------------------" );
     }
 
     @Test
