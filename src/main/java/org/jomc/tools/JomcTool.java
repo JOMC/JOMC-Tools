@@ -25,7 +25,7 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- *   $JOMC$
+ *   $JOMC: JomcTool.java 3839 2011-10-08 20:21:42Z schulte2005 $
  *
  */
 package org.jomc.tools;
@@ -41,7 +41,6 @@ import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
 import java.net.URL;
 import java.text.DateFormat;
-import java.text.DateFormatSymbols;
 import java.text.Format;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -92,7 +91,7 @@ import org.jomc.modlet.Model;
  * Base tool class.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
- * @version $JOMC$
+ * @version $JOMC: JomcTool.java 3839 2011-10-08 20:21:42Z schulte2005 $
  */
 public class JomcTool
 {
