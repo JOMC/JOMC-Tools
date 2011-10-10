@@ -25,7 +25,7 @@
  *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- *   $JOMC: JomcToolTest.java 3839 2011-10-08 20:21:42Z schulte2005 $
+ *   $JOMC$
  *
  */
 package org.jomc.tools.test;
@@ -64,7 +64,7 @@ import static org.junit.Assert.fail;
  * Test cases for class {@code org.jomc.tools.JomcTool}.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
- * @version $JOMC: JomcToolTest.java 3839 2011-10-08 20:21:42Z schulte2005 $
+ * @version $JOMC$
  */
 public class JomcToolTest
 {
