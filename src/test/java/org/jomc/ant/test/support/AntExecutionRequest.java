@@ -65,7 +65,7 @@ public class AntExecutionRequest
      *
      * @return The {@code Project} to execute a target of or {@code null}.
      */
-    public Project getProject()
+    public final Project getProject()
     {
         return this.project;
     }
@@ -75,7 +75,7 @@ public class AntExecutionRequest
      *
      * @return The identifier of the target to execute or {@code null}.
      */
-    public String getTarget()
+    public final String getTarget()
     {
         return this.target;
     }
