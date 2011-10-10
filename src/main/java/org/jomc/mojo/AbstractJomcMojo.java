@@ -648,7 +648,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     {
                         throw new MojoFailureException( Messages.getMessage(
                             "illegalPropertiesFormat", p.getFormat(),
-                            StringUtils.join( PropertiesResourceType.FORMAT_VALUES, ',' ) ) );
+                            StringUtils.join( PropertiesResourceType.getSupportedFormats(), ',' ) ) );
 
                     }
                 }

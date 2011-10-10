@@ -30,6 +30,9 @@
  */
 package org.jomc.mojo;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
@@ -49,7 +52,7 @@ public class PropertiesResourceType extends ResourceType
     public static final String XML_FORMAT = "xml";
 
     /** Supported properties file format values. */
-    public static final String[] FORMAT_VALUES =
+    private static final String[] FORMAT_VALUES =
     {
         PLAIN_FORMAT, XML_FORMAT
     };
@@ -89,13 +92,26 @@ public class PropertiesResourceType extends ResourceType
     }
 
     /**
+     * Gets a list holding supported format values.
+     *
+     * @return An unmodifiable list holding supported format values.
+     *
+     * @see #isFormatSupported(java.lang.String)
+     */
+    public static List<String> getSupportedFormats()
+    {
+        return Collections.unmodifiableList( Arrays.asList( FORMAT_VALUES ) );
+    }
+
+    /**
      * Tests a given format value.
      *
      * @param value The format value to test.
      *
-     * @return {@code true}, if the given format value is valid; {@code false}, if the given format value is not valid.
+     * @return {@code true}, if the given format value is supported; {@code false}, if the given format value is not
+     * supported.
      *
-     * @see #FORMAT_VALUES
+     * @see #getSupportedFormats()
      */
     public static boolean isFormatSupported( final String value )
     {
