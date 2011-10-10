@@ -44,8 +44,14 @@ import static org.junit.Assert.assertTrue;
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $JOMC$
  */
-public class Assert
+public abstract class Assert
 {
+
+    /** Creates a new {@code Assert} instance. */
+    public Assert()
+    {
+        super();
+    }
 
     /**
      * Tests an Ant execution to have thrown an exception of a given type.
