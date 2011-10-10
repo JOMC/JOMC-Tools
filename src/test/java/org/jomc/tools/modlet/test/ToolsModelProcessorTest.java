@@ -30,20 +30,20 @@
  */
 package org.jomc.tools.modlet.test;
 
-import org.jomc.tools.model.SourceSectionsType;
-import org.jomc.tools.model.SourceSectionType;
-import org.jomc.tools.model.SourceFilesType;
-import org.jomc.tools.model.SourceFileType;
 import org.jomc.model.Implementation;
 import org.jomc.model.Implementations;
+import org.jomc.model.ModelObject;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.Specification;
 import org.jomc.model.Specifications;
 import org.jomc.model.modlet.ModelHelper;
-import org.jomc.model.ModelObject;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
+import org.jomc.tools.model.SourceFileType;
+import org.jomc.tools.model.SourceFilesType;
+import org.jomc.tools.model.SourceSectionType;
+import org.jomc.tools.model.SourceSectionsType;
 import org.jomc.tools.modlet.ToolsModelProcessor;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
