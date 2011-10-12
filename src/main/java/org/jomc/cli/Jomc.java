@@ -103,6 +103,7 @@ public final class Jomc
     {
         if ( this.printWriter == null )
         {
+            // JDK: As of JDK 6, "this.printWriter = System.console().writer()".
             this.printWriter = new PrintWriter( System.out, true );
         }
 
