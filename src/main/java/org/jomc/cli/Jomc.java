@@ -479,6 +479,7 @@ public final class Jomc
 
                 lines.append( "] " ).append( line ).append( System.getProperty( "line.separator", "\n" ) );
             }
+            reader.close();
 
             return lines.toString();
         }
