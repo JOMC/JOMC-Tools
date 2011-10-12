@@ -1624,7 +1624,7 @@ public class JomcTool
             throw new NullPointerException( "calendar" );
         }
 
-        // JDK 7: yyyy-MM-dd'T'HH:mm:ssXXX
+        // JDK: As of JDK 7, "yyyy-MM-dd'T'HH:mm:ssXXX".
         return new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ", this.getLocale() ).format( calendar.getTime() );
     }
 
@@ -1830,7 +1830,7 @@ public class JomcTool
         ctx.put( "toolUrl", getMessage( "projectUrl" ) );
         ctx.put( "calendar", now.getTime() );
 
-        // JDK 7: yyyy-MM-dd'T'HH:mm:ss.SSSXXX
+        // JDK: As of JDK 7, "yyyy-MM-dd'T'HH:mm:ss.SSSXXX".
         ctx.put( "now",
                  new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSZ", this.getLocale() ).format( now.getTime() ) );
 
