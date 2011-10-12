@@ -1104,6 +1104,7 @@ public class JomcTool
                         append( line.replaceAll( "\\/\\*\\*", "/*" ).replaceAll( "\\*/", "/" ) );
 
                 }
+                reader.close();
 
                 if ( builder.length() > 0 )
                 {

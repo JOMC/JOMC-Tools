@@ -106,6 +106,7 @@ ${tool.getIndentation(3)}while ( ( line = reader.readLine() ) != null )
 ${tool.getIndentation(3)}{
 ${tool.getIndentation(4)}builder.append( lineSeparator ).append( line );
 ${tool.getIndentation(3)}}
+${tool.getIndentation(3)}reader.close();
 
 ${tool.getIndentation(3)}return builder.substring( lineSeparator.length() );
 ${tool.getIndentation(2)}}
