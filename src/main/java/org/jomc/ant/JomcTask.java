@@ -1388,7 +1388,7 @@ public class JomcTask extends Task
                     log( line, Project.MSG_DEBUG );
                 }
             }
-
+            reader.close();
         }
         catch ( final IOException e )
         {

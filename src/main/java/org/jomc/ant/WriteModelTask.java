@@ -386,6 +386,7 @@ public final class WriteModelTask extends JomcModelTask
                 {
                     this.log( line, Project.MSG_INFO );
                 }
+                reader.close();
             }
         }
         catch ( final IOException e )
