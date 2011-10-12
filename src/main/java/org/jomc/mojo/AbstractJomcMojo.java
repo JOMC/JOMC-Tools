@@ -2286,6 +2286,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
                     throwableLogged = true;
                 }
+                reader.close();
             }
         }
         catch ( final IOException e )
