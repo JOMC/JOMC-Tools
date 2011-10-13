@@ -1927,7 +1927,17 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         finally
         {
-            IOUtils.closeQuietly( in );
+            try
+            {
+                if ( in != null )
+                {
+                    in.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                this.getLog().warn( e );
+            }
         }
 
         return null;
@@ -2043,7 +2053,17 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         finally
         {
-            IOUtils.closeQuietly( in );
+            try
+            {
+                if ( in != null )
+                {
+                    in.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                this.getLog().warn( e );
+            }
         }
 
         return properties;
