@@ -420,9 +420,16 @@ public class ResourceFileProcessor extends JomcTool
             }
             finally
             {
-                if ( out != null )
+                try
                 {
-                    out.close();
+                    if ( out != null )
+                    {
+                        out.close();
+                    }
+                }
+                catch ( final IOException ex )
+                {
+                    this.log( Level.WARNING, getMessage( ex ), ex );
                 }
             }
         }
@@ -455,9 +462,16 @@ public class ResourceFileProcessor extends JomcTool
             }
             finally
             {
-                if ( out != null )
+                try
                 {
-                    out.close();
+                    if ( out != null )
+                    {
+                        out.close();
+                    }
+                }
+                catch ( final IOException e )
+                {
+                    this.log( Level.WARNING, getMessage( e ), e );
                 }
             }
         }
@@ -507,6 +521,11 @@ public class ResourceFileProcessor extends JomcTool
         return MessageFormat.format( ResourceBundle.getBundle(
             ResourceFileProcessor.class.getName().replace( '.', '/' ) ).getString( key ), arguments );
 
+    }
+
+    private static String getMessage( final Throwable t )
+    {
+        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

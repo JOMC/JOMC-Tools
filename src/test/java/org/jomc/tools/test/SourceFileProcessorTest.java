@@ -555,8 +555,14 @@ public class SourceFileProcessorTest extends JomcToolTest
         }
         finally
         {
-            IOUtils.closeQuietly( in );
-            IOUtils.closeQuietly( out );
+            if ( in != null )
+            {
+                in.close();
+            }
+            if ( out != null )
+            {
+                out.close();
+            }
         }
     }
 
@@ -571,7 +577,10 @@ public class SourceFileProcessorTest extends JomcToolTest
         }
         finally
         {
-            IOUtils.closeQuietly( in );
+            if ( in != null )
+            {
+                in.close();
+            }
         }
     }
 
