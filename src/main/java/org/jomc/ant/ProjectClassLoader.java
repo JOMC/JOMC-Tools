@@ -681,23 +681,36 @@ public class ProjectClassLoader extends URLClassLoader
                 }
                 finally
                 {
-                    if ( out != null )
+                    try
                     {
-                        out.close();
+                        if ( out != null )
+                        {
+                            out.close();
+                        }
+                    }
+                    catch ( final IOException e )
+                    {
+                        this.project.log( Messages.getMessage( e ), e, Project.MSG_WARN );
                     }
                 }
 
                 filteredResource = tmpResource.toURI().toURL();
             }
 
-            in.close();
             return filteredResource;
         }
         finally
         {
-            if ( in != null )
+            try
             {
-                in.close();
+                if ( in != null )
+                {
+                    in.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                this.project.log( Messages.getMessage( e ), e, Project.MSG_WARN );
             }
         }
     }
@@ -766,9 +779,16 @@ public class ProjectClassLoader extends URLClassLoader
         }
         finally
         {
-            if ( in != null )
+            try
             {
-                in.close();
+                if ( in != null )
+                {
+                    in.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                this.project.log( Messages.getMessage( e ), e, Project.MSG_WARN );
             }
         }
     }

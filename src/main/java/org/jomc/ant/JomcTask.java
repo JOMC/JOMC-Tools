@@ -60,7 +60,6 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
-import org.apache.commons.io.IOUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.PropertyHelper;
@@ -1034,7 +1033,17 @@ public class JomcTask extends Task
         }
         finally
         {
-            IOUtils.closeQuietly( in );
+            try
+            {
+                if ( in != null )
+                {
+                    in.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                this.logMessage( Level.WARNING, Messages.getMessage( e ), e );
+            }
         }
 
         return null;
@@ -1130,7 +1139,17 @@ public class JomcTask extends Task
         }
         finally
         {
-            IOUtils.closeQuietly( in );
+            try
+            {
+                if ( in != null )
+                {
+                    in.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                this.logMessage( Level.WARNING, Messages.getMessage( e ), e );
+            }
         }
 
         return properties;

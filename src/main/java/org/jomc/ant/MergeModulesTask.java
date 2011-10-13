@@ -57,7 +57,6 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamSource;
-import org.apache.commons.io.IOUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.jomc.ant.types.NameType;
@@ -470,7 +469,17 @@ public final class MergeModulesTask extends JomcModelTask
                     }
                     finally
                     {
-                        IOUtils.closeQuietly( in );
+                        try
+                        {
+                            if ( in != null )
+                            {
+                                in.close();
+                            }
+                        }
+                        catch ( final IOException e )
+                        {
+                            this.logMessage( Level.WARNING, Messages.getMessage( e ), e );
+                        }
                     }
                 }
             }

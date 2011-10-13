@@ -44,7 +44,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
-import org.apache.commons.io.IOUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.jomc.ant.types.KeyValueType;
@@ -358,7 +357,17 @@ public class JomcModelTask extends JomcTask
                 }
                 finally
                 {
-                    IOUtils.closeQuietly( in );
+                    try
+                    {
+                        if ( in != null )
+                        {
+                            in.close();
+                        }
+                    }
+                    catch ( final IOException e )
+                    {
+                        this.logMessage( Level.WARNING, Messages.getMessage( e ), e );
+                    }
                 }
             }
         }
