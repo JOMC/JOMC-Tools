@@ -390,7 +390,17 @@ public abstract class AbstractModletCommand extends AbstractCommand
                             }
                             finally
                             {
-                                IOUtils.closeQuietly( reader );
+                                try
+                                {
+                                    if ( reader != null )
+                                    {
+                                        reader.close();
+                                    }
+                                }
+                                catch ( final IOException ex )
+                                {
+                                    this.log( Level.WARNING, getExceptionMessage( ex ), ex );
+                                }
                             }
                         }
                         else
@@ -499,7 +509,17 @@ public abstract class AbstractModletCommand extends AbstractCommand
                                 }
                                 finally
                                 {
-                                    IOUtils.closeQuietly( reader );
+                                    try
+                                    {
+                                        if ( reader != null )
+                                        {
+                                            reader.close();
+                                        }
+                                    }
+                                    catch ( final IOException ex )
+                                    {
+                                        log( Level.WARNING, getExceptionMessage( ex ), ex );
+                                    }
                                 }
                             }
                             else
@@ -702,50 +722,75 @@ public abstract class AbstractModletCommand extends AbstractCommand
 
         private URL filterProviders( final URL resource ) throws IOException
         {
-            URL filteredResource = resource;
-            final InputStream in = resource.openStream();
-            final List<?> lines = IOUtils.readLines( in, "UTF-8" );
-            final List<String> providerExcludes = Arrays.asList( getProviderExcludes().split( ":" ) );
-            final List<String> filteredLines = new ArrayList<String>( lines.size() );
+            InputStream in = null;
 
-            for ( Object line : lines )
+            try
             {
-                if ( !providerExcludes.contains( line.toString() ) )
-                {
-                    filteredLines.add( line.toString() );
-                }
-                else
-                {
-                    log( Level.FINE,
-                         getExcludedProviderInfo( getLocale(), resource.toExternalForm(), line.toString() ), null );
+                in = resource.openStream();
+                URL filteredResource = resource;
+                final List<?> lines = IOUtils.readLines( in, "UTF-8" );
+                final List<String> providerExcludes = Arrays.asList( getProviderExcludes().split( ":" ) );
+                final List<String> filteredLines = new ArrayList<String>( lines.size() );
 
-                }
-            }
-
-            if ( lines.size() != filteredLines.size() )
-            {
-                OutputStream out = null;
-                final File tmpResource = File.createTempFile( this.getClass().getName(), ".rsrc" );
-                tmpResource.deleteOnExit();
-
-                try
+                for ( Object line : lines )
                 {
-                    out = new FileOutputStream( tmpResource );
-                    IOUtils.writeLines( filteredLines, System.getProperty( "line.separator" ), out, "UTF-8" );
-                }
-                finally
-                {
-                    if ( out != null )
+                    if ( !providerExcludes.contains( line.toString() ) )
                     {
-                        out.close();
+                        filteredLines.add( line.toString() );
+                    }
+                    else
+                    {
+                        log( Level.FINE,
+                             getExcludedProviderInfo( getLocale(), resource.toExternalForm(), line.toString() ), null );
+
                     }
                 }
 
-                filteredResource = tmpResource.toURI().toURL();
-            }
+                if ( lines.size() != filteredLines.size() )
+                {
+                    OutputStream out = null;
+                    final File tmpResource = File.createTempFile( this.getClass().getName(), ".rsrc" );
+                    tmpResource.deleteOnExit();
 
-            in.close();
-            return filteredResource;
+                    try
+                    {
+                        out = new FileOutputStream( tmpResource );
+                        IOUtils.writeLines( filteredLines, System.getProperty( "line.separator" ), out, "UTF-8" );
+                    }
+                    finally
+                    {
+                        try
+                        {
+                            if ( out != null )
+                            {
+                                out.close();
+                            }
+                        }
+                        catch ( final IOException e )
+                        {
+                            log( Level.WARNING, getExceptionMessage( e ), e );
+                        }
+                    }
+
+                    filteredResource = tmpResource.toURI().toURL();
+                }
+
+                return filteredResource;
+            }
+            finally
+            {
+                try
+                {
+                    if ( in != null )
+                    {
+                        in.close();
+                    }
+                }
+                catch ( final IOException e )
+                {
+                    log( Level.WARNING, getExceptionMessage( e ), e );
+                }
+            }
         }
 
         private URL filterModlets( final URL resource ) throws ModelException, IOException, JAXBException
