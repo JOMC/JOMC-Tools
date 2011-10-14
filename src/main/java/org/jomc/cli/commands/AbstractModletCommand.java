@@ -357,6 +357,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
                             String line = null;
                             final File file = new File( e.substring( 1 ) );
                             BufferedReader reader = null;
+                            boolean suppressExceptionOnClose = true;
 
                             try
                             {
@@ -387,6 +388,8 @@ public abstract class AbstractModletCommand extends AbstractCommand
                                         }
                                     }
                                 }
+
+                                suppressExceptionOnClose = false;
                             }
                             finally
                             {
@@ -399,7 +402,14 @@ public abstract class AbstractModletCommand extends AbstractCommand
                                 }
                                 catch ( final IOException ex )
                                 {
-                                    this.log( Level.WARNING, getExceptionMessage( ex ), ex );
+                                    if ( suppressExceptionOnClose )
+                                    {
+                                        this.log( Level.SEVERE, getExceptionMessage( ex ), ex );
+                                    }
+                                    else
+                                    {
+                                        throw new CommandExecutionException( getExceptionMessage( ex ), ex );
+                                    }
                                 }
                             }
                         }
@@ -483,6 +493,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
                                 String line = null;
                                 final File file = new File( e.substring( 1 ) );
                                 BufferedReader reader = null;
+                                boolean suppressExceptionOnClose = true;
 
                                 try
                                 {
@@ -506,6 +517,8 @@ public abstract class AbstractModletCommand extends AbstractCommand
                                             }
                                         }
                                     }
+
+                                    suppressExceptionOnClose = false;
                                 }
                                 finally
                                 {
@@ -518,7 +531,14 @@ public abstract class AbstractModletCommand extends AbstractCommand
                                     }
                                     catch ( final IOException ex )
                                     {
-                                        log( Level.WARNING, getExceptionMessage( ex ), ex );
+                                        if ( suppressExceptionOnClose )
+                                        {
+                                            log( Level.SEVERE, getExceptionMessage( ex ), ex );
+                                        }
+                                        else
+                                        {
+                                            throw new CommandExecutionException( getExceptionMessage( ex ), ex );
+                                        }
                                     }
                                 }
                             }
@@ -723,6 +743,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
         private URL filterProviders( final URL resource ) throws IOException
         {
             InputStream in = null;
+            boolean suppressExceptionOnClose = true;
 
             try
             {
@@ -756,6 +777,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
                     {
                         out = new FileOutputStream( tmpResource );
                         IOUtils.writeLines( filteredLines, System.getProperty( "line.separator" ), out, "UTF-8" );
+                        suppressExceptionOnClose = false;
                     }
                     finally
                     {
@@ -765,16 +787,26 @@ public abstract class AbstractModletCommand extends AbstractCommand
                             {
                                 out.close();
                             }
+
+                            suppressExceptionOnClose = true;
                         }
                         catch ( final IOException e )
                         {
-                            log( Level.WARNING, getExceptionMessage( e ), e );
+                            if ( suppressExceptionOnClose )
+                            {
+                                log( Level.SEVERE, getExceptionMessage( e ), e );
+                            }
+                            else
+                            {
+                                throw e;
+                            }
                         }
                     }
 
                     filteredResource = tmpResource.toURI().toURL();
                 }
 
+                suppressExceptionOnClose = false;
                 return filteredResource;
             }
             finally
@@ -788,7 +820,14 @@ public abstract class AbstractModletCommand extends AbstractCommand
                 }
                 catch ( final IOException e )
                 {
-                    log( Level.WARNING, getExceptionMessage( e ), e );
+                    if ( suppressExceptionOnClose )
+                    {
+                        log( Level.SEVERE, getExceptionMessage( e ), e );
+                    }
+                    else
+                    {
+                        throw e;
+                    }
                 }
             }
         }

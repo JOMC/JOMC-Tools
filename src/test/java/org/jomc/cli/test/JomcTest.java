@@ -636,31 +636,79 @@ public class JomcTest
         FileUtils.deleteDirectory( targetDirectory );
         assertTrue( targetDirectory.mkdirs() );
 
-        final ZipInputStream in = new ZipInputStream( resource.openStream() );
-        ZipEntry e = null;
+        ZipInputStream in = null;
+        boolean suppressExceptionOnClose = true;
 
-        while ( ( e = in.getNextEntry() ) != null )
+        try
         {
-            final File dest = new File( targetDirectory, e.getName() );
-            assertTrue( dest.isAbsolute() );
+            in = new ZipInputStream( resource.openStream() );
+            ZipEntry e = null;
 
-            if ( e.isDirectory() )
+            while ( ( e = in.getNextEntry() ) != null )
             {
-                if ( !dest.exists() )
+                final File dest = new File( targetDirectory, e.getName() );
+                assertTrue( dest.isAbsolute() );
+
+                if ( e.isDirectory() )
                 {
-                    assertTrue( dest.mkdirs() );
+                    if ( !dest.exists() )
+                    {
+                        assertTrue( dest.mkdirs() );
+                    }
+
+                    continue;
                 }
 
-                continue;
+                OutputStream out = null;
+
+                try
+                {
+                    out = FileUtils.openOutputStream( dest );
+                    IOUtils.copy( in, out );
+                    suppressExceptionOnClose = false;
+                }
+                finally
+                {
+                    try
+                    {
+                        if ( out != null )
+                        {
+                            out.close();
+                        }
+
+                        suppressExceptionOnClose = true;
+                    }
+                    catch ( final IOException ex )
+                    {
+                        if ( !suppressExceptionOnClose )
+                        {
+                            throw ex;
+                        }
+                    }
+                }
+
+                in.closeEntry();
             }
 
-            final OutputStream out = FileUtils.openOutputStream( dest );
-            IOUtils.copy( in, out );
-            IOUtils.closeQuietly( out );
-            in.closeEntry();
+            suppressExceptionOnClose = false;
         }
-
-        IOUtils.closeQuietly( in );
+        finally
+        {
+            try
+            {
+                if ( in != null )
+                {
+                    in.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( !suppressExceptionOnClose )
+                {
+                    throw e;
+                }
+            }
+        }
     }
 
     // SECTION-END

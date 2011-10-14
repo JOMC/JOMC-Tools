@@ -280,10 +280,12 @@ public final class Jomc
                 PrintWriter pw = new PrintWriter( usage );
                 formatter.printUsage( pw, this.getWidth(), cmd.getName(), options );
                 pw.close();
+                assert !pw.checkError() : "Unexpected error printing usage.";
 
                 pw = new PrintWriter( opts );
                 formatter.printOptions( pw, this.getWidth(), options, this.getLeftPad(), this.getDescPad() );
                 pw.close();
+                assert !pw.checkError() : "Unexpected error printing options.";
 
                 this.getPrintWriter().println( cmd.getShortDescription( this.getLocale() ) );
                 this.getPrintWriter().println();
@@ -460,10 +462,13 @@ public final class Jomc
 
     private String formatLogLines( final Level level, final String text )
     {
+        BufferedReader reader = null;
+        boolean suppressExceptionOnClose = true;
+
         try
         {
             final StringBuilder lines = new StringBuilder( text.length() );
-            final BufferedReader reader = new BufferedReader( new StringReader( text ) );
+            reader = new BufferedReader( new StringReader( text ) );
 
             String line;
             while ( ( line = reader.readLine() ) != null )
@@ -480,13 +485,34 @@ public final class Jomc
 
                 lines.append( "] " ).append( line ).append( System.getProperty( "line.separator", "\n" ) );
             }
-            reader.close();
 
+            suppressExceptionOnClose = false;
             return lines.toString();
         }
         catch ( final IOException e )
         {
             throw new AssertionError( e );
+        }
+        finally
+        {
+            try
+            {
+                if ( reader != null )
+                {
+                    reader.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( suppressExceptionOnClose )
+                {
+                    this.log( Level.SEVERE, getMessage( e ), e );
+                }
+                else
+                {
+                    throw new AssertionError( e );
+                }
+            }
         }
     }
 
