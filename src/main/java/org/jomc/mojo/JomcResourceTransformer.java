@@ -374,10 +374,12 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
                 message = Messages.getMessage( e.getLinkedException() );
             }
 
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( message ).initCause( e );
         }
         catch ( final ModelException e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( Messages.getMessage( e ) ).initCause( e );
         }
     }
@@ -547,6 +549,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
                 message = Messages.getMessage( e.getException() );
             }
 
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( message ).initCause( e );
         }
         catch ( final TransformerException e )
@@ -557,6 +560,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
                 message = Messages.getMessage( e.getException() );
             }
 
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( message ).initCause( e );
         }
         catch ( final JAXBException e )
@@ -567,14 +571,17 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
                 message = Messages.getMessage( e.getLinkedException() );
             }
 
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( message ).initCause( e );
         }
         catch ( final ModelException e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( Messages.getMessage( e ) ).initCause( e );
         }
         catch ( final URISyntaxException e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( Messages.getMessage( e ) ).initCause( e );
         }
         finally
@@ -660,6 +667,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
             String m = Messages.getMessage( e );
             m = m == null ? "" : " " + m;
 
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( Messages.getMessage(
                 "malformedLocation", location, m ) ).initCause( e );
 

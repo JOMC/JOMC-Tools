@@ -571,10 +571,12 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
                 message = Messages.getMessage( e.getLinkedException() );
             }
 
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( message ).initCause( e );
         }
         catch ( final ModelException e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( Messages.getMessage( e ) ).initCause( e );
         }
     }
@@ -649,6 +651,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
             String m = Messages.getMessage( e );
             m = m == null ? "" : " " + m;
 
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( Messages.getMessage(
                 "malformedLocation", location, m ) ).initCause( e );
 
