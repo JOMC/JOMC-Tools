@@ -1723,6 +1723,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
 
         InputStream in = null;
+        boolean suppressExceptionOnClose = true;
         final URL url = this.getResource( resource.getLocation() );
         final ErrorListener errorListener = new ErrorListener()
         {
@@ -1846,6 +1847,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     transformer.setOutputProperty( e.getKey(), e.getValue() );
                 }
 
+                suppressExceptionOnClose = false;
                 return transformer;
             }
             else if ( resource.isOptional() )
@@ -1935,7 +1937,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
             catch ( final IOException e )
             {
-                this.getLog().warn( e );
+                if ( suppressExceptionOnClose )
+                {
+                    this.getLog().error( e );
+                }
+                else
+                {
+                    throw new MojoExecutionException( Messages.getMessage( e ), e );
+                }
             }
         }
 
@@ -1964,6 +1973,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
 
         InputStream in = null;
+        boolean suppressExceptionOnClose = true;
         final URL url = this.getResource( propertiesResourceType.getLocation() );
         final Properties properties = new Properties();
 
@@ -2007,6 +2017,8 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     "propertiesNotFound", propertiesResourceType.getLocation() ) );
 
             }
+
+            suppressExceptionOnClose = false;
         }
         catch ( final SocketTimeoutException e )
         {
@@ -2061,7 +2073,14 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
             catch ( final IOException e )
             {
-                this.getLog().warn( e );
+                if ( suppressExceptionOnClose )
+                {
+                    this.getLog().error( e );
+                }
+                else
+                {
+                    throw new MojoExecutionException( Messages.getMessage( e ), e );
+                }
             }
         }
 
@@ -2272,12 +2291,15 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     protected void log( final Level level, final String message, final Throwable throwable )
         throws MojoExecutionException
     {
+        BufferedReader reader = null;
+        boolean suppressExceptionOnClose = true;
+
         try
         {
             if ( this.isLoggable( level ) )
             {
                 String line;
-                final BufferedReader reader = new BufferedReader( new StringReader( message == null ? "" : message ) );
+                reader = new BufferedReader( new StringReader( message == null ? "" : message ) );
                 boolean throwableLogged = false;
 
                 while ( ( line = reader.readLine() ) != null )
@@ -2305,13 +2327,31 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
                     throwableLogged = true;
                 }
-                reader.close();
             }
+
+            suppressExceptionOnClose = false;
         }
         catch ( final IOException e )
         {
             this.getLog().error( e );
             throw new AssertionError( e );
+        }
+        finally
+        {
+            try
+            {
+                if ( reader != null )
+                {
+                    reader.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( !suppressExceptionOnClose )
+                {
+                    throw new AssertionError( e );
+                }
+            }
         }
     }
 
