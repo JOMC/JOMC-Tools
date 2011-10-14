@@ -997,7 +997,7 @@ public class JomcTask extends Task
         }
         catch ( final URISyntaxException e )
         {
-            throw new BuildException( e, this.getLocation() );
+            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }
         catch ( final SocketTimeoutException e )
         {
@@ -1213,7 +1213,7 @@ public class JomcTask extends Task
         }
         catch ( final IOException e )
         {
-            throw new BuildException( e, this.getLocation() );
+            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }
     }
 
