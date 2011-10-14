@@ -1026,6 +1026,7 @@ public class SourceFileProcessor extends JomcTool
             }
             catch ( final VelocityException e )
             {
+                // JDK: As of JDK 6, "new IOException( message, cause )".
                 throw (IOException) new IOException( getMessage( e ) ).initCause( e );
             }
         }
@@ -1159,6 +1160,7 @@ public class SourceFileProcessor extends JomcTool
                     }
                     catch ( final IOException e )
                     {
+                        // JDK: As of JDK 6, "new IOException( message, cause )".
                         throw (IOException) new IOException( getMessage(
                             "failedEditing", f.getAbsolutePath(), getMessage( e ) ) ).initCause( e );
 
@@ -1189,6 +1191,7 @@ public class SourceFileProcessor extends JomcTool
                 }
                 catch ( final VelocityException e )
                 {
+                    // JDK: As of JDK 6, "new IOException( message, cause )".
                     throw (IOException) new IOException( getMessage(
                         "failedEditing", f.getAbsolutePath(), getMessage( e ) ) ).initCause( e );
 

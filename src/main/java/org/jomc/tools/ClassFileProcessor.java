@@ -167,6 +167,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
@@ -211,6 +212,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
@@ -256,6 +258,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
@@ -301,6 +304,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
@@ -470,6 +474,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
@@ -512,6 +517,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
@@ -553,6 +559,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
@@ -594,6 +601,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
@@ -633,6 +641,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
@@ -680,6 +689,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
@@ -728,6 +738,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
@@ -776,6 +787,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
@@ -1173,10 +1185,12 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ParseException e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
         catch ( final TokenMgrError e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
@@ -1228,6 +1242,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
@@ -1288,6 +1303,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
@@ -1346,6 +1362,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
@@ -1404,6 +1421,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final ModelException e )
         {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
         }
     }
@@ -1495,6 +1513,7 @@ public class ClassFileProcessor extends JomcTool
                 message = getMessage( e.getLinkedException() );
             }
 
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( message ).initCause( e );
         }
         catch ( final TransformerException e )
@@ -1505,6 +1524,7 @@ public class ClassFileProcessor extends JomcTool
                 message = getMessage( e.getException() );
             }
 
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( message ).initCause( e );
         }
     }
@@ -1702,6 +1722,7 @@ public class ClassFileProcessor extends JomcTool
                 message = getMessage( e.getLinkedException() );
             }
 
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( message ).initCause( e );
         }
         catch ( final TransformerException e )
@@ -1712,6 +1733,7 @@ public class ClassFileProcessor extends JomcTool
                 message = getMessage( e.getException() );
             }
 
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( message ).initCause( e );
         }
     }
@@ -1876,6 +1898,7 @@ public class ClassFileProcessor extends JomcTool
                 message = getMessage( e.getLinkedException() );
             }
 
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( message ).initCause( e );
         }
     }
@@ -1927,6 +1950,7 @@ public class ClassFileProcessor extends JomcTool
                 message = getMessage( e.getLinkedException() );
             }
 
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( message ).initCause( e );
         }
     }

@@ -2420,6 +2420,7 @@ public class JomcTool
             String m = getMessage( e );
             m = m == null ? "" : " " + m;
 
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( "invalidTemplate", location, m ) ).initCause( e );
         }
         catch ( final VelocityException e )
@@ -2427,6 +2428,7 @@ public class JomcTool
             String m = getMessage( e );
             m = m == null ? "" : " " + m;
 
+            // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( "velocityException", location, m ) ).initCause( e );
         }
     }
