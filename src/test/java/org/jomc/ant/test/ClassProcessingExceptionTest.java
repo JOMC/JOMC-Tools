@@ -30,8 +30,8 @@
  */
 package org.jomc.ant.test;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
-import org.jomc.ant.ClassProcessingException;
 import org.junit.Test;
 
 /**
@@ -55,13 +55,34 @@ public class ClassProcessingExceptionTest
     @Test
     public final void testClassProcessingException() throws Exception
     {
-        final ObjectInputStream in = new ObjectInputStream( this.getClass().getResourceAsStream(
-            ABSOLUTE_RESOURCE_NAME_PREFIX + "ClassProcessingException.ser" ) );
+        ObjectInputStream in = null;
+        boolean suppressExceptionOnClose = true;
 
-        final ClassProcessingException e = (ClassProcessingException) in.readObject();
-        in.close();
+        try
+        {
+            in = new ObjectInputStream( this.getClass().getResourceAsStream(
+                ABSOLUTE_RESOURCE_NAME_PREFIX + "ClassProcessingException.ser" ) );
 
-        System.out.println( e );
+            System.out.println( in.readObject() );
+            suppressExceptionOnClose = false;
+        }
+        finally
+        {
+            try
+            {
+                if ( in != null )
+                {
+                    in.close();
+                }
+            }
+            catch ( final IOException ex )
+            {
+                if ( !suppressExceptionOnClose )
+                {
+                    throw ex;
+                }
+            }
+        }
     }
 
 }

@@ -405,6 +405,7 @@ public final class MergeModulesTask extends JomcModelTask
                 for ( int i = urls.length - 1; i >= 0; i-- )
                 {
                     InputStream in = null;
+                    boolean suppressExceptionOnClose = true;
 
                     try
                     {
@@ -438,6 +439,8 @@ public final class MergeModulesTask extends JomcModelTask
                                       Project.MSG_WARN );
 
                         }
+
+                        suppressExceptionOnClose = false;
                     }
                     catch ( final SocketTimeoutException e )
                     {
@@ -478,7 +481,15 @@ public final class MergeModulesTask extends JomcModelTask
                         }
                         catch ( final IOException e )
                         {
-                            this.logMessage( Level.WARNING, Messages.getMessage( e ), e );
+
+                            if ( suppressExceptionOnClose )
+                            {
+                                this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
+                            }
+                            else
+                            {
+                                throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
+                            }
                         }
                     }
                 }

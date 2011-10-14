@@ -274,6 +274,7 @@ public class JomcModelTask extends JomcTask
             for ( int i = urls.length - 1; i >= 0; i-- )
             {
                 InputStream in = null;
+                boolean suppressExceptionOnClose = true;
 
                 try
                 {
@@ -312,6 +313,8 @@ public class JomcModelTask extends JomcTask
                                   Project.MSG_WARN );
 
                     }
+
+                    suppressExceptionOnClose = false;
                 }
                 catch ( final SocketTimeoutException e )
                 {
@@ -366,7 +369,14 @@ public class JomcModelTask extends JomcTask
                     }
                     catch ( final IOException e )
                     {
-                        this.logMessage( Level.WARNING, Messages.getMessage( e ), e );
+                        if ( suppressExceptionOnClose )
+                        {
+                            this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
+                        }
+                        else
+                        {
+                            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
+                        }
                     }
                 }
             }

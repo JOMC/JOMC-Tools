@@ -892,6 +892,7 @@ public class JomcTask extends Task
         }
 
         InputStream in = null;
+        boolean suppressExceptionOnClose = true;
         final URL url = this.getResource( resource.getLocation() );
 
         try
@@ -980,6 +981,7 @@ public class JomcTask extends Task
                     transformer.setOutputProperty( p.getKey(), p.getValue() );
                 }
 
+                suppressExceptionOnClose = false;
                 return transformer;
             }
             else if ( resource.isOptional() )
@@ -1042,7 +1044,14 @@ public class JomcTask extends Task
             }
             catch ( final IOException e )
             {
-                this.logMessage( Level.WARNING, Messages.getMessage( e ), e );
+                if ( suppressExceptionOnClose )
+                {
+                    this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
+                }
+                else
+                {
+                    throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
+                }
             }
         }
 
@@ -1067,6 +1076,7 @@ public class JomcTask extends Task
         }
 
         InputStream in = null;
+        boolean suppressExceptionOnClose = true;
         final Properties properties = new Properties();
         final URL url = this.getResource( propertiesResourceType.getLocation() );
 
@@ -1102,6 +1112,8 @@ public class JomcTask extends Task
                     "propertiesNotFound", propertiesResourceType.getLocation() ), this.getLocation() );
 
             }
+
+            suppressExceptionOnClose = false;
         }
         catch ( final SocketTimeoutException e )
         {
@@ -1148,7 +1160,14 @@ public class JomcTask extends Task
             }
             catch ( final IOException e )
             {
-                this.logMessage( Level.WARNING, Messages.getMessage( e ), e );
+                if ( suppressExceptionOnClose )
+                {
+                    this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
+                }
+                else
+                {
+                    throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
+                }
             }
         }
 
@@ -1383,11 +1402,14 @@ public class JomcTask extends Task
      */
     public final void logMessage( final Level level, final String message ) throws BuildException
     {
+        BufferedReader reader = null;
+        boolean suppressExceptionOnClose = true;
+
         try
         {
-            final BufferedReader reader = new BufferedReader( new StringReader( message ) );
-
             String line = null;
+            reader = new BufferedReader( new StringReader( message ) );
+
             while ( ( line = reader.readLine() ) != null )
             {
                 if ( level.intValue() >= Level.SEVERE.intValue() )
@@ -1407,11 +1429,33 @@ public class JomcTask extends Task
                     log( line, Project.MSG_DEBUG );
                 }
             }
-            reader.close();
+
+            suppressExceptionOnClose = false;
         }
         catch ( final IOException e )
         {
             throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
+        }
+        finally
+        {
+            try
+            {
+                if ( reader != null )
+                {
+                    reader.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( suppressExceptionOnClose )
+                {
+                    this.log( e, Project.MSG_ERR );
+                }
+                else
+                {
+                    throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
+                }
+            }
         }
     }
 

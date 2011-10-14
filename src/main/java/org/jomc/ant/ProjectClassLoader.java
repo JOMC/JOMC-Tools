@@ -346,6 +346,7 @@ public class ProjectClassLoader extends URLClassLoader
     public static Set<String> getDefaultModletExcludes() throws IOException
     {
         InputStream resource = null;
+        boolean suppressExceptionOnClose = true;
         final Set<String> defaultModletExcludes = new HashSet<String>();
 
         try
@@ -370,13 +371,24 @@ public class ProjectClassLoader extends URLClassLoader
                 }
             }
 
+            suppressExceptionOnClose = false;
             return defaultModletExcludes;
         }
         finally
         {
-            if ( resource != null )
+            try
             {
-                resource.close();
+                if ( resource != null )
+                {
+                    resource.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( !suppressExceptionOnClose )
+                {
+                    throw e;
+                }
             }
         }
     }
@@ -427,6 +439,7 @@ public class ProjectClassLoader extends URLClassLoader
     public static Set<String> getDefaultProviderExcludes() throws IOException
     {
         InputStream resource = null;
+        boolean suppressExceptionOnClose = true;
         final Set<String> defaultProviderExcludes = new HashSet<String>();
 
         try
@@ -451,13 +464,24 @@ public class ProjectClassLoader extends URLClassLoader
                 }
             }
 
+            suppressExceptionOnClose = false;
             return defaultProviderExcludes;
         }
         finally
         {
-            if ( resource != null )
+            try
             {
-                resource.close();
+                if ( resource != null )
+                {
+                    resource.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( !suppressExceptionOnClose )
+                {
+                    throw e;
+                }
             }
         }
     }
@@ -508,6 +532,7 @@ public class ProjectClassLoader extends URLClassLoader
     public static Set<String> getDefaultServiceExcludes() throws IOException
     {
         InputStream resource = null;
+        boolean suppressExceptionOnClose = true;
         final Set<String> defaultServiceExcludes = new HashSet<String>();
 
         try
@@ -532,13 +557,24 @@ public class ProjectClassLoader extends URLClassLoader
                 }
             }
 
+            suppressExceptionOnClose = false;
             return defaultServiceExcludes;
         }
         finally
         {
-            if ( resource != null )
+            try
             {
-                resource.close();
+                if ( resource != null )
+                {
+                    resource.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( !suppressExceptionOnClose )
+                {
+                    throw e;
+                }
             }
         }
     }
@@ -589,6 +625,7 @@ public class ProjectClassLoader extends URLClassLoader
     public static Set<String> getDefaultSchemaExcludes() throws IOException
     {
         InputStream resource = null;
+        boolean suppressExceptionOnClose = true;
         final Set<String> defaultSchemaExcludes = new HashSet<String>();
 
         try
@@ -613,13 +650,24 @@ public class ProjectClassLoader extends URLClassLoader
                 }
             }
 
+            suppressExceptionOnClose = false;
             return defaultSchemaExcludes;
         }
         finally
         {
-            if ( resource != null )
+            try
             {
-                resource.close();
+                if ( resource != null )
+                {
+                    resource.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( !suppressExceptionOnClose )
+                {
+                    throw e;
+                }
             }
         }
     }
@@ -645,6 +693,7 @@ public class ProjectClassLoader extends URLClassLoader
     private URL filterProviders( final URL resource ) throws IOException
     {
         InputStream in = null;
+        boolean suppressExceptionOnClose = true;
 
         try
         {
@@ -678,6 +727,7 @@ public class ProjectClassLoader extends URLClassLoader
                 {
                     out = new FileOutputStream( tmpResource );
                     IOUtils.writeLines( filteredLines, System.getProperty( "line.separator" ), out, "UTF-8" );
+                    suppressExceptionOnClose = false;
                 }
                 finally
                 {
@@ -687,16 +737,26 @@ public class ProjectClassLoader extends URLClassLoader
                         {
                             out.close();
                         }
+
+                        suppressExceptionOnClose = true;
                     }
                     catch ( final IOException e )
                     {
-                        this.project.log( Messages.getMessage( e ), e, Project.MSG_WARN );
+                        if ( suppressExceptionOnClose )
+                        {
+                            this.project.log( Messages.getMessage( e ), e, Project.MSG_ERR );
+                        }
+                        else
+                        {
+                            throw e;
+                        }
                     }
                 }
 
                 filteredResource = tmpResource.toURI().toURL();
             }
 
+            suppressExceptionOnClose = false;
             return filteredResource;
         }
         finally
@@ -710,7 +770,14 @@ public class ProjectClassLoader extends URLClassLoader
             }
             catch ( final IOException e )
             {
-                this.project.log( Messages.getMessage( e ), e, Project.MSG_WARN );
+                if ( suppressExceptionOnClose )
+                {
+                    this.project.log( Messages.getMessage( e ), e, Project.MSG_ERR );
+                }
+                else
+                {
+                    throw e;
+                }
             }
         }
     }
@@ -718,6 +785,7 @@ public class ProjectClassLoader extends URLClassLoader
     private URL filterModlets( final URL resource ) throws ModelException, IOException, JAXBException
     {
         InputStream in = null;
+        boolean suppressExceptionOnClose = true;
 
         try
         {
@@ -775,6 +843,7 @@ public class ProjectClassLoader extends URLClassLoader
                 }
             }
 
+            suppressExceptionOnClose = false;
             return filteredResource;
         }
         finally
@@ -788,7 +857,14 @@ public class ProjectClassLoader extends URLClassLoader
             }
             catch ( final IOException e )
             {
-                this.project.log( Messages.getMessage( e ), e, Project.MSG_WARN );
+                if ( suppressExceptionOnClose )
+                {
+                    this.project.log( Messages.getMessage( e ), e, Project.MSG_ERR );
+                }
+                else
+                {
+                    throw e;
+                }
             }
         }
     }
