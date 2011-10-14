@@ -170,9 +170,34 @@ public class ClassFileProcessorTest extends JomcToolTest
         final Marshaller marshaller = this.getModelContext().createMarshaller( ModelObject.MODEL_PUBLIC_ID );
         final Unmarshaller unmarshaller = this.getModelContext().createUnmarshaller( ModelObject.MODEL_PUBLIC_ID );
         final URL object = this.getClass().getResource( "/java/lang/Object.class" );
-        final InputStream in = object.openStream();
-        final JavaClass objectClass = new ClassParser( in, object.toExternalForm() ).parse();
-        in.close();
+
+        InputStream in = null;
+        JavaClass objectClass = null;
+        boolean suppressExceptionOnClose = true;
+
+        try
+        {
+            in = object.openStream();
+            objectClass = new ClassParser( in, object.toExternalForm() ).parse();
+            suppressExceptionOnClose = false;
+        }
+        finally
+        {
+            try
+            {
+                if ( in != null )
+                {
+                    in.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( !suppressExceptionOnClose )
+                {
+                    throw e;
+                }
+            }
+        }
 
         try
         {
@@ -1702,31 +1727,79 @@ public class ClassFileProcessorTest extends JomcToolTest
         FileUtils.deleteDirectory( targetDirectory );
         assertTrue( targetDirectory.mkdirs() );
 
-        final ZipInputStream in = new ZipInputStream( resource.openStream() );
-        ZipEntry e = null;
+        ZipInputStream in = null;
+        boolean suppressExceptionOnClose = true;
 
-        while ( ( e = in.getNextEntry() ) != null )
+        try
         {
-            final File dest = new File( targetDirectory, e.getName() );
-            assertTrue( dest.isAbsolute() );
+            in = new ZipInputStream( resource.openStream() );
+            ZipEntry e = null;
 
-            if ( e.isDirectory() )
+            while ( ( e = in.getNextEntry() ) != null )
             {
-                if ( !dest.exists() )
+                final File dest = new File( targetDirectory, e.getName() );
+                assertTrue( dest.isAbsolute() );
+
+                if ( e.isDirectory() )
                 {
-                    assertTrue( dest.mkdirs() );
+                    if ( !dest.exists() )
+                    {
+                        assertTrue( dest.mkdirs() );
+                    }
+
+                    continue;
                 }
 
-                continue;
+                OutputStream out = null;
+
+                try
+                {
+                    out = FileUtils.openOutputStream( dest );
+                    IOUtils.copy( in, out );
+                    suppressExceptionOnClose = false;
+                }
+                finally
+                {
+                    try
+                    {
+                        if ( out != null )
+                        {
+                            out.close();
+                        }
+
+                        suppressExceptionOnClose = true;
+                    }
+                    catch ( final IOException ex )
+                    {
+                        if ( !suppressExceptionOnClose )
+                        {
+                            throw ex;
+                        }
+                    }
+                }
+
+                in.closeEntry();
             }
 
-            final OutputStream out = FileUtils.openOutputStream( dest );
-            IOUtils.copy( in, out );
-            IOUtils.closeQuietly( out );
-            in.closeEntry();
+            suppressExceptionOnClose = false;
         }
-
-        IOUtils.closeQuietly( in );
+        finally
+        {
+            try
+            {
+                if ( in != null )
+                {
+                    in.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( !suppressExceptionOnClose )
+                {
+                    throw e;
+                }
+            }
+        }
     }
 
 }

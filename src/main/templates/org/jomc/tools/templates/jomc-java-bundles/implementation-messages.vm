@@ -94,11 +94,14 @@ ${tool.getIndentation(1)}@Deprecated
 ${tool.getIndentation(1)}@javax.annotation.Generated( value = "$toolName $toolVersion", comments = "See $toolUrl" )
 ${tool.getIndentation(1)}$tool.getJavaModifierName($implementation,$message) static String $tool.getJavaGetterMethodName($message)( final java.util.Locale locale#if($message.getArguments() && !$message.getArguments().getArgument().isEmpty())#set($i = 0)#foreach($argument in $message.getArguments().getArgument())#set($argument = $message.getArguments().getArgument($i))#set($i = $i + 1), final $tool.getJavaTypeName($argument) $argument.getName()#end#end )
 ${tool.getIndentation(1)}{
+${tool.getIndentation(2)}java.io.BufferedReader reader = null;
+${tool.getIndentation(2)}boolean suppressExceptionOnClose = true;
+
 ${tool.getIndentation(2)}try
 ${tool.getIndentation(2)}{
 ${tool.getIndentation(3)}final String message = java.text.MessageFormat.format( java.util.ResourceBundle.getBundle( "${tool.getJavaClasspathLocation($implementation)}", locale ).getString( "$message.getName()" )#if($message.getArguments() && !$message.getArguments().getArgument().isEmpty())#set($i = 0)#foreach($argument in $message.getArguments().getArgument())#set($argument = $message.getArguments().getArgument($i))#set($i = $i + 1), $argument.getName()#end#end, (Object) null );
 ${tool.getIndentation(3)}final java.lang.StringBuilder builder = new java.lang.StringBuilder( message.length() );
-${tool.getIndentation(3)}final java.io.BufferedReader reader = new java.io.BufferedReader( new java.io.StringReader( message ) );
+${tool.getIndentation(3)}reader = new java.io.BufferedReader( new java.io.StringReader( message ) );
 ${tool.getIndentation(3)}final String lineSeparator = System.getProperty( "line.separator", "\n" );
 
 ${tool.getIndentation(3)}String line;
@@ -106,8 +109,8 @@ ${tool.getIndentation(3)}while ( ( line = reader.readLine() ) != null )
 ${tool.getIndentation(3)}{
 ${tool.getIndentation(4)}builder.append( lineSeparator ).append( line );
 ${tool.getIndentation(3)}}
-${tool.getIndentation(3)}reader.close();
 
+${tool.getIndentation(3)}suppressExceptionOnClose = false;
 ${tool.getIndentation(3)}return builder.substring( lineSeparator.length() );
 ${tool.getIndentation(2)}}
 ${tool.getIndentation(2)}catch( final java.lang.ClassCastException e )
@@ -125,6 +128,23 @@ ${tool.getIndentation(2)}}
 ${tool.getIndentation(2)}catch( final java.io.IOException e )
 ${tool.getIndentation(2)}{
 ${tool.getIndentation(3)}throw new org.jomc.ObjectManagementException( e.getMessage(), e );
+${tool.getIndentation(2)}}
+${tool.getIndentation(2)}finally
+${tool.getIndentation(2)}{
+${tool.getIndentation(3)}try
+${tool.getIndentation(3)}{
+${tool.getIndentation(4)}if( reader != null )
+${tool.getIndentation(4)}{
+${tool.getIndentation(5)}reader.close();
+${tool.getIndentation(4)}}
+${tool.getIndentation(3)}}
+${tool.getIndentation(3)}catch( final java.io.IOException e )
+${tool.getIndentation(3)}{
+${tool.getIndentation(4)}if( !suppressExceptionOnClose )
+${tool.getIndentation(4)}{
+${tool.getIndentation(5)}throw new org.jomc.ObjectManagementException( e.getMessage(), e );
+${tool.getIndentation(4)}}
+${tool.getIndentation(3)}}
 ${tool.getIndentation(2)}}
 ${tool.getIndentation(1)}}
 #end

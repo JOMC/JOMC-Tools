@@ -1087,6 +1087,9 @@ public class JomcTool
             throw new IllegalArgumentException( Integer.toString( indentationLevel ) );
         }
 
+        BufferedReader reader = null;
+        boolean suppressExceptionOnClose = true;
+
         try
         {
             String javadoc = "";
@@ -1094,7 +1097,7 @@ public class JomcTool
             if ( text.getValue() != null )
             {
                 final String indent = this.getIndentation( indentationLevel );
-                final BufferedReader reader = new BufferedReader( new StringReader( text.getValue() ) );
+                reader = new BufferedReader( new StringReader( text.getValue() ) );
                 final StringBuilder builder = new StringBuilder( text.getValue().length() );
 
                 String line;
@@ -1104,7 +1107,6 @@ public class JomcTool
                         append( line.replaceAll( "\\/\\*\\*", "/*" ).replaceAll( "\\*/", "/" ) );
 
                 }
-                reader.close();
 
                 if ( builder.length() > 0 )
                 {
@@ -1118,6 +1120,7 @@ public class JomcTool
                 }
             }
 
+            suppressExceptionOnClose = false;
             return javadoc;
         }
         catch ( final MimeTypeParseException e )
@@ -1127,6 +1130,27 @@ public class JomcTool
         catch ( final IOException e )
         {
             throw new AssertionError( e );
+        }
+        finally
+        {
+            try
+            {
+                if ( reader != null )
+                {
+                    reader.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( suppressExceptionOnClose )
+                {
+                    this.log( Level.SEVERE, getMessage( e ), e );
+                }
+                else
+                {
+                    throw new AssertionError( e );
+                }
+            }
         }
     }
 

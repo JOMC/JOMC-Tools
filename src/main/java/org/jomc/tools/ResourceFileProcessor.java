@@ -413,10 +413,12 @@ public class ResourceFileProcessor extends JomcTool
             }
 
             OutputStream out = null;
+            boolean suppressExceptionOnClose = true;
             try
             {
                 out = new FileOutputStream( file );
                 p.store( out, toolName + ' ' + toolVersion + " - See " + toolUrl );
+                suppressExceptionOnClose = false;
             }
             finally
             {
@@ -429,7 +431,14 @@ public class ResourceFileProcessor extends JomcTool
                 }
                 catch ( final IOException ex )
                 {
-                    this.log( Level.WARNING, getMessage( ex ), ex );
+                    if ( suppressExceptionOnClose )
+                    {
+                        this.log( Level.SEVERE, getMessage( ex ), ex );
+                    }
+                    else
+                    {
+                        throw ex;
+                    }
                 }
             }
         }
@@ -455,10 +464,12 @@ public class ResourceFileProcessor extends JomcTool
             }
 
             OutputStream out = null;
+            boolean suppressExceptionOnClose = true;
             try
             {
                 out = new FileOutputStream( file );
                 defProperties.store( out, toolName + ' ' + toolVersion + " - See " + toolUrl );
+                suppressExceptionOnClose = false;
             }
             finally
             {
@@ -471,7 +482,14 @@ public class ResourceFileProcessor extends JomcTool
                 }
                 catch ( final IOException e )
                 {
-                    this.log( Level.WARNING, getMessage( e ), e );
+                    if ( suppressExceptionOnClose )
+                    {
+                        this.log( Level.SEVERE, getMessage( e ), e );
+                    }
+                    else
+                    {
+                        throw e;
+                    }
                 }
             }
         }

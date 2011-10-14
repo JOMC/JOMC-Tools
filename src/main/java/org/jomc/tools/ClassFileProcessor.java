@@ -2179,11 +2179,13 @@ public class ClassFileProcessor extends JomcTool
 
             InputStream in = null;
             JavaClass javaClass = null;
+            boolean suppressExceptionOnClose = true;
 
             try
             {
                 in = classUrl.openStream();
                 javaClass = new ClassParser( in, classUrl.toExternalForm() ).parse();
+                suppressExceptionOnClose = false;
             }
             finally
             {
@@ -2196,7 +2198,14 @@ public class ClassFileProcessor extends JomcTool
                 }
                 catch ( final IOException e )
                 {
-                    this.log( Level.WARNING, getMessage( e ), e );
+                    if ( suppressExceptionOnClose )
+                    {
+                        this.log( Level.SEVERE, getMessage( e ), e );
+                    }
+                    else
+                    {
+                        throw e;
+                    }
                 }
             }
 
@@ -2231,11 +2240,13 @@ public class ClassFileProcessor extends JomcTool
 
             InputStream in = null;
             JavaClass javaClass = null;
+            boolean suppressExceptionOnClose = true;
 
             try
             {
                 in = classUrl.openStream();
                 javaClass = new ClassParser( in, classUrl.toExternalForm() ).parse();
+                suppressExceptionOnClose = false;
             }
             finally
             {
@@ -2248,7 +2259,14 @@ public class ClassFileProcessor extends JomcTool
                 }
                 catch ( final IOException e )
                 {
-                    this.log( Level.WARNING, getMessage( e ), e );
+                    if ( suppressExceptionOnClose )
+                    {
+                        this.log( Level.SEVERE, getMessage( e ), e );
+                    }
+                    else
+                    {
+                        throw e;
+                    }
                 }
             }
 

@@ -544,6 +544,7 @@ public class SourceFileProcessorTest extends JomcToolTest
 
         InputStream in = null;
         OutputStream out = null;
+        boolean suppressExceptionOnClose = true;
 
         try
         {
@@ -552,34 +553,72 @@ public class SourceFileProcessorTest extends JomcToolTest
 
             out = new FileOutputStream( file );
             IOUtils.copy( in, out );
+            suppressExceptionOnClose = false;
         }
         finally
         {
-            if ( in != null )
+            try
             {
-                in.close();
+                if ( in != null )
+                {
+                    in.close();
+                }
             }
-            if ( out != null )
+            catch ( final IOException e )
             {
-                out.close();
+                if ( !suppressExceptionOnClose )
+                {
+                    throw e;
+                }
             }
+            finally
+            {
+                try
+                {
+                    if ( out != null )
+                    {
+                        out.close();
+                    }
+                }
+                catch ( final IOException e )
+                {
+                    if ( !suppressExceptionOnClose )
+                    {
+                        throw e;
+                    }
+                }
+            }
+
         }
     }
 
     private String toString( final File f ) throws IOException
     {
         InputStream in = null;
+        boolean suppressExceptionOnClose = true;
 
         try
         {
             in = new FileInputStream( f );
-            return IOUtils.toString( in, this.getResourceEncoding() );
+            final String str = IOUtils.toString( in, this.getResourceEncoding() );
+            suppressExceptionOnClose = false;
+            return str;
         }
         finally
         {
-            if ( in != null )
+            try
             {
-                in.close();
+                if ( in != null )
+                {
+                    in.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( !suppressExceptionOnClose )
+                {
+                    throw e;
+                }
             }
         }
     }
