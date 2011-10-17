@@ -315,7 +315,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Classpath elements separated by ''{0}''. If starting with a ''@'' character, a file name of a file holding classpath elements.</text>
+            <text language="en">Class path elements separated by ''{0}''. If starting with a ''@'' character, a file name of a file holding class path elements.</text>
             <text language="de">Klassenpfad-Elemente mit ''{0}'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Klassenpfad-Elementen.</text>
           </template>
           <arguments>
@@ -393,7 +393,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Location of classpath modules.</text>
+            <text language="en">Location of class path modules.</text>
             <text language="de">Ort der Klassenpfad-Module.</text>
           </template>
         </message>
@@ -429,7 +429,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Location of classpath modlets.</text>
+            <text language="en">Location of class path modlets.</text>
             <text language="de">Ort der Klassenpfad-Modlets.</text>
           </template>
         </message>
@@ -466,7 +466,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Location of classpath transformers.</text>
+            <text language="en">Location of class path transformers.</text>
             <text language="de">Ort der Klassenpfad-Transformatoren.</text>
           </template>
         </message>
@@ -502,7 +502,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Location of classpath providers.</text>
+            <text language="en">Location of class path providers.</text>
             <text language="de">Ort der Klassenpfad-Provider.</text>
           </template>
         </message>
@@ -611,7 +611,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Deactivates classpath resolution.</text>
+            <text language="en">Deactivates class path resolution.</text>
             <text language="de">Deaktiviert die Klassenpfad-Auflösung.</text>
           </template>
         </message>
@@ -857,7 +857,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Templates profile to use.</text>
+            <text language="en">Template profile to use.</text>
             <text language="de">Zu verwendendes Vorlagen-Profil.</text>
           </template>
         </message>
@@ -2398,7 +2398,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
       <messages>
         <message name="classpathElementInfo">
           <template defaultLanguage="en">
-            <text language="en">Classpath element: ''{0}''</text>
+            <text language="en">Class path element: ''{0}''</text>
             <text language="de">Klassenpfad-Element: ''{0}''</text>
           </template>
           <arguments>
@@ -2407,7 +2407,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         </message>
         <message name="classpathElementNotFoundWarning">
           <template defaultLanguage="en">
-            <text language="en">Classpath element ''{0}'' ignored. File not found.</text>
+            <text language="en">Class path element ''{0}'' ignored. File not found.</text>
             <text language="de">Klassenpfad-Element ''{0}'' ignoriert. Datei nicht gefunden.</text>
           </template>
           <arguments>
