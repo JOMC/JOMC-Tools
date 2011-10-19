@@ -158,7 +158,10 @@ public class JomcTool
     /** The encoding to use for reading templates. */
     private String templateEncoding;
 
-    /** The location to search for templates in addition to searching the class path. */
+    /**
+     * The location to search for templates in addition to searching the class path.
+     * @since 1.2
+     */
     private URL templateLocation;
 
     /** The encoding to use for reading files. */
@@ -167,7 +170,10 @@ public class JomcTool
     /** The encoding to use for writing files. */
     private String outputEncoding;
 
-    /** The template parameters. */
+    /**
+     * The template parameters.
+     * @since 1.2
+     */
     private Map<String, Object> templateParameters;
 
     /** The template profile of the instance. */
@@ -185,7 +191,10 @@ public class JomcTool
     /** The log level of the instance. */
     private Level logLevel;
 
-    /** The locale of the instance. */
+    /**
+     * The locale of the instance.
+     * @since 1.2
+     */
     private Locale locale;
 
     /** Cached indentation strings. */
@@ -1462,6 +1471,8 @@ public class JomcTool
      * @throws NullPointerException if {@code calendar} is {@code null}.
      *
      * @see SimpleDateFormat yyyy-DDD
+     *
+     * @since 1.2
      */
     public String getIsoDate( final Calendar calendar )
     {
@@ -1548,6 +1559,8 @@ public class JomcTool
      * @throws NullPointerException if {@code calendar} is {@code null}.
      *
      * @see SimpleDateFormat HH:mm
+     *
+     * @since 1.2
      */
     public String getIsoTime( final Calendar calendar )
     {
@@ -1640,6 +1653,8 @@ public class JomcTool
      * @throws NullPointerException if {@code calendar} is {@code null}.
      *
      * @see SimpleDateFormat yyyy-MM-dd'T'HH:mm:ssZ
+     *
+     * @since 1.2
      */
     public String getIsoDateTime( final Calendar calendar )
     {
@@ -1888,9 +1903,9 @@ public class JomcTool
      *
      * @return The template parameters of the instance.
      *
-     * @since 1.2
-     *
      * @see #getVelocityContext()
+     *
+     * @since 1.2
      */
     public final Map<String, Object> getTemplateParameters()
     {
@@ -2266,7 +2281,7 @@ public class JomcTool
 
     /**
      * Gets a velocity template for a given name.
-     * <p>This method searches templates at the following locations:
+     * <p>This method searches templates at the following locations in the shown order.
      * <ol>
      *  <li><code>org/jomc/tools/templates/{@link #getTemplateProfile() profile}/{@link #getLocale() language}/<i>templateName</i></code></li>
      *  <li><code>org/jomc/tools/templates/{@link #getTemplateProfile() profile}/<i>templateName</i></code></li>
