@@ -51,3 +51,37 @@ Customizing code generation
   details, especially the {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/JomcTool.html#getVelocityTemplate(java.lang.String)}getVelocityTemplate}}
   method and the {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/SourceFileProcessor.html#getSourceFilesType(org.jomc.model.Specification)}getSourceFilesType}}
   methods.
+
+* Controlling behaviour of the default templates
+
+  The behaviour of the default templates can be controlled using <<<templateParameter>>> nested elements. The default
+  values are shown below.
+
++-----------------+
+<!-- Flag indicating generated code to contain checks for illegal null references using the 'assert' keyword. -->
+<templateParameter key="with-assertions" value="true" type="java.lang.Boolean"/>
+
+<!-- Flag indicating generated code to contain copyright notices based on model object authors. -->
+<templateParameter key="with-author-copyright" value="true" type="java.lang.Boolean"/>
+
+<!-- Flag indicating generated code to contain editor folds for the Netbeans IDE and compatible editors. -->
+<templateParameter key="with-editor-fold" value="true" type="java.lang.Boolean"/>
+
+<!-- Flag indicating generated code to contain javadoc documentation. -->
+<templateParameter key="with-javadoc" value="true" type="java.lang.Boolean"/>
+
+<!-- Flag indicating generated code to contain '@author' javadoc documentation tags. -->
+<templateParameter key="with-javadoc-author" value="true" type="java.lang.Boolean"/>
+
+<!-- Flag indicating generated code to contain '@version' javadoc documentation tags. -->
+<templateParameter key="with-javadoc-version" value="true" type="java.lang.Boolean"/>
+
+<!-- Flag indicating generated code to contain JSR-250 '@Generated' annotations. -->
+<templateParameter key="with-jsr-250" value="true" type="java.lang.Boolean"/>
+
+<!-- SCM file identification keyword. The given value will be surrounded by '$' characters. -->
+<templateParameter key="with-revision-keyword" value="Id"/>
+
+<!-- Flag indicating generated code to contain copyright notices based on model object vendor information. -->
+<templateParameter key="with-vendor-copyright" value="true" type="java.lang.Boolean"/>
++-----------------+
