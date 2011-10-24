@@ -466,9 +466,9 @@ public class JomcModelTask extends JomcTask
         if ( this.moduleResources != null )
         {
             clone.moduleResources = new HashSet<ModuleResourceType>( this.moduleResources.size() );
-            for ( ModuleResourceType t : this.moduleResources )
+            for ( ModuleResourceType e : this.moduleResources )
             {
-                clone.moduleResources.add( t.clone() );
+                clone.moduleResources.add( e.clone() );
             }
         }
 

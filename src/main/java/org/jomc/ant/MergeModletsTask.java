@@ -705,27 +705,27 @@ public final class MergeModletsTask extends JomcTask
         if ( this.modletResources != null )
         {
             clone.modletResources = new HashSet<ModletResourceType>( this.modletResources.size() );
-            for ( ModletResourceType t : this.modletResources )
+            for ( ModletResourceType e : this.modletResources )
             {
-                clone.modletResources.add( t.clone() );
+                clone.modletResources.add( e.clone() );
             }
         }
 
         if ( this.modletExcludes != null )
         {
             clone.modletExcludes = new HashSet<NameType>( this.modletExcludes.size() );
-            for ( NameType t : this.modletExcludes )
+            for ( NameType e : this.modletExcludes )
             {
-                clone.modletExcludes.add( t.clone() );
+                clone.modletExcludes.add( e.clone() );
             }
         }
 
         if ( this.modletIncludes != null )
         {
             clone.modletIncludes = new HashSet<NameType>( this.modletIncludes.size() );
-            for ( NameType t : this.modletIncludes )
+            for ( NameType e : this.modletIncludes )
             {
-                clone.modletIncludes.add( t.clone() );
+                clone.modletIncludes.add( e.clone() );
             }
         }
 
@@ -734,9 +734,9 @@ public final class MergeModletsTask extends JomcTask
             clone.modletObjectStylesheetResources =
                 new ArrayList<TransformerResourceType>( this.modletObjectStylesheetResources.size() );
 
-            for ( TransformerResourceType r : this.modletObjectStylesheetResources )
+            for ( TransformerResourceType e : this.modletObjectStylesheetResources )
             {
-                clone.modletObjectStylesheetResources.add( r.clone() );
+                clone.modletObjectStylesheetResources.add( e.clone() );
             }
         }
 

@@ -32,6 +32,7 @@ package org.jomc.ant;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -861,19 +862,43 @@ public class JomcToolTask extends JomcModelTask
             clone.locale = this.locale.clone();
         }
 
+        if ( this.velocityPropertyResources != null )
+        {
+            clone.velocityPropertyResources =
+                new ArrayList<PropertiesResourceType>( this.velocityPropertyResources.size() );
+
+            for ( PropertiesResourceType e : this.velocityPropertyResources )
+            {
+                clone.velocityPropertyResources.add( e.clone() );
+            }
+        }
+
         if ( this.velocityProperties != null )
         {
-            for ( KeyValueType<String, Object> p : this.velocityProperties )
+            clone.velocityProperties = new ArrayList<KeyValueType<String, Object>>( this.velocityProperties.size() );
+            for ( KeyValueType<String, Object> e : this.velocityProperties )
             {
-                clone.getVelocityProperties().add( p.clone() );
+                clone.velocityProperties.add( e.clone() );
+            }
+        }
+
+        if ( this.templateParameterResources != null )
+        {
+            clone.templateParameterResources =
+                new ArrayList<PropertiesResourceType>( this.templateParameterResources.size() );
+
+            for ( PropertiesResourceType e : this.templateParameterResources )
+            {
+                clone.templateParameterResources.add( e.clone() );
             }
         }
 
         if ( this.templateParameters != null )
         {
+            clone.templateParameters = new ArrayList<KeyValueType<String, Object>>( this.templateParameters.size() );
             for ( KeyValueType<String, Object> p : this.templateParameters )
             {
-                clone.getTemplateParameters().add( p.clone() );
+                clone.templateParameters.add( p.clone() );
             }
         }
 

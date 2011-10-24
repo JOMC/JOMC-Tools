@@ -676,18 +676,18 @@ public final class MergeModulesTask extends JomcModelTask
         if ( this.moduleExcludes != null )
         {
             clone.moduleExcludes = new HashSet<NameType>( this.moduleExcludes.size() );
-            for ( NameType t : this.moduleExcludes )
+            for ( NameType e : this.moduleExcludes )
             {
-                clone.moduleExcludes.add( t.clone() );
+                clone.moduleExcludes.add( e.clone() );
             }
         }
 
         if ( this.moduleIncludes != null )
         {
             clone.moduleIncludes = new HashSet<NameType>( this.moduleIncludes.size() );
-            for ( NameType t : this.moduleIncludes )
+            for ( NameType e : this.moduleIncludes )
             {
-                clone.moduleIncludes.add( t.clone() );
+                clone.moduleIncludes.add( e.clone() );
             }
         }
 
@@ -696,9 +696,9 @@ public final class MergeModulesTask extends JomcModelTask
             clone.modelObjectStylesheetResources =
                 new ArrayList<TransformerResourceType>( this.modelObjectStylesheetResources.size() );
 
-            for ( TransformerResourceType r : this.modelObjectStylesheetResources )
+            for ( TransformerResourceType e : this.modelObjectStylesheetResources )
             {
-                clone.modelObjectStylesheetResources.add( r.clone() );
+                clone.modelObjectStylesheetResources.add( e.clone() );
             }
         }
 

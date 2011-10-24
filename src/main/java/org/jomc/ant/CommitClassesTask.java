@@ -257,6 +257,17 @@ public final class CommitClassesTask extends ClassFileProcessorTask
         clone.classesDirectory =
             this.classesDirectory != null ? new File( this.classesDirectory.getAbsolutePath() ) : null;
 
+        if ( this.modelObjectStylesheetResources != null )
+        {
+            clone.modelObjectStylesheetResources =
+                new ArrayList<TransformerResourceType>( this.modelObjectStylesheetResources.size() );
+
+            for ( TransformerResourceType e : this.modelObjectStylesheetResources )
+            {
+                clone.modelObjectStylesheetResources.add( e.clone() );
+            }
+        }
+
         return clone;
     }
 

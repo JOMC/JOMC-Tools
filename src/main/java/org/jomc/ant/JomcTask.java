@@ -42,6 +42,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -1556,6 +1557,40 @@ public class JomcTask extends Task
         {
             final JomcTask clone = (JomcTask) super.clone();
             clone.classpath = (Path) ( this.classpath != null ? this.classpath.clone() : null );
+
+            if ( this.modelContextAttributes != null )
+            {
+                clone.modelContextAttributes =
+                    new ArrayList<KeyValueType<String, Object>>( this.modelContextAttributes.size() );
+
+                for ( KeyValueType e : this.modelContextAttributes )
+                {
+                    clone.modelContextAttributes.add( e.clone() );
+                }
+            }
+
+            if ( this.transformationParameterResources != null )
+            {
+                clone.transformationParameterResources =
+                    new ArrayList<PropertiesResourceType>( this.transformationParameterResources.size() );
+
+                for ( PropertiesResourceType e : this.transformationParameterResources )
+                {
+                    clone.transformationParameterResources.add( e.clone() );
+                }
+            }
+
+            if ( this.transformationParameters != null )
+            {
+                clone.transformationParameters =
+                    new ArrayList<KeyValueType<String, Object>>( this.transformationParameters.size() );
+
+                for ( KeyValueType e : this.transformationParameters )
+                {
+                    clone.transformationParameters.add( e.clone() );
+                }
+            }
+
             return clone;
         }
         catch ( final CloneNotSupportedException e )
