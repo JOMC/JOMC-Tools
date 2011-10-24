@@ -441,11 +441,12 @@ public class JomcModelTask extends JomcTask
 
         for ( int i = 0, s0 = this.getModelContextAttributes().size(); i < s0; i++ )
         {
-            final KeyValueType<String, Object> kv = this.getModelContextAttributes().get( i );
+            final KeyValueType kv = this.getModelContextAttributes().get( i );
+            final Object object = kv.getObject( this.getLocation() );
 
-            if ( kv.getValue() != null )
+            if ( object != null )
             {
-                modelContext.setAttribute( kv.getKey(), kv.getValue() );
+                modelContext.setAttribute( kv.getKey(), object );
             }
             else
             {

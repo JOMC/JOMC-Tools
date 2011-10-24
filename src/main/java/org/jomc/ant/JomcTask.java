@@ -98,7 +98,7 @@ public class JomcTask extends Task
     private String model;
 
     /** {@code ModelContext} attributes to apply. */
-    private List<KeyValueType<String, Object>> modelContextAttributes;
+    private List<KeyValueType> modelContextAttributes;
 
     /** The name of the {@code ModelContext} implementation class backing the task. */
     private String modelContextClassName;
@@ -119,13 +119,13 @@ public class JomcTask extends Task
     private String platformProviderLocation;
 
     /** The global transformation parameters to apply. */
-    private List<KeyValueType<String, Object>> transformationParameters;
+    private List<KeyValueType> transformationParameters;
 
     /** The global transformation parameter resources to apply. */
     private List<PropertiesResourceType> transformationParameterResources;
 
     /** The global transformation output properties to apply. */
-    private List<KeyValueType<String, String>> transformationOutputProperties;
+    private List<KeyValueType> transformationOutputProperties;
 
     /** The flag indicating JAXP schema validation of modlet resources is enabled. */
     private boolean modletResourceValidationEnabled = true;
@@ -286,11 +286,11 @@ public class JomcTask extends Task
      * @see #createModelContextAttribute()
      * @see #newModelContext(java.lang.ClassLoader)
      */
-    public final List<KeyValueType<String, Object>> getModelContextAttributes()
+    public final List<KeyValueType> getModelContextAttributes()
     {
         if ( this.modelContextAttributes == null )
         {
-            this.modelContextAttributes = new LinkedList<KeyValueType<String, Object>>();
+            this.modelContextAttributes = new LinkedList<KeyValueType>();
         }
 
         return this.modelContextAttributes;
@@ -303,9 +303,9 @@ public class JomcTask extends Task
      *
      * @see #getModelContextAttributes()
      */
-    public KeyValueType<String, Object> createModelContextAttribute()
+    public KeyValueType createModelContextAttribute()
     {
-        final KeyValueType<String, Object> modelContextAttribute = new KeyValueType<String, Object>();
+        final KeyValueType modelContextAttribute = new KeyValueType();
         this.getModelContextAttributes().add( modelContextAttribute );
         return modelContextAttribute;
     }
@@ -467,11 +467,11 @@ public class JomcTask extends Task
      * @see #createTransformationParameter()
      * @see #getTransformer(org.jomc.ant.types.TransformerResourceType)
      */
-    public final List<KeyValueType<String, Object>> getTransformationParameters()
+    public final List<KeyValueType> getTransformationParameters()
     {
         if ( this.transformationParameters == null )
         {
-            this.transformationParameters = new LinkedList<KeyValueType<String, Object>>();
+            this.transformationParameters = new LinkedList<KeyValueType>();
         }
 
         return this.transformationParameters;
@@ -484,9 +484,9 @@ public class JomcTask extends Task
      *
      * @see #getTransformationParameters()
      */
-    public KeyValueType<String, Object> createTransformationParameter()
+    public KeyValueType createTransformationParameter()
     {
-        final KeyValueType<String, Object> transformationParameter = new KeyValueType<String, Object>();
+        final KeyValueType transformationParameter = new KeyValueType();
         this.getTransformationParameters().add( transformationParameter );
         return transformationParameter;
     }
@@ -536,11 +536,11 @@ public class JomcTask extends Task
      *
      * @see #createTransformationOutputProperty()
      */
-    public final List<KeyValueType<String, String>> getTransformationOutputProperties()
+    public final List<KeyValueType> getTransformationOutputProperties()
     {
         if ( this.transformationOutputProperties == null )
         {
-            this.transformationOutputProperties = new LinkedList<KeyValueType<String, String>>();
+            this.transformationOutputProperties = new LinkedList<KeyValueType>();
         }
 
         return this.transformationOutputProperties;
@@ -553,9 +553,9 @@ public class JomcTask extends Task
      *
      * @see #getTransformationOutputProperties()
      */
-    public KeyValueType<String, String> createTransformationOutputProperty()
+    public KeyValueType createTransformationOutputProperty()
     {
-        final KeyValueType<String, String> transformationOutputProperty = new KeyValueType<String, String>();
+        final KeyValueType transformationOutputProperty = new KeyValueType();
         this.getTransformationOutputProperties().add( transformationOutputProperty );
         return transformationOutputProperty;
     }
@@ -631,6 +631,7 @@ public class JomcTask extends Task
         this.assertNotNull( "model", this.getModel() );
         this.assertKeysNotNull( this.getModelContextAttributes() );
         this.assertKeysNotNull( this.getTransformationParameters() );
+        this.assertKeysNotNull( this.getTransformationOutputProperties() );
         this.assertLocationsNotNull( this.getTransformationParameterResources() );
     }
 
@@ -994,13 +995,13 @@ public class JomcTask extends Task
 
                 for ( int i = 0, s0 = this.getTransformationParameters().size(); i < s0; i++ )
                 {
-                    final KeyValueType<String, Object> p = this.getTransformationParameters().get( i );
-                    transformer.setParameter( p.getKey(), p.getValue() );
+                    final KeyValueType p = this.getTransformationParameters().get( i );
+                    transformer.setParameter( p.getKey(), p.getObject( this.getLocation() ) );
                 }
 
                 for ( int i = 0, s0 = this.getTransformationOutputProperties().size(); i < s0; i++ )
                 {
-                    final KeyValueType<String, String> p = this.getTransformationOutputProperties().get( i );
+                    final KeyValueType p = this.getTransformationOutputProperties().get( i );
                     transformer.setOutputProperty( p.getKey(), p.getValue() );
                 }
 
@@ -1015,13 +1016,13 @@ public class JomcTask extends Task
 
                 for ( int i = 0, s0 = resource.getTransformationParameters().size(); i < s0; i++ )
                 {
-                    final KeyValueType<String, Object> p = resource.getTransformationParameters().get( i );
-                    transformer.setParameter( p.getKey(), p.getValue() );
+                    final KeyValueType p = resource.getTransformationParameters().get( i );
+                    transformer.setParameter( p.getKey(), p.getObject( this.getLocation() ) );
                 }
 
                 for ( int i = 0, s0 = resource.getTransformationOutputProperties().size(); i < s0; i++ )
                 {
-                    final KeyValueType<String, String> p = resource.getTransformationOutputProperties().get( i );
+                    final KeyValueType p = resource.getTransformationOutputProperties().get( i );
                     transformer.setOutputProperty( p.getKey(), p.getValue() );
                 }
 
@@ -1316,11 +1317,12 @@ public class JomcTask extends Task
 
         for ( int i = 0, s0 = this.getModelContextAttributes().size(); i < s0; i++ )
         {
-            final KeyValueType<String, Object> kv = this.getModelContextAttributes().get( i );
+            final KeyValueType kv = this.getModelContextAttributes().get( i );
+            final Object object = kv.getObject( this.getLocation() );
 
-            if ( kv.getValue() != null )
+            if ( object != null )
             {
-                modelContext.setAttribute( kv.getKey(), kv.getValue() );
+                modelContext.setAttribute( kv.getKey(), object );
             }
             else
             {
@@ -1386,14 +1388,14 @@ public class JomcTask extends Task
      * @throws BuildException if a {@code key} property of a given {@code KeyValueType} from the {@code keys} collection
      * holds a {@code null} value.
      */
-    public final void assertKeysNotNull( final Collection<? extends KeyValueType<?, ?>> keys ) throws BuildException
+    public final void assertKeysNotNull( final Collection<? extends KeyValueType> keys ) throws BuildException
     {
         if ( keys == null )
         {
             throw new NullPointerException( "keys" );
         }
 
-        for ( KeyValueType<?, ?> k : keys )
+        for ( KeyValueType k : keys )
         {
             this.assertNotNull( "key", k.getKey() );
         }
@@ -1423,9 +1425,9 @@ public class JomcTask extends Task
 
             if ( r instanceof TransformerResourceType )
             {
-                assertKeysNotNull( ( (TransformerResourceType) r ).getTransformationOutputProperties() );
                 assertKeysNotNull( ( (TransformerResourceType) r ).getTransformationParameters() );
                 assertLocationsNotNull( ( (TransformerResourceType) r ).getTransformationParameterResources() );
+                assertKeysNotNull( ( (TransformerResourceType) r ).getTransformationOutputProperties() );
             }
         }
     }
@@ -1603,12 +1605,22 @@ public class JomcTask extends Task
 
             if ( this.modelContextAttributes != null )
             {
-                clone.modelContextAttributes =
-                    new ArrayList<KeyValueType<String, Object>>( this.modelContextAttributes.size() );
+                clone.modelContextAttributes = new ArrayList<KeyValueType>( this.modelContextAttributes.size() );
 
                 for ( KeyValueType e : this.modelContextAttributes )
                 {
                     clone.modelContextAttributes.add( e.clone() );
+                }
+            }
+
+            if ( this.transformationParameters != null )
+            {
+                clone.transformationParameters =
+                    new ArrayList<KeyValueType>( this.transformationParameters.size() );
+
+                for ( KeyValueType e : this.transformationParameters )
+                {
+                    clone.transformationParameters.add( e.clone() );
                 }
             }
 
@@ -1623,23 +1635,12 @@ public class JomcTask extends Task
                 }
             }
 
-            if ( this.transformationParameters != null )
-            {
-                clone.transformationParameters =
-                    new ArrayList<KeyValueType<String, Object>>( this.transformationParameters.size() );
-
-                for ( KeyValueType e : this.transformationParameters )
-                {
-                    clone.transformationParameters.add( e.clone() );
-                }
-            }
-
             if ( this.transformationOutputProperties != null )
             {
                 clone.transformationOutputProperties =
-                    new ArrayList<KeyValueType<String, String>>( this.transformationOutputProperties.size() );
+                    new ArrayList<KeyValueType>( this.transformationOutputProperties.size() );
 
-                for ( KeyValueType<String, String> e : this.transformationOutputProperties )
+                for ( KeyValueType e : this.transformationOutputProperties )
                 {
                     clone.transformationOutputProperties.add( e.clone() );
                 }

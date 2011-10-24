@@ -100,13 +100,13 @@ public class JomcToolTask extends JomcModelTask
     private String module;
 
     /** The Velocity runtime properties. */
-    private List<KeyValueType<String, Object>> velocityProperties;
+    private List<KeyValueType> velocityProperties;
 
     /** The Velocity runtime property resources. */
     private List<PropertiesResourceType> velocityPropertyResources;
 
     /** The template parameters. */
-    private List<KeyValueType<String, Object>> templateParameters;
+    private List<KeyValueType> templateParameters;
 
     /** The template parameter resources. */
     private List<PropertiesResourceType> templateParameterResources;
@@ -552,11 +552,11 @@ public class JomcToolTask extends JomcModelTask
      *
      * @see #createVelocityProperty()
      */
-    public final List<KeyValueType<String, Object>> getVelocityProperties()
+    public final List<KeyValueType> getVelocityProperties()
     {
         if ( this.velocityProperties == null )
         {
-            this.velocityProperties = new LinkedList<KeyValueType<String, Object>>();
+            this.velocityProperties = new LinkedList<KeyValueType>();
         }
 
         return this.velocityProperties;
@@ -569,9 +569,9 @@ public class JomcToolTask extends JomcModelTask
      *
      * @see #getVelocityProperties()
      */
-    public KeyValueType<String, Object> createVelocityProperty()
+    public KeyValueType createVelocityProperty()
     {
-        final KeyValueType<String, Object> velocityProperty = new KeyValueType<String, Object>();
+        final KeyValueType velocityProperty = new KeyValueType();
         this.getVelocityProperties().add( velocityProperty );
         return velocityProperty;
     }
@@ -620,11 +620,11 @@ public class JomcToolTask extends JomcModelTask
      *
      * @see #createTemplateParameter()
      */
-    public final List<KeyValueType<String, Object>> getTemplateParameters()
+    public final List<KeyValueType> getTemplateParameters()
     {
         if ( this.templateParameters == null )
         {
-            this.templateParameters = new LinkedList<KeyValueType<String, Object>>();
+            this.templateParameters = new LinkedList<KeyValueType>();
         }
 
         return this.templateParameters;
@@ -637,9 +637,9 @@ public class JomcToolTask extends JomcModelTask
      *
      * @see #getTemplateParameters()
      */
-    public KeyValueType<String, Object> createTemplateParameter()
+    public KeyValueType createTemplateParameter()
     {
-        final KeyValueType<String, Object> templateParameter = new KeyValueType<String, Object>();
+        final KeyValueType templateParameter = new KeyValueType();
         this.getTemplateParameters().add( templateParameter );
         return templateParameter;
     }
@@ -770,11 +770,12 @@ public class JomcToolTask extends JomcModelTask
 
             for ( int i = 0, s0 = this.getVelocityProperties().size(); i < s0; i++ )
             {
-                final KeyValueType<String, Object> p = this.getVelocityProperties().get( i );
+                final KeyValueType p = this.getVelocityProperties().get( i );
+                final Object object = p.getObject( this.getLocation() );
 
-                if ( p.getValue() != null )
+                if ( object != null )
                 {
-                    tool.getVelocityEngine().setProperty( p.getKey(), p.getValue() );
+                    tool.getVelocityEngine().setProperty( p.getKey(), object );
                 }
                 else
                 {
@@ -812,11 +813,12 @@ public class JomcToolTask extends JomcModelTask
 
             for ( int i = 0, s0 = this.getTemplateParameters().size(); i < s0; i++ )
             {
-                final KeyValueType<String, Object> p = this.getTemplateParameters().get( i );
+                final KeyValueType p = this.getTemplateParameters().get( i );
+                final Object object = p.getObject( this.getLocation() );
 
-                if ( p.getValue() != null )
+                if ( object != null )
                 {
-                    tool.getTemplateParameters().put( p.getKey(), p.getValue() );
+                    tool.getTemplateParameters().put( p.getKey(), object );
                 }
                 else
                 {
@@ -875,10 +877,32 @@ public class JomcToolTask extends JomcModelTask
 
         if ( this.velocityProperties != null )
         {
-            clone.velocityProperties = new ArrayList<KeyValueType<String, Object>>( this.velocityProperties.size() );
-            for ( KeyValueType<String, Object> e : this.velocityProperties )
+            clone.velocityProperties = new ArrayList<KeyValueType>( this.velocityProperties.size() );
+
+            for ( KeyValueType e : this.velocityProperties )
             {
                 clone.velocityProperties.add( e.clone() );
+            }
+        }
+
+        if ( this.velocityPropertyResources != null )
+        {
+            clone.velocityPropertyResources =
+                new ArrayList<PropertiesResourceType>( this.velocityPropertyResources.size() );
+
+            for ( PropertiesResourceType e : this.velocityPropertyResources )
+            {
+                clone.velocityPropertyResources.add( e.clone() );
+            }
+        }
+
+        if ( this.templateParameters != null )
+        {
+            clone.templateParameters = new ArrayList<KeyValueType>( this.templateParameters.size() );
+
+            for ( KeyValueType e : this.templateParameters )
+            {
+                clone.templateParameters.add( e.clone() );
             }
         }
 
@@ -890,15 +914,6 @@ public class JomcToolTask extends JomcModelTask
             for ( PropertiesResourceType e : this.templateParameterResources )
             {
                 clone.templateParameterResources.add( e.clone() );
-            }
-        }
-
-        if ( this.templateParameters != null )
-        {
-            clone.templateParameters = new ArrayList<KeyValueType<String, Object>>( this.templateParameters.size() );
-            for ( KeyValueType<String, Object> p : this.templateParameters )
-            {
-                clone.templateParameters.add( p.clone() );
             }
         }
 

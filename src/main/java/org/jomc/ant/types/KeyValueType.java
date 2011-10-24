@@ -30,25 +30,28 @@
  */
 package org.jomc.ant.types;
 
+import java.lang.reflect.InvocationTargetException;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Location;
 
 /**
- * Datatype holding a {@code key} and a {@code value} property.
- *
- * @param <K> The type of the {@code key} property.
- * @param <V> The type of the {@code value} property.
+ * Datatype holding a {@code key}, {@code value} and {@code type} property.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $JOMC$
  */
-public class KeyValueType<K, V> implements Cloneable
+public class KeyValueType implements Cloneable
 {
 
     /** The key of the type. */
-    private K key;
+    private String key;
 
     /** The value of the type. */
-    private V value;
+    private String value;
+
+    /** The class of the type of {@code value}. */
+    private Class<?> type;
 
     /** Creates a new {@code KeyValueType} instance. */
     public KeyValueType()
@@ -61,9 +64,9 @@ public class KeyValueType<K, V> implements Cloneable
      *
      * @return The value of the {@code key} property.
      *
-     * @see #setKey(java.lang.Object)
+     * @see #setKey(java.lang.String)
      */
-    public final K getKey()
+    public final String getKey()
     {
         return this.key;
     }
@@ -75,7 +78,7 @@ public class KeyValueType<K, V> implements Cloneable
      *
      * @see #getKey()
      */
-    public final void setKey( final K k )
+    public final void setKey( final String k )
     {
         this.key = k;
     }
@@ -83,25 +86,113 @@ public class KeyValueType<K, V> implements Cloneable
     /**
      * Gets the value of the {@code value} property.
      *
-     * @return The value of the {@code value} property.
+     * @return The value of the {@code value} property or {@code null}.
      *
-     * @see #setValue(java.lang.Object)
+     * @see #setValue(java.lang.String)
      */
-    public final V getValue()
+    public final String getValue()
     {
         return this.value;
     }
 
     /**
-     * Sets the value of the {@code key} property.
+     * Sets the value of the {@code value} property.
      *
-     * @param v The new value of the {@code value} property.
+     * @param v The new value of the {@code value} property or {@code null}.
      *
      * @see #getValue()
      */
-    public final void setValue( final V v )
+    public final void setValue( final String v )
     {
         this.value = v;
+    }
+
+    /**
+     * Gets the value of the {@code type} property.
+     *
+     * @return The value of the {@code type} property or {@code null}.
+     *
+     * @see #setType(java.lang.Class)
+     */
+    public final Class<?> getType()
+    {
+        return this.type;
+    }
+
+    /**
+     * Sets the value of the {@code type} property.
+     *
+     * @param t The new value of the {@code type} property or {@code null}.
+     *
+     * @see #getType()
+     */
+    public final void setType( final Class<?> t )
+    {
+        this.type = t;
+    }
+
+    /**
+     * Gets the object of the instance.
+     *
+     * @param location The location the object is requested at.
+     *
+     * @return The object of the instance or {@code null}.
+     *
+     * @throws NullPointerException if {@code location} is {@code null}.
+     * @throws BuildException if getting the object fails.
+     *
+     * @see #getType()
+     * @see #getValue()
+     */
+    public Object getObject( final Location location ) throws BuildException
+    {
+        if ( location == null )
+        {
+            throw new NullPointerException( "location" );
+        }
+
+        try
+        {
+            Object o = this.getValue();
+
+            if ( o != null )
+            {
+                if ( this.getType() != null )
+                {
+                    o = this.getType().getConstructor( String.class ).newInstance( o );
+                }
+            }
+            else if ( this.getType() != null )
+            {
+                o = this.getType().newInstance();
+            }
+
+            return o;
+        }
+        catch ( final NoSuchMethodException e )
+        {
+            throw new BuildException( Messages.getMessage( "failureCreatingValueObject", this.getType(),
+                                                           this.getValue() ), e, location );
+
+        }
+        catch ( final InstantiationException e )
+        {
+            throw new BuildException( Messages.getMessage( "failureCreatingValueObject", this.getType(),
+                                                           this.getValue() ), e, location );
+
+        }
+        catch ( final IllegalAccessException e )
+        {
+            throw new BuildException( Messages.getMessage( "failureCreatingValueObject", this.getType(),
+                                                           this.getValue() ), e, location );
+
+        }
+        catch ( final InvocationTargetException e )
+        {
+            throw new BuildException( Messages.getMessage( "failureCreatingValueObject", this.getType(),
+                                                           this.getValue() ), e, location );
+
+        }
     }
 
     /**
@@ -110,12 +201,11 @@ public class KeyValueType<K, V> implements Cloneable
      * @return A copy of this object.
      */
     @Override
-    @SuppressWarnings( "unchecked" )
-    public KeyValueType<K, V> clone()
+    public KeyValueType clone()
     {
         try
         {
-            return (KeyValueType<K, V>) super.clone();
+            return (KeyValueType) super.clone();
         }
         catch ( final CloneNotSupportedException e )
         {

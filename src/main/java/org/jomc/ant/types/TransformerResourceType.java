@@ -48,10 +48,10 @@ public class TransformerResourceType extends ResourceType
     private List<PropertiesResourceType> transformationParameterResources;
 
     /** The transformation parameters to apply. */
-    private List<KeyValueType<String, Object>> transformationParameters;
+    private List<KeyValueType> transformationParameters;
 
     /** The transformation output properties to apply. */
-    private List<KeyValueType<String, String>> transformationOutputProperties;
+    private List<KeyValueType> transformationOutputProperties;
 
     /** Creates a new {@code TransformerResourceType}. */
     public TransformerResourceType()
@@ -69,11 +69,11 @@ public class TransformerResourceType extends ResourceType
      *
      * @see #createTransformationParameter()
      */
-    public final List<KeyValueType<String, Object>> getTransformationParameters()
+    public final List<KeyValueType> getTransformationParameters()
     {
         if ( this.transformationParameters == null )
         {
-            this.transformationParameters = new LinkedList<KeyValueType<String, Object>>();
+            this.transformationParameters = new LinkedList<KeyValueType>();
         }
 
         return this.transformationParameters;
@@ -86,9 +86,9 @@ public class TransformerResourceType extends ResourceType
      *
      * @see #getTransformationParameters()
      */
-    public KeyValueType<String, Object> createTransformationParameter()
+    public KeyValueType createTransformationParameter()
     {
-        final KeyValueType<String, Object> transformationParameter = new KeyValueType<String, Object>();
+        final KeyValueType transformationParameter = new KeyValueType();
         this.getTransformationParameters().add( transformationParameter );
         return transformationParameter;
     }
@@ -137,11 +137,11 @@ public class TransformerResourceType extends ResourceType
      *
      * @see #createTransformationOutputProperty()
      */
-    public final List<KeyValueType<String, String>> getTransformationOutputProperties()
+    public final List<KeyValueType> getTransformationOutputProperties()
     {
         if ( this.transformationOutputProperties == null )
         {
-            this.transformationOutputProperties = new LinkedList<KeyValueType<String, String>>();
+            this.transformationOutputProperties = new LinkedList<KeyValueType>();
         }
 
         return this.transformationOutputProperties;
@@ -154,9 +154,9 @@ public class TransformerResourceType extends ResourceType
      *
      * @see #getTransformationOutputProperties()
      */
-    public KeyValueType<String, String> createTransformationOutputProperty()
+    public KeyValueType createTransformationOutputProperty()
     {
-        final KeyValueType<String, String> transformationOutputProperty = new KeyValueType<String, String>();
+        final KeyValueType transformationOutputProperty = new KeyValueType();
         this.getTransformationOutputProperties().add( transformationOutputProperty );
         return transformationOutputProperty;
     }
@@ -171,14 +171,14 @@ public class TransformerResourceType extends ResourceType
     {
         final TransformerResourceType clone = (TransformerResourceType) super.clone();
 
-        if ( this.transformationOutputProperties != null )
+        if ( this.transformationParameters != null )
         {
-            clone.transformationOutputProperties =
-                new ArrayList<KeyValueType<String, String>>( this.transformationOutputProperties.size() );
+            clone.transformationParameters =
+                new ArrayList<KeyValueType>( this.transformationParameters.size() );
 
-            for ( KeyValueType<String, String> e : this.transformationOutputProperties )
+            for ( KeyValueType e : this.transformationParameters )
             {
-                clone.transformationOutputProperties.add( e.clone() );
+                clone.transformationParameters.add( e.clone() );
             }
         }
 
@@ -193,14 +193,14 @@ public class TransformerResourceType extends ResourceType
             }
         }
 
-        if ( this.transformationParameters != null )
+        if ( this.transformationOutputProperties != null )
         {
-            clone.transformationParameters =
-                new ArrayList<KeyValueType<String, Object>>( this.transformationParameters.size() );
+            clone.transformationOutputProperties =
+                new ArrayList<KeyValueType>( this.transformationOutputProperties.size() );
 
-            for ( KeyValueType<String, Object> e : this.transformationParameters )
+            for ( KeyValueType e : this.transformationOutputProperties )
             {
-                clone.transformationParameters.add( e.clone() );
+                clone.transformationOutputProperties.add( e.clone() );
             }
         }
 
