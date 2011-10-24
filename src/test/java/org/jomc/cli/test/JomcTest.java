@@ -714,7 +714,6 @@ public class JomcTest
     // SECTION-END
     // SECTION-START[Constructors]
     // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
-
     /** Creates a new {@code JomcTest} instance. */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
     public JomcTest()
@@ -729,7 +728,6 @@ public class JomcTest
     // SECTION-END
     // SECTION-START[Properties]
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
-
     /**
      * Gets the value of the {@code <classesDirectory>} property.
      * @return Directory holding class files.
@@ -742,7 +740,6 @@ public class JomcTest
         assert _p != null : "'classesDirectory' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <resourcesDirectory>} property.
      * @return Directory holding resources.
@@ -755,7 +752,6 @@ public class JomcTest
         assert _p != null : "'resourcesDirectory' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <templatesDirectory>} property.
      * @return Directory holding templates.
@@ -768,7 +764,6 @@ public class JomcTest
         assert _p != null : "'templatesDirectory' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <testClassesDirectory>} property.
      * @return Directory holding class files to commit to and to validate.
@@ -781,7 +776,6 @@ public class JomcTest
         assert _p != null : "'testClassesDirectory' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <testModelDocument>} property.
      * @return Valid model document.
@@ -794,7 +788,6 @@ public class JomcTest
         assert _p != null : "'testModelDocument' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <testModelDocumentIllegal>} property.
      * @return Model document with invalid model.
@@ -807,7 +800,6 @@ public class JomcTest
         assert _p != null : "'testModelDocumentIllegal' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <testModelDocumentIllegalSchemaConstraints>} property.
      * @return Model document not valid to the JOMC JAXP schema.
@@ -820,7 +812,6 @@ public class JomcTest
         assert _p != null : "'testModelDocumentIllegalSchemaConstraints' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <testModelDocumentNonExistentClasses>} property.
      * @return Model document referencing non-existent classes.
@@ -833,7 +824,6 @@ public class JomcTest
         assert _p != null : "'testModelDocumentNonExistentClasses' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <testModelOutputDocument>} property.
      * @return File to write a transformed model to.
@@ -846,7 +836,6 @@ public class JomcTest
         assert _p != null : "'testModelOutputDocument' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <testModelStylesheet>} property.
      * @return Valid model object stylesheet.
@@ -859,7 +848,6 @@ public class JomcTest
         assert _p != null : "'testModelStylesheet' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <testModletName>} property.
      * @return Test module name.
@@ -872,7 +860,6 @@ public class JomcTest
         assert _p != null : "'testModletName' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <testModletOutputDocument>} property.
      * @return File to write a transformed modlet to.
@@ -885,7 +872,6 @@ public class JomcTest
         assert _p != null : "'testModletOutputDocument' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <testModletStylesheet>} property.
      * @return Valid modlet object stylesheet.
@@ -898,7 +884,6 @@ public class JomcTest
         assert _p != null : "'testModletStylesheet' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <testModuleName>} property.
      * @return Test module name.
@@ -911,7 +896,6 @@ public class JomcTest
         assert _p != null : "'testModuleName' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <testResourcesDirectory>} property.
      * @return Directory to generate resources to.
@@ -924,7 +908,6 @@ public class JomcTest
         assert _p != null : "'testResourcesDirectory' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <testShowInstanceOutputDocument>} property.
      * @return File to write an instance to.
@@ -937,7 +920,6 @@ public class JomcTest
         assert _p != null : "'testShowInstanceOutputDocument' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <testShowModelOutputDocument>} property.
      * @return File to write a model to.
@@ -950,7 +932,6 @@ public class JomcTest
         assert _p != null : "'testShowModelOutputDocument' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <testShowSpecificationAndInstanceOutputDocument>} property.
      * @return File to write a model holding a specification and an instance to.
@@ -963,7 +944,6 @@ public class JomcTest
         assert _p != null : "'testShowSpecificationAndInstanceOutputDocument' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <testShowSpecificationOutputDocument>} property.
      * @return File to write a specification to.
@@ -976,7 +956,6 @@ public class JomcTest
         assert _p != null : "'testShowSpecificationOutputDocument' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <testSourcesDirectory>} property.
      * @return Directory holding source code files to manage.
