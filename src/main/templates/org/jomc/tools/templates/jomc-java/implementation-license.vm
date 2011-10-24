@@ -55,16 +55,18 @@
 ## @param mediumDateTime The current date and time formatted using a 'MEDIUM' format style.
 ## @param longDateTime The current date and time formatted using a 'LONG' format style.
 ## @param isoDateTime The current date and time formatted using an ISO-8601 format style.
+#if($with-editor-fold)
 ${tool.getIndentation(0)}// <editor-fold defaultstate="collapsed" desc=" Generated License ">
+#end
 ${tool.getIndentation(0)}/*
-#if(!$licenseSkipVendorCopyright && $implementation.getVendor())
+#if($with-vendor-copyright && $implementation.getVendor())
 #if($implementation.getCreateDate())
 ${tool.getIndentation(0)} *   Copyright (C) $implementation.getVendor(), $tool.getIsoDate($implementation.getCreateDate().toGregorianCalendar())
 #else
 ${tool.getIndentation(0)} *   Copyright (C) $implementation.getVendor(), ${isoDate}
 #end
 #end
-#if($implementation.getAuthors())
+#if($with-author-copyright && $implementation.getAuthors())
 #foreach($author in $implementation.getAuthors().getAuthor())
 #if($author.getCreateDate())
 ${tool.getIndentation(0)} *   Copyright (C) $author.getName(), $tool.getIsoDate($author.getCreateDate().toGregorianCalendar())
@@ -102,12 +104,12 @@ ${tool.getIndentation(0)} *   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT L
 ${tool.getIndentation(0)} *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 ${tool.getIndentation(0)} *   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ${tool.getIndentation(0)} *
+#if($with-revision-keyword)
 #set($D = "$")
-#if($licenseRevisionKeyword)
-${tool.getIndentation(0)} *   ${D}$licenseRevisionKeyword${D}
-#else
-${tool.getIndentation(0)} *   ${D}Id${D}
-#end
+${tool.getIndentation(0)} *   ${D}$with-revision-keyword${D}
 ${tool.getIndentation(0)} *
+#end
 ${tool.getIndentation(0)} */
+#if($with-editor-fold)
 ${tool.getIndentation(0)}// </editor-fold>
+#end

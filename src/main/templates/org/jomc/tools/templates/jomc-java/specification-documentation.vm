@@ -55,7 +55,10 @@
 ## @param mediumDateTime The current date and time formatted using a 'MEDIUM' format style.
 ## @param longDateTime The current date and time formatted using a 'LONG' format style.
 ## @param isoDateTime The current date and time formatted using an ISO-8601 format style.
+#if($with-editor-fold)
 ${tool.getIndentation(0)}// <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
+#end
+#if($with-javadoc)
 ${tool.getIndentation(0)}/**
 #if($specification.getDocumentation())
 ${tool.getIndentation(0)} * $tool.getJavadocComment($specification.getDocumentation(), 0, " * ")
@@ -90,13 +93,13 @@ ${tool.getIndentation(0)} * $tool.getJavaTypeName($specification,false) object =
 ${tool.getIndentation(0)} *   </pre></blockquote>
 ${tool.getIndentation(0)} * </p>
 ${tool.getIndentation(0)} *
-#if($specification.getAuthors())
+#if($with-javadoc-author && $specification.getAuthors())
 #foreach($author in $specification.getAuthors().getAuthor())
 ${tool.getIndentation(0)} * @author #if($author.getMail())<a href="mailto:$author.getMail()">#end$tool.getHtmlString($author.getName())#if($author.getMail())</a>#end#if($author.getVersion()) $tool.getHtmlString($author.getVersion())#end
 
 #end
 #end
-#if($specification.getVersion())
+#if($with-javadoc-version && $specification.getVersion())
 ${tool.getIndentation(0)} * @version $tool.getHtmlString($specification.getVersion())
 #else
 ${tool.getIndentation(0)} * @version This specification does not support versioning.
@@ -104,4 +107,7 @@ ${tool.getIndentation(0)} * @version This specification does not support version
 ${tool.getIndentation(0)} * @see org.jomc.ObjectManagerFactory
 ${tool.getIndentation(0)} * @see org.jomc.ObjectManager
 ${tool.getIndentation(0)} */
+#end
+#if($with-editor-fold)
 ${tool.getIndentation(0)}// </editor-fold>
+#end

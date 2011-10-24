@@ -57,10 +57,12 @@
 ## @param isoDateTime The current date and time formatted using an ISO-8601 format style.
 #set($dependencies = $modules.getDependencies($implementation.getIdentifier()))
 #if($dependencies)
+#if($with-editor-fold)
 ${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generated Dependencies ">
+#end
 #foreach($dependency in $dependencies.getDependency())
 #set($specification = $modules.getSpecification($dependency.getIdentifier()))
-
+#if($with-javadoc)
 ${tool.getIndentation(1)}/**
 ${tool.getIndentation(1)} * Gets the {@code <$dependency.getName()>} dependency.
 ${tool.getIndentation(1)} * <p>
@@ -103,13 +105,16 @@ ${tool.getIndentation(1)} * {@code null} if no object is available.
 #end
 ${tool.getIndentation(1)} * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
 ${tool.getIndentation(1)} */
+#end
 #if($dependency.isDeprecated())
 ${tool.getIndentation(1)}@Deprecated
 #end
+#if($with-jsr-250)
 ${tool.getIndentation(1)}@javax.annotation.Generated( value = "$toolName $toolVersion", comments = "See $toolUrl" )
+#end
 ${tool.getIndentation(1)}$tool.getJavaModifierName($implementation,$dependency) $tool.getJavaTypeName($dependency) $tool.getJavaGetterMethodName($dependency)()
 ${tool.getIndentation(1)}{
-#if($dependency.isOptional())
+#if($dependency.isOptional() || !$with-assertions)
 ${tool.getIndentation(2)}return ($tool.getJavaTypeName($dependency)) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "$dependency.getName()" );
 #else
 ${tool.getIndentation(2)}final $tool.getJavaTypeName($dependency) _d = ($tool.getJavaTypeName($dependency)) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "$dependency.getName()" );
@@ -118,5 +123,7 @@ ${tool.getIndentation(2)}return _d;
 #end
 ${tool.getIndentation(1)}}
 #end
+#if($with-editor-fold)
 ${tool.getIndentation(1)}// </editor-fold>
+#end
 #end

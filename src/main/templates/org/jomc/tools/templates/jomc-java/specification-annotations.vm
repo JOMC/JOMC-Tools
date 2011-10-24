@@ -55,9 +55,15 @@
 ## @param mediumDateTime The current date and time formatted using a 'MEDIUM' format style.
 ## @param longDateTime The current date and time formatted using a 'LONG' format style.
 ## @param isoDateTime The current date and time formatted using an ISO-8601 format style.
+#if($with-editor-fold)
 ${tool.getIndentation(0)}// <editor-fold defaultstate="collapsed" desc=" Generated Annotations ">
+#end
 #if($specification.isDeprecated())
 ${tool.getIndentation(0)}@Deprecated
 #end
+#if($with-jsr-250)
 ${tool.getIndentation(0)}@javax.annotation.Generated( value = "$toolName $toolVersion", comments = "See $toolUrl" )
+#end
+#if($with-editor-fold)
 ${tool.getIndentation(0)}// </editor-fold>
+#end

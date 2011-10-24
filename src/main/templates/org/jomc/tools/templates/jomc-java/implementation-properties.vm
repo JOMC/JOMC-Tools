@@ -57,9 +57,11 @@
 ## @param isoDateTime The current date and time formatted using an ISO-8601 format style.
 #set($properties = $modules.getProperties($implementation.getIdentifier()))
 #if($properties)
+#if($with-editor-fold)
 ${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
+#end
 #foreach($property in $properties.getProperty())
-
+#if($with-javadoc)
 ${tool.getIndentation(1)}/**
 ${tool.getIndentation(1)} * Gets the value of the {@code <$property.getName()>} property.
 #if($property.getDocumentation())
@@ -70,12 +72,16 @@ ${tool.getIndentation(1)} * @return The value of the {@code <$property.getName()
 #end
 ${tool.getIndentation(1)} * @throws org.jomc.ObjectManagementException if getting the property instance fails.
 ${tool.getIndentation(1)} */
+#end
 #if($property.isDeprecated())
 ${tool.getIndentation(1)}@Deprecated
 #end
+#if($with-jsr-250)
 ${tool.getIndentation(1)}@javax.annotation.Generated( value = "$toolName $toolVersion", comments = "See $toolUrl" )
+#end
 ${tool.getIndentation(1)}$tool.getJavaModifierName($implementation,$property) $tool.getJavaTypeName($property,false) $tool.getJavaGetterMethodName($property)()
 ${tool.getIndentation(1)}{
+#if($with-assertions)
 ${tool.getIndentation(2)}final $tool.getJavaTypeName($property,true) _p = ($tool.getJavaTypeName($property,true)) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "$property.getName()" );
 ${tool.getIndentation(2)}assert _p != null : "'$property.getName()' property not found.";
 #if($tool.isJavaPrimitiveType($property))
@@ -83,7 +89,12 @@ ${tool.getIndentation(2)}return _p.$tool.getJavaTypeName($property,false)Value()
 #else
 ${tool.getIndentation(2)}return _p;
 #end
+#else
+${tool.getIndentation(2)}return ( ($tool.getJavaTypeName($property,true)) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "$property.getName()" ) )#if($tool.isJavaPrimitiveType($property)).$tool.getJavaTypeName($property,false)Value()#end;
+#end
 ${tool.getIndentation(1)}}
 #end
+#if($with-editor-fold)
 ${tool.getIndentation(1)}// </editor-fold>
+#end
 #end

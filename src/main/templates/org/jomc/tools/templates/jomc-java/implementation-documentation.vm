@@ -55,7 +55,10 @@
 ## @param mediumDateTime The current date and time formatted using a 'MEDIUM' format style.
 ## @param longDateTime The current date and time formatted using a 'LONG' format style.
 ## @param isoDateTime The current date and time formatted using an ISO-8601 format style.
+#if($with-editor-fold)
 ${tool.getIndentation(0)}// <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
+#end
+#if($with-javadoc)
 ${tool.getIndentation(0)}/**
 #if($implementation.getDocumentation())
 ${tool.getIndentation(0)} * $tool.getJavadocComment($implementation.getDocumentation(), 0, " * ")
@@ -87,16 +90,19 @@ ${tool.getIndentation(0)} *   This implementation is flagged the {@code <final>}
 #end
 ${tool.getIndentation(0)} * </p>
 ${tool.getIndentation(0)} *
-#if($implementation.getAuthors())
+#if($with-javadoc-author && $implementation.getAuthors())
 #foreach($author in $implementation.getAuthors().getAuthor())
 ${tool.getIndentation(0)} * @author #if($author.getMail())<a href="mailto:$author.getMail()">#end$tool.getHtmlString($author.getName())#if($author.getMail())</a>#end#if($author.getVersion()) $tool.getHtmlString($author.getVersion())#end
 
 #end
 #end
-#if($implementation.getVersion())
+#if($with-javadoc-version && $implementation.getVersion())
 ${tool.getIndentation(0)} * @version $tool.getHtmlString($implementation.getVersion())
 #else
 ${tool.getIndentation(0)} * @version This implementation does not support versioning.
 #end
 ${tool.getIndentation(0)} */
+#end
+#if($with-editor-fold)
 ${tool.getIndentation(0)}// </editor-fold>
+#end
