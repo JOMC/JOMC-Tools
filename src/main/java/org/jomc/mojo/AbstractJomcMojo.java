@@ -352,11 +352,20 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     /**
      * Velocity runtime properties.
+     * <pre>
+     * &lt;velocityProperties>
+     *   &lt;velocityProperty>
+     *     &lt;key>The name of the property.&lt;/key>
+     *     &lt;value>The value of the property.&lt;/value>
+     *     &lt;type>The name of the class of the properties object.&lt;/type>
+     *   &lt;/velocityProperty>
+     * &lt;/velocityProperties>
+     * </pre>
      *
      * @parameter
      * @since 1.2
      */
-    private Map<String, Object> velocityProperties;
+    private List<VelocityProperty> velocityProperties;
 
     /**
      * Velocity runtime property resources.
@@ -394,11 +403,20 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     /**
      * Template parameters.
+     * <pre>
+     * &lt;templateParameters>
+     *   &lt;templateParameter>
+     *     &lt;key>The name of the parameter.&lt;/key>
+     *     &lt;value>The value of the parameter.&lt;/value>
+     *     &lt;type>The name of the class of the parameter's object.&lt;/type>
+     *   &lt;/templateParameter>
+     * &lt;/templateParameters>
+     * </pre>
      *
      * @parameter
      * @since 1.2
      */
-    private Map<String, Object> templateParameters;
+    private List<TemplateParameter> templateParameters;
 
     /**
      * Template parameter resources.
@@ -436,11 +454,37 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     /**
      * Global transformation parameters.
+     * <pre>
+     * &lt;transformationParameters>
+     *   &lt;transformationParameter>
+     *     &lt;key>The name of the parameter.&lt;/key>
+     *     &lt;value>The value of the parameter.&lt;/value>
+     *     &lt;type>The name of the class of the parameter's object.&lt;/type>
+     *   &lt;/transformationParameter>
+     * &lt;/transformationParameters>
+     * </pre>
      *
      * @parameter
      * @since 1.2
      */
-    private Map<String, Object> transformationParameters;
+    private List<TransformationParameter> transformationParameters;
+
+    /**
+     * Global transformation output properties.
+     * <pre>
+     * &lt;transformationOutputProperties>
+     *   &lt;transformationOutputProperty>
+     *     &lt;key>The name of the property.&lt;/key>
+     *     &lt;value>The value of the property.&lt;/value>
+     *     &lt;type>The name of the class of the properties object.&lt;/type>
+     *   &lt;/transformationOutputProperty>
+     * &lt;/transformationOutputProperties>
+     * </pre>
+     *
+     * @parameter
+     * @since 1.2
+     */
+    private List<TransformationOutputProperty> transformationOutputProperties;
 
     /**
      * Global transformation parameter resources.
@@ -503,11 +547,20 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     /**
      * {@code ModelContext} attributes.
+     * <pre>
+     * &lt;modelContextAttributes>
+     *   &lt;modelContextAttribute>
+     *     &lt;key>The name of the attribute.&lt;/key>
+     *     &lt;value>The value of the attribute.&lt;/value>
+     *     &lt;type>The name of the class of the attributes's object.&lt;/type>
+     *   &lt;/modelContextAttribute>
+     * &lt;/modelContextAttributes>
+     * </pre>
      *
      * @parameter
      * @since 1.2
      */
-    private Map<String, Object> modelContextAttributes;
+    private List<ModelContextAttribute> modelContextAttributes;
 
     /**
      * Flag controlling JAXP schema validation of model resources.
@@ -1822,9 +1875,17 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
                 if ( this.transformationParameters != null )
                 {
-                    for ( Map.Entry<String, Object> e : this.transformationParameters.entrySet() )
+                    for ( TransformationParameter e : this.transformationParameters )
                     {
-                        transformer.setParameter( e.getKey(), e.getValue() );
+                        transformer.setParameter( e.getKey(), e.getObject() );
+                    }
+                }
+
+                if ( this.transformationOutputProperties != null )
+                {
+                    for ( TransformationOutputProperty e : this.transformationOutputProperties )
+                    {
+                        transformer.setOutputProperty( e.getKey(), e.getValue() );
                     }
                 }
 
@@ -1837,12 +1898,12 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     }
                 }
 
-                for ( Map.Entry<String, Object> e : resource.getTransformationParameters().entrySet() )
+                for ( TransformationParameter e : resource.getTransformationParameters() )
                 {
-                    transformer.setParameter( e.getKey(), e.getValue() );
+                    transformer.setParameter( e.getKey(), e.getObject() );
                 }
 
-                for ( Map.Entry<String, String> e : resource.getTransformationOutputProperties().entrySet() )
+                for ( TransformationOutputProperty e : resource.getTransformationOutputProperties() )
                 {
                     transformer.setOutputProperty( e.getKey(), e.getValue() );
                 }
@@ -1865,6 +1926,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     "transformerNotFound", resource.getLocation() ) );
 
             }
+        }
+        catch ( final InstantiationException e )
+        {
+            throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
         catch ( final URISyntaxException e )
         {
@@ -2375,76 +2440,86 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             context.setLogLevel( this.getLog().isDebugEnabled() ? Level.ALL : Level.INFO );
         }
 
-        context.setModletSchemaSystemId( this.modletSchemaSystemId );
-        context.getListeners().add( new ModelContext.Listener()
+        try
         {
-
-            @Override
-            public void onLog( final Level level, final String message, final Throwable t )
+            context.setModletSchemaSystemId( this.modletSchemaSystemId );
+            context.getListeners().add( new ModelContext.Listener()
             {
-                super.onLog( level, message, t );
 
-                try
+                @Override
+                public void onLog( final Level level, final String message, final Throwable t )
                 {
-                    log( level, message, t );
+                    super.onLog( level, message, t );
+
+                    try
+                    {
+                        log( level, message, t );
+                    }
+                    catch ( final MojoExecutionException e )
+                    {
+                        getLog().error( e );
+                    }
                 }
-                catch ( final MojoExecutionException e )
-                {
-                    getLog().error( e );
-                }
+
+            } );
+
+            if ( this.providerLocation != null )
+            {
+                context.setAttribute( DefaultModelContext.PROVIDER_LOCATION_ATTRIBUTE_NAME, this.providerLocation );
             }
 
-        } );
-
-        if ( this.providerLocation != null )
-        {
-            context.setAttribute( DefaultModelContext.PROVIDER_LOCATION_ATTRIBUTE_NAME, this.providerLocation );
-        }
-
-        if ( this.platformProviderLocation != null )
-        {
-            context.setAttribute( DefaultModelContext.PLATFORM_PROVIDER_LOCATION_ATTRIBUTE_NAME,
-                                  this.platformProviderLocation );
-
-        }
-
-        if ( this.modletLocation != null )
-        {
-            context.setAttribute( DefaultModletProvider.MODLET_LOCATION_ATTRIBUTE_NAME, this.modletLocation );
-        }
-
-        if ( this.transformerLocation != null )
-        {
-            context.setAttribute( DefaultModelProcessor.TRANSFORMER_LOCATION_ATTRIBUTE_NAME, this.transformerLocation );
-        }
-
-        if ( this.moduleLocation != null )
-        {
-            context.setAttribute( DefaultModelProvider.MODULE_LOCATION_ATTRIBUTE_NAME, this.moduleLocation );
-        }
-
-        context.setAttribute( ToolsModelProvider.MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME,
-                              this.modelObjectClasspathResolutionEnabled );
-
-        context.setAttribute( ToolsModelProcessor.MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME,
-                              this.modelObjectClasspathResolutionEnabled );
-
-        context.setAttribute( DefaultModletProvider.VALIDATING_ATTRIBUTE_NAME, this.modletResourceValidationEnabled );
-        context.setAttribute( DefaultModelProvider.VALIDATING_ATTRIBUTE_NAME, this.modelResourceValidationEnabled );
-
-        if ( this.modelContextAttributes != null )
-        {
-            for ( Map.Entry<String, Object> e : this.modelContextAttributes.entrySet() )
+            if ( this.platformProviderLocation != null )
             {
-                if ( e.getValue() != null )
+                context.setAttribute( DefaultModelContext.PLATFORM_PROVIDER_LOCATION_ATTRIBUTE_NAME,
+                                      this.platformProviderLocation );
+
+            }
+
+            if ( this.modletLocation != null )
+            {
+                context.setAttribute( DefaultModletProvider.MODLET_LOCATION_ATTRIBUTE_NAME, this.modletLocation );
+            }
+
+            if ( this.transformerLocation != null )
+            {
+                context.setAttribute( DefaultModelProcessor.TRANSFORMER_LOCATION_ATTRIBUTE_NAME,
+                                      this.transformerLocation );
+            }
+
+            if ( this.moduleLocation != null )
+            {
+                context.setAttribute( DefaultModelProvider.MODULE_LOCATION_ATTRIBUTE_NAME, this.moduleLocation );
+            }
+
+            context.setAttribute( ToolsModelProvider.MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME,
+                                  this.modelObjectClasspathResolutionEnabled );
+
+            context.setAttribute( ToolsModelProcessor.MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME,
+                                  this.modelObjectClasspathResolutionEnabled );
+
+            context.setAttribute( DefaultModletProvider.VALIDATING_ATTRIBUTE_NAME, this.modletResourceValidationEnabled );
+            context.setAttribute( DefaultModelProvider.VALIDATING_ATTRIBUTE_NAME, this.modelResourceValidationEnabled );
+
+            if ( this.modelContextAttributes != null )
+            {
+                for ( ModelContextAttribute e : this.modelContextAttributes )
                 {
-                    context.setAttribute( e.getKey(), e.getValue() );
-                }
-                else
-                {
-                    context.clearAttribute( e.getKey() );
+                    final Object object = e.getObject();
+
+                    if ( object != null )
+                    {
+                        context.setAttribute( e.getKey(), object );
+                    }
+                    else
+                    {
+                        context.clearAttribute( e.getKey() );
+                    }
                 }
             }
+        }
+        catch ( final InstantiationException e )
+        {
+            throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
     }
 
@@ -2541,11 +2616,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( this.velocityProperties != null )
             {
-                for ( Map.Entry<String, Object> e : this.velocityProperties.entrySet() )
+                for ( VelocityProperty e : this.velocityProperties )
                 {
-                    if ( e.getValue() != null )
+                    final Object object = e.getObject();
+
+                    if ( object != null )
                     {
-                        tool.getVelocityEngine().setProperty( e.getKey(), e.getValue() );
+                        tool.getVelocityEngine().setProperty( e.getKey(), object );
                     }
                     else
                     {
@@ -2588,11 +2665,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             if ( this.templateParameters != null )
             {
-                for ( Map.Entry<String, Object> e : this.templateParameters.entrySet() )
+                for ( TemplateParameter e : this.templateParameters )
                 {
-                    if ( e.getValue() != null )
+                    final Object object = e.getObject();
+
+                    if ( object != null )
                     {
-                        tool.getTemplateParameters().put( e.getKey(), e.getValue() );
+                        tool.getTemplateParameters().put( e.getKey(), object );
                     }
                     else
                     {
@@ -2611,6 +2690,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     this.log( Level.WARNING, Messages.getMessage( "locationNotFound", this.templateLocation ), null );
                 }
             }
+        }
+        catch ( final InstantiationException e )
+        {
+            throw new MojoExecutionException( Messages.getMessage( e ), e );
         }
         catch ( final IOException e )
         {

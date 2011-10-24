@@ -82,8 +82,11 @@ import org.jomc.modlet.Modlets;
  *     &lt;model&gt;http://jomc.org/model&lt;/model&gt;
  *     &lt;modelContextClassName&gt;class name&lt;/modelContextClassName&gt;
  *     &lt;modelContextAttributes&gt;
- *       &lt;key/&gt;
- *       &lt;key&gt;value&lt;/key&gt;
+ *       &lt;modelContextAttribute&gt;
+ *         &lt;key&gt;The name of the attribute&lt;/key&gt;
+ *         &lt;value&gt;The name of the attribute&lt;/value&gt;
+ *         &lt;type&gt;The name of the class of the object.&lt;/type&gt;
+ *       &lt;/modelContextAttribute&gt;
  *     &lt;/modelContextAttributes/&gt;
  *     &lt;moduleEncoding&gt;${project.build.sourceEncoding}&lt;/moduleEncoding&gt;
  *     &lt;moduleName&gt;${project.name}&lt;/moduleName&gt;
@@ -214,7 +217,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
     private String modelContextClassName;
 
     /** {@code ModelContext} attributes to apply. */
-    private Map<String, Object> modelContextAttributes;
+    private List<ModelContextAttribute> modelContextAttributes;
 
     /** Modlet resources. */
     private Modlets modlets = new Modlets();
@@ -401,6 +404,10 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
                 archiver.addFile( modletFile, normalizeResourceName( this.modletResource ) );
             }
         }
+        catch ( final InstantiationException e )
+        {
+            throw new ArchiverException( Messages.getMessage( e ), e );
+        }
         catch ( final TransformerConfigurationException e )
         {
             String message = Messages.getMessage( e );
@@ -563,6 +570,11 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
 
             return selected;
         }
+        catch ( final InstantiationException e )
+        {
+            // JDK: As of JDK 6, "new IOException( message, cause )".
+            throw (IOException) new IOException( Messages.getMessage( e ) ).initCause( e );
+        }
         catch ( final JAXBException e )
         {
             String message = Messages.getMessage( e );
@@ -658,7 +670,8 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
         }
     }
 
-    private Object unmarshalModelObject( final InputStream in ) throws ModelException, JAXBException
+    private Object unmarshalModelObject( final InputStream in )
+        throws ModelException, JAXBException, InstantiationException
     {
         if ( in == null )
         {
@@ -674,7 +687,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
     }
 
     private void marshalModelObject( final JAXBElement<? extends ModelObject> element, final File file )
-        throws ModelException, JAXBException
+        throws ModelException, JAXBException, InstantiationException
     {
         if ( element == null )
         {
@@ -703,7 +716,8 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
 
     private <T> JAXBElement<T> transformModelObject( final JAXBElement<? extends ModelObject> element,
                                                      final Class<T> boundType )
-        throws ModelException, TransformerException, JAXBException, IOException, URISyntaxException
+        throws ModelException, TransformerException, JAXBException, IOException, URISyntaxException,
+               InstantiationException
     {
         if ( element == null )
         {
@@ -752,7 +766,8 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
         return transformed;
     }
 
-    private Object unmarshalModletObject( final InputStream in ) throws ModelException, JAXBException
+    private Object unmarshalModletObject( final InputStream in )
+        throws ModelException, JAXBException, InstantiationException
     {
         if ( in == null )
         {
@@ -768,7 +783,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
     }
 
     private void marshalModletObject( final JAXBElement<? extends ModletObject> element, final File file )
-        throws ModelException, JAXBException
+        throws ModelException, JAXBException, InstantiationException
     {
         if ( element == null )
         {
@@ -797,7 +812,8 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
 
     private <T> JAXBElement<T> transformModletObject( final JAXBElement<? extends ModletObject> element,
                                                       final Class<T> boundType )
-        throws ModelException, TransformerException, JAXBException, IOException, URISyntaxException
+        throws ModelException, TransformerException, JAXBException, IOException, URISyntaxException,
+               InstantiationException
     {
         if ( element == null )
         {
@@ -868,7 +884,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
         return normalized;
     }
 
-    private ModelContext createModelContext() throws ModelException
+    private ModelContext createModelContext() throws ModelException, InstantiationException
     {
         final ModelContext modelContext =
             this.modelContextClassName == null
@@ -896,11 +912,13 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
 
         if ( this.modelContextAttributes != null )
         {
-            for ( Map.Entry<String, Object> e : this.modelContextAttributes.entrySet() )
+            for ( ModelContextAttribute e : this.modelContextAttributes )
             {
-                if ( e.getValue() != null )
+                final Object object = e.getObject();
+
+                if ( object != null )
                 {
-                    modelContext.setAttribute( e.getKey(), e.getValue() );
+                    modelContext.setAttribute( e.getKey(), object );
                 }
                 else
                 {

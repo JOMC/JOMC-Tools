@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) Christian Schulte, 2005-206
+ *   Copyright (C) Christian Schulte, 2011-293
  *   All rights reserved.
  *
  *   Redistribution and use in source and binary forms, with or without
@@ -31,17 +31,17 @@
 package org.jomc.mojo;
 
 /**
- * {@code transformationParameterResource} element.
+ * {@code velocityProperty} element.
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $JOMC$
  * @since 1.2
  */
-public final class TransformationParameterResource extends PropertiesResourceType
+public class VelocityProperty extends KeyValueType
 {
 
-    /** Creates a new {@code TransformationParameterResource} instance. */
-    public TransformationParameterResource()
+    /** Creates a new {@code VelocityProperty} instance. */
+    public VelocityProperty()
     {
         super();
     }
@@ -52,9 +52,9 @@ public final class TransformationParameterResource extends PropertiesResourceTyp
      * @return A copy of this object.
      */
     @Override
-    public TransformationParameterResource clone()
+    public VelocityProperty clone()
     {
-        return (TransformationParameterResource) super.clone();
+        return (VelocityProperty) super.clone();
     }
 
 }

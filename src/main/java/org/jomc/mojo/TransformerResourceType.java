@@ -31,11 +31,8 @@
 package org.jomc.mojo;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * Datatype describing a XSLT document resource.
@@ -51,10 +48,10 @@ public class TransformerResourceType extends ResourceType
     private List<TransformationParameterResource> transformationParameterResources;
 
     /** Transformation parameters. */
-    private Map<String, Object> transformationParameters;
+    private List<TransformationParameter> transformationParameters;
 
     /** Transformation output properties. */
-    private Map<String, String> transformationOutputProperties;
+    private List<TransformationOutputProperty> transformationOutputProperties;
 
     /** Creates a new {@code TransformerResourceType} instance. */
     public TransformerResourceType()
@@ -82,17 +79,17 @@ public class TransformerResourceType extends ResourceType
 
     /**
      * Gets the transformation parameters to apply.
-     * <p>This accessor method returns a reference to the live map, not a snapshot. Therefore any modification you make
-     * to the returned map will be present inside the object. This is why there is no {@code set} method for the
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * to the returned list will be present inside the object. This is why there is no {@code set} method for the
      * transformation parameters property.</p>
      *
      * @return The transformation parameters to apply.
      */
-    public final Map<String, Object> getTransformationParameters()
+    public final List<TransformationParameter> getTransformationParameters()
     {
         if ( this.transformationParameters == null )
         {
-            this.transformationParameters = new HashMap<String, Object>();
+            this.transformationParameters = new LinkedList<TransformationParameter>();
         }
 
         return this.transformationParameters;
@@ -100,17 +97,17 @@ public class TransformerResourceType extends ResourceType
 
     /**
      * Gets the transformation output properties to apply.
-     * <p>This accessor method returns a reference to the live map, not a snapshot. Therefore any modification you make
-     * to the returned map will be present inside the object. This is why there is no {@code set} method for the
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * to the returned list will be present inside the object. This is why there is no {@code set} method for the
      * transformation output properties property.</p>
      *
      * @return The transformation output properties to apply.
      */
-    public final Map<String, String> getTransformationOutputProperties()
+    public final List<TransformationOutputProperty> getTransformationOutputProperties()
     {
         if ( this.transformationOutputProperties == null )
         {
-            this.transformationOutputProperties = new HashMap<String, String>();
+            this.transformationOutputProperties = new LinkedList<TransformationOutputProperty>();
         }
 
         return this.transformationOutputProperties;
@@ -125,29 +122,41 @@ public class TransformerResourceType extends ResourceType
     public TransformerResourceType clone()
     {
         final TransformerResourceType clone = (TransformerResourceType) super.clone();
-        clone.transformationParameterResources =
-            this.transformationParameterResources != null
-            ? new ArrayList<TransformationParameterResource>( this.transformationParameterResources ) : null;
 
-        clone.transformationParameters = this.transformationParameters != null
-                                         ? new HashMap<String, Object>( this.transformationParameters ) : null;
+        if ( this.transformationOutputProperties != null )
+        {
+            clone.transformationOutputProperties =
+                new ArrayList<TransformationOutputProperty>( this.transformationOutputProperties.size() );
 
-        clone.transformationOutputProperties = this.transformationOutputProperties != null
-                                               ? new HashMap<String, String>( this.transformationOutputProperties )
-                                               : null;
+            for ( TransformationOutputProperty e : this.transformationOutputProperties )
+            {
+                clone.transformationOutputProperties.add( e.clone() );
+            }
+        }
+
+        if ( this.transformationParameterResources != null )
+        {
+            clone.transformationParameterResources =
+                new ArrayList<TransformationParameterResource>( this.transformationParameterResources.size() );
+
+            for ( TransformationParameterResource e : this.transformationParameterResources )
+            {
+                clone.transformationParameterResources.add( e.clone() );
+            }
+        }
+
+        if ( this.transformationParameters != null )
+        {
+            clone.transformationParameters =
+                new ArrayList<TransformationParameter>( this.transformationParameters.size() );
+
+            for ( TransformationParameter e : this.transformationParameters )
+            {
+                clone.transformationParameters.add( e.clone() );
+            }
+        }
 
         return clone;
-    }
-
-    /**
-     * Creates and returns a string representation of the object.
-     *
-     * @return A string representation of the object.
-     */
-    @Override
-    public String toString()
-    {
-        return ToStringBuilder.reflectionToString( this );
     }
 
 }

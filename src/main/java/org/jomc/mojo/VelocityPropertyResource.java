@@ -30,8 +30,6 @@
  */
 package org.jomc.mojo;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-
 /**
  * {@code velocityPropertyResource} element.
  *
@@ -49,14 +47,14 @@ public final class VelocityPropertyResource extends PropertiesResourceType
     }
 
     /**
-     * Creates and returns a string representation of the object.
+     * Creates and returns a copy of this object.
      *
-     * @return A string representation of the object.
+     * @return A copy of this object.
      */
     @Override
-    public String toString()
+    public VelocityPropertyResource clone()
     {
-        return ToStringBuilder.reflectionToString( this );
+        return (VelocityPropertyResource) super.clone();
     }
 
 }

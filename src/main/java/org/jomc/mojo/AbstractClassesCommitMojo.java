@@ -95,10 +95,18 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
      *       &lt;/transformationParameterResource>
      *     &lt;/transformationParameterResources>
      *     &lt;transformationParameters>
-     *       &lt;key>value&lt;/key>
+     *       &lt;transformationParameter>
+     *         &lt;key>The name of the parameter.&lt;/key>
+     *         &lt;value>The value of the parameter.&lt;/value>
+     *         &lt;type>The name of the class of the parameter's object.&lt;/type>
+     *       &lt;/transformationParameter>
      *     &lt;/transformationParameters>
      *     &lt;transformationOutputProperties>
-     *       &lt;key>value&lt;/key>
+     *       &lt;transformationOutputProperty>
+     *         &lt;key>The name of the property.&lt;/key>
+     *         &lt;value>The value of the property.&lt;/value>
+     *         &lt;type>The name of the class of the properties object.&lt;/type>
+     *       &lt;/transformationOutputProperty>
      *     &lt;/transformationOutputProperties>
      *   &lt;/modelObjectStylesheetResource>
      * &lt;/modelObjectStylesheetResources>
