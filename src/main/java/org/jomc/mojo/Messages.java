@@ -39,6 +39,7 @@ import java.util.ResourceBundle;
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $JOMC$
+ * @since 1.2
  */
 abstract class Messages
 {

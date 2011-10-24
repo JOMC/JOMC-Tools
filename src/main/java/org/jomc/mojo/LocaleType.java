@@ -37,6 +37,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
  * @version $JOMC$
+ * @since 1.2
  */
 public class LocaleType implements Cloneable
 {
