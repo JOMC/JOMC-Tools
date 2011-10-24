@@ -61,6 +61,8 @@ import org.jomc.modlet.Modlet;
 import org.jomc.modlet.ModletObject;
 import org.jomc.modlet.Modlets;
 import org.jomc.modlet.ObjectFactory;
+import static org.jomc.ant.test.support.Assert.assertException;
+import static org.jomc.ant.test.support.Assert.assertExceptionMessage;
 import static org.jomc.ant.test.support.Assert.assertMessageLogged;
 import static org.jomc.ant.test.support.Assert.assertMessageNotLogged;
 import static org.jomc.ant.test.support.Assert.assertNoException;
@@ -145,8 +147,7 @@ public class JomcTaskTest
         if ( this.jomcTask == null )
         {
             this.jomcTask = this.newJomcTask();
-            this.jomcTask.setProject( new Project() );
-            this.jomcTask.getProject().init();
+            this.jomcTask.setProject( this.getProject() );
         }
 
         return this.jomcTask;
@@ -451,8 +452,8 @@ public class JomcTaskTest
             System.out.println( e );
         }
 
-        final Collection<KeyValueType<Object, Object>> keys = new ArrayList<KeyValueType<Object, Object>>( 1 );
-        keys.add( new KeyValueType<Object, Object>() );
+        final Collection<KeyValueType> keys = new ArrayList<KeyValueType>( 1 );
+        keys.add( new KeyValueType() );
 
         try
         {
@@ -600,6 +601,38 @@ public class JomcTaskTest
     {
         assertTrue( this.getJomcTask() == this.getJomcTask() );
         assertFalse( this.getJomcTask() == this.getJomcTask().clone() );
+    }
+
+    @Test
+    public final void testModelContextAttributeMissingKey() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-model-context-attribute-missing-key" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
+    }
+
+    @Test
+    public final void testTransformationParameterMissingKey() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-transformation-parameter-missing-key" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
+    }
+
+    @Test
+    public final void testTransformationParameterResourceMissingLocation() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-transformation-parameter-resource-missing-location" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'location' is missing a value." );
+    }
+
+    @Test
+    public final void testTransformationOutputPropertyMissingKey() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-transformation-output-property-missing-key" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
     }
 
 }

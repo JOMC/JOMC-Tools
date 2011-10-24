@@ -64,61 +64,92 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-missing-classes-directory">
-    <jomc:commit-classes if="${jomc.enabled}"/>
+  <target name="test-execute-task">
+    <jomc:commit-classes classesDirectory="${classes.dir}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-if">
+    <jomc:commit-classes classesDirectory="${classes.dir}" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-unless">
+    <jomc:commit-classes classesDirectory="${classes.dir}" unless="off"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-model-context-attribute-missing-key">
+    <jomc:commit-classes classesDirectory="${empty.dir}">
+      <jomc:modelContextAttribute/>
+    </jomc:commit-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-missing-key">
+    <jomc:commit-classes classesDirectory="${empty.dir}">
+      <jomc:transformationParameter/>
+    </jomc:commit-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-resource-missing-location">
+    <jomc:commit-classes classesDirectory="${empty.dir}">
+      <jomc:transformationParameterResource/>
+    </jomc:commit-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-output-property-missing-key">
+    <jomc:commit-classes classesDirectory="${empty.dir}">
+      <jomc:transformationOutputProperty/>
+    </jomc:commit-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-module-resource-missing-location">
+    <jomc:commit-classes classesDirectory="${empty.dir}">
+      <jomc:moduleResource/>
+    </jomc:commit-classes>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-velocity-property-missing-key">
-    <jomc:commit-classes classesDirectory="${empty.dir}" if="${jomc.enabled}">
-      <jomc:velocityProperty value="TEST"/>
+    <jomc:commit-classes classesDirectory="${empty.dir}">
+      <jomc:velocityProperty/>
+    </jomc:commit-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-velocity-property-resource-missing-location">
+    <jomc:commit-classes classesDirectory="${empty.dir}">
+      <jomc:velocityPropertyResource/>
     </jomc:commit-classes>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-template-parameter-missing-key">
-    <jomc:commit-classes classesDirectory="${empty.dir}" if="${jomc.enabled}">
-      <jomc:templateParameter value="TEST"/>
+    <jomc:commit-classes classesDirectory="${empty.dir}">
+      <jomc:templateParameter/>
     </jomc:commit-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-template-parameter-resource-missing-location">
+    <jomc:commit-classes classesDirectory="${empty.dir}">
+      <jomc:templateParameterResource/>
+    </jomc:commit-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-missing-classes-directory">
+    <jomc:commit-classes if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-stylesheet-missing-location">
     <jomc:commit-classes classesDirectory="${empty.dir}" if="${jomc.enabled}">
       <jomc:modelObjectStylesheetResource optional="false" connectTimeout="0" readTimeout="0"/>
-    </jomc:commit-classes>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-stylesheet-parameter-resource-missing-location">
-    <jomc:commit-classes classesDirectory="${empty.dir}" if="${jomc.enabled}">
-      <jomc:modelObjectStylesheetResource location="${no.op.stylesheet}" optional="false" connectTimeout="0"
-                                          readTimeout="0">
-        <jomc:transformationParameterResource optional="true"/>
-      </jomc:modelObjectStylesheetResource>
-    </jomc:commit-classes>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-stylesheet-parameter-missing-key">
-    <jomc:commit-classes classesDirectory="${empty.dir}" if="${jomc.enabled}">
-      <jomc:modelObjectStylesheetResource location="${no.op.stylesheet}" optional="false" connectTimeout="0"
-                                          readTimeout="0"/>
-      <jomc:transformationParameter value="TEST"/>
-    </jomc:commit-classes>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-module-resource-missing-location">
-    <jomc:commit-classes classesDirectory="${empty.dir}" if="${jomc.enabled}">
-      <jomc:moduleResource/>
-    </jomc:commit-classes>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-model-context-attribute-missing-key">
-    <jomc:commit-classes classesDirectory="${empty.dir}" if="${jomc.enabled}">
-      <jomc:modelContextAttribute/>
     </jomc:commit-classes>
   </target>
 
@@ -306,20 +337,4 @@
     <jomc:commit-classes classesDirectory="${classes.dir}" moduleLocation="META-INF/jomc-broken.xml"
                          if="${jomc.enabled}"/>
   </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task">
-    <jomc:commit-classes classesDirectory="${classes.dir}"/>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task-if">
-    <jomc:commit-classes classesDirectory="${classes.dir}" if="${jomc.enabled}"/>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task-unless">
-    <jomc:commit-classes classesDirectory="${classes.dir}" unless="off"/>
-  </target>
-
 </project>

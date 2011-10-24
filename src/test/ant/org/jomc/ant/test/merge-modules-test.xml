@@ -57,6 +57,56 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-if">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-unless">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST" unless="off"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-model-context-attribute-missing-key">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST">
+      <jomc:modelContextAttribute/>
+    </jomc:merge-modules>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-missing-key">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST">
+      <jomc:transformationParameter/>
+    </jomc:merge-modules>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-resource-missing-location">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST">
+      <jomc:transformationParameterResource/>
+    </jomc:merge-modules>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-output-property-missing-key">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST">
+      <jomc:transformationOutputProperty/>
+    </jomc:merge-modules>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-module-resource-missing-location">
+    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST">
+      <jomc:moduleResource/>
+    </jomc:merge-modules>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-missing-module-file">
     <jomc:merge-modules moduleName="TEST" if="${jomc.enabled}"/>
   </target>
@@ -77,20 +127,6 @@
   <target name="test-inclusion-missing-module-name">
     <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST" if="${jomc.enabled}">
       <jomc:moduleInclude/>
-    </jomc:merge-modules>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-module-resource-missing-location">
-    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST" if="${jomc.enabled}">
-      <jomc:moduleResource/>
-    </jomc:merge-modules>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-model-context-attribute-missing-key">
-    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST" if="${jomc.enabled}">
-      <jomc:modelContextAttribute/>
     </jomc:merge-modules>
   </target>
 
@@ -158,20 +194,4 @@
       <jomc:moduleInclude name="JOMC Ant Tasks Tests"/>
     </jomc:merge-modules>
   </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task">
-    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST"/>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task-if">
-    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST" if="${jomc.enabled}"/>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task-unless">
-    <jomc:merge-modules moduleFile="${empty.dir}/test-module.xml" moduleName="TEST" unless="off"/>
-  </target>
-
 </project>

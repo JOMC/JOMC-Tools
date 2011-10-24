@@ -30,7 +30,12 @@
  */
 package org.jomc.ant.test;
 
+import org.apache.tools.ant.BuildException;
 import org.jomc.ant.JomcModelTask;
+import org.jomc.ant.test.support.AntExecutionResult;
+import static org.jomc.ant.test.support.Assert.assertException;
+import static org.jomc.ant.test.support.Assert.assertExceptionMessage;
+import org.junit.Test;
 
 /**
  * Test cases for class {@code org.jomc.ant.JomcModelTask}.
@@ -66,6 +71,14 @@ public class JomcModelTaskTest extends JomcTaskTest
     protected String getBuildFileName()
     {
         return "jomc-model-task-test.xml";
+    }
+
+    @Test
+    public final void testModuleResourceMissingLocation() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-module-resource-missing-location" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'location' is missing a value." );
     }
 
 }

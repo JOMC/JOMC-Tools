@@ -54,22 +54,86 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-missing-sources-directory">
-    <jomc:manage-sources if="${jomc.enabled}"/>
+  <target name="test-execute-task">
+    <jomc:manage-sources sourcesDirectory="${empty.dir}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-if">
+    <jomc:manage-sources sourcesDirectory="${empty.dir}" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-unless">
+    <jomc:manage-sources sourcesDirectory="${empty.dir}" unless="off"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-model-context-attribute-missing-key">
+    <jomc:manage-sources>
+      <jomc:modelContextAttribute/>
+    </jomc:manage-sources>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-missing-key">
+    <jomc:manage-sources>
+      <jomc:transformationParameter/>
+    </jomc:manage-sources>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-resource-missing-location">
+    <jomc:manage-sources>
+      <jomc:transformationParameterResource/>
+    </jomc:manage-sources>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-output-property-missing-key">
+    <jomc:manage-sources>
+      <jomc:transformationOutputProperty/>
+    </jomc:manage-sources>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-module-resource-missing-location">
+    <jomc:manage-sources>
+      <jomc:moduleResource/>
+    </jomc:manage-sources>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-velocity-property-missing-key">
-    <jomc:manage-sources sourcesDirectory="${empty.dir}" if="${jomc.enabled}">
-      <jomc:velocityProperty value="TEST"/>
+    <jomc:manage-sources>
+      <jomc:velocityProperty/>
+    </jomc:manage-sources>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-velocity-property-resource-missing-location">
+    <jomc:manage-sources>
+      <jomc:velocityPropertyResource/>
     </jomc:manage-sources>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-template-parameter-missing-key">
-    <jomc:manage-sources sourcesDirectory="${empty.dir}" if="${jomc.enabled}">
-      <jomc:templateParameter value="TEST"/>
+    <jomc:manage-sources>
+      <jomc:templateParameter/>
     </jomc:manage-sources>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-template-parameter-resource-missing-location">
+    <jomc:manage-sources>
+      <jomc:templateParameterResource/>
+    </jomc:manage-sources>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-missing-sources-directory">
+    <jomc:manage-sources if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
@@ -77,20 +141,6 @@
     <jomc:manage-sources sourcesDirectory="${empty.dir}">
       <jomc:locale language="de" country="de" variant="ISO8859_1"/>
       <jomc:locale language="de" country="de" variant="ISO8859_1"/>
-    </jomc:manage-sources>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-module-resource-missing-location">
-    <jomc:manage-sources sourcesDirectory="${empty.dir}">
-      <jomc:moduleResource/>
-    </jomc:manage-sources>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-model-context-attribute-missing-key">
-    <jomc:manage-sources sourcesDirectory="${empty.dir}">
-      <jomc:modelContextAttribute/>
     </jomc:manage-sources>
   </target>
 
@@ -195,20 +245,4 @@
     <jomc:manage-sources sourcesDirectory="${empty.dir}" moduleLocation="META-INF/jomc-broken.xml"
                          if="${jomc.enabled}"/>
   </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task">
-    <jomc:manage-sources sourcesDirectory="${empty.dir}"/>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task-if">
-    <jomc:manage-sources sourcesDirectory="${empty.dir}" if="${jomc.enabled}"/>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task-unless">
-    <jomc:manage-sources sourcesDirectory="${empty.dir}" unless="off"/>
-  </target>
-
 </project>

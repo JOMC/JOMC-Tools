@@ -87,59 +87,11 @@ public class CommitClassesTaskTest extends ClassFileProcessorTaskTest
     }
 
     @Test
-    public final void testVelocityPropertyMissingKey() throws Exception
-    {
-        final AntExecutionResult r = this.executeTarget( "test-velocity-property-missing-key" );
-        assertException( r, BuildException.class );
-        assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
-    }
-
-    @Test
-    public final void testTemplateParameterMissingKey() throws Exception
-    {
-        final AntExecutionResult r = this.executeTarget( "test-template-parameter-missing-key" );
-        assertException( r, BuildException.class );
-        assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
-    }
-
-    @Test
     public final void testStylesheetMissingLocationKey() throws Exception
     {
         final AntExecutionResult r = this.executeTarget( "test-stylesheet-missing-location" );
         assertException( r, BuildException.class );
         assertExceptionMessage( r, "Mandatory attribute 'location' is missing a value." );
-    }
-
-    @Test
-    public final void testStylesheetParameterResourceMissingLocationKey() throws Exception
-    {
-        final AntExecutionResult r = this.executeTarget( "test-stylesheet-parameter-resource-missing-location" );
-        assertException( r, BuildException.class );
-        assertExceptionMessage( r, "Mandatory attribute 'location' is missing a value." );
-    }
-
-    @Test
-    public final void testStylesheetParameterMissingKey() throws Exception
-    {
-        final AntExecutionResult r = this.executeTarget( "test-stylesheet-parameter-missing-key" );
-        assertException( r, BuildException.class );
-        assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
-    }
-
-    @Test
-    public final void testModuleResourceMissingLocation() throws Exception
-    {
-        final AntExecutionResult r = this.executeTarget( "test-module-resource-missing-location" );
-        assertException( r, BuildException.class );
-        assertExceptionMessage( r, "Mandatory attribute 'location' is missing a value." );
-    }
-
-    @Test
-    public final void testModelContextAttributeMissingKey() throws Exception
-    {
-        final AntExecutionResult r = this.executeTarget( "test-model-context-attribute-missing-key" );
-        assertException( r, BuildException.class );
-        assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
     }
 
     @Test
@@ -156,14 +108,6 @@ public class CommitClassesTaskTest extends ClassFileProcessorTaskTest
         final AntExecutionResult r = this.executeTarget( "test-optional-stylesheet-not-found" );
         assertNoException( r );
         assertMessageLogged( r, "XSLT document 'DOES_NOT_EXIST' not found." );
-    }
-
-    @Test
-    public final void testInvalidMultipleLocaleElements() throws Exception
-    {
-        final AntExecutionResult r = this.executeTarget( "test-invalid-multiple-locale-elements" );
-        assertException( r, BuildException.class );
-        assertExceptionMessage( r, "Multiple nested 'locale' elements." );
     }
 
     @Test

@@ -32,16 +32,90 @@
 -->
 <project name="source-file-processor-task-test" xmlns:jomctest="antlib:org.jomc.ant.test">
 
+  <!-- ************************************************************************************************************* -->
   <target name="test-execute-task">
     <jomctest:test-source-file-processor-task/>
   </target>
 
+  <!-- ************************************************************************************************************* -->
   <target name="test-execute-task-if">
     <jomctest:test-source-file-processor-task if="on"/>
   </target>
 
+  <!-- ************************************************************************************************************* -->
   <target name="test-execute-task-unless">
     <jomctest:test-source-file-processor-task unless="off"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-model-context-attribute-missing-key">
+    <jomctest:test-source-file-processor-task>
+      <jomctest:modelContextAttribute/>
+    </jomctest:test-source-file-processor-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-missing-key">
+    <jomctest:test-source-file-processor-task>
+      <jomctest:transformationParameter/>
+    </jomctest:test-source-file-processor-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-resource-missing-location">
+    <jomctest:test-source-file-processor-task>
+      <jomctest:transformationParameterResource/>
+    </jomctest:test-source-file-processor-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-output-property-missing-key">
+    <jomctest:test-source-file-processor-task>
+      <jomctest:transformationOutputProperty/>
+    </jomctest:test-source-file-processor-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-module-resource-missing-location">
+    <jomctest:test-source-file-processor-task>
+      <jomctest:moduleResource/>
+    </jomctest:test-source-file-processor-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-velocity-property-missing-key">
+    <jomctest:test-source-file-processor-task>
+      <jomctest:velocityProperty/>
+    </jomctest:test-source-file-processor-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-velocity-property-resource-missing-location">
+    <jomctest:test-source-file-processor-task>
+      <jomctest:velocityPropertyResource/>
+    </jomctest:test-source-file-processor-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-template-parameter-missing-key">
+    <jomctest:test-source-file-processor-task>
+      <jomctest:templateParameter/>
+    </jomctest:test-source-file-processor-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-template-parameter-resource-missing-location">
+    <jomctest:test-source-file-processor-task>
+      <jomctest:templateParameterResource/>
+    </jomctest:test-source-file-processor-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-invalid-multiple-locale-elements">
+    <jomctest:test-source-file-processor-task>
+      <jomctest:locale language="de" country="de" variant="ISO8859_1"/>
+      <jomctest:locale language="de" country="de" variant="ISO8859_1"/>
+    </jomctest:test-source-file-processor-task>
   </target>
 
 </project>

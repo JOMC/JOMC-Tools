@@ -32,16 +32,54 @@
 -->
 <project name="jomc-model-task-test" xmlns:jomctest="antlib:org.jomc.ant.test">
 
+  <!-- ************************************************************************************************************* -->
   <target name="test-execute-task">
     <jomctest:test-jomc-model-task/>
   </target>
 
+  <!-- ************************************************************************************************************* -->
   <target name="test-execute-task-if">
     <jomctest:test-jomc-model-task if="on"/>
   </target>
 
+  <!-- ************************************************************************************************************* -->
   <target name="test-execute-task-unless">
     <jomctest:test-jomc-model-task unless="off"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-model-context-attribute-missing-key">
+    <jomctest:test-jomc-model-task>
+      <jomctest:modelContextAttribute/>
+    </jomctest:test-jomc-model-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-missing-key">
+    <jomctest:test-jomc-model-task>
+      <jomctest:transformationParameter/>
+    </jomctest:test-jomc-model-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-resource-missing-location">
+    <jomctest:test-jomc-model-task>
+      <jomctest:transformationParameterResource/>
+    </jomctest:test-jomc-model-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-output-property-missing-key">
+    <jomctest:test-jomc-model-task>
+      <jomctest:transformationOutputProperty/>
+    </jomctest:test-jomc-model-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-module-resource-missing-location">
+    <jomctest:test-jomc-model-task>
+      <jomctest:moduleResource/>
+    </jomctest:test-jomc-model-task>
   </target>
 
 </project>

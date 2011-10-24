@@ -54,16 +54,52 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-module-resource-missing-location">
-    <jomc:write-model specification="DOES NOT EXIST">
-      <jomc:moduleResource/>
-    </jomc:write-model>
+  <target name="test-execute-task">
+    <jomc:write-model/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-if">
+    <jomc:write-model if="on"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-unless">
+    <jomc:write-model unless="off"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-model-context-attribute-missing-key">
-    <jomc:write-model specification="DOES NOT EXIST">
+    <jomc:write-model>
       <jomc:modelContextAttribute/>
+    </jomc:write-model>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-missing-key">
+    <jomc:write-model>
+      <jomc:transformationParameter/>
+    </jomc:write-model>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-resource-missing-location">
+    <jomc:write-model>
+      <jomc:transformationParameterResource/>
+    </jomc:write-model>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-output-property-missing-key">
+    <jomc:write-model>
+      <jomc:transformationOutputProperty/>
+    </jomc:write-model>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-module-resource-missing-location">
+    <jomc:write-model>
+      <jomc:moduleResource/>
     </jomc:write-model>
   </target>
 
@@ -107,20 +143,4 @@
       <jomc:transformationParameter key="test" value="test"/>
     </jomc:write-model>
   </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task">
-    <jomc:write-model/>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task-if">
-    <jomc:write-model if="on"/>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task-unless">
-    <jomc:write-model unless="off"/>
-  </target>
-
 </project>

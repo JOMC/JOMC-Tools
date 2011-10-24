@@ -30,7 +30,11 @@
  */
 package org.jomc.ant.test;
 
+import org.apache.tools.ant.BuildException;
 import org.jomc.ant.JomcToolTask;
+import org.jomc.ant.test.support.AntExecutionResult;
+import static org.jomc.ant.test.support.Assert.assertException;
+import static org.jomc.ant.test.support.Assert.assertExceptionMessage;
 import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
@@ -129,6 +133,46 @@ public class JomcToolTaskTest extends JomcModelTaskTest
             assertNotNull( e.getMessage() );
             System.out.println( e );
         }
+    }
+
+    @Test
+    public final void testVelocityPropertyMissingKey() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-velocity-property-missing-key" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
+    }
+
+    @Test
+    public final void testVelocityPropertyResourceMissingLocation() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-velocity-property-resource-missing-location" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'location' is missing a value." );
+    }
+
+    @Test
+    public final void testTemplateParameterMissingKey() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-template-parameter-missing-key" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
+    }
+
+    @Test
+    public final void testTemplateParameterResourceMissingLocation() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-template-parameter-resource-missing-location" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Mandatory attribute 'location' is missing a value." );
+    }
+
+    @Test
+    public final void testInvalidMultipleLocaleElements() throws Exception
+    {
+        final AntExecutionResult r = this.executeTarget( "test-invalid-multiple-locale-elements" );
+        assertException( r, BuildException.class );
+        assertExceptionMessage( r, "Multiple nested 'locale' elements." );
     }
 
 }

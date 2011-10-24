@@ -32,16 +32,90 @@
 -->
 <project name="jomc-tool-task-test" xmlns:jomctest="antlib:org.jomc.ant.test">
 
+  <!-- ************************************************************************************************************* -->
   <target name="test-execute-task">
     <jomctest:test-jomc-tool-task/>
   </target>
 
+  <!-- ************************************************************************************************************* -->
   <target name="test-execute-task-if">
     <jomctest:test-jomc-tool-task if="on"/>
   </target>
 
+  <!-- ************************************************************************************************************* -->
   <target name="test-execute-task-unless">
     <jomctest:test-jomc-tool-task unless="off"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-model-context-attribute-missing-key">
+    <jomctest:test-jomc-tool-task>
+      <jomctest:modelContextAttribute/>
+    </jomctest:test-jomc-tool-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-missing-key">
+    <jomctest:test-jomc-tool-task>
+      <jomctest:transformationParameter/>
+    </jomctest:test-jomc-tool-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-resource-missing-location">
+    <jomctest:test-jomc-tool-task>
+      <jomctest:transformationParameterResource/>
+    </jomctest:test-jomc-tool-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-output-property-missing-key">
+    <jomctest:test-jomc-tool-task>
+      <jomctest:transformationOutputProperty/>
+    </jomctest:test-jomc-tool-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-module-resource-missing-location">
+    <jomctest:test-jomc-tool-task>
+      <jomctest:moduleResource/>
+    </jomctest:test-jomc-tool-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-velocity-property-missing-key">
+    <jomctest:test-jomc-tool-task>
+      <jomctest:velocityProperty/>
+    </jomctest:test-jomc-tool-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-velocity-property-resource-missing-location">
+    <jomctest:test-jomc-tool-task>
+      <jomctest:velocityPropertyResource/>
+    </jomctest:test-jomc-tool-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-template-parameter-missing-key">
+    <jomctest:test-jomc-tool-task>
+      <jomctest:templateParameter/>
+    </jomctest:test-jomc-tool-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-template-parameter-resource-missing-location">
+    <jomctest:test-jomc-tool-task>
+      <jomctest:templateParameterResource/>
+    </jomctest:test-jomc-tool-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-invalid-multiple-locale-elements">
+    <jomctest:test-jomc-tool-task>
+      <jomctest:locale language="de" country="de" variant="ISO8859_1"/>
+      <jomctest:locale language="de" country="de" variant="ISO8859_1"/>
+    </jomctest:test-jomc-tool-task>
   </target>
 
 </project>

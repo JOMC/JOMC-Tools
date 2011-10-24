@@ -32,16 +32,47 @@
 -->
 <project name="jomc-task-test" xmlns:jomctest="antlib:org.jomc.ant.test">
 
+  <!-- ************************************************************************************************************* -->
   <target name="test-execute-task">
     <jomctest:test-jomc-task/>
   </target>
 
+  <!-- ************************************************************************************************************* -->
   <target name="test-execute-task-if">
     <jomctest:test-jomc-task if="on"/>
   </target>
 
+  <!-- ************************************************************************************************************* -->
   <target name="test-execute-task-unless">
     <jomctest:test-jomc-task unless="off"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-model-context-attribute-missing-key">
+    <jomctest:test-jomc-task>
+      <jomctest:modelContextAttribute/>
+    </jomctest:test-jomc-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-missing-key">
+    <jomctest:test-jomc-task>
+      <jomctest:transformationParameter/>
+    </jomctest:test-jomc-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-resource-missing-location">
+    <jomctest:test-jomc-task>
+      <jomctest:transformationParameterResource/>
+    </jomctest:test-jomc-task>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-output-property-missing-key">
+    <jomctest:test-jomc-task>
+      <jomctest:transformationOutputProperty/>
+    </jomctest:test-jomc-task>
   </target>
 
 </project>

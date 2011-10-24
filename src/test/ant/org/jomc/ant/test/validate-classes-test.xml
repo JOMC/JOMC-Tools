@@ -63,22 +63,89 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-missing-classes-directory">
-    <jomc:validate-classes if="${jomc.enabled}"/>
+  <target name="test-execute-task">
+    <jomc:commit-classes classesDirectory="${classes.dir}"/>
+    <jomc:validate-classes classesDirectory="${classes.dir}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-if">
+    <jomc:commit-classes classesDirectory="${classes.dir}" if="${jomc.enabled}"/>
+    <jomc:validate-classes classesDirectory="${classes.dir}" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-unless">
+    <jomc:commit-classes classesDirectory="${classes.dir}" unless="off"/>
+    <jomc:validate-classes classesDirectory="${classes.dir}" unless="off"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-model-context-attribute-missing-key">
+    <jomc:validate-classes classesDirectory="${classes.dir}">
+      <jomc:modelContextAttribute/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-missing-key">
+    <jomc:validate-classes classesDirectory="${classes.dir}">
+      <jomc:transformationParameter/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-resource-missing-location">
+    <jomc:validate-classes classesDirectory="${classes.dir}">
+      <jomc:transformationParameterResource/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-output-property-missing-key">
+    <jomc:validate-classes classesDirectory="${classes.dir}">
+      <jomc:transformationOutputProperty/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-module-resource-missing-location">
+    <jomc:validate-classes classesDirectory="${classes.dir}">
+      <jomc:moduleResource/>
+    </jomc:validate-classes>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-velocity-property-missing-key">
-    <jomc:validate-classes classesDirectory="${empty.dir}" if="${jomc.enabled}">
-      <jomc:velocityProperty value="TEST"/>
+    <jomc:validate-classes classesDirectory="${classes.dir}">
+      <jomc:velocityProperty/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-velocity-property-resource-missing-location">
+    <jomc:validate-classes classesDirectory="${classes.dir}">
+      <jomc:velocityPropertyResource/>
     </jomc:validate-classes>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-template-parameter-missing-key">
-    <jomc:validate-classes classesDirectory="${empty.dir}" if="${jomc.enabled}">
-      <jomc:templateParameter value="TEST"/>
+    <jomc:validate-classes classesDirectory="${classes.dir}">
+      <jomc:templateParameter/>
     </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-template-parameter-resource-missing-location">
+    <jomc:validate-classes classesDirectory="${classes.dir}">
+      <jomc:templateParameterResource/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-missing-classes-directory">
+    <jomc:validate-classes if="${jomc.enabled}"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
@@ -86,20 +153,6 @@
     <jomc:validate-classes classesDirectory="${empty.dir}">
       <jomc:locale language="de" country="de" variant="ISO8859_1"/>
       <jomc:locale language="de" country="de" variant="ISO8859_1"/>
-    </jomc:validate-classes>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-module-resource-missing-location">
-    <jomc:validate-classes classesDirectory="${empty.dir}">
-      <jomc:moduleResource/>
-    </jomc:validate-classes>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-model-context-attribute-missing-key">
-    <jomc:validate-classes classesDirectory="${empty.dir}">
-      <jomc:modelContextAttribute/>
     </jomc:validate-classes>
   </target>
 
@@ -273,23 +326,4 @@
     <jomc:validate-classes classesDirectory="${classes.dir}" moduleLocation="META-INF/jomc-broken.xml"
                            if="${jomc.enabled}"/>
   </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task">
-    <jomc:commit-classes classesDirectory="${classes.dir}"/>
-    <jomc:validate-classes classesDirectory="${classes.dir}"/>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task-if">
-    <jomc:commit-classes classesDirectory="${classes.dir}" if="${jomc.enabled}"/>
-    <jomc:validate-classes classesDirectory="${classes.dir}" if="${jomc.enabled}"/>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task-unless">
-    <jomc:commit-classes classesDirectory="${classes.dir}" unless="off"/>
-    <jomc:validate-classes classesDirectory="${classes.dir}" unless="off"/>
-  </target>
-
 </project>

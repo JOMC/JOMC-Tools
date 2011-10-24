@@ -54,16 +54,52 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
-  <target name="test-module-resource-missing-location">
-    <jomc:validate-model if="${jomc.enabled}">
-      <jomc:moduleResource/>
-    </jomc:validate-model>
+  <target name="test-execute-task">
+    <jomc:validate-model/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-if">
+    <jomc:validate-model if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-unless">
+    <jomc:validate-model unless="off"/>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-model-context-attribute-missing-key">
-    <jomc:validate-model if="${jomc.enabled}">
+    <jomc:validate-model>
       <jomc:modelContextAttribute/>
+    </jomc:validate-model>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-missing-key">
+    <jomc:validate-model>
+      <jomc:transformationParameter/>
+    </jomc:validate-model>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-resource-missing-location">
+    <jomc:validate-model>
+      <jomc:transformationParameterResource/>
+    </jomc:validate-model>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-output-property-missing-key">
+    <jomc:validate-model>
+      <jomc:transformationOutputProperty/>
+    </jomc:validate-model>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-module-resource-missing-location">
+    <jomc:validate-model>
+      <jomc:moduleResource/>
     </jomc:validate-model>
   </target>
 
@@ -82,20 +118,4 @@
     <jomc:validate-model classpathref="redundant.classpath" moduleLocation="META-INF/jomc-broken.xml"
                          if="${jomc.enabled}"/>
   </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task">
-    <jomc:validate-model/>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task-if">
-    <jomc:validate-model if="${jomc.enabled}"/>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task-unless">
-    <jomc:validate-model unless="off"/>
-  </target>
-
 </project>

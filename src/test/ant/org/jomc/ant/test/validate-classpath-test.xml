@@ -68,16 +68,83 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task">
+    <jomc:commit-classes classesDirectory="${classes.dir}"/>
+    <jomc:validate-classpath classpathref="classes.classpath"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-if">
+    <jomc:commit-classes classesDirectory="${classes.dir}" if="${jomc.enabled}"/>
+    <jomc:validate-classpath classpathref="classes.classpath" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-unless">
+    <jomc:commit-classes classesDirectory="${classes.dir}" unless="off"/>
+    <jomc:validate-classpath classpathref="classes.classpath" unless="off"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-model-context-attribute-missing-key">
+    <jomc:validate-classpath classpathref="classes.classpath">
+      <jomc:modelContextAttribute/>
+    </jomc:validate-classpath>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-missing-key">
+    <jomc:validate-classpath classpathref="classes.classpath">
+      <jomc:transformationParameter/>
+    </jomc:validate-classpath>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-resource-missing-location">
+    <jomc:validate-classpath classpathref="classes.classpath">
+      <jomc:transformationParameterResource/>
+    </jomc:validate-classpath>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-output-property-missing-key">
+    <jomc:validate-classpath classpathref="classes.classpath">
+      <jomc:transformationOutputProperty/>
+    </jomc:validate-classpath>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-module-resource-missing-location">
+    <jomc:validate-classpath classpathref="classes.classpath">
+      <jomc:moduleResource/>
+    </jomc:validate-classpath>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-velocity-property-missing-key">
-    <jomc:validate-classpath if="${jomc.enabled}">
-      <jomc:velocityProperty value="TEST"/>
+    <jomc:validate-classpath classpathref="classes.classpath">
+      <jomc:velocityProperty/>
+    </jomc:validate-classpath>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-velocity-property-resource-missing-location">
+    <jomc:validate-classpath classpathref="classes.classpath">
+      <jomc:velocityPropertyResource/>
     </jomc:validate-classpath>
   </target>
 
   <!-- ************************************************************************************************************* -->
   <target name="test-template-parameter-missing-key">
-    <jomc:validate-classpath if="${jomc.enabled}">
-      <jomc:templateParameter value="TEST"/>
+    <jomc:validate-classpath classpathref="classes.classpath">
+      <jomc:templateParameter/>
+    </jomc:validate-classpath>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-template-parameter-resource-missing-location">
+    <jomc:validate-classpath classpathref="classes.classpath">
+      <jomc:templateParameterResource/>
     </jomc:validate-classpath>
   </target>
 
@@ -86,20 +153,6 @@
     <jomc:validate-classpath>
       <jomc:locale language="de" country="de" variant="ISO8859_1"/>
       <jomc:locale language="de" country="de" variant="ISO8859_1"/>
-    </jomc:validate-classpath>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-module-resource-missing-location">
-    <jomc:validate-classpath>
-      <jomc:moduleResource/>
-    </jomc:validate-classpath>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-model-context-attribute-missing-key">
-    <jomc:validate-classpath>
-      <jomc:modelContextAttribute/>
     </jomc:validate-classpath>
   </target>
 
@@ -272,23 +325,4 @@
   <target name="test-validate-ant-tasks-broken-model">
     <jomc:validate-classpath moduleLocation="META-INF/jomc-broken.xml" if="${jomc.enabled}"/>
   </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task">
-    <jomc:commit-classes classesDirectory="${classes.dir}"/>
-    <jomc:validate-classpath classpathref="classes.classpath"/>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task-if">
-    <jomc:commit-classes classesDirectory="${classes.dir}" if="${jomc.enabled}"/>
-    <jomc:validate-classpath classpathref="classes.classpath" if="${jomc.enabled}"/>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task-unless">
-    <jomc:commit-classes classesDirectory="${classes.dir}" unless="off"/>
-    <jomc:validate-classpath classpathref="classes.classpath" unless="off"/>
-  </target>
-
 </project>

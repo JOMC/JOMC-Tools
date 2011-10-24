@@ -57,6 +57,52 @@
   </target>
 
   <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
+                        classpathref="redundant.classpath"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-if">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
+                        classpathref="redundant.classpath" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-unless">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
+                        classpathref="redundant.classpath" unless="off"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-model-context-attribute-missing-key">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST">
+      <jomc:modelContextAttribute/>
+    </jomc:merge-modlets>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-missing-key">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST">
+      <jomc:transformationParameter/>
+    </jomc:merge-modlets>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-resource-missing-location">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST">
+      <jomc:transformationParameterResource/>
+    </jomc:merge-modlets>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-output-property-missing-key">
+    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST">
+      <jomc:transformationOutputProperty/>
+    </jomc:merge-modlets>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
   <target name="test-missing-modlet-file">
     <jomc:merge-modlets modletName="TEST" if="${jomc.enabled}"/>
   </target>
@@ -84,13 +130,6 @@
   <target name="test-modlet-resource-missing-locatiom">
     <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" if="${jomc.enabled}">
       <jomc:modletResource/>
-    </jomc:merge-modlets>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-model-context-attribute-missing-key">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST" if="${jomc.enabled}">
-      <jomc:modelContextAttribute/>
     </jomc:merge-modlets>
   </target>
 
@@ -161,23 +200,4 @@
       <jomc:modletInclude name="JOMC Tools"/>
     </jomc:merge-modlets>
   </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
-                        classpathref="redundant.classpath"/>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task-if">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
-                        classpathref="redundant.classpath" if="${jomc.enabled}"/>
-  </target>
-
-  <!-- ************************************************************************************************************* -->
-  <target name="test-execute-task-unless">
-    <jomc:merge-modlets modletFile="${empty.dir}/test-modlet.xml" modletName="TEST"
-                        classpathref="redundant.classpath" unless="off"/>
-  </target>
-
 </project>

@@ -87,46 +87,6 @@ public class GenerateResourcesTaskTest extends ResourceFileProcessorTaskTest
     }
 
     @Test
-    public final void testVelocityPropertyMissingKey() throws Exception
-    {
-        final AntExecutionResult r = this.executeTarget( "test-velocity-property-missing-key" );
-        assertException( r, BuildException.class );
-        assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
-    }
-
-    @Test
-    public final void testTemplateParameterMissingKey() throws Exception
-    {
-        final AntExecutionResult r = this.executeTarget( "test-template-parameter-missing-key" );
-        assertException( r, BuildException.class );
-        assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
-    }
-
-    @Test
-    public final void testInvalidMultipleLocaleElements() throws Exception
-    {
-        final AntExecutionResult r = this.executeTarget( "test-invalid-multiple-locale-elements" );
-        assertException( r, BuildException.class );
-        assertExceptionMessage( r, "Multiple nested 'locale' elements." );
-    }
-
-    @Test
-    public final void testModuleResourceMissingLocation() throws Exception
-    {
-        final AntExecutionResult r = this.executeTarget( "test-module-resource-missing-location" );
-        assertException( r, BuildException.class );
-        assertExceptionMessage( r, "Mandatory attribute 'location' is missing a value." );
-    }
-
-    @Test
-    public final void testModelContextAttributeMissingKey() throws Exception
-    {
-        final AntExecutionResult r = this.executeTarget( "test-model-context-attribute-missing-key" );
-        assertException( r, BuildException.class );
-        assertExceptionMessage( r, "Mandatory attribute 'key' is missing a value." );
-    }
-
-    @Test
     public final void testSpecificationNotFound() throws Exception
     {
         final AntExecutionResult r = this.executeTarget( "test-specification-not-found" );
