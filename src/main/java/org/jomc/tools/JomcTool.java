@@ -34,11 +34,13 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.Format;
@@ -47,6 +49,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -202,6 +205,9 @@ public class JomcTool
 
     /** Cached template locations. */
     private volatile Reference<Map<String, String>> templateLocationsCache;
+
+    /** Cached template profile properties. */
+    private volatile Reference<Map<String, java.util.Properties>> templateProfilePropertiesCache;
 
     /** Creates a new {@code JomcTool} instance. */
     public JomcTool()
@@ -1861,6 +1867,11 @@ public class JomcTool
         final VelocityContext ctx = new VelocityContext( Collections.synchronizedMap(
             new HashMap<String, Object>( this.getTemplateParameters() ) ) );
 
+        this.mergeTemplateProfileProperties( this.getTemplateProfile(), this.getLocale().getLanguage(), ctx );
+        this.mergeTemplateProfileProperties( this.getTemplateProfile(), null, ctx );
+        this.mergeTemplateProfileProperties( getDefaultTemplateProfile(), this.getLocale().getLanguage(), ctx );
+        this.mergeTemplateProfileProperties( getDefaultTemplateProfile(), null, ctx );
+
         ctx.put( "model", this.getModel().clone() );
         ctx.put( "modules", this.getModules().clone() );
         ctx.put( "tool", this );
@@ -1892,6 +1903,7 @@ public class JomcTool
         ctx.put( "mediumDateTime", this.getMediumDateTime( now ) );
         ctx.put( "longDateTime", this.getLongDateTime( now ) );
         ctx.put( "isoDateTime", this.getIsoDateTime( now ) );
+
         return ctx;
     }
 
@@ -2445,6 +2457,130 @@ public class JomcTool
 
             // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( "velocityException", location, m ) ).initCause( e );
+        }
+    }
+
+    private java.util.Properties getTemplateProfileProperties( final String profileName, final String language )
+    {
+        Map<String, java.util.Properties> map =
+            this.templateProfilePropertiesCache == null ? null : this.templateProfilePropertiesCache.get();
+
+        if ( map == null )
+        {
+            map = new HashMap<String, java.util.Properties>();
+            this.templateProfilePropertiesCache = new SoftReference<Map<String, java.util.Properties>>( map );
+        }
+
+        final String key = profileName + "|" + language;
+        java.util.Properties profileProperties = map.get( key );
+
+        if ( profileProperties == null )
+        {
+            InputStream in = null;
+            profileProperties = new java.util.Properties();
+            final String resourceName = "/" + TEMPLATE_PREFIX + profileName + ( language == null ? "" : "/" + language )
+                                        + "/context.properties";
+
+            try
+            {
+                in = this.getClass().getResourceAsStream( resourceName );
+
+                if ( in != null )
+                {
+                    if ( this.isLoggable( Level.CONFIG ) )
+                    {
+                        this.log( Level.CONFIG, getMessage( "contextPropertiesFound", resourceName ), null );
+                    }
+
+                    profileProperties.load( in );
+                }
+                else if ( this.isLoggable( Level.CONFIG ) )
+                {
+                    this.log( Level.CONFIG, getMessage( "contextPropertiesNotFound", resourceName ), null );
+                }
+
+                map.put( key, profileProperties );
+            }
+            catch ( final IOException e )
+            {
+                this.log( Level.SEVERE, getMessage( e ), e );
+            }
+            finally
+            {
+                try
+                {
+                    if ( in != null )
+                    {
+                        in.close();
+                    }
+                }
+                catch ( final IOException e )
+                {
+                    this.log( Level.SEVERE, getMessage( e ), e );
+                }
+            }
+        }
+
+        return profileProperties;
+    }
+
+    private void mergeTemplateProfileProperties( final String profileName, final String language,
+                                                 final VelocityContext velocityContext )
+    {
+        final java.util.Properties templateProfileProperties =
+            this.getTemplateProfileProperties( profileName, language );
+
+        for ( final Enumeration<?> e = templateProfileProperties.propertyNames(); e.hasMoreElements(); )
+        {
+            final String name = e.nextElement().toString();
+            final String value = templateProfileProperties.getProperty( name );
+            final String[] values = value.split( "\\|" );
+
+            if ( !velocityContext.containsKey( name ) )
+            {
+                if ( values.length > 1 )
+                {
+                    try
+                    {
+                        final Class<?> valueClass = Class.forName( values[0] );
+
+                        if ( values[1].length() > 0 )
+                        {
+                            velocityContext.put(
+                                name, valueClass.getConstructor( String.class ).newInstance( values[1] ) );
+
+                        }
+                        else
+                        {
+                            velocityContext.put( name, valueClass.newInstance() );
+                        }
+                    }
+                    catch ( final InstantiationException ex )
+                    {
+                        this.log( Level.SEVERE, getMessage( ex ), ex );
+                    }
+                    catch ( final IllegalAccessException ex )
+                    {
+                        this.log( Level.SEVERE, getMessage( ex ), ex );
+                    }
+                    catch ( final InvocationTargetException ex )
+                    {
+                        this.log( Level.SEVERE, getMessage( ex ), ex );
+                    }
+                    catch ( final NoSuchMethodException ex )
+                    {
+                        this.log( Level.SEVERE, getMessage( ex ), ex );
+                    }
+                    catch ( final ClassNotFoundException ex )
+                    {
+                        this.log( Level.SEVERE, getMessage( ex ), ex );
+                    }
+                }
+                else
+                {
+                    velocityContext.put( name, value );
+                }
+            }
         }
     }
 
