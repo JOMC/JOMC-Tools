@@ -365,7 +365,6 @@ public abstract class AbstractCommand
     // SECTION-END
     // SECTION-START[Constructors]
     // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
-
     /** Creates a new {@code AbstractCommand} instance. */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
     public AbstractCommand()
@@ -378,7 +377,6 @@ public abstract class AbstractCommand
     // SECTION-END
     // SECTION-START[Dependencies]
     // <editor-fold defaultstate="collapsed" desc=" Generated Dependencies ">
-
     /**
      * Gets the {@code <Locale>} dependency.
      * <p>
@@ -399,7 +397,6 @@ public abstract class AbstractCommand
     // SECTION-END
     // SECTION-START[Properties]
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
-
     /**
      * Gets the value of the {@code <abbreviatedCommandName>} property.
      * @return Abbreviated name of the command.
@@ -412,7 +409,6 @@ public abstract class AbstractCommand
         assert _p != null : "'abbreviatedCommandName' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <commandName>} property.
      * @return Name of the command.
@@ -429,7 +425,6 @@ public abstract class AbstractCommand
     // SECTION-END
     // SECTION-START[Messages]
     // <editor-fold defaultstate="collapsed" desc=" Generated Messages ">
-
     /**
      * Gets the text of the {@code <applicationTitle>} message.
      * <p><strong>Languages:</strong>
@@ -449,7 +444,6 @@ public abstract class AbstractCommand
         assert _m != null : "'applicationTitle' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <commandFailureMessage>} message.
      * <p><strong>Languages:</strong>
@@ -471,7 +465,6 @@ public abstract class AbstractCommand
         assert _m != null : "'commandFailureMessage' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <commandInfoMessage>} message.
      * <p><strong>Languages:</strong>
@@ -493,7 +486,6 @@ public abstract class AbstractCommand
         assert _m != null : "'commandInfoMessage' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <commandSuccessMessage>} message.
      * <p><strong>Languages:</strong>
@@ -515,7 +507,6 @@ public abstract class AbstractCommand
         assert _m != null : "'commandSuccessMessage' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <defaultLogLevelInfo>} message.
      * <p><strong>Languages:</strong>
@@ -537,7 +528,6 @@ public abstract class AbstractCommand
         assert _m != null : "'defaultLogLevelInfo' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <longDescriptionMessage>} message.
      * <p><strong>Languages:</strong>
@@ -557,7 +547,6 @@ public abstract class AbstractCommand
         assert _m != null : "'longDescriptionMessage' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <separator>} message.
      * <p><strong>Languages:</strong>
@@ -577,7 +566,6 @@ public abstract class AbstractCommand
         assert _m != null : "'separator' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <shortDescriptionMessage>} message.
      * <p><strong>Languages:</strong>

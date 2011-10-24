@@ -193,7 +193,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
     // SECTION-END
     // SECTION-START[Constructors]
     // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
-
     /** Creates a new {@code CommitClassesCommand} instance. */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
     public CommitClassesCommand()
@@ -390,7 +389,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
     // SECTION-END
     // SECTION-START[Dependencies]
     // <editor-fold defaultstate="collapsed" desc=" Generated Dependencies ">
-
     /**
      * Gets the {@code <ClassFileProcessorOption>} dependency.
      * <p>
@@ -407,7 +405,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'ClassFileProcessorOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <ClassesDirectoryOption>} dependency.
      * <p>
@@ -438,7 +435,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'ClassesDirectoryOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <ClasspathOption>} dependency.
      * <p>
@@ -455,7 +451,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'ClasspathOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <CountryOption>} dependency.
      * <p>
@@ -472,7 +467,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'CountryOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <DefaultTemplateProfileOption>} dependency.
      * <p>
@@ -489,7 +483,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'DefaultTemplateProfileOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <DocumentsOption>} dependency.
      * <p>
@@ -506,7 +499,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'DocumentsOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <ImplementationOption>} dependency.
      * <p>
@@ -523,7 +515,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'ImplementationOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <IndentationStringOption>} dependency.
      * <p>
@@ -540,7 +531,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'IndentationStringOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <InputEncodingOption>} dependency.
      * <p>
@@ -557,7 +547,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'InputEncodingOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <LanguageOption>} dependency.
      * <p>
@@ -574,7 +563,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'LanguageOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <LineSeparatorOption>} dependency.
      * <p>
@@ -591,7 +579,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'LineSeparatorOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <Locale>} dependency.
      * <p>
@@ -608,7 +595,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'Locale' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <LocaleVariantOption>} dependency.
      * <p>
@@ -625,7 +611,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'LocaleVariantOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <ModelContextOption>} dependency.
      * <p>
@@ -642,7 +627,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'ModelContextOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <ModelOption>} dependency.
      * <p>
@@ -659,7 +643,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'ModelOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <ModletLocationOption>} dependency.
      * <p>
@@ -676,7 +659,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'ModletLocationOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <ModletSchemaSystemIdOption>} dependency.
      * <p>
@@ -693,7 +675,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'ModletSchemaSystemIdOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <ModuleLocationOption>} dependency.
      * <p>
@@ -710,7 +691,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'ModuleLocationOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <ModuleNameOption>} dependency.
      * <p>
@@ -727,7 +707,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'ModuleNameOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <NoClassProcessingOption>} dependency.
      * <p>
@@ -744,7 +723,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'NoClassProcessingOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <NoClasspathResolutionOption>} dependency.
      * <p>
@@ -761,7 +739,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'NoClasspathResolutionOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <NoModelProcessingOption>} dependency.
      * <p>
@@ -778,7 +755,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'NoModelProcessingOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <NoModelResourceValidation>} dependency.
      * <p>
@@ -795,7 +771,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'NoModelResourceValidation' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <NoModletResourceValidation>} dependency.
      * <p>
@@ -812,7 +787,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'NoModletResourceValidation' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <OutputEncodingOption>} dependency.
      * <p>
@@ -829,7 +803,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'OutputEncodingOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <PlatformProviderLocationOption>} dependency.
      * <p>
@@ -846,7 +819,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'PlatformProviderLocationOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <ProviderLocationOption>} dependency.
      * <p>
@@ -863,7 +835,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'ProviderLocationOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <SpecificationOption>} dependency.
      * <p>
@@ -880,7 +851,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'SpecificationOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <StylesheetOption>} dependency.
      * <p>
@@ -897,7 +867,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'StylesheetOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <TemplateEncodingOption>} dependency.
      * <p>
@@ -914,7 +883,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'TemplateEncodingOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <TemplateLocationOption>} dependency.
      * <p>
@@ -931,7 +899,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'TemplateLocationOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <TemplateProfileOption>} dependency.
      * <p>
@@ -948,7 +915,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _d != null : "'TemplateProfileOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <TransformerLocationOption>} dependency.
      * <p>
@@ -969,7 +935,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
     // SECTION-END
     // SECTION-START[Properties]
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
-
     /**
      * Gets the value of the {@code <abbreviatedCommandName>} property.
      * @return Abbreviated name of the command.
@@ -982,7 +947,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _p != null : "'abbreviatedCommandName' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <applicationModlet>} property.
      * @return Name of the 'shaded' application modlet.
@@ -995,7 +959,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _p != null : "'applicationModlet' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <commandName>} property.
      * @return Name of the command.
@@ -1008,7 +971,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _p != null : "'commandName' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <modletExcludes>} property.
      * @return List of modlet names to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.
@@ -1021,7 +983,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _p != null : "'modletExcludes' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <providerExcludes>} property.
      * @return List of providers to exclude from any {@code META-INF/services} file separated by {@code :}.
@@ -1034,7 +995,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _p != null : "'providerExcludes' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <schemaExcludes>} property.
      * @return List of schema context-ids to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.
@@ -1047,7 +1007,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _p != null : "'schemaExcludes' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <serviceExcludes>} property.
      * @return List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.
@@ -1064,7 +1023,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
     // SECTION-END
     // SECTION-START[Messages]
     // <editor-fold defaultstate="collapsed" desc=" Generated Messages ">
-
     /**
      * Gets the text of the {@code <applicationTitle>} message.
      * <p><strong>Languages:</strong>
@@ -1084,7 +1042,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'applicationTitle' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <cannotProcessMessage>} message.
      * <p><strong>Languages:</strong>
@@ -1107,7 +1064,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'cannotProcessMessage' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <classpathElementInfo>} message.
      * <p><strong>Languages:</strong>
@@ -1129,7 +1085,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'classpathElementInfo' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <classpathElementNotFoundWarning>} message.
      * <p><strong>Languages:</strong>
@@ -1151,7 +1106,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'classpathElementNotFoundWarning' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <commandFailureMessage>} message.
      * <p><strong>Languages:</strong>
@@ -1173,7 +1127,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'commandFailureMessage' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <commandInfoMessage>} message.
      * <p><strong>Languages:</strong>
@@ -1195,7 +1148,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'commandInfoMessage' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <commandSuccessMessage>} message.
      * <p><strong>Languages:</strong>
@@ -1217,7 +1169,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'commandSuccessMessage' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <defaultLogLevelInfo>} message.
      * <p><strong>Languages:</strong>
@@ -1239,7 +1190,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'defaultLogLevelInfo' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <disabledMessage>} message.
      * <p><strong>Languages:</strong>
@@ -1260,7 +1210,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'disabledMessage' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <documentFileInfo>} message.
      * <p><strong>Languages:</strong>
@@ -1282,7 +1231,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'documentFileInfo' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <documentFileNotFoundWarning>} message.
      * <p><strong>Languages:</strong>
@@ -1304,7 +1252,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'documentFileNotFoundWarning' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <excludedModletInfo>} message.
      * <p><strong>Languages:</strong>
@@ -1327,7 +1274,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'excludedModletInfo' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <excludedProviderInfo>} message.
      * <p><strong>Languages:</strong>
@@ -1350,7 +1296,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'excludedProviderInfo' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <excludedSchemaInfo>} message.
      * <p><strong>Languages:</strong>
@@ -1373,7 +1318,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'excludedSchemaInfo' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <excludedServiceInfo>} message.
      * <p><strong>Languages:</strong>
@@ -1396,7 +1340,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'excludedServiceInfo' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <failedCreatingObjectMessage>} message.
      * <p><strong>Languages:</strong>
@@ -1418,7 +1361,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'failedCreatingObjectMessage' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <implementationNotFoundWarning>} message.
      * <p><strong>Languages:</strong>
@@ -1440,7 +1382,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'implementationNotFoundWarning' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <invalidModelMessage>} message.
      * <p><strong>Languages:</strong>
@@ -1462,7 +1403,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'invalidModelMessage' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <longDescriptionMessage>} message.
      * <p><strong>Languages:</strong>
@@ -1483,7 +1423,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'longDescriptionMessage' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <moduleNotFoundWarning>} message.
      * <p><strong>Languages:</strong>
@@ -1505,7 +1444,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'moduleNotFoundWarning' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <readingMessage>} message.
      * <p><strong>Languages:</strong>
@@ -1527,7 +1465,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'readingMessage' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <separator>} message.
      * <p><strong>Languages:</strong>
@@ -1547,7 +1484,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'separator' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <shortDescriptionMessage>} message.
      * <p><strong>Languages:</strong>
@@ -1568,7 +1504,6 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         assert _m != null : "'shortDescriptionMessage' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <specificationNotFoundWarning>} message.
      * <p><strong>Languages:</strong>

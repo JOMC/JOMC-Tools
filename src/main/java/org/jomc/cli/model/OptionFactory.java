@@ -93,7 +93,6 @@ public final class OptionFactory
     // SECTION-END
     // SECTION-START[Constructors]
     // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
-
     /** Creates a new {@code OptionFactory} instance. */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
     public OptionFactory()
@@ -106,7 +105,6 @@ public final class OptionFactory
     // SECTION-END
     // SECTION-START[Dependencies]
     // <editor-fold defaultstate="collapsed" desc=" Generated Dependencies ">
-
     /**
      * Gets the {@code <Locale>} dependency.
      * <p>
@@ -127,7 +125,6 @@ public final class OptionFactory
     // SECTION-END
     // SECTION-START[Properties]
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
-
     /**
      * Gets the value of the {@code <longOpt>} property.
      * @return Long name of the option.
@@ -140,7 +137,6 @@ public final class OptionFactory
         assert _p != null : "'longOpt' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <numberOfArgs>} property.
      * @return Number of argument values the option can take.
@@ -153,7 +149,6 @@ public final class OptionFactory
         assert _p != null : "'numberOfArgs' property not found.";
         return _p.intValue();
     }
-
     /**
      * Gets the value of the {@code <opt>} property.
      * @return Name of the option.
@@ -166,7 +161,6 @@ public final class OptionFactory
         assert _p != null : "'opt' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <optionalArg>} property.
      * @return Query to see if the option can have an optional argument.
@@ -179,7 +173,6 @@ public final class OptionFactory
         assert _p != null : "'optionalArg' property not found.";
         return _p.booleanValue();
     }
-
     /**
      * Gets the value of the {@code <required>} property.
      * @return Query to see if the option is required.
@@ -192,7 +185,6 @@ public final class OptionFactory
         assert _p != null : "'required' property not found.";
         return _p.booleanValue();
     }
-
     /**
      * Gets the value of the {@code <valueSeparator>} property.
      * @return Value separator of the option.
@@ -209,7 +201,6 @@ public final class OptionFactory
     // SECTION-END
     // SECTION-START[Messages]
     // <editor-fold defaultstate="collapsed" desc=" Generated Messages ">
-
     /**
      * Gets the text of the {@code <argumentDescription>} message.
      * <p><strong>Languages:</strong>
@@ -229,7 +220,6 @@ public final class OptionFactory
         assert _m != null : "'argumentDescription' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <description>} message.
      * <p><strong>Languages:</strong>

@@ -524,7 +524,6 @@ public final class Jomc
     // SECTION-END
     // SECTION-START[Constructors]
     // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
-
     /** Creates a new {@code Jomc} instance. */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
     public Jomc()
@@ -537,7 +536,6 @@ public final class Jomc
     // SECTION-END
     // SECTION-START[Dependencies]
     // <editor-fold defaultstate="collapsed" desc=" Generated Dependencies ">
-
     /**
      * Gets the {@code <CommandLineParser>} dependency.
      * <p>
@@ -554,7 +552,6 @@ public final class Jomc
         assert _d != null : "'CommandLineParser' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <Commands>} dependency.
      * <p>
@@ -571,7 +568,6 @@ public final class Jomc
         assert _d != null : "'Commands' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <DebugOption>} dependency.
      * <p>
@@ -588,7 +584,6 @@ public final class Jomc
         assert _d != null : "'DebugOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <FailOnWarningsOption>} dependency.
      * <p>
@@ -605,7 +600,6 @@ public final class Jomc
         assert _d != null : "'FailOnWarningsOption' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <Locale>} dependency.
      * <p>
@@ -622,7 +616,6 @@ public final class Jomc
         assert _d != null : "'Locale' dependency not found.";
         return _d;
     }
-
     /**
      * Gets the {@code <VerboseOption>} dependency.
      * <p>
@@ -643,7 +636,6 @@ public final class Jomc
     // SECTION-END
     // SECTION-START[Properties]
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
-
     /**
      * Gets the value of the {@code <descPad>} property.
      * @return The number of characters of padding to be prefixed to each description line.
@@ -656,7 +648,6 @@ public final class Jomc
         assert _p != null : "'descPad' property not found.";
         return _p.intValue();
     }
-
     /**
      * Gets the value of the {@code <helpCommandName>} property.
      * @return The name of the command used to request help.
@@ -669,7 +660,6 @@ public final class Jomc
         assert _p != null : "'helpCommandName' property not found.";
         return _p;
     }
-
     /**
      * Gets the value of the {@code <leftPad>} property.
      * @return The number of characters of padding to be prefixed to each line.
@@ -682,7 +672,6 @@ public final class Jomc
         assert _p != null : "'leftPad' property not found.";
         return _p.intValue();
     }
-
     /**
      * Gets the value of the {@code <width>} property.
      * @return The number of characters per line for the usage statement.
@@ -699,7 +688,6 @@ public final class Jomc
     // SECTION-END
     // SECTION-START[Messages]
     // <editor-fold defaultstate="collapsed" desc=" Generated Messages ">
-
     /**
      * Gets the text of the {@code <defaultExceptionMessage>} message.
      * <p><strong>Languages:</strong>
@@ -720,7 +708,6 @@ public final class Jomc
         assert _m != null : "'defaultExceptionMessage' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <defaultLogLevelInfo>} message.
      * <p><strong>Languages:</strong>
@@ -742,7 +729,6 @@ public final class Jomc
         assert _m != null : "'defaultLogLevelInfo' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <illegalArgumentsInfo>} message.
      * <p><strong>Languages:</strong>
@@ -765,7 +751,6 @@ public final class Jomc
         assert _m != null : "'illegalArgumentsInfo' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <timeInfo>} message.
      * <p><strong>Languages:</strong>
@@ -787,7 +772,6 @@ public final class Jomc
         assert _m != null : "'timeInfo' message not found.";
         return _m;
     }
-
     /**
      * Gets the text of the {@code <usage>} message.
      * <p><strong>Languages:</strong>
