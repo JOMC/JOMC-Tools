@@ -82,3 +82,94 @@ Customizing code generation
   ...
 </project>
 +-----------------+
+
+* Controlling behaviour of the default templates
+
+  As of JOMC 1.2, the behaviour of the default templates can be controlled using the <<<templateParameters>>> parameter.
+  The default values are shown below.
+
++-----------------+
+<project>
+  ...
+  <build>
+    <plugins>
+      ...
+      <plugin>
+        <groupId>org.jomc</groupId>
+        <artifactId>maven-jomc-plugin</artifactId>
+        <version>${project.version}</version>
+        ...
+        <configuration>
+          <templateParameters>
+
+            <!-- Flag indicating generated code to contain checks for illegal null references using the 'assert' keyword. -->
+            <templateParameter>
+              <key>with-assertions</key>
+              <value>true</value>
+              <type>java.lang.Boolean</type>
+            </templateParameter>
+
+            <!-- Flag indicating generated code to contain copyright notices based on model object authors. -->
+            <templateParameter>
+              <key>with-author-copyright</key>
+              <value>true</value>
+              <type>java.lang.Boolean</type>
+            </templateParameter>
+
+            <!-- Flag indicating generated code to contain editor folds for the Netbeans IDE and compatible editors. -->
+            <templateParameter>
+              <key>with-editor-fold</key>
+              <value>true</value>
+              <type>java.lang.Boolean</type>
+            </templateParameter>
+
+            <!-- Flag indicating generated code to contain javadoc documentation. -->
+            <templateParameter>
+              <key>with-javadoc</key>
+              <value>true</value>
+              <type>java.lang.Boolean</type>
+            </templateParameter>
+
+            <!-- Flag indicating generated code to contain '@author' javadoc documentation tags. -->
+            <templateParameter>
+              <key>with-javadoc-author</key>
+              <value>true</value>
+              <type>java.lang.Boolean</type>
+            </templateParameter>
+
+            <!-- Flag indicating generated code to contain '@version' javadoc documentation tags. -->
+            <templateParameter>
+              <key>with-javadoc-version</key>
+              <value>true</value>
+              <type>java.lang.Boolean</type>
+            </templateParameter>
+
+            <!-- Flag indicating generated code to contain JSR-250 '@Generated' annotations. -->
+            <templateParameter>
+              <key>with-jsr-250</key>
+              <value>true</value>
+              <type>java.lang.Boolean</type>
+            </templateParameter>
+
+            <!-- SCM file identification keyword. The given value will be surrounded by '$' characters. -->
+            <templateParameter>
+              <key>with-revision-keyword</key>
+              <value>Id</value>
+            </templateParameter>
+
+            <!-- Flag indicating generated code to contain copyright notices based on model object vendor information. -->
+            <templateParameter>
+              <key>with-vendor-copyright</key>
+              <value>true</value>
+              <type>java.lang.Boolean</type>
+            </templateParameter>
+
+          </templateParameters>
+        </configuration>
+      </plugin>
+      ...
+    </plugins>
+  </build>
+  ...
+</project>
++-----------------+
