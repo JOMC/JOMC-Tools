@@ -124,6 +124,9 @@ public class JomcTask extends Task
     /** The global transformation parameter resources to apply. */
     private List<PropertiesResourceType> transformationParameterResources;
 
+    /** The global transformation output properties to apply. */
+    private List<KeyValueType<String, String>> transformationOutputProperties;
+
     /** The flag indicating JAXP schema validation of modlet resources is enabled. */
     private boolean modletResourceValidationEnabled = true;
 
@@ -521,6 +524,40 @@ public class JomcTask extends Task
         final PropertiesResourceType transformationParameterResource = new PropertiesResourceType();
         this.getTransformationParameterResources().add( transformationParameterResource );
         return transformationParameterResource;
+    }
+
+    /**
+     * Gets the global transformation output properties to apply.
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * to the returned list will be present inside the object. This is why there is no {@code set} method for the
+     * transformation output properties property.</p>
+     *
+     * @return The global transformation output properties to apply.
+     *
+     * @see #createTransformationOutputProperty()
+     */
+    public final List<KeyValueType<String, String>> getTransformationOutputProperties()
+    {
+        if ( this.transformationOutputProperties == null )
+        {
+            this.transformationOutputProperties = new LinkedList<KeyValueType<String, String>>();
+        }
+
+        return this.transformationOutputProperties;
+    }
+
+    /**
+     * Creates a new {@code transformationOutputProperty} element instance.
+     *
+     * @return A new {@code transformationOutputProperty} element instance.
+     *
+     * @see #getTransformationOutputProperties()
+     */
+    public KeyValueType<String, String> createTransformationOutputProperty()
+    {
+        final KeyValueType<String, String> transformationOutputProperty = new KeyValueType<String, String>();
+        this.getTransformationOutputProperties().add( transformationOutputProperty );
+        return transformationOutputProperty;
     }
 
     /**
@@ -959,6 +996,12 @@ public class JomcTask extends Task
                 {
                     final KeyValueType<String, Object> p = this.getTransformationParameters().get( i );
                     transformer.setParameter( p.getKey(), p.getValue() );
+                }
+
+                for ( int i = 0, s0 = this.getTransformationOutputProperties().size(); i < s0; i++ )
+                {
+                    final KeyValueType<String, String> p = this.getTransformationOutputProperties().get( i );
+                    transformer.setOutputProperty( p.getKey(), p.getValue() );
                 }
 
                 for ( int i = 0, s0 = resource.getTransformationParameterResources().size(); i < s0; i++ )
@@ -1588,6 +1631,17 @@ public class JomcTask extends Task
                 for ( KeyValueType e : this.transformationParameters )
                 {
                     clone.transformationParameters.add( e.clone() );
+                }
+            }
+
+            if ( this.transformationOutputProperties != null )
+            {
+                clone.transformationOutputProperties =
+                    new ArrayList<KeyValueType<String, String>>( this.transformationOutputProperties.size() );
+
+                for ( KeyValueType<String, String> e : this.transformationOutputProperties )
+                {
+                    clone.transformationOutputProperties.add( e.clone() );
                 }
             }
 
