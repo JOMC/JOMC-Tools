@@ -1807,7 +1807,7 @@ public class ClassFileProcessor extends JomcTool
 
         /*
         The JavaTM Virtual Machine Specification - Second Edition - Chapter 4.1
-        
+
         A Java virtual machine implementation is required to silently ignore any
         or all attributes in the attributes table of a ClassFile structure that
         it does not recognize. Attributes not defined in this specification are
