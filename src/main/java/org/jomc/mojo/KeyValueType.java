@@ -63,7 +63,7 @@ public class KeyValueType implements Cloneable
      *
      * @return The value of the {@code key} property.
      *
-     * @see #setKey(java.lang.Object)
+     * @see #setKey(java.lang.String)
      */
     public final String getKey()
     {
