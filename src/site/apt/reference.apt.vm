@@ -1435,7 +1435,7 @@ Task and Type Reference
 |                                             |                                            | the key is mapped to   |
 |                                             |                                            | the null reference.    |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<type>>>                                  | The name of the class of the pair's        | No. If not set,        |
+| <<<type>>>                                  | The name of the class of the type's        | No. If not set,        |
 |                                             | object.                                    | depending on the value |
 |                                             |                                            | attribute, the key is  |
 |                                             |                                            | is either mapped to    |
