@@ -95,5 +95,7 @@ ${tool.getIndentation(2)}options.addOption( this.$tool.getJavaGetterMethodName($
 #end
 ${tool.getIndentation(2)}return options;
 ${tool.getIndentation(1)}}
+#if($with-editor-fold)
 ${tool.getIndentation(1)}// </editor-fold>
+#end
 #end
