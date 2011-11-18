@@ -115,7 +115,7 @@ import org.jomc.modlet.Modlets;
  *   &lt;providerLocation&gt;META-INF/custom-services&lt;/providerLocation&gt;
  *   &lt;platformProviderLocation&gt;${java.home}/jre/lib/custom-jomc.properties&lt;/platformProviderLocation&gt;
  *   &lt;modletLocation&gt;META-INF/custom-jomc-modlet.xml&lt;/modletLocation&gt;
- *   &lt;modletSchemaSystemId&gt;http://custom.host.tld/custom/path/jomc-modlet-1.0.xsd&lt;/modletSchemaSystemId&gt;
+ *   &lt;modletSchemaSystemId&gt;http://custom.host.tld/custom/path/jomc-modlet-1.1.xsd&lt;/modletSchemaSystemId&gt;
  * &lt;/transformer&gt;
  * </pre></p>
  *
