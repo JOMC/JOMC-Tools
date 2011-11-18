@@ -31,6 +31,8 @@
 package org.jomc.mojo;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
@@ -142,15 +144,38 @@ public class KeyValueType implements Cloneable
      */
     public Object getObject() throws InstantiationException // JDK: As of JDK 7, "throws ReflectiveOperationException".
     {
+        Class<?> javaClass = null;
+        Object o = this.getValue();
+
         try
         {
-            Object o = this.getValue();
-
             if ( o != null )
             {
                 if ( this.getType() != null && !String.class.getName().equals( this.getType() ) )
                 {
-                    o = Class.forName( this.getType() ).getConstructor( String.class ).newInstance( o );
+                    javaClass = Class.forName( this.getType() );
+
+                    try
+                    {
+                        o = javaClass.getConstructor( String.class ).newInstance( o );
+                    }
+                    catch ( final NoSuchMethodException e )
+                    {
+                        final Method valueOf = javaClass.getMethod( "valueOf", String.class );
+
+                        if ( Modifier.isStatic( valueOf.getModifiers() )
+                             && valueOf.getReturnType().equals( javaClass ) )
+                        {
+                            o = valueOf.invoke( null, o );
+                        }
+                        else
+                        {
+                            throw (InstantiationException) new InstantiationException(
+                                Messages.getMessage( "noSuchMethodCreatingObject", this.getType(), this.getValue(),
+                                                     javaClass.getSimpleName() ) ).initCause( e );
+
+                        }
+                    }
                 }
             }
             else if ( this.getType() != null )
@@ -169,7 +194,8 @@ public class KeyValueType implements Cloneable
         catch ( final NoSuchMethodException e )
         {
             throw (InstantiationException) new InstantiationException(
-                Messages.getMessage( "failedCreatingObject", this.getType() ) ).initCause( e );
+                Messages.getMessage( "noSuchMethodCreatingObject", this.getType(), this.getValue(),
+                                     javaClass.getSimpleName() ) ).initCause( e );
 
         }
         catch ( final IllegalAccessException e )
