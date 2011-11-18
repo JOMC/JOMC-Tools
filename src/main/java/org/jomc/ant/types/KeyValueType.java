@@ -31,6 +31,8 @@
 package org.jomc.ant.types;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Location;
@@ -157,9 +159,29 @@ public class KeyValueType implements Cloneable
 
             if ( o != null )
             {
-                if ( this.getType() != null )
+                if ( this.getType() != null && !String.class.equals( this.getType() ) )
                 {
-                    o = this.getType().getConstructor( String.class ).newInstance( o );
+                    try
+                    {
+                        o = this.getType().getConstructor( String.class ).newInstance( o );
+                    }
+                    catch ( final NoSuchMethodException e )
+                    {
+                        final Method valueOf = this.getType().getMethod( "valueOf", String.class );
+
+                        if ( Modifier.isStatic( valueOf.getModifiers() )
+                             && valueOf.getReturnType().equals( this.getType() ) )
+                        {
+                            o = valueOf.invoke( null, o );
+                        }
+                        else
+                        {
+                            throw new BuildException(
+                                Messages.getMessage( "noSuchMethodCreatingValueObject", this.getType(),
+                                                     this.getValue(), this.getType().getSimpleName() ), e, location );
+
+                        }
+                    }
                 }
             }
             else if ( this.getType() != null )
@@ -171,8 +193,9 @@ public class KeyValueType implements Cloneable
         }
         catch ( final NoSuchMethodException e )
         {
-            throw new BuildException( Messages.getMessage( "failureCreatingValueObject", this.getType(),
-                                                           this.getValue() ), e, location );
+            throw new BuildException(
+                Messages.getMessage( "noSuchMethodCreatingValueObject", this.getType(),
+                                     this.getValue(), this.getType().getSimpleName() ), e, location );
 
         }
         catch ( final InstantiationException e )

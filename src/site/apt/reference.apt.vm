@@ -1429,37 +1429,45 @@ Task and Type Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<key>>>                                   | The key.                                   | <<Yes>>.               |
 *---------------------------------------------+--------------------------------------------+------------------------+
-| <<<value>>>                                 | The value.                                 | No. If both, the value |
-|                                             |                                            | attribute and the type |
+| <<<value>>>                                 | The value.                                 | No. If both, the       |
+|                                             |                                            | <<<value>>> attribute  |
+|                                             |                                            | and the <<<type>>>     |
 |                                             |                                            | attribute are not set, |
 |                                             |                                            | the key is mapped to   |
 |                                             |                                            | the null reference.    |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<type>>>                                  | The name of the class of the type's        | No. If not set,        |
-|                                             | object.                                    | depending on the value |
-|                                             |                                            | attribute, the key is  |
-|                                             |                                            | is either mapped to    |
-|                                             |                                            | the null reference, if |
-|                                             |                                            | the value attribute is |
-|                                             |                                            | not set, or to the     |
-|                                             |                                            | string the value       |
+|                                             | object.                                    | depending on the       |
+|                                             |                                            | <<<value>>> attribute, |
+|                                             |                                            | the key is either      |
+|                                             |                                            | mapped to the null     |
+|                                             |                                            | reference, if the      |
+|                                             |                                            | <<<value>>> attribute  |
+|                                             |                                            | is not set, or to the  |
+|                                             |                                            | value the <<<value>>>  |
 |                                             |                                            | attribute is set to.   |
 |                                             |                                            | If set, depending on   |
-|                                             |                                            | the value attribute,   |
-|                                             |                                            | the key is either      |
-|                                             |                                            | mapped to an object    |
-|                                             |                                            | created using the      |
-|                                             |                                            | public no-arg          |
+|                                             |                                            | the <<<value>>>        |
+|                                             |                                            | attribute, the key     |
+|                                             |                                            | is either mapped to an |
+|                                             |                                            | object created using   |
+|                                             |                                            | the public no-arg      |
 |                                             |                                            | constructor of the     |
 |                                             |                                            | given class, if the    |
-|                                             |                                            | value attribute is not |
-|                                             |                                            | set, or is mapped to   |
-|                                             |                                            | an object created      |
-|                                             |                                            | using the public       |
-|                                             |                                            | constructor taking a   |
-|                                             |                                            | single string          |
-|                                             |                                            | argument by passing    |
-|                                             |                                            | the string the value   |
+|                                             |                                            | <<<value>>> attribute  |
+|                                             |                                            | is not set, or is      |
+|                                             |                                            | mapped to an object    |
+|                                             |                                            | created by invoking    |
+|                                             |                                            | either the public      |
+|                                             |                                            | constructor of the     |
+|                                             |                                            | given class taking a   |
+|                                             |                                            | single string argument |
+|                                             |                                            | or the static          |
+|                                             |                                            | <<<valueOf>>> method   |
+|                                             |                                            | of the given class     |
+|                                             |                                            | taking a single string |
+|                                             |                                            | argument passing the   |
+|                                             |                                            | value the <<<value>>>  |
 |                                             |                                            | attribute is set to.   |
 *---------------------------------------------+--------------------------------------------+------------------------+
 
@@ -1472,9 +1480,10 @@ Task and Type Reference
 *----------------------------------------------------------------+---------------------------------------------------+
 | \<element key="The Key" value="The Value"/\>                   | "The Key" => "The Value"                          |
 *----------------------------------------------------------------+---------------------------------------------------+
-| \<element key="The Key" type="package.Class"/\>                | "The Key" => new package.Class();                 |
+| \<element key="The Key" type="pkg.Class"/\>                    | "The Key" => new pkg.Class();                     |
 *----------------------------------------------------------------+---------------------------------------------------+
-| \<element key="The Key" value="The URL" type="java.net.URL"/\> | "The Key" => new java.net.URL( "The URL" );       |
+| \<element key="The Key" value="The Value" type="pkg.Class"/\>  | 1. "The Key" => new pkg.Class( "The Value" );     |
+|                                                                | 2. "The Key" => pkg.Class.valueOf( "The Value" ); |
 *----------------------------------------------------------------+---------------------------------------------------+
 
 * <<<{LocaleType}>>>
