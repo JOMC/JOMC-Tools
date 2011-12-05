@@ -76,6 +76,7 @@ import org.jomc.model.Argument;
 import org.jomc.model.ArgumentType;
 import org.jomc.model.Dependency;
 import org.jomc.model.Implementation;
+import org.jomc.model.InheritanceModel;
 import org.jomc.model.Message;
 import org.jomc.model.ModelObject;
 import org.jomc.model.Modules;
@@ -1872,8 +1873,14 @@ public class JomcTool
         this.mergeTemplateProfileProperties( getDefaultTemplateProfile(), this.getLocale().getLanguage(), ctx );
         this.mergeTemplateProfileProperties( getDefaultTemplateProfile(), null, ctx );
 
-        ctx.put( "model", this.getModel().clone() );
-        ctx.put( "modules", this.getModules().clone() );
+        this.getModules(); // Initialization prior to cloning.
+        final Model clonedModel = this.getModel().clone();
+        Modules clonedModules = ModelHelper.getModules( clonedModel );
+        assert clonedModules != null : "Unexpected missing modules for model '" + clonedModel.getIdentifier() + "'.";
+
+        ctx.put( "model", clonedModel );
+        ctx.put( "modules", clonedModules );
+        ctx.put( "imodel", new InheritanceModel( this.getModules() ) );
         ctx.put( "tool", this );
         ctx.put( "toolName", this.getClass().getName() );
         ctx.put( "toolVersion", getMessage( "projectVersion" ) );
