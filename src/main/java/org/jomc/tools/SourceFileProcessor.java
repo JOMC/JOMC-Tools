@@ -45,6 +45,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.exception.VelocityException;
 import org.jomc.model.Implementation;
 import org.jomc.model.Implementations;
+import org.jomc.model.Instance;
 import org.jomc.model.Module;
 import org.jomc.model.Specification;
 import org.jomc.tools.model.SourceFileType;
@@ -261,7 +262,9 @@ public class SourceFileProcessor extends JomcTool
         }
         else
         {
-            model = implementation.getAnyObject( SourceFilesType.class );
+            final Instance instance = this.getModules().getInstance( implementation.getIdentifier() );
+            assert instance != null : "Instance '" + implementation.getIdentifier() + "' not found.";
+            model = instance.getAnyObject( SourceFilesType.class );
         }
 
         return model;

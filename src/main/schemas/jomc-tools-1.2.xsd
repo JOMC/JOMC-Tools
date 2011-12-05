@@ -99,6 +99,16 @@
         <xsd:sequence>
           <xsd:element ref="tools:source-file" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
+        <xsd:attribute name="final" type="xsd:boolean" use="optional" default="false">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Flag indicating the list of source files is the final node in an inheritance hierarchy.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="override" type="xsd:boolean" use="optional" default="false">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Flag indicating the list of source files is intended to override a super list of source files.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
@@ -141,6 +151,16 @@
         <xsd:attribute name="tail-comment" type="xsd:string" use="optional">
           <xsd:annotation>
             <xsd:documentation xml:lang="en">Characters to use to end a comment in the source file.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="final" type="xsd:boolean" use="optional" default="false">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Flag indicating the source file is the final node in an inheritance hierarchy.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="override" type="xsd:boolean" use="optional" default="false">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Flag indicating the source file is intended to override a super source file.</xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
       </xsd:extension>

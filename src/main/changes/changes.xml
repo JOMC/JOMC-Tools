@@ -83,6 +83,12 @@
       <action dev="schulte2005" type="add"><![CDATA[Added <code>ToolsType</code> complex type to the
       <code>jomc-tools-1.2.xsd</code> schema and updated all complex types to extend that base type.]]>
       </action>
+      <action dev="schulte2005" type="add"><![CDATA[Added attributes <code>final</code> and <code>override</code>
+      to the <code>SourceFilesType</code> and <code>SourceFileType</code> complex types of the
+      <code>jomc-tools-1.2.xsd</code> schema and updated classes <code>org.jomc.tools.model.SourceFilesType</code> and
+      <code>org.jomc.tools.model.SourceFileType</code> to implement interface <code>org.jomc.model.Inheritable</code>.
+      ]]>
+      </action>
       <action dev="schulte2005" type="add"><![CDATA[Added classes <code>org.jomc.tools.modlet.ToolsModelProvider</code>,
       <code>org.jomc.tools.modlet.ToolsModelProcessor</code> and <code>org.jomc.tools.modlet.ToolsModelValidator</code>.
       ]]>

@@ -35,6 +35,7 @@
                xmlns:xs="http://www.w3.org/2001/XMLSchema"
                xmlns:tools="http://jomc.org/tools/model"
                xmlns:ci="http://jaxb.dev.java.net/plugin/code-injector"
+               xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
                version="2.0">
 
   <jaxb:bindings schemaLocation="jomc-tools-1.2.xsd">
@@ -291,6 +292,9 @@
     </jaxb:bindings>
     <!-- *********************************************************************************************************** -->
     <jaxb:bindings node="xs:complexType[@name='SourceFilesType']">
+      <inheritance:implements>org.jomc.model.Inheritable</inheritance:implements>
+    </jaxb:bindings>
+    <jaxb:bindings node="xs:complexType[@name='SourceFilesType']">
       <ci:code><![CDATA[
     /**
      * Gets a source file model for a given name from the list of source file models.
@@ -326,6 +330,9 @@
       </ci:code>
     </jaxb:bindings>
     <!-- *********************************************************************************************************** -->
+    <jaxb:bindings node="xs:complexType[@name='SourceFileType']">
+      <inheritance:implements>org.jomc.model.Inheritable</inheritance:implements>
+    </jaxb:bindings>
     <jaxb:bindings node="xs:complexType[@name='SourceFileType']">
       <ci:code><![CDATA[
     /**
