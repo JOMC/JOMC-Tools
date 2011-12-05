@@ -3161,7 +3161,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     implementationName="${project.name} Module Name Option">
 
           <properties>
-            <property name="required" type="boolean" value="true"/>
+            <property name="required" type="boolean" value="true" override="true"/>
           </properties>
         </dependency>
         <dependency name="ModuleVersionOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
@@ -3294,7 +3294,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     implementationName="${project.name} Modlet Name Option">
 
           <properties>
-            <property name="required" type="boolean" value="true"/>
+            <property name="required" type="boolean" value="true" override="true"/>
           </properties>
         </dependency>
         <dependency name="ModletVersionOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
