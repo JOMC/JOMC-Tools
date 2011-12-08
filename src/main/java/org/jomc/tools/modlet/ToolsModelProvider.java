@@ -30,13 +30,20 @@
  */
 package org.jomc.tools.modlet;
 
+import java.lang.reflect.Field;
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.logging.Level;
+import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
 import org.jomc.model.Dependencies;
 import org.jomc.model.Implementation;
+import org.jomc.model.InheritanceModel;
 import org.jomc.model.Messages;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
@@ -66,6 +73,9 @@ import static org.jomc.tools.modlet.ToolsModletConstants.*;
  */
 public class ToolsModelProvider implements ModelProvider
 {
+
+    /** Constant for the qualified name of {@code source-files} elements. */
+    private static final QName SOURCE_FILES_QNAME = new ObjectFactory().createSourceFiles( null ).getName();
 
     /**
      * Constant for the name of the model context attribute backing property {@code enabled}.
@@ -345,17 +355,97 @@ public class ToolsModelProvider implements ModelProvider
 
                 if ( modules.getImplementations() != null )
                 {
+                    final Map<Implementation, SourceFilesType> userSourceFiles =
+                        new HashMap<Implementation, SourceFilesType>();
+
+                    InheritanceModel imodel = new InheritanceModel( modules );
+
                     for ( int i = 0, s0 = modules.getImplementations().getImplementation().size(); i < s0; i++ )
                     {
                         final Implementation implementation = modules.getImplementations().getImplementation().get( i );
                         final SourceFileType sourceFileType = implementation.getAnyObject( SourceFileType.class );
                         final SourceFilesType sourceFilesType = implementation.getAnyObject( SourceFilesType.class );
 
-                        if ( sourceFileType == null && sourceFilesType == null && implementation.isClassDeclaration() )
+                        if ( sourceFileType == null )
                         {
-                            implementation.getAny().add( new ObjectFactory().createSourceFiles(
-                                this.getDefaultSourceFilesType( tool, implementation ) ) );
+                            if ( sourceFilesType != null )
+                            {
+                                userSourceFiles.put( implementation, sourceFilesType );
+                            }
+                            else if ( implementation.isClassDeclaration() )
+                            {
+                                final SourceFilesType defaultSourceFiles =
+                                    this.getDefaultSourceFilesType( tool, implementation );
 
+                                boolean finalAncestor = false;
+
+                                final Set<InheritanceModel.Node<JAXBElement<?>>> sourceFilesNodes =
+                                    imodel.getEffectiveJaxbElementNodes( implementation.getIdentifier(),
+                                                                         SOURCE_FILES_QNAME );
+
+                                for ( final InheritanceModel.Node<JAXBElement<?>> sourceFilesNode : sourceFilesNodes )
+                                {
+                                    SourceFilesType ancestorSourceFiles = null;
+
+                                    if ( sourceFilesNode.getModelObject().getValue() instanceof SourceFilesType )
+                                    {
+                                        ancestorSourceFiles =
+                                            (SourceFilesType) sourceFilesNode.getModelObject().getValue();
+
+                                        this.overwriteSourceFiles( defaultSourceFiles, ancestorSourceFiles, false );
+
+                                        if ( ancestorSourceFiles.isFinal() )
+                                        {
+                                            finalAncestor = true;
+                                        }
+                                    }
+                                }
+
+                                if ( !finalAncestor )
+                                {
+                                    implementation.getAny().add(
+                                        new ObjectFactory().createSourceFiles( defaultSourceFiles ) );
+
+                                }
+                            }
+                        }
+                    }
+
+                    for ( final Map.Entry<Implementation, SourceFilesType> e : userSourceFiles.entrySet() )
+                    {
+                        this.overwriteSourceFiles( e.getValue(), this.getDefaultSourceFilesType( tool, e.getKey() ),
+                                                   true );
+
+                    }
+
+                    imodel = new InheritanceModel( modules );
+
+                    for ( int i = 0, s0 = modules.getImplementations().getImplementation().size(); i < s0; i++ )
+                    {
+                        final Implementation implementation = modules.getImplementations().getImplementation().get( i );
+                        final SourceFilesType sourceFilesType = implementation.getAnyObject( SourceFilesType.class );
+
+                        if ( sourceFilesType != null )
+                        {
+                            boolean override = false;
+
+                            final Set<InheritanceModel.Node<JAXBElement<?>>> sourceFilesNodes =
+                                imodel.getEffectiveJaxbElementNodes( implementation.getIdentifier(),
+                                                                     SOURCE_FILES_QNAME );
+
+                            for ( final InheritanceModel.Node<JAXBElement<?>> e : sourceFilesNodes )
+                            {
+                                if ( !e.getOverriddenNodes().isEmpty() )
+                                {
+                                    override = true;
+                                    break;
+                                }
+                            }
+
+                            if ( override )
+                            {
+                                sourceFilesType.setOverride( override );
+                            }
                         }
                     }
                 }
@@ -401,7 +491,7 @@ public class ToolsModelProvider implements ModelProvider
         final SourceFileType sourceFileType = new SourceFileType();
         sourceFilesType.getSourceFile().add( sourceFileType );
 
-        sourceFileType.setIdentifier( specification.getIdentifier() );
+        sourceFileType.setIdentifier( "Default" );
 
         if ( specification.getClazz() != null )
         {
@@ -474,7 +564,7 @@ public class ToolsModelProvider implements ModelProvider
         final Messages messages = tool.getModules().getMessages( implementation.getIdentifier() );
         final Properties properties = tool.getModules().getProperties( implementation.getIdentifier() );
 
-        sourceFileType.setIdentifier( implementation.getIdentifier() );
+        sourceFileType.setIdentifier( "Default" );
 
         if ( implementation.getClazz() != null )
         {
@@ -564,6 +654,228 @@ public class ToolsModelProvider implements ModelProvider
         sourceFileType.getSourceSections().getSourceSection().add( s );
 
         return sourceFilesType;
+    }
+
+    /**
+     * Overwrites a list of source code files with another list of source code files.
+     *
+     * @param targetSourceFiles The list to overwrite.
+     * @param sourceSourceFiles The list to overwrite with.
+     * @param preserveExisting {@code true}, to preserve existing attributes of source code files and sections;
+     * {@code false}, to overwrite existing attributes of source code files and sections.
+     *
+     * @throws NullPointerException if {@code targetSourceFiles} or {@code sourceSourceFiles} is {@code null}.
+     */
+    private void overwriteSourceFiles( final SourceFilesType targetSourceFiles, final SourceFilesType sourceSourceFiles,
+                                       final boolean preserveExisting )
+    {
+        if ( targetSourceFiles == null )
+        {
+            throw new NullPointerException( "targetSourceFiles" );
+        }
+        if ( sourceSourceFiles == null )
+        {
+            throw new NullPointerException( "sourceSourceFiles" );
+        }
+
+        try
+        {
+            for ( final SourceFileType s : sourceSourceFiles.getSourceFile() )
+            {
+                final SourceFileType targetSourceFile = targetSourceFiles.getSourceFile( s.getIdentifier() );
+
+                if ( targetSourceFile != null )
+                {
+                    this.overwriteSourceFile( targetSourceFile, s, preserveExisting );
+                }
+            }
+        }
+        catch ( final NoSuchFieldException e )
+        {
+            throw new AssertionError( e );
+        }
+    }
+
+    /**
+     * Overwrites a source code file with another source code file.
+     *
+     * @param targetSourceFile The source code file to overwrite.
+     * @param sourceSourceFile The source code file to overwrite with.
+     * @param preserveExisting {@code true}, to preserve existing attributes of the given source code file and sections;
+     * {@code false}, to overwrite existing attributes of the given source code file and sections.
+     *
+     * @throws NullPointerException if {@code targetSourceFile} or {@code sourceSourceFile} is {@code null}.
+     */
+    private void overwriteSourceFile( final SourceFileType targetSourceFile, final SourceFileType sourceSourceFile,
+                                      final boolean preserveExisting )
+        throws NoSuchFieldException
+    {
+        if ( targetSourceFile == null )
+        {
+            throw new NullPointerException( "targetSourceFile" );
+        }
+        if ( sourceSourceFile == null )
+        {
+            throw new NullPointerException( "sourceSourceFile" );
+        }
+
+        if ( !preserveExisting )
+        {
+            targetSourceFile.setIdentifier( sourceSourceFile.getIdentifier() );
+            targetSourceFile.setLocation( sourceSourceFile.getLocation() );
+            targetSourceFile.setTemplate( sourceSourceFile.getTemplate() );
+            targetSourceFile.setHeadComment( sourceSourceFile.getHeadComment() );
+            targetSourceFile.setTailComment( sourceSourceFile.getTailComment() );
+
+            if ( isFieldSet( sourceSourceFile, "_final" ) )
+            {
+                targetSourceFile.setFinal( sourceSourceFile.isFinal() );
+            }
+            if ( isFieldSet( sourceSourceFile, "modelVersion" ) )
+            {
+                targetSourceFile.setModelVersion( sourceSourceFile.getModelVersion() );
+            }
+            if ( isFieldSet( sourceSourceFile, "override" ) )
+            {
+                targetSourceFile.setOverride( sourceSourceFile.isOverride() );
+            }
+        }
+
+        if ( sourceSourceFile.getSourceSections() != null )
+        {
+            if ( targetSourceFile.getSourceSections() == null )
+            {
+                targetSourceFile.setSourceSections( new SourceSectionsType() );
+            }
+
+            this.overwriteSourceSections( targetSourceFile.getSourceSections(), sourceSourceFile.getSourceSections(),
+                                          preserveExisting );
+
+        }
+    }
+
+    /**
+     * Overwrites source code file sections with other source code file sections.
+     *
+     * @param targetSourceSections The source code file sections to overwrite.
+     * @param sourceSourceSections The source code file sections to overwrite with.
+     * @param preserveExisting {@code true}, to preserve existing attributes of the given source code file sections;
+     * {@code false}, to overwrite existing attributes of the given source code file sections.
+     *
+     * @throws NullPointerException if {@code targetSourceSections} or {@code sourceSourceSections} is {@code null}.
+     */
+    private void overwriteSourceSections( final SourceSectionsType targetSourceSections,
+                                          final SourceSectionsType sourceSourceSections,
+                                          final boolean preserveExisting ) throws NoSuchFieldException
+    {
+        if ( targetSourceSections == null )
+        {
+            throw new NullPointerException( "targetSourceSections" );
+        }
+        if ( sourceSourceSections == null )
+        {
+            throw new NullPointerException( "sourceSourceSections" );
+        }
+
+        for ( final SourceSectionType sourceSection : sourceSourceSections.getSourceSection() )
+        {
+            SourceSectionType targetSection = null;
+
+            for ( final SourceSectionType t : targetSourceSections.getSourceSection() )
+            {
+                if ( sourceSection.getName().equals( t.getName() ) )
+                {
+                    targetSection = t;
+                    break;
+                }
+            }
+
+            if ( targetSection != null )
+            {
+                if ( !preserveExisting )
+                {
+                    targetSection.setName( sourceSection.getName() );
+                    targetSection.setHeadTemplate( sourceSection.getHeadTemplate() );
+                    targetSection.setTailTemplate( sourceSection.getTailTemplate() );
+
+                    if ( isFieldSet( sourceSection, "editable" ) )
+                    {
+                        targetSection.setEditable( sourceSection.isEditable() );
+                    }
+                    if ( isFieldSet( sourceSection, "indentationLevel" ) )
+                    {
+                        targetSection.setIndentationLevel( sourceSection.getIndentationLevel() );
+                    }
+                    if ( isFieldSet( sourceSection, "modelVersion" ) )
+                    {
+                        targetSection.setModelVersion( sourceSection.getModelVersion() );
+                    }
+                    if ( isFieldSet( sourceSection, "optional" ) )
+                    {
+                        targetSection.setOptional( sourceSection.isOptional() );
+                    }
+                }
+            }
+            else
+            {
+                targetSection = sourceSection.clone();
+                targetSourceSections.getSourceSection().add( targetSection );
+            }
+
+            if ( sourceSection.getSourceSections() != null )
+            {
+                if ( targetSection.getSourceSections() == null )
+                {
+                    targetSection.setSourceSections( new SourceSectionsType() );
+                }
+
+                this.overwriteSourceSections( targetSection.getSourceSections(), sourceSection.getSourceSections(),
+                                              preserveExisting );
+            }
+        }
+    }
+
+    private static boolean isFieldSet( final Object object, final String fieldName ) throws NoSuchFieldException
+    {
+        final Field field = getField( object.getClass(), fieldName );
+
+        if ( field == null )
+        {
+            throw new NoSuchFieldException( fieldName );
+        }
+
+        final boolean accessible = field.isAccessible();
+
+        try
+        {
+            field.setAccessible( true );
+            return field.get( object ) != null;
+        }
+        catch ( final IllegalAccessException e )
+        {
+            throw new AssertionError( e );
+        }
+        finally
+        {
+            field.setAccessible( accessible );
+        }
+    }
+
+    private static Field getField( final Class<?> clazz, final String name )
+    {
+        if ( clazz != null )
+        {
+            try
+            {
+                return clazz.getDeclaredField( name );
+            }
+            catch ( final NoSuchFieldException e )
+            {
+                return getField( clazz.getSuperclass(), name );
+            }
+        }
+
+        return null;
     }
 
     private static String getMessage( final String key, final Object... args )
