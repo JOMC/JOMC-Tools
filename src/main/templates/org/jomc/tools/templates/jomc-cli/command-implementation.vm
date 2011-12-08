@@ -60,7 +60,7 @@
 #if($dependencies)
 #set($options = $dependencies.getDependenciesBySpecification("JOMC CLI Command Option"))
 #if($with-editor-fold)
-${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generated Command ">
+${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generated Options ">
 #end
 #if($with-javadoc)
 ${tool.getIndentation(1)}/**
@@ -87,6 +87,9 @@ ${tool.getIndentation(1)} */
 #end
 #if($with-jsr-250)
 ${tool.getIndentation(1)}@javax.annotation.Generated( value = "$toolName $toolVersion", comments = "See $toolUrl" )
+#end
+#if($implementation.getImplementations() && !$implementation.getImplementations().getReference().isEmpty())
+${tool.getIndentation(1)}@Override
 #end
 ${tool.getIndentation(1)}public org.apache.commons.cli.Options getOptions()
 ${tool.getIndentation(1)}{

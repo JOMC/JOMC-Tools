@@ -2321,6 +2321,14 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
           </arguments>
         </message>
       </messages>
+      <source-files xmlns="http://jomc.org/tools/model">
+        <source-file identifier="Default">
+          <source-sections>
+            <source-section name="Generated Command" head-template="command-implementation.vm" editable="false"
+                            indentationLevel="1"/>
+          </source-sections>
+        </source-file>
+      </source-files>
     </implementation>
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} Modlet Command"
@@ -2798,25 +2806,6 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
           </template>
         </message>
       </messages>
-      <source-files xmlns="http://jomc.org/tools/model">
-        <source-file identifier="${project.name} generate-resources Command">
-          <source-sections>
-            <source-section name="License Header"/>
-            <source-section name="Annotations"/>
-            <source-section name="Documentation"/>
-            <source-section name="GenerateResourcesCommand" editable="true"/>
-            <source-section name="Constructors">
-              <source-sections>
-                <source-section name="Default Constructor" editable="true"/>
-              </source-sections>
-            </source-section>
-            <source-section name="Command" head-template="command-implementation.vm" editable="false"/>
-            <source-section name="Dependencies"/>
-            <source-section name="Properties"/>
-            <source-section name="Messages"/>
-          </source-sections>
-        </source-file>
-      </source-files>
     </implementation>
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} manage-sources Command"
@@ -2875,25 +2864,6 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
           </template>
         </message>
       </messages>
-      <source-files xmlns="http://jomc.org/tools/model">
-        <source-file identifier="${project.name} manage-sources Command">
-          <source-sections>
-            <source-section name="License Header"/>
-            <source-section name="Annotations"/>
-            <source-section name="Documentation"/>
-            <source-section name="ManageSourcesCommand" editable="true"/>
-            <source-section name="Constructors">
-              <source-sections>
-                <source-section name="Default Constructor" editable="true"/>
-              </source-sections>
-            </source-section>
-            <source-section name="Command" head-template="command-implementation.vm" editable="false"/>
-            <source-section name="Dependencies"/>
-            <source-section name="Properties"/>
-            <source-section name="Messages"/>
-          </source-sections>
-        </source-file>
-      </source-files>
     </implementation>
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} commit-classes Command"
@@ -2961,25 +2931,6 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
           </template>
         </message>
       </messages>
-      <source-files xmlns="http://jomc.org/tools/model">
-        <source-file identifier="${project.name} commit-classes Command">
-          <source-sections>
-            <source-section name="License Header"/>
-            <source-section name="Annotations"/>
-            <source-section name="Documentation"/>
-            <source-section name="CommitClassesCommand" editable="true"/>
-            <source-section name="Constructors">
-              <source-sections>
-                <source-section name="Default Constructor" editable="true"/>
-              </source-sections>
-            </source-section>
-            <source-section name="Command" head-template="command-implementation.vm" editable="false"/>
-            <source-section name="Dependencies"/>
-            <source-section name="Properties"/>
-            <source-section name="Messages"/>
-          </source-sections>
-        </source-file>
-      </source-files>
     </implementation>
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} validate-classes Command"
@@ -3036,25 +2987,6 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
           </template>
         </message>
       </messages>
-      <source-files xmlns="http://jomc.org/tools/model">
-        <source-file identifier="${project.name} validate-classes Command">
-          <source-sections>
-            <source-section name="License Header"/>
-            <source-section name="Annotations"/>
-            <source-section name="Documentation"/>
-            <source-section name="ValidateClassesCommand" editable="true"/>
-            <source-section name="Constructors">
-              <source-sections>
-                <source-section name="Default Constructor" editable="true"/>
-              </source-sections>
-            </source-section>
-            <source-section name="Command" head-template="command-implementation.vm" editable="false"/>
-            <source-section name="Dependencies"/>
-            <source-section name="Properties"/>
-            <source-section name="Messages"/>
-          </source-sections>
-        </source-file>
-      </source-files>
     </implementation>
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} validate-model Command"
@@ -3105,25 +3037,6 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
           </template>
         </message>
       </messages>
-      <source-files xmlns="http://jomc.org/tools/model">
-        <source-file identifier="${project.name} validate-model Command">
-          <source-sections>
-            <source-section name="License Header"/>
-            <source-section name="Annotations"/>
-            <source-section name="Documentation"/>
-            <source-section name="ValidateModelCommand" editable="true"/>
-            <source-section name="Constructors">
-              <source-sections>
-                <source-section name="Default Constructor" editable="true"/>
-              </source-sections>
-            </source-section>
-            <source-section name="Command" head-template="command-implementation.vm" editable="false"/>
-            <source-section name="Dependencies"/>
-            <source-section name="Properties"/>
-            <source-section name="Messages"/>
-          </source-sections>
-        </source-file>
-      </source-files>
     </implementation>
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} merge-modules Command"
@@ -3238,25 +3151,6 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference name="illegalTransformationResultError"/>
         <reference name="writeInfo"/>
       </messages>
-      <source-files xmlns="http://jomc.org/tools/model">
-        <source-file identifier="${project.name} merge-modules Command">
-          <source-sections>
-            <source-section name="License Header"/>
-            <source-section name="Annotations"/>
-            <source-section name="Documentation"/>
-            <source-section name="MergeModulesCommand" editable="true"/>
-            <source-section name="Constructors">
-              <source-sections>
-                <source-section name="Default Constructor" editable="true"/>
-              </source-sections>
-            </source-section>
-            <source-section name="Command" head-template="command-implementation.vm" editable="false"/>
-            <source-section name="Dependencies"/>
-            <source-section name="Properties"/>
-            <source-section name="Messages"/>
-          </source-sections>
-        </source-file>
-      </source-files>
     </implementation>
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} merge-modlets Command"
@@ -3369,25 +3263,6 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference name="illegalTransformationResultError"/>
         <reference name="writeInfo"/>
       </messages>
-      <source-files xmlns="http://jomc.org/tools/model">
-        <source-file identifier="${project.name} merge-modlets Command">
-          <source-sections>
-            <source-section name="License Header"/>
-            <source-section name="Annotations"/>
-            <source-section name="Documentation"/>
-            <source-section name="MergeModletsCommand" editable="true"/>
-            <source-section name="Constructors">
-              <source-sections>
-                <source-section name="Default Constructor" editable="true"/>
-              </source-sections>
-            </source-section>
-            <source-section name="Command" head-template="command-implementation.vm" editable="false"/>
-            <source-section name="Dependencies"/>
-            <source-section name="Properties"/>
-            <source-section name="Messages"/>
-          </source-sections>
-        </source-file>
-      </source-files>
     </implementation>
     <!-- *********************************************************************************************************** -->
     <implementation identifier="${project.name} show-model Command"
@@ -3459,25 +3334,6 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         <reference name="specificationNotFoundWarning" final="true"/>
         <reference name="writeInfo" final="true"/>
       </messages>
-      <source-files xmlns="http://jomc.org/tools/model">
-        <source-file identifier="${project.name} show-model Command">
-          <source-sections>
-            <source-section name="License Header"/>
-            <source-section name="Annotations"/>
-            <source-section name="Documentation"/>
-            <source-section name="ShowModelCommand" editable="true"/>
-            <source-section name="Constructors">
-              <source-sections>
-                <source-section name="Default Constructor" editable="true"/>
-              </source-sections>
-            </source-section>
-            <source-section name="Command" head-template="command-implementation.vm" editable="false"/>
-            <source-section name="Dependencies"/>
-            <source-section name="Properties"/>
-            <source-section name="Messages"/>
-          </source-sections>
-        </source-file>
-      </source-files>
     </implementation>
   </implementations>
   <messages>
