@@ -425,7 +425,7 @@ public class ToolsModelProvider implements ModelProvider
                         final Implementation implementation = modules.getImplementations().getImplementation().get( i );
                         final SourceFilesType sourceFilesType = implementation.getAnyObject( SourceFilesType.class );
 
-                        if ( sourceFilesType != null )
+                        if ( sourceFilesType != null && !userSourceFiles.containsKey( implementation ) )
                         {
                             boolean override = false;
 
