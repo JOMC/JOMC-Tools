@@ -40,15 +40,14 @@ import org.apache.commons.cli.Option;
 // SECTION-START[Documentation]
 // <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 /**
- *
- * Creates {@code Option} objects describing a single command-line option by maintaining information regarding the
- * short-name, the long-name, a flag indicating if an argument is required, and a self-documenting description.
- *
+ * Creates {@code Option} objects describing a single command-line option by maintaining information regarding the short-name, the long-name, a flag indicating if an argument is required, and a self-documenting description.
  *
  * <p>
- *   This implementation is identified by identifier {@code <JOMC CLI Option Factory>}.
- *   It does not provide any specified objects due to flag {@code <abstract>}.
+ *   This implementation is identified by {@code <JOMC CLI Option Factory>}.
  * </p>
+ * <dl>
+ *   <dt><b>Abstract:</b></dt><dd>An {@code ObjectManager} does not produce objects.</dd>
+ * </dl>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
  * @version 1.2-SNAPSHOT

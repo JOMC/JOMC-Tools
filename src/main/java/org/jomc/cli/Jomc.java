@@ -56,8 +56,7 @@ import org.jomc.modlet.DefaultModletProvider;
  * JOMC command line interface.
  *
  * <p>
- *   This implementation is identified by identifier {@code <JOMC CLI Application>}.
- *   It does not provide any specified objects.
+ *   This implementation is identified by {@code <JOMC CLI Application>}.
  * </p>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0

@@ -46,12 +46,8 @@ import org.apache.commons.cli.Options;
  * Command.
  *
  * <p>
- *   This specification is identified by identifier {@code <JOMC CLI Command>}.
- *   An application assembler may provide multiple implementations of this specification (including none) due to
- *   multiplicity {@code <Many>}.
- *   This specification does not apply to any scope. A new object is returned whenever requested.
+ *   This specification is identified by {@code <JOMC CLI Command>}.
  * </p>
- *
  * <p>
  *   Use of class {@code ObjectManager} is supported for accessing implementations.
  *   <blockquote><pre>
@@ -59,6 +55,10 @@ import org.apache.commons.cli.Options;
  * Command object = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( Command.class, "<i>implementation name</i>" );
  *   </pre></blockquote>
  * </p>
+ * <dl>
+ *   <dt><b>Multiplicity:</b></dt><dd>Many</dd>
+ *   <dt><b>Scope:</b></dt><dd>None</dd>
+ * </dl>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
  * @version 1.0

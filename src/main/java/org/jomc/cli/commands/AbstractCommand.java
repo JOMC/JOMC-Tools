@@ -46,9 +46,18 @@ import org.apache.commons.cli.CommandLine;
  * JOMC CLI command implementation.
  *
  * <p>
- *   This implementation is identified by identifier {@code <JOMC CLI Command>}.
- *   It does not provide any specified objects due to flag {@code <abstract>}.
+ *   This implementation is identified by {@code <JOMC CLI Command>}.
  * </p>
+ * <p>
+ *   It provides objects named {@code <JOMC CLI Command>} of the following specifications:
+ *
+ *   <ul>
+ *     <li>{@code <JOMC CLI Command>} at specification level 1.0.</li>
+ *   </ul>
+ * </p>
+ * <dl>
+ *   <dt><b>Abstract:</b></dt><dd>An {@code ObjectManager} does not produce objects.</dd>
+ * </dl>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
  * @version 1.2-SNAPSHOT

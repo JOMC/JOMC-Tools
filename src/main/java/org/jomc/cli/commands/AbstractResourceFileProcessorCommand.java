@@ -44,9 +44,18 @@ import org.jomc.tools.ResourceFileProcessor;
  * JOMC CLI {@code ResourceFileProcessor} based command implementation.
  *
  * <p>
- *   This implementation is identified by identifier {@code <JOMC CLI ResourceFileProcessor Command>}.
- *   It does not provide any specified objects due to flag {@code <abstract>}.
+ *   This implementation is identified by {@code <JOMC CLI ResourceFileProcessor Command>}.
  * </p>
+ * <p>
+ *   It provides objects named {@code <JOMC CLI ResourceFileProcessor Command>} of the following specifications:
+ *
+ *   <ul>
+ *     <li>{@code <JOMC CLI Command>} at specification level 1.0.</li>
+ *   </ul>
+ * </p>
+ * <dl>
+ *   <dt><b>Abstract:</b></dt><dd>An {@code ObjectManager} does not produce objects.</dd>
+ * </dl>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.2
  * @version 1.2-SNAPSHOT
@@ -683,6 +692,11 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the value of the {@code <applicationModlet>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this property.</dd>
+     *   </dl>
+     * </p>
      * @return Name of the 'shaded' application modlet.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -707,7 +721,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the value of the {@code <modletExcludes>} property.
-     * @return List of modlet names to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this property.</dd>
+     *   </dl>
+     * </p>
+     * @return List of modlet names to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -719,7 +738,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the value of the {@code <providerExcludes>} property.
-     * @return List of providers to exclude from any {@code META-INF/services} file separated by {@code :}.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this property.</dd>
+     *   </dl>
+     * </p>
+     * @return List of providers to exclude from any {@code META-INF/services} files separated by {@code :}.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -731,7 +755,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the value of the {@code <schemaExcludes>} property.
-     * @return List of schema context-ids to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this property.</dd>
+     *   </dl>
+     * </p>
+     * @return List of schema context-ids to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -743,7 +772,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the value of the {@code <serviceExcludes>} property.
-     * @return List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this property.</dd>
+     *   </dl>
+     * </p>
+     * @return List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
@@ -1103,6 +1137,9 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this message.</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param implementationIdentifier Format argument.
@@ -1164,6 +1201,9 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this message.</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param moduleName Format argument.
@@ -1244,6 +1284,9 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this message.</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param specificationIdentifier Format argument.
