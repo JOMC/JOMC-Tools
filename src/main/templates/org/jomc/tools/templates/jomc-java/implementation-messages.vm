@@ -72,6 +72,11 @@ ${tool.getIndentation(1)} *     <li>$tool.getHtmlString($tool.getDisplayLanguage
 #end
 ${tool.getIndentation(1)} *   </ul>
 ${tool.getIndentation(1)} * </p>
+#if($message.isFinal())
+${tool.getIndentation(1)} * <dl>
+${tool.getIndentation(1)} *   <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this message.</dd>
+${tool.getIndentation(1)} * </dl>
+#end
 ${tool.getIndentation(1)} *
 ${tool.getIndentation(1)} * @param locale The locale of the message to return.
 #if($message.getArguments() && !$message.getArguments().getArgument().isEmpty())

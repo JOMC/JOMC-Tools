@@ -66,22 +66,8 @@ ${tool.getIndentation(0)} * $tool.getJavadocComment($specification.getDocumentat
 #end
 ${tool.getIndentation(0)} *
 ${tool.getIndentation(0)} * <p>
-${tool.getIndentation(0)} *   This specification is identified by identifier {@code <$specification.getIdentifier()>}.
-#if($specification.getMultiplicity().value() == "One")
-${tool.getIndentation(0)} *   An application assembler may provide either no or one implementation of this specification due to
-${tool.getIndentation(0)} *   multiplicity {@code <$specification.getMultiplicity().value()>}.
-#elseif($specification.getMultiplicity().value() == "Many")
-${tool.getIndentation(0)} *   An application assembler may provide multiple implementations of this specification (including none) due to
-${tool.getIndentation(0)} *   multiplicity {@code <$specification.getMultiplicity().value()>}.
-#end
-#if($specification.getScope())
-${tool.getIndentation(0)} *   This specification applies to {@code <$specification.getScope()>} scope.
-${tool.getIndentation(0)} *   The same $tool.getHtmlString($specification.getScope().toLowerCase($tool.getLocale())) object is returned whenever requested.
-#else
-${tool.getIndentation(0)} *   This specification does not apply to any scope. A new object is returned whenever requested.
-#end
+${tool.getIndentation(0)} *   This specification is identified by {@code <$specification.getIdentifier()>}.
 ${tool.getIndentation(0)} * </p>
-${tool.getIndentation(0)} *
 ${tool.getIndentation(0)} * <p>
 ${tool.getIndentation(0)} *   Use of class {@code ObjectManager} is supported for accessing implementations.
 ${tool.getIndentation(0)} *   <blockquote><pre>
@@ -93,6 +79,10 @@ ${tool.getIndentation(0)} * ${tool.getJavaTypeName($specification,false)}[] obje
 ${tool.getIndentation(0)} * $tool.getJavaTypeName($specification,false) object = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getHtmlString($tool.getJavaTypeName($specification,false))}.class, "<i>implementation name</i>" );
 ${tool.getIndentation(0)} *   </pre></blockquote>
 ${tool.getIndentation(0)} * </p>
+${tool.getIndentation(0)} * <dl>
+${tool.getIndentation(0)} *   <dt><b>Multiplicity:</b></dt><dd>$specification.getMultiplicity().value()</dd>
+${tool.getIndentation(0)} *   <dt><b>Scope:</b></dt><dd>#if(!$specification.getScope())None#else$specification.getScope()#end</dd>
+${tool.getIndentation(0)} * </dl>
 ${tool.getIndentation(0)} *
 #if($with-javadoc-author && $specification.getAuthors())
 #foreach($author in $specification.getAuthors().getAuthor())
@@ -100,10 +90,12 @@ ${tool.getIndentation(0)} * @author #if($author.getMail())<a href="mailto:$autho
 
 #end
 #end
-#if($with-javadoc-version && $specification.getVersion())
+#if($with-javadoc-version)
+#if($specification.getVersion())
 ${tool.getIndentation(0)} * @version $tool.getHtmlString($specification.getVersion())
 #else
 ${tool.getIndentation(0)} * @version This specification does not support versioning.
+#end
 #end
 ${tool.getIndentation(0)} * @see org.jomc.ObjectManagerFactory
 ${tool.getIndentation(0)} * @see org.jomc.ObjectManager
