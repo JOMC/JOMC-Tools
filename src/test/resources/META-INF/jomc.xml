@@ -45,7 +45,7 @@
                     class="org.jomc.cli.test.JomcTest" classDeclaration="true" vendor="${project.organization.name}"
                     version="${project.version}" createDate="2009-07-25T19:56:45Z">
       <documentation defaultLanguage="en">
-        <text language="en">Tests the {@code Jomc} CLI class.</text>
+        <text language="en" type="text/x-javadoc">Tests the {@code Jomc} CLI class.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"

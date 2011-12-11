@@ -92,10 +92,7 @@
                     vendor="${project.organization.name}" abstract="true" createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en"><![CDATA[
-Creates {@code Option} objects describing a single command-line option by maintaining information regarding the
-short-name, the long-name, a flag indicating if an argument is required, and a self-documenting description.]]>
-        </text>
+        <text language="en" type="text/x-javadoc">Creates {@code Option} objects describing a single command-line option by maintaining information regarding the short-name, the long-name, a flag indicating if an argument is required, and a self-documenting description.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -2384,22 +2381,22 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
         </property>
         <property name="providerExcludes" value="org.jomc.modlet.DefaultModletProvider" final="true">
           <documentation defaultLanguage="en">
-            <text language="en">List of providers to exclude from any {@code META-INF/services} file separated by {@code :}.</text>
+            <text language="en">List of providers to exclude from any {@code META-INF/services} files separated by {@code :}.</text>
           </documentation>
         </property>
         <property name="schemaExcludes" value="org.jomc.model:org.jomc.tools.model" final="true">
           <documentation defaultLanguage="en">
-            <text language="en">List of schema context-ids to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</text>
+            <text language="en">List of schema context-ids to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.</text>
           </documentation>
         </property>
         <property name="serviceExcludes" value="org.jomc.model.modlet.DefaultModelProvider:org.jomc.model.modlet.DefaultModelProcessor:org.jomc.model.modlet.DefaultModelValidator:org.jomc.tools.modlet.ToolsModelProvider:org.jomc.tools.modlet.ToolsModelProcessor:org.jomc.tools.modlet.ToolsModelValidator" final="true">
           <documentation defaultLanguage="en">
-            <text language="en">List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</text>
+            <text language="en">List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.</text>
           </documentation>
         </property>
         <property name="modletExcludes" value="JOMC Modlet:JOMC Model:JOMC Tools:JOMC CLI" final="true">
           <documentation defaultLanguage="en">
-            <text language="en">List of modlet names to exclude from any {@code META-INF/jomc-modlet.xml} file separated by {@code :}.</text>
+            <text language="en">List of modlet names to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.</text>
           </documentation>
         </property>
       </properties>
@@ -2552,7 +2549,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}" abstract="true" createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en">${project.name} {@code JomcTool} based command implementation.</text>
+        <text language="en" type="text/x-javadoc">${project.name} {@code JomcTool} based command implementation.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.2" mail="schulte2005@users.sourceforge.net"
@@ -2628,7 +2625,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}" abstract="true" createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en">${project.name} {@code ClassFileProcessor} based command implementation.</text>
+        <text language="en" type="text/x-javadoc">${project.name} {@code ClassFileProcessor} based command implementation.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.2" mail="schulte2005@users.sourceforge.net"
@@ -2662,7 +2659,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}" abstract="true" createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en">${project.name} {@code ResourceFileProcessor} based command implementation.</text>
+        <text language="en" type="text/x-javadoc">${project.name} {@code ResourceFileProcessor} based command implementation.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.2" mail="schulte2005@users.sourceforge.net"
@@ -2703,7 +2700,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     vendor="${project.organization.name}" abstract="true" createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en">${project.name} {@code SourceFileProcessor} based command implementation.</text>
+        <text language="en" type="text/x-javadoc">${project.name} {@code SourceFileProcessor} based command implementation.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.2" mail="schulte2005@users.sourceforge.net"
@@ -2744,7 +2741,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en">${project.name} {@code generate-resources} command implementation.</text>
+        <text language="en" type="text/x-javadoc">${project.name} {@code generate-resources} command implementation.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -2814,7 +2811,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en">${project.name} {@code manage-sources} command implementation.</text>
+        <text language="en" type="text/x-javadoc">${project.name} {@code manage-sources} command implementation.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -2872,7 +2869,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en">${project.name} {@code commit-classes} command implementation.</text>
+        <text language="en" type="text/x-javadoc">${project.name} {@code commit-classes} command implementation.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -2939,7 +2936,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en">${project.name} {@code validate-classes} command implementation.</text>
+        <text language="en" type="text/x-javadoc">${project.name} {@code validate-classes} command implementation.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -2995,7 +2992,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en">${project.name} {@code validate-model} command implementation.</text>
+        <text language="en" type="text/x-javadoc">${project.name} {@code validate-model} command implementation.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -3045,7 +3042,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en">${project.name} {@code merge-modules} command implementation.</text>
+        <text language="en" type="text/x-javadoc">${project.name} {@code merge-modules} command implementation.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -3159,7 +3156,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en">${project.name} {@code merge-modlets} command implementation.</text>
+        <text language="en" type="text/x-javadoc">${project.name} {@code merge-modlets} command implementation.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
@@ -3271,7 +3268,7 @@ short-name, the long-name, a flag indicating if an argument is required, and a s
                     createDate="2009-07-25T19:56:45Z">
 
       <documentation defaultLanguage="en">
-        <text language="en">${project.name} {@code show-model} command implementation.</text>
+        <text language="en" type="text/x-javadoc">${project.name} {@code show-model} command implementation.</text>
       </documentation>
       <authors>
         <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
