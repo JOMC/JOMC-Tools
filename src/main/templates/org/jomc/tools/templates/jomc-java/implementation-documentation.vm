@@ -81,19 +81,11 @@ ${tool.getIndentation(0)} *     <li>{@code <$reference.getIdentifier()>}#if($ref
 ${tool.getIndentation(0)} *   </ul>
 ${tool.getIndentation(0)} * </p>
 #end
-#if($implementation.isAbstract() || $implementation.isFinal() || $implementation.isStateless())
 ${tool.getIndentation(0)} * <dl>
-#if($implementation.isAbstract())
-${tool.getIndentation(0)} *   <dt><b>Abstract:</b></dt><dd>An {@code ObjectManager} does not produce objects.</dd>
-#end
-#if($implementation.isFinal())
-${tool.getIndentation(0)} *   <dt><b>Final:</b></dt><dd>Model objects are not inheritable.</dd>
-#end
-#if($implementation.isStateless())
-${tool.getIndentation(0)} *   <dt><b>Stateless:</b></dt><dd>No state is retained.</dd>
-#end
+${tool.getIndentation(0)} *   <dt><b>Abstract:</b></dt><dd>$tool.getBooleanString($implementation.isAbstract())</dd>
+${tool.getIndentation(0)} *   <dt><b>Final:</b></dt><dd>$tool.getBooleanString($implementation.isFinal())</dd>
+${tool.getIndentation(0)} *   <dt><b>Stateless:</b></dt><dd>$tool.getBooleanString($implementation.isStateless())</dd>
 ${tool.getIndentation(0)} * </dl>
-#end
 ${tool.getIndentation(0)} *
 #if($with-javadoc-author && $implementation.getAuthors())
 #foreach($author in $implementation.getAuthors().getAuthor())

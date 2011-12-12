@@ -96,11 +96,9 @@ ${tool.getIndentation(1)} *     </tr>
 ${tool.getIndentation(1)} *   </table>
 ${tool.getIndentation(1)} * </p>
 #end
-#if($dependency.isFinal())
 ${tool.getIndentation(1)} * <dl>
-${tool.getIndentation(1)} *   <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this dependency.</dd>
+${tool.getIndentation(1)} *   <dt><b>Final:</b></dt><dd>$tool.getBooleanString($dependency.isFinal())</dd>
 ${tool.getIndentation(1)} * </dl>
-#end
 #if($dependency.getDocumentation())
 ${tool.getIndentation(1)} * @return $tool.getJavadocComment($dependency.getDocumentation(), 1, " * ")
 #else

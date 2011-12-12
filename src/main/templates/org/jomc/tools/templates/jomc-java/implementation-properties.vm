@@ -65,13 +65,11 @@ ${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generat
 #if($with-javadoc)
 ${tool.getIndentation(1)}/**
 ${tool.getIndentation(1)} * Gets the value of the {@code <$property.getName()>} property.
-#if($property.isFinal())
 ${tool.getIndentation(1)} * <p>
 ${tool.getIndentation(1)} *   <dl>
-${tool.getIndentation(1)} *     <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this property.</dd>
+${tool.getIndentation(1)} *     <dt><b>Final:</b></dt><dd>$tool.getBooleanString($property.isFinal())</dd>
 ${tool.getIndentation(1)} *   </dl>
 ${tool.getIndentation(1)} * </p>
-#end
 #if($property.getDocumentation())
 ${tool.getIndentation(1)} * @return $tool.getJavadocComment($property.getDocumentation(), 1, " * ")
 #end

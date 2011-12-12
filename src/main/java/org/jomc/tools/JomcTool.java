@@ -1384,6 +1384,26 @@ public class JomcTool
     }
 
     /**
+     * Formats a {@code Boolean} to a string.
+     *
+     * @param b The {@code Boolean} to format to a string or {@code null}.
+     *
+     * @return {@code b} formatted to a string.
+     *
+     * @see #getLocale()
+     *
+     * @since 1.2
+     */
+    public String getBooleanString( final Boolean b )
+    {
+        final MessageFormat messageFormat = new MessageFormat( ResourceBundle.getBundle(
+            JomcTool.class.getName().replace( '.', '/' ), this.getLocale() ).
+            getString( b ? "booleanStringTrue" : "booleanStringFalse" ), this.getLocale() );
+
+        return messageFormat.format( null );
+    }
+
+    /**
      * Gets the display language of a given language code.
      *
      * @param language The language code to get the display language of.
