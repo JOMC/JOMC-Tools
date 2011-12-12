@@ -58,6 +58,11 @@ import org.jomc.modlet.DefaultModletProvider;
  * <p>
  *   This implementation is identified by {@code <JOMC CLI Application>}.
  * </p>
+ * <dl>
+ *   <dt><b>Abstract:</b></dt><dd>No</dd>
+ *   <dt><b>Final:</b></dt><dd>No</dd>
+ *   <dt><b>Stateless:</b></dt><dd>No</dd>
+ * </dl>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
  * @version 1.2-SNAPSHOT
@@ -541,6 +546,9 @@ public final class Jomc
      *   This method returns the {@code <Commons CLI - GNU Command Line Parser>} object of the {@code <org.apache.commons.cli.CommandLineParser>} specification at any specification level.
      *   That specification does not apply to any scope. A new object is returned whenever requested.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <CommandLineParser>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -557,6 +565,9 @@ public final class Jomc
      *   This method returns any available object of the {@code <JOMC CLI Command>} specification at specification level 1.0.
      *   That specification does not apply to any scope. A new object is returned whenever requested.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <Commands>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -573,6 +584,9 @@ public final class Jomc
      *   This method returns the {@code <JOMC CLI Debug Option>} object of the {@code <JOMC CLI Application Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <DebugOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -589,6 +603,9 @@ public final class Jomc
      *   This method returns the {@code <JOMC CLI Fail-On-Warnings Option>} object of the {@code <JOMC CLI Application Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <FailOnWarningsOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -605,6 +622,9 @@ public final class Jomc
      *   This method returns the {@code <default>} object of the {@code <java.util.Locale>} specification at specification level 1.1.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <Locale>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -621,6 +641,9 @@ public final class Jomc
      *   This method returns the {@code <JOMC CLI Verbose Option>} object of the {@code <JOMC CLI Application Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <VerboseOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -637,6 +660,11 @@ public final class Jomc
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
     /**
      * Gets the value of the {@code <descPad>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return The number of characters of padding to be prefixed to each description line.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -649,6 +677,11 @@ public final class Jomc
     }
     /**
      * Gets the value of the {@code <helpCommandName>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return The name of the command used to request help.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -661,6 +694,11 @@ public final class Jomc
     }
     /**
      * Gets the value of the {@code <leftPad>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return The number of characters of padding to be prefixed to each line.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -673,6 +711,11 @@ public final class Jomc
     }
     /**
      * Gets the value of the {@code <width>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return The number of characters per line for the usage statement.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -695,6 +738,9 @@ public final class Jomc
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <defaultExceptionMessage>} message for {@code locale}.
@@ -715,6 +761,9 @@ public final class Jomc
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param defaultLogLevel Format argument.
@@ -736,6 +785,9 @@ public final class Jomc
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param command Format argument.
@@ -758,6 +810,9 @@ public final class Jomc
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param time Format argument.
@@ -779,6 +834,9 @@ public final class Jomc
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param helpCommandName Format argument.

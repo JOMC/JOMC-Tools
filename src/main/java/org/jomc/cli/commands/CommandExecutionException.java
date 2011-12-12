@@ -42,6 +42,11 @@ package org.jomc.cli.commands;
  * <p>
  *   This implementation is identified by {@code <JOMC CLI Command Execution Exception>}.
  * </p>
+ * <dl>
+ *   <dt><b>Abstract:</b></dt><dd>No</dd>
+ *   <dt><b>Final:</b></dt><dd>No</dd>
+ *   <dt><b>Stateless:</b></dt><dd>No</dd>
+ * </dl>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
  * @version 1.2-SNAPSHOT

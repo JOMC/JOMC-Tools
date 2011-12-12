@@ -71,6 +71,11 @@ import org.jomc.tools.ClassFileProcessor;
  *     <li>{@code <JOMC CLI Command>} at specification level 1.0.</li>
  *   </ul>
  * </p>
+ * <dl>
+ *   <dt><b>Abstract:</b></dt><dd>No</dd>
+ *   <dt><b>Final:</b></dt><dd>No</dd>
+ *   <dt><b>Stateless:</b></dt><dd>No</dd>
+ * </dl>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
  * @version 1.2-SNAPSHOT
@@ -214,6 +219,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI ClassFileProcessor Class Name Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ClassFileProcessorOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -244,6 +252,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     </tr>
      *   </table>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ClassesDirectoryOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -260,6 +271,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Classpath Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ClasspathOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -276,6 +290,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Country Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <CountryOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -292,6 +309,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Default Template Profile Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <DefaultTemplateProfileOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -308,6 +328,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Documents Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <DocumentsOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -324,6 +347,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Implementation Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ImplementationOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -340,6 +366,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Indentation String Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <IndentationStringOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -356,6 +385,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Input Encoding Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <InputEncodingOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -372,6 +404,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Language Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <LanguageOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -388,6 +423,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Line Separator Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <LineSeparatorOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -404,6 +442,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <default>} object of the {@code <java.util.Locale>} specification at specification level 1.1.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <Locale>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -420,6 +461,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Locale Variant Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <LocaleVariantOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -436,6 +480,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI ModelContext Class Name Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ModelContextOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -452,6 +499,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Model Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ModelOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -468,6 +518,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Modlet Location Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ModletLocationOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -484,6 +537,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Modlet Schema System Id Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ModletSchemaSystemIdOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -500,6 +556,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Module Location Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ModuleLocationOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -516,6 +575,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Module Name Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ModuleNameOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -532,6 +594,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI No Class File Processing Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <NoClassProcessingOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -548,6 +613,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI No Classpath Resolution Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <NoClasspathResolutionOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -564,6 +632,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI No Model Processing Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <NoModelProcessingOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -580,6 +651,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI No Model Resource Validation Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <NoModelResourceValidation>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -596,6 +670,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI No Modlet Resource Validation Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <NoModletResourceValidation>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -612,6 +689,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Output Encoding Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <OutputEncodingOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -628,6 +708,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Platform Provider Location Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <PlatformProviderLocationOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -644,6 +727,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Provider Location Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ProviderLocationOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -660,6 +746,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Specification Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <SpecificationOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -676,6 +765,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Stylesheet Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <StylesheetOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -692,6 +784,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Template Encoding Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <TemplateEncodingOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -708,6 +803,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Template Location Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <TemplateLocationOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -724,6 +822,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Template Profile Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <TemplateProfileOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -740,6 +841,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   This method returns the {@code <JOMC CLI Transformer Location Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <TransformerLocationOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -756,6 +860,11 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
     /**
      * Gets the value of the {@code <abbreviatedCommandName>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return Abbreviated name of the command.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -770,7 +879,7 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      * Gets the value of the {@code <applicationModlet>} property.
      * <p>
      *   <dl>
-     *     <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this property.</dd>
+     *     <dt><b>Final:</b></dt><dd>Yes</dd>
      *   </dl>
      * </p>
      * @return Name of the 'shaded' application modlet.
@@ -785,6 +894,11 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
     }
     /**
      * Gets the value of the {@code <commandName>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return Name of the command.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -799,7 +913,7 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      * Gets the value of the {@code <modletExcludes>} property.
      * <p>
      *   <dl>
-     *     <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this property.</dd>
+     *     <dt><b>Final:</b></dt><dd>Yes</dd>
      *   </dl>
      * </p>
      * @return List of modlet names to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.
@@ -816,7 +930,7 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      * Gets the value of the {@code <providerExcludes>} property.
      * <p>
      *   <dl>
-     *     <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this property.</dd>
+     *     <dt><b>Final:</b></dt><dd>Yes</dd>
      *   </dl>
      * </p>
      * @return List of providers to exclude from any {@code META-INF/services} files separated by {@code :}.
@@ -833,7 +947,7 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      * Gets the value of the {@code <schemaExcludes>} property.
      * <p>
      *   <dl>
-     *     <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this property.</dd>
+     *     <dt><b>Final:</b></dt><dd>Yes</dd>
      *   </dl>
      * </p>
      * @return List of schema context-ids to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.
@@ -850,7 +964,7 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      * Gets the value of the {@code <serviceExcludes>} property.
      * <p>
      *   <dl>
-     *     <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this property.</dd>
+     *     <dt><b>Final:</b></dt><dd>Yes</dd>
      *   </dl>
      * </p>
      * @return List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.
@@ -874,6 +988,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     <li>English (default)</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <applicationTitle>} message for {@code locale}.
@@ -894,6 +1011,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param itemInfo Format argument.
@@ -916,6 +1036,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param classpathElement Format argument.
@@ -937,6 +1060,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param fileName Format argument.
@@ -958,6 +1084,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
@@ -979,6 +1108,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
@@ -1000,6 +1132,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
@@ -1021,6 +1156,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param defaultLogLevel Format argument.
@@ -1042,6 +1180,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <disabledMessage>} message for {@code locale}.
@@ -1062,6 +1203,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param documentFile Format argument.
@@ -1083,6 +1227,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param fileName Format argument.
@@ -1104,6 +1251,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
@@ -1126,6 +1276,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
@@ -1148,6 +1301,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
@@ -1170,6 +1326,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
@@ -1192,6 +1351,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param objectInfo Format argument.
@@ -1214,7 +1376,7 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   </ul>
      * </p>
      * <dl>
-     *   <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this message.</dd>
+     *   <dt><b>Final:</b></dt><dd>Yes</dd>
      * </dl>
      *
      * @param locale The locale of the message to return.
@@ -1237,6 +1399,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param modelIdentifier Format argument.
@@ -1258,6 +1423,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <longDescriptionMessage>} message for {@code locale}.
@@ -1279,7 +1447,7 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   </ul>
      * </p>
      * <dl>
-     *   <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this message.</dd>
+     *   <dt><b>Final:</b></dt><dd>Yes</dd>
      * </dl>
      *
      * @param locale The locale of the message to return.
@@ -1302,6 +1470,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param locationInfo Format argument.
@@ -1322,6 +1493,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     <li>English (default)</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <separator>} message for {@code locale}.
@@ -1342,6 +1516,9 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <shortDescriptionMessage>} message for {@code locale}.
@@ -1363,7 +1540,7 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
      *   </ul>
      * </p>
      * <dl>
-     *   <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this message.</dd>
+     *   <dt><b>Final:</b></dt><dd>Yes</dd>
      * </dl>
      *
      * @param locale The locale of the message to return.

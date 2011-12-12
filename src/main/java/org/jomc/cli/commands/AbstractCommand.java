@@ -56,7 +56,9 @@ import org.apache.commons.cli.CommandLine;
  *   </ul>
  * </p>
  * <dl>
- *   <dt><b>Abstract:</b></dt><dd>An {@code ObjectManager} does not produce objects.</dd>
+ *   <dt><b>Abstract:</b></dt><dd>Yes</dd>
+ *   <dt><b>Final:</b></dt><dd>No</dd>
+ *   <dt><b>Stateless:</b></dt><dd>No</dd>
  * </dl>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
@@ -392,6 +394,9 @@ public abstract class AbstractCommand
      *   This method returns the {@code <default>} object of the {@code <java.util.Locale>} specification at specification level 1.1.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <Locale>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -408,6 +413,11 @@ public abstract class AbstractCommand
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
     /**
      * Gets the value of the {@code <abbreviatedCommandName>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return Abbreviated name of the command.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -420,6 +430,11 @@ public abstract class AbstractCommand
     }
     /**
      * Gets the value of the {@code <commandName>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return Name of the command.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -441,6 +456,9 @@ public abstract class AbstractCommand
      *     <li>English (default)</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <applicationTitle>} message for {@code locale}.
@@ -461,6 +479,9 @@ public abstract class AbstractCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
@@ -482,6 +503,9 @@ public abstract class AbstractCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
@@ -503,6 +527,9 @@ public abstract class AbstractCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
@@ -524,6 +551,9 @@ public abstract class AbstractCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param defaultLogLevel Format argument.
@@ -544,6 +574,9 @@ public abstract class AbstractCommand
      *     <li>English (default)</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <longDescriptionMessage>} message for {@code locale}.
@@ -563,6 +596,9 @@ public abstract class AbstractCommand
      *     <li>English (default)</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <separator>} message for {@code locale}.
@@ -582,6 +618,9 @@ public abstract class AbstractCommand
      *     <li>English (default)</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <shortDescriptionMessage>} message for {@code locale}.

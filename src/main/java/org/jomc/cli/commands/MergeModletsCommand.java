@@ -76,6 +76,11 @@ import org.jomc.modlet.ObjectFactory;
  *     <li>{@code <JOMC CLI Command>} at specification level 1.0.</li>
  *   </ul>
  * </p>
+ * <dl>
+ *   <dt><b>Abstract:</b></dt><dd>No</dd>
+ *   <dt><b>Final:</b></dt><dd>No</dd>
+ *   <dt><b>Stateless:</b></dt><dd>No</dd>
+ * </dl>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
  * @version 1.2-SNAPSHOT
@@ -382,6 +387,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *   This method returns the {@code <JOMC CLI Classpath Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ClasspathOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -398,6 +406,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *   This method returns the {@code <JOMC CLI Document Encoding Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <DocumentEncodingOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -428,6 +439,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     </tr>
      *   </table>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <DocumentOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -444,6 +458,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *   This method returns the {@code <JOMC CLI Documents Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <DocumentsOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -460,6 +477,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *   This method returns the {@code <default>} object of the {@code <java.util.Locale>} specification at specification level 1.1.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <Locale>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -476,6 +496,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *   This method returns the {@code <JOMC CLI ModelContext Class Name Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ModelContextOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -492,6 +515,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *   This method returns the {@code <JOMC CLI Model Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ModelOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -508,6 +534,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *   This method returns the {@code <JOMC CLI Modlet Excludes Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ModletExcludesOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -524,6 +553,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *   This method returns the {@code <JOMC CLI Modlet Includes Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ModletIncludesOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -540,6 +572,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *   This method returns the {@code <JOMC CLI Modlet Location Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ModletLocationOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -570,6 +605,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     </tr>
      *   </table>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ModletNameOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -586,6 +624,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *   This method returns the {@code <JOMC CLI Modlet Schema System Id Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ModletSchemaSystemIdOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -602,6 +643,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *   This method returns the {@code <JOMC CLI Modlet Vendor Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ModletVendorOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -618,6 +662,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *   This method returns the {@code <JOMC CLI Modlet Version Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ModletVersionOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -634,6 +681,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *   This method returns the {@code <JOMC CLI No Modlet Resource Validation Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <NoModletResourceValidation>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -650,6 +700,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *   This method returns the {@code <JOMC CLI Platform Provider Location Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <PlatformProviderLocationOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -666,6 +719,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *   This method returns the {@code <JOMC CLI Provider Location Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ProviderLocationOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -682,6 +738,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *   This method returns the {@code <JOMC CLI Resources Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <ResourcesOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -698,6 +757,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *   This method returns the {@code <JOMC CLI Stylesheet Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      * @return The {@code <StylesheetOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
@@ -714,6 +776,11 @@ public final class MergeModletsCommand extends AbstractModletCommand
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
     /**
      * Gets the value of the {@code <abbreviatedCommandName>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return Abbreviated name of the command.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -728,7 +795,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
      * Gets the value of the {@code <applicationModlet>} property.
      * <p>
      *   <dl>
-     *     <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this property.</dd>
+     *     <dt><b>Final:</b></dt><dd>Yes</dd>
      *   </dl>
      * </p>
      * @return Name of the 'shaded' application modlet.
@@ -743,6 +810,11 @@ public final class MergeModletsCommand extends AbstractModletCommand
     }
     /**
      * Gets the value of the {@code <commandName>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return Name of the command.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -757,7 +829,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
      * Gets the value of the {@code <modletExcludes>} property.
      * <p>
      *   <dl>
-     *     <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this property.</dd>
+     *     <dt><b>Final:</b></dt><dd>Yes</dd>
      *   </dl>
      * </p>
      * @return List of modlet names to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.
@@ -774,7 +846,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
      * Gets the value of the {@code <providerExcludes>} property.
      * <p>
      *   <dl>
-     *     <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this property.</dd>
+     *     <dt><b>Final:</b></dt><dd>Yes</dd>
      *   </dl>
      * </p>
      * @return List of providers to exclude from any {@code META-INF/services} files separated by {@code :}.
@@ -791,7 +863,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
      * Gets the value of the {@code <schemaExcludes>} property.
      * <p>
      *   <dl>
-     *     <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this property.</dd>
+     *     <dt><b>Final:</b></dt><dd>Yes</dd>
      *   </dl>
      * </p>
      * @return List of schema context-ids to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.
@@ -808,7 +880,7 @@ public final class MergeModletsCommand extends AbstractModletCommand
      * Gets the value of the {@code <serviceExcludes>} property.
      * <p>
      *   <dl>
-     *     <dt><b>Final:</b></dt><dd>Descendant implementations cannot override this property.</dd>
+     *     <dt><b>Final:</b></dt><dd>Yes</dd>
      *   </dl>
      * </p>
      * @return List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.
@@ -832,6 +904,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>English (default)</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <applicationTitle>} message for {@code locale}.
@@ -852,6 +927,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param itemInfo Format argument.
@@ -874,6 +952,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param classpathElement Format argument.
@@ -895,6 +976,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param fileName Format argument.
@@ -916,6 +1000,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
@@ -937,6 +1024,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
@@ -958,6 +1048,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
@@ -979,6 +1072,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param defaultLogLevel Format argument.
@@ -1000,6 +1096,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param documentFile Format argument.
@@ -1021,6 +1120,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param fileName Format argument.
@@ -1042,6 +1144,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
@@ -1064,6 +1169,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
@@ -1086,6 +1194,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
@@ -1108,6 +1219,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
@@ -1130,6 +1244,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param modletName Format argument.
@@ -1151,6 +1268,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param stylesheetInfo Format argument.
@@ -1172,6 +1292,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param modletName Format argument.
@@ -1193,6 +1316,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param modelIdentifier Format argument.
@@ -1214,6 +1340,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <longDescriptionMessage>} message for {@code locale}.
@@ -1234,6 +1363,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param locationInfo Format argument.
@@ -1254,6 +1386,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>English (default)</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <separator>} message for {@code locale}.
@@ -1274,6 +1409,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <shortDescriptionMessage>} message for {@code locale}.
@@ -1294,6 +1432,9 @@ public final class MergeModletsCommand extends AbstractModletCommand
      *     <li>Deutsch</li>
      *   </ul>
      * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
      *
      * @param locale The locale of the message to return.
      * @param fileName Format argument.
