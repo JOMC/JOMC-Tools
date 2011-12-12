@@ -69,6 +69,11 @@ import static org.junit.Assert.assertTrue;
  * <p>
  *   This implementation is identified by {@code <org.jomc.cli.test.JomcTest>}.
  * </p>
+ * <dl>
+ *   <dt><b>Abstract:</b></dt><dd>No</dd>
+ *   <dt><b>Final:</b></dt><dd>No</dd>
+ *   <dt><b>Stateless:</b></dt><dd>No</dd>
+ * </dl>
  *
  * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
  * @version 1.2-SNAPSHOT
@@ -729,6 +734,11 @@ public class JomcTest
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
     /**
      * Gets the value of the {@code <classesDirectory>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return Directory holding class files.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -741,6 +751,11 @@ public class JomcTest
     }
     /**
      * Gets the value of the {@code <resourcesDirectory>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return Directory holding resources.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -753,6 +768,11 @@ public class JomcTest
     }
     /**
      * Gets the value of the {@code <templatesDirectory>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return Directory holding templates.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -765,6 +785,11 @@ public class JomcTest
     }
     /**
      * Gets the value of the {@code <testClassesDirectory>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return Directory holding class files to commit to and to validate.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -777,6 +802,11 @@ public class JomcTest
     }
     /**
      * Gets the value of the {@code <testModelDocument>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return Valid model document.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -789,6 +819,11 @@ public class JomcTest
     }
     /**
      * Gets the value of the {@code <testModelDocumentIllegal>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return Model document with invalid model.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -801,6 +836,11 @@ public class JomcTest
     }
     /**
      * Gets the value of the {@code <testModelDocumentIllegalSchemaConstraints>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return Model document not valid to the JOMC JAXP schema.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -813,6 +853,11 @@ public class JomcTest
     }
     /**
      * Gets the value of the {@code <testModelDocumentNonExistentClasses>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return Model document referencing non-existent classes.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -825,6 +870,11 @@ public class JomcTest
     }
     /**
      * Gets the value of the {@code <testModelOutputDocument>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return File to write a transformed model to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -837,6 +887,11 @@ public class JomcTest
     }
     /**
      * Gets the value of the {@code <testModelStylesheet>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return Valid model object stylesheet.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -849,6 +904,11 @@ public class JomcTest
     }
     /**
      * Gets the value of the {@code <testModletName>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return Test module name.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -861,6 +921,11 @@ public class JomcTest
     }
     /**
      * Gets the value of the {@code <testModletOutputDocument>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return File to write a transformed modlet to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -873,6 +938,11 @@ public class JomcTest
     }
     /**
      * Gets the value of the {@code <testModletStylesheet>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return Valid modlet object stylesheet.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -885,6 +955,11 @@ public class JomcTest
     }
     /**
      * Gets the value of the {@code <testModuleName>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return Test module name.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -897,6 +972,11 @@ public class JomcTest
     }
     /**
      * Gets the value of the {@code <testResourcesDirectory>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return Directory to generate resources to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -909,6 +989,11 @@ public class JomcTest
     }
     /**
      * Gets the value of the {@code <testShowInstanceOutputDocument>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return File to write an instance to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -921,6 +1006,11 @@ public class JomcTest
     }
     /**
      * Gets the value of the {@code <testShowModelOutputDocument>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return File to write a model to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -933,6 +1023,11 @@ public class JomcTest
     }
     /**
      * Gets the value of the {@code <testShowSpecificationAndInstanceOutputDocument>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return File to write a model holding a specification and an instance to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -945,6 +1040,11 @@ public class JomcTest
     }
     /**
      * Gets the value of the {@code <testShowSpecificationOutputDocument>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return File to write a specification to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -957,6 +1057,11 @@ public class JomcTest
     }
     /**
      * Gets the value of the {@code <testSourcesDirectory>} property.
+     * <p>
+     *   <dl>
+     *     <dt><b>Final:</b></dt><dd>No</dd>
+     *   </dl>
+     * </p>
      * @return Directory holding source code files to manage.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
