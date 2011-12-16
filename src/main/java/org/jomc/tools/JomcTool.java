@@ -1895,7 +1895,7 @@ public class JomcTool
 
         this.getModules(); // Initialization prior to cloning.
         final Model clonedModel = this.getModel().clone();
-        Modules clonedModules = ModelHelper.getModules( clonedModel );
+        final Modules clonedModules = ModelHelper.getModules( clonedModel );
         assert clonedModules != null : "Unexpected missing modules for model '" + clonedModel.getIdentifier() + "'.";
 
         ctx.put( "model", clonedModel );
