@@ -63,23 +63,10 @@ ${tool.getIndentation(0)}// <editor-fold defaultstate="collapsed" desc=" Generat
 ${tool.getIndentation(0)}/**
 #if($specification.getDocumentation())
 ${tool.getIndentation(0)} * $tool.getJavadocComment($specification.getDocumentation(), 0, " * ")
-#end
 ${tool.getIndentation(0)} *
-${tool.getIndentation(0)} * <p>
-${tool.getIndentation(0)} *   This specification is identified by {@code <$specification.getIdentifier()>}.
-${tool.getIndentation(0)} * </p>
-${tool.getIndentation(0)} * <p>
-${tool.getIndentation(0)} *   Use of class {@code ObjectManager} is supported for accessing implementations.
-${tool.getIndentation(0)} *   <blockquote><pre>
-#if($specification.getMultiplicity().value() == "One")
-${tool.getIndentation(0)} * $tool.getJavaTypeName($specification,false) object = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getHtmlString($tool.getJavaTypeName($specification,false))}.class );
-#elseif($specification.getMultiplicity().value() == "Many")
-${tool.getIndentation(0)} * ${tool.getJavaTypeName($specification,false)}[] objects = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getHtmlString($tool.getJavaTypeName($specification,false))}[].class );
 #end
-${tool.getIndentation(0)} * $tool.getJavaTypeName($specification,false) object = ObjectManagerFactory.getObjectManager( getClass().getClassLoader() ).getObject( ${tool.getHtmlString($tool.getJavaTypeName($specification,false))}.class, "<i>implementation name</i>" );
-${tool.getIndentation(0)} *   </pre></blockquote>
-${tool.getIndentation(0)} * </p>
 ${tool.getIndentation(0)} * <dl>
+${tool.getIndentation(0)} *   <dt><b>Identifier:</b></dt><dd>$tool.getHtmlString($specification.getIdentifier())</dd>
 ${tool.getIndentation(0)} *   <dt><b>Multiplicity:</b></dt><dd>$specification.getMultiplicity().value()</dd>
 ${tool.getIndentation(0)} *   <dt><b>Scope:</b></dt><dd>#if(!$specification.getScope())None#else$specification.getScope()#end</dd>
 ${tool.getIndentation(0)} * </dl>
@@ -97,8 +84,14 @@ ${tool.getIndentation(0)} * @version $tool.getHtmlString($specification.getVersi
 ${tool.getIndentation(0)} * @version This specification does not support versioning.
 #end
 #end
+#set( $H = '#' )
+#if($specification.getMultiplicity().value() == "One")
+${tool.getIndentation(0)} * @see org.jomc.ObjectManager${H}getObject(java.lang.Class) getObject(${tool.getHtmlString($tool.getJavaTypeName($specification,false))}.class)
+#elseif($specification.getMultiplicity().value() == "Many")
+${tool.getIndentation(0)} * @see org.jomc.ObjectManager${H}getObject(java.lang.Class) getObject(${tool.getHtmlString($tool.getJavaTypeName($specification,false))}[].class)
+#end
+${tool.getIndentation(0)} * @see org.jomc.ObjectManager${H}getObject(java.lang.Class,java.lang.String) getObject(${tool.getHtmlString($tool.getJavaTypeName($specification,false))}.class, "<i>implementation name</i>")
 ${tool.getIndentation(0)} * @see org.jomc.ObjectManagerFactory
-${tool.getIndentation(0)} * @see org.jomc.ObjectManager
 ${tool.getIndentation(0)} */
 #end
 #if($with-editor-fold)
