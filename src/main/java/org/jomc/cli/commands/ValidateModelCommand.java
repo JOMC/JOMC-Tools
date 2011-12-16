@@ -45,17 +45,10 @@ import org.jomc.modlet.ModelValidationReport;
 /**
  * JOMC CLI {@code validate-model} command implementation.
  *
- * <p>
- *   This implementation is identified by {@code <JOMC CLI validate-model Command>}.
- * </p>
- * <p>
- *   It provides objects named {@code <default-validate-model>} of the following specifications:
- *
- *   <ul>
- *     <li>{@code <JOMC CLI Command>} at specification level 1.0.</li>
- *   </ul>
- * </p>
  * <dl>
+ *   <dt><b>Identifier:</b></dt><dd>JOMC CLI validate-model Command</dd>
+ *   <dt><b>Name:</b></dt><dd>default-validate-model</dd>
+ *   <dt><b>Implements:</b></dt><dd>JOMC CLI Command@1.0</dd></dt>
  *   <dt><b>Abstract:</b></dt><dd>No</dd>
  *   <dt><b>Final:</b></dt><dd>No</dd>
  *   <dt><b>Stateless:</b></dt><dd>No</dd>

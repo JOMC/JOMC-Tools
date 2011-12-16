@@ -86,17 +86,10 @@ import org.jomc.modlet.Services;
 /**
  * JOMC CLI modlet based command implementation.
  *
- * <p>
- *   This implementation is identified by {@code <JOMC CLI Modlet Command>}.
- * </p>
- * <p>
- *   It provides objects named {@code <JOMC CLI Modlet Command>} of the following specifications:
- *
- *   <ul>
- *     <li>{@code <JOMC CLI Command>} at specification level 1.0.</li>
- *   </ul>
- * </p>
  * <dl>
+ *   <dt><b>Identifier:</b></dt><dd>JOMC CLI Modlet Command</dd>
+ *   <dt><b>Name:</b></dt><dd>JOMC CLI Modlet Command</dd>
+ *   <dt><b>Implements:</b></dt><dd>JOMC CLI Command@1.0</dd></dt>
  *   <dt><b>Abstract:</b></dt><dd>Yes</dd>
  *   <dt><b>Final:</b></dt><dd>No</dd>
  *   <dt><b>Stateless:</b></dt><dd>No</dd>

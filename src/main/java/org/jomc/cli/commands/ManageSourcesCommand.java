@@ -57,17 +57,10 @@ import org.jomc.tools.SourceFileProcessor;
 /**
  * JOMC CLI {@code manage-sources} command implementation.
  *
- * <p>
- *   This implementation is identified by {@code <JOMC CLI manage-sources Command>}.
- * </p>
- * <p>
- *   It provides objects named {@code <default-manage-sources>} of the following specifications:
- *
- *   <ul>
- *     <li>{@code <JOMC CLI Command>} at specification level 1.0.</li>
- *   </ul>
- * </p>
  * <dl>
+ *   <dt><b>Identifier:</b></dt><dd>JOMC CLI manage-sources Command</dd>
+ *   <dt><b>Name:</b></dt><dd>default-manage-sources</dd>
+ *   <dt><b>Implements:</b></dt><dd>JOMC CLI Command@1.0</dd></dt>
  *   <dt><b>Abstract:</b></dt><dd>No</dd>
  *   <dt><b>Final:</b></dt><dd>No</dd>
  *   <dt><b>Stateless:</b></dt><dd>No</dd>

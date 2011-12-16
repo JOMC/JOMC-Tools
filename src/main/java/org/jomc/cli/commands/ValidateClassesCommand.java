@@ -56,17 +56,10 @@ import org.jomc.tools.ClassFileProcessor;
 /**
  * JOMC CLI {@code validate-classes} command implementation.
  *
- * <p>
- *   This implementation is identified by {@code <JOMC CLI validate-classes Command>}.
- * </p>
- * <p>
- *   It provides objects named {@code <default-validate-classes>} of the following specifications:
- *
- *   <ul>
- *     <li>{@code <JOMC CLI Command>} at specification level 1.0.</li>
- *   </ul>
- * </p>
  * <dl>
+ *   <dt><b>Identifier:</b></dt><dd>JOMC CLI validate-classes Command</dd>
+ *   <dt><b>Name:</b></dt><dd>default-validate-classes</dd>
+ *   <dt><b>Implements:</b></dt><dd>JOMC CLI Command@1.0</dd></dt>
  *   <dt><b>Abstract:</b></dt><dd>No</dd>
  *   <dt><b>Final:</b></dt><dd>No</dd>
  *   <dt><b>Stateless:</b></dt><dd>No</dd>

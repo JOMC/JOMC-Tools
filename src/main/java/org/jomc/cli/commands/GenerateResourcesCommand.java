@@ -57,17 +57,10 @@ import org.jomc.tools.ResourceFileProcessor;
 /**
  * JOMC CLI {@code generate-resources} command implementation.
  *
- * <p>
- *   This implementation is identified by {@code <JOMC CLI generate-resources Command>}.
- * </p>
- * <p>
- *   It provides objects named {@code <default-generate-resources>} of the following specifications:
- *
- *   <ul>
- *     <li>{@code <JOMC CLI Command>} at specification level 1.0.</li>
- *   </ul>
- * </p>
  * <dl>
+ *   <dt><b>Identifier:</b></dt><dd>JOMC CLI generate-resources Command</dd>
+ *   <dt><b>Name:</b></dt><dd>default-generate-resources</dd>
+ *   <dt><b>Implements:</b></dt><dd>JOMC CLI Command@1.0</dd></dt>
  *   <dt><b>Abstract:</b></dt><dd>No</dd>
  *   <dt><b>Final:</b></dt><dd>No</dd>
  *   <dt><b>Stateless:</b></dt><dd>No</dd>

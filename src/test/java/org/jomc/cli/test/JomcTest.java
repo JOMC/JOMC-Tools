@@ -66,10 +66,9 @@ import static org.junit.Assert.assertTrue;
 /**
  * Tests the {@code Jomc} CLI class.
  *
- * <p>
- *   This implementation is identified by {@code <org.jomc.cli.test.JomcTest>}.
- * </p>
  * <dl>
+ *   <dt><b>Identifier:</b></dt><dd>org.jomc.cli.test.JomcTest</dd>
+ *   <dt><b>Name:</b></dt><dd>JOMC CLI Tests</dd>
  *   <dt><b>Abstract:</b></dt><dd>No</dd>
  *   <dt><b>Final:</b></dt><dd>No</dd>
  *   <dt><b>Stateless:</b></dt><dd>No</dd>
