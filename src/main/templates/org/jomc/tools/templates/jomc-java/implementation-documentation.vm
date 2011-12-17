@@ -63,14 +63,19 @@ ${tool.getIndentation(0)}// <editor-fold defaultstate="collapsed" desc=" Generat
 ${tool.getIndentation(0)}/**
 #if($implementation.getDocumentation())
 ${tool.getIndentation(0)} * $tool.getJavadocComment($implementation.getDocumentation(), 0, " * ")
-${tool.getIndentation(0)} *
+#else
+${tool.getIndentation(0)} * Implementation {@code <$implementation.getIdentifier()>}.
 #end
+${tool.getIndentation(0)} *
 ${tool.getIndentation(0)} * <dl>
 ${tool.getIndentation(0)} *   <dt><b>Identifier:</b></dt><dd>$tool.getHtmlString($implementation.getIdentifier())</dd>
 ${tool.getIndentation(0)} *   <dt><b>Name:</b></dt><dd>$tool.getHtmlString($implementation.getName())</dd>
 #set($specifications = $modules.getSpecifications($implementation.getIdentifier()))
 #if($specifications && !$specifications.getReference().isEmpty())
-${tool.getIndentation(0)} *   <dt><b>Implements:</b></dt><dd>#foreach($reference in $specifications.getReference())$tool.getHtmlString($reference.getIdentifier())#if($reference.getVersion())@$tool.getHtmlString($reference.getVersion())#end#if(!$foreach.last), #end#end</dd></dt>
+${tool.getIndentation(0)} *   <dt><b>Specifications:</b></dt>
+#foreach($reference in $specifications.getReference())
+${tool.getIndentation(0)} *     <dd>$tool.getHtmlString($reference.getIdentifier())#if($reference.getVersion()) @ $tool.getHtmlString($reference.getVersion())#end</dd>
+#end
 #end
 ${tool.getIndentation(0)} *   <dt><b>Abstract:</b></dt><dd>$tool.getBooleanString($implementation.isAbstract())</dd>
 ${tool.getIndentation(0)} *   <dt><b>Final:</b></dt><dd>$tool.getBooleanString($implementation.isFinal())</dd>

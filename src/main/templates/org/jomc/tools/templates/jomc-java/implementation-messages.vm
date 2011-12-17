@@ -65,16 +65,13 @@ ${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generat
 #if($with-javadoc)
 ${tool.getIndentation(1)}/**
 ${tool.getIndentation(1)} * Gets the text of the {@code <$message.getName()>} message.
-${tool.getIndentation(1)} * <p><strong>Languages:</strong>
-${tool.getIndentation(1)} *   <ul>
+${tool.getIndentation(1)} * <p><dl>
+${tool.getIndentation(1)} *   <dt><b>Languages:</b></dt>
 #foreach($text in $message.getTemplate().getText())
-${tool.getIndentation(1)} *     <li>$tool.getHtmlString($tool.getDisplayLanguage($text.getLanguage()))#if($message.getTemplate().getDefaultLanguage() == $text.getLanguage()) (default)#end</li>
+${tool.getIndentation(1)} *     <dd>$tool.getHtmlString($tool.getDisplayLanguage($text.getLanguage()))#if($message.getTemplate().getDefaultLanguage() == $text.getLanguage()) (default)#end</dd>
 #end
-${tool.getIndentation(1)} *   </ul>
-${tool.getIndentation(1)} * </p>
-${tool.getIndentation(1)} * <dl>
 ${tool.getIndentation(1)} *   <dt><b>Final:</b></dt><dd>$tool.getBooleanString($message.isFinal())</dd>
-${tool.getIndentation(1)} * </dl>
+${tool.getIndentation(1)} * </dl></p>
 ${tool.getIndentation(1)} *
 ${tool.getIndentation(1)} * @param locale The locale of the message to return.
 #if($message.getArguments() && !$message.getArguments().getArgument().isEmpty())

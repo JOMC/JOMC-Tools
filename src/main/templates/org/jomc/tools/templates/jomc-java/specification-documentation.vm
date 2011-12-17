@@ -63,8 +63,10 @@ ${tool.getIndentation(0)}// <editor-fold defaultstate="collapsed" desc=" Generat
 ${tool.getIndentation(0)}/**
 #if($specification.getDocumentation())
 ${tool.getIndentation(0)} * $tool.getJavadocComment($specification.getDocumentation(), 0, " * ")
-${tool.getIndentation(0)} *
+#else
+${tool.getIndentation(0)} * Specification {@code <$specification.getIdentifier()>}.
 #end
+${tool.getIndentation(0)} *
 ${tool.getIndentation(0)} * <dl>
 ${tool.getIndentation(0)} *   <dt><b>Identifier:</b></dt><dd>$tool.getHtmlString($specification.getIdentifier())</dd>
 ${tool.getIndentation(0)} *   <dt><b>Multiplicity:</b></dt><dd>$specification.getMultiplicity().value()</dd>
