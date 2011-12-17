@@ -65,7 +65,6 @@ ${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generat
 #if($with-javadoc)
 ${tool.getIndentation(1)}/**
 ${tool.getIndentation(1)} * Gets the options of the command.
-${tool.getIndentation(1)} *
 ${tool.getIndentation(1)} * <p><strong>Options:</strong>
 ${tool.getIndentation(1)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
 ${tool.getIndentation(1)} *     <tr class="TableSubHeadingColor">
@@ -81,7 +80,6 @@ ${tool.getIndentation(1)} *     </tr>
 #end
 ${tool.getIndentation(1)} *   </table>
 ${tool.getIndentation(1)} * </p>
-${tool.getIndentation(1)} *
 ${tool.getIndentation(1)} * @return The options of the command.
 ${tool.getIndentation(1)} */
 #end
