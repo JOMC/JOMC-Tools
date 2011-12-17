@@ -659,11 +659,9 @@ public final class Jomc
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
     /**
      * Gets the value of the {@code <descPad>} property.
-     * <p>
-     *   <dl>
-     *     <dt><b>Final:</b></dt><dd>No</dd>
-     *   </dl>
-     * </p>
+     * <p><dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl></p>
      * @return The number of characters of padding to be prefixed to each description line.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -676,11 +674,9 @@ public final class Jomc
     }
     /**
      * Gets the value of the {@code <helpCommandName>} property.
-     * <p>
-     *   <dl>
-     *     <dt><b>Final:</b></dt><dd>No</dd>
-     *   </dl>
-     * </p>
+     * <p><dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl></p>
      * @return The name of the command used to request help.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -693,11 +689,9 @@ public final class Jomc
     }
     /**
      * Gets the value of the {@code <leftPad>} property.
-     * <p>
-     *   <dl>
-     *     <dt><b>Final:</b></dt><dd>No</dd>
-     *   </dl>
-     * </p>
+     * <p><dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl></p>
      * @return The number of characters of padding to be prefixed to each line.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -710,11 +704,9 @@ public final class Jomc
     }
     /**
      * Gets the value of the {@code <width>} property.
-     * <p>
-     *   <dl>
-     *     <dt><b>Final:</b></dt><dd>No</dd>
-     *   </dl>
-     * </p>
+     * <p><dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl></p>
      * @return The number of characters per line for the usage statement.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -731,15 +723,12 @@ public final class Jomc
     // <editor-fold defaultstate="collapsed" desc=" Generated Messages ">
     /**
      * Gets the text of the {@code <defaultExceptionMessage>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <defaultExceptionMessage>} message for {@code locale}.
@@ -754,15 +743,12 @@ public final class Jomc
     }
     /**
      * Gets the text of the {@code <defaultLogLevelInfo>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param defaultLogLevel Format argument.
@@ -778,15 +764,12 @@ public final class Jomc
     }
     /**
      * Gets the text of the {@code <illegalArgumentsInfo>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param command Format argument.
@@ -803,15 +786,12 @@ public final class Jomc
     }
     /**
      * Gets the text of the {@code <timeInfo>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param time Format argument.
@@ -827,15 +807,12 @@ public final class Jomc
     }
     /**
      * Gets the text of the {@code <usage>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param helpCommandName Format argument.

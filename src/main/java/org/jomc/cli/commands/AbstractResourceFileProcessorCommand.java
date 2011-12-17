@@ -46,7 +46,8 @@ import org.jomc.tools.ResourceFileProcessor;
  * <dl>
  *   <dt><b>Identifier:</b></dt><dd>JOMC CLI ResourceFileProcessor Command</dd>
  *   <dt><b>Name:</b></dt><dd>JOMC CLI ResourceFileProcessor Command</dd>
- *   <dt><b>Implements:</b></dt><dd>JOMC CLI Command@1.0</dd></dt>
+ *   <dt><b>Specifications:</b></dt>
+ *     <dd>JOMC CLI Command @ 1.0</dd>
  *   <dt><b>Abstract:</b></dt><dd>Yes</dd>
  *   <dt><b>Final:</b></dt><dd>No</dd>
  *   <dt><b>Stateless:</b></dt><dd>No</dd>
@@ -771,11 +772,9 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
     /**
      * Gets the value of the {@code <abbreviatedCommandName>} property.
-     * <p>
-     *   <dl>
-     *     <dt><b>Final:</b></dt><dd>No</dd>
-     *   </dl>
-     * </p>
+     * <p><dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl></p>
      * @return Abbreviated name of the command.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -788,11 +787,9 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the value of the {@code <applicationModlet>} property.
-     * <p>
-     *   <dl>
-     *     <dt><b>Final:</b></dt><dd>Yes</dd>
-     *   </dl>
-     * </p>
+     * <p><dl>
+     *   <dt><b>Final:</b></dt><dd>Yes</dd>
+     * </dl></p>
      * @return Name of the 'shaded' application modlet.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -805,11 +802,9 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the value of the {@code <commandName>} property.
-     * <p>
-     *   <dl>
-     *     <dt><b>Final:</b></dt><dd>No</dd>
-     *   </dl>
-     * </p>
+     * <p><dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl></p>
      * @return Name of the command.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -822,11 +817,9 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the value of the {@code <modletExcludes>} property.
-     * <p>
-     *   <dl>
-     *     <dt><b>Final:</b></dt><dd>Yes</dd>
-     *   </dl>
-     * </p>
+     * <p><dl>
+     *   <dt><b>Final:</b></dt><dd>Yes</dd>
+     * </dl></p>
      * @return List of modlet names to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -839,11 +832,9 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the value of the {@code <providerExcludes>} property.
-     * <p>
-     *   <dl>
-     *     <dt><b>Final:</b></dt><dd>Yes</dd>
-     *   </dl>
-     * </p>
+     * <p><dl>
+     *   <dt><b>Final:</b></dt><dd>Yes</dd>
+     * </dl></p>
      * @return List of providers to exclude from any {@code META-INF/services} files separated by {@code :}.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -856,11 +847,9 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the value of the {@code <schemaExcludes>} property.
-     * <p>
-     *   <dl>
-     *     <dt><b>Final:</b></dt><dd>Yes</dd>
-     *   </dl>
-     * </p>
+     * <p><dl>
+     *   <dt><b>Final:</b></dt><dd>Yes</dd>
+     * </dl></p>
      * @return List of schema context-ids to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -873,11 +862,9 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the value of the {@code <serviceExcludes>} property.
-     * <p>
-     *   <dl>
-     *     <dt><b>Final:</b></dt><dd>Yes</dd>
-     *   </dl>
-     * </p>
+     * <p><dl>
+     *   <dt><b>Final:</b></dt><dd>Yes</dd>
+     * </dl></p>
      * @return List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -894,14 +881,11 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     // <editor-fold defaultstate="collapsed" desc=" Generated Messages ">
     /**
      * Gets the text of the {@code <applicationTitle>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <applicationTitle>} message for {@code locale}.
@@ -916,15 +900,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <cannotProcessMessage>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param itemInfo Format argument.
@@ -941,15 +922,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <classpathElementInfo>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param classpathElement Format argument.
@@ -965,15 +943,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <classpathElementNotFoundWarning>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param fileName Format argument.
@@ -989,15 +964,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <commandFailureMessage>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
@@ -1013,15 +985,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <commandInfoMessage>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
@@ -1037,15 +1006,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <commandSuccessMessage>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
@@ -1061,15 +1027,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <defaultLogLevelInfo>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param defaultLogLevel Format argument.
@@ -1085,15 +1048,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <disabledMessage>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <disabledMessage>} message for {@code locale}.
@@ -1108,15 +1068,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <documentFileInfo>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param documentFile Format argument.
@@ -1132,15 +1089,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <documentFileNotFoundWarning>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param fileName Format argument.
@@ -1156,15 +1110,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <excludedModletInfo>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
@@ -1181,15 +1132,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <excludedProviderInfo>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
@@ -1206,15 +1154,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <excludedSchemaInfo>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
@@ -1231,15 +1176,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <excludedServiceInfo>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
@@ -1256,15 +1198,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <failedCreatingObjectMessage>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param objectInfo Format argument.
@@ -1280,15 +1219,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <implementationNotFoundWarning>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>Yes</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param implementationIdentifier Format argument.
@@ -1304,15 +1240,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <invalidModelMessage>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param modelIdentifier Format argument.
@@ -1328,14 +1261,11 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <longDescriptionMessage>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <longDescriptionMessage>} message for {@code locale}.
@@ -1350,15 +1280,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <moduleNotFoundWarning>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>Yes</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param moduleName Format argument.
@@ -1374,15 +1301,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <readingMessage>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param locationInfo Format argument.
@@ -1398,14 +1322,11 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <separator>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <separator>} message for {@code locale}.
@@ -1420,14 +1341,11 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <shortDescriptionMessage>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <shortDescriptionMessage>} message for {@code locale}.
@@ -1442,15 +1360,12 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     /**
      * Gets the text of the {@code <specificationNotFoundWarning>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *     <li>Deutsch</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
+     *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>Yes</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param specificationIdentifier Format argument.

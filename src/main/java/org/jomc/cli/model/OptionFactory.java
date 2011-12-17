@@ -130,11 +130,9 @@ public final class OptionFactory
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
     /**
      * Gets the value of the {@code <longOpt>} property.
-     * <p>
-     *   <dl>
-     *     <dt><b>Final:</b></dt><dd>No</dd>
-     *   </dl>
-     * </p>
+     * <p><dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl></p>
      * @return Long name of the option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -147,11 +145,9 @@ public final class OptionFactory
     }
     /**
      * Gets the value of the {@code <numberOfArgs>} property.
-     * <p>
-     *   <dl>
-     *     <dt><b>Final:</b></dt><dd>No</dd>
-     *   </dl>
-     * </p>
+     * <p><dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl></p>
      * @return Number of argument values the option can take.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -164,11 +160,9 @@ public final class OptionFactory
     }
     /**
      * Gets the value of the {@code <opt>} property.
-     * <p>
-     *   <dl>
-     *     <dt><b>Final:</b></dt><dd>No</dd>
-     *   </dl>
-     * </p>
+     * <p><dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl></p>
      * @return Name of the option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -181,11 +175,9 @@ public final class OptionFactory
     }
     /**
      * Gets the value of the {@code <optionalArg>} property.
-     * <p>
-     *   <dl>
-     *     <dt><b>Final:</b></dt><dd>No</dd>
-     *   </dl>
-     * </p>
+     * <p><dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl></p>
      * @return Query to see if the option can have an optional argument.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -198,11 +190,9 @@ public final class OptionFactory
     }
     /**
      * Gets the value of the {@code <required>} property.
-     * <p>
-     *   <dl>
-     *     <dt><b>Final:</b></dt><dd>No</dd>
-     *   </dl>
-     * </p>
+     * <p><dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl></p>
      * @return Query to see if the option is required.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -215,11 +205,9 @@ public final class OptionFactory
     }
     /**
      * Gets the value of the {@code <valueSeparator>} property.
-     * <p>
-     *   <dl>
-     *     <dt><b>Final:</b></dt><dd>No</dd>
-     *   </dl>
-     * </p>
+     * <p><dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl></p>
      * @return Value separator of the option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
@@ -236,14 +224,11 @@ public final class OptionFactory
     // <editor-fold defaultstate="collapsed" desc=" Generated Messages ">
     /**
      * Gets the text of the {@code <argumentDescription>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @return Display name for the argument value of the option.
@@ -258,14 +243,11 @@ public final class OptionFactory
     }
     /**
      * Gets the text of the {@code <description>} message.
-     * <p><strong>Languages:</strong>
-     *   <ul>
-     *     <li>English (default)</li>
-     *   </ul>
-     * </p>
-     * <dl>
+     * <p><dl>
+     *   <dt><b>Languages:</b></dt>
+     *     <dd>English (default)</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
+     * </dl></p>
      *
      * @param locale The locale of the message to return.
      * @param valueSeparator Format argument.
