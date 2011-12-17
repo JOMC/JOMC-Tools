@@ -446,7 +446,6 @@ public abstract class AbstractCommand
      *     <dd>English (default)</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <applicationTitle>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
@@ -466,7 +465,6 @@ public abstract class AbstractCommand
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
      * @return The text of the {@code <commandFailureMessage>} message for {@code locale}.
@@ -487,7 +485,6 @@ public abstract class AbstractCommand
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
      * @return The text of the {@code <commandInfoMessage>} message for {@code locale}.
@@ -508,7 +505,6 @@ public abstract class AbstractCommand
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
      * @return The text of the {@code <commandSuccessMessage>} message for {@code locale}.
@@ -529,7 +525,6 @@ public abstract class AbstractCommand
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param defaultLogLevel Format argument.
      * @return The text of the {@code <defaultLogLevelInfo>} message for {@code locale}.
@@ -549,7 +544,6 @@ public abstract class AbstractCommand
      *     <dd>English (default)</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <longDescriptionMessage>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
@@ -568,7 +562,6 @@ public abstract class AbstractCommand
      *     <dd>English (default)</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <separator>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
@@ -587,7 +580,6 @@ public abstract class AbstractCommand
      *     <dd>English (default)</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <shortDescriptionMessage>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
@@ -605,7 +597,6 @@ public abstract class AbstractCommand
     // <editor-fold defaultstate="collapsed" desc=" Generated Options ">
     /**
      * Gets the options of the command.
-     *
      * <p><strong>Options:</strong>
      *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
      *     <tr class="TableSubHeadingColor">
@@ -614,7 +605,6 @@ public abstract class AbstractCommand
      *     </tr>
      *   </table>
      * </p>
-     *
      * @return The options of the command.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )

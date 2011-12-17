@@ -729,7 +729,6 @@ public final class Jomc
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <defaultExceptionMessage>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
@@ -749,7 +748,6 @@ public final class Jomc
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param defaultLogLevel Format argument.
      * @return The text of the {@code <defaultLogLevelInfo>} message for {@code locale}.
@@ -770,7 +768,6 @@ public final class Jomc
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param command Format argument.
      * @param helpCommandName Format argument.
@@ -792,7 +789,6 @@ public final class Jomc
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param time Format argument.
      * @return The text of the {@code <timeInfo>} message for {@code locale}.
@@ -813,7 +809,6 @@ public final class Jomc
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param helpCommandName Format argument.
      * @return The text of the {@code <usage>} message for {@code locale}.

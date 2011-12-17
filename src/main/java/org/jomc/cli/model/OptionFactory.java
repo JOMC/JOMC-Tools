@@ -229,7 +229,6 @@ public final class OptionFactory
      *     <dd>English (default)</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @return Display name for the argument value of the option.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
@@ -248,7 +247,6 @@ public final class OptionFactory
      *     <dd>English (default)</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param valueSeparator Format argument.
      * @return Display description of the option.

@@ -519,7 +519,6 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     <dd>English (default)</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <applicationTitle>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
@@ -539,7 +538,6 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param itemInfo Format argument.
      * @param detailMessage Format argument.
@@ -561,7 +559,6 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param classpathElement Format argument.
      * @return The text of the {@code <classpathElementInfo>} message for {@code locale}.
@@ -582,7 +579,6 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param fileName Format argument.
      * @return The text of the {@code <classpathElementNotFoundWarning>} message for {@code locale}.
@@ -603,7 +599,6 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
      * @return The text of the {@code <commandFailureMessage>} message for {@code locale}.
@@ -624,7 +619,6 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
      * @return The text of the {@code <commandInfoMessage>} message for {@code locale}.
@@ -645,7 +639,6 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
      * @return The text of the {@code <commandSuccessMessage>} message for {@code locale}.
@@ -666,7 +659,6 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param defaultLogLevel Format argument.
      * @return The text of the {@code <defaultLogLevelInfo>} message for {@code locale}.
@@ -687,7 +679,6 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param documentFile Format argument.
      * @return The text of the {@code <documentFileInfo>} message for {@code locale}.
@@ -708,7 +699,6 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param fileName Format argument.
      * @return The text of the {@code <documentFileNotFoundWarning>} message for {@code locale}.
@@ -729,7 +719,6 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
      * @param modletIdentifier Format argument.
@@ -751,7 +740,6 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
      * @param providerName Format argument.
@@ -773,7 +761,6 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
      * @param contextId Format argument.
@@ -795,7 +782,6 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param resourceName Format argument.
      * @param serviceName Format argument.
@@ -817,7 +803,6 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param modelIdentifier Format argument.
      * @return The text of the {@code <invalidModelMessage>} message for {@code locale}.
@@ -838,7 +823,6 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <longDescriptionMessage>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
@@ -858,7 +842,6 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @param locationInfo Format argument.
      * @return The text of the {@code <readingMessage>} message for {@code locale}.
@@ -878,7 +861,6 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     <dd>English (default)</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <separator>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
@@ -898,7 +880,6 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     <dd>Deutsch</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
-     *
      * @param locale The locale of the message to return.
      * @return The text of the {@code <shortDescriptionMessage>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
@@ -916,7 +897,6 @@ public final class ValidateModelCommand extends AbstractModelCommand
     // <editor-fold defaultstate="collapsed" desc=" Generated Options ">
     /**
      * Gets the options of the command.
-     *
      * <p><strong>Options:</strong>
      *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
      *     <tr class="TableSubHeadingColor">
@@ -981,7 +961,6 @@ public final class ValidateModelCommand extends AbstractModelCommand
      *     </tr>
      *   </table>
      * </p>
-     *
      * @return The options of the command.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
