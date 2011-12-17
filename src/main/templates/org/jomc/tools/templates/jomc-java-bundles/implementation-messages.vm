@@ -72,7 +72,6 @@ ${tool.getIndentation(1)} *     <dd>$tool.getHtmlString($tool.getDisplayLanguage
 #end
 ${tool.getIndentation(1)} *   <dt><b>Final:</b></dt><dd>$tool.getBooleanString($message.isFinal())</dd>
 ${tool.getIndentation(1)} * </dl></p>
-${tool.getIndentation(1)} *
 ${tool.getIndentation(1)} * @param locale The locale of the message to return.
 #if($message.getArguments() && !$message.getArguments().getArgument().isEmpty())
 #set($i = 0)
