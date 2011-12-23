@@ -69,16 +69,6 @@
     </release>
     <!-- *********************************************************************************************************** -->
     <release version="1.2">
-      <action dev="schulte2005" type="fix"><![CDATA[Corrected the <code>resource-dir</code> and <code>source-dir</code>
-      command line arguments to disallow multiple values.]]>
-      </action>
-      <action dev="schulte2005" type="update"><![CDATA[Updated the <code>merge-modlets</code> and
-      <code>merge-modules</code> commands of the command line application to add system properties to
-      <code>Transformer</code>s as parameters.]]>
-      </action>
-      <action dev="schulte2005" type="update"><![CDATA[Added a <code>stylesheet</code> option to the
-      <code>commit-classes</code> command of the command line application to support class file transformations.]]>
-      </action>
       <action dev="schulte2005" type="add"><![CDATA[Added options <code>default-template-profile</code>,
       <code>indentation</code>, <code>input-encoding</code>, <code>line-separator</code>,
       <code>model-context-class</code>, <code>modlet-schema-system-id</code>, <code>no-resource-processing</code>,
@@ -131,6 +121,16 @@
       <code>commit-classes</code>, <code>generate-resources</code>, <code>manage-sources</code>,
       <code>merge-modules</code>, <code>show-model</code>, <code>validate-classes</code> and
       <code>validate-model</code> commands of the command line application.]]>
+      </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Corrected the <code>resource-dir</code> and <code>source-dir</code>
+      command line arguments to disallow multiple values.]]>
+      </action>
+      <action dev="schulte2005" type="update"><![CDATA[Updated the <code>merge-modlets</code> and
+      <code>merge-modules</code> commands of the command line application to add system properties to
+      <code>Transformer</code>s as parameters.]]>
+      </action>
+      <action dev="schulte2005" type="update"><![CDATA[Added a <code>stylesheet</code> option to the
+      <code>commit-classes</code> command of the command line application to support class file transformations.]]>
       </action>
       <action dev="schulte2005" type="remove"><![CDATA[Removed optional <code>oro</code> Java archive from
       distribution.]]>
