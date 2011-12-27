@@ -380,8 +380,7 @@ public class ToolsModelProvider implements ModelProvider
                                 boolean finalAncestor = false;
 
                                 final Set<InheritanceModel.Node<JAXBElement<?>>> sourceFilesNodes =
-                                    imodel.getEffectiveJaxbElementNodes( implementation.getIdentifier(),
-                                                                         SOURCE_FILES_QNAME );
+                                    imodel.getJaxbElementNodes( implementation.getIdentifier(), SOURCE_FILES_QNAME );
 
                                 for ( final InheritanceModel.Node<JAXBElement<?>> sourceFilesNode : sourceFilesNodes )
                                 {
@@ -430,8 +429,7 @@ public class ToolsModelProvider implements ModelProvider
                             boolean override = false;
 
                             final Set<InheritanceModel.Node<JAXBElement<?>>> sourceFilesNodes =
-                                imodel.getEffectiveJaxbElementNodes( implementation.getIdentifier(),
-                                                                     SOURCE_FILES_QNAME );
+                                imodel.getJaxbElementNodes( implementation.getIdentifier(), SOURCE_FILES_QNAME );
 
                             for ( final InheritanceModel.Node<JAXBElement<?>> e : sourceFilesNodes )
                             {
