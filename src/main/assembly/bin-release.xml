@@ -44,6 +44,15 @@
   </componentDescriptors>
   <fileSets>
     <fileSet>
+      <directory>${project.build.directory}/jomc-tests</directory>
+      <fileMode>0555</fileMode>
+      <directoryMode>0755</directoryMode>
+      <outputDirectory>/lib/test</outputDirectory>
+      <includes>
+        <include>*.jar</include>
+      </includes>
+    </fileSet>
+    <fileSet>
       <directory>${project.build.directory}/jomc-javadoc</directory>
       <fileMode>0444</fileMode>
       <directoryMode>0755</directoryMode>
@@ -104,4 +113,15 @@
       </includes>
     </fileSet>
   </fileSets>
+  <dependencySets>
+    <dependencySet>
+      <directoryMode>0755</directoryMode>
+      <fileMode>0555</fileMode>
+      <scope>test</scope>
+      <outputDirectory>/lib/test</outputDirectory>
+      <includes>
+        <include>junit:junit</include>
+      </includes>
+    </dependencySet>
+  </dependencySets>
 </assembly>
