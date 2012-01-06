@@ -31,14 +31,19 @@
 package org.jomc.tools;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -1154,7 +1159,7 @@ public class SourceFileProcessor extends JomcTool
                             log( Level.FINER, getMessage( "reading", f.getAbsolutePath() ), null );
                         }
 
-                        content = FileUtils.readFileToString( f, getInputEncoding() );
+                        content = this.readSourceFile( f );
                     }
 
                     try
@@ -1185,7 +1190,7 @@ public class SourceFileProcessor extends JomcTool
 
                         }
 
-                        FileUtils.writeStringToFile( f, edited, getOutputEncoding() );
+                        this.writeSourceFile( f, edited );
                     }
                     else if ( isLoggable( Level.FINER ) )
                     {
@@ -1202,5 +1207,99 @@ public class SourceFileProcessor extends JomcTool
             }
         }
 
+        private String readSourceFile( final File file ) throws IOException
+        {
+            if ( file == null )
+            {
+                throw new NullPointerException( "file" );
+            }
+
+            Reader reader = null;
+            boolean suppressExceptionOnClose = true;
+
+            try
+            {
+                reader = new InputStreamReader( new FileInputStream( file ), getInputEncoding() );
+
+                final StringBuilder appendable = new StringBuilder( 16384 );
+                final char[] buf = new char[ 16384 ];
+                int read = reader.read( buf );
+
+                while ( read != -1 )
+                {
+                    appendable.append( buf, 0, read );
+                    read = reader.read( buf );
+                }
+
+                suppressExceptionOnClose = false;
+                return appendable.toString();
+            }
+            finally
+            {
+                try
+                {
+                    if ( reader != null )
+                    {
+                        reader.close();
+                    }
+                }
+                catch ( final IOException e )
+                {
+                    if ( suppressExceptionOnClose )
+                    {
+                        log( Level.SEVERE, null, e );
+                    }
+                    else
+                    {
+                        throw e;
+                    }
+                }
+            }
+        }
+
+        private void writeSourceFile( final File file, final String content ) throws IOException
+        {
+            if ( file == null )
+            {
+                throw new NullPointerException( "file" );
+            }
+            if ( content == null )
+            {
+                throw new NullPointerException( "content" );
+            }
+
+            Writer writer = null;
+            boolean suppressExceptionOnClose = true;
+
+            try
+            {
+                writer = new OutputStreamWriter( new FileOutputStream( file ), getOutputEncoding() );
+                writer.append( content );
+                suppressExceptionOnClose = false;
+            }
+            finally
+            {
+                try
+                {
+                    if ( writer != null )
+                    {
+                        writer.close();
+                    }
+                }
+                catch ( final IOException e )
+                {
+                    if ( suppressExceptionOnClose )
+                    {
+                        log( Level.SEVERE, null, e );
+                    }
+                    else
+                    {
+                        throw e;
+                    }
+                }
+            }
+        }
+
     }
+
 }
