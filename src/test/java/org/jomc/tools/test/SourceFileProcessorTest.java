@@ -543,33 +543,19 @@ public class SourceFileProcessorTest extends JomcToolTest
         assertTrue( resourceName.startsWith( "/" ) );
 
         InputStream in = null;
-        OutputStream out = null;
         boolean suppressExceptionOnClose = true;
 
         try
         {
             in = this.getClass().getResourceAsStream( resourceName );
             assertNotNull( "Resource '" + resourceName + "' not found.", in );
+            OutputStream out = null;
 
-            out = new FileOutputStream( file );
-            IOUtils.copy( in, out );
-            suppressExceptionOnClose = false;
-        }
-        finally
-        {
             try
             {
-                if ( in != null )
-                {
-                    in.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                if ( !suppressExceptionOnClose )
-                {
-                    throw e;
-                }
+                out = new FileOutputStream( file );
+                IOUtils.copy( in, out );
+                suppressExceptionOnClose = false;
             }
             finally
             {
@@ -588,7 +574,23 @@ public class SourceFileProcessorTest extends JomcToolTest
                     }
                 }
             }
-
+        }
+        finally
+        {
+            try
+            {
+                if ( in != null )
+                {
+                    in.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( !suppressExceptionOnClose )
+                {
+                    throw e;
+                }
+            }
         }
     }
 
