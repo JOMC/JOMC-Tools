@@ -645,22 +645,17 @@ public class JomcTest
         try
         {
             in = new ZipInputStream( resource.openStream() );
-            ZipEntry e = null;
+            ZipEntry e;
 
             while ( ( e = in.getNextEntry() ) != null )
             {
-                final File dest = new File( targetDirectory, e.getName() );
-                assertTrue( dest.isAbsolute() );
-
                 if ( e.isDirectory() )
                 {
-                    if ( !dest.exists() )
-                    {
-                        assertTrue( dest.mkdirs() );
-                    }
-
                     continue;
                 }
+
+                final File dest = new File( targetDirectory, e.getName() );
+                assertTrue( dest.isAbsolute() );
 
                 OutputStream out = null;
 
