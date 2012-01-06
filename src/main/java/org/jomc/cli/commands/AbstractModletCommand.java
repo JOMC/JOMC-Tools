@@ -470,6 +470,9 @@ public abstract class AbstractModletCommand extends AbstractCommand
         /** Set of modlet resource locations to filter. */
         private final Set<String> modletResourceLocations = new HashSet<String>();
 
+        /** Set of temporary resources. */
+        private final Set<File> temporaryResources = new HashSet<File>();
+
         /**
          * Creates a new {@code CommandLineClassLoader} taking a command line backing the class loader.
          *
@@ -745,6 +748,25 @@ public abstract class AbstractModletCommand extends AbstractCommand
             return enumeration;
         }
 
+        /**
+         * Removes temporary resources.
+         * @throws Throwable if finalization fails.
+         */
+        @Override
+        protected void finalize() throws Throwable
+        {
+            for ( final File temporaryResource : this.temporaryResources )
+            {
+                if ( temporaryResource.exists() && !temporaryResource.delete() )
+                {
+                    temporaryResource.deleteOnExit();
+                }
+            }
+
+            this.temporaryResources.clear();
+            super.finalize();
+        }
+
         private URL filterProviders( final URL resource ) throws IOException
         {
             InputStream in = null;
@@ -754,15 +776,15 @@ public abstract class AbstractModletCommand extends AbstractCommand
             {
                 in = resource.openStream();
                 URL filteredResource = resource;
-                final List<?> lines = IOUtils.readLines( in, "UTF-8" );
+                final List<String> lines = IOUtils.readLines( in, "UTF-8" );
                 final List<String> providerExcludes = Arrays.asList( getProviderExcludes().split( ":" ) );
                 final List<String> filteredLines = new ArrayList<String>( lines.size() );
 
-                for ( Object line : lines )
+                for ( String line : lines )
                 {
-                    if ( !providerExcludes.contains( line.toString() ) )
+                    if ( !providerExcludes.contains( line.trim() ) )
                     {
-                        filteredLines.add( line.toString() );
+                        filteredLines.add( line.trim() );
                     }
                     else
                     {
@@ -776,12 +798,12 @@ public abstract class AbstractModletCommand extends AbstractCommand
                 {
                     OutputStream out = null;
                     final File tmpResource = File.createTempFile( this.getClass().getName(), ".rsrc" );
-                    tmpResource.deleteOnExit();
+                    this.temporaryResources.add( tmpResource );
 
                     try
                     {
                         out = new FileOutputStream( tmpResource );
-                        IOUtils.writeLines( filteredLines, System.getProperty( "line.separator" ), out, "UTF-8" );
+                        IOUtils.writeLines( filteredLines, System.getProperty( "line.separator", "\n" ), out, "UTF-8" );
                         suppressExceptionOnClose = false;
                     }
                     finally
@@ -887,7 +909,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
                 if ( filtered )
                 {
                     final File tmpResource = File.createTempFile( this.getClass().getName(), ".rsrc" );
-                    tmpResource.deleteOnExit();
+                    this.temporaryResources.add( tmpResource );
                     modelContext.createMarshaller( ModletObject.MODEL_PUBLIC_ID ).marshal(
                         new ObjectFactory().createModlets( modlets ), tmpResource );
 
