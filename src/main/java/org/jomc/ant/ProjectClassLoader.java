@@ -39,6 +39,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -113,6 +114,9 @@ public class ProjectClassLoader extends URLClassLoader
 
     /** Set of provider resource locations to filter. */
     private Set<String> providerResourceLocations;
+
+    /** Set of temporary resources. */
+    private final Set<File> temporaryResources = new HashSet<File>();
 
     /**
      * Creates a new {@code ProjectClassLoader} instance taking a project and a class path.
@@ -339,58 +343,13 @@ public class ProjectClassLoader extends URLClassLoader
     /**
      * Gets a set of modlet names excluded by default.
      *
-     * @return A set of modlet names excluded by default.
+     * @return An unmodifiable set of modlet names excluded by default.
      *
      * @throws IOException if reading configuration resources fails.
      */
     public static Set<String> getDefaultModletExcludes() throws IOException
     {
-        InputStream resource = null;
-        boolean suppressExceptionOnClose = true;
-        final Set<String> defaultModletExcludes = new HashSet<String>();
-
-        try
-        {
-            resource = ProjectClassLoader.class.getResourceAsStream(
-                ABSOLUTE_RESOURCE_NAME_PREFIX + "DefaultModletExcludes" );
-
-            if ( resource != null )
-            {
-                final List<?> lines = IOUtils.readLines( resource, "UTF-8" );
-
-                for ( Object line : lines )
-                {
-                    final String trimmed = line.toString().trim();
-
-                    if ( trimmed.contains( "#" ) || StringUtils.isEmpty( trimmed ) )
-                    {
-                        continue;
-                    }
-
-                    defaultModletExcludes.add( trimmed );
-                }
-            }
-
-            suppressExceptionOnClose = false;
-            return defaultModletExcludes;
-        }
-        finally
-        {
-            try
-            {
-                if ( resource != null )
-                {
-                    resource.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                if ( !suppressExceptionOnClose )
-                {
-                    throw e;
-                }
-            }
-        }
+        return readDefaultExcludes( ABSOLUTE_RESOURCE_NAME_PREFIX + "DefaultModletExcludes" );
     }
 
     /**
@@ -432,58 +391,13 @@ public class ProjectClassLoader extends URLClassLoader
     /**
      * Gets a set of provider names excluded by default.
      *
-     * @return A set of provider names excluded by default.
+     * @return An unmodifiable set of provider names excluded by default.
      *
      * @throws IOException if reading configuration resources fails.
      */
     public static Set<String> getDefaultProviderExcludes() throws IOException
     {
-        InputStream resource = null;
-        boolean suppressExceptionOnClose = true;
-        final Set<String> defaultProviderExcludes = new HashSet<String>();
-
-        try
-        {
-            resource = ProjectClassLoader.class.getResourceAsStream(
-                ABSOLUTE_RESOURCE_NAME_PREFIX + "DefaultProviderExcludes" );
-
-            if ( resource != null )
-            {
-                final List<?> lines = IOUtils.readLines( resource, "UTF-8" );
-
-                for ( Object line : lines )
-                {
-                    final String trimmed = line.toString().trim();
-
-                    if ( trimmed.contains( "#" ) || StringUtils.isEmpty( trimmed ) )
-                    {
-                        continue;
-                    }
-
-                    defaultProviderExcludes.add( trimmed );
-                }
-            }
-
-            suppressExceptionOnClose = false;
-            return defaultProviderExcludes;
-        }
-        finally
-        {
-            try
-            {
-                if ( resource != null )
-                {
-                    resource.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                if ( !suppressExceptionOnClose )
-                {
-                    throw e;
-                }
-            }
-        }
+        return readDefaultExcludes( ABSOLUTE_RESOURCE_NAME_PREFIX + "DefaultProviderExcludes" );
     }
 
     /**
@@ -525,58 +439,13 @@ public class ProjectClassLoader extends URLClassLoader
     /**
      * Gets a set of service class names excluded by default.
      *
-     * @return A set of service class names excluded by default.
+     * @return An unmodifiable set of service class names excluded by default.
      *
      * @throws IOException if reading configuration resources fails.
      */
     public static Set<String> getDefaultServiceExcludes() throws IOException
     {
-        InputStream resource = null;
-        boolean suppressExceptionOnClose = true;
-        final Set<String> defaultServiceExcludes = new HashSet<String>();
-
-        try
-        {
-            resource = ProjectClassLoader.class.getResourceAsStream(
-                ABSOLUTE_RESOURCE_NAME_PREFIX + "DefaultServiceExcludes" );
-
-            if ( resource != null )
-            {
-                final List<?> lines = IOUtils.readLines( resource, "UTF-8" );
-
-                for ( Object line : lines )
-                {
-                    final String trimmed = line.toString().trim();
-
-                    if ( trimmed.contains( "#" ) || StringUtils.isEmpty( trimmed ) )
-                    {
-                        continue;
-                    }
-
-                    defaultServiceExcludes.add( trimmed );
-                }
-            }
-
-            suppressExceptionOnClose = false;
-            return defaultServiceExcludes;
-        }
-        finally
-        {
-            try
-            {
-                if ( resource != null )
-                {
-                    resource.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                if ( !suppressExceptionOnClose )
-                {
-                    throw e;
-                }
-            }
-        }
+        return readDefaultExcludes( ABSOLUTE_RESOURCE_NAME_PREFIX + "DefaultServiceExcludes" );
     }
 
     /**
@@ -618,58 +487,13 @@ public class ProjectClassLoader extends URLClassLoader
     /**
      * Gets a set of schema public identifiers excluded by default.
      *
-     * @return A set of schema public identifiers excluded by default.
+     * @return An unmodifiable set of schema public identifiers excluded by default.
      *
      * @throws IOException if reading configuration resources fails.
      */
     public static Set<String> getDefaultSchemaExcludes() throws IOException
     {
-        InputStream resource = null;
-        boolean suppressExceptionOnClose = true;
-        final Set<String> defaultSchemaExcludes = new HashSet<String>();
-
-        try
-        {
-            resource = ProjectClassLoader.class.getResourceAsStream(
-                ABSOLUTE_RESOURCE_NAME_PREFIX + "DefaultSchemaExcludes" );
-
-            if ( resource != null )
-            {
-                final List<?> lines = IOUtils.readLines( resource, "UTF-8" );
-
-                for ( Object line : lines )
-                {
-                    final String trimmed = line.toString().trim();
-
-                    if ( trimmed.contains( "#" ) || StringUtils.isEmpty( trimmed ) )
-                    {
-                        continue;
-                    }
-
-                    defaultSchemaExcludes.add( trimmed );
-                }
-            }
-
-            suppressExceptionOnClose = false;
-            return defaultSchemaExcludes;
-        }
-        finally
-        {
-            try
-            {
-                if ( resource != null )
-                {
-                    resource.close();
-                }
-            }
-            catch ( final IOException e )
-            {
-                if ( !suppressExceptionOnClose )
-                {
-                    throw e;
-                }
-            }
-        }
+        return readDefaultExcludes( ABSOLUTE_RESOURCE_NAME_PREFIX + "DefaultSchemaExcludes" );
     }
 
     /**
@@ -690,6 +514,25 @@ public class ProjectClassLoader extends URLClassLoader
         return this.excludedSchemas;
     }
 
+    /**
+     * Removes temporary resources.
+     * @throws Throwable if finalization fails.
+     */
+    @Override
+    protected void finalize() throws Throwable
+    {
+        for ( final File temporaryResource : this.temporaryResources )
+        {
+            if ( temporaryResource.exists() && !temporaryResource.delete() )
+            {
+                temporaryResource.deleteOnExit();
+            }
+        }
+
+        this.temporaryResources.clear();
+        super.finalize();
+    }
+
     private URL filterProviders( final URL resource ) throws IOException
     {
         InputStream in = null;
@@ -699,20 +542,20 @@ public class ProjectClassLoader extends URLClassLoader
         {
             URL filteredResource = resource;
             in = resource.openStream();
-            final List<?> lines = IOUtils.readLines( in, "UTF-8" );
+            final List<String> lines = IOUtils.readLines( in, "UTF-8" );
             final List<String> filteredLines = new ArrayList<String>( lines.size() );
 
-            for ( Object line : lines )
+            for ( String line : lines )
             {
-                if ( !this.getProviderExcludes().contains( line.toString().trim() ) )
+                if ( !this.getProviderExcludes().contains( line.trim() ) )
                 {
-                    filteredLines.add( line.toString().trim() );
+                    filteredLines.add( line.trim() );
                 }
                 else
                 {
-                    this.getExcludedProviders().add( line.toString().trim() );
+                    this.getExcludedProviders().add( line.trim() );
                     this.getProject().log( Messages.getMessage( "providerExclusion", resource.toExternalForm(),
-                                                                line.toString().trim() ), Project.MSG_DEBUG );
+                                                                line.trim() ), Project.MSG_DEBUG );
 
                 }
             }
@@ -721,12 +564,12 @@ public class ProjectClassLoader extends URLClassLoader
             {
                 OutputStream out = null;
                 final File tmpResource = File.createTempFile( this.getClass().getName(), ".rsrc" );
-                tmpResource.deleteOnExit();
+                this.temporaryResources.add( tmpResource );
 
                 try
                 {
                     out = new FileOutputStream( tmpResource );
-                    IOUtils.writeLines( filteredLines, System.getProperty( "line.separator" ), out, "UTF-8" );
+                    IOUtils.writeLines( filteredLines, System.getProperty( "line.separator", "\n" ), out, "UTF-8" );
                     suppressExceptionOnClose = false;
                 }
                 finally
@@ -835,7 +678,7 @@ public class ProjectClassLoader extends URLClassLoader
                 if ( filtered )
                 {
                     final File tmpResource = File.createTempFile( this.getClass().getName(), ".rsrc" );
-                    tmpResource.deleteOnExit();
+                    this.temporaryResources.add( tmpResource );
                     modelContext.createMarshaller( ModletObject.MODEL_PUBLIC_ID ).marshal(
                         new ObjectFactory().createModlets( modlets ), tmpResource );
 
@@ -980,6 +823,58 @@ public class ProjectClassLoader extends URLClassLoader
         }
 
         this.getExcludedServices().getService().add( service );
+    }
+
+    private static Set<String> readDefaultExcludes( final String location ) throws IOException
+    {
+        InputStream resource = null;
+        boolean suppressExceptionOnClose = true;
+        Set<String> defaultExcludes = null;
+
+        try
+        {
+            resource = ProjectClassLoader.class.getResourceAsStream( location );
+
+            if ( resource != null )
+            {
+                final List<String> lines = IOUtils.readLines( resource, "UTF-8" );
+                defaultExcludes = new HashSet<String>( lines.size() );
+
+                for ( String line : lines )
+                {
+                    final String trimmed = line.trim();
+
+                    if ( trimmed.contains( "#" ) || StringUtils.isEmpty( trimmed ) )
+                    {
+                        continue;
+                    }
+
+                    defaultExcludes.add( trimmed );
+                }
+            }
+
+            suppressExceptionOnClose = false;
+            return defaultExcludes != null
+                   ? Collections.unmodifiableSet( defaultExcludes ) : Collections.<String>emptySet();
+
+        }
+        finally
+        {
+            try
+            {
+                if ( resource != null )
+                {
+                    resource.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( !suppressExceptionOnClose )
+                {
+                    throw e;
+                }
+            }
+        }
     }
 
 }
