@@ -340,7 +340,7 @@ public final class Jomc
                 for ( int i = 0; i < args.length; i++ )
                 {
                     this.log( Level.FINER, new StringBuilder().append( "[" ).append( i ).append( "] -> '" ).
-                        append( args[i] ).append( "'" ).append( System.getProperty( "line.separator" ) ).
+                        append( args[i] ).append( "'" ).append( System.getProperty( "line.separator", "\n" ) ).
                         toString(), null );
 
                 }
