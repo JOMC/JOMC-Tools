@@ -1,6 +1,6 @@
 
   ${project.organization.name} - ${project.name} - LIESMICH.txt
-  Version ${project.version} Build ${buildNumber}
+  Version ${project.version} (${build.date})
   ${project.url}
 
   ${project.description}

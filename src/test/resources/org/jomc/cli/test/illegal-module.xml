@@ -356,7 +356,7 @@
         </message>
         <message name="applicationTitle" final="true">
           <template defaultLanguage="en">
-            <text language="en">JOMC Version ${project.version} Build ${buildNumber}</text>
+            <text language="en">JOMC ${project.version} (${build.date})</text>
           </template>
         </message>
         <message name="classpathElement" final="true">
