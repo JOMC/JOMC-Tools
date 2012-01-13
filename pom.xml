@@ -477,6 +477,10 @@
         <directory>src/test/resources</directory>
       </testResource>
       <testResource>
+        <filtering>false</filtering>
+        <directory>src/test/objects</directory>
+      </testResource>
+      <testResource>
         <filtering>true</filtering>
         <directory>src/main/resources/META-INF</directory>
         <targetPath>org/jomc/cli/test</targetPath>

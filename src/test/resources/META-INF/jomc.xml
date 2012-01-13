@@ -155,5 +155,19 @@
         </property>
       </properties>
     </implementation>
+    <!-- **********************************************************************************************************  -->
+    <implementation identifier="${project.name} Command Execution Exception Test" name="${project.name}"
+                    class="org.jomc.cli.commands.test.CommandExecutionExceptionTest" classDeclaration="true"
+                    vendor="${project.organization.name}" version="${project.version}" createDate="2012-01-13T04:07:45Z">
+
+      <documentation defaultLanguage="en">
+        <text language="en" type="text/x-javadoc">Test cases for class {@code org.jomc.cli.commands.CommandExecutionException}.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.2" mail="schulte2005@users.sourceforge.net"
+                createDate="2012-01-13T04:07:45Z"/>
+
+      </authors>
+    </implementation>
   </implementations>
 </module>

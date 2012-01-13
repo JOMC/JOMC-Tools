@@ -1,7 +1,7 @@
 // SECTION-START[License Header]
 // <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
- *   Copyright (C) Christian Schulte, 2005-206
+ *   Copyright (C) Christian Schulte, 2012-013
  *   All rights reserved.
  *
  *   Redistribution and use in source and binary forms, with or without
@@ -32,22 +32,27 @@
  */
 // </editor-fold>
 // SECTION-END
-package org.jomc.cli.commands;
+package org.jomc.cli.commands.test;
+
+import java.io.ObjectInputStream;
+import org.jomc.cli.commands.CommandExecutionException;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 // SECTION-START[Documentation]
 // <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 /**
- * Command execution exception.
+ * Test cases for class {@code org.jomc.cli.commands.CommandExecutionException}.
  *
  * <dl>
- *   <dt><b>Identifier:</b></dt><dd>JOMC CLI Command Execution Exception</dd>
+ *   <dt><b>Identifier:</b></dt><dd>JOMC CLI Command Execution Exception Test</dd>
  *   <dt><b>Name:</b></dt><dd>JOMC CLI</dd>
  *   <dt><b>Abstract:</b></dt><dd>No</dd>
  *   <dt><b>Final:</b></dt><dd>No</dd>
  *   <dt><b>Stateless:</b></dt><dd>No</dd>
  * </dl>
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
+ * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.2
  * @version 1.2-SNAPSHOT
  */
 // </editor-fold>
@@ -57,50 +62,31 @@ package org.jomc.cli.commands;
 @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
 // </editor-fold>
 // SECTION-END
-public class CommandExecutionException extends Exception
+public class CommandExecutionExceptionTest
 {
-    // SECTION-START[CommandExecutionException]
+    // SECTION-START[CommandExecutionExceptionTest]
 
-    /** Serial version UID for backwards compatibility with 1.2 object streams. */
-    private static final long serialVersionUID = 5113160867045764410L;
+    /** Constant to prefix relative resource names with. */
+    private static final String ABSOLUTE_RESOURCE_NAME_PREFIX = "/org/jomc/cli/commands/test/";
 
-    /**
-     * Creates a new {@code CommandExecutionException} taking a message.
-     *
-     * @param message A message describing the exception.
-     */
-    public CommandExecutionException( final String message )
+    @Test
+    public final void testCommandExecutionException() throws Exception
     {
-        this( message, null );
-    }
+        final ObjectInputStream in = new ObjectInputStream( this.getClass().getResourceAsStream(
+            ABSOLUTE_RESOURCE_NAME_PREFIX + "CommandExecutionException.ser" ) );
 
-    /**
-     * Creates a new {@code CommandExecutionException} taking a causing throwable.
-     *
-     * @param throwable A throwable causing the exception.
-     */
-    public CommandExecutionException( final Throwable throwable )
-    {
-        this( null, throwable );
-    }
+        final CommandExecutionException e = (CommandExecutionException) in.readObject();
+        in.close();
 
-    /**
-     * Creates a new {@code CommandExecutionException} taking a message and a causing throwable.
-     *
-     * @param message A message describing the exception.
-     * @param throwable A throwable causing the exception.
-     */
-    public CommandExecutionException( final String message, final Throwable throwable )
-    {
-        super( message, throwable );
+        assertEquals( "TEST", e.getMessage() );
     }
 
     // SECTION-END
     // SECTION-START[Constructors]
     // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
-    /** Creates a new {@code CommandExecutionException} instance. */
+    /** Creates a new {@code CommandExecutionExceptionTest} instance. */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    public CommandExecutionException()
+    public CommandExecutionExceptionTest()
     {
         // SECTION-START[Default Constructor]
         super();
