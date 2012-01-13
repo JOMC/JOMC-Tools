@@ -31,14 +31,12 @@
 package org.jomc.tools;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
+import java.io.RandomAccessFile;
 import java.io.StringWriter;
-import java.io.Writer;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
@@ -79,7 +77,7 @@ public class SourceFileProcessor extends JomcTool
 {
 
     /** The source file editor of the instance. */
-    private SourceFileEditor sourceFileEditor;
+    private SourceFileProcessor.SourceFileEditor sourceFileEditor;
 
     /** Source files model. */
     @Deprecated
@@ -284,11 +282,12 @@ public class SourceFileProcessor extends JomcTool
      *
      * @see #setSourceFileEditor(org.jomc.tools.SourceFileProcessor.SourceFileEditor)
      */
-    public final SourceFileEditor getSourceFileEditor()
+    public final SourceFileProcessor.SourceFileEditor getSourceFileEditor()
     {
         if ( this.sourceFileEditor == null )
         {
-            this.sourceFileEditor = new SourceFileEditor( new TrailingWhitespaceEditor( this.getLineSeparator() ),
+            this.sourceFileEditor =
+                new SourceFileProcessor.SourceFileEditor( new TrailingWhitespaceEditor( this.getLineSeparator() ),
                                                           this.getLineSeparator() );
 
         }
@@ -305,7 +304,7 @@ public class SourceFileProcessor extends JomcTool
      *
      * @see #getSourceFileEditor()
      */
-    public final void setSourceFileEditor( final SourceFileEditor value )
+    public final void setSourceFileEditor( final SourceFileProcessor.SourceFileEditor value )
     {
         this.sourceFileEditor = value;
     }
@@ -325,7 +324,7 @@ public class SourceFileProcessor extends JomcTool
      * @see SourceFileEditor#edit(org.jomc.model.Specification, org.jomc.tools.model.SourceFileType, java.io.File)
      */
     @Deprecated
-    public SourceFileEditor getSourceFileEditor( final Specification specification )
+    public SourceFileProcessor.SourceFileEditor getSourceFileEditor( final Specification specification )
     {
         if ( specification == null )
         {
@@ -353,7 +352,7 @@ public class SourceFileProcessor extends JomcTool
      * @see SourceFileEditor#edit(org.jomc.model.Implementation, org.jomc.tools.model.SourceFileType, java.io.File)
      */
     @Deprecated
-    public SourceFileEditor getSourceFileEditor( final Implementation implementation )
+    public SourceFileProcessor.SourceFileEditor getSourceFileEditor( final Implementation implementation )
     {
         if ( implementation == null )
         {
@@ -478,7 +477,7 @@ public class SourceFileProcessor extends JomcTool
 
             if ( manage )
             {
-                final SourceFileEditor editor = this.getSourceFileEditor( specification );
+                final SourceFileProcessor.SourceFileEditor editor = this.getSourceFileEditor( specification );
                 final SourceFilesType model = this.getSourceFilesType( specification );
 
                 if ( editor != null && model != null )
@@ -521,7 +520,7 @@ public class SourceFileProcessor extends JomcTool
 
         if ( implementation.isClassDeclaration() )
         {
-            final SourceFileEditor editor = this.getSourceFileEditor( implementation );
+            final SourceFileProcessor.SourceFileEditor editor = this.getSourceFileEditor( implementation );
             final SourceFilesType model = this.getSourceFilesType( implementation );
 
             if ( editor != null && model != null )
@@ -1214,21 +1213,31 @@ public class SourceFileProcessor extends JomcTool
                 throw new NullPointerException( "file" );
             }
 
-            Reader reader = null;
+            RandomAccessFile randomAccessFile = null;
+            FileChannel fileChannel = null;
+            FileLock fileLock = null;
             boolean suppressExceptionOnClose = true;
+
+            //final Charset charset = Charset.forName( getInputEncoding() );
+            final ByteBuffer buf = ByteBuffer.allocate( Long.valueOf( file.length() ).intValue() );
+            final StringBuilder appendable = new StringBuilder( Long.valueOf( file.length() ).intValue() );
 
             try
             {
-                reader = new InputStreamReader( new FileInputStream( file ), getInputEncoding() );
+                randomAccessFile = new RandomAccessFile( file, "r" );
+                fileChannel = randomAccessFile.getChannel();
+                fileLock = fileChannel.lock( 0L, file.length(), true );
+                fileChannel.position( 0L );
 
-                final StringBuilder appendable = new StringBuilder( 16384 );
-                final char[] buf = new char[ 16384 ];
-                int read = reader.read( buf );
+                buf.clear();
+                int read = fileChannel.read( buf );
 
                 while ( read != -1 )
                 {
-                    appendable.append( buf, 0, read );
-                    read = reader.read( buf );
+                    // JDK: As of JDK 6, new String( byte[], int, int, Charset )
+                    appendable.append( new String( buf.array(), buf.arrayOffset(), read, getInputEncoding() ) );
+                    buf.clear();
+                    read = fileChannel.read( buf );
                 }
 
                 suppressExceptionOnClose = false;
@@ -1238,9 +1247,9 @@ public class SourceFileProcessor extends JomcTool
             {
                 try
                 {
-                    if ( reader != null )
+                    if ( fileLock != null )
                     {
-                        reader.close();
+                        fileLock.release();
                     }
                 }
                 catch ( final IOException e )
@@ -1252,6 +1261,48 @@ public class SourceFileProcessor extends JomcTool
                     else
                     {
                         throw e;
+                    }
+                }
+                finally
+                {
+                    try
+                    {
+                        if ( fileChannel != null )
+                        {
+                            fileChannel.close();
+                        }
+                    }
+                    catch ( final IOException e )
+                    {
+                        if ( suppressExceptionOnClose )
+                        {
+                            log( Level.SEVERE, null, e );
+                        }
+                        else
+                        {
+                            throw e;
+                        }
+                    }
+                    finally
+                    {
+                        try
+                        {
+                            if ( randomAccessFile != null )
+                            {
+                                randomAccessFile.close();
+                            }
+                        }
+                        catch ( final IOException e )
+                        {
+                            if ( suppressExceptionOnClose )
+                            {
+                                log( Level.SEVERE, null, e );
+                            }
+                            else
+                            {
+                                throw e;
+                            }
+                        }
                     }
                 }
             }
@@ -1268,22 +1319,29 @@ public class SourceFileProcessor extends JomcTool
                 throw new NullPointerException( "content" );
             }
 
-            Writer writer = null;
+            RandomAccessFile randomAccessFile = null;
+            FileChannel fileChannel = null;
+            FileLock fileLock = null;
             boolean suppressExceptionOnClose = true;
+            final byte[] bytes = content.getBytes( getOutputEncoding() );
 
             try
             {
-                writer = new OutputStreamWriter( new FileOutputStream( file ), getOutputEncoding() );
-                writer.append( content );
+                randomAccessFile = new RandomAccessFile( file, "rw" );
+                fileChannel = randomAccessFile.getChannel();
+                fileLock = fileChannel.lock( 0L, bytes.length, false );
+                fileChannel.truncate( bytes.length );
+                fileChannel.position( 0L );
+                fileChannel.write( ByteBuffer.wrap( bytes ) );
                 suppressExceptionOnClose = false;
             }
             finally
             {
                 try
                 {
-                    if ( writer != null )
+                    if ( fileLock != null )
                     {
-                        writer.close();
+                        fileLock.release();
                     }
                 }
                 catch ( final IOException e )
@@ -1295,6 +1353,48 @@ public class SourceFileProcessor extends JomcTool
                     else
                     {
                         throw e;
+                    }
+                }
+                finally
+                {
+                    try
+                    {
+                        if ( fileChannel != null )
+                        {
+                            fileChannel.close();
+                        }
+                    }
+                    catch ( final IOException e )
+                    {
+                        if ( suppressExceptionOnClose )
+                        {
+                            log( Level.SEVERE, null, e );
+                        }
+                        else
+                        {
+                            throw e;
+                        }
+                    }
+                    finally
+                    {
+                        try
+                        {
+                            if ( randomAccessFile != null )
+                            {
+                                randomAccessFile.close();
+                            }
+                        }
+                        catch ( final IOException e )
+                        {
+                            if ( suppressExceptionOnClose )
+                            {
+                                log( Level.SEVERE, null, e );
+                            }
+                            else
+                            {
+                                throw e;
+                            }
+                        }
                     }
                 }
             }

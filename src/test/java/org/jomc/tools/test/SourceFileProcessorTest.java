@@ -43,6 +43,7 @@ import org.jomc.model.Specification;
 import org.jomc.tools.SourceFileProcessor;
 import org.jomc.util.SectionEditor;
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -239,7 +240,7 @@ public class SourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getJomcTool().manageSourceFiles( nonExistingDirectory );
-            fail( "Expected IOException not found." );
+            fail( "Expected IOException not thrown." );
         }
         catch ( final IOException e )
         {
@@ -252,7 +253,7 @@ public class SourceFileProcessorTest extends JomcToolTest
             this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getModule( "Module" ),
                                                   nonExistingDirectory );
 
-            fail( "Expected IOException not found." );
+            fail( "Expected IOException not thrown." );
         }
         catch ( final IOException e )
         {
@@ -265,7 +266,7 @@ public class SourceFileProcessorTest extends JomcToolTest
             this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
                                                   nonExistingDirectory );
 
-            fail( "Expected IOException not found." );
+            fail( "Expected IOException not thrown." );
         }
         catch ( final IOException e )
         {
@@ -278,7 +279,7 @@ public class SourceFileProcessorTest extends JomcToolTest
             this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getSpecification( "Specification" ),
                                                   nonExistingDirectory );
 
-            fail( "Expected IOException not found." );
+            fail( "Expected IOException not thrown." );
         }
         catch ( final IOException e )
         {
@@ -289,19 +290,42 @@ public class SourceFileProcessorTest extends JomcToolTest
         File sourcesDirectory = this.getNextOutputDirectory();
         assertTrue( sourcesDirectory.mkdirs() );
         this.getJomcTool().manageSourceFiles( sourcesDirectory );
+        this.getJomcTool().manageSourceFiles( sourcesDirectory );
 
         sourcesDirectory = this.getNextOutputDirectory();
         assertTrue( sourcesDirectory.mkdirs() );
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getModule( "Module" ),
                                               sourcesDirectory );
 
+        this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getModule( "Module" ),
+                                              sourcesDirectory );
+
         final File implementationDirectory = this.getNextOutputDirectory();
+        final File implementationSourceFile = new File( implementationDirectory, "Implementation.java" );
         assertTrue( implementationDirectory.mkdirs() );
-        this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
-                                              implementationDirectory );
+        long implementationSourceFileLength;
 
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
+
+        implementationSourceFileLength = implementationSourceFile.length();
+        assertTrue( implementationSourceFile.exists() );
+
+        this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
+                                              implementationDirectory );
+
+        assertTrue( implementationSourceFile.exists() );
+        assertEquals( implementationSourceFileLength, implementationSourceFile.length() );
+
+        this.getJomcTool().getTemplateParameters().put( "with-javadoc", Boolean.FALSE );
+
+        this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
+                                              implementationDirectory );
+
+        assertTrue( implementationSourceFile.exists() );
+        assertTrue( implementationSourceFile.length() < implementationSourceFileLength );
+
+        this.getJomcTool().getTemplateParameters().clear();
 
         this.getJomcTool().manageSourceFiles(
             this.getJomcTool().getModules().getImplementation( "ImplementationWithSourceFilesModel" ),

@@ -104,6 +104,9 @@
       of class <code>org.jomc.tools.SourceFileProcessor</code> to correctly manage implementations based on flag
       <code>classDeclaration</code> instead of attribute <code>identifier</code>.]]>
       </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Corrected methods <code>manageSourceFiles</code> of class
+      <code>org.jomc.tools.SourceFileProcessor</code> to truncate files when editing content.]]>
+      </action>
       <action dev="schulte2005" type="update"><![CDATA[Updated method <code>getVelocityEngine</code>
       of class <code>org.jomc.tools.JomcTool</code> to not initialize new engine instances adding support for on-demand
       initialization and to to set velocity runtime property <code>runtime.strict.math</code>]]>
@@ -128,6 +131,9 @@
       </action>
       <action dev="schulte2005" type="update"><![CDATA[Updated <code>getSourceFileType</code> methods of class
       <code>org.jomc.tools.SourceFileProcessor</code> to no longer create default source file models.]]>
+      </action>
+      <action dev="schulte2005" type="update"><![CDATA[Updated methods <code>manageSourceFiles</code> of class
+      <code>org.jomc.tools.SourceFileProcessor</code> to use file locking.]]>
       </action>
       <action dev="schulte2005" type="remove"><![CDATA[Removed <code>abstract</code> modifier of class
       <code>org.jomc.tools.JomcTool</code>.]]>
