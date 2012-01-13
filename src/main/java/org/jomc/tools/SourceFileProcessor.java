@@ -1333,6 +1333,7 @@ public class SourceFileProcessor extends JomcTool
                 fileChannel.truncate( bytes.length );
                 fileChannel.position( 0L );
                 fileChannel.write( ByteBuffer.wrap( bytes ) );
+                fileChannel.force( true );
                 suppressExceptionOnClose = false;
             }
             finally
