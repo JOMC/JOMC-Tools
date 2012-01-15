@@ -887,7 +887,10 @@ public class SourceFileProcessor extends JomcTool
          * Gets the currently edited source code file.
          *
          * @return The currently edited source code file.
+         *
+         * @deprecated As of JOMC 1.2, deprecated without replacement. This method will be removed in version 2.0.
          */
+        @Deprecated
         protected SourceFileType getSourceFileType()
         {
             if ( this.sourceFileType == null )
@@ -910,7 +913,10 @@ public class SourceFileProcessor extends JomcTool
          * Gets a new velocity context used for merging templates.
          *
          * @return A new velocity context used for merging templates.
+         *
+         * @deprecated As of JOMC 1.2, deprecated without replacement. This method will be removed in version 2.0.
          */
+        @Deprecated
         protected VelocityContext getVelocityContext()
         {
             final VelocityContext ctx = SourceFileProcessor.this.getVelocityContext();
