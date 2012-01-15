@@ -99,10 +99,13 @@ public final class MergeModletsCommand extends AbstractModletCommand
             throw new NullPointerException( "commandLine" );
         }
 
+        CommandLineClassLoader classLoader = null;
+        boolean suppressExceptionOnClose = true;
+
         try
         {
+            classLoader = new CommandLineClassLoader( commandLine );
             final Modlets modlets = new Modlets();
-            final CommandLineClassLoader classLoader = new CommandLineClassLoader( commandLine );
             final ModelContext context = this.createModelContext( commandLine, classLoader );
             final Marshaller marshaller = context.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
             final Unmarshaller unmarshaller = context.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
@@ -329,6 +332,8 @@ public final class MergeModletsCommand extends AbstractModletCommand
             {
                 this.log( Level.INFO, this.getWriteInfo( this.getLocale(), modletFile.getAbsolutePath() ), null );
             }
+
+            suppressExceptionOnClose = false;
         }
         catch ( final IOException e )
         {
@@ -357,6 +362,27 @@ public final class MergeModletsCommand extends AbstractModletCommand
         catch ( final ModelException e )
         {
             throw new CommandExecutionException( getExceptionMessage( e ), e );
+        }
+        finally
+        {
+            try
+            {
+                if ( classLoader != null )
+                {
+                    classLoader.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( suppressExceptionOnClose )
+                {
+                    this.log( Level.SEVERE, getExceptionMessage( e ), e );
+                }
+                else
+                {
+                    throw new CommandExecutionException( getExceptionMessage( e ), e );
+                }
+            }
         }
     }
 

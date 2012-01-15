@@ -34,6 +34,8 @@
 // SECTION-END
 package org.jomc.cli.commands;
 
+import java.io.IOException;
+import java.util.logging.Level;
 import org.apache.commons.cli.CommandLine;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
@@ -78,9 +80,12 @@ public final class ValidateModelCommand extends AbstractModelCommand
             throw new NullPointerException( "commandLine" );
         }
 
+        CommandLineClassLoader classLoader = null;
+        boolean suppressExceptionOnClose = true;
+
         try
         {
-            final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
+            classLoader = new CommandLineClassLoader( commandLine );
             final ModelContext context = this.createModelContext( commandLine, classLoader );
             final Model model = this.getModel( context, commandLine );
             final ModelValidationReport validationReport = context.validateModel( model );
@@ -92,10 +97,33 @@ public final class ValidateModelCommand extends AbstractModelCommand
                     this.getLocale(), this.getModel( commandLine ) ) );
 
             }
+
+            suppressExceptionOnClose = false;
         }
         catch ( final ModelException e )
         {
             throw new CommandExecutionException( getExceptionMessage( e ), e );
+        }
+        finally
+        {
+            try
+            {
+                if ( classLoader != null )
+                {
+                    classLoader.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( suppressExceptionOnClose )
+                {
+                    this.log( Level.SEVERE, getExceptionMessage( e ), e );
+                }
+                else
+                {
+                    throw new CommandExecutionException( getExceptionMessage( e ), e );
+                }
+            }
         }
     }
 

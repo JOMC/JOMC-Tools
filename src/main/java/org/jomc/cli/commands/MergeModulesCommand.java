@@ -98,10 +98,13 @@ public final class MergeModulesCommand extends AbstractModelCommand
             throw new NullPointerException( "commandLine" );
         }
 
+        CommandLineClassLoader classLoader = null;
+        boolean suppressExceptionOnClose = true;
+
         try
         {
+            classLoader = new CommandLineClassLoader( commandLine );
             final Modules modules = new Modules();
-            final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
             final ModelContext context = this.createModelContext( commandLine, classLoader );
             final String model = this.getModel( commandLine );
             final Marshaller marshaller = context.createMarshaller( model );
@@ -335,6 +338,8 @@ public final class MergeModulesCommand extends AbstractModelCommand
             {
                 this.log( Level.INFO, this.getWriteInfo( this.getLocale(), moduleFile.getAbsolutePath() ), null );
             }
+
+            suppressExceptionOnClose = false;
         }
         catch ( final IOException e )
         {
@@ -363,6 +368,27 @@ public final class MergeModulesCommand extends AbstractModelCommand
         catch ( final ModelException e )
         {
             throw new CommandExecutionException( getExceptionMessage( e ), e );
+        }
+        finally
+        {
+            try
+            {
+                if ( classLoader != null )
+                {
+                    classLoader.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( suppressExceptionOnClose )
+                {
+                    this.log( Level.SEVERE, getExceptionMessage( e ), e );
+                }
+                else
+                {
+                    throw new CommandExecutionException( getExceptionMessage( e ), e );
+                }
+            }
         }
     }
 

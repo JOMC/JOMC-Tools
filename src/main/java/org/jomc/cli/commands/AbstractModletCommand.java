@@ -35,6 +35,7 @@
 package org.jomc.cli.commands;
 
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -42,6 +43,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -749,21 +751,46 @@ public abstract class AbstractModletCommand extends AbstractCommand
         }
 
         /**
+         * Closes the class loader.
+         * @throws IOException if closing the class loader fails.
+         */
+        public void close() throws IOException
+        {
+            for ( final Iterator<File> it = this.temporaryResources.iterator(); it.hasNext(); )
+            {
+                final File temporaryResource = it.next();
+
+                if ( temporaryResource.exists() && temporaryResource.delete() )
+                {
+                    it.remove();
+                }
+            }
+
+            if ( Closeable.class.isAssignableFrom( CommandLineClassLoader.class ) )
+            { // JDK: As of JDK 7, super.close();
+                this.jdk7Close();
+            }
+        }
+
+        /**
          * Removes temporary resources.
          * @throws Throwable if finalization fails.
          */
         @Override
         protected void finalize() throws Throwable
         {
-            for ( final File temporaryResource : this.temporaryResources )
+            for ( final Iterator<File> it = this.temporaryResources.iterator(); it.hasNext(); )
             {
+                final File temporaryResource = it.next();
+
                 if ( temporaryResource.exists() && !temporaryResource.delete() )
                 {
                     temporaryResource.deleteOnExit();
                 }
+
+                it.remove();
             }
 
-            this.temporaryResources.clear();
             super.finalize();
         }
 
@@ -974,6 +1001,26 @@ public abstract class AbstractModletCommand extends AbstractCommand
             }
 
             return filteredSchemas || filteredServices;
+        }
+
+        private void jdk7Close()
+        {
+            try
+            {
+                URLClassLoader.class.getMethod( "close" ).invoke( this );
+            }
+            catch ( final NoSuchMethodException e )
+            {
+                log( Level.FINEST, null, e );
+            }
+            catch ( final IllegalAccessException e )
+            {
+                log( Level.FINEST, null, e );
+            }
+            catch ( final InvocationTargetException e )
+            {
+                log( Level.FINEST, null, e );
+            }
         }
 
     }

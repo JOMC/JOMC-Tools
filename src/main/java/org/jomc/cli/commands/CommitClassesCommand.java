@@ -38,6 +38,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -94,9 +95,12 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
             throw new NullPointerException( "commandLine" );
         }
 
+        CommandLineClassLoader classLoader = null;
+        boolean suppressExceptionOnClose = true;
+
         try
         {
-            final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
+            classLoader = new CommandLineClassLoader( commandLine );
             final ModelContext context = this.createModelContext( commandLine, classLoader );
             final Model model = this.getModel( context, commandLine );
             final JAXBContext jaxbContext = context.createContext( model.getIdentifier() );
@@ -171,6 +175,8 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
                     tool.transformModelObjects( context, classesDirectory, transformers );
                 }
             }
+
+            suppressExceptionOnClose = false;
         }
         catch ( final JAXBException e )
         {
@@ -189,6 +195,27 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
         catch ( final IOException e )
         {
             throw new CommandExecutionException( getExceptionMessage( e ), e );
+        }
+        finally
+        {
+            try
+            {
+                if ( classLoader != null )
+                {
+                    classLoader.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( suppressExceptionOnClose )
+                {
+                    this.log( Level.SEVERE, getExceptionMessage( e ), e );
+                }
+                else
+                {
+                    throw new CommandExecutionException( getExceptionMessage( e ), e );
+                }
+            }
         }
     }
 

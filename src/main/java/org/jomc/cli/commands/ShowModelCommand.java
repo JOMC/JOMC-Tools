@@ -35,6 +35,7 @@
 package org.jomc.cli.commands;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
@@ -93,9 +94,12 @@ public final class ShowModelCommand extends AbstractModelCommand
             throw new NullPointerException( "commandLine" );
         }
 
+        CommandLineClassLoader classLoader = null;
+        boolean suppressExceptionOnClose = true;
+
         try
         {
-            final ClassLoader classLoader = new CommandLineClassLoader( commandLine );
+            classLoader = new CommandLineClassLoader( commandLine );
             final ModelContext context = this.createModelContext( commandLine, classLoader );
             final Model model = this.getModel( context, commandLine );
             final JAXBContext jaxbContext = context.createContext( model.getIdentifier() );
@@ -202,6 +206,8 @@ public final class ShowModelCommand extends AbstractModelCommand
                 marshaller.marshal( new ObjectFactory().createModel( displayModel ), stringWriter );
                 this.log( Level.INFO, stringWriter.toString(), null );
             }
+
+            suppressExceptionOnClose = false;
         }
         catch ( final JAXBException e )
         {
@@ -216,6 +222,27 @@ public final class ShowModelCommand extends AbstractModelCommand
         catch ( final ModelException e )
         {
             throw new CommandExecutionException( getExceptionMessage( e ), e );
+        }
+        finally
+        {
+            try
+            {
+                if ( classLoader != null )
+                {
+                    classLoader.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( suppressExceptionOnClose )
+                {
+                    this.log( Level.SEVERE, getExceptionMessage( e ), e );
+                }
+                else
+                {
+                    throw new CommandExecutionException( getExceptionMessage( e ), e );
+                }
+            }
         }
     }
 
