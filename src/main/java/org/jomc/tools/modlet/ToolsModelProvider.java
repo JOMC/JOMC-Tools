@@ -384,11 +384,9 @@ public class ToolsModelProvider implements ModelProvider
 
                                 for ( final InheritanceModel.Node<JAXBElement<?>> sourceFilesNode : sourceFilesNodes )
                                 {
-                                    SourceFilesType ancestorSourceFiles = null;
-
                                     if ( sourceFilesNode.getModelObject().getValue() instanceof SourceFilesType )
                                     {
-                                        ancestorSourceFiles =
+                                        final SourceFilesType ancestorSourceFiles =
                                             (SourceFilesType) sourceFilesNode.getModelObject().getValue();
 
                                         this.overwriteSourceFiles( defaultSourceFiles, ancestorSourceFiles, false );
@@ -557,10 +555,19 @@ public class ToolsModelProvider implements ModelProvider
         final SourceFileType sourceFileType = new SourceFileType();
         sourceFilesType.getSourceFile().add( sourceFileType );
 
-        final Specifications specifications = tool.getModules().getSpecifications( implementation.getIdentifier() );
-        final Dependencies dependencies = tool.getModules().getDependencies( implementation.getIdentifier() );
-        final Messages messages = tool.getModules().getMessages( implementation.getIdentifier() );
-        final Properties properties = tool.getModules().getProperties( implementation.getIdentifier() );
+        final Modules modules = ModelHelper.getModules( tool.getModel() );
+        Specifications specifications = null;
+        Dependencies dependencies = null;
+        Messages messages = null;
+        Properties properties = null;
+
+        if ( modules != null )
+        {
+            specifications = modules.getSpecifications( implementation.getIdentifier() );
+            dependencies = modules.getDependencies( implementation.getIdentifier() );
+            messages = modules.getMessages( implementation.getIdentifier() );
+            properties = modules.getProperties( implementation.getIdentifier() );
+        }
 
         sourceFileType.setIdentifier( "Default" );
 

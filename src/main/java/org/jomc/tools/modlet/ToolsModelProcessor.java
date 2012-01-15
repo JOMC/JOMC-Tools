@@ -616,6 +616,8 @@ public class ToolsModelProcessor implements ModelProcessor
         {
             if ( sourceSectionsType != null )
             {
+                final Modules modules = ModelHelper.getModules( tool.getModel() );
+
                 for ( int i = 0, s0 = sourceSectionsType.getSourceSection().size(); i < s0; i++ )
                 {
                     final SourceSectionType s = sourceSectionsType.getSourceSection().get( i );
@@ -669,7 +671,7 @@ public class ToolsModelProcessor implements ModelProcessor
                         if ( !isFieldSet( s, "optional" ) )
                         {
                             final Specifications specifications =
-                                tool.getModules().getSpecifications( implementation.getIdentifier() );
+                                modules != null ? modules.getSpecifications( implementation.getIdentifier() ) : null;
 
                             s.setOptional( specifications == null || ( specifications.getSpecification().isEmpty()
                                                                        && specifications.getReference().isEmpty() ) );
@@ -698,7 +700,7 @@ public class ToolsModelProcessor implements ModelProcessor
                         if ( !isFieldSet( s, "optional" ) )
                         {
                             final Dependencies dependencies =
-                                tool.getModules().getDependencies( implementation.getIdentifier() );
+                                modules != null ? modules.getDependencies( implementation.getIdentifier() ) : null;
 
                             s.setOptional( dependencies == null || dependencies.getDependency().isEmpty() );
                         }
@@ -717,7 +719,7 @@ public class ToolsModelProcessor implements ModelProcessor
                         if ( !isFieldSet( s, "optional" ) )
                         {
                             final Properties properties =
-                                tool.getModules().getProperties( implementation.getIdentifier() );
+                                modules != null ? modules.getProperties( implementation.getIdentifier() ) : null;
 
                             s.setOptional( properties == null || properties.getProperty().isEmpty() );
                         }
@@ -735,7 +737,9 @@ public class ToolsModelProcessor implements ModelProcessor
                     {
                         if ( !isFieldSet( s, "optional" ) )
                         {
-                            final Messages messages = tool.getModules().getMessages( implementation.getIdentifier() );
+                            final Messages messages =
+                                modules != null ? modules.getMessages( implementation.getIdentifier() ) : null;
+
                             s.setOptional( messages == null || messages.getMessage().isEmpty() );
                         }
                         if ( !isFieldSet( s, "indentationLevel" ) )
