@@ -1751,7 +1751,7 @@ public class JomcTool
      * @see #getModules()
      * @see #setModel(org.jomc.modlet.Model)
      */
-    public Model getModel()
+    public final Model getModel()
     {
         if ( this.model == null )
         {
@@ -1769,7 +1769,7 @@ public class JomcTool
      *
      * @see #getModel()
      */
-    public void setModel( final Model value )
+    public final void setModel( final Model value )
     {
         this.model = value;
     }
@@ -1781,7 +1781,11 @@ public class JomcTool
      *
      * @see #getModel()
      * @see #setModel(org.jomc.modlet.Model)
+     *
+     * @deprecated As of JOMC 1.2, please use method {@link #getModel()} and {@link ModelHelper#getModules(org.jomc.modlet.Model)}.
+     * This method will be removed in version 2.0.
      */
+    @Deprecated
     public Modules getModules()
     {
         Modules modules = ModelHelper.getModules( this.getModel() );
@@ -1804,7 +1808,7 @@ public class JomcTool
      *
      * @see #setVelocityEngine(org.apache.velocity.app.VelocityEngine)
      */
-    public VelocityEngine getVelocityEngine() throws IOException
+    public final VelocityEngine getVelocityEngine() throws IOException
     {
         if ( this.velocityEngine == null )
         {
@@ -1870,7 +1874,7 @@ public class JomcTool
      *
      * @see #getVelocityEngine()
      */
-    public void setVelocityEngine( final VelocityEngine value )
+    public final void setVelocityEngine( final VelocityEngine value )
     {
         this.velocityEngine = value;
     }
@@ -2362,7 +2366,7 @@ public class JomcTool
 
         location = map.get( key );
 
-        if ( location == null )
+        if ( location == null && !map.containsKey( key ) )
         {
             if ( !StringUtils.EMPTY.equals( this.getLocale().getLanguage() ) )
             {
@@ -2392,12 +2396,9 @@ public class JomcTool
                 template = this.findVelocityTemplate( location );
             }
 
-            if ( template != null )
-            {
-                map.put( key, location );
-            }
+            map.put( key, location );
         }
-        else
+        else if ( location != null )
         {
             template = this.findVelocityTemplate( location );
         }
