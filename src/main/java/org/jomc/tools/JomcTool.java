@@ -2102,7 +2102,7 @@ public class JomcTool
      * @see #setDefaultTemplateProfile(java.lang.String)
      *
      * @deprecated The {@code static} modifier of this method and support to setup the default template profile using
-     * a system property will be removed in JOMC 2.0.
+     * a system property will be removed in version 2.0.
      */
     @Deprecated
     public static String getDefaultTemplateProfile()
@@ -2124,7 +2124,7 @@ public class JomcTool
      *
      * @see #getDefaultTemplateProfile()
      *
-     * @deprecated The {@code static} modifier of this method will be removed in JOMC 2.0.
+     * @deprecated The {@code static} modifier of this method will be removed in version 2.0.
      */
     @Deprecated
     public static void setDefaultTemplateProfile( final String value )
