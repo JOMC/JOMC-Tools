@@ -1806,13 +1806,13 @@ public class ClassFileProcessor extends JomcTool
         final byte[] attributeData = data != null ? data : NO_BYTES;
 
         /*
-        The JavaTM Virtual Machine Specification - Second Edition - Chapter 4.1
+         The JavaTM Virtual Machine Specification - Second Edition - Chapter 4.1
 
-        A Java virtual machine implementation is required to silently ignore any
-        or all attributes in the attributes table of a ClassFile structure that
-        it does not recognize. Attributes not defined in this specification are
-        not allowed to affect the semantics of the class file, but only to
-        provide additional descriptive information (§4.7.1).
+         A Java virtual machine implementation is required to silently ignore any
+         or all attributes in the attributes table of a ClassFile structure that
+         it does not recognize. Attributes not defined in this specification are
+         not allowed to affect the semantics of the class file, but only to
+         provide additional descriptive information (§4.7.1).
          */
         Attribute[] attributes = clazz.getAttributes();
 
