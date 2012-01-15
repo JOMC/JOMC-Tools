@@ -357,13 +357,16 @@ public final class MergeModulesTask extends JomcModelTask
     @Override
     public void executeTask() throws BuildException
     {
+        ProjectClassLoader classLoader = null;
+        boolean suppressExceptionOnClose = true;
+
         try
         {
             this.log( Messages.getMessage( "mergingModules", this.getModel() ) );
 
+            classLoader = this.newProjectClassLoader();
             final Modules modules = new Modules();
             final Set<ResourceType> resources = new HashSet<ResourceType>( this.getModuleResources() );
-            final ProjectClassLoader classLoader = this.newProjectClassLoader();
             final ModelContext context = this.newModelContext( classLoader );
             final Marshaller marshaller = context.createMarshaller( this.getModel() );
             final Unmarshaller unmarshaller = context.createUnmarshaller( this.getModel() );
@@ -405,7 +408,7 @@ public final class MergeModulesTask extends JomcModelTask
                 for ( int i = urls.length - 1; i >= 0; i-- )
                 {
                     InputStream in = null;
-                    boolean suppressExceptionOnClose = true;
+                    suppressExceptionOnClose = true;
 
                     try
                     {
@@ -493,6 +496,8 @@ public final class MergeModulesTask extends JomcModelTask
                         }
                     }
                 }
+
+                suppressExceptionOnClose = true;
             }
 
             for ( final Iterator<Module> it = modules.getModule().iterator(); it.hasNext(); )
@@ -579,6 +584,7 @@ public final class MergeModulesTask extends JomcModelTask
             marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
             marshaller.setSchema( context.createSchema( this.getModel() ) );
             marshaller.marshal( new ObjectFactory().createModule( mergedModule ), this.getModuleFile() );
+            suppressExceptionOnClose = false;
         }
         catch ( final URISyntaxException e )
         {
@@ -605,6 +611,27 @@ public final class MergeModulesTask extends JomcModelTask
         catch ( final ModelException e )
         {
             throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
+        }
+        finally
+        {
+            try
+            {
+                if ( classLoader != null )
+                {
+                    classLoader.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( suppressExceptionOnClose )
+                {
+                    this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
+                }
+                else
+                {
+                    throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
+                }
+            }
         }
     }
 

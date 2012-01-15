@@ -32,6 +32,7 @@ package org.jomc.ant;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.util.JAXBSource;
@@ -106,11 +107,14 @@ public final class ManageSourcesTask extends SourceFileProcessorTask
     @Override
     public void processSourceFiles() throws BuildException
     {
+        ProjectClassLoader classLoader = null;
+        boolean suppressExceptionOnClose = true;
+
         try
         {
             this.log( Messages.getMessage( "managingSources", this.getModel() ) );
 
-            final ProjectClassLoader classLoader = this.newProjectClassLoader();
+            classLoader = this.newProjectClassLoader();
             final ModelContext context = this.newModelContext( classLoader );
             final SourceFileProcessor tool = this.newSourceFileProcessor();
             final JAXBContext jaxbContext = context.createContext( this.getModel() );
@@ -146,6 +150,8 @@ public final class ManageSourcesTask extends SourceFileProcessorTask
                 {
                     tool.manageSourceFiles( this.getSourcesDirectory() );
                 }
+
+                suppressExceptionOnClose = false;
             }
             else
             {
@@ -163,6 +169,27 @@ public final class ManageSourcesTask extends SourceFileProcessorTask
         catch ( final ModelException e )
         {
             throw new SourceProcessingException( Messages.getMessage( e ), e, this.getLocation() );
+        }
+        finally
+        {
+            try
+            {
+                if ( classLoader != null )
+                {
+                    classLoader.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( suppressExceptionOnClose )
+                {
+                    this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
+                }
+                else
+                {
+                    throw new SourceProcessingException( Messages.getMessage( e ), e, this.getLocation() );
+                }
+            }
         }
     }
 

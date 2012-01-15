@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.util.JAXBSource;
@@ -150,11 +151,14 @@ public final class CommitClassesTask extends ClassFileProcessorTask
     @Override
     public void processClassFiles() throws BuildException
     {
+        ProjectClassLoader classLoader = null;
+        boolean suppressExceptionOnClose = true;
+
         try
         {
             this.log( Messages.getMessage( "committingModelObjects", this.getModel() ) );
 
-            final ProjectClassLoader classLoader = this.newProjectClassLoader();
+            classLoader = this.newProjectClassLoader();
             final ModelContext context = this.newModelContext( classLoader );
             final ClassFileProcessor tool = this.newClassFileProcessor();
             final JAXBContext jaxbContext = context.createContext( this.getModel() );
@@ -225,6 +229,8 @@ public final class CommitClassesTask extends ClassFileProcessorTask
                         tool.transformModelObjects( context, this.getClassesDirectory(), transformers );
                     }
                 }
+
+                suppressExceptionOnClose = false;
             }
             else
             {
@@ -246,6 +252,27 @@ public final class CommitClassesTask extends ClassFileProcessorTask
         catch ( final ModelException e )
         {
             throw new ClassProcessingException( Messages.getMessage( e ), e, this.getLocation() );
+        }
+        finally
+        {
+            try
+            {
+                if ( classLoader != null )
+                {
+                    classLoader.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( suppressExceptionOnClose )
+                {
+                    this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
+                }
+                else
+                {
+                    throw new ClassProcessingException( Messages.getMessage( e ), e, this.getLocation() );
+                }
+            }
         }
     }
 

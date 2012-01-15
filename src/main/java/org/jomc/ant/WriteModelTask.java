@@ -328,11 +328,12 @@ public final class WriteModelTask extends JomcModelTask
     public void executeTask() throws BuildException
     {
         BufferedReader reader = null;
+        ProjectClassLoader classLoader = null;
         boolean suppressExceptionOnClose = true;
 
         try
         {
-            final ProjectClassLoader classLoader = this.newProjectClassLoader();
+            classLoader = this.newProjectClassLoader();
             final ModelContext modelContext = this.newModelContext( classLoader );
             final Model model = this.getModel( modelContext );
             final Marshaller marshaller = modelContext.createMarshaller( this.getModel() );
@@ -430,6 +431,27 @@ public final class WriteModelTask extends JomcModelTask
                 else
                 {
                     throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
+                }
+            }
+            finally
+            {
+                try
+                {
+                    if ( classLoader != null )
+                    {
+                        classLoader.close();
+                    }
+                }
+                catch ( final IOException e )
+                {
+                    if ( suppressExceptionOnClose )
+                    {
+                        this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
+                    }
+                    else
+                    {
+                        throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
+                    }
                 }
             }
         }

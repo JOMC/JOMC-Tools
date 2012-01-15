@@ -30,11 +30,13 @@
  */
 package org.jomc.ant;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -515,21 +517,46 @@ public class ProjectClassLoader extends URLClassLoader
     }
 
     /**
+     * Closes the class loader.
+     * @throws IOException if closing the class loader fails.
+     */
+    public void close() throws IOException
+    {
+        for ( final Iterator<File> it = this.temporaryResources.iterator(); it.hasNext(); )
+        {
+            final File temporaryResource = it.next();
+
+            if ( temporaryResource.exists() && temporaryResource.delete() )
+            {
+                it.remove();
+            }
+        }
+
+        if ( Closeable.class.isAssignableFrom( ProjectClassLoader.class ) )
+        { // JDK: As of JDK 7, super.close();
+            this.jdk7Close();
+        }
+    }
+
+    /**
      * Removes temporary resources.
      * @throws Throwable if finalization fails.
      */
     @Override
     protected void finalize() throws Throwable
     {
-        for ( final File temporaryResource : this.temporaryResources )
+        for ( final Iterator<File> it = this.temporaryResources.iterator(); it.hasNext(); )
         {
+            final File temporaryResource = it.next();
+
             if ( temporaryResource.exists() && !temporaryResource.delete() )
             {
                 temporaryResource.deleteOnExit();
             }
+
+            it.remove();
         }
 
-        this.temporaryResources.clear();
         super.finalize();
     }
 
@@ -823,6 +850,26 @@ public class ProjectClassLoader extends URLClassLoader
         }
 
         this.getExcludedServices().getService().add( service );
+    }
+
+    private void jdk7Close()
+    {
+        try
+        {
+            URLClassLoader.class.getMethod( "close" ).invoke( this );
+        }
+        catch ( final NoSuchMethodException e )
+        {
+            this.project.log( Messages.getMessage( e ), e, Project.MSG_DEBUG );
+        }
+        catch ( final IllegalAccessException e )
+        {
+            this.project.log( Messages.getMessage( e ), e, Project.MSG_DEBUG );
+        }
+        catch ( final InvocationTargetException e )
+        {
+            this.project.log( Messages.getMessage( e ), e, Project.MSG_DEBUG );
+        }
     }
 
     private static Set<String> readDefaultExcludes( final String location ) throws IOException

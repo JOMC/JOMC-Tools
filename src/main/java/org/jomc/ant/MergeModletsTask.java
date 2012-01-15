@@ -397,13 +397,16 @@ public final class MergeModletsTask extends JomcTask
     @Override
     public void executeTask() throws BuildException
     {
+        ProjectClassLoader classLoader = null;
+        boolean suppressExceptionOnClose = true;
+
         try
         {
             this.log( Messages.getMessage( "mergingModlets", this.getModel() ) );
 
+            classLoader = this.newProjectClassLoader();
             final Modlets modlets = new Modlets();
             final Set<ResourceType> resources = new HashSet<ResourceType>( this.getModletResources() );
-            final ProjectClassLoader classLoader = this.newProjectClassLoader();
             final ModelContext context = this.newModelContext( classLoader );
             final Marshaller marshaller = context.createMarshaller( ModletObject.MODEL_PUBLIC_ID );
             final Unmarshaller unmarshaller = context.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
@@ -444,7 +447,7 @@ public final class MergeModletsTask extends JomcTask
                 for ( int i = urls.length - 1; i >= 0; i-- )
                 {
                     InputStream in = null;
-                    boolean suppressExceptionOnClose = true;
+                    suppressExceptionOnClose = true;
 
                     try
                     {
@@ -530,6 +533,8 @@ public final class MergeModletsTask extends JomcTask
                         }
                     }
                 }
+
+                suppressExceptionOnClose = true;
             }
 
             for ( String defaultExclude : classLoader.getModletExcludes() )
@@ -608,6 +613,7 @@ public final class MergeModletsTask extends JomcTask
             marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
             marshaller.setSchema( context.createSchema( ModletObject.MODEL_PUBLIC_ID ) );
             marshaller.marshal( new ObjectFactory().createModlet( mergedModlet ), this.getModletFile() );
+            suppressExceptionOnClose = false;
         }
         catch ( final URISyntaxException e )
         {
@@ -634,6 +640,27 @@ public final class MergeModletsTask extends JomcTask
         catch ( final ModelException e )
         {
             throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
+        }
+        finally
+        {
+            try
+            {
+                if ( classLoader != null )
+                {
+                    classLoader.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( suppressExceptionOnClose )
+                {
+                    this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
+                }
+                else
+                {
+                    throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
+                }
+            }
         }
     }
 
