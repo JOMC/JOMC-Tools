@@ -49,9 +49,6 @@ mvn ... -Djomc.verbose=true -Djomc.sourceProcessing=false
 ...
 <profile>
   <id>jomc-release</id>
-  <activation>
-    <activeByDefault>false</activeByDefault>
-  </activation>
   <properties>
     <jomc.verbose>true</jomc.verbose>
     <jomc.sourceProcessing>false</jomc.sourceProcessing>
