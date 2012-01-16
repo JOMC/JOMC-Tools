@@ -580,6 +580,7 @@
       <groupId>javax.annotation</groupId>
       <artifactId>jsr250-api</artifactId>
       <scope>provided</scope>
+      <optional>false</optional>
     </dependency>
     <dependency>
       <groupId>javax.xml.bind</groupId>
