@@ -64,7 +64,7 @@
                     <include>org.jomc:jomc-model</include>
                     <include>org.jomc:jomc-ri</include>
                     <include>org.jomc:jomc-tools</include>
-                    <include>org.jomc:jomc-cli</include>
+                    <include>${project.groupId}:${project.artifactId}</include>
                     <include>commons-cli:commons-cli</include>
                     <include>commons-collections:commons-collections</include>
                     <include>commons-io:commons-io</include>
@@ -261,13 +261,13 @@
               <configuration>
                 <artifactItems>
                   <artifactItem>
-                    <groupId>${project.groupId}</groupId>
+                    <groupId>org.jomc</groupId>
                     <artifactId>jomc-tools</artifactId>
                     <type>jar</type>
                     <outputDirectory>${project.build.directory}/jomc-tools</outputDirectory>
                   </artifactItem>
                   <artifactItem>
-                    <groupId>${project.groupId}</groupId>
+                    <groupId>org.jomc</groupId>
                     <artifactId>jomc-tools</artifactId>
                     <version>1.0</version>
                     <classifier>schemas</classifier>
@@ -275,7 +275,7 @@
                     <outputDirectory>${project.build.directory}/jomc-schemas</outputDirectory>
                   </artifactItem>
                   <artifactItem>
-                    <groupId>${project.groupId}</groupId>
+                    <groupId>org.jomc</groupId>
                     <artifactId>jomc-modlet</artifactId>
                     <version>1.0</version>
                     <classifier>schemas</classifier>
@@ -283,7 +283,7 @@
                     <outputDirectory>${project.build.directory}/jomc-schemas</outputDirectory>
                   </artifactItem>
                   <artifactItem>
-                    <groupId>${project.groupId}</groupId>
+                    <groupId>org.jomc</groupId>
                     <artifactId>jomc-model</artifactId>
                     <version>1.0</version>
                     <classifier>schemas</classifier>
@@ -291,20 +291,20 @@
                     <outputDirectory>${project.build.directory}/jomc-schemas</outputDirectory>
                   </artifactItem>
                   <artifactItem>
-                    <groupId>${project.groupId}</groupId>
+                    <groupId>org.jomc</groupId>
                     <artifactId>jomc-tools</artifactId>
                     <classifier>templates</classifier>
                     <type>jar</type>
                     <outputDirectory>${project.build.directory}/jomc-templates</outputDirectory>
                   </artifactItem>
                   <artifactItem>
-                    <groupId>${project.groupId}</groupId>
+                    <groupId>org.jomc</groupId>
                     <artifactId>jomc-ant-tasks</artifactId>
                     <type>jar</type>
                     <outputDirectory>${project.build.directory}/jomc-ant-tasks</outputDirectory>
                   </artifactItem>
                   <artifactItem>
-                    <groupId>${project.groupId}</groupId>
+                    <groupId>org.jomc</groupId>
                     <artifactId>maven-jomc-plugin</artifactId>
                     <type>jar</type>
                     <outputDirectory>${project.build.directory}/maven-jomc-plugin</outputDirectory>
@@ -335,39 +335,39 @@
                     <outputDirectory>${project.build.directory}/jomc-endorsed</outputDirectory>
                   </artifactItem>
                   <artifactItem>
-                    <groupId>${project.groupId}</groupId>
+                    <groupId>org.jomc</groupId>
                     <artifactId>jomc-ant-tasks</artifactId>
                     <type>jar</type>
                     <outputDirectory>${project.build.directory}/jomc-ant-tasks</outputDirectory>
                   </artifactItem>
                   <artifactItem>
-                    <groupId>${project.groupId}</groupId>
+                    <groupId>org.jomc</groupId>
                     <artifactId>jomc-ant-tasks</artifactId>
                     <classifier>installer</classifier>
                     <type>xml</type>
                     <outputDirectory>${project.build.directory}/jomc-ant-tasks</outputDirectory>
                   </artifactItem>
                   <artifactItem>
-                    <groupId>${project.groupId}</groupId>
+                    <groupId>org.jomc</groupId>
                     <artifactId>jomc-ant-tasks</artifactId>
                     <classifier>changes</classifier>
                     <type>xhtml</type>
                     <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
                   </artifactItem>
                   <artifactItem>
-                    <groupId>${project.groupId}</groupId>
+                    <groupId>org.jomc</groupId>
                     <artifactId>maven-jomc-plugin</artifactId>
                     <type>jar</type>
                     <outputDirectory>${project.build.directory}/maven-jomc-plugin</outputDirectory>
                   </artifactItem>
                   <artifactItem>
-                    <groupId>${project.groupId}</groupId>
+                    <groupId>org.jomc</groupId>
                     <artifactId>maven-jomc-plugin</artifactId>
                     <type>pom</type>
                     <outputDirectory>${project.build.directory}/maven-jomc-plugin</outputDirectory>
                   </artifactItem>
                   <artifactItem>
-                    <groupId>${project.groupId}</groupId>
+                    <groupId>org.jomc</groupId>
                     <artifactId>maven-jomc-plugin</artifactId>
                     <classifier>changes</classifier>
                     <type>xhtml</type>
@@ -375,14 +375,14 @@
                   </artifactItem>
                   <artifactItem>
                     <groupId>${project.groupId}</groupId>
-                    <artifactId>jomc-cli</artifactId>
+                    <artifactId>${project.artifactId}</artifactId>
                     <classifier>changes</classifier>
                     <type>xhtml</type>
                     <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
                   </artifactItem>
                   <artifactItem>
-                    <groupId>${project.groupId}</groupId>
-                    <artifactId>jomc-parent</artifactId>
+                    <groupId>${project.parent.groupId}</groupId>
+                    <artifactId>${project.parent.artifactId}</artifactId>
                     <version>${project.parent.version}</version>
                     <classifier>changes</classifier>
                     <type>xhtml</type>
@@ -900,138 +900,138 @@
                   <configuration>
                     <artifactItems combine.children="append">
                       <artifactItem>
-                        <groupId>${project.groupId}</groupId>
+                        <groupId>org.jomc</groupId>
                         <artifactId>jomc-ant-tasks</artifactId>
                         <classifier>tests</classifier>
                         <type>jar</type>
                         <outputDirectory>${project.build.directory}/jomc-tests</outputDirectory>
                       </artifactItem>
                       <artifactItem>
-                        <groupId>${project.groupId}</groupId>
+                        <groupId>org.jomc</groupId>
                         <artifactId>jomc-ant-tasks</artifactId>
                         <classifier>javadoc</classifier>
                         <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                       </artifactItem>
                       <artifactItem>
-                        <groupId>${project.groupId}</groupId>
+                        <groupId>org.jomc</groupId>
                         <artifactId>jomc-ant-tasks</artifactId>
                         <classifier>test-javadoc</classifier>
                         <outputDirectory>${project.build.directory}/jomc-test-javadoc</outputDirectory>
                       </artifactItem>
                       <artifactItem>
-                        <groupId>${project.groupId}</groupId>
+                        <groupId>org.jomc</groupId>
                         <artifactId>jomc-ant-tasks</artifactId>
                         <classifier>sources</classifier>
                         <outputDirectory>${project.build.directory}/jomc-sources</outputDirectory>
                       </artifactItem>
                       <artifactItem>
-                        <groupId>${project.groupId}</groupId>
+                        <groupId>org.jomc</groupId>
                         <artifactId>jomc-ant-tasks</artifactId>
                         <classifier>test-sources</classifier>
                         <outputDirectory>${project.build.directory}/jomc-test-sources</outputDirectory>
                       </artifactItem>
                       <artifactItem>
-                        <groupId>${project.groupId}</groupId>
+                        <groupId>org.jomc</groupId>
                         <artifactId>jomc-ant-tasks</artifactId>
                         <classifier>site</classifier>
                         <outputDirectory>${project.build.directory}/jomc-site</outputDirectory>
                       </artifactItem>
                       <artifactItem>
-                        <groupId>${project.groupId}</groupId>
+                        <groupId>org.jomc</groupId>
                         <artifactId>jomc-ant-tasks</artifactId>
                         <classifier>project</classifier>
                         <outputDirectory>${project.build.directory}/jomc-project</outputDirectory>
                       </artifactItem>
                       <artifactItem>
-                        <groupId>${project.groupId}</groupId>
+                        <groupId>org.jomc</groupId>
                         <artifactId>maven-jomc-plugin</artifactId>
                         <classifier>tests</classifier>
                         <type>jar</type>
                         <outputDirectory>${project.build.directory}/jomc-tests</outputDirectory>
                       </artifactItem>
                       <artifactItem>
-                        <groupId>${project.groupId}</groupId>
+                        <groupId>org.jomc</groupId>
                         <artifactId>maven-jomc-plugin</artifactId>
                         <classifier>javadoc</classifier>
                         <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                       </artifactItem>
                       <artifactItem>
-                        <groupId>${project.groupId}</groupId>
+                        <groupId>org.jomc</groupId>
                         <artifactId>maven-jomc-plugin</artifactId>
                         <classifier>sources</classifier>
                         <outputDirectory>${project.build.directory}/jomc-sources</outputDirectory>
                       </artifactItem>
                       <artifactItem>
-                        <groupId>${project.groupId}</groupId>
+                        <groupId>org.jomc</groupId>
                         <artifactId>maven-jomc-plugin</artifactId>
                         <classifier>test-sources</classifier>
                         <outputDirectory>${project.build.directory}/jomc-test-sources</outputDirectory>
                       </artifactItem>
                       <artifactItem>
-                        <groupId>${project.groupId}</groupId>
+                        <groupId>org.jomc</groupId>
                         <artifactId>maven-jomc-plugin</artifactId>
                         <classifier>site</classifier>
                         <outputDirectory>${project.build.directory}/jomc-site</outputDirectory>
                       </artifactItem>
                       <artifactItem>
-                        <groupId>${project.groupId}</groupId>
+                        <groupId>org.jomc</groupId>
                         <artifactId>maven-jomc-plugin</artifactId>
                         <classifier>project</classifier>
                         <outputDirectory>${project.build.directory}/jomc-project</outputDirectory>
                       </artifactItem>
                       <artifactItem>
                         <groupId>${project.groupId}</groupId>
-                        <artifactId>jomc-cli</artifactId>
+                        <artifactId>${project.artifactId}</artifactId>
                         <classifier>tests</classifier>
                         <type>jar</type>
                         <outputDirectory>${project.build.directory}/jomc-tests</outputDirectory>
                       </artifactItem>
                       <artifactItem>
                         <groupId>${project.groupId}</groupId>
-                        <artifactId>jomc-cli</artifactId>
+                        <artifactId>${project.artifactId}</artifactId>
                         <classifier>javadoc</classifier>
                         <outputDirectory>${project.build.directory}/jomc-javadoc</outputDirectory>
                       </artifactItem>
                       <artifactItem>
                         <groupId>${project.groupId}</groupId>
-                        <artifactId>jomc-cli</artifactId>
+                        <artifactId>${project.artifactId}</artifactId>
                         <classifier>test-javadoc</classifier>
                         <outputDirectory>${project.build.directory}/jomc-test-javadoc</outputDirectory>
                       </artifactItem>
                       <artifactItem>
                         <groupId>${project.groupId}</groupId>
-                        <artifactId>jomc-cli</artifactId>
+                        <artifactId>${project.artifactId}</artifactId>
                         <classifier>sources</classifier>
                         <outputDirectory>${project.build.directory}/jomc-sources</outputDirectory>
                       </artifactItem>
                       <artifactItem>
                         <groupId>${project.groupId}</groupId>
-                        <artifactId>jomc-cli</artifactId>
+                        <artifactId>${project.artifactId}</artifactId>
                         <classifier>test-sources</classifier>
                         <outputDirectory>${project.build.directory}/jomc-test-sources</outputDirectory>
                       </artifactItem>
                       <artifactItem>
                         <groupId>${project.groupId}</groupId>
-                        <artifactId>jomc-cli</artifactId>
+                        <artifactId>${project.artifactId}</artifactId>
                         <classifier>site</classifier>
                         <outputDirectory>${project.build.directory}/jomc-site</outputDirectory>
                       </artifactItem>
                       <artifactItem>
                         <groupId>${project.groupId}</groupId>
-                        <artifactId>jomc-cli</artifactId>
+                        <artifactId>${project.artifactId}</artifactId>
                         <classifier>project</classifier>
                         <outputDirectory>${project.build.directory}/jomc-project</outputDirectory>
                       </artifactItem>
                       <artifactItem>
-                        <groupId>${project.groupId}</groupId>
-                        <artifactId>jomc-parent</artifactId>
+                        <groupId>${project.parent.groupId}</groupId>
+                        <artifactId>${project.parent.artifactId}</artifactId>
                         <version>${project.parent.version}</version>
                         <classifier>site</classifier>
                         <outputDirectory>${project.build.directory}/jomc-site</outputDirectory>
                       </artifactItem>
                       <artifactItem>
-                        <groupId>${project.groupId}</groupId>
-                        <artifactId>jomc-parent</artifactId>
+                        <groupId>${project.parent.groupId}</groupId>
+                        <artifactId>${project.parent.artifactId}</artifactId>
                         <version>${project.parent.version}</version>
                         <classifier>project</classifier>
                         <outputDirectory>${project.build.directory}/jomc-project</outputDirectory>
