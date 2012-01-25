@@ -437,22 +437,22 @@ public final class ValidateClassesCommand extends AbstractClassFileProcessorComm
         return _d;
     }
     /**
-     * Gets the {@code <ModelContextOption>} dependency.
+     * Gets the {@code <ModelContextFactoryOption>} dependency.
      * <p>
-     *   This method returns the {@code <JOMC CLI ModelContext Class Name Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   This method returns the {@code <JOMC CLI ModelContextFactory Class Name Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
      * <dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl>
-     * @return The {@code <ModelContextOption>} dependency.
+     * @return The {@code <ModelContextFactoryOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private org.apache.commons.cli.Option getModelContextOption()
+    private org.apache.commons.cli.Option getModelContextFactoryOption()
     {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModelContextOption" );
-        assert _d != null : "'ModelContextOption' dependency not found.";
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModelContextFactoryOption" );
+        assert _d != null : "'ModelContextFactoryOption' dependency not found.";
         return _d;
     }
     /**
@@ -1465,7 +1465,7 @@ public final class ValidateClassesCommand extends AbstractClassFileProcessorComm
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
-     *       <td align="left" valign="top" nowrap>JOMC CLI ModelContext Class Name Option</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI ModelContextFactory Class Name Option</td>
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
@@ -1559,7 +1559,7 @@ public final class ValidateClassesCommand extends AbstractClassFileProcessorComm
         options.addOption( this.getLanguageOption() );
         options.addOption( this.getLineSeparatorOption() );
         options.addOption( this.getLocaleVariantOption() );
-        options.addOption( this.getModelContextOption() );
+        options.addOption( this.getModelContextFactoryOption() );
         options.addOption( this.getModelOption() );
         options.addOption( this.getModletLocationOption() );
         options.addOption( this.getModletSchemaSystemIdOption() );

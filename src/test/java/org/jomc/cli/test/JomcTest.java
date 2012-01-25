@@ -52,6 +52,7 @@ import org.jomc.cli.Jomc;
 import org.jomc.model.ModelObject;
 import org.jomc.model.Module;
 import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelContextFactory;
 import org.jomc.modlet.Modlet;
 import org.jomc.modlet.ModletObject;
 import org.junit.Before;
@@ -339,7 +340,7 @@ public class JomcTest
     @Test
     public final void testMergeModules() throws Exception
     {
-        final ModelContext context = ModelContext.createModelContext( this.getClass().getClassLoader() );
+        final ModelContext context = ModelContextFactory.newInstance().newModelContext();
         final Unmarshaller unmarshaller = context.createUnmarshaller( ModelObject.MODEL_PUBLIC_ID );
         final Schema schema = context.createSchema( ModelObject.MODEL_PUBLIC_ID );
         unmarshaller.setSchema( schema );
@@ -443,7 +444,7 @@ public class JomcTest
     @Test
     public final void testMergeModlets() throws Exception
     {
-        final ModelContext context = ModelContext.createModelContext( this.getClass().getClassLoader() );
+        final ModelContext context = ModelContextFactory.newInstance().newModelContext();
         final Unmarshaller unmarshaller = context.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID );
         final Schema schema = context.createSchema( ModletObject.MODEL_PUBLIC_ID );
         unmarshaller.setSchema( schema );

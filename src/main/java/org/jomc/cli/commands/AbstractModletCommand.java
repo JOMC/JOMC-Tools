@@ -72,6 +72,7 @@ import org.jomc.model.ModelObject;
 import org.jomc.modlet.DefaultModelContext;
 import org.jomc.modlet.DefaultModletProvider;
 import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelContextFactory;
 import org.jomc.modlet.ModelException;
 import org.jomc.modlet.ModelValidationReport;
 import org.jomc.modlet.Modlet;
@@ -190,65 +191,66 @@ public abstract class AbstractModletCommand extends AbstractCommand
             throw new NullPointerException( "commandLine" );
         }
 
-        try
+        final ModelContextFactory modelContextFactory;
+        if ( commandLine.hasOption( this.getModelContextFactoryOption().getOpt() ) )
         {
-            final ModelContext modelContext =
-                commandLine.hasOption( this.getModelContextOption().getOpt() )
-                ? ModelContext.createModelContext( commandLine.getOptionValue( this.getModelContextOption().getOpt() ),
-                                                   classLoader )
-                : ModelContext.createModelContext( classLoader );
+            modelContextFactory = ModelContextFactory.newInstance( commandLine.getOptionValue(
+                this.getModelContextFactoryOption().getOpt() ) );
 
-            if ( commandLine.hasOption( this.getModletSchemaSystemIdOption().getOpt() ) )
-            {
-                modelContext.setModletSchemaSystemId(
-                    commandLine.getOptionValue( this.getModletSchemaSystemIdOption().getOpt() ) );
-
-            }
-
-            modelContext.setLogLevel( this.getLogLevel() );
-            modelContext.getListeners().add( new ModelContext.Listener()
-            {
-
-                @Override
-                public void onLog( final Level level, final String message, final Throwable t )
-                {
-                    super.onLog( level, message, t );
-                    log( level, message, t );
-                }
-
-            } );
-
-            if ( commandLine.hasOption( this.getProviderLocationOption().getOpt() ) )
-            {
-                modelContext.setAttribute( DefaultModelContext.PROVIDER_LOCATION_ATTRIBUTE_NAME,
-                                           commandLine.getOptionValue( this.getProviderLocationOption().getOpt() ) );
-
-            }
-
-            if ( commandLine.hasOption( this.getPlatformProviderLocationOption().getOpt() ) )
-            {
-                modelContext.setAttribute(
-                    DefaultModelContext.PLATFORM_PROVIDER_LOCATION_ATTRIBUTE_NAME,
-                    commandLine.getOptionValue( this.getPlatformProviderLocationOption().getOpt() ) );
-
-            }
-
-            if ( commandLine.hasOption( this.getModletLocationOption().getOpt() ) )
-            {
-                modelContext.setAttribute( DefaultModletProvider.MODLET_LOCATION_ATTRIBUTE_NAME,
-                                           commandLine.getOptionValue( this.getModletLocationOption().getOpt() ) );
-
-            }
-
-            modelContext.setAttribute( DefaultModletProvider.VALIDATING_ATTRIBUTE_NAME,
-                                       !commandLine.hasOption( this.getNoModletResourceValidation().getOpt() ) );
-
-            return modelContext;
         }
-        catch ( final ModelException e )
+        else
         {
-            throw new CommandExecutionException( getExceptionMessage( e ), e );
+            modelContextFactory = ModelContextFactory.newInstance();
         }
+
+        final ModelContext modelContext = modelContextFactory.newModelContext( classLoader );
+
+        if ( commandLine.hasOption( this.getModletSchemaSystemIdOption().getOpt() ) )
+        {
+            modelContext.setModletSchemaSystemId(
+                commandLine.getOptionValue( this.getModletSchemaSystemIdOption().getOpt() ) );
+
+        }
+
+        modelContext.setLogLevel( this.getLogLevel() );
+        modelContext.getListeners().add( new ModelContext.Listener()
+        {
+
+            @Override
+            public void onLog( final Level level, final String message, final Throwable t )
+            {
+                super.onLog( level, message, t );
+                log( level, message, t );
+            }
+
+        } );
+
+        if ( commandLine.hasOption( this.getProviderLocationOption().getOpt() ) )
+        {
+            modelContext.setAttribute( DefaultModelContext.PROVIDER_LOCATION_ATTRIBUTE_NAME,
+                                       commandLine.getOptionValue( this.getProviderLocationOption().getOpt() ) );
+
+        }
+
+        if ( commandLine.hasOption( this.getPlatformProviderLocationOption().getOpt() ) )
+        {
+            modelContext.setAttribute(
+                DefaultModelContext.PLATFORM_PROVIDER_LOCATION_ATTRIBUTE_NAME,
+                commandLine.getOptionValue( this.getPlatformProviderLocationOption().getOpt() ) );
+
+        }
+
+        if ( commandLine.hasOption( this.getModletLocationOption().getOpt() ) )
+        {
+            modelContext.setAttribute( DefaultModletProvider.MODLET_LOCATION_ATTRIBUTE_NAME,
+                                       commandLine.getOptionValue( this.getModletLocationOption().getOpt() ) );
+
+        }
+
+        modelContext.setAttribute( DefaultModletProvider.VALIDATING_ATTRIBUTE_NAME,
+                                   !commandLine.hasOption( this.getNoModletResourceValidation().getOpt() ) );
+
+        return modelContext;
     }
 
     /**
@@ -890,7 +892,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
         {
             URL filteredResource = resource;
             final List<String> excludedModletNames = Arrays.asList( getModletExcludes().split( ":" ) );
-            final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
+            final ModelContext modelContext = ModelContextFactory.newInstance().newModelContext();
             Object o = modelContext.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID ).unmarshal( resource );
             if ( o instanceof JAXBElement<?> )
             {
@@ -1098,22 +1100,22 @@ public abstract class AbstractModletCommand extends AbstractCommand
         return _d;
     }
     /**
-     * Gets the {@code <ModelContextOption>} dependency.
+     * Gets the {@code <ModelContextFactoryOption>} dependency.
      * <p>
-     *   This method returns the {@code <JOMC CLI ModelContext Class Name Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   This method returns the {@code <JOMC CLI ModelContextFactory Class Name Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
      * <dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl>
-     * @return The {@code <ModelContextOption>} dependency.
+     * @return The {@code <ModelContextFactoryOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 1.2-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2-SNAPSHOT" )
-    private org.apache.commons.cli.Option getModelContextOption()
+    private org.apache.commons.cli.Option getModelContextFactoryOption()
     {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModelContextOption" );
-        assert _d != null : "'ModelContextOption' dependency not found.";
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "ModelContextFactoryOption" );
+        assert _d != null : "'ModelContextFactoryOption' dependency not found.";
         return _d;
     }
     /**
@@ -1742,7 +1744,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
-     *       <td align="left" valign="top" nowrap>JOMC CLI ModelContext Class Name Option</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI ModelContextFactory Class Name Option</td>
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
@@ -1779,7 +1781,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
         final org.apache.commons.cli.Options options = new org.apache.commons.cli.Options();
         options.addOption( this.getClasspathOption() );
         options.addOption( this.getDocumentsOption() );
-        options.addOption( this.getModelContextOption() );
+        options.addOption( this.getModelContextFactoryOption() );
         options.addOption( this.getModelOption() );
         options.addOption( this.getModletLocationOption() );
         options.addOption( this.getModletSchemaSystemIdOption() );

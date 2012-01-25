@@ -1803,8 +1803,8 @@
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="${project.name} ModelContext Class Name Option"
-                    name="${project.name} ModelContext Class Name Option"
+    <implementation identifier="${project.name} ModelContextFactory Class Name Option"
+                    name="${project.name} ModelContextFactory Class Name Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
@@ -1820,15 +1820,15 @@
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="mcc" override="true"/>
-        <property name="longOpt" value="model-context-class" override="true"/>
+        <property name="opt" value="mcfc" override="true"/>
+        <property name="longOpt" value="model-context-factory-class" override="true"/>
         <property name="numberOfArgs" type="int" value="1" override="true"/>
       </properties>
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Class name of the ''ModelContext'' to use.</text>
-            <text language="de">Klassenname des zu verwendenden ''ModelContext''.</text>
+            <text language="en">Class name of the ''ModelContextFactory'' to use.</text>
+            <text language="de">Klassenname der zu verwendenden ''ModelContextFactory''.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
@@ -2351,8 +2351,8 @@
         <dependency name="DocumentsOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Documents Option"/>
 
-        <dependency name="ModelContextOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
-                    implementationName="${project.name} ModelContext Class Name Option"/>
+        <dependency name="ModelContextFactoryOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
+                    implementationName="${project.name} ModelContextFactory Class Name Option"/>
 
         <dependency name="ModelOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Model Option"/>
