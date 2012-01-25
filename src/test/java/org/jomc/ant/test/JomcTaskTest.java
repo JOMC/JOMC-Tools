@@ -56,6 +56,7 @@ import org.jomc.ant.types.PropertiesResourceType;
 import org.jomc.ant.types.TransformerResourceType;
 import org.jomc.model.ModelObject;
 import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelContextFactory;
 import org.jomc.modlet.ModelException;
 import org.jomc.modlet.Modlet;
 import org.jomc.modlet.ModletObject;
@@ -221,7 +222,7 @@ public class JomcTaskTest
                 assertTrue( classpathDirectory.mkdirs() );
             }
 
-            final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
+            final ModelContext modelContext = ModelContextFactory.newInstance().newModelContext();
             final Modlets modlets = modelContext.getModlets();
             final Modlet redundantModlet =
                 modlets.getMergedModlet( "JOMC Ant Tasks Tests", ModelObject.MODEL_PUBLIC_ID );

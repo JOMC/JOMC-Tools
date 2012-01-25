@@ -253,7 +253,7 @@ public class JomcModelTask extends JomcTask
 
         for ( ResourceType resource : this.getModuleResources() )
         {
-            final URL[] urls = this.getResources( resource.getLocation(), context.getClassLoader() );
+            final URL[] urls = this.getResources( context, resource.getLocation() );
 
             if ( urls.length == 0 )
             {

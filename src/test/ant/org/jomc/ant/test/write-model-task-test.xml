@@ -129,7 +129,7 @@
                       transformerLocation="TEST"
                       modelObjectClasspathResolutionEnabled="false"
                       model="http://jomc.org/model"
-                      modelContextClassName="org.jomc.modlet.DefaultModelContext"
+                      modelContextFactoryClassName="org.jomc.modlet.DefaultModelContextFactory"
                       modelProcessingEnabled="false"
                       modletLocation="META-INF/jomc-modlet.xml"
                       providerLocation="META-INF/services"

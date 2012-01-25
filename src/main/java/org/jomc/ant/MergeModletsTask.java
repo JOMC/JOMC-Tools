@@ -426,7 +426,7 @@ public final class MergeModletsTask extends JomcTask
 
             for ( ResourceType resource : resources )
             {
-                final URL[] urls = this.getResources( resource.getLocation(), classLoader );
+                final URL[] urls = this.getResources( context, resource.getLocation() );
 
                 if ( urls.length == 0 )
                 {

@@ -386,7 +386,7 @@ public final class MergeModulesTask extends JomcModelTask
 
             for ( ResourceType resource : resources )
             {
-                final URL[] urls = this.getResources( resource.getLocation(), context.getClassLoader() );
+                final URL[] urls = this.getResources( context, resource.getLocation() );
 
                 if ( urls.length == 0 )
                 {

@@ -78,6 +78,7 @@ import org.jomc.modlet.DefaultModelContext;
 import org.jomc.modlet.DefaultModletProvider;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelContextFactory;
 import org.jomc.modlet.ModelException;
 import org.jomc.modlet.ModelValidationReport;
 
@@ -100,8 +101,8 @@ public class JomcTask extends Task
     /** {@code ModelContext} attributes to apply. */
     private List<KeyValueType> modelContextAttributes;
 
-    /** The name of the {@code ModelContext} implementation class backing the task. */
-    private String modelContextClassName;
+    /** The name of the {@code ModelContextFactory} implementation class backing the task. */
+    private String modelContextFactoryClassName;
 
     /** Controls processing of models. */
     private boolean modelProcessingEnabled = true;
@@ -311,27 +312,28 @@ public class JomcTask extends Task
     }
 
     /**
-     * Gets the name of the {@code ModelContext} implementation class backing the task.
+     * Gets the name of the {@code ModelContextFactory} implementation class backing the task.
      *
-     * @return The name of the {@code ModelContext} implementation class backing the task or {@code null}.
+     * @return The name of the {@code ModelContextFactory} implementation class backing the task or {@code null}.
      *
-     * @see #setModelContextClassName(java.lang.String)
+     * @see #setModelContextFactoryClassName(java.lang.String)
      */
-    public final String getModelContextClassName()
+    public final String getModelContextFactoryClassName()
     {
-        return this.modelContextClassName;
+        return this.modelContextFactoryClassName;
     }
 
     /**
-     * Sets the name of the {@code ModelContext} implementation class backing the task.
+     * Sets the name of the {@code ModelContextFactory} implementation class backing the task.
      *
-     * @param value The new name of the {@code ModelContext} implementation class backing the task or {@code null}.
+     * @param value The new name of the {@code ModelContextFactory} implementation class backing the task or
+     * {@code null}.
      *
-     * @see #getModelContextClassName()
+     * @see #getModelContextFactoryClassName()
      */
-    public final void setModelContextClassName( final String value )
+    public final void setModelContextFactoryClassName( final String value )
     {
-        this.modelContextClassName = value;
+        this.modelContextFactoryClassName = value;
     }
 
     /**
@@ -760,37 +762,37 @@ public class JomcTask extends Task
 
     /**
      * Creates an array of {@code URL}s for a given resource location.
-     * <p>This method first searches the given class loader for resources matching {@code location}. If such resources
-     * are found, an array of URLs of those resources is returned. If no such resources are found, an attempt is made
+     * <p>This method first searches the given context for resources matching {@code location}. If such resources are
+     * found, an array of URLs of those resources is returned. If no such resources are found, an attempt is made
      * to parse the given location to an URL. On successful parsing, that URL is returned. Failing that, the given
      * location is interpreted as a file name relative to the project's base directory. If that file is found, the URL
      * of that file is returned. Otherwise an empty array is returned.</p>
      *
+     * @param context The context to search for resources.
      * @param location The resource location to create an array of {@code URL}s from.
-     * @param classLoader The class loader to search for resources.
      *
      * @return An array of {@code URL}s for {@code location} or an empty array if parsing {@code location} to an URL
      * fails and {@code location} points to non-existent resources.
      *
-     * @throws NullPointerException if {@code location} or {@code classLoader} is {@code null}.
+     * @throws NullPointerException if {@code context} or {@code location} is {@code null}.
      * @throws BuildException if creating an URL array fails.
      */
-    public URL[] getResources( final String location, final ClassLoader classLoader ) throws BuildException
+    public URL[] getResources( final ModelContext context, final String location ) throws BuildException
     {
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
         if ( location == null )
         {
             throw new NullPointerException( "location" );
-        }
-        if ( classLoader == null )
-        {
-            throw new NullPointerException( "classLoader" );
         }
 
         final Set<URI> uris = new HashSet<URI>();
 
         try
         {
-            for ( final Enumeration<URL> e = classLoader.getResources( location ); e.hasMoreElements(); )
+            for ( final Enumeration<URL> e = context.findResources( location ); e.hasMoreElements(); )
             {
                 uris.add( e.nextElement().toURI() );
             }
@@ -799,7 +801,7 @@ public class JomcTask extends Task
         {
             this.log( e, Project.MSG_DEBUG );
         }
-        catch ( final IOException e )
+        catch ( final ModelException e )
         {
             this.log( e, Project.MSG_DEBUG );
         }
@@ -1273,11 +1275,17 @@ public class JomcTask extends Task
      */
     public ModelContext newModelContext( final ClassLoader classLoader ) throws ModelException
     {
-        final ModelContext modelContext =
-            this.getModelContextClassName() == null
-            ? ModelContext.createModelContext( classLoader )
-            : ModelContext.createModelContext( this.getModelContextClassName(), classLoader );
+        final ModelContextFactory modelContextFactory;
+        if ( this.modelContextFactoryClassName != null )
+        {
+            modelContextFactory = ModelContextFactory.newInstance( this.getModelContextFactoryClassName() );
+        }
+        else
+        {
+            modelContextFactory = ModelContextFactory.newInstance();
+        }
 
+        final ModelContext modelContext = modelContextFactory.newModelContext( classLoader );
         modelContext.setLogLevel( Level.ALL );
         modelContext.setModletSchemaSystemId( this.getModletSchemaSystemId() );
 

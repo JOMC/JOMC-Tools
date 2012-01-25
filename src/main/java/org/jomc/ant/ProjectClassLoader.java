@@ -54,6 +54,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Path;
 import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelContextFactory;
 import org.jomc.modlet.ModelException;
 import org.jomc.modlet.Modlet;
 import org.jomc.modlet.ModletObject;
@@ -660,7 +661,7 @@ public class ProjectClassLoader extends URLClassLoader
         try
         {
             URL filteredResource = resource;
-            final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
+            final ModelContext modelContext = ModelContextFactory.newInstance().newModelContext();
             in = resource.openStream();
             final JAXBElement<?> e =
                 (JAXBElement<?>) modelContext.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID ).unmarshal( in );
