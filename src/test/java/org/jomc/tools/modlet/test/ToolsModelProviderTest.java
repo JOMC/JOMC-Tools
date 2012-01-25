@@ -40,6 +40,7 @@ import org.jomc.model.Specifications;
 import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelContextFactory;
 import org.jomc.tools.model.SourceFilesType;
 import org.jomc.tools.modlet.ToolsModelProvider;
 import org.junit.Test;
@@ -99,7 +100,7 @@ public class ToolsModelProviderTest
     @Test
     public final void testFindModel() throws Exception
     {
-        final ModelContext context = ModelContext.createModelContext( this.getClass().getClassLoader() );
+        final ModelContext context = ModelContextFactory.newInstance().newModelContext();
         Model model = new Model();
         model.setIdentifier( ModelObject.MODEL_PUBLIC_ID );
 
@@ -203,14 +204,12 @@ public class ToolsModelProviderTest
         this.getModelProvider().setEnabled( null );
         assertTrue( this.getModelProvider().isEnabled() );
 
-        this.getModelProvider().findModel( ModelContext.createModelContext( this.getClass().getClassLoader() ), model );
-
+        this.getModelProvider().findModel( ModelContextFactory.newInstance().newModelContext(), model );
         ToolsModelProvider.setDefaultEnabled( false );
         this.getModelProvider().setEnabled( null );
         assertFalse( this.getModelProvider().isEnabled() );
 
-        this.getModelProvider().findModel( ModelContext.createModelContext( this.getClass().getClassLoader() ), model );
-
+        this.getModelProvider().findModel( ModelContextFactory.newInstance().newModelContext(), model );
         ToolsModelProvider.setDefaultEnabled( null );
         this.getModelProvider().setEnabled( null );
     }

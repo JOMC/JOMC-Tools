@@ -40,6 +40,7 @@ import org.jomc.model.Specifications;
 import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelContextFactory;
 import org.jomc.tools.model.SourceFileType;
 import org.jomc.tools.model.SourceFilesType;
 import org.jomc.tools.model.SourceSectionType;
@@ -103,7 +104,7 @@ public class ToolsModelProcessorTest
     @Test
     public final void testProcessModel() throws Exception
     {
-        final ModelContext context = ModelContext.createModelContext( this.getClass().getClassLoader() );
+        final ModelContext context = ModelContextFactory.newInstance().newModelContext();
         Model model = new Model();
         model.setIdentifier( ModelObject.MODEL_PUBLIC_ID );
 
@@ -403,16 +404,12 @@ public class ToolsModelProcessorTest
         this.getModelProcessor().setEnabled( null );
         assertTrue( this.getModelProcessor().isEnabled() );
 
-        this.getModelProcessor().processModel(
-            ModelContext.createModelContext( this.getClass().getClassLoader() ), model );
-
+        this.getModelProcessor().processModel( ModelContextFactory.newInstance().newModelContext(), model );
         ToolsModelProcessor.setDefaultEnabled( false );
         this.getModelProcessor().setEnabled( null );
         assertFalse( this.getModelProcessor().isEnabled() );
 
-        this.getModelProcessor().processModel(
-            ModelContext.createModelContext( this.getClass().getClassLoader() ), model );
-
+        this.getModelProcessor().processModel( ModelContextFactory.newInstance().newModelContext(), model );
         ToolsModelProcessor.setDefaultEnabled( null );
         this.getModelProcessor().setEnabled( null );
     }

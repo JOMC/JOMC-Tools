@@ -64,6 +64,7 @@ import org.jomc.model.modlet.DefaultModelProvider;
 import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelContextFactory;
 import org.jomc.modlet.ModelException;
 import org.jomc.tools.ClassFileProcessor;
 import org.jomc.tools.ResourceFileProcessor;
@@ -1427,17 +1428,26 @@ public class ClassFileProcessorTest extends JomcToolTest
         this.getJomcTool().transformModelObjects( s, this.getModelContext(), specificationClasses, transformers );
         this.getJomcTool().transformModelObjects( i, this.getModelContext(), implementationClasses, transformers );
 
-        this.getJomcTool().validateModelObjects( ModelContext.createModelContext( allClassesLoader ) );
-        this.getJomcTool().validateModelObjects( m, ModelContext.createModelContext( moduleClassesLoader ) );
-        this.getJomcTool().validateModelObjects( s, ModelContext.createModelContext( specificationClassesLoader ) );
-        this.getJomcTool().validateModelObjects( i, ModelContext.createModelContext( implementationClassesLoader ) );
+        this.getJomcTool().validateModelObjects(
+            ModelContextFactory.newInstance().newModelContext( allClassesLoader ) );
+
+        this.getJomcTool().validateModelObjects(
+            m, ModelContextFactory.newInstance().newModelContext( moduleClassesLoader ) );
+
+        this.getJomcTool().validateModelObjects(
+            s, ModelContextFactory.newInstance().newModelContext( specificationClassesLoader ) );
+
+        this.getJomcTool().validateModelObjects(
+            i, ModelContextFactory.newInstance().newModelContext( implementationClassesLoader ) );
 
         this.getJomcTool().validateModelObjects( this.getModelContext(), allClasses );
         this.getJomcTool().validateModelObjects( m, this.getModelContext(), moduleClasses );
         this.getJomcTool().validateModelObjects( s, this.getModelContext(), specificationClasses );
         this.getJomcTool().validateModelObjects( i, this.getModelContext(), implementationClasses );
 
-        this.getJomcTool().validateModelObjects( ModelContext.createModelContext( uncommittedClassesLoader ) );
+        this.getJomcTool().validateModelObjects(
+            ModelContextFactory.newInstance().newModelContext( uncommittedClassesLoader ) );
+
         this.getJomcTool().validateModelObjects( this.getModelContext(), uncommittedClasses );
 
         final Model model = this.getJomcTool().getModel();
@@ -1543,21 +1553,27 @@ public class ClassFileProcessorTest extends JomcToolTest
 
         this.getJomcTool().setModel( copy );
 
-        this.getJomcTool().validateModelObjects( ModelContext.createModelContext( allClassesLoader ) );
-        this.getJomcTool().validateModelObjects( testModule, ModelContext.createModelContext( moduleClassesLoader ) );
-        this.getJomcTool().validateModelObjects( classFileProcessor,
-                                                 ModelContext.createModelContext( specificationClassesLoader ) );
+        this.getJomcTool().validateModelObjects(
+            ModelContextFactory.newInstance().newModelContext( allClassesLoader ) );
 
-        this.getJomcTool().validateModelObjects( classFileProcessorImpl,
-                                                 ModelContext.createModelContext( implementationClassesLoader ) );
+        this.getJomcTool().validateModelObjects(
+            testModule, ModelContextFactory.newInstance().newModelContext( moduleClassesLoader ) );
+
+        this.getJomcTool().validateModelObjects(
+            classFileProcessor, ModelContextFactory.newInstance().newModelContext( specificationClassesLoader ) );
+
+        this.getJomcTool().validateModelObjects(
+            classFileProcessorImpl, ModelContextFactory.newInstance().newModelContext( implementationClassesLoader ) );
 
         this.getJomcTool().validateModelObjects( this.getModelContext(), allClasses );
         this.getJomcTool().validateModelObjects( testModule, this.getModelContext(), moduleClasses );
         this.getJomcTool().validateModelObjects( classFileProcessor, this.getModelContext(), specificationClasses );
-        this.getJomcTool().validateModelObjects( classFileProcessorImpl,
-                                                 this.getModelContext(), implementationClasses );
+        this.getJomcTool().validateModelObjects( classFileProcessorImpl, this.getModelContext(),
+                                                 implementationClasses );
 
-        this.getJomcTool().validateModelObjects( ModelContext.createModelContext( uncommittedClassesLoader ) );
+        this.getJomcTool().validateModelObjects(
+            ModelContextFactory.newInstance().newModelContext( uncommittedClassesLoader ) );
+
         this.getJomcTool().validateModelObjects( this.getModelContext(), uncommittedClasses );
 
         classFileProcessor.setClazz( this.getClass().getPackage().getName() + ".DoesNotExist" );
@@ -1569,19 +1585,8 @@ public class ClassFileProcessorTest extends JomcToolTest
 
         try
         {
-            this.getJomcTool().validateModelObjects( ModelContext.createModelContext( allClassesLoader ) );
-            fail( "Expected IOException not thrown." );
-        }
-        catch ( final IOException e )
-        {
-            assertNotNull( e.getMessage() );
-            System.out.println( e );
-        }
-
-        try
-        {
-            this.getJomcTool().validateModelObjects( testModule,
-                                                     ModelContext.createModelContext( moduleClassesLoader ) );
+            this.getJomcTool().validateModelObjects(
+                ModelContextFactory.newInstance().newModelContext( allClassesLoader ) );
 
             fail( "Expected IOException not thrown." );
         }
@@ -1593,8 +1598,8 @@ public class ClassFileProcessorTest extends JomcToolTest
 
         try
         {
-            this.getJomcTool().validateModelObjects( classFileProcessor,
-                                                     ModelContext.createModelContext( specificationClassesLoader ) );
+            this.getJomcTool().validateModelObjects(
+                testModule, ModelContextFactory.newInstance().newModelContext( moduleClassesLoader ) );
 
             fail( "Expected IOException not thrown." );
         }
@@ -1606,8 +1611,21 @@ public class ClassFileProcessorTest extends JomcToolTest
 
         try
         {
-            this.getJomcTool().validateModelObjects( classFileProcessorImpl,
-                                                     ModelContext.createModelContext( implementationClassesLoader ) );
+            this.getJomcTool().validateModelObjects(
+                classFileProcessor, ModelContextFactory.newInstance().newModelContext( specificationClassesLoader ) );
+
+            fail( "Expected IOException not thrown." );
+        }
+        catch ( final IOException e )
+        {
+            assertNotNull( e.getMessage() );
+            System.out.println( e );
+        }
+
+        try
+        {
+            this.getJomcTool().validateModelObjects(
+                classFileProcessorImpl, ModelContextFactory.newInstance().newModelContext( implementationClassesLoader ) );
 
             fail( "Expected IOException not thrown." );
         }
@@ -1665,7 +1683,9 @@ public class ClassFileProcessorTest extends JomcToolTest
 
         try
         {
-            this.getJomcTool().validateModelObjects( ModelContext.createModelContext( uncommittedClassesLoader ) );
+            this.getJomcTool().validateModelObjects(
+                ModelContextFactory.newInstance().newModelContext( uncommittedClassesLoader ) );
+
             fail( "Expected IOException not thrown." );
         }
         catch ( final IOException e )

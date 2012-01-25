@@ -52,6 +52,7 @@ import org.jomc.model.modlet.DefaultModelProvider;
 import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelContextFactory;
 import org.jomc.modlet.ModelException;
 import org.jomc.tools.JomcTool;
 import org.junit.Test;
@@ -290,14 +291,7 @@ public class JomcToolTest
      */
     protected ModelContext newModelContext()
     {
-        try
-        {
-            return ModelContext.createModelContext( this.getClass().getClassLoader() );
-        }
-        catch ( final ModelException e )
-        {
-            throw new AssertionError( e );
-        }
+        return ModelContextFactory.newInstance().newModelContext();
     }
 
     /**

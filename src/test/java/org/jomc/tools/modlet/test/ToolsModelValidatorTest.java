@@ -48,6 +48,7 @@ import org.jomc.model.Texts;
 import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelContextFactory;
 import org.jomc.modlet.ModelValidationReport;
 import org.jomc.tools.model.SourceFileType;
 import org.jomc.tools.model.SourceFilesType;
@@ -109,7 +110,7 @@ public class ToolsModelValidatorTest
     @Test
     public final void testValidateModel() throws Exception
     {
-        final ModelContext modelContext = ModelContext.createModelContext( this.getClass().getClassLoader() );
+        final ModelContext modelContext = ModelContextFactory.newInstance().newModelContext();
 
         try
         {

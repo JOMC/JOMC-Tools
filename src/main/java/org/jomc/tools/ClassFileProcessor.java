@@ -468,8 +468,7 @@ public class ClassFileProcessor extends JomcTool
             final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
             u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
             return this.validateModelObjects(
-                this.getModules().getSpecifications(), this.getModules().getImplementations(), u,
-                context.getClassLoader() );
+                this.getModules().getSpecifications(), this.getModules().getImplementations(), u, context );
 
         }
         catch ( final ModelException e )
@@ -511,9 +510,7 @@ public class ClassFileProcessor extends JomcTool
         {
             final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
             u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
-            return this.validateModelObjects(
-                module.getSpecifications(), module.getImplementations(), u, context.getClassLoader() );
-
+            return this.validateModelObjects( module.getSpecifications(), module.getImplementations(), u, context );
         }
         catch ( final ModelException e )
         {
@@ -555,7 +552,7 @@ public class ClassFileProcessor extends JomcTool
         {
             final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
             u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
-            return this.validateModelObjects( specification, u, context.getClassLoader() );
+            return this.validateModelObjects( specification, u, context );
         }
         catch ( final ModelException e )
         {
@@ -597,7 +594,7 @@ public class ClassFileProcessor extends JomcTool
         {
             final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
             u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
-            return this.validateModelObjects( implementation, u, context.getClassLoader() );
+            return this.validateModelObjects( implementation, u, context );
         }
         catch ( final ModelException e )
         {
@@ -2149,8 +2146,8 @@ public class ClassFileProcessor extends JomcTool
 
     private ModelValidationReport validateModelObjects( final Specifications specifications,
                                                         final Implementations implementations,
-                                                        final Unmarshaller unmarshaller, final ClassLoader classLoader )
-        throws IOException
+                                                        final Unmarshaller unmarshaller, final ModelContext context )
+        throws IOException, ModelException
     {
         final ModelValidationReport report = new ModelValidationReport();
 
@@ -2159,7 +2156,7 @@ public class ClassFileProcessor extends JomcTool
             for ( int i = 0, s0 = specifications.getSpecification().size(); i < s0; i++ )
             {
                 final ModelValidationReport current = this.validateModelObjects(
-                    specifications.getSpecification().get( i ), unmarshaller, classLoader );
+                    specifications.getSpecification().get( i ), unmarshaller, context );
 
                 report.getDetails().addAll( current.getDetails() );
             }
@@ -2170,7 +2167,7 @@ public class ClassFileProcessor extends JomcTool
             for ( int i = 0, s0 = implementations.getImplementation().size(); i < s0; i++ )
             {
                 final ModelValidationReport current = this.validateModelObjects(
-                    implementations.getImplementation().get( i ), unmarshaller, classLoader );
+                    implementations.getImplementation().get( i ), unmarshaller, context );
 
                 report.getDetails().addAll( current.getDetails() );
             }
@@ -2181,7 +2178,7 @@ public class ClassFileProcessor extends JomcTool
 
     private ModelValidationReport validateModelObjects( final Specification specification,
                                                         final Unmarshaller unmarshaller,
-                                                        final ClassLoader classLoader ) throws IOException
+                                                        final ModelContext context ) throws IOException, ModelException
     {
         final ModelValidationReport report = new ModelValidationReport();
 
@@ -2189,7 +2186,7 @@ public class ClassFileProcessor extends JomcTool
         {
             final String classLocation = specification.getClazz().replace( '.', '/' ) + ".class";
 
-            final URL classUrl = classLoader.getResource( classLocation );
+            final URL classUrl = context.findResource( classLocation );
 
             if ( classUrl == null )
             {
@@ -2242,7 +2239,7 @@ public class ClassFileProcessor extends JomcTool
 
     private ModelValidationReport validateModelObjects( final Implementation implementation,
                                                         final Unmarshaller unmarshaller,
-                                                        final ClassLoader classLoader ) throws IOException
+                                                        final ModelContext context ) throws IOException, ModelException
     {
         final ModelValidationReport report = new ModelValidationReport();
 
@@ -2250,7 +2247,7 @@ public class ClassFileProcessor extends JomcTool
         {
             final String classLocation = implementation.getClazz().replace( '.', '/' ) + ".class";
 
-            final URL classUrl = classLoader.getResource( classLocation );
+            final URL classUrl = context.findResource( classLocation );
 
             if ( classUrl == null )
             {
