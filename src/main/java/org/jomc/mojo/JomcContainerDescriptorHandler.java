@@ -67,6 +67,7 @@ import org.jomc.model.modlet.DefaultModelProvider;
 import org.jomc.modlet.DefaultModelContext;
 import org.jomc.modlet.DefaultModletProvider;
 import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelContextFactory;
 import org.jomc.modlet.ModelException;
 import org.jomc.modlet.Modlet;
 import org.jomc.modlet.ModletObject;
@@ -80,7 +81,7 @@ import org.jomc.modlet.Modlets;
  *   &lt;handlerName&gt;JOMC&lt;/handlerName&gt;
  *   &lt;configuration&gt;
  *     &lt;model&gt;http://jomc.org/model&lt;/model&gt;
- *     &lt;modelContextClassName&gt;class name&lt;/modelContextClassName&gt;
+ *     &lt;modelContextFactoryClassName&gt;class name&lt;/modelContextFactoryClassName&gt;
  *     &lt;modelContextAttributes&gt;
  *       &lt;modelContextAttribute&gt;
  *         &lt;key&gt;The name of the attribute&lt;/key&gt;
@@ -213,8 +214,8 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
     /** The location to search for modlets. */
     private String modletLocation;
 
-    /** Name of the {@code ModelContext} implementation class. */
-    private String modelContextClassName;
+    /** Name of the {@code ModelContextFactory} implementation class. */
+    private String modelContextFactoryClassName;
 
     /** {@code ModelContext} attributes to apply. */
     private List<ModelContextAttribute> modelContextAttributes;
@@ -886,11 +887,17 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
 
     private ModelContext createModelContext() throws ModelException, InstantiationException
     {
-        final ModelContext modelContext =
-            this.modelContextClassName == null
-            ? ModelContext.createModelContext( this.getClass().getClassLoader() )
-            : ModelContext.createModelContext( this.modelContextClassName, this.getClass().getClassLoader() );
+        final ModelContextFactory modelContextFactory;
+        if ( this.modelContextFactoryClassName != null )
+        {
+            modelContextFactory = ModelContextFactory.newInstance( this.modelContextFactoryClassName );
+        }
+        else
+        {
+            modelContextFactory = ModelContextFactory.newInstance();
+        }
 
+        final ModelContext modelContext = modelContextFactory.newModelContext();
         modelContext.setModletSchemaSystemId( this.modletSchemaSystemId );
 
         if ( this.providerLocation != null )

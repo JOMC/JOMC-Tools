@@ -80,6 +80,7 @@ import org.jomc.modlet.DefaultModelContext;
 import org.jomc.modlet.DefaultModletProvider;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelContextFactory;
 import org.jomc.modlet.ModelException;
 import org.jomc.modlet.ModelValidationReport;
 import org.jomc.tools.ClassFileProcessor;
@@ -160,12 +161,12 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private String model;
 
     /**
-     * The name of the {@code ModelContext} implementation class backing the task.
+     * The name of the {@code ModelContextFactory} implementation class backing the task.
      *
-     * @parameter expression="${jomc.modelContextClassName}"
+     * @parameter expression="${jomc.modelContextFactoryClassName}"
      * @since 1.2
      */
-    private String modelContextClassName;
+    private String modelContextFactoryClassName;
 
     /**
      * The location to search for modlets.
@@ -1452,19 +1453,20 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected ModelContext createModelContext( final ClassLoader classLoader ) throws MojoExecutionException
     {
-        try
+        final ModelContextFactory modelContextFactory;
+        if ( this.modelContextFactoryClassName != null )
         {
-            final ModelContext context = this.modelContextClassName == null
-                                         ? ModelContext.createModelContext( classLoader )
-                                         : ModelContext.createModelContext( this.modelContextClassName, classLoader );
+            modelContextFactory = ModelContextFactory.newInstance( this.modelContextFactoryClassName );
+        }
+        else
+        {
+            modelContextFactory = ModelContextFactory.newInstance();
+        }
 
-            this.setupModelContext( context );
-            return context;
-        }
-        catch ( final ModelException e )
-        {
-            throw new MojoExecutionException( Messages.getMessage( e ), e );
-        }
+        final ModelContext context = modelContextFactory.newModelContext( classLoader );
+        this.setupModelContext( context );
+
+        return context;
     }
 
     /**

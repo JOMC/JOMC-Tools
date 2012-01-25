@@ -63,6 +63,7 @@ import org.jomc.model.modlet.DefaultModelProvider;
 import org.jomc.modlet.DefaultModelContext;
 import org.jomc.modlet.DefaultModletProvider;
 import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelContextFactory;
 import org.jomc.modlet.ModelException;
 import org.jomc.modlet.Modlet;
 import org.jomc.modlet.ModletObject;
@@ -74,7 +75,7 @@ import org.jomc.modlet.Modlets;
  * <p><b>Maven Shade Plugin Usage</b><pre>
  * &lt;transformer implementation="org.jomc.mojo.JomcResourceTransformer"&gt;
  *   &lt;model&gt;http://jomc.org/model&lt;/model&gt;
- *   &lt;modelContextClassName&gt;class name&lt;/modelContextClassName&gt;
+ *   &lt;modelContextFactoryClassName&gt;class name&lt;/modelContextFactoryClassName&gt;
  *     &lt;modelContextAttributes&gt;
  *       &lt;modelContextAttribute&gt;
  *         &lt;key&gt;The name of the attribute&lt;/key&gt;
@@ -220,7 +221,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
      * Name of the {@code ModelContext} implementation class.
      * @since 1.2
      */
-    private String modelContextClassName;
+    private String modelContextFactoryClassName;
 
     /**
      * {@code ModelContext} attributes to apply.
@@ -903,11 +904,17 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
 
     private ModelContext createModelContext() throws ModelException, InstantiationException
     {
-        final ModelContext modelContext =
-            this.modelContextClassName == null
-            ? ModelContext.createModelContext( this.getClass().getClassLoader() )
-            : ModelContext.createModelContext( this.modelContextClassName, this.getClass().getClassLoader() );
+        final ModelContextFactory modelContextFactory;
+        if ( this.modelContextFactoryClassName != null )
+        {
+            modelContextFactory = ModelContextFactory.newInstance( this.modelContextFactoryClassName );
+        }
+        else
+        {
+            modelContextFactory = ModelContextFactory.newInstance();
+        }
 
+        final ModelContext modelContext = modelContextFactory.newModelContext();
         modelContext.setModletSchemaSystemId( this.modletSchemaSystemId );
 
         if ( this.providerLocation != null )
