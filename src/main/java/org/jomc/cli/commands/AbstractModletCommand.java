@@ -77,6 +77,7 @@ import org.jomc.modlet.ModelException;
 import org.jomc.modlet.ModelValidationReport;
 import org.jomc.modlet.Modlet;
 import org.jomc.modlet.ModletObject;
+import org.jomc.modlet.ModletProvider;
 import org.jomc.modlet.Modlets;
 import org.jomc.modlet.ObjectFactory;
 import org.jomc.modlet.Schema;
@@ -585,12 +586,15 @@ public abstract class AbstractModletCommand extends AbstractCommand
                     if ( commandLine.hasOption( getProviderLocationOption().getOpt() ) )
                     {
                         this.providerResourceLocations.add(
-                            commandLine.getOptionValue( getProviderLocationOption().getOpt() ) );
+                            commandLine.getOptionValue( getProviderLocationOption().getOpt() )
+                            + "/" + ModletProvider.class.getName() );
 
                     }
                     else
                     {
-                        this.providerResourceLocations.add( DefaultModelContext.getDefaultProviderLocation() );
+                        this.providerResourceLocations.add(
+                            DefaultModelContext.getDefaultProviderLocation() + "/" + ModletProvider.class.getName() );
+
                     }
 
                     if ( commandLine.hasOption( getModletLocationOption().getOpt() ) )
