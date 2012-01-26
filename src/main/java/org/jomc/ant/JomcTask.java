@@ -81,6 +81,7 @@ import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelContextFactory;
 import org.jomc.modlet.ModelException;
 import org.jomc.modlet.ModelValidationReport;
+import org.jomc.modlet.ModletProvider;
 
 /**
  * Base class for executing tasks.
@@ -1249,11 +1250,15 @@ public class JomcTask extends Task
 
             if ( this.getProviderLocation() != null )
             {
-                classLoader.getProviderResourceLocations().add( this.getProviderLocation() );
+                classLoader.getProviderResourceLocations().add(
+                    this.getProviderLocation() + "/" + ModletProvider.class.getName() );
+
             }
             else
             {
-                classLoader.getProviderResourceLocations().add( DefaultModelContext.getDefaultProviderLocation() );
+                classLoader.getProviderResourceLocations().add(
+                    DefaultModelContext.getDefaultProviderLocation() + "/" + ModletProvider.class.getName() );
+
             }
 
             return classLoader;
