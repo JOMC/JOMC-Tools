@@ -1028,9 +1028,21 @@ public class SourceFileProcessor extends JomcTool
                     {
                         if ( isLoggable( Level.WARNING ) )
                         {
-                            log( Level.WARNING, getMessage(
-                                "unknownSection", model.getIdentifier(), s.getName() ), null );
+                            if ( this.implementation != null )
+                            {
+                                log( Level.WARNING, getMessage(
+                                    "unknownImplementationSection", this.implementation.getIdentifier(),
+                                    model.getIdentifier(), s.getName() ), null );
 
+
+                            }
+                            else if ( this.specification != null )
+                            {
+                                log( Level.WARNING, getMessage(
+                                    "unknownSpecificationSection", this.specification.getIdentifier(),
+                                    model.getIdentifier(), s.getName() ), null );
+
+                            }
                         }
 
                         this.getUnknownSections().add( s );
