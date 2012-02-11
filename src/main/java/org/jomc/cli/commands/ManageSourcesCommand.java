@@ -1,6 +1,7 @@
 // SECTION-START[License Header]
 // <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
+ *   Java Object Management and Configuration
  *   Copyright (C) Christian Schulte, 2005-206
  *   All rights reserved.
  *
