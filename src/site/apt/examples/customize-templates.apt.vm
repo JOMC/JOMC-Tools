@@ -79,6 +79,9 @@ Customizing code generation
 <!-- Flag indicating generated code to contain JSR-250 '@Generated' annotations. -->
 <templateParameter key="with-jsr-250" value="true" type="java.lang.Boolean"/>
 
+<!-- Name of the project. -->
+<templateParameter key="with-project-name"/>
+
 <!-- SCM file identification keyword. The given value will be surrounded by '$' characters. -->
 <templateParameter key="with-revision-keyword" value="Id"/>
 
