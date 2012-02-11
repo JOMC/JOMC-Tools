@@ -60,6 +60,9 @@
 ${tool.getIndentation(0)}// <editor-fold defaultstate="collapsed" desc=" Generated License ">
 #end
 ${tool.getIndentation(0)}/*
+#if($with-project-name)
+${tool.getIndentation(0)} *   $with-project-name
+#end
 #if($with-vendor-copyright && $implementation.getVendor())
 #if($implementation.getCreateDate())
 ${tool.getIndentation(0)} *   Copyright (C) $implementation.getVendor(), $tool.getIsoDate($implementation.getCreateDate().toGregorianCalendar())
