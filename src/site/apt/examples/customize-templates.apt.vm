@@ -151,6 +151,11 @@ Customizing code generation
               <type>java.lang.Boolean</type>
             </templateParameter>
 
+            <!-- Name of the project. -->
+            <templateParameter>
+              <key>with-project-name</key>
+            </templateParameter>
+
             <!-- SCM file identification keyword. The given value will be surrounded by '$' characters. -->
             <templateParameter>
               <key>with-revision-keyword</key>
