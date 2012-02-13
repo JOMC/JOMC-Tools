@@ -832,7 +832,7 @@ public class ProjectClassLoader extends URLClassLoader
 
     private void addExcludedSchema( final Schema schema )
     {
-        if ( this.getExcludedSchemas().getSchemaByPublicId( schema.getPublicId() ) == null )
+        if ( this.getExcludedSchemas().getSchemaBySystemId( schema.getSystemId() ) == null )
         {
             this.getExcludedSchemas().getSchema().add( schema );
         }
