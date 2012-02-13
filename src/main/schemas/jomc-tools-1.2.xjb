@@ -42,9 +42,6 @@
     <!-- *********************************************************************************************************** -->
     <jaxb:bindings node="xs:complexType[@name='ToolsType']">
       <ci:code><![CDATA[
-    /** Public identifier of the tools model. */
-    public static final String MODEL_PUBLIC_ID = "http://jomc.org/tools/model";
-
     /**
      * Gets a single {@code JAXBElement} matching a namespace URI and local part from a given list of objects.
      *
