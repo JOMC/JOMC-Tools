@@ -141,7 +141,7 @@
       </action>
     </release>
     <!-- *********************************************************************************************************** -->
-    <release version="1.2">
+    <release version="1.2" date="2012-02-16">
       <action dev="schulte2005" type="add"><![CDATA[Added class
       <code>org.jomc.mojo.JomcContainerDescriptorHandler</code> to add support for assembling JOMC resources using the
       Maven Assembly Plugin.]]>
