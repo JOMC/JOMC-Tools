@@ -383,6 +383,18 @@ public class SourceFileProcessorTest extends JomcToolTest
             System.out.println( e.toString() );
         }
 
+        this.copyResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "EmptyImplementationSource.java.txt",
+                           new File( implementationDirectory, "Implementation.java" ) );
+
+        this.copyResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "EmptySpecificationSource.java.txt",
+                           new File( specificationDirectory, "Specification.java" ) );
+
+        this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
+                                              implementationDirectory );
+
+        this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getSpecification( "Specification" ),
+                                              specificationDirectory );
+
         this.getJomcTool().setTemplateProfile( "DOES_NOT_EXIST" );
 
         sourcesDirectory = this.getNextOutputDirectory();

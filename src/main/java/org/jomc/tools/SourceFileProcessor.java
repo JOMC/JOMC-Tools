@@ -1237,8 +1237,9 @@ public class SourceFileProcessor extends JomcTool
             boolean suppressExceptionOnClose = true;
 
             //final Charset charset = Charset.forName( getInputEncoding() );
-            final ByteBuffer buf = ByteBuffer.allocate( Long.valueOf( file.length() ).intValue() );
-            final StringBuilder appendable = new StringBuilder( Long.valueOf( file.length() ).intValue() );
+            final int length = file.length() > 0L ? Long.valueOf( file.length() ).intValue() : 1;
+            final ByteBuffer buf = ByteBuffer.allocate( length );
+            final StringBuilder appendable = new StringBuilder( length );
 
             try
             {
