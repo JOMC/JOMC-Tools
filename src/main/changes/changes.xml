@@ -143,6 +143,11 @@
       </action>
     </release>
     <!-- *********************************************************************************************************** -->
-    <release version="2.0"/>
+    <release version="2.0">
+      <action dev="schulte2005" type="fix"><![CDATA[Updated method <code>getVelocityContext</code> of class
+      <code>org.jomc.tools.JomcTool</code> to correctly parse template profile property values ending in <code>|</code>
+      to support adding objects to the context created using the public default constructor.]]>
+      </action>
+    </release>
   </body>
 </document>

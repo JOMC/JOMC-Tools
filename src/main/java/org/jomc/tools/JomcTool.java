@@ -2566,47 +2566,41 @@ public class JomcTool
 
             if ( !velocityContext.containsKey( name ) )
             {
-                if ( values.length > 1 )
+                try
                 {
-                    try
+                    if ( values.length > 1 )
                     {
                         final Class<?> valueClass = Class.forName( values[0] );
-
-                        if ( values[1].length() > 0 )
-                        {
-                            velocityContext.put(
-                                name, valueClass.getConstructor( String.class ).newInstance( values[1] ) );
-
-                        }
-                        else
-                        {
-                            velocityContext.put( name, valueClass.newInstance() );
-                        }
+                        velocityContext.put( name, valueClass.getConstructor( String.class ).newInstance( values[1] ) );
                     }
-                    catch ( final InstantiationException ex )
+                    else if ( value.contains( "|" ) )
                     {
-                        this.log( Level.SEVERE, getMessage( ex ), ex );
+                        velocityContext.put( name, Class.forName( values[0] ).newInstance() );
                     }
-                    catch ( final IllegalAccessException ex )
+                    else
                     {
-                        this.log( Level.SEVERE, getMessage( ex ), ex );
-                    }
-                    catch ( final InvocationTargetException ex )
-                    {
-                        this.log( Level.SEVERE, getMessage( ex ), ex );
-                    }
-                    catch ( final NoSuchMethodException ex )
-                    {
-                        this.log( Level.SEVERE, getMessage( ex ), ex );
-                    }
-                    catch ( final ClassNotFoundException ex )
-                    {
-                        this.log( Level.SEVERE, getMessage( ex ), ex );
+                        velocityContext.put( name, value );
                     }
                 }
-                else
+                catch ( final InstantiationException ex )
                 {
-                    velocityContext.put( name, value );
+                    this.log( Level.SEVERE, getMessage( ex ), ex );
+                }
+                catch ( final IllegalAccessException ex )
+                {
+                    this.log( Level.SEVERE, getMessage( ex ), ex );
+                }
+                catch ( final InvocationTargetException ex )
+                {
+                    this.log( Level.SEVERE, getMessage( ex ), ex );
+                }
+                catch ( final NoSuchMethodException ex )
+                {
+                    this.log( Level.SEVERE, getMessage( ex ), ex );
+                }
+                catch ( final ClassNotFoundException ex )
+                {
+                    this.log( Level.SEVERE, getMessage( ex ), ex );
                 }
             }
         }

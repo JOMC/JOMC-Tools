@@ -32,6 +32,7 @@ package org.jomc.tools.test;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -1133,6 +1134,23 @@ public class JomcToolTest
         this.getJomcTool().setVelocityEngine( null );
         assertNotNull( this.getJomcTool().getVelocityEngine() );
         this.getJomcTool().setVelocityEngine( null );
+    }
+
+    @Test
+    public final void testVelocityContext() throws Exception
+    {
+        assertNotNull( this.getJomcTool().getVelocityContext() );
+        this.getJomcTool().setTemplateProfile( "test" );
+        assertNotNull( this.getJomcTool().getVelocityContext() );
+        assertNotNull( this.getJomcTool().getVelocityContext().get( "test-object" ) );
+        assertTrue( this.getJomcTool().getVelocityContext().get( "test-object" ) instanceof JomcTool );
+        assertNotNull( this.getJomcTool().getVelocityContext().get( "test-url" ) );
+        assertTrue( this.getJomcTool().getVelocityContext().get( "test-url" ) instanceof URL );
+        assertEquals( new URL( "file:///tmp" ), this.getJomcTool().getVelocityContext().get( "test-url" ) );
+        assertNotNull( this.getJomcTool().getVelocityContext().get( "test-string" ) );
+        assertTrue( this.getJomcTool().getVelocityContext().get( "test-string" ) instanceof String );
+        assertEquals( "Test", this.getJomcTool().getVelocityContext().get( "test-string" ) );
+        this.getJomcTool().setTemplateProfile( null );
     }
 
     @Test
