@@ -148,6 +148,11 @@
       <code>org.jomc.tools.JomcTool</code> to correctly parse template profile property values ending in <code>|</code>
       to support adding objects to the context created using the public default constructor.]]>
       </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Updated methods <code>edit(Specification,SourceFileType,File)</code>
+      and <code>edit(Implementation,SourceFileType,File)</code> of class
+      <code>org.jomc.tools.SourceFileProcessor.SourceFileEditor</code> to provide a single <code>VelocityContext</code>
+      instance to all templates involved in rendering a source code file.]]>
+      </action>
     </release>
   </body>
 </document>

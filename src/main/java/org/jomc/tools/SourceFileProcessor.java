@@ -571,6 +571,9 @@ public class SourceFileProcessor extends JomcTool
         /** The source code file to edit. */
         private SourceFileType sourceFileType;
 
+        /** The {@code VelocityContext} of the instance. */
+        private VelocityContext velocityContext;
+
         /** List of sections added to the input. */
         @Deprecated
         private List<Section> addedSections;
@@ -691,6 +694,8 @@ public class SourceFileProcessor extends JomcTool
             super( lineEditor, lineSeparator );
             this.specification = specification;
             this.implementation = null;
+            this.sourceFileType = null;
+            this.velocityContext = null;
 
             assert getModules().getSpecification( specification.getIdentifier() ) != null :
                 "Specification '" + specification.getIdentifier() + "' not found.";
@@ -761,6 +766,8 @@ public class SourceFileProcessor extends JomcTool
             super( lineEditor, lineSeparator );
             this.implementation = implementation;
             this.specification = null;
+            this.sourceFileType = null;
+            this.velocityContext = null;
 
             assert getModules().getImplementation( implementation.getIdentifier() ) != null :
                 "Implementation '" + implementation.getIdentifier() + "' not found.";
@@ -801,7 +808,15 @@ public class SourceFileProcessor extends JomcTool
 
             this.specification = specification;
             this.sourceFileType = sourceFileType;
+            this.velocityContext = SourceFileProcessor.this.getVelocityContext();
+            this.velocityContext.put( "specification", specification );
+
             this.editSourceFile( sourcesDirectory );
+
+            this.implementation = null;
+            this.specification = null;
+            this.sourceFileType = null;
+            this.velocityContext = null;
         }
 
         /**
@@ -838,7 +853,15 @@ public class SourceFileProcessor extends JomcTool
 
             this.implementation = implementation;
             this.sourceFileType = sourceFileType;
+            this.velocityContext = SourceFileProcessor.this.getVelocityContext();
+            this.velocityContext.put( "implementation", implementation );
+
             this.editSourceFile( sourcesDirectory );
+
+            this.implementation = null;
+            this.specification = null;
+            this.sourceFileType = null;
+            this.velocityContext = null;
         }
 
         /**
@@ -919,19 +942,24 @@ public class SourceFileProcessor extends JomcTool
         @Deprecated
         protected VelocityContext getVelocityContext()
         {
-            final VelocityContext ctx = SourceFileProcessor.this.getVelocityContext();
-
-            if ( this.specification != null )
+            if ( this.velocityContext == null )
             {
-                ctx.put( "specification", this.specification );
+                final VelocityContext ctx = SourceFileProcessor.this.getVelocityContext();
+
+                if ( this.specification != null )
+                {
+                    ctx.put( "specification", this.specification );
+                }
+
+                if ( this.implementation != null )
+                {
+                    ctx.put( "implementation", this.implementation );
+                }
+
+                return ctx;
             }
 
-            if ( this.implementation != null )
-            {
-                ctx.put( "implementation", this.implementation );
-            }
-
-            return ctx;
+            return this.velocityContext;
         }
 
         /**
