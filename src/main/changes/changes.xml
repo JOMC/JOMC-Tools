@@ -209,6 +209,11 @@
       </action>
     </release>
     <!-- *********************************************************************************************************** -->
-    <release version="2.0"/>
+    <release version="2.0">
+      <action dev="schulte2005" type="fix"><![CDATA[Corrected goals <code>write-main-resources</code> and
+      <code>write-test-resources</code> to not add a corresponding resource to the maven project for projects without
+      resources.]]>
+      </action>
+    </release>
   </body>
 </document>

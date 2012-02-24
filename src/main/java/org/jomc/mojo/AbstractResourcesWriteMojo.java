@@ -109,6 +109,18 @@ public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo
                     }
 
                     tool.writeResourceBundleResourceFiles( module, this.getResourcesDirectory() );
+
+                    if ( !this.getResourcesDirectory().equals( this.getResourcesOutputDirectory() ) )
+                    {
+                        FileUtils.copyDirectory( this.getResourcesDirectory(), this.getResourcesOutputDirectory() );
+                    }
+
+                    final Resource resource = new Resource();
+                    resource.setDirectory( this.getResourcesDirectory().getAbsolutePath() );
+                    resource.setFiltering( false );
+
+                    this.addMavenResource( this.getMavenProject(), resource );
+
                     this.logToolSuccess( TOOLNAME );
                 }
                 else
@@ -120,17 +132,6 @@ public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo
             {
                 throw new MojoExecutionException( Messages.getMessage( "resourceProcessingFailure" ) );
             }
-
-            if ( !this.getResourcesDirectory().equals( this.getResourcesOutputDirectory() ) )
-            {
-                FileUtils.copyDirectory( this.getResourcesDirectory(), this.getResourcesOutputDirectory() );
-            }
-
-            final Resource resource = new Resource();
-            resource.setDirectory( this.getResourcesDirectory().getAbsolutePath() );
-            resource.setFiltering( false );
-
-            this.addMavenResource( this.getMavenProject(), resource );
         }
         else if ( this.isLoggable( Level.INFO ) )
         {
