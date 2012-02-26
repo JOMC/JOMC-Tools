@@ -153,6 +153,9 @@
       <code>org.jomc.tools.SourceFileProcessor.SourceFileEditor</code> to provide a single <code>VelocityContext</code>
       instance to all templates involved in rendering a source code file.]]>
       </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Updated class <code>org.jomc.tools.modlet.ToolsModelProvider</code>
+      to add missing support for overwriting source file models of specifications.]]>
+      </action>
     </release>
   </body>
 </document>

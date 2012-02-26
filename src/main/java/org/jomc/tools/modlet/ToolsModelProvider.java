@@ -344,11 +344,21 @@ public class ToolsModelProvider implements ModelProvider
                         final SourceFileType sourceFileType = specification.getAnyObject( SourceFileType.class );
                         final SourceFilesType sourceFilesType = specification.getAnyObject( SourceFilesType.class );
 
-                        if ( sourceFileType == null && sourceFilesType == null && specification.isClassDeclaration() )
+                        if ( specification.isClassDeclaration() && sourceFileType == null )
                         {
-                            specification.getAny().add( new ObjectFactory().createSourceFiles(
-                                this.getDefaultSourceFilesType( tool, specification ) ) );
+                            final SourceFilesType defaultSourceFiles =
+                                this.getDefaultSourceFilesType( tool, specification );
 
+                            if ( sourceFilesType != null )
+                            {
+                                this.overwriteSourceFiles( sourceFilesType, defaultSourceFiles, true );
+                            }
+                            else
+                            {
+                                specification.getAny().add( new ObjectFactory().createSourceFiles(
+                                    this.getDefaultSourceFilesType( tool, specification ) ) );
+
+                            }
                         }
                     }
                 }
