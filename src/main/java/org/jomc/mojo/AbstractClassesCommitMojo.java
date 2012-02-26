@@ -59,24 +59,6 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
     private static final String TOOLNAME = "ClassFileProcessor";
 
     /**
-     * XSLT document to use for transforming model objects.
-     * <p>The value of the parameter is a location to search a XSLT document at. First the value is used to search the
-     * class path of the plugin. If a class path resource is found, a XSLT document is loaded from that resource. If no
-     * class path resource is found, an attempt is made to parse the value to an URL. Succeeding that, an XSLT document
-     * is loaded from that URL (since version 1.2). Failing that, the value is interpreted as a file name of a XSLT
-     * document to load relative to the base directory of the project. If that file exists, a XSLT document is loaded
-     * from that file. If no XSLT document is found at the given location, a build failure is produced.</p>
-     * <p><b>Note:</b> When upgrading to version 1.2, any project dependencies holding XSLT documents referenced by this
-     * parameter need to be added to the plugins' dependencies.</p>
-     * <p><strong>Deprecated:</strong> As of JOMC 1.2, please use the 'modelObjectStylesheetResources' parameter. This
-     * parameter will be removed in version 2.0.</p>
-     *
-     * @parameter
-     */
-    @Deprecated
-    private String modelObjectStylesheet;
-
-    /**
      * XSLT documents to use for transforming model objects.
      * <pre>
      * &lt;modelObjectStylesheetResources>
@@ -139,30 +121,6 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
     /**
      * Gets transformers to use for transforming model objects.
      *
-     * @param classLoader The class loader to use for loading a transformer class path resource.
-     *
-     * @return A list of transformers to use for transforming model objects.
-     *
-     * @throws NullPointerException if {@code classLoader} is {@code null}.
-     * @throws MojoExecutionException if getting the transformers fails.
-     *
-     * @deprecated As of JOMC 1.2, the dependencies of the project are no longer searched for XSLT documents. Please
-     * use method {@link #getTransformers()}. This method will be removed in version 2.0.
-     */
-    @Deprecated
-    protected List<Transformer> getTransformers( final ClassLoader classLoader ) throws MojoExecutionException
-    {
-        if ( classLoader == null )
-        {
-            throw new NullPointerException( "classLoader" );
-        }
-
-        return this.getTransformers();
-    }
-
-    /**
-     * Gets transformers to use for transforming model objects.
-     *
      * @return A list of transformers to use for transforming model objects.
      *
      * @throws MojoExecutionException if getting the transformers fails.
@@ -172,20 +130,7 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
     protected List<Transformer> getTransformers() throws MojoExecutionException
     {
         final List<Transformer> transformers = new ArrayList<Transformer>(
-            this.modelObjectStylesheetResources != null ? this.modelObjectStylesheetResources.size() + 1 : 1 );
-
-        if ( this.modelObjectStylesheet != null )
-        {
-            final TransformerResourceType r = new TransformerResourceType();
-            r.setLocation( this.modelObjectStylesheet );
-
-            final Transformer transformer = this.getTransformer( r );
-
-            if ( transformer != null )
-            {
-                transformers.add( transformer );
-            }
-        }
+            this.modelObjectStylesheetResources != null ? this.modelObjectStylesheetResources.size() : 0 );
 
         if ( this.modelObjectStylesheetResources != null )
         {
@@ -231,7 +176,8 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
 
             if ( validationReport.isModelValid() )
             {
-                final Module module = tool.getModules().getModule( this.getClassesModuleName() );
+                final Module module =
+                    tool.getModules() != null ? tool.getModules().getModule( this.getClassesModuleName() ) : null;
 
                 if ( module != null )
                 {

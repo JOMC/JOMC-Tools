@@ -78,16 +78,22 @@ public abstract class AbstractClassesValidateMojo extends AbstractJomcMojo
 
             if ( validationReport.isModelValid() )
             {
-                final Module module = tool.getModules().getModule( this.getClassesModuleName() );
+                final Module module =
+                    tool.getModules() != null ? tool.getModules().getModule( this.getClassesModuleName() ) : null;
 
                 if ( module != null )
                 {
                     validationReport = tool.validateModelObjects( module, context, this.getClassesDirectory() );
-                    this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 
-                    if ( !validationReport.isModelValid() )
+                    if ( validationReport != null )
                     {
-                        throw new MojoExecutionException( Messages.getMessage( "classFileValidationFailure" ) );
+                        this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE,
+                                  validationReport );
+
+                        if ( !validationReport.isModelValid() )
+                        {
+                            throw new MojoExecutionException( Messages.getMessage( "classFileValidationFailure" ) );
+                        }
                     }
 
                     this.logToolSuccess( TOOLNAME );

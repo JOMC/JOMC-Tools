@@ -97,7 +97,8 @@ public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo
 
             if ( validationReport.isModelValid() )
             {
-                final Module module = tool.getModules().getModule( this.getResourcesModuleName() );
+                final Module module =
+                    tool.getModules() != null ? tool.getModules().getModule( this.getResourcesModuleName() ) : null;
 
                 if ( module != null )
                 {

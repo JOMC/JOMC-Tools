@@ -284,26 +284,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     private String testModuleName;
 
     /**
-     * Directory holding the compiled class files of the project.
-     * <p><strong>Deprecated:</strong> As of JOMC 1.1, please use the 'outputDirectory' parameter. This parameter will
-     * be removed in version 2.0.</p>
-     *
-     * @parameter
-     */
-    @Deprecated
-    private String classesDirectory;
-
-    /**
-     * Directory holding the compiled test class files of the project.
-     * <p><strong>Deprecated:</strong> As of JOMC 1.1, please use the 'testOutputDirectory' parameter. This parameter
-     * will be removed in version 2.0.</p>
-     *
-     * @parameter
-     */
-    @Deprecated
-    private String testClassesDirectory;
-
-    /**
      * Output directory of the project.
      *
      * @parameter default-value="${project.build.outputDirectory}" expression="${jomc.outputDirectory}"
@@ -649,7 +629,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
         finally
         {
-            JomcTool.setDefaultTemplateProfile( null );
             this.logSeparator();
         }
     }
@@ -847,28 +826,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected File getOutputDirectory() throws MojoExecutionException
     {
-        if ( this.classesDirectory != null )
-        {
-            if ( this.isLoggable( Level.WARNING ) )
-            {
-                this.log( Level.WARNING, Messages.getMessage(
-                    "deprecationWarning", "classesDirectory", "outputDirectory" ), null );
-
-            }
-
-            if ( !this.classesDirectory.equals( this.outputDirectory ) )
-            {
-                if ( this.isLoggable( Level.WARNING ) )
-                {
-                    this.log( Level.WARNING, Messages.getMessage( "ignoringParameter", "outputDirectory" ), null );
-                }
-
-                this.outputDirectory = this.classesDirectory;
-            }
-
-            this.classesDirectory = null;
-        }
-
         final File dir = this.getAbsoluteFile( this.outputDirectory );
         if ( !dir.exists() && !dir.mkdirs() )
         {
@@ -889,28 +846,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     protected File getTestOutputDirectory() throws MojoExecutionException
     {
-        if ( this.testClassesDirectory != null )
-        {
-            if ( this.isLoggable( Level.WARNING ) )
-            {
-                this.log( Level.WARNING, Messages.getMessage(
-                    "deprecationWarning", "testClassesDirectory", "testOutputDirectory" ), null );
-
-            }
-
-            if ( !this.testClassesDirectory.equals( this.testOutputDirectory ) )
-            {
-                if ( this.isLoggable( Level.WARNING ) )
-                {
-                    this.log( Level.WARNING, Messages.getMessage( "ignoringParameter", "testOutputDirectory" ), null );
-                }
-
-                this.testOutputDirectory = this.testClassesDirectory;
-            }
-
-            this.testClassesDirectory = null;
-        }
-
         final File dir = this.getAbsoluteFile( this.testOutputDirectory );
         if ( !dir.exists() && !dir.mkdirs() )
         {
@@ -2195,22 +2130,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
 
         return loggable;
-    }
-
-    /**
-     * Logs a separator at a given level.
-     *
-     * @param level The level to log a separator at.
-     *
-     * @throws MojoExecutionException if logging fails.
-     *
-     * @deprecated As of JOMC 1.1, please use method {@link #logSeparator()}. This method will be removed in version
-     * 2.0.
-     */
-    @Deprecated
-    protected void logSeparator( final Level level ) throws MojoExecutionException
-    {
-        this.logSeparator();
     }
 
     /**

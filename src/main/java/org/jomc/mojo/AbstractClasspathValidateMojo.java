@@ -76,11 +76,15 @@ public abstract class AbstractClasspathValidateMojo extends AbstractJomcMojo
         if ( validationReport.isModelValid() )
         {
             validationReport = tool.validateModelObjects( context );
-            this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
 
-            if ( !validationReport.isModelValid() )
+            if ( validationReport != null )
             {
-                throw new MojoExecutionException( Messages.getMessage( "classFileValidationFailure" ) );
+                this.log( context, validationReport.isModelValid() ? Level.INFO : Level.SEVERE, validationReport );
+
+                if ( !validationReport.isModelValid() )
+                {
+                    throw new MojoExecutionException( Messages.getMessage( "classFileValidationFailure" ) );
+                }
             }
 
             this.logToolSuccess( TOOLNAME );

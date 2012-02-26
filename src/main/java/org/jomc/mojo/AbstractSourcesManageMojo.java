@@ -79,7 +79,8 @@ public abstract class AbstractSourcesManageMojo extends AbstractJomcMojo
 
             if ( validationReport.isModelValid() )
             {
-                final Module module = tool.getModules().getModule( this.getSourcesModuleName() );
+                final Module module =
+                    tool.getModules() != null ? tool.getModules().getModule( this.getSourcesModuleName() ) : null;
 
                 if ( module != null )
                 {
