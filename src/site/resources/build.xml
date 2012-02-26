@@ -39,7 +39,7 @@
 
   <property name="repository.url" value="http://repo1.maven.org/maven2"/>
   <property name="maven-ant-tasks.version" value="2.1.3"/>
-  <property name="jomc.version" value="1.2"/>
+  <property name="jomc.version" value="2.0"/>
 
   <!-- ************************************************************************************************************* -->
   <target name="install" description="Downloads and installs JOMC Ant Tasks.">
