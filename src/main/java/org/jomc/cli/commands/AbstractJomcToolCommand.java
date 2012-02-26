@@ -82,20 +82,6 @@ public abstract class AbstractJomcToolCommand extends AbstractModelCommand
     // SECTION-END
     // SECTION-START[AbstractJomcToolCommand]
 
-    /** {@inheritDoc} */
-    @Override
-    protected void postExecuteCommand( final CommandLine commandLine ) throws CommandExecutionException
-    {
-        if ( commandLine == null )
-        {
-            throw new NullPointerException( "commandLine" );
-        }
-
-        JomcTool.setDefaultTemplateProfile( null );
-
-        super.postExecuteCommand( commandLine );
-    }
-
     /**
      * Creates a new object for a given class name and type.
      *

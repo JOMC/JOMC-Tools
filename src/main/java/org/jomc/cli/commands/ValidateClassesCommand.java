@@ -118,37 +118,65 @@ public final class ValidateClassesCommand extends AbstractClassFileProcessorComm
             final Specification specification = this.getSpecification( commandLine, model );
             final Implementation implementation = this.getImplementation( commandLine, model );
             final Module module = this.getModule( commandLine, model );
-            validationReport = new ModelValidationReport();
 
             if ( specification != null )
             {
-                validationReport.getDetails().addAll(
-                    tool.validateModelObjects( specification, context ).getDetails() );
+                validationReport = tool.validateModelObjects( specification, context );
 
+                if ( validationReport != null )
+                {
+                    this.log( validationReport, marshaller );
+
+                    if ( !validationReport.isModelValid() )
+                    {
+                        throw new CommandExecutionException( this.getInvalidClassesMessage( this.getLocale() ) );
+                    }
+                }
             }
 
             if ( implementation != null )
             {
-                validationReport.getDetails().addAll(
-                    tool.validateModelObjects( implementation, context ).getDetails() );
+                validationReport = tool.validateModelObjects( implementation, context );
 
+                if ( validationReport != null )
+                {
+                    this.log( validationReport, marshaller );
+
+                    if ( !validationReport.isModelValid() )
+                    {
+                        throw new CommandExecutionException( this.getInvalidClassesMessage( this.getLocale() ) );
+                    }
+                }
             }
 
             if ( module != null )
             {
-                validationReport.getDetails().addAll( tool.validateModelObjects( module, context ).getDetails() );
+                validationReport = tool.validateModelObjects( module, context );
+
+                if ( validationReport != null )
+                {
+                    this.log( validationReport, marshaller );
+
+                    if ( !validationReport.isModelValid() )
+                    {
+                        throw new CommandExecutionException( this.getInvalidClassesMessage( this.getLocale() ) );
+                    }
+                }
             }
 
             if ( this.isModulesProcessingRequested( commandLine ) )
             {
-                validationReport.getDetails().addAll( tool.validateModelObjects( context ).getDetails() );
-            }
+                validationReport = tool.validateModelObjects( context );
 
-            this.log( validationReport, marshaller );
+                if ( validationReport != null )
+                {
+                    this.log( validationReport, marshaller );
 
-            if ( !validationReport.isModelValid() )
-            {
-                throw new CommandExecutionException( this.getInvalidClassesMessage( this.getLocale() ) );
+                    if ( !validationReport.isModelValid() )
+                    {
+                        throw new CommandExecutionException( this.getInvalidClassesMessage( this.getLocale() ) );
+                    }
+                }
             }
 
             suppressExceptionOnClose = false;
