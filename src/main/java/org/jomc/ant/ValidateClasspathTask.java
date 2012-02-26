@@ -97,44 +97,60 @@ public final class ValidateClasspathTask extends ClassFileProcessorTask
                 if ( s != null )
                 {
                     validationReport = tool.validateModelObjects( s, context );
-                    this.logValidationReport( context, validationReport );
 
-                    if ( !validationReport.isModelValid() )
+                    if ( validationReport != null )
                     {
-                        throw new ModelException( Messages.getMessage( "invalidModel", this.getModel() ) );
+                        this.logValidationReport( context, validationReport );
+
+                        if ( !validationReport.isModelValid() )
+                        {
+                            throw new ModelException( Messages.getMessage( "invalidModel", this.getModel() ) );
+                        }
                     }
                 }
 
                 if ( i != null )
                 {
                     validationReport = tool.validateModelObjects( i, context );
-                    this.logValidationReport( context, validationReport );
 
-                    if ( !validationReport.isModelValid() )
+                    if ( validationReport != null )
                     {
-                        throw new ModelException( Messages.getMessage( "invalidModel", this.getModel() ) );
+                        this.logValidationReport( context, validationReport );
+
+                        if ( !validationReport.isModelValid() )
+                        {
+                            throw new ModelException( Messages.getMessage( "invalidModel", this.getModel() ) );
+                        }
                     }
                 }
 
                 if ( m != null )
                 {
                     validationReport = tool.validateModelObjects( m, context );
-                    this.logValidationReport( context, validationReport );
 
-                    if ( !validationReport.isModelValid() )
+                    if ( validationReport != null )
                     {
-                        throw new ModelException( Messages.getMessage( "invalidModel", this.getModel() ) );
+                        this.logValidationReport( context, validationReport );
+
+                        if ( !validationReport.isModelValid() )
+                        {
+                            throw new ModelException( Messages.getMessage( "invalidModel", this.getModel() ) );
+                        }
                     }
                 }
 
                 if ( this.isModulesProcessingRequested() )
                 {
                     validationReport = tool.validateModelObjects( context );
-                    this.logValidationReport( context, validationReport );
 
-                    if ( !validationReport.isModelValid() )
+                    if ( validationReport != null )
                     {
-                        throw new ModelException( Messages.getMessage( "invalidModel", this.getModel() ) );
+                        this.logValidationReport( context, validationReport );
+
+                        if ( !validationReport.isModelValid() )
+                        {
+                            throw new ModelException( Messages.getMessage( "invalidModel", this.getModel() ) );
+                        }
                     }
                 }
 

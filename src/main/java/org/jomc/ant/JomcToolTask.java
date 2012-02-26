@@ -694,8 +694,6 @@ public class JomcToolTask extends JomcModelTask
     @Override
     public void postExecuteTask() throws BuildException
     {
-        JomcTool.setDefaultTemplateProfile( null );
-
         super.postExecuteTask();
     }
 
