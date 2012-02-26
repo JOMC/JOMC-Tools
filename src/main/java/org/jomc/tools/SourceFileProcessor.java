@@ -519,6 +519,7 @@ public class SourceFileProcessor extends JomcTool
                 this.sourceFileType = sourceFileType;
                 this.velocityContext = SourceFileProcessor.this.getVelocityContext();
                 this.velocityContext.put( "specification", specification );
+                this.velocityContext.put( "smodel", sourceFileType );
 
                 this.editSourceFile( sourcesDirectory );
 
@@ -569,6 +570,7 @@ public class SourceFileProcessor extends JomcTool
                 this.sourceFileType = sourceFileType;
                 this.velocityContext = SourceFileProcessor.this.getVelocityContext();
                 this.velocityContext.put( "implementation", implementation );
+                this.velocityContext.put( "smodel", sourceFileType );
 
                 this.editSourceFile( sourcesDirectory );
 
