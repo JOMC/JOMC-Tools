@@ -38,6 +38,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -1723,6 +1724,76 @@ public class ClassFileProcessorTest extends JomcToolTest
         }
 
         new ClassFileProcessor( this.getJomcTool() );
+    }
+
+    @Test
+    public final void testClassFileProcessorModelObjectsNotFound() throws Exception
+    {
+        final JavaClass object = new ClassParser(
+            ClassLoader.getSystemResourceAsStream( "java/lang/Object.class" ), "Object.class" ).parse();
+
+        final Module m = new Module();
+        m.setName( "DOES_NOT_EXIST" );
+
+        final Specification s = new Specification();
+        s.setIdentifier( "DOES_NOT_EXIST)" );
+
+        final Implementation i = new Implementation();
+        i.setIdentifier( "DOES_NOT_EXIST" );
+
+        final Model oldModel = this.getJomcTool().getModel();
+        this.getJomcTool().setModel( null );
+
+        this.getJomcTool().commitModelObjects( this.getModelContext(), new File( "/tmp" ) );
+        this.getJomcTool().commitModelObjects( m, this.getModelContext(), new File( "/tmp" ) );
+        this.getJomcTool().commitModelObjects( s, this.getModelContext(), new File( "/tmp" ) );
+        this.getJomcTool().commitModelObjects( i, this.getModelContext(), new File( "/tmp" ) );
+
+        this.getJomcTool().commitModelObjects(
+            s, this.getModelContext().createMarshaller( ModelObject.MODEL_PUBLIC_ID ), object );
+
+        this.getJomcTool().commitModelObjects(
+            i, this.getModelContext().createMarshaller( ModelObject.MODEL_PUBLIC_ID ), object );
+
+        this.getJomcTool().validateModelObjects( this.getModelContext() );
+        this.getJomcTool().validateModelObjects( m, this.getModelContext() );
+        this.getJomcTool().validateModelObjects( s, this.getModelContext() );
+        this.getJomcTool().validateModelObjects( i, this.getModelContext() );
+
+        this.getJomcTool().validateModelObjects( this.getModelContext(), new File( "/tmp" ) );
+        this.getJomcTool().validateModelObjects( m, this.getModelContext(), new File( "/tmp" ) );
+        this.getJomcTool().validateModelObjects( s, this.getModelContext(), new File( "/tmp" ) );
+        this.getJomcTool().validateModelObjects( i, this.getModelContext(), new File( "/tmp" ) );
+
+        this.getJomcTool().validateModelObjects(
+            s, this.getModelContext().createUnmarshaller( ModelObject.MODEL_PUBLIC_ID ), object );
+
+        this.getJomcTool().validateModelObjects(
+            i, this.getModelContext().createUnmarshaller( ModelObject.MODEL_PUBLIC_ID ), object );
+
+        this.getJomcTool().transformModelObjects( this.getModelContext(), new File( "/tmp" ),
+                                                  Collections.<Transformer>emptyList() );
+
+        this.getJomcTool().transformModelObjects( m, this.getModelContext(), new File( "/tmp" ),
+                                                  Collections.<Transformer>emptyList() );
+
+        this.getJomcTool().transformModelObjects( s, this.getModelContext(), new File( "/tmp" ),
+                                                  Collections.<Transformer>emptyList() );
+
+        this.getJomcTool().transformModelObjects( i, this.getModelContext(), new File( "/tmp" ),
+                                                  Collections.<Transformer>emptyList() );
+
+        this.getJomcTool().transformModelObjects(
+            s, this.getModelContext().createMarshaller( ModelObject.MODEL_PUBLIC_ID ),
+            this.getModelContext().createUnmarshaller( ModelObject.MODEL_PUBLIC_ID ), object,
+            Collections.<Transformer>emptyList() );
+
+        this.getJomcTool().transformModelObjects(
+            i, this.getModelContext().createMarshaller( ModelObject.MODEL_PUBLIC_ID ),
+            this.getModelContext().createUnmarshaller( ModelObject.MODEL_PUBLIC_ID ), object,
+            Collections.<Transformer>emptyList() );
+
+        this.getJomcTool().setModel( oldModel );
     }
 
     private Transformer getTransformer( final String resource )

@@ -38,8 +38,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.text.MessageFormat;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.commons.lang.StringUtils;
@@ -79,10 +77,6 @@ public class SourceFileProcessor extends JomcTool
     /** The source file editor of the instance. */
     private SourceFileProcessor.SourceFileEditor sourceFileEditor;
 
-    /** Source files model. */
-    @Deprecated
-    private SourceFilesType sourceFilesType;
-
     /** Creates a new {@code SourceFileProcessor} instance. */
     public SourceFileProcessor()
     {
@@ -101,66 +95,7 @@ public class SourceFileProcessor extends JomcTool
     public SourceFileProcessor( final SourceFileProcessor tool ) throws IOException
     {
         super( tool );
-        this.sourceFilesType = tool.sourceFilesType != null ? tool.sourceFilesType.clone() : null;
         this.sourceFileEditor = tool.sourceFileEditor;
-    }
-
-    /**
-     * Gets the source files model of the instance.
-     * <p>This accessor method returns a reference to the live object, not a snapshot. Therefore any modification you
-     * make to the returned object will be present inside the object. This is why there is no {@code set} method.</p>
-     *
-     * @return The source files model of the instance.
-     *
-     * @see #getSourceFileType(org.jomc.model.Specification)
-     * @see #getSourceFileType(org.jomc.model.Implementation)
-     *
-     * @deprecated As of JOMC 1.2, please add source file models to {@code Specification}s and {@code Implementation}s
-     * directly. This method will be removed in version 2.0.
-     */
-    @Deprecated
-    public SourceFilesType getSourceFilesType()
-    {
-        if ( this.sourceFilesType == null )
-        {
-            this.sourceFilesType = new SourceFilesType();
-        }
-
-        return this.sourceFilesType;
-    }
-
-    /**
-     * Gets the model of a specification source file of the modules of the instance.
-     *
-     * @param specification The specification to get a source file model for.
-     *
-     * @return The source file model for {@code specification}. As of JOMC 1.2, this method returns {@code null} if no
-     * source file model is found.
-     *
-     * @throws NullPointerException if {@code specification} is {@code null}.
-     *
-     * @deprecated As of JOMC 1.2, please use method {@link #getSourceFilesType(org.jomc.model.Specification)}. This
-     * method will be removed in version 2.0.
-     */
-    @Deprecated
-    public SourceFileType getSourceFileType( final Specification specification )
-    {
-        if ( specification == null )
-        {
-            throw new NullPointerException( "specification" );
-        }
-
-        assert this.getModules().getSpecification( specification.getIdentifier() ) != null :
-            "Specification '" + specification.getIdentifier() + "' not found.";
-
-        SourceFileType sourceFileType = this.getSourceFilesType().getSourceFile( specification.getIdentifier() );
-
-        if ( sourceFileType == null )
-        {
-            sourceFileType = specification.getAnyObject( SourceFileType.class );
-        }
-
-        return sourceFileType;
     }
 
     /**
@@ -181,57 +116,19 @@ public class SourceFileProcessor extends JomcTool
             throw new NullPointerException( "specification" );
         }
 
-        assert this.getModules().getSpecification( specification.getIdentifier() ) != null :
-            "Specification '" + specification.getIdentifier() + "' not found.";
+        SourceFilesType sourceFiles = null;
 
-        SourceFilesType model = null;
-        final SourceFileType sourceFileType = this.getSourceFileType( specification );
-
-        if ( sourceFileType != null )
+        if ( this.getModules() != null
+             && this.getModules().getSpecification( specification.getIdentifier() ) != null )
         {
-            model = new SourceFilesType();
-            model.getSourceFile().add( sourceFileType );
+            sourceFiles = specification.getAnyObject( SourceFilesType.class );
         }
-        else
+        else if ( this.isLoggable( Level.WARNING ) )
         {
-            model = specification.getAnyObject( SourceFilesType.class );
+            this.log( Level.WARNING, getMessage( "specificationNotFound", specification.getIdentifier() ), null );
         }
 
-        return model;
-    }
-
-    /**
-     * Gets the model of an implementation source file of the modules of the instance.
-     *
-     * @param implementation The implementation to get a source file model for.
-     *
-     * @return The source file model for {@code implementation}. As of JOMC 1.2, this method returns {@code null} if no
-     * source file model is found.
-     *
-     * @throws NullPointerException if {@code implementation} is {@code null}.
-     *
-     * @deprecated As of JOMC 1.2, please use method {@link #getSourceFilesType(org.jomc.model.Implementation)}. This
-     * method will be removed in version 2.0.
-     */
-    @Deprecated
-    public SourceFileType getSourceFileType( final Implementation implementation )
-    {
-        if ( implementation == null )
-        {
-            throw new NullPointerException( "implementation" );
-        }
-
-        assert this.getModules().getImplementation( implementation.getIdentifier() ) != null :
-            "Implementation '" + implementation.getIdentifier() + "' not found.";
-
-        SourceFileType sourceFileType = this.getSourceFilesType().getSourceFile( implementation.getIdentifier() );
-
-        if ( sourceFileType == null )
-        {
-            sourceFileType = implementation.getAnyObject( SourceFileType.class );
-        }
-
-        return sourceFileType;
+        return sourceFiles;
     }
 
     /**
@@ -252,25 +149,21 @@ public class SourceFileProcessor extends JomcTool
             throw new NullPointerException( "implementation" );
         }
 
-        assert this.getModules().getImplementation( implementation.getIdentifier() ) != null :
-            "Implementation '" + implementation.getIdentifier() + "' not found.";
+        SourceFilesType sourceFiles = null;
 
-        SourceFilesType model = null;
-        final SourceFileType sourceFileType = this.getSourceFileType( implementation );
-
-        if ( sourceFileType != null )
-        {
-            model = new SourceFilesType();
-            model.getSourceFile().add( sourceFileType );
-        }
-        else
+        if ( this.getModules() != null
+             && this.getModules().getImplementation( implementation.getIdentifier() ) != null )
         {
             final Instance instance = this.getModules().getInstance( implementation.getIdentifier() );
             assert instance != null : "Instance '" + implementation.getIdentifier() + "' not found.";
-            model = instance.getAnyObject( SourceFilesType.class );
+            sourceFiles = instance.getAnyObject( SourceFilesType.class );
+        }
+        else if ( this.isLoggable( Level.WARNING ) )
+        {
+            this.log( Level.WARNING, getMessage( "implementationNotFound", implementation.getIdentifier() ), null );
         }
 
-        return model;
+        return sourceFiles;
     }
 
     /**
@@ -310,62 +203,6 @@ public class SourceFileProcessor extends JomcTool
     }
 
     /**
-     * Gets a new editor for editing the source file of a given specification of the modules of the instance.
-     *
-     * @param specification The specification whose source file to edit.
-     *
-     * @return A new editor for editing the source file of {@code specification}.
-     *
-     * @throws NullPointerException if {@code specification} is {@code null}.
-     *
-     * @deprecated As of JOMC 1.2, please use method {@link #getSourceFileEditor()}. This method will be removed in
-     * version 2.0.
-     *
-     * @see SourceFileEditor#edit(org.jomc.model.Specification, org.jomc.tools.model.SourceFileType, java.io.File)
-     */
-    @Deprecated
-    public SourceFileProcessor.SourceFileEditor getSourceFileEditor( final Specification specification )
-    {
-        if ( specification == null )
-        {
-            throw new NullPointerException( "specification" );
-        }
-
-        assert this.getModules().getSpecification( specification.getIdentifier() ) != null :
-            "Specification '" + specification.getIdentifier() + "' not found.";
-
-        return this.getSourceFileEditor();
-    }
-
-    /**
-     * Gets a new editor for editing the source file of a given implementation of the modules of the instance.
-     *
-     * @param implementation The implementation whose source file to edit.
-     *
-     * @return A new editor for editing the source file of {@code implementation}.
-     *
-     * @throws NullPointerException if {@code implementation} is {@code null}.
-     *
-     * @deprecated As of JOMC 1.2, please use method {@link #getSourceFileEditor()}. This method will be removed in
-     * version 2.0.
-     *
-     * @see SourceFileEditor#edit(org.jomc.model.Implementation, org.jomc.tools.model.SourceFileType, java.io.File)
-     */
-    @Deprecated
-    public SourceFileProcessor.SourceFileEditor getSourceFileEditor( final Implementation implementation )
-    {
-        if ( implementation == null )
-        {
-            throw new NullPointerException( "implementation" );
-        }
-
-        assert this.getModules().getImplementation( implementation.getIdentifier() ) != null :
-            "Implementation '" + implementation.getIdentifier() + "' not found.";
-
-        return this.getSourceFileEditor();
-    }
-
-    /**
      * Manages the source files of the modules of the instance.
      *
      * @param sourcesDirectory The directory holding the source files to manage.
@@ -382,9 +219,16 @@ public class SourceFileProcessor extends JomcTool
             throw new NullPointerException( "sourcesDirectory" );
         }
 
-        for ( int i = this.getModules().getModule().size() - 1; i >= 0; i-- )
+        if ( this.getModules() != null )
         {
-            this.manageSourceFiles( this.getModules().getModule().get( i ), sourcesDirectory );
+            for ( int i = this.getModules().getModule().size() - 1; i >= 0; i-- )
+            {
+                this.manageSourceFiles( this.getModules().getModule().get( i ), sourcesDirectory );
+            }
+        }
+        else if ( this.isLoggable( Level.WARNING ) )
+        {
+            this.log( Level.WARNING, getMessage( "modulesNotFound", this.getModel().getIdentifier() ), null );
         }
     }
 
@@ -411,21 +255,26 @@ public class SourceFileProcessor extends JomcTool
             throw new NullPointerException( "sourcesDirectory" );
         }
 
-        assert this.getModules().getModule( module.getName() ) != null : "Module '" + module.getName() + "' not found.";
-
-        if ( module.getSpecifications() != null )
+        if ( this.getModules() != null && this.getModules().getModule( module.getName() ) != null )
         {
-            for ( int i = 0, s0 = module.getSpecifications().getSpecification().size(); i < s0; i++ )
+            if ( module.getSpecifications() != null )
             {
-                this.manageSourceFiles( module.getSpecifications().getSpecification().get( i ), sourcesDirectory );
+                for ( int i = 0, s0 = module.getSpecifications().getSpecification().size(); i < s0; i++ )
+                {
+                    this.manageSourceFiles( module.getSpecifications().getSpecification().get( i ), sourcesDirectory );
+                }
+            }
+            if ( module.getImplementations() != null )
+            {
+                for ( int i = 0, s0 = module.getImplementations().getImplementation().size(); i < s0; i++ )
+                {
+                    this.manageSourceFiles( module.getImplementations().getImplementation().get( i ), sourcesDirectory );
+                }
             }
         }
-        if ( module.getImplementations() != null )
+        else if ( this.isLoggable( Level.WARNING ) )
         {
-            for ( int i = 0, s0 = module.getImplementations().getImplementation().size(); i < s0; i++ )
-            {
-                this.manageSourceFiles( module.getImplementations().getImplementation().get( i ), sourcesDirectory );
-            }
+            this.log( Level.WARNING, getMessage( "moduleNotFound", module.getName() ), null );
         }
     }
 
@@ -452,42 +301,48 @@ public class SourceFileProcessor extends JomcTool
             throw new NullPointerException( "sourcesDirectory" );
         }
 
-        assert this.getModules().getSpecification( specification.getIdentifier() ) != null :
-            "Specification '" + specification.getIdentifier() + "' not found.";
-
-        if ( specification.isClassDeclaration() )
+        if ( this.getModules() != null
+             && this.getModules().getSpecification( specification.getIdentifier() ) != null )
         {
-            boolean manage = true;
-            final Implementations implementations = this.getModules().getImplementations();
-
-            if ( implementations != null )
+            if ( specification.isClassDeclaration() )
             {
-                for ( int i = 0, s0 = implementations.getImplementation().size(); i < s0; i++ )
-                {
-                    final Implementation impl = implementations.getImplementation().get( i );
+                boolean manage = true;
+                final Implementations implementations = this.getModules().getImplementations();
 
-                    if ( impl.isClassDeclaration() && specification.getClazz().equals( impl.getClazz() ) )
+                if ( implementations != null )
+                {
+                    for ( int i = 0, s0 = implementations.getImplementation().size(); i < s0; i++ )
                     {
-                        this.manageSourceFiles( impl, sourcesDirectory );
-                        manage = false;
-                        break;
+                        final Implementation impl = implementations.getImplementation().get( i );
+
+                        if ( impl.isClassDeclaration() && specification.getClazz().equals( impl.getClazz() ) )
+                        {
+                            this.manageSourceFiles( impl, sourcesDirectory );
+                            manage = false;
+                            break;
+                        }
+                    }
+                }
+
+                if ( manage )
+                {
+                    final SourceFilesType model = this.getSourceFilesType( specification );
+
+                    if ( model != null )
+                    {
+                        for ( int i = 0, s0 = model.getSourceFile().size(); i < s0; i++ )
+                        {
+                            this.getSourceFileEditor().edit(
+                                specification, model.getSourceFile().get( i ), sourcesDirectory );
+
+                        }
                     }
                 }
             }
-
-            if ( manage )
-            {
-                final SourceFileProcessor.SourceFileEditor editor = this.getSourceFileEditor( specification );
-                final SourceFilesType model = this.getSourceFilesType( specification );
-
-                if ( editor != null && model != null )
-                {
-                    for ( int i = 0, s0 = model.getSourceFile().size(); i < s0; i++ )
-                    {
-                        editor.edit( specification, model.getSourceFile().get( i ), sourcesDirectory );
-                    }
-                }
-            }
+        }
+        else if ( this.isLoggable( Level.WARNING ) )
+        {
+            this.log( Level.WARNING, getMessage( "specificationNotFound", specification.getIdentifier() ), null );
         }
     }
 
@@ -515,21 +370,27 @@ public class SourceFileProcessor extends JomcTool
             throw new NullPointerException( "sourcesDirectory" );
         }
 
-        assert this.getModules().getImplementation( implementation.getIdentifier() ) != null :
-            "Implementation '" + implementation.getIdentifier() + "' not found.";
-
-        if ( implementation.isClassDeclaration() )
+        if ( this.getModules() != null
+             && this.getModules().getImplementation( implementation.getIdentifier() ) != null )
         {
-            final SourceFileProcessor.SourceFileEditor editor = this.getSourceFileEditor( implementation );
-            final SourceFilesType model = this.getSourceFilesType( implementation );
-
-            if ( editor != null && model != null )
+            if ( implementation.isClassDeclaration() )
             {
-                for ( int i = 0, s0 = model.getSourceFile().size(); i < s0; i++ )
+                final SourceFilesType model = this.getSourceFilesType( implementation );
+
+                if ( model != null )
                 {
-                    editor.edit( implementation, model.getSourceFile().get( i ), sourcesDirectory );
+                    for ( int i = 0, s0 = model.getSourceFile().size(); i < s0; i++ )
+                    {
+                        this.getSourceFileEditor().edit(
+                            implementation, model.getSourceFile().get( i ), sourcesDirectory );
+
+                    }
                 }
             }
+        }
+        else if ( this.isLoggable( Level.WARNING ) )
+        {
+            this.log( Level.WARNING, getMessage( "implementationNotFound", implementation.getIdentifier() ), null );
         }
     }
 
@@ -573,14 +434,6 @@ public class SourceFileProcessor extends JomcTool
 
         /** The {@code VelocityContext} of the instance. */
         private VelocityContext velocityContext;
-
-        /** List of sections added to the input. */
-        @Deprecated
-        private List<Section> addedSections;
-
-        /** List of sections without corresponding model entry. */
-        @Deprecated
-        private List<Section> unknownSections;
 
         /**
          * Creates a new {@code SourceFileEditor} instance.
@@ -631,150 +484,6 @@ public class SourceFileProcessor extends JomcTool
         }
 
         /**
-         * Creates a new {@code SourceFileEditor} taking a {@code Specification} to edit source code of.
-         *
-         * @param specification The specification to edit source code of.
-         *
-         * @deprecated As of JOMC 1.2, please use method {@link #edit(org.jomc.model.Specification, org.jomc.tools.model.SourceFileType, java.io.File)}.
-         * This constructor will be removed in version 2.0.
-         */
-        @Deprecated
-        public SourceFileEditor( final Specification specification )
-        {
-            this( specification, null, null );
-        }
-
-        /**
-         * Creates a new {@code SourceFileEditor} taking a {@code Specification} to edit source code of and a line
-         * separator.
-         *
-         * @param specification The specification to edit source code of.
-         * @param lineSeparator The line separator of the editor.
-         *
-         * @deprecated As of JOMC 1.2, please use method {@link #edit(org.jomc.model.Specification, org.jomc.tools.model.SourceFileType, java.io.File)}.
-         * This constructor will be removed in version 2.0.
-         */
-        @Deprecated
-        public SourceFileEditor( final Specification specification, final String lineSeparator )
-        {
-            this( specification, null, lineSeparator );
-        }
-
-        /**
-         * Creates a new {@code SourceFileEditor} taking a {@code Specification} to edit source code of and an editor to
-         * chain.
-         *
-         * @param specification The specification backing the editor.
-         * @param lineEditor The editor to chain.
-         *
-         * @deprecated As of JOMC 1.2, please use method {@link #edit(org.jomc.model.Specification, org.jomc.tools.model.SourceFileType, java.io.File)}.
-         * This constructor will be removed in version 2.0.
-         */
-        @Deprecated
-        public SourceFileEditor( final Specification specification, final LineEditor lineEditor )
-        {
-            this( specification, lineEditor, null );
-        }
-
-        /**
-         * Creates a new {@code SourceFileEditor} taking a {@code Specification} to edit source code of, an editor to
-         * chain and a line separator.
-         *
-         * @param specification The specification backing the editor.
-         * @param lineEditor The editor to chain.
-         * @param lineSeparator The line separator of the editor.
-         *
-         * @deprecated As of JOMC 1.2, please use method {@link #edit(org.jomc.model.Specification, org.jomc.tools.model.SourceFileType, java.io.File)}.
-         * This constructor will be removed in version 2.0.
-         */
-        @Deprecated
-        public SourceFileEditor( final Specification specification, final LineEditor lineEditor,
-                                 final String lineSeparator )
-        {
-            super( lineEditor, lineSeparator );
-            this.specification = specification;
-            this.implementation = null;
-            this.sourceFileType = null;
-            this.velocityContext = null;
-
-            assert getModules().getSpecification( specification.getIdentifier() ) != null :
-                "Specification '" + specification.getIdentifier() + "' not found.";
-
-        }
-
-        /**
-         * Creates a new {@code SourceFileEditor} taking an {@code Implementation} to edit source code of.
-         *
-         * @param implementation The implementation to edit source code of.
-         *
-         * @deprecated As of JOMC 1.2, please use method {@link #edit(org.jomc.model.Implementation, org.jomc.tools.model.SourceFileType, java.io.File)}.
-         * This constructor will be removed in version 2.0.
-         */
-        @Deprecated
-        public SourceFileEditor( final Implementation implementation )
-        {
-            this( implementation, null, null );
-        }
-
-        /**
-         * Creates a new {@code SourceFileEditor} taking an {@code Implementation} to edit source code of and a line
-         * separator.
-         *
-         * @param implementation The implementation to edit source code of.
-         * @param lineSeparator The line separator of the editor.
-         *
-         * @deprecated As of JOMC 1.2, please use method {@link #edit(org.jomc.model.Implementation, org.jomc.tools.model.SourceFileType, java.io.File)}.
-         * This constructor will be removed in version 2.0.
-         */
-        @Deprecated
-        public SourceFileEditor( final Implementation implementation, final String lineSeparator )
-        {
-            this( implementation, null, lineSeparator );
-        }
-
-        /**
-         * Creates a new {@code SourceFileEditor} taking an {@code Implementation} to edit source code of and an editor
-         * to chain.
-         *
-         * @param implementation The implementation to edit source code of.
-         * @param lineEditor The editor to chain.
-         *
-         * @deprecated As of JOMC 1.2, please use method {@link #edit(org.jomc.model.Implementation, org.jomc.tools.model.SourceFileType, java.io.File)}.
-         * This constructor will be removed in version 2.0.
-         */
-        @Deprecated
-        public SourceFileEditor( final Implementation implementation, final LineEditor lineEditor )
-        {
-            this( implementation, lineEditor, null );
-        }
-
-        /**
-         * Creates a new {@code SourceFileEditor} taking an {@code Implementation} to edit source code of, an editor
-         * to chain and a line separator.
-         *
-         * @param implementation The implementation to edit source code of.
-         * @param lineEditor The editor to chain.
-         * @param lineSeparator The line separator of the editor.
-         *
-         * @deprecated As of JOMC 1.2, please use method {@link #edit(org.jomc.model.Implementation, org.jomc.tools.model.SourceFileType, java.io.File)}.
-         * This constructor will be removed in version 2.0.
-         */
-        @Deprecated
-        public SourceFileEditor( final Implementation implementation, final LineEditor lineEditor,
-                                 final String lineSeparator )
-        {
-            super( lineEditor, lineSeparator );
-            this.implementation = implementation;
-            this.specification = null;
-            this.sourceFileType = null;
-            this.velocityContext = null;
-
-            assert getModules().getImplementation( implementation.getIdentifier() ) != null :
-                "Implementation '" + implementation.getIdentifier() + "' not found.";
-
-        }
-
-        /**
          * Edits a source file of a given specification.
          *
          * @param specification The specification to edit a source file of.
@@ -803,20 +512,25 @@ public class SourceFileProcessor extends JomcTool
                 throw new NullPointerException( "sourcesDirectory" );
             }
 
-            assert getModules().getSpecification( specification.getIdentifier() ) != null :
-                "Specification '" + specification.getIdentifier() + "' not found.";
+            if ( getModules() != null
+                 && getModules().getSpecification( specification.getIdentifier() ) != null )
+            {
+                this.specification = specification;
+                this.sourceFileType = sourceFileType;
+                this.velocityContext = SourceFileProcessor.this.getVelocityContext();
+                this.velocityContext.put( "specification", specification );
 
-            this.specification = specification;
-            this.sourceFileType = sourceFileType;
-            this.velocityContext = SourceFileProcessor.this.getVelocityContext();
-            this.velocityContext.put( "specification", specification );
+                this.editSourceFile( sourcesDirectory );
 
-            this.editSourceFile( sourcesDirectory );
-
-            this.implementation = null;
-            this.specification = null;
-            this.sourceFileType = null;
-            this.velocityContext = null;
+                this.implementation = null;
+                this.specification = null;
+                this.sourceFileType = null;
+                this.velocityContext = null;
+            }
+            else
+            {
+                throw new IOException( getMessage( "specificationNotFound", specification.getIdentifier() ) );
+            }
         }
 
         /**
@@ -848,118 +562,25 @@ public class SourceFileProcessor extends JomcTool
                 throw new NullPointerException( "sourcesDirectory" );
             }
 
-            assert getModules().getImplementation( implementation.getIdentifier() ) != null :
-                "Implementation '" + implementation.getIdentifier() + "' not found.";
-
-            this.implementation = implementation;
-            this.sourceFileType = sourceFileType;
-            this.velocityContext = SourceFileProcessor.this.getVelocityContext();
-            this.velocityContext.put( "implementation", implementation );
-
-            this.editSourceFile( sourcesDirectory );
-
-            this.implementation = null;
-            this.specification = null;
-            this.sourceFileType = null;
-            this.velocityContext = null;
-        }
-
-        /**
-         * Gets a list of sections added to the input.
-         * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you
-         * make to the returned list will be present inside the object. This is why there is no {@code set} method
-         * for the added sections property.</p>
-         *
-         * @return A list of sections added to the input.
-         *
-         * @deprecated As of JOMC 1.2, deprecated without replacement. This method will be removed in version 2.0.
-         */
-        @Deprecated
-        public List<Section> getAddedSections()
-        {
-            if ( this.addedSections == null )
+            if ( getModules() != null
+                 && getModules().getImplementation( implementation.getIdentifier() ) != null )
             {
-                this.addedSections = new LinkedList<Section>();
+                this.implementation = implementation;
+                this.sourceFileType = sourceFileType;
+                this.velocityContext = SourceFileProcessor.this.getVelocityContext();
+                this.velocityContext.put( "implementation", implementation );
+
+                this.editSourceFile( sourcesDirectory );
+
+                this.implementation = null;
+                this.specification = null;
+                this.sourceFileType = null;
+                this.velocityContext = null;
             }
-
-            return this.addedSections;
-        }
-
-        /**
-         * Gets a list of sections without corresponding model entry.
-         * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you
-         * make to the returned list will be present inside the object. This is why there is no {@code set} method
-         * for the unknown sections property.</p>
-         *
-         * @return A list of sections without corresponding model entry.
-         *
-         * @deprecated As of JOMC 1.2, deprecated without replacement. This method will be removed in version 2.0.
-         */
-        @Deprecated
-        public List<Section> getUnknownSections()
-        {
-            if ( this.unknownSections == null )
+            else
             {
-                this.unknownSections = new LinkedList<Section>();
+                throw new IOException( getMessage( "implementationNotFound", implementation.getIdentifier() ) );
             }
-
-            return this.unknownSections;
-        }
-
-        /**
-         * Gets the currently edited source code file.
-         *
-         * @return The currently edited source code file.
-         *
-         * @deprecated As of JOMC 1.2, deprecated without replacement. This method will be removed in version 2.0.
-         */
-        @Deprecated
-        protected SourceFileType getSourceFileType()
-        {
-            if ( this.sourceFileType == null )
-            {
-                if ( this.specification != null )
-                {
-                    return SourceFileProcessor.this.getSourceFileType( this.specification );
-                }
-
-                if ( this.implementation != null )
-                {
-                    return SourceFileProcessor.this.getSourceFileType( this.implementation );
-                }
-            }
-
-            return this.sourceFileType;
-        }
-
-        /**
-         * Gets a new velocity context used for merging templates.
-         *
-         * @return A new velocity context used for merging templates.
-         *
-         * @deprecated As of JOMC 1.2, deprecated without replacement. This method will be removed in version 2.0.
-         */
-        @Deprecated
-        protected VelocityContext getVelocityContext()
-        {
-            if ( this.velocityContext == null )
-            {
-                final VelocityContext ctx = SourceFileProcessor.this.getVelocityContext();
-
-                if ( this.specification != null )
-                {
-                    ctx.put( "specification", this.specification );
-                }
-
-                if ( this.implementation != null )
-                {
-                    ctx.put( "implementation", this.implementation );
-                }
-
-                return ctx;
-            }
-
-            return this.velocityContext;
         }
 
         /**
@@ -974,9 +595,6 @@ public class SourceFileProcessor extends JomcTool
         @Override
         protected String getOutput( final Section section ) throws IOException
         {
-            this.getAddedSections().clear();
-            this.getUnknownSections().clear();
-
             final SourceFileType model = this.getSourceFileType();
 
             if ( model != null )
@@ -1072,8 +690,6 @@ public class SourceFileProcessor extends JomcTool
 
                             }
                         }
-
-                        this.getUnknownSections().add( s );
                     }
                 }
             }
@@ -1082,6 +698,26 @@ public class SourceFileProcessor extends JomcTool
                 // JDK: As of JDK 6, "new IOException( message, cause )".
                 throw (IOException) new IOException( getMessage( e ) ).initCause( e );
             }
+        }
+
+        /**
+         * Gets the currently edited source code file.
+         *
+         * @return The currently edited source code file.
+         */
+        private SourceFileType getSourceFileType()
+        {
+            return this.sourceFileType;
+        }
+
+        /**
+         * Gets the velocity context used for merging templates.
+         *
+         * @return The velocity context used for merging templates.
+         */
+        private VelocityContext getVelocityContext()
+        {
+            return this.velocityContext;
         }
 
         private void createSections( final SourceFileType sourceFileType, final SourceSectionsType sourceSectionsType,
@@ -1108,8 +744,6 @@ public class SourceFileProcessor extends JomcTool
                                 "addedSection", sourceFileType.getIdentifier(), childSection.getName() ), null );
 
                         }
-
-                        this.getAddedSections().add( childSection );
                     }
 
                     this.createSections( sourceFileType, sourceSectionType.getSourceSections(), childSection );

@@ -59,6 +59,7 @@ import org.jomc.tools.JomcTool;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -359,7 +360,6 @@ public class JomcToolTest
     }
 
     @Test
-    @SuppressWarnings( "deprecation" )
     public final void testJomcToolNullPointerException() throws Exception
     {
         assertNotNull( this.getJomcTool() );
@@ -467,16 +467,6 @@ public class JomcToolTest
         try
         {
             this.getJomcTool().getJavaMethodParameterName( (Property) null );
-            fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( final NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            this.getJomcTool().getJavaInterfaceNames( null, false );
             fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -909,7 +899,6 @@ public class JomcToolTest
     }
 
     @Test
-    @SuppressWarnings( "deprecation" )
     public final void testJomcToolNotNull() throws Exception
     {
         final Specification specification = new Specification();
@@ -986,7 +975,6 @@ public class JomcToolTest
         assertEquals( "getLocale", this.getJomcTool().getJavaGetterMethodName( d ) );
         assertEquals( "getMessage", this.getJomcTool().getJavaGetterMethodName( m ) );
         assertEquals( "getProperty", this.getJomcTool().getJavaGetterMethodName( p ) );
-        assertEquals( 0, this.getJomcTool().getJavaInterfaceNames( implementation, true ).size() );
         assertEquals( 0, this.getJomcTool().getImplementedJavaTypeNames( implementation, true ).size() );
         assertEquals( "private", this.getJomcTool().getJavaModifierName( implementation, d ) );
         assertEquals( "private", this.getJomcTool().getJavaModifierName( implementation, m ) );
@@ -1070,30 +1058,28 @@ public class JomcToolTest
     }
 
     @Test
-    @SuppressWarnings( "deprecation" )
     public final void testDefaultTemplateProfile() throws Exception
     {
-        assertNotNull( JomcTool.getDefaultTemplateProfile() );
+        assertNotNull( this.getJomcTool().getDefaultTemplateProfile() );
         System.setProperty( "org.jomc.tools.JomcTool.defaultTemplateProfile", "TEST" );
-        JomcTool.setDefaultTemplateProfile( null );
-        assertEquals( "TEST", JomcTool.getDefaultTemplateProfile() );
+        this.getJomcTool().setDefaultTemplateProfile( null );
+        assertEquals( "TEST", this.getJomcTool().getDefaultTemplateProfile() );
         System.clearProperty( "org.jomc.tools.JomcTool.defaultTemplateProfile" );
-        JomcTool.setDefaultTemplateProfile( null );
+        this.getJomcTool().setDefaultTemplateProfile( null );
     }
 
     @Test
-    @SuppressWarnings( "deprecation" )
     public final void testTemplateProfile() throws Exception
     {
-        JomcTool.setDefaultTemplateProfile( null );
+        this.getJomcTool().setDefaultTemplateProfile( null );
         this.getJomcTool().setTemplateProfile( null );
         assertNotNull( this.getJomcTool().getTemplateProfile() );
 
-        JomcTool.setDefaultTemplateProfile( "TEST" );
+        this.getJomcTool().setDefaultTemplateProfile( "TEST" );
         this.getJomcTool().setTemplateProfile( null );
         assertEquals( "TEST", this.getJomcTool().getTemplateProfile() );
 
-        JomcTool.setDefaultTemplateProfile( null );
+        this.getJomcTool().setDefaultTemplateProfile( null );
         this.getJomcTool().setTemplateProfile( null );
     }
 
@@ -1183,6 +1169,32 @@ public class JomcToolTest
         this.getJomcTool().setLineSeparator( null );
         assertNotNull( this.getJomcTool().getLineSeparator() );
         this.getJomcTool().setLineSeparator( null );
+    }
+
+    @Test
+    public final void testJomcToolModelObjectsNotFound() throws Exception
+    {
+        final SpecificationReference ref = new SpecificationReference();
+        ref.setIdentifier( "DOES_NOT_EXIST" );
+
+        final Implementation i = new Implementation();
+        i.setIdentifier( "DOES_NOT_EXSIST" );
+
+        final Dependency d = new Dependency();
+        d.setIdentifier( "DOES_NOT_EXIST" );
+
+        final Property p = new Property();
+        p.setName( "DOES_NOT_EXIST" );
+
+        assertNull( this.getJomcTool().getJavaPackageName( ref ) );
+        assertNull( this.getJomcTool().getJavaTypeName( ref, false ) );
+        assertNull( this.getJomcTool().getJavaTypeName( d ) );
+
+        final Model oldModel = this.getJomcTool().getModel();
+        this.getJomcTool().setModel( null );
+        assertTrue( this.getJomcTool().getImplementedJavaTypeNames( i, true ).isEmpty() );
+        assertEquals( "private", this.getJomcTool().getJavaModifierName( i, p ) );
+        this.getJomcTool().setModel( oldModel );
     }
 
     public static void assertNullPointerException( final NullPointerException e )

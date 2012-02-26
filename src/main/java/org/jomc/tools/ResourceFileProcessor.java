@@ -106,8 +106,8 @@ public class ResourceFileProcessor extends JomcTool
 
             if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.CONFIG,
-                          getMessage( "defaultResourceBundleDefaultLocale", this.resourceBundleDefaultLocale ), null );
+                this.log( Level.CONFIG, getMessage( "defaultResourceBundleDefaultLocale",
+                                                    this.resourceBundleDefaultLocale ), null );
 
             }
         }
@@ -144,9 +144,16 @@ public class ResourceFileProcessor extends JomcTool
             throw new NullPointerException( "resourcesDirectory" );
         }
 
-        for ( int i = 0, s0 = this.getModules().getModule().size(); i < s0; i++ )
+        if ( this.getModules() != null )
         {
-            this.writeResourceBundleResourceFiles( this.getModules().getModule().get( i ), resourcesDirectory );
+            for ( int i = 0, s0 = this.getModules().getModule().size(); i < s0; i++ )
+            {
+                this.writeResourceBundleResourceFiles( this.getModules().getModule().get( i ), resourcesDirectory );
+            }
+        }
+        else if ( this.isLoggable( Level.WARNING ) )
+        {
+            this.log( Level.WARNING, getMessage( "modulesNotFound", this.getModel().getIdentifier() ), null );
         }
     }
 
@@ -174,26 +181,31 @@ public class ResourceFileProcessor extends JomcTool
             throw new NullPointerException( "resourcesDirectory" );
         }
 
-        assert this.getModules().getModule( module.getName() ) != null : "Module '" + module.getName() + "' not found.";
-
-        if ( module.getSpecifications() != null )
+        if ( this.getModules() != null && this.getModules().getModule( module.getName() ) != null )
         {
-            for ( int i = 0, s0 = module.getSpecifications().getSpecification().size(); i < s0; i++ )
+            if ( module.getSpecifications() != null )
             {
-                this.writeResourceBundleResourceFiles( module.getSpecifications().getSpecification().get( i ),
-                                                       resourcesDirectory );
+                for ( int i = 0, s0 = module.getSpecifications().getSpecification().size(); i < s0; i++ )
+                {
+                    this.writeResourceBundleResourceFiles( module.getSpecifications().getSpecification().get( i ),
+                                                           resourcesDirectory );
 
+                }
+            }
+
+            if ( module.getImplementations() != null )
+            {
+                for ( int i = 0, s0 = module.getImplementations().getImplementation().size(); i < s0; i++ )
+                {
+                    this.writeResourceBundleResourceFiles( module.getImplementations().getImplementation().get( i ),
+                                                           resourcesDirectory );
+
+                }
             }
         }
-
-        if ( module.getImplementations() != null )
+        else if ( this.isLoggable( Level.WARNING ) )
         {
-            for ( int i = 0, s0 = module.getImplementations().getImplementation().size(); i < s0; i++ )
-            {
-                this.writeResourceBundleResourceFiles( module.getImplementations().getImplementation().get( i ),
-                                                       resourcesDirectory );
-
-            }
+            this.log( Level.WARNING, getMessage( "moduleNotFound", module.getName() ), null );
         }
     }
 
@@ -220,24 +232,29 @@ public class ResourceFileProcessor extends JomcTool
             throw new NullPointerException( "resourcesDirectory" );
         }
 
-        assert this.getModules().getSpecification( specification.getIdentifier() ) != null :
-            "Specification '" + specification.getIdentifier() + "' not found.";
-
-        if ( specification.isClassDeclaration() )
+        if ( this.getModules() != null
+             && this.getModules().getSpecification( specification.getIdentifier() ) != null )
         {
-            if ( !resourcesDirectory.isDirectory() )
+            if ( specification.isClassDeclaration() )
             {
-                throw new IOException( getMessage( "directoryNotFound", resourcesDirectory.getAbsolutePath() ) );
+                if ( !resourcesDirectory.isDirectory() )
+                {
+                    throw new IOException( getMessage( "directoryNotFound", resourcesDirectory.getAbsolutePath() ) );
+                }
+
+                this.assertValidTemplates( specification );
+
+                final String bundlePath =
+                    this.getJavaTypeName( specification, true ).replace( '.', File.separatorChar );
+
+                this.writeResourceBundleResourceFiles(
+                    this.getResourceBundleResources( specification ), resourcesDirectory, bundlePath );
+
             }
-
-            this.assertValidTemplates( specification );
-
-            final String bundlePath =
-                this.getJavaTypeName( specification, true ).replace( '.', File.separatorChar );
-
-            this.writeResourceBundleResourceFiles(
-                this.getResourceBundleResources( specification ), resourcesDirectory, bundlePath );
-
+        }
+        else if ( this.isLoggable( Level.WARNING ) )
+        {
+            this.log( Level.WARNING, getMessage( "specificationNotFound", specification.getIdentifier() ), null );
         }
     }
 
@@ -264,24 +281,29 @@ public class ResourceFileProcessor extends JomcTool
             throw new NullPointerException( "resourcesDirectory" );
         }
 
-        assert this.getModules().getImplementation( implementation.getIdentifier() ) != null :
-            "Implementation '" + implementation.getIdentifier() + "' not found.";
-
-        if ( implementation.isClassDeclaration() )
+        if ( this.getModules() != null
+             && this.getModules().getImplementation( implementation.getIdentifier() ) != null )
         {
-            if ( !resourcesDirectory.isDirectory() )
+            if ( implementation.isClassDeclaration() )
             {
-                throw new IOException( getMessage( "directoryNotFound", resourcesDirectory.getAbsolutePath() ) );
+                if ( !resourcesDirectory.isDirectory() )
+                {
+                    throw new IOException( getMessage( "directoryNotFound", resourcesDirectory.getAbsolutePath() ) );
+                }
+
+                this.assertValidTemplates( implementation );
+
+                final String bundlePath =
+                    this.getJavaTypeName( implementation, true ).replace( '.', File.separatorChar );
+
+                this.writeResourceBundleResourceFiles(
+                    this.getResourceBundleResources( implementation ), resourcesDirectory, bundlePath );
+
             }
-
-            this.assertValidTemplates( implementation );
-
-            final String bundlePath =
-                this.getJavaTypeName( implementation, true ).replace( '.', File.separatorChar );
-
-            this.writeResourceBundleResourceFiles(
-                this.getResourceBundleResources( implementation ), resourcesDirectory, bundlePath );
-
+        }
+        else if ( this.isLoggable( Level.WARNING ) )
+        {
+            this.log( Level.WARNING, getMessage( "implementationNotFound", implementation.getIdentifier() ), null );
         }
     }
 
@@ -290,7 +312,8 @@ public class ResourceFileProcessor extends JomcTool
      *
      * @param specification The specification to get resource bundle properties resources of.
      *
-     * @return Resource bundle properties resources of {@code specification}.
+     * @return Resource bundle properties resources of {@code specification} or {@code null}, if no model objects are
+     * found.
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
      * @throws IOException if getting the resource bundle properties resources fails.
@@ -303,10 +326,19 @@ public class ResourceFileProcessor extends JomcTool
             throw new NullPointerException( "specification" );
         }
 
-        assert this.getModules().getSpecification( specification.getIdentifier() ) != null :
-            "Specification '" + specification.getIdentifier() + "' not found.";
+        Map<Locale, Properties> properties = null;
 
-        return new HashMap<Locale, Properties>();
+        if ( this.getModules() != null
+             && this.getModules().getSpecification( specification.getIdentifier() ) != null )
+        {
+            properties = new HashMap<Locale, Properties>();
+        }
+        else if ( this.isLoggable( Level.WARNING ) )
+        {
+            this.log( Level.WARNING, getMessage( "specificationNotFound", specification.getIdentifier() ), null );
+        }
+
+        return properties;
     }
 
     /**
@@ -314,7 +346,8 @@ public class ResourceFileProcessor extends JomcTool
      *
      * @param implementation The implementation to get resource bundle properties resources of.
      *
-     * @return Resource bundle properties resources of {@code implementation}.
+     * @return Resource bundle properties resources of {@code implementation} or {@code null}, if no model objects are
+     * found.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      * @throws IOException if getting the resource bundle properties resources fails.
@@ -327,36 +360,43 @@ public class ResourceFileProcessor extends JomcTool
             throw new NullPointerException( "implementation" );
         }
 
-        assert this.getModules().getImplementation( implementation.getIdentifier() ) != null :
-            "Implementation '" + implementation.getIdentifier() + "' not found.";
+        Map<Locale, Properties> properties = null;
 
-        final Map<Locale, java.util.Properties> properties = new HashMap<Locale, java.util.Properties>( 10 );
-        final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
-
-        if ( messages != null )
+        if ( this.getModules() != null
+             && this.getModules().getImplementation( implementation.getIdentifier() ) != null )
         {
-            for ( int i = 0, s0 = messages.getMessage().size(); i < s0; i++ )
+            properties = new HashMap<Locale, java.util.Properties>( 10 );
+            final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
+
+            if ( messages != null )
             {
-                final Message message = messages.getMessage().get( i );
-
-                if ( message.getTemplate() != null )
+                for ( int i = 0, s0 = messages.getMessage().size(); i < s0; i++ )
                 {
-                    for ( int j = 0, s1 = message.getTemplate().getText().size(); j < s1; j++ )
+                    final Message message = messages.getMessage().get( i );
+
+                    if ( message.getTemplate() != null )
                     {
-                        final Text text = message.getTemplate().getText().get( j );
-                        final Locale locale = new Locale( text.getLanguage().toLowerCase() );
-                        Properties bundleProperties = properties.get( locale );
-
-                        if ( bundleProperties == null )
+                        for ( int j = 0, s1 = message.getTemplate().getText().size(); j < s1; j++ )
                         {
-                            bundleProperties = new Properties();
-                            properties.put( locale, bundleProperties );
-                        }
+                            final Text text = message.getTemplate().getText().get( j );
+                            final Locale locale = new Locale( text.getLanguage().toLowerCase() );
+                            Properties bundleProperties = properties.get( locale );
 
-                        bundleProperties.setProperty( message.getName(), text.getValue() );
+                            if ( bundleProperties == null )
+                            {
+                                bundleProperties = new Properties();
+                                properties.put( locale, bundleProperties );
+                            }
+
+                            bundleProperties.setProperty( message.getName(), text.getValue() );
+                        }
                     }
                 }
             }
+        }
+        else if ( this.isLoggable( Level.WARNING ) )
+        {
+            this.log( Level.WARNING, getMessage( "implementationNotFound", implementation.getIdentifier() ), null );
         }
 
         return properties;

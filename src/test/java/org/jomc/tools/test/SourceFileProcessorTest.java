@@ -40,12 +40,14 @@ import org.apache.commons.io.IOUtils;
 import org.jomc.model.Implementation;
 import org.jomc.model.Module;
 import org.jomc.model.Specification;
+import org.jomc.modlet.Model;
 import org.jomc.tools.SourceFileProcessor;
 import org.jomc.util.SectionEditor;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -82,29 +84,8 @@ public class SourceFileProcessorTest extends JomcToolTest
     }
 
     @Test
-    @SuppressWarnings( "deprecation" )
     public final void testSourceFileProcessorNullPointerException() throws Exception
     {
-        try
-        {
-            this.getJomcTool().getSourceFileType( (Specification) null );
-            fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( final NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            this.getJomcTool().getSourceFileType( (Implementation) null );
-            fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( final NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
         try
         {
             this.getJomcTool().getSourceFilesType( (Specification) null );
@@ -118,26 +99,6 @@ public class SourceFileProcessorTest extends JomcToolTest
         try
         {
             this.getJomcTool().getSourceFilesType( (Implementation) null );
-            fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( final NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            this.getJomcTool().getSourceFileEditor( (Specification) null );
-            fail( "Expected NullPointerException not thrown." );
-        }
-        catch ( final NullPointerException e )
-        {
-            assertNullPointerException( e );
-        }
-
-        try
-        {
-            this.getJomcTool().getSourceFileEditor( (Implementation) null );
             fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -558,6 +519,14 @@ public class SourceFileProcessorTest extends JomcToolTest
     }
 
     @Test
+    public final void testSourceFileEditor() throws Exception
+    {
+        assertNotNull( this.getJomcTool().getSourceFileEditor() );
+        this.getJomcTool().setSourceFileEditor( null );
+        assertNotNull( this.getJomcTool().getSourceFileEditor() );
+    }
+
+    @Test
     public final void testCopyConstructor() throws Exception
     {
         try
@@ -572,6 +541,32 @@ public class SourceFileProcessorTest extends JomcToolTest
         }
 
         new SourceFileProcessor( this.getJomcTool() );
+    }
+
+    @Test
+    public final void testSourceFileProcessorModelObjectsNotFound() throws Exception
+    {
+        final Module m = new Module();
+        m.setName( "DOES_NOT_EXIST" );
+
+        final Specification s = new Specification();
+        s.setIdentifier( "DOES_NOT_EXIST)" );
+
+        final Implementation i = new Implementation();
+        i.setIdentifier( "DOES_NOT_EXIST" );
+
+        final Model oldModel = this.getJomcTool().getModel();
+        this.getJomcTool().setModel( null );
+
+        assertNull( this.getJomcTool().getSourceFilesType( s ) );
+        assertNull( this.getJomcTool().getSourceFilesType( i ) );
+
+        this.getJomcTool().manageSourceFiles( new File( "/tmp" ) );
+        this.getJomcTool().manageSourceFiles( m, new File( "/tmp" ) );
+        this.getJomcTool().manageSourceFiles( s, new File( "/tmp" ) );
+        this.getJomcTool().manageSourceFiles( i, new File( "/tmp" ) );
+
+        this.getJomcTool().setModel( oldModel );
     }
 
     private void copyResource( final String resourceName, final File file ) throws IOException

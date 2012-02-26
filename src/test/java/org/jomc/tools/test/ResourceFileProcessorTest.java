@@ -35,9 +35,11 @@ import java.io.IOException;
 import org.jomc.model.Implementation;
 import org.jomc.model.Module;
 import org.jomc.model.Specification;
+import org.jomc.modlet.Model;
 import org.jomc.tools.ResourceFileProcessor;
 import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -275,6 +277,32 @@ public class ResourceFileProcessorTest extends JomcToolTest
         }
 
         new ResourceFileProcessor( this.getJomcTool() );
+    }
+
+    @Test
+    public final void testResourceFileProcessorModelObjectsNotFound() throws Exception
+    {
+        final Module m = new Module();
+        m.setName( "DOES_NOT_EXIST" );
+
+        final Specification s = new Specification();
+        s.setIdentifier( "DOES_NOT_EXIST)" );
+
+        final Implementation i = new Implementation();
+        i.setIdentifier( "DOES_NOT_EXIST" );
+
+        final Model oldModel = this.getJomcTool().getModel();
+        this.getJomcTool().setModel( null );
+
+        assertNull( this.getJomcTool().getResourceBundleResources( i ) );
+        assertNull( this.getJomcTool().getResourceBundleResources( s ) );
+
+        this.getJomcTool().writeResourceBundleResourceFiles( new File( "/tmp" ) );
+        this.getJomcTool().writeResourceBundleResourceFiles( m, new File( "/tmp" ) );
+        this.getJomcTool().writeResourceBundleResourceFiles( s, new File( "/tmp" ) );
+        this.getJomcTool().writeResourceBundleResourceFiles( i, new File( "/tmp" ) );
+
+        this.getJomcTool().setModel( oldModel );
     }
 
 }

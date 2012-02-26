@@ -142,7 +142,7 @@ public class JomcTool
     private static final String DEFAULT_TEMPLATE_PROFILE = "jomc-java";
 
     /** The default template profile. */
-    private static volatile String defaultTemplateProfile;
+    private String defaultTemplateProfile;
 
     /**
      * The log level events are logged at by default.
@@ -241,6 +241,7 @@ public class JomcTool
         this.model = tool.model != null ? tool.model.clone() : null;
         this.outputEncoding = tool.outputEncoding;
         this.templateEncoding = tool.templateEncoding;
+        this.defaultTemplateProfile = tool.defaultTemplateProfile;
         this.templateProfile = tool.templateProfile;
         this.velocityEngine = tool.velocityEngine;
         this.locale = tool.locale;
@@ -463,9 +464,20 @@ public class JomcTool
             throw new NullPointerException( "reference" );
         }
 
-        final Specification s = this.getModules().getSpecification( reference.getIdentifier() );
-        assert s != null : "Specification '" + reference.getIdentifier() + "' not found.";
-        return s.getClazz() != null ? this.getJavaPackageName( s ) : null;
+        Specification s = null;
+        String javaPackageName = null;
+
+        if ( this.getModules() != null
+             && ( s = this.getModules().getSpecification( reference.getIdentifier() ) ) != null )
+        {
+            javaPackageName = s.getClazz() != null ? this.getJavaPackageName( s ) : null;
+        }
+        else if ( this.isLoggable( Level.WARNING ) )
+        {
+            this.log( Level.WARNING, getMessage( "specificationNotFound", reference.getIdentifier() ), null );
+        }
+
+        return javaPackageName;
     }
 
     /**
@@ -486,9 +498,20 @@ public class JomcTool
             throw new NullPointerException( "reference" );
         }
 
-        final Specification s = this.getModules().getSpecification( reference.getIdentifier() );
-        assert s != null : "Specification '" + reference.getIdentifier() + "' not found.";
-        return s.getClazz() != null ? this.getJavaTypeName( s, qualified ) : null;
+        Specification s = null;
+        String javaTypeName = null;
+
+        if ( this.getModules() != null
+             && ( s = this.getModules().getSpecification( reference.getIdentifier() ) ) != null )
+        {
+            javaTypeName = s.getClazz() != null ? this.getJavaTypeName( s, qualified ) : null;
+        }
+        else if ( this.isLoggable( Level.WARNING ) )
+        {
+            this.log( Level.WARNING, getMessage( "specificationNotFound", reference.getIdentifier() ), null );
+        }
+
+        return javaTypeName;
     }
 
     /**
@@ -581,31 +604,6 @@ public class JomcTool
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
      *
-     * @deprecated As of JOMC 1.2, replaced by method {@link #getImplementedJavaTypeNames(org.jomc.model.Implementation, boolean)}.
-     * This method will be removed in version 2.0.
-     */
-    @Deprecated
-    public List<String> getJavaInterfaceNames( final Implementation implementation, final boolean qualified )
-    {
-        if ( implementation == null )
-        {
-            throw new NullPointerException( "implementation" );
-        }
-
-        return this.getImplementedJavaTypeNames( implementation, qualified );
-    }
-
-    /**
-     * Gets a list of names of all Java types an implementation implements.
-     *
-     * @param implementation The implementation to get names of all implemented Java types of.
-     * @param qualified {@code true}, to return the fully qualified type names (with package name prepended);
-     * {@code false}, to return the short type names (without package name prepended).
-     *
-     * @return An unmodifiable list of names of all Java types implemented by {@code implementation}.
-     *
-     * @throws NullPointerException if {@code implementation} is {@code null}.
-     *
      * @since 1.2
      */
     public List<String> getImplementedJavaTypeNames( final Implementation implementation, final boolean qualified )
@@ -615,27 +613,37 @@ public class JomcTool
             throw new NullPointerException( "implementation" );
         }
 
-        final Specifications specs = this.getModules().getSpecifications( implementation.getIdentifier() );
-        final List<String> col = new ArrayList<String>( specs == null ? 0 : specs.getSpecification().size() );
+        List<String> col = null;
 
-        if ( specs != null )
+        if ( this.getModules() != null )
         {
-            for ( int i = 0, s0 = specs.getSpecification().size(); i < s0; i++ )
-            {
-                final Specification s = specs.getSpecification().get( i );
+            final Specifications specs = this.getModules().getSpecifications( implementation.getIdentifier() );
+            col = new ArrayList<String>( specs == null ? 0 : specs.getSpecification().size() );
 
-                if ( s.getClazz() != null )
+            if ( specs != null )
+            {
+                for ( int i = 0, s0 = specs.getSpecification().size(); i < s0; i++ )
                 {
-                    final String typeName = this.getJavaTypeName( s, qualified );
-                    if ( !col.contains( typeName ) )
+                    final Specification s = specs.getSpecification().get( i );
+
+                    if ( s.getClazz() != null )
                     {
-                        col.add( typeName );
+                        final String typeName = this.getJavaTypeName( s, qualified );
+
+                        if ( !col.contains( typeName ) )
+                        {
+                            col.add( typeName );
+                        }
                     }
                 }
             }
         }
+        else if ( this.isLoggable( Level.WARNING ) )
+        {
+            this.log( Level.WARNING, getMessage( "modulesNotFound", this.getModel().getIdentifier() ), null );
+        }
 
-        return Collections.unmodifiableList( col );
+        return Collections.unmodifiableList( col != null ? col : Collections.<String>emptyList() );
     }
 
     /**
@@ -857,21 +865,31 @@ public class JomcTool
             throw new NullPointerException( "dependency" );
         }
 
-        final Specification s = this.getModules().getSpecification( dependency.getIdentifier() );
+        Specification s = null;
+        String javaTypeName = null;
 
-        if ( s != null && s.getClazz() != null )
+        if ( this.getModules() != null
+             && ( s = this.getModules().getSpecification( dependency.getIdentifier() ) ) != null )
         {
-            final StringBuilder typeName = new StringBuilder( s.getClazz().length() );
-            typeName.append( this.getJavaTypeName( s, true ) );
-            if ( s.getMultiplicity() == Multiplicity.MANY && dependency.getImplementationName() == null )
+            if ( s.getClazz() != null )
             {
-                typeName.append( "[]" );
-            }
+                final StringBuilder typeName = new StringBuilder( s.getClazz().length() );
+                typeName.append( this.getJavaTypeName( s, true ) );
 
-            return typeName.toString();
+                if ( s.getMultiplicity() == Multiplicity.MANY && dependency.getImplementationName() == null )
+                {
+                    typeName.append( "[]" );
+                }
+
+                javaTypeName = typeName.toString();
+            }
+        }
+        else if ( this.isLoggable( Level.WARNING ) )
+        {
+            this.log( Level.WARNING, getMessage( "specificationNotFound", dependency.getIdentifier() ), null );
         }
 
-        return null;
+        return javaTypeName;
     }
 
     /**
@@ -1065,15 +1083,23 @@ public class JomcTool
             throw new NullPointerException( "property" );
         }
 
-        String modifier = "private";
-        final Properties specified = this.getModules().getSpecifiedProperties( implementation.getIdentifier() );
+        String javaModifierName = "private";
 
-        if ( specified != null && specified.getProperty( property.getName() ) != null )
+        if ( this.getModules() != null )
         {
-            modifier = "public";
+            final Properties specified = this.getModules().getSpecifiedProperties( implementation.getIdentifier() );
+
+            if ( specified != null && specified.getProperty( property.getName() ) != null )
+            {
+                javaModifierName = "public";
+            }
+        }
+        else if ( this.isLoggable( Level.WARNING ) )
+        {
+            this.log( Level.WARNING, getMessage( "modulesNotFound", this.getModel().getIdentifier() ), null );
         }
 
-        return modifier;
+        return javaModifierName;
     }
 
     /**
@@ -1775,28 +1801,16 @@ public class JomcTool
     }
 
     /**
-     * Gets the modules of the instance.
+     * Gets the modules of the model of the instance.
      *
-     * @return The modules of the instance.
+     * @return The modules of the model of the instance or {@code null}, if no modules are found.
      *
      * @see #getModel()
      * @see #setModel(org.jomc.modlet.Model)
-     *
-     * @deprecated As of JOMC 1.2, please use method {@link #getModel()} and {@link ModelHelper#getModules(org.jomc.modlet.Model)}.
-     * This method will be removed in version 2.0.
      */
-    @Deprecated
-    public Modules getModules()
+    public final Modules getModules()
     {
-        Modules modules = ModelHelper.getModules( this.getModel() );
-
-        if ( modules == null )
-        {
-            modules = new Modules();
-            ModelHelper.setModules( this.getModel(), modules );
-        }
-
-        return modules;
+        return ModelHelper.getModules( this.getModel() );
     }
 
     /**
@@ -1894,17 +1908,16 @@ public class JomcTool
 
         this.mergeTemplateProfileProperties( this.getTemplateProfile(), this.getLocale().getLanguage(), ctx );
         this.mergeTemplateProfileProperties( this.getTemplateProfile(), null, ctx );
-        this.mergeTemplateProfileProperties( getDefaultTemplateProfile(), this.getLocale().getLanguage(), ctx );
-        this.mergeTemplateProfileProperties( getDefaultTemplateProfile(), null, ctx );
+        this.mergeTemplateProfileProperties( this.getDefaultTemplateProfile(), this.getLocale().getLanguage(), ctx );
+        this.mergeTemplateProfileProperties( this.getDefaultTemplateProfile(), null, ctx );
 
-        this.getModules(); // Initialization prior to cloning.
         final Model clonedModel = this.getModel().clone();
         final Modules clonedModules = ModelHelper.getModules( clonedModel );
         assert clonedModules != null : "Unexpected missing modules for model '" + clonedModel.getIdentifier() + "'.";
 
         ctx.put( "model", clonedModel );
         ctx.put( "modules", clonedModules );
-        ctx.put( "imodel", new InheritanceModel( this.getModules() ) );
+        ctx.put( "imodel", new InheritanceModel( clonedModules ) );
         ctx.put( "tool", this );
         ctx.put( "toolName", this.getClass().getName() );
         ctx.put( "toolVersion", getMessage( "projectVersion" ) );
@@ -2100,21 +2113,17 @@ public class JomcTool
      * @return The default template profile.
      *
      * @see #setDefaultTemplateProfile(java.lang.String)
-     *
-     * @deprecated The {@code static} modifier of this method and support to setup the default template profile using
-     * a system property will be removed in version 2.0.
      */
-    @Deprecated
-    public static String getDefaultTemplateProfile()
+    public final String getDefaultTemplateProfile()
     {
-        if ( defaultTemplateProfile == null )
+        if ( this.defaultTemplateProfile == null )
         {
-            defaultTemplateProfile = System.getProperty( "org.jomc.tools.JomcTool.defaultTemplateProfile",
-                                                         DEFAULT_TEMPLATE_PROFILE );
+            this.defaultTemplateProfile = System.getProperty( "org.jomc.tools.JomcTool.defaultTemplateProfile",
+                                                              DEFAULT_TEMPLATE_PROFILE );
 
         }
 
-        return defaultTemplateProfile;
+        return this.defaultTemplateProfile;
     }
 
     /**
@@ -2123,13 +2132,10 @@ public class JomcTool
      * @param value The new default template profile or {@code null}.
      *
      * @see #getDefaultTemplateProfile()
-     *
-     * @deprecated The {@code static} modifier of this method will be removed in version 2.0.
      */
-    @Deprecated
-    public static void setDefaultTemplateProfile( final String value )
+    public final void setDefaultTemplateProfile( final String value )
     {
-        defaultTemplateProfile = value;
+        this.defaultTemplateProfile = value;
     }
 
     /**
@@ -2144,7 +2150,7 @@ public class JomcTool
     {
         if ( this.templateProfile == null )
         {
-            this.templateProfile = getDefaultTemplateProfile();
+            this.templateProfile = this.getDefaultTemplateProfile();
 
             if ( this.isLoggable( Level.CONFIG ) )
             {
@@ -2353,7 +2359,7 @@ public class JomcTool
 
         String location = null;
         Template template = null;
-        final String key = this.getLocale() + "|" + this.getTemplateProfile() + "|" + getDefaultTemplateProfile()
+        final String key = this.getLocale() + "|" + this.getTemplateProfile() + "|" + this.getDefaultTemplateProfile()
                            + "|" + templateName;
 
         Map<String, String> map = this.templateLocationsCache == null ? null : this.templateLocationsCache.get();
@@ -2384,15 +2390,15 @@ public class JomcTool
 
             if ( template == null && !StringUtils.EMPTY.equals( this.getLocale().getLanguage() ) )
             {
-                location = TEMPLATE_PREFIX + getDefaultTemplateProfile() + "/" + this.getLocale().getLanguage() + "/"
-                           + templateName;
+                location = TEMPLATE_PREFIX + this.getDefaultTemplateProfile() + "/" + this.getLocale().getLanguage()
+                           + "/" + templateName;
 
                 template = this.findVelocityTemplate( location );
             }
 
             if ( template == null )
             {
-                location = TEMPLATE_PREFIX + getDefaultTemplateProfile() + "/" + templateName;
+                location = TEMPLATE_PREFIX + this.getDefaultTemplateProfile() + "/" + templateName;
                 template = this.findVelocityTemplate( location );
             }
 
