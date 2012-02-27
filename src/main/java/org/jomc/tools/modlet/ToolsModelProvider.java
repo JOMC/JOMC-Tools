@@ -341,10 +341,9 @@ public class ToolsModelProvider implements ModelProvider
                     for ( int i = 0, s0 = modules.getSpecifications().getSpecification().size(); i < s0; i++ )
                     {
                         final Specification specification = modules.getSpecifications().getSpecification().get( i );
-                        final SourceFileType sourceFileType = specification.getAnyObject( SourceFileType.class );
                         final SourceFilesType sourceFilesType = specification.getAnyObject( SourceFilesType.class );
 
-                        if ( specification.isClassDeclaration() && sourceFileType == null )
+                        if ( specification.isClassDeclaration() )
                         {
                             final SourceFilesType defaultSourceFiles =
                                 this.getDefaultSourceFilesType( tool, specification );
@@ -376,44 +375,41 @@ public class ToolsModelProvider implements ModelProvider
                         final SourceFileType sourceFileType = implementation.getAnyObject( SourceFileType.class );
                         final SourceFilesType sourceFilesType = implementation.getAnyObject( SourceFilesType.class );
 
-                        if ( sourceFileType == null )
+                        if ( sourceFilesType != null )
                         {
-                            if ( sourceFilesType != null )
+                            userSourceFiles.put( implementation, sourceFilesType );
+                        }
+                        else if ( implementation.isClassDeclaration() )
+                        {
+                            final SourceFilesType defaultSourceFiles =
+                                this.getDefaultSourceFilesType( tool, implementation );
+
+                            boolean finalAncestor = false;
+
+                            final Set<InheritanceModel.Node<JAXBElement<?>>> sourceFilesNodes =
+                                imodel.getJaxbElementNodes( implementation.getIdentifier(), SOURCE_FILES_QNAME );
+
+                            for ( final InheritanceModel.Node<JAXBElement<?>> sourceFilesNode : sourceFilesNodes )
                             {
-                                userSourceFiles.put( implementation, sourceFilesType );
-                            }
-                            else if ( implementation.isClassDeclaration() )
-                            {
-                                final SourceFilesType defaultSourceFiles =
-                                    this.getDefaultSourceFilesType( tool, implementation );
-
-                                boolean finalAncestor = false;
-
-                                final Set<InheritanceModel.Node<JAXBElement<?>>> sourceFilesNodes =
-                                    imodel.getJaxbElementNodes( implementation.getIdentifier(), SOURCE_FILES_QNAME );
-
-                                for ( final InheritanceModel.Node<JAXBElement<?>> sourceFilesNode : sourceFilesNodes )
+                                if ( sourceFilesNode.getModelObject().getValue() instanceof SourceFilesType )
                                 {
-                                    if ( sourceFilesNode.getModelObject().getValue() instanceof SourceFilesType )
+                                    final SourceFilesType ancestorSourceFiles =
+                                        (SourceFilesType) sourceFilesNode.getModelObject().getValue();
+
+                                    this.overwriteSourceFiles( defaultSourceFiles, ancestorSourceFiles, false );
+
+                                    if ( ancestorSourceFiles.isFinal() )
                                     {
-                                        final SourceFilesType ancestorSourceFiles =
-                                            (SourceFilesType) sourceFilesNode.getModelObject().getValue();
-
-                                        this.overwriteSourceFiles( defaultSourceFiles, ancestorSourceFiles, false );
-
-                                        if ( ancestorSourceFiles.isFinal() )
-                                        {
-                                            finalAncestor = true;
-                                        }
+                                        finalAncestor = true;
                                     }
                                 }
+                            }
 
-                                if ( !finalAncestor )
-                                {
-                                    implementation.getAny().add(
-                                        new ObjectFactory().createSourceFiles( defaultSourceFiles ) );
+                            if ( !finalAncestor )
+                            {
+                                implementation.getAny().add(
+                                    new ObjectFactory().createSourceFiles( defaultSourceFiles ) );
 
-                                }
                             }
                         }
                     }

@@ -331,26 +331,7 @@ public class ToolsModelProcessor implements ModelProcessor
                     for ( int i = 0, s0 = modules.getSpecifications().getSpecification().size(); i < s0; i++ )
                     {
                         final Specification specification = modules.getSpecifications().getSpecification().get( i );
-                        final SourceFileType sourceFileType = specification.getAnyObject( SourceFileType.class );
                         final SourceFilesType sourceFilesType = specification.getAnyObject( SourceFilesType.class );
-
-                        if ( sourceFileType != null )
-                        {
-                            if ( sourceFileType.getLocation() == null && specification.getClazz() != null )
-                            {
-                                // As of 1.2, the 'location' attribute got updated from 'required' to 'optional'.
-                                sourceFileType.setLocation( new StringBuilder( specification.getClazz().length() + 5 ).
-                                    append( specification.getClazz().replace( '.', '/' ) ).append( ".java" ).
-                                    toString() );
-
-                            }
-
-                            if ( sourceFileType.getHeadComment() == null )
-                            {
-                                // As of 1.2, the 'head-comment' and 'tail-comment' attributes got introduced.
-                                sourceFileType.setHeadComment( "//" );
-                            }
-                        }
 
                         if ( sourceFilesType != null )
                         {
@@ -364,26 +345,7 @@ public class ToolsModelProcessor implements ModelProcessor
                     for ( int i = 0, s0 = modules.getImplementations().getImplementation().size(); i < s0; i++ )
                     {
                         final Implementation implementation = modules.getImplementations().getImplementation().get( i );
-                        final SourceFileType sourceFileType = implementation.getAnyObject( SourceFileType.class );
                         final SourceFilesType sourceFilesType = implementation.getAnyObject( SourceFilesType.class );
-
-                        if ( sourceFileType != null )
-                        {
-                            if ( sourceFileType.getLocation() == null && implementation.getClazz() != null )
-                            {
-                                // As of 1.2, the 'location' attribute got updated from 'required' to 'optional'.
-                                sourceFileType.setLocation( new StringBuilder( implementation.getClazz().length() + 5 ).
-                                    append( implementation.getClazz().replace( '.', '/' ) ).append( ".java" ).
-                                    toString() );
-
-                            }
-
-                            if ( sourceFileType.getHeadComment() == null )
-                            {
-                                // As of 1.2, the 'head-comment' and 'tail-comment' attributes got introduced.
-                                sourceFileType.setHeadComment( "//" );
-                            }
-                        }
 
                         if ( sourceFilesType != null )
                         {
