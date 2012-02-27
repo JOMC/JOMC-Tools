@@ -1898,9 +1898,11 @@ public class JomcTool
      *
      * @return A new velocity context used for merging templates.
      *
+     * @throws IOException if creating a new context instance fails.
+     *
      * @see #getTemplateParameters()
      */
-    public VelocityContext getVelocityContext()
+    public VelocityContext getVelocityContext() throws IOException
     {
         final Calendar now = Calendar.getInstance();
         final VelocityContext ctx = new VelocityContext( Collections.synchronizedMap(
@@ -2495,6 +2497,7 @@ public class JomcTool
     }
 
     private java.util.Properties getTemplateProfileProperties( final String profileName, final String language )
+        throws IOException
     {
         Map<String, java.util.Properties> map =
             this.templateProfilePropertiesCache == null ? null : this.templateProfilePropertiesCache.get();
@@ -2507,6 +2510,7 @@ public class JomcTool
 
         final String key = profileName + "|" + language;
         java.util.Properties profileProperties = map.get( key );
+        boolean suppressExceptionOnClose = true;
 
         if ( profileProperties == null )
         {
@@ -2534,10 +2538,7 @@ public class JomcTool
                 }
 
                 map.put( key, profileProperties );
-            }
-            catch ( final IOException e )
-            {
-                this.log( Level.SEVERE, getMessage( e ), e );
+                suppressExceptionOnClose = false;
             }
             finally
             {
@@ -2550,7 +2551,14 @@ public class JomcTool
                 }
                 catch ( final IOException e )
                 {
-                    this.log( Level.SEVERE, getMessage( e ), e );
+                    if ( suppressExceptionOnClose )
+                    {
+                        this.log( Level.SEVERE, getMessage( e ), e );
+                    }
+                    else
+                    {
+                        throw e;
+                    }
                 }
             }
         }
@@ -2559,7 +2567,7 @@ public class JomcTool
     }
 
     private void mergeTemplateProfileProperties( final String profileName, final String language,
-                                                 final VelocityContext velocityContext )
+                                                 final VelocityContext velocityContext ) throws IOException
     {
         final java.util.Properties templateProfileProperties =
             this.getTemplateProfileProperties( profileName, language );
@@ -2572,11 +2580,13 @@ public class JomcTool
 
             if ( !velocityContext.containsKey( name ) )
             {
+                final String className = values[0];
+
                 try
                 {
                     if ( values.length > 1 )
                     {
-                        final Class<?> valueClass = Class.forName( values[0] );
+                        final Class<?> valueClass = Class.forName( className );
                         velocityContext.put( name, valueClass.getConstructor( String.class ).newInstance( values[1] ) );
                     }
                     else if ( value.contains( "|" ) )
@@ -2590,23 +2600,43 @@ public class JomcTool
                 }
                 catch ( final InstantiationException ex )
                 {
-                    this.log( Level.SEVERE, getMessage( ex ), ex );
+                    // JDK: As of JDK 6, "new IOException( message, cause )".
+                    throw (IOException) new IOException( getMessage(
+                        "contextPropertiesException", profileName + ( language != null ? ", " + language : "" ) ) ).
+                        initCause( ex );
+
                 }
                 catch ( final IllegalAccessException ex )
                 {
-                    this.log( Level.SEVERE, getMessage( ex ), ex );
+                    // JDK: As of JDK 6, "new IOException( message, cause )".
+                    throw (IOException) new IOException( getMessage(
+                        "contextPropertiesException", profileName + ( language != null ? ", " + language : "" ) ) ).
+                        initCause( ex );
+
                 }
                 catch ( final InvocationTargetException ex )
                 {
-                    this.log( Level.SEVERE, getMessage( ex ), ex );
+                    // JDK: As of JDK 6, "new IOException( message, cause )".
+                    throw (IOException) new IOException( getMessage(
+                        "contextPropertiesException", profileName + ( language != null ? ", " + language : "" ) ) ).
+                        initCause( ex );
+
                 }
                 catch ( final NoSuchMethodException ex )
                 {
-                    this.log( Level.SEVERE, getMessage( ex ), ex );
+                    // JDK: As of JDK 6, "new IOException( message, cause )".
+                    throw (IOException) new IOException( getMessage(
+                        "contextPropertiesException", profileName + ( language != null ? ", " + language : "" ) ) ).
+                        initCause( ex );
+
                 }
                 catch ( final ClassNotFoundException ex )
                 {
-                    this.log( Level.SEVERE, getMessage( ex ), ex );
+                    // JDK: As of JDK 6, "new IOException( message, cause )".
+                    throw (IOException) new IOException( getMessage(
+                        "contextPropertiesException", profileName + ( language != null ? ", " + language : "" ) ) ).
+                        initCause( ex );
+
                 }
             }
         }

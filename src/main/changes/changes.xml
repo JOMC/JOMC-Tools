@@ -161,6 +161,9 @@
       <code>java.lang.StringIndexOutOfBoundsException: String index out of range: -1</code> exception thrown for
       empty messages.]]>
       </action>
+      <action dev="schulte2005" type="update"><![CDATA[Updated method <code>getVelocityContext</code> of class
+      <code>org.jomc.tools.JomcTool</code> adding <code>java.io.Exception</code> to the list exceptions.]]>
+      </action>
     </release>
   </body>
 </document>
