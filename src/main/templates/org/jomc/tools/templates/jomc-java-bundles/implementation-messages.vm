@@ -116,7 +116,7 @@ ${tool.getIndentation(4)}builder.append( lineSeparator ).append( line );
 ${tool.getIndentation(3)}}
 
 ${tool.getIndentation(3)}suppressExceptionOnClose = false;
-${tool.getIndentation(3)}return builder.substring( lineSeparator.length() );
+${tool.getIndentation(3)}return builder.length() > 0 ? builder.substring( lineSeparator.length() ) : "";
 ${tool.getIndentation(2)}}
 ${tool.getIndentation(2)}catch( final java.lang.ClassCastException e )
 ${tool.getIndentation(2)}{

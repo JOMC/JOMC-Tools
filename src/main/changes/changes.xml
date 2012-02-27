@@ -156,6 +156,11 @@
       <action dev="schulte2005" type="fix"><![CDATA[Updated class <code>org.jomc.tools.modlet.ToolsModelProvider</code>
       to add missing support for overwriting source file models of specifications.]]>
       </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Updated the <code>implementation-messages.vm</code> template of the
+      <code>jomc-java-bundles</code> template profile to correct a
+      <code>java.lang.StringIndexOutOfBoundsException: String index out of range: -1</code> exception thrown for
+      empty messages.]]>
+      </action>
     </release>
   </body>
 </document>
