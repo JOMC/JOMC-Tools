@@ -171,40 +171,6 @@ public class ToolsModelProcessorTest
         SourceFileType is = implementation.getAnyObject( SourceFileType.class );
         assertNull( is );
 
-        ss = new SourceFileType();
-        ss.setIdentifier( this.getClass().getName() + " Specification" );
-
-        is = new SourceFileType();
-        is.setIdentifier( this.getClass().getName() + " Implementation" );
-
-        specification.getAny().add( ss );
-        implementation.getAny().add( is );
-
-        processed = this.getModelProcessor().processModel( context, processed );
-        assertNotNull( processed );
-
-        modules = ModelHelper.getModules( processed );
-        assertNotNull( modules );
-
-        specification = modules.getSpecification( this.getClass().getName() + " Specification" );
-        assertNotNull( specification );
-
-        implementation = modules.getImplementation( this.getClass().getName() + " Implementation" );
-        assertNotNull( implementation );
-
-        ss = specification.getAnyObject( SourceFileType.class );
-        assertNotNull( ss );
-        assertNotNull( ss.getLocation() );
-        assertNotNull( ss.getHeadComment() );
-
-        is = implementation.getAnyObject( SourceFileType.class );
-        assertNotNull( is );
-        assertNotNull( is.getLocation() );
-        assertNotNull( is.getHeadComment() );
-
-        specification.getAny().clear();
-        implementation.getAny().clear();
-
         SourceFilesType specificationSourceFiles = new SourceFilesType();
         ss = new SourceFileType();
         ss.setIdentifier( this.getClass().getSimpleName() );
