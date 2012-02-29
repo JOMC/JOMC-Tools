@@ -850,6 +850,27 @@ public class JomcTool
     }
 
     /**
+     * Gets a Java field name of a property.
+     *
+     * @param property The property to get the Java field name of.
+     *
+     * @return The Java field name of {@code property}.
+     *
+     * @throws NullPointerException if {@code property} is {@code null}.
+     *
+     * @since 1.3
+     */
+    public String getJavaFieldName( final Property property )
+    {
+        if ( property == null )
+        {
+            throw new NullPointerException( "property" );
+        }
+
+        return this.getJavaIdentifier( property.getName(), false );
+    }
+
+    /**
      * Gets the name of a Java type of a given dependency.
      *
      * @param dependency The dependency to get a dependency Java type name of.
@@ -954,6 +975,27 @@ public class JomcTool
     }
 
     /**
+     * Gets a Java field name of a dependency.
+     *
+     * @param dependency The dependency to get the Java field name of.
+     *
+     * @return The Java field name of {@code dependency}.
+     *
+     * @throws NullPointerException if {@code dependency} is {@code null}.
+     *
+     * @since 1.3
+     */
+    public String getJavaFieldName( final Dependency dependency )
+    {
+        if ( dependency == null )
+        {
+            throw new NullPointerException( "dependency" );
+        }
+
+        return this.getJavaIdentifier( dependency.getName(), false );
+    }
+
+    /**
      * Gets the name of a Java getter method of a given message.
      *
      * @param message The message to get a Java getter method name of.
@@ -1005,6 +1047,27 @@ public class JomcTool
      * @since 1.2
      */
     public String getJavaMethodParameterName( final Message message )
+    {
+        if ( message == null )
+        {
+            throw new NullPointerException( "message" );
+        }
+
+        return this.getJavaIdentifier( message.getName(), false );
+    }
+
+    /**
+     * Gets a Java field name of a message.
+     *
+     * @param message The message to get the Java field name of.
+     *
+     * @return The Java field name of {@code message}.
+     *
+     * @throws NullPointerException if {@code message} is {@code null}.
+     *
+     * @since 1.3
+     */
+    public String getJavaFieldName( final Message message )
     {
         if ( message == null )
         {
@@ -1270,23 +1333,91 @@ public class JomcTool
             {
                 final char c = str.charAt( i );
 
-                if ( !( Character.isJavaIdentifierStart( c ) || Character.isJavaIdentifierPart( c ) ) )
+                if ( builder.length() > 0 )
                 {
-                    uc = true;
+                    if ( Character.isJavaIdentifierPart( c ) )
+                    {
+                        builder.append( uc ? Character.toUpperCase( c ) : c );
+                        uc = false;
+                    }
+                    else
+                    {
+                        uc = true;
+                    }
                 }
-                else if ( builder.length() == 0
-                          ? Character.isJavaIdentifierStart( c )
-                          : Character.isJavaIdentifierPart( c ) )
+                else
                 {
-                    builder.append( uc ? Character.toUpperCase( c ) : c );
-                    uc = false;
+                    if ( Character.isJavaIdentifierStart( c ) )
+                    {
+                        builder.append( uc ? Character.toUpperCase( c ) : Character.toLowerCase( c ) );
+                        uc = false;
+                    }
+                    else
+                    {
+                        uc = capitalize;
+                    }
                 }
             }
 
             identifier = builder.toString();
+
+            if ( identifier.length() <= 0 && this.isLoggable( Level.WARNING ) )
+            {
+                this.log( Level.WARNING, getMessage( "invalidJavaIdentifier", str ), null );
+            }
         }
 
         return identifier;
+    }
+
+    /**
+     * Formats a string to a Java constant name.
+     *
+     * @param str The string to format or {@code null}.
+     *
+     * @return {@code str} formatted to a Java constant name or {@code null}.
+     *
+     * @since 1.3
+     */
+    public String getJavaConstantName( final String str )
+    {
+        String name = null;
+
+        if ( str != null )
+        {
+            final int len = str.length();
+            final StringBuilder builder = new StringBuilder( len );
+            boolean separator = false;
+
+            for ( int i = 0; i < len; i++ )
+            {
+                final char c = str.charAt( i );
+
+                if ( builder.length() > 0 ? Character.isJavaIdentifierPart( c ) : Character.isJavaIdentifierStart( c ) )
+                {
+                    if ( builder.length() > 0 && separator )
+                    {
+                        builder.append( '_' );
+                    }
+
+                    builder.append( Character.toUpperCase( c ) );
+                    separator = false;
+                }
+                else
+                {
+                    separator = true;
+                }
+            }
+
+            name = builder.toString();
+
+            if ( name.length() <= 0 && this.isLoggable( Level.WARNING ) )
+            {
+                this.log( Level.WARNING, getMessage( "invalidJavaConstantName", str ), null );
+            }
+        }
+
+        return name;
     }
 
     /**

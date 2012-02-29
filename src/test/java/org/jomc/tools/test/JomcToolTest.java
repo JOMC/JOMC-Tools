@@ -1197,6 +1197,28 @@ public class JomcToolTest
         this.getJomcTool().setModel( oldModel );
     }
 
+    @Test
+    public final void testJavaIdentifier() throws Exception
+    {
+        assertEquals( "", this.getJomcTool().getJavaIdentifier( "", true ) );
+        assertEquals( "", this.getJomcTool().getJavaIdentifier( "", false ) );
+        assertEquals( "", this.getJomcTool().getJavaIdentifier( "  ", true ) );
+        assertEquals( "", this.getJomcTool().getJavaIdentifier( "  ", false ) );
+        assertEquals( "testTestTest", this.getJomcTool().getJavaIdentifier( "  test test test  ", false ) );
+        assertEquals( "TestTestTest", this.getJomcTool().getJavaIdentifier( "  test test test  ", true ) );
+        assertEquals( "testTestTest", this.getJomcTool().getJavaIdentifier( "  Test test test  ", false ) );
+        assertEquals( "TestTestTest", this.getJomcTool().getJavaIdentifier( "  test test test  ", true ) );
+    }
+
+    @Test
+    public final void testJavaConstantName() throws Exception
+    {
+        assertEquals( "", this.getJomcTool().getJavaConstantName( "" ) );
+        assertEquals( "", this.getJomcTool().getJavaConstantName( "  " ) );
+        assertEquals( "TEST_TEST_TEST", this.getJomcTool().getJavaConstantName( "  test test test  " ) );
+        assertEquals( "TEST_TEST_TEST_TEST", this.getJomcTool().getJavaConstantName( "  Test tEst teSt tesT  " ) );
+    }
+
     public static void assertNullPointerException( final NullPointerException e )
     {
         assertNotNull( e );
