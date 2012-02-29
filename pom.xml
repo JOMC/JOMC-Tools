@@ -623,6 +623,7 @@
     <jomc.cli.command.version>1.0</jomc.cli.command.version>
     <jomc.cli.application.option.version>1.2</jomc.cli.application.option.version>
     <jomc.cli.command.option.version>1.2</jomc.cli.command.option.version>
+    <jomc-cli.artifact.version>${project.version}</jomc-cli.artifact.version>
   </properties>
   <profiles>
     <profile>
