@@ -209,11 +209,16 @@
       </action>
     </release>
     <!-- *********************************************************************************************************** -->
-    <release version="2.0">
+    <release version="1.2.1" date="2012-02-28">
       <action dev="schulte2005" type="fix"><![CDATA[Corrected goals <code>write-main-resources</code> and
       <code>write-test-resources</code> to not add a corresponding resource to the maven project for projects without
       resources.]]>
       </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-tools</code> dependency from <code>1.2</code> to <code>1.2.1<code>.
+      See <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2.1/changes-report.html">Changes report</a>.]]>
+      </action>
     </release>
+    <!-- *********************************************************************************************************** -->
+    <release version="2.0"/>
   </body>
 </document>
