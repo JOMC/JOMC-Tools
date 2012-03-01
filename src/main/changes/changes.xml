@@ -143,10 +143,7 @@
       </action>
     </release>
     <!-- *********************************************************************************************************** -->
-    <release version="2.0">
-      <action dev="schulte2005" type="add"><![CDATA[Added <code>getJavaFieldName</code> methods and method
-      <code>getJavaConstantName</code> to class <code>org.jomc.tools.JomcTool</code>.]]>
-      </action>
+    <release version="1.2.1" date="2012-02-28">
       <action dev="schulte2005" type="fix"><![CDATA[Updated method <code>getVelocityContext</code> of class
       <code>org.jomc.tools.JomcTool</code> to correctly parse template profile property values ending in <code>|</code>
       to support adding objects to the context created using the public default constructor.]]>
@@ -164,12 +161,18 @@
       <code>java.lang.StringIndexOutOfBoundsException: String index out of range: -1</code> exception thrown for
       empty messages.]]>
       </action>
+    </release>
+    <!-- *********************************************************************************************************** -->
+    <release version="2.0">
+      <action dev="schulte2005" type="add"><![CDATA[Added <code>getJavaFieldName</code> methods and method
+      <code>getJavaConstantName</code> to class <code>org.jomc.tools.JomcTool</code>.]]>
+      </action>
       <action dev="schulte2005" type="fix"><![CDATA[Corrected method <code>getJavaIdentifier(String,boolean)</code> of
       class <code>org.jomc.tools.JomcTool</code> to return the first character lower-cased when given a string having
       the first character upper-cased.]]>
       </action>
       <action dev="schulte2005" type="update"><![CDATA[Updated method <code>getVelocityContext</code> of class
-      <code>org.jomc.tools.JomcTool</code> adding <code>java.io.Exception</code> to the list exceptions.]]>
+      <code>org.jomc.tools.JomcTool</code> adding <code>java.io.Exception</code> to the list of exceptions.]]>
       </action>
       <action dev="schulte2005" type="update"><![CDATA[Updated class <code>org.jomc.tool.JomcTool</code> to log warnings
       whenever an attribute value of a model object leads to an invalid Java identifier or constant name.]]>
