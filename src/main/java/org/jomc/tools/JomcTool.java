@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.StringReader;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
@@ -51,14 +52,17 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.logging.Level;
 import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.Template;
@@ -209,6 +213,12 @@ public class JomcTool
 
     /** Cached template profile properties. */
     private volatile Reference<Map<String, java.util.Properties>> templateProfilePropertiesCache;
+
+    /**
+     * Cached Java keywords.
+     * @since 1.3
+     */
+    private volatile Reference<Set<String>> javaKeywordsCache;
 
     /** Creates a new {@code JomcTool} instance. */
     public JomcTool()
@@ -846,7 +856,7 @@ public class JomcTool
             throw new NullPointerException( "property" );
         }
 
-        return this.getJavaIdentifier( property.getName(), false );
+        return this.getJavaFieldName( property.getName() );
     }
 
     /**
@@ -867,7 +877,7 @@ public class JomcTool
             throw new NullPointerException( "property" );
         }
 
-        return this.getJavaIdentifier( property.getName(), false );
+        return this.getJavaFieldName( property.getName() );
     }
 
     /**
@@ -971,7 +981,7 @@ public class JomcTool
             throw new NullPointerException( "dependency" );
         }
 
-        return this.getJavaIdentifier( dependency.getName(), false );
+        return this.getJavaFieldName( dependency.getName() );
     }
 
     /**
@@ -992,7 +1002,7 @@ public class JomcTool
             throw new NullPointerException( "dependency" );
         }
 
-        return this.getJavaIdentifier( dependency.getName(), false );
+        return this.getJavaFieldName( dependency.getName() );
     }
 
     /**
@@ -1053,7 +1063,7 @@ public class JomcTool
             throw new NullPointerException( "message" );
         }
 
-        return this.getJavaIdentifier( message.getName(), false );
+        return this.getJavaFieldName( message.getName() );
     }
 
     /**
@@ -1074,7 +1084,7 @@ public class JomcTool
             throw new NullPointerException( "message" );
         }
 
-        return this.getJavaIdentifier( message.getName(), false );
+        return this.getJavaFieldName( message.getName() );
     }
 
     /**
@@ -1368,6 +1378,63 @@ public class JomcTool
         }
 
         return identifier;
+    }
+
+    /**
+     * Formats a string to a Java field name.
+     *
+     * @param str The string to format or {@code null}.
+     *
+     * @return {@code str} formatted to a Java field name or {@code null}.
+     *
+     * @since 1.3
+     */
+    public String getJavaFieldName( final String str )
+    {
+        String fieldName = null;
+
+        if ( str != null )
+        {
+            final int len = str.length();
+            final StringBuilder builder = new StringBuilder( len );
+            boolean uc = false;
+
+            for ( int i = 0; i < len; i++ )
+            {
+                final char c = str.charAt( i );
+
+                if ( builder.length() > 0 )
+                {
+                    if ( Character.isJavaIdentifierPart( c ) )
+                    {
+                        builder.append( uc ? Character.toUpperCase( c ) : c );
+                        uc = false;
+                    }
+                    else
+                    {
+                        uc = true;
+                    }
+                }
+                else if ( Character.isJavaIdentifierStart( c ) )
+                {
+                    builder.append( Character.toLowerCase( c ) );
+                }
+            }
+
+            fieldName = builder.toString();
+
+            if ( fieldName.length() <= 0 && this.isLoggable( Level.WARNING ) )
+            {
+                this.log( Level.WARNING, getMessage( "invalidJavaFieldName", str ), null );
+            }
+
+            if ( this.getJavaKeywords().contains( fieldName ) )
+            {
+                fieldName = "_" + fieldName;
+            }
+        }
+
+        return fieldName;
     }
 
     /**
@@ -2771,6 +2838,46 @@ public class JomcTool
                 }
             }
         }
+    }
+
+    private Set<String> getJavaKeywords()
+    {
+        Reader in = null;
+        Set<String> set = this.javaKeywordsCache == null ? null : this.javaKeywordsCache.get();
+
+        try
+        {
+            if ( set == null )
+            {
+                set = new HashSet<String>( 64 );
+                this.javaKeywordsCache = new SoftReference<Set<String>>( set );
+            }
+
+            in = new InputStreamReader( this.getClass().getResourceAsStream(
+                "/" + this.getClass().getPackage().getName().replace( ".", "/" ) + "/JavaKeywords.txt" ), "UTF-8" );
+
+            set.addAll( IOUtils.readLines( in ) );
+        }
+        catch ( final IOException e )
+        {
+            throw new IllegalStateException( getMessage( e ), e );
+        }
+        finally
+        {
+            try
+            {
+                if ( in != null )
+                {
+                    in.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                throw new IllegalStateException( getMessage( e ), e );
+            }
+        }
+
+        return set;
     }
 
     private static String getMessage( final String key, final Object... arguments )

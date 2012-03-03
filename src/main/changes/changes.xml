@@ -171,6 +171,10 @@
       class <code>org.jomc.tools.JomcTool</code> to return the first character lower-cased when given a string having
       the first character upper-cased.]]>
       </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Corrected methods <code>getJavaMethodParameterName</code> of
+      class <code>org.jomc.tools.JomcTool</code> to prepend a <code>_</code> character to parameter names equal to
+      Java keywords.]]>
+      </action>
       <action dev="schulte2005" type="update"><![CDATA[Updated method <code>getVelocityContext</code> of class
       <code>org.jomc.tools.JomcTool</code> adding <code>java.io.Exception</code> to the list of exceptions.]]>
       </action>

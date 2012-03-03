@@ -1219,6 +1219,17 @@ public class JomcToolTest
         assertEquals( "TEST_TEST_TEST_TEST", this.getJomcTool().getJavaConstantName( "  Test tEst teSt tesT  " ) );
     }
 
+    @Test
+    public final void testJavaFieldName() throws Exception
+    {
+        assertEquals( "", this.getJomcTool().getJavaFieldName( "" ) );
+        assertEquals( "", this.getJomcTool().getJavaFieldName( "  " ) );
+        assertEquals( "testTestTest", this.getJomcTool().getJavaFieldName( "  test test test  " ) );
+        assertEquals( "testTEstTeStTesT", this.getJomcTool().getJavaFieldName( "  Test tEst teSt tesT  " ) );
+        assertEquals( "_package", this.getJomcTool().getJavaFieldName( "  Package " ) );
+        assertEquals( "_new", this.getJomcTool().getJavaFieldName( "  New " ) );
+    }
+
     public static void assertNullPointerException( final NullPointerException e )
     {
         assertNotNull( e );
