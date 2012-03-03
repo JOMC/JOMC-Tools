@@ -214,10 +214,7 @@ public class JomcTool
     /** Cached template profile properties. */
     private volatile Reference<Map<String, java.util.Properties>> templateProfilePropertiesCache;
 
-    /**
-     * Cached Java keywords.
-     * @since 1.3
-     */
+    /** Cached Java keywords. */
     private volatile Reference<Set<String>> javaKeywordsCache;
 
     /** Creates a new {@code JomcTool} instance. */
@@ -704,7 +701,7 @@ public class JomcTool
             throw new NullPointerException( "argument" );
         }
 
-        return this.getJavaIdentifier( argument.getName(), false );
+        return this.getJavaFieldName( argument.getName() );
     }
 
     /**
