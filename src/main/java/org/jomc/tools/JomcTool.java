@@ -692,6 +692,8 @@ public class JomcTool
      *
      * @throws NullPointerException if {@code argument} is {@code null}.
      *
+     * @see #getJavaMethodParameterName(java.lang.String)
+     *
      * @since 1.2
      */
     public String getJavaMethodParameterName( final Argument argument )
@@ -701,7 +703,7 @@ public class JomcTool
             throw new NullPointerException( "argument" );
         }
 
-        return this.getJavaFieldName( argument.getName() );
+        return this.getJavaMethodParameterName( argument.getName() );
     }
 
     /**
@@ -795,6 +797,8 @@ public class JomcTool
      * @return The Java getter method name of {@code property}.
      *
      * @throws NullPointerException if {@code property} is {@code null}.
+     *
+     * @see #getJavaIdentifier(java.lang.String, boolean)
      */
     public String getJavaGetterMethodName( final Property property )
     {
@@ -823,6 +827,8 @@ public class JomcTool
      *
      * @throws NullPointerException if {@code property} is {@code null}.
      *
+     * @see #getJavaIdentifier(java.lang.String, boolean)
+     *
      * @since 1.2
      */
     public String getJavaSetterMethodName( final Property property )
@@ -844,6 +850,8 @@ public class JomcTool
      *
      * @throws NullPointerException if {@code property} is {@code null}.
      *
+     * @see #getJavaMethodParameterName(java.lang.String)
+     *
      * @since 1.2
      */
     public String getJavaMethodParameterName( final Property property )
@@ -853,7 +861,7 @@ public class JomcTool
             throw new NullPointerException( "property" );
         }
 
-        return this.getJavaFieldName( property.getName() );
+        return this.getJavaMethodParameterName( property.getName() );
     }
 
     /**
@@ -864,6 +872,8 @@ public class JomcTool
      * @return The Java field name of {@code property}.
      *
      * @throws NullPointerException if {@code property} is {@code null}.
+     *
+     * @see #getJavaFieldName(java.lang.String)
      *
      * @since 1.3
      */
@@ -928,6 +938,8 @@ public class JomcTool
      * @return The Java getter method name of {@code dependency}.
      *
      * @throws NullPointerException if {@code dependency} is {@code null}.
+     *
+     * @see #getJavaIdentifier(java.lang.String, boolean)
      */
     public String getJavaGetterMethodName( final Dependency dependency )
     {
@@ -947,6 +959,8 @@ public class JomcTool
      * @return The Java setter method name of {@code dependency}.
      *
      * @throws NullPointerException if {@code dependency} is {@code null}.
+     *
+     * @see #getJavaIdentifier(java.lang.String, boolean)
      *
      * @since 1.2
      */
@@ -969,6 +983,8 @@ public class JomcTool
      *
      * @throws NullPointerException if {@code dependency} is {@code null}.
      *
+     * @see #getJavaMethodParameterName(java.lang.String)
+     *
      * @since 1.2
      */
     public String getJavaMethodParameterName( final Dependency dependency )
@@ -978,7 +994,7 @@ public class JomcTool
             throw new NullPointerException( "dependency" );
         }
 
-        return this.getJavaFieldName( dependency.getName() );
+        return this.getJavaMethodParameterName( dependency.getName() );
     }
 
     /**
@@ -989,6 +1005,8 @@ public class JomcTool
      * @return The Java field name of {@code dependency}.
      *
      * @throws NullPointerException if {@code dependency} is {@code null}.
+     *
+     * @see #getJavaFieldName(java.lang.String)
      *
      * @since 1.3
      */
@@ -1010,6 +1028,8 @@ public class JomcTool
      * @return The Java getter method name of {@code message}.
      *
      * @throws NullPointerException if {@code message} is {@code null}.
+     *
+     * @see #getJavaIdentifier(java.lang.String, boolean)
      */
     public String getJavaGetterMethodName( final Message message )
     {
@@ -1029,6 +1049,8 @@ public class JomcTool
      * @return The Java setter method name of {@code message}.
      *
      * @throws NullPointerException if {@code message} is {@code null}.
+     *
+     * @see #getJavaIdentifier(java.lang.String, boolean)
      *
      * @since 1.2
      */
@@ -1051,6 +1073,8 @@ public class JomcTool
      *
      * @throws NullPointerException if {@code message} is {@code null}.
      *
+     * @see #getJavaMethodParameterName(java.lang.String)
+     *
      * @since 1.2
      */
     public String getJavaMethodParameterName( final Message message )
@@ -1060,7 +1084,7 @@ public class JomcTool
             throw new NullPointerException( "message" );
         }
 
-        return this.getJavaFieldName( message.getName() );
+        return this.getJavaMethodParameterName( message.getName() );
     }
 
     /**
@@ -1071,6 +1095,8 @@ public class JomcTool
      * @return The Java field name of {@code message}.
      *
      * @throws NullPointerException if {@code message} is {@code null}.
+     *
+     * @see #getJavaFieldName(java.lang.String)
      *
      * @since 1.3
      */
@@ -1375,6 +1401,63 @@ public class JomcTool
         }
 
         return identifier;
+    }
+
+    /**
+     * Formats a string to a Java method parameter name.
+     *
+     * @param str The string to format or {@code null}.
+     *
+     * @return {@code str} formatted to a Java method parameter name or {@code null}.
+     *
+     * @since 1.3
+     */
+    public String getJavaMethodParameterName( final String str )
+    {
+        String methodParameterName = null;
+
+        if ( str != null )
+        {
+            final int len = str.length();
+            final StringBuilder builder = new StringBuilder( len );
+            boolean uc = false;
+
+            for ( int i = 0; i < len; i++ )
+            {
+                final char c = str.charAt( i );
+
+                if ( builder.length() > 0 )
+                {
+                    if ( Character.isJavaIdentifierPart( c ) )
+                    {
+                        builder.append( uc ? Character.toUpperCase( c ) : c );
+                        uc = false;
+                    }
+                    else
+                    {
+                        uc = true;
+                    }
+                }
+                else if ( Character.isJavaIdentifierStart( c ) )
+                {
+                    builder.append( Character.toLowerCase( c ) );
+                }
+            }
+
+            methodParameterName = builder.toString();
+
+            if ( methodParameterName.length() <= 0 && this.isLoggable( Level.WARNING ) )
+            {
+                this.log( Level.WARNING, getMessage( "invalidJavaMethodParameterName", str ), null );
+            }
+
+            if ( this.getJavaKeywords().contains( methodParameterName ) )
+            {
+                methodParameterName = "_" + methodParameterName;
+            }
+        }
+
+        return methodParameterName;
     }
 
     /**

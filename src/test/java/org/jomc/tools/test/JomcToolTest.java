@@ -1230,6 +1230,17 @@ public class JomcToolTest
         assertEquals( "_new", this.getJomcTool().getJavaFieldName( "  New " ) );
     }
 
+    @Test
+    public final void testJavaMethodParameterName() throws Exception
+    {
+        assertEquals( "", this.getJomcTool().getJavaMethodParameterName( "" ) );
+        assertEquals( "", this.getJomcTool().getJavaMethodParameterName( "  " ) );
+        assertEquals( "testTestTest", this.getJomcTool().getJavaMethodParameterName( "  test test test  " ) );
+        assertEquals( "testTEstTeStTesT", this.getJomcTool().getJavaMethodParameterName( "  Test tEst teSt tesT  " ) );
+        assertEquals( "_package", this.getJomcTool().getJavaMethodParameterName( "  Package " ) );
+        assertEquals( "_new", this.getJomcTool().getJavaMethodParameterName( "  New " ) );
+    }
+
     public static void assertNullPointerException( final NullPointerException e )
     {
         assertNotNull( e );
