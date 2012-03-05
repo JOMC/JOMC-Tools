@@ -1542,12 +1542,21 @@ public class JomcTool
 
                 if ( builder.length() > 0 ? Character.isJavaIdentifierPart( c ) : Character.isJavaIdentifierStart( c ) )
                 {
-                    if ( builder.length() > 0 && separator )
+                    if ( builder.length() > 0 )
                     {
-                        builder.append( '_' );
+                        if ( !separator )
+                        {
+                            final char previous = builder.charAt( builder.length() - 1 );
+                            separator = Character.isLowerCase( previous ) && Character.isUpperCase( c );
+                        }
+
+                        if ( separator )
+                        {
+                            builder.append( '_' );
+                        }
                     }
 
-                    builder.append( Character.toUpperCase( c ) );
+                    builder.append( c );
                     separator = false;
                 }
                 else
@@ -1556,7 +1565,7 @@ public class JomcTool
                 }
             }
 
-            name = builder.toString();
+            name = builder.toString().toUpperCase( this.getLocale() );
 
             if ( name.length() <= 0 && this.isLoggable( Level.WARNING ) )
             {

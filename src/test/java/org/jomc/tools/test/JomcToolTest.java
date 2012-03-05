@@ -1205,9 +1205,13 @@ public class JomcToolTest
         assertEquals( "", this.getJomcTool().getJavaIdentifier( "  ", true ) );
         assertEquals( "", this.getJomcTool().getJavaIdentifier( "  ", false ) );
         assertEquals( "testTestTest", this.getJomcTool().getJavaIdentifier( "  test test test  ", false ) );
+        assertEquals( "testTestTest", this.getJomcTool().getJavaIdentifier( "  test  test  test  ", false ) );
         assertEquals( "TestTestTest", this.getJomcTool().getJavaIdentifier( "  test test test  ", true ) );
+        assertEquals( "TestTestTest", this.getJomcTool().getJavaIdentifier( "  test  test  test  ", true ) );
         assertEquals( "testTestTest", this.getJomcTool().getJavaIdentifier( "  Test test test  ", false ) );
+        assertEquals( "testTestTest", this.getJomcTool().getJavaIdentifier( "  Test  test  test  ", false ) );
         assertEquals( "TestTestTest", this.getJomcTool().getJavaIdentifier( "  test test test  ", true ) );
+        assertEquals( "TestTestTest", this.getJomcTool().getJavaIdentifier( "  test  test  test  ", true ) );
     }
 
     @Test
@@ -1216,7 +1220,10 @@ public class JomcToolTest
         assertEquals( "", this.getJomcTool().getJavaConstantName( "" ) );
         assertEquals( "", this.getJomcTool().getJavaConstantName( "  " ) );
         assertEquals( "TEST_TEST_TEST", this.getJomcTool().getJavaConstantName( "  test test test  " ) );
-        assertEquals( "TEST_TEST_TEST_TEST", this.getJomcTool().getJavaConstantName( "  Test tEst teSt tesT  " ) );
+        assertEquals( "TEST_TEST_TEST", this.getJomcTool().getJavaConstantName( "  test  test  test  " ) );
+        assertEquals( "TEST_T_EST_TE_ST_TES_T",
+                      this.getJomcTool().getJavaConstantName( "  Test   tEst   teSt   tesT  " ) );
+
     }
 
     @Test
@@ -1225,7 +1232,9 @@ public class JomcToolTest
         assertEquals( "", this.getJomcTool().getJavaFieldName( "" ) );
         assertEquals( "", this.getJomcTool().getJavaFieldName( "  " ) );
         assertEquals( "testTestTest", this.getJomcTool().getJavaFieldName( "  test test test  " ) );
+        assertEquals( "testTestTest", this.getJomcTool().getJavaFieldName( "  test  test  test  " ) );
         assertEquals( "testTEstTeStTesT", this.getJomcTool().getJavaFieldName( "  Test tEst teSt tesT  " ) );
+        assertEquals( "testTEstTeStTesT", this.getJomcTool().getJavaFieldName( "  Test  tEst  teSt  tesT  " ) );
         assertEquals( "_package", this.getJomcTool().getJavaFieldName( "  Package " ) );
         assertEquals( "_new", this.getJomcTool().getJavaFieldName( "  New " ) );
     }
@@ -1237,6 +1246,9 @@ public class JomcToolTest
         assertEquals( "", this.getJomcTool().getJavaMethodParameterName( "  " ) );
         assertEquals( "testTestTest", this.getJomcTool().getJavaMethodParameterName( "  test test test  " ) );
         assertEquals( "testTEstTeStTesT", this.getJomcTool().getJavaMethodParameterName( "  Test tEst teSt tesT  " ) );
+        assertEquals( "testTEstTeStTesT",
+                      this.getJomcTool().getJavaMethodParameterName( "  Test  tEst  teSt  tesT  " ) );
+
         assertEquals( "_package", this.getJomcTool().getJavaMethodParameterName( "  Package " ) );
         assertEquals( "_new", this.getJomcTool().getJavaMethodParameterName( "  New " ) );
     }
