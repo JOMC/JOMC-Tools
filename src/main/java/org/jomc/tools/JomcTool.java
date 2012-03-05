@@ -1365,12 +1365,13 @@ public class JomcTool
             for ( int i = 0; i < len; i++ )
             {
                 final char c = str.charAt( i );
+                final String charString = Character.toString( c );
 
                 if ( builder.length() > 0 )
                 {
                     if ( Character.isJavaIdentifierPart( c ) )
                     {
-                        builder.append( uc ? Character.toUpperCase( c ) : c );
+                        builder.append( uc ? charString.toUpperCase( this.getLocale() ) : charString );
                         uc = false;
                     }
                     else
@@ -1382,7 +1383,9 @@ public class JomcTool
                 {
                     if ( Character.isJavaIdentifierStart( c ) )
                     {
-                        builder.append( uc ? Character.toUpperCase( c ) : Character.toLowerCase( c ) );
+                        builder.append( uc ? charString.toUpperCase( this.getLocale() )
+                                        : charString.toLowerCase( this.getLocale() ) );
+
                         uc = false;
                     }
                     else
@@ -1425,12 +1428,13 @@ public class JomcTool
             for ( int i = 0; i < len; i++ )
             {
                 final char c = str.charAt( i );
+                final String charString = Character.toString( c );
 
                 if ( builder.length() > 0 )
                 {
                     if ( Character.isJavaIdentifierPart( c ) )
                     {
-                        builder.append( uc ? Character.toUpperCase( c ) : c );
+                        builder.append( uc ? charString.toUpperCase( this.getLocale() ) : charString );
                         uc = false;
                     }
                     else
@@ -1440,7 +1444,7 @@ public class JomcTool
                 }
                 else if ( Character.isJavaIdentifierStart( c ) )
                 {
-                    builder.append( Character.toLowerCase( c ) );
+                    builder.append( charString.toLowerCase( this.getLocale() ) );
                 }
             }
 
@@ -1482,12 +1486,13 @@ public class JomcTool
             for ( int i = 0; i < len; i++ )
             {
                 final char c = str.charAt( i );
+                final String charString = Character.toString( c );
 
                 if ( builder.length() > 0 )
                 {
                     if ( Character.isJavaIdentifierPart( c ) )
                     {
-                        builder.append( uc ? Character.toUpperCase( c ) : c );
+                        builder.append( uc ? charString.toUpperCase( this.getLocale() ) : charString );
                         uc = false;
                     }
                     else
@@ -1497,7 +1502,7 @@ public class JomcTool
                 }
                 else if ( Character.isJavaIdentifierStart( c ) )
                 {
-                    builder.append( Character.toLowerCase( c ) );
+                    builder.append( charString.toLowerCase( this.getLocale() ) );
                 }
             }
 
