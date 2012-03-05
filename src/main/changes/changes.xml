@@ -179,8 +179,9 @@
       <code>getJavaConstantName</code> and method <code>getJavaMethodParameterName(java.lang.String)</code> to
       class <code>org.jomc.tools.JomcTool</code>.]]>
       </action>
-      <action dev="schulte2005" type="fix"><![CDATA[Corrected method <code>getJavaIdentifier(String,boolean)</code> of
-      class <code>org.jomc.tools.JomcTool</code> to convert case using the locale of the instance.]]>
+      <action dev="schulte2005" type="fix"><![CDATA[Corrected methods <code>getJavaIdentifier(String,boolean)</code> of
+      and <code>getJavaMethodParameterName(String)</code> class <code>org.jomc.tools.JomcTool</code> to convert case
+      using the locale of the instance.]]>
       </action>
       <action dev="schulte2005" type="update"><![CDATA[Updated method <code>getVelocityContext</code> of class
       <code>org.jomc.tools.JomcTool</code> adding <code>java.io.Exception</code> to the list of exceptions.]]>
