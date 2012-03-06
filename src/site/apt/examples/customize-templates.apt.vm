@@ -85,7 +85,7 @@ Customizing code generation
 <!-- SCM file identification keyword. The given value will be surrounded by '$' characters. -->
 <templateParameter key="with-revision-keyword" value="Id"/>
 
-<!-- Flag indicating generated code to contain '@SuppressWarnings' annotations with the given value.  -->
+<!-- Since 1.3: Flag indicating generated code to contain '@SuppressWarnings' annotations with the given value.  -->
 <templateParameter key="with-suppress-warnings" value="unused"/>
 
 <!-- Flag indicating generated code to contain copyright notices based on model object vendor information. -->
