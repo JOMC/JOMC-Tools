@@ -552,6 +552,7 @@ public final class Jomc
      * @return The {@code <CommandLineParser>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
+    @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.CommandLineParser getCommandLineParser()
     {
@@ -571,6 +572,7 @@ public final class Jomc
      * @return The {@code <Commands>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
+    @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.jomc.cli.Command[] getCommands()
     {
@@ -590,6 +592,7 @@ public final class Jomc
      * @return The {@code <DebugOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
+    @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getDebugOption()
     {
@@ -609,6 +612,7 @@ public final class Jomc
      * @return The {@code <FailOnWarningsOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
+    @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getFailOnWarningsOption()
     {
@@ -628,6 +632,7 @@ public final class Jomc
      * @return The {@code <Locale>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
+    @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.util.Locale getLocale()
     {
@@ -647,6 +652,7 @@ public final class Jomc
      * @return The {@code <VerboseOption>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
+    @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getVerboseOption()
     {
@@ -666,6 +672,7 @@ public final class Jomc
      * @return The number of characters of padding to be prefixed to each description line.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
+    @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private int getDescPad()
     {
@@ -681,6 +688,7 @@ public final class Jomc
      * @return The name of the command used to request help.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
+    @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.lang.String getHelpCommandName()
     {
@@ -696,6 +704,7 @@ public final class Jomc
      * @return The number of characters of padding to be prefixed to each line.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
+    @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private int getLeftPad()
     {
@@ -711,6 +720,7 @@ public final class Jomc
      * @return The number of characters per line for the usage statement.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
+    @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private int getWidth()
     {
@@ -734,6 +744,7 @@ public final class Jomc
      * @return The text of the {@code <defaultExceptionMessage>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
+    @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getDefaultExceptionMessage( final java.util.Locale locale )
     {
@@ -754,6 +765,7 @@ public final class Jomc
      * @return The text of the {@code <defaultLogLevelInfo>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
+    @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getDefaultLogLevelInfo( final java.util.Locale locale, final java.lang.String defaultLogLevel )
     {
@@ -775,6 +787,7 @@ public final class Jomc
      * @return The text of the {@code <illegalArgumentsInfo>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
+    @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getIllegalArgumentsInfo( final java.util.Locale locale, final java.lang.String command, final java.lang.String helpCommandName )
     {
@@ -795,6 +808,7 @@ public final class Jomc
      * @return The text of the {@code <timeInfo>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
+    @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getTimeInfo( final java.util.Locale locale, final java.util.Date time )
     {
@@ -815,6 +829,7 @@ public final class Jomc
      * @return The text of the {@code <usage>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
+    @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getUsage( final java.util.Locale locale, final java.lang.String helpCommandName )
     {
