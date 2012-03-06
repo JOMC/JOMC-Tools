@@ -162,6 +162,12 @@ Customizing code generation
               <value>Id</value>
             </templateParameter>
 
+            <!-- Flag indicating generated code to contain '@SuppressWarnings' annotations with the given value. -->
+            <templateParameter>
+              <key>with-suppress-warnings</key>
+              <value>unused</value>
+            </templateParameter>
+
             <!-- Flag indicating generated code to contain copyright notices based on model object vendor information. -->
             <templateParameter>
               <key>with-vendor-copyright</key>
