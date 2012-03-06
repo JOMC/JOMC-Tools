@@ -95,6 +95,9 @@ ${tool.getIndentation(1)} */
 #if($message.isDeprecated())
 ${tool.getIndentation(1)}@Deprecated
 #end
+#if($with-suppress-warnings)
+${tool.getIndentation(1)}@SuppressWarnings("$with-suppress-warnings")
+#end
 #if($with-jsr-250)
 ${tool.getIndentation(1)}@javax.annotation.Generated( value = "$toolName $toolVersion", comments = "See $toolUrl" )
 #end
