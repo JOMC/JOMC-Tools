@@ -176,8 +176,9 @@
     <!-- *********************************************************************************************************** -->
     <release version="2.0">
       <action dev="schulte2005" type="add"><![CDATA[Added <code>getJavaFieldName</code> methods, method
-      <code>getJavaConstantName</code> and method <code>getJavaMethodParameterName(java.lang.String)</code> to
-      class <code>org.jomc.tools.JomcTool</code>.]]>
+      <code>getJavaConstantName</code>, method <code>getJavaMethodParameterName(java.lang.String)</code> and method
+      <code>getJavaClasspathLocation(java.lang.String,boolean)</code> to class <code>org.jomc.tools.JomcTool</code>.
+      See the <a href="http://jomc.sourceforge.net/jomc/1.3/jomc-tools-1.3/clirr-report.html">CLIRR</a> report.]]>
       </action>
       <action dev="schulte2005" type="fix"><![CDATA[Corrected methods <code>getJavaIdentifier(String,boolean)</code>
       and <code>getJavaMethodParameterName(String)</code> of class <code>org.jomc.tools.JomcTool</code> to convert case
