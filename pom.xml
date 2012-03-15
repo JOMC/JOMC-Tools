@@ -332,14 +332,14 @@
                   <artifactItem>
                     <groupId>javax.xml.parsers</groupId>
                     <artifactId>jaxp-api</artifactId>
-                    <version>1.4.2</version>
+                    <version>1.4.5</version>
                     <type>jar</type>
                     <outputDirectory>${project.build.directory}/jomc-endorsed</outputDirectory>
                   </artifactItem>
                   <artifactItem>
                     <groupId>com.sun.xml.parsers</groupId>
                     <artifactId>jaxp-ri</artifactId>
-                    <version>1.4.2</version>
+                    <version>1.4.5</version>
                     <type>jar</type>
                     <outputDirectory>${project.build.directory}/jomc-endorsed</outputDirectory>
                   </artifactItem>
