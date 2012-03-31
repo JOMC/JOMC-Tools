@@ -175,6 +175,38 @@
       </action>
     </release>
     <!-- *********************************************************************************************************** -->
+    <release version="1.2.4" date="2012-03-15">
+      <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-model</code> dependency from
+      <code>1.2</code> to <code>1.2.1<code>.
+      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-model-1.2.1/changes-report.html">Changes report</a>.]]>
+      </action>
+      <action dev="schulte2005" type="update"><![CDATA[Updated the version of the <code>maven-jomc-plugin</code> from
+      <code>1.2.2</code> to <code>1.2.3<code>.
+      See the <a href="http://jomc.sourceforge.net/jomc/1.2/mave-jomc-plugin-1.2.3/changes-report.html">Changes report</a>.]]>
+      </action>
+      <action dev="schulte2005" type="update"><![CDATA[Updated the version of the <code>jomc-ant-tasks</code> from
+      <code>1.2.2</code> to <code>1.2.3<code>.
+      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-ant-tasks-1.2.3/changes-report.html">Changes report</a>.]]>
+      </action>
+      <action dev="schulte2005" type="update"><![CDATA[Updated the version of the <code>jaxp-api</code> artifact from
+      <code>1.4.2</code> to <code>1.4.5<code>.]]>
+      </action>
+      <action dev="schulte2005" type="update"><![CDATA[Updated the version of the <code>jaxp-ri</code> artifact from
+      <code>1.4.2</code> to <code>1.4.5<code>.]]>
+      </action>
+    </release>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.2.5" date="2012-03-28">
+      <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-model</code> dependency from
+      <code>1.2.1</code> to <code>1.2.2<code>.
+      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-model-1.2.2/changes-report.html">Changes report</a>.]]>
+      </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-ri</code> dependency from
+      <code>1.2.1</code> to <code>1.2.2<code>.
+      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-ri-1.2.2/changes-report.html">Changes report</a>.]]>
+      </action>
+    </release>
+    <!-- *********************************************************************************************************** -->
     <release version="2.0"/>
   </body>
 </document>
