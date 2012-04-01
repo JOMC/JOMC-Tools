@@ -174,6 +174,21 @@
       </action>
     </release>
     <!-- *********************************************************************************************************** -->
+    <release version="1.2.3" date="2012-04-01">
+      <action dev="schulte2005" type="fix"><![CDATA[Corrected methods <code>getJavaIdentifier(String,boolean)</code>
+      and <code>getJavaMethodParameterName(String)</code> of class <code>org.jomc.tools.JomcTool</code> to convert case
+      using the locale of the instance.]]>
+      </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-modlet</code> dependency from
+      <code>1.2</code> to <code>1.2.1<code>.
+      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-modlet-1.2.1/changes-report.html">Changes report</a>.]]>
+      </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-model</code> dependency from
+      <code>1.2</code> to <code>1.2.3<code>.
+      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-model-1.2.3/changes-report.html">Changes report</a>.]]>
+      </action>
+    </release>
+    <!-- *********************************************************************************************************** -->
     <release version="2.0">
       <action dev="schulte2005" type="add"><![CDATA[Added <code>getJavaFieldName</code> methods, method
       <code>getJavaConstantName</code>, method <code>getJavaMethodParameterName(java.lang.String)</code> and method
