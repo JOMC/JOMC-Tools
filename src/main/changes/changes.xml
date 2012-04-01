@@ -180,11 +180,11 @@
       using the locale of the instance.]]>
       </action>
       <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-modlet</code> dependency from
-      <code>1.2</code> to <code>1.2.1<code>.
+      <code>1.2</code> to <code>1.2.1</code>.
       See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-modlet-1.2.1/changes-report.html">Changes report</a>.]]>
       </action>
       <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-model</code> dependency from
-      <code>1.2</code> to <code>1.2.3<code>.
+      <code>1.2</code> to <code>1.2.3</code>.
       See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-model-1.2.3/changes-report.html">Changes report</a>.]]>
       </action>
     </release>
