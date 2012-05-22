@@ -249,6 +249,13 @@
       </action>
     </release>
     <!-- *********************************************************************************************************** -->
-    <release version="2.0"/>
+    <release version="2.0">
+      <action dev="schulte2005" type="add"><![CDATA[Added parameter <code>defaultTemplateEncoding</code> to all
+      goals.]]>
+      </action>
+      <action dev="schulte2005" type="remove"><![CDATA[Removed parameter <code>templateEncoding</code> from all
+      goals.]]>
+      </action>
+    </release>
   </body>
 </document>

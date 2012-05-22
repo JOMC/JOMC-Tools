@@ -109,9 +109,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     /**
      * The encoding to use for reading templates.
      *
-     * @parameter expression="${jomc.templateEncoding}"
+     * @parameter expression="${jomc.defaultTemplateEncoding}"
+     *
+     * @since 1.3
      */
-    private String templateEncoding;
+    private String defaultTemplateEncoding;
 
     /**
      * Location to search for templates in addition to searching the class path of the plugin.
@@ -2491,9 +2493,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
             } );
 
-            tool.setTemplateEncoding( this.templateEncoding );
             tool.setInputEncoding( this.sourceEncoding );
             tool.setOutputEncoding( this.sourceEncoding );
+            tool.setDefaultTemplateEncoding( this.defaultTemplateEncoding );
             tool.setDefaultTemplateProfile( this.defaultTemplateProfile );
             tool.setTemplateProfile( this.templateProfile );
             tool.setModel( this.getModel( context ) );
