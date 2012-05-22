@@ -77,6 +77,15 @@
       </action>
     </release>
     <!-- *********************************************************************************************************** -->
-    <release version="2.0"/>
+    <release version="2.0">
+      <action dev="schulte2005" type="add"><![CDATA[Added attribute <code>defaultTemplateEncoding</code> to tasks
+      <code>commit-classes</code>, <code>generate-resources</code>, <code>manage-sources</code>,
+      <code>validate-classes</code> and <code>validate-classpath</code>.]]>
+      </action>
+      <action dev="schulte2005" type="remove"><![CDATA[Removed attribute <code>templateEncoding</code> of tasks
+      <code>commit-classes</code>, <code>generate-resources</code>, <code>manage-sources</code>,
+      <code>validate-classes</code> and <code>validate-classpath</code>.]]>
+      </action>
+    </release>
   </body>
 </document>

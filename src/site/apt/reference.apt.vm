@@ -60,6 +60,9 @@ Task and Type Reference
 | <<<classProcessingEnabled>>>                | A flag indicating the processing of        | No. Defaults to true.  |
 |                                             | classes is enabled.                        |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<defaultTemplateEncoding>>>               | The default encoding to use for reading    | No.                    |
+|                                             | templates. <Since 1.3>                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<defaultTemplateProfile>>>                | The default template profile to use when   | No. {{{B}[B]}}         |
 |                                             | accessing templates.                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -137,8 +140,6 @@ Task and Type Reference
 |                                             |                                            | attributes are not     |
 |                                             |                                            | set, all modules will  |
 |                                             |                                            | be processed.          |
-*---------------------------------------------+--------------------------------------------+------------------------+
-| <<<templateEncoding>>>                      | The encoding to use for reading templates. | No.                    |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateLocation>>>                      | Location to search for templates in        | No.                    |
 |                                             | addition to searching the class path of    |                        |
@@ -240,6 +241,9 @@ Task and Type Reference
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element is supported.  |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<defaultTemplateEncoding>>>               | The default encoding to use for reading    | No.                    |
+|                                             | templates. <Since 1.3>                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<defaultTemplateProfile>>>                | The default template profile to use when   | No. {{{B}[B]}}         |
 |                                             | accessing templates.                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -330,8 +334,6 @@ Task and Type Reference
 |                                             |                                            | attributes are not     |
 |                                             |                                            | set, all modules will  |
 |                                             |                                            | be processed.          |
-*---------------------------------------------+--------------------------------------------+------------------------+
-| <<<templateEncoding>>>                      | The encoding to use for reading templates. | No.                    |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateLocation>>>                      | Location to search for templates in        | No.                    |
 |                                             | addition to searching the class path of    |                        |
@@ -430,6 +432,9 @@ Task and Type Reference
 |                                             |                                            | nested <<<classpath>>> |
 |                                             |                                            | element is supported.  |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<defaultTemplateEncoding>>>               | The default encoding to use for reading    | No.                    |
+|                                             | templates. <Since 1.3>                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<defaultTemplateProfile>>>                | The default template profile to use when   | No. {{{B}[B]}}         |
 |                                             | accessing templates.                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -516,8 +521,6 @@ Task and Type Reference
 |                                             |                                            | attributes are not     |
 |                                             |                                            | set, all modules will  |
 |                                             |                                            | be processed.          |
-*---------------------------------------------+--------------------------------------------+------------------------+
-| <<<templateEncoding>>>                      | The encoding to use for reading templates. | No.                    |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateLocation>>>                      | Location to search for templates in        | No.                    |
 |                                             | addition to searching the class path of    |                        |
@@ -627,6 +630,9 @@ Task and Type Reference
 | <<<classProcessingEnabled>>>                | A flag indicating the processing of        | No. Defaults to true.  |
 |                                             | classes is enabled.                        |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<defaultTemplateEncoding>>>               | The default encoding to use for reading    | No.                    |
+|                                             | templates. <Since 1.3>                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<defaultTemplateProfile>>>                | The default template profile to use when   | No. {{{B}[B]}}         |
 |                                             | accessing templates.                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -701,8 +707,6 @@ Task and Type Reference
 |                                             |                                            | attributes are not     |
 |                                             |                                            | set, all modules will  |
 |                                             |                                            | be processed.          |
-*---------------------------------------------+--------------------------------------------+------------------------+
-| <<<templateEncoding>>>                      | The encoding to use for reading templates. | No.                    |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateLocation>>>                      | Location to search for templates in        | No.                    |
 |                                             | addition to searching the class path of    |                        |
@@ -807,6 +811,9 @@ Task and Type Reference
 | <<<classProcessingEnabled>>>                | A flag indicating the processing of        | No. Defaults to true.  |
 |                                             | classes is enabled.                        |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<defaultTemplateEncoding>>>               | The default encoding to use for reading    | No.                    |
+|                                             | templates. <Since 1.3>                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<defaultTemplateProfile>>>                | The default template profile to use when   | No. {{{B}[B]}}         |
 |                                             | accessing templates.                       |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -884,8 +891,6 @@ Task and Type Reference
 |                                             |                                            | attributes are not     |
 |                                             |                                            | set, all modules will  |
 |                                             |                                            | be processed.          |
-*---------------------------------------------+--------------------------------------------+------------------------+
-| <<<templateEncoding>>>                      | The encoding to use for reading templates. | No.                    |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<templateLocation>>>                      | Location to search for templates in        | No.                    |
 |                                             | addition to searching the class path of    |                        |

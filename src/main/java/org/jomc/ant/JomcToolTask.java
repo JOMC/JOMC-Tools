@@ -63,6 +63,9 @@ import org.jomc.tools.JomcTool;
 public class JomcToolTask extends JomcModelTask
 {
 
+    /** The default encoding to use for reading templates. */
+    private String defaultTemplateEncoding;
+
     /** The default template profile to use when accessing templates. */
     private String defaultTemplateProfile;
 
@@ -71,9 +74,6 @@ public class JomcToolTask extends JomcModelTask
 
     /** The encoding to use for writing files. */
     private String outputEncoding;
-
-    /** The encoding to use for reading templates. */
-    private String templateEncoding;
 
     /** Additional location to search for templates. */
     private String templateLocation;
@@ -170,11 +170,13 @@ public class JomcToolTask extends JomcModelTask
      *
      * @return The encoding to use for reading templates or {@code null}.
      *
-     * @see #setTemplateEncoding(java.lang.String)
+     * @see #setDefaultTemplateEncoding(java.lang.String)
+     *
+     * @since 1.3
      */
-    public final String getTemplateEncoding()
+    public final String getDefaultTemplateEncoding()
     {
-        return this.templateEncoding;
+        return this.defaultTemplateEncoding;
     }
 
     /**
@@ -182,11 +184,13 @@ public class JomcToolTask extends JomcModelTask
      *
      * @param value The new encoding to use for reading templates or {@code null}.
      *
-     * @see #getTemplateEncoding()
+     * @see #getDefaultTemplateEncoding()
+     *
+     * @since 1.3
      */
-    public final void setTemplateEncoding( final String value )
+    public final void setDefaultTemplateEncoding( final String value )
     {
-        this.templateEncoding = value;
+        this.defaultTemplateEncoding = value;
     }
 
     /**
@@ -719,7 +723,7 @@ public class JomcToolTask extends JomcModelTask
             tool.setInputEncoding( this.getInputEncoding() );
             tool.setLineSeparator( StringEscapeUtils.unescapeJava( this.getLineSeparator() ) );
             tool.setOutputEncoding( this.getOutputEncoding() );
-            tool.setTemplateEncoding( this.getTemplateEncoding() );
+            tool.setDefaultTemplateEncoding( this.getDefaultTemplateEncoding() );
             tool.setDefaultTemplateProfile( this.getDefaultTemplateProfile() );
             tool.setTemplateProfile( this.getTemplateProfile() );
             tool.getListeners().add( new JomcTool.Listener()
