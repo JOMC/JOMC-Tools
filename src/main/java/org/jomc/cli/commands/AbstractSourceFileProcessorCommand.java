@@ -179,6 +179,26 @@ public abstract class AbstractSourceFileProcessorCommand extends AbstractJomcToo
         return _d;
     }
     /**
+     * Gets the {@code <DefaultTemplateEncodingOption>} dependency.
+     * <p>
+     *   This method returns the {@code <JOMC CLI Default Template Encoding Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
+     * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
+     * @return The {@code <DefaultTemplateEncodingOption>} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @SuppressWarnings("unused")
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    private org.apache.commons.cli.Option getDefaultTemplateEncodingOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "DefaultTemplateEncodingOption" );
+        assert _d != null : "'DefaultTemplateEncodingOption' dependency not found.";
+        return _d;
+    }
+    /**
      * Gets the {@code <DefaultTemplateProfileOption>} dependency.
      * <p>
      *   This method returns the {@code <JOMC CLI Default Template Profile Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
@@ -710,26 +730,6 @@ public abstract class AbstractSourceFileProcessorCommand extends AbstractJomcToo
     {
         final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "SpecificationOption" );
         assert _d != null : "'SpecificationOption' dependency not found.";
-        return _d;
-    }
-    /**
-     * Gets the {@code <TemplateEncodingOption>} dependency.
-     * <p>
-     *   This method returns the {@code <JOMC CLI Template Encoding Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
-     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
-     * </p>
-     * <dl>
-     *   <dt><b>Final:</b></dt><dd>No</dd>
-     * </dl>
-     * @return The {@code <TemplateEncodingOption>} dependency.
-     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
-     */
-    @SuppressWarnings("unused")
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
-    private org.apache.commons.cli.Option getTemplateEncodingOption()
-    {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "TemplateEncodingOption" );
-        assert _d != null : "'TemplateEncodingOption' dependency not found.";
         return _d;
     }
     /**
@@ -1434,6 +1434,10 @@ public abstract class AbstractSourceFileProcessorCommand extends AbstractJomcToo
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC CLI Default Template Encoding Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Default Template Profile Option</td>
      *     </tr>
      *     <tr class="TableRow">
@@ -1534,10 +1538,6 @@ public abstract class AbstractSourceFileProcessorCommand extends AbstractJomcToo
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
-     *       <td align="left" valign="top" nowrap>JOMC CLI Template Encoding Option</td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC CLI Template Location Option</td>
      *     </tr>
      *     <tr class="TableRow">
@@ -1559,6 +1559,7 @@ public abstract class AbstractSourceFileProcessorCommand extends AbstractJomcToo
         final org.apache.commons.cli.Options options = new org.apache.commons.cli.Options();
         options.addOption( this.getClasspathOption() );
         options.addOption( this.getCountryOption() );
+        options.addOption( this.getDefaultTemplateEncodingOption() );
         options.addOption( this.getDefaultTemplateProfileOption() );
         options.addOption( this.getDocumentsOption() );
         options.addOption( this.getImplementationOption() );
@@ -1584,7 +1585,6 @@ public abstract class AbstractSourceFileProcessorCommand extends AbstractJomcToo
         options.addOption( this.getSourceDirectoryOption() );
         options.addOption( this.getSourceFileProcessorOption() );
         options.addOption( this.getSpecificationOption() );
-        options.addOption( this.getTemplateEncodingOption() );
         options.addOption( this.getTemplateLocationOption() );
         options.addOption( this.getTemplateProfileOption() );
         options.addOption( this.getTransformerLocationOption() );

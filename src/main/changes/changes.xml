@@ -241,6 +241,15 @@
       </action>
     </release>
     <!-- *********************************************************************************************************** -->
-    <release version="2.0"/>
+    <release version="2.0">
+      <action dev="schulte2005" type="add"><![CDATA[Added option <code>default-template-encoding</code> to commands
+      <code>commit-classes</code>, <code>generate-resources</code>, <code>manage-sources</code> and
+      <code>validate-classes</code>.]]>
+      </action>
+      <action dev="schulte2005" type="remove"><![CDATA[Removed option <code>template-encoding</code> from commands
+      <code>commit-classes</code>, <code>generate-resources</code>, <code>manage-sources</code> and
+      <code>validate-classes</code>.]]>
+      </action>
+    </release>
   </body>
 </document>

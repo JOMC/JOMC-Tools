@@ -191,11 +191,17 @@
                 <resources>
                   <resource>
                     <directory>src/main/templates</directory>
-                    <filtering>false</filtering>
+                    <filtering>true</filtering>
                     <includes>
-                      <include>**/*.vm</include>
                       <include>**/*.properties</include>
                     </includes>
+                  </resource>
+                  <resource>
+                    <directory>src/main/templates</directory>
+                    <filtering>false</filtering>
+                    <excludes>
+                      <exclude>**/*.properties</exclude>
+                    </excludes>
                   </resource>
                   <resource>
                     <directory>${remoteResourcesOutputDirectory}</directory>
@@ -465,7 +471,7 @@
           </executions>
           <configuration>
             <templateProfile>jomc-cli</templateProfile>
-            <templateLocation>src/main/templates</templateLocation>
+            <templateLocation>${project.build.outputDirectory}</templateLocation>
           </configuration>
         </plugin>
       </plugins>
@@ -476,8 +482,18 @@
         <directory>src/main/resources</directory>
       </resource>
       <resource>
+        <filtering>true</filtering>
+        <directory>src/main/templates</directory>
+        <includes>
+          <include>**/*.properties</include>
+        </includes>
+      </resource>
+      <resource>
         <filtering>false</filtering>
         <directory>src/main/templates</directory>
+        <excludes>
+          <exclude>**/*.properties</exclude>
+        </excludes>
       </resource>
     </resources>
     <testResources>

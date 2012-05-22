@@ -904,8 +904,8 @@
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="${project.name} Template Encoding Option"
-                    name="${project.name} Template Encoding Option"
+    <implementation identifier="${project.name} Default Template Encoding Option"
+                    name="${project.name} Default Template Encoding Option"
                     class="org.jomc.cli.model.OptionFactory" version="${project.version}"
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
@@ -921,15 +921,15 @@
         <reference identifier="${project.name} Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="te" override="true"/>
-        <property name="longOpt" value="template-encoding" override="true"/>
+        <property name="opt" value="dte" override="true"/>
+        <property name="longOpt" value="default-template-encoding" override="true"/>
         <property name="numberOfArgs" type="int" value="1" override="true"/>
       </properties>
       <messages>
         <message name="description" override="true">
           <template defaultLanguage="en">
-            <text language="en">Template encoding.</text>
-            <text language="de">Vorlagenkodierung.</text>
+            <text language="en">Default template encoding.</text>
+            <text language="de">Standard Vorlagenkodierung.</text>
           </template>
         </message>
         <message name="argumentDescription" override="true">
@@ -2563,11 +2563,11 @@
         <dependency name="TemplateProfileOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Template Profile Option"/>
 
+        <dependency name="DefaultTemplateEncodingOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
+                    implementationName="${project.name} Default Template Encoding Option"/>
+
         <dependency name="DefaultTemplateProfileOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Default Template Profile Option"/>
-
-        <dependency name="TemplateEncodingOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
-                    implementationName="${project.name} Template Encoding Option"/>
 
         <dependency name="TemplateLocationOption" identifier="${project.name} Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} Template Location Option"/>
