@@ -31,10 +31,14 @@
 package org.jomc.tools.test;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.logging.Level;
 import org.apache.commons.io.FileUtils;
 import org.jomc.model.Argument;
@@ -896,6 +900,26 @@ public class JomcToolTest
         {
             assertNullPointerException( e );
         }
+
+        try
+        {
+            this.getJomcTool().getTemplateEncoding( null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
+
+        try
+        {
+            this.getJomcTool().getParentTemplateProfile( null );
+            fail( "Expected NullPointerException not thrown." );
+        }
+        catch ( final NullPointerException e )
+        {
+            assertNullPointerException( e );
+        }
     }
 
     @Test
@@ -941,7 +965,7 @@ public class JomcToolTest
         assertNotNull( this.getJomcTool().getModules() );
         assertNotNull( this.getJomcTool().getOutputEncoding() );
         assertNotNull( this.getJomcTool().getTemplateProfile() );
-        assertNotNull( this.getJomcTool().getTemplateEncoding() );
+        assertNotNull( this.getJomcTool().getDefaultTemplateEncoding() );
         assertNotNull( this.getJomcTool().getTemplateParameters() );
         assertNotNull( this.getJomcTool().getIndentation() );
         assertNotNull( this.getJomcTool().getLineSeparator() );
@@ -964,6 +988,7 @@ public class JomcToolTest
         assertNotNull( this.getJomcTool().getYears( now, nextYear ) );
         assertNotNull( this.getJomcTool().getYears( nextYear, now ) );
         assertNotNull( this.getJomcTool().getDisplayLanguage( "en" ) );
+
         assertEquals( this.getJomcTool().getYears( now, nextYear ), this.getJomcTool().getYears( nextYear, now ) );
         assertEquals( Locale.getDefault().getDisplayLanguage(),
                       this.getJomcTool().getDisplayLanguage( Locale.getDefault().getLanguage() ) );
@@ -986,6 +1011,12 @@ public class JomcToolTest
         assertEquals( "java.util", this.getJomcTool().getJavaPackageName( d ) );
         assertEquals( "", this.getJomcTool().getJavaString( "" ) );
         assertEquals( this.getJomcTool().getIndentation(), this.getJomcTool().getIndentation( 1 ) );
+        assertEquals( this.getJomcTool().getDefaultTemplateEncoding(),
+                      this.getJomcTool().getTemplateEncoding( "DOES_NOT_EXIST" ) );
+
+        assertEquals( this.getJomcTool().getDefaultTemplateProfile(),
+                      this.getJomcTool().getParentTemplateProfile( "DOES_NOT_EXIST" ) );
+
     }
 
     @Test
@@ -999,9 +1030,9 @@ public class JomcToolTest
         try
         {
             this.getJomcTool().getVelocityTemplate( "DOES_NOT_EXIST" );
-            fail( "Expected IOException not thrown." );
+            fail( "Expected FileNotFoundException not thrown." );
         }
-        catch ( final IOException e )
+        catch ( final FileNotFoundException e )
         {
             assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
@@ -1011,9 +1042,9 @@ public class JomcToolTest
         {
             this.getJomcTool().setTemplateProfile( "DOES_NOT_EXIST" );
             this.getJomcTool().getVelocityTemplate( "DOES_NOT_EXIST" );
-            fail( "Expected IOException not thrown." );
+            fail( "Expected FileNotFoundException not thrown." );
         }
-        catch ( final IOException e )
+        catch ( final FileNotFoundException e )
         {
             assertNotNull( e.getMessage() );
             System.out.println( e.toString() );
@@ -1060,11 +1091,8 @@ public class JomcToolTest
     @Test
     public final void testDefaultTemplateProfile() throws Exception
     {
-        assertNotNull( this.getJomcTool().getDefaultTemplateProfile() );
-        System.setProperty( "org.jomc.tools.JomcTool.defaultTemplateProfile", "TEST" );
         this.getJomcTool().setDefaultTemplateProfile( null );
-        assertEquals( "TEST", this.getJomcTool().getDefaultTemplateProfile() );
-        System.clearProperty( "org.jomc.tools.JomcTool.defaultTemplateProfile" );
+        assertNotNull( this.getJomcTool().getDefaultTemplateProfile() );
         this.getJomcTool().setDefaultTemplateProfile( null );
     }
 
@@ -1140,11 +1168,42 @@ public class JomcToolTest
     }
 
     @Test
+    public final void testDefaultTemplateEncoding() throws Exception
+    {
+        this.getJomcTool().setDefaultTemplateEncoding( null );
+        assertNotNull( this.getJomcTool().getDefaultTemplateEncoding() );
+        this.getJomcTool().setDefaultTemplateEncoding( null );
+    }
+
+    @Test
     public final void testTemplateEncoding() throws Exception
     {
-        this.getJomcTool().setTemplateEncoding( null );
-        assertNotNull( this.getJomcTool().getTemplateEncoding() );
-        this.getJomcTool().setTemplateEncoding( null );
+        final File templateLocation = this.getNextOutputDirectory();
+        File templatesDir = new File( templateLocation, "org" );
+        templatesDir = new File( templatesDir, "jomc" );
+        templatesDir = new File( templatesDir, "tools" );
+        templatesDir = new File( templatesDir, "templates" );
+        templatesDir = new File( templatesDir, "tmp" );
+
+        assertTrue( templatesDir.mkdirs() );
+
+        final Properties p = new Properties();
+        p.setProperty( "template-encoding", "ISO-8859-1" );
+
+        final OutputStream profileProperties = new FileOutputStream( new File( templatesDir, "profile.properties" ) );
+        p.store( profileProperties, this.getClass().getName() );
+        profileProperties.close();
+
+        this.getJomcTool().setDefaultTemplateEncoding( null );
+        this.getJomcTool().setTemplateLocation( templateLocation.toURI().toURL() );
+
+        assertEquals( "ISO-8859-1", this.getJomcTool().getTemplateEncoding( "tmp" ) );
+        assertEquals( "US-ASCII", this.getJomcTool().getTemplateEncoding( "test" ) );
+        assertEquals( this.getJomcTool().getDefaultTemplateEncoding(),
+                      this.getJomcTool().getTemplateEncoding( "jomc-java-bundles" ) );
+
+        this.getJomcTool().setTemplateLocation( null );
+        this.getJomcTool().setDefaultTemplateEncoding( null );
     }
 
     @Test
@@ -1251,6 +1310,38 @@ public class JomcToolTest
 
         assertEquals( "_package", this.getJomcTool().getJavaMethodParameterName( "  Package " ) );
         assertEquals( "_new", this.getJomcTool().getJavaMethodParameterName( "  New " ) );
+    }
+
+    @Test
+    public final void testParentTemplateProfile() throws Exception
+    {
+        final File templateLocation = this.getNextOutputDirectory();
+        File templatesDir = new File( templateLocation, "org" );
+        templatesDir = new File( templatesDir, "jomc" );
+        templatesDir = new File( templatesDir, "tools" );
+        templatesDir = new File( templatesDir, "templates" );
+        templatesDir = new File( templatesDir, "tmp" );
+
+        assertTrue( templatesDir.mkdirs() );
+
+        final Properties p = new Properties();
+        p.setProperty( "parent-template-profile", "test" );
+
+        final OutputStream profileProperties = new FileOutputStream( new File( templatesDir, "profile.properties" ) );
+        p.store( profileProperties, this.getClass().getName() );
+        profileProperties.close();
+
+        this.getJomcTool().setDefaultTemplateProfile( null );
+        this.getJomcTool().setTemplateLocation( templateLocation.toURI().toURL() );
+
+        assertEquals( "test", this.getJomcTool().getParentTemplateProfile( "tmp" ) );
+        assertEquals( "jomc-java-bundles", this.getJomcTool().getParentTemplateProfile( "test" ) );
+        assertEquals( this.getJomcTool().getDefaultTemplateProfile(),
+                      this.getJomcTool().getParentTemplateProfile( "jomc-java-bundles" ) );
+
+        assertNull( this.getJomcTool().getParentTemplateProfile( this.getJomcTool().getDefaultTemplateProfile() ) );
+        this.getJomcTool().setTemplateLocation( null );
+        this.getJomcTool().setDefaultTemplateEncoding( null );
     }
 
     public static void assertNullPointerException( final NullPointerException e )

@@ -33,6 +33,7 @@ package org.jomc.tools;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -52,13 +53,14 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.logging.Level;
 import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
@@ -142,8 +144,23 @@ public class JomcTool
     private static final String TEMPLATE_PREFIX =
         JomcTool.class.getPackage().getName().replace( '.', '/' ) + "/templates/";
 
-    /** Constant for the default template profile. */
-    private static final String DEFAULT_TEMPLATE_PROFILE = "jomc-java";
+    /**
+     * Constant for the name of the template profile property specifying a parent template profile name.
+     * @since 1.3
+     */
+    private static final String PARENT_TEMPLATE_PROFILE_PROPERTY_NAME = "parent-template-profile";
+
+    /**
+     * Constant for the name of the template profile property specifying the template encoding.
+     * @since 1.3
+     */
+    private static final String TEMPLATE_ENCODING_PROFILE_PROPERTY_NAME = "template-encoding";
+
+    /**
+     * The default encoding to use for reading templates.
+     * @since 1.3
+     */
+    private String defaultTemplateEncoding;
 
     /** The default template profile. */
     private String defaultTemplateProfile;
@@ -163,8 +180,11 @@ public class JomcTool
     /** The {@code VelocityEngine} of the instance. */
     private VelocityEngine velocityEngine;
 
-    /** The encoding to use for reading templates. */
-    private String templateEncoding;
+    /**
+     * Flag indicating the default {@code VelocityEngine}.
+     * @since 1.3
+     */
+    private boolean defaultVelocityEngine;
 
     /**
      * The location to search for templates in addition to searching the class path.
@@ -208,10 +228,22 @@ public class JomcTool
     /** Cached indentation strings. */
     private volatile Reference<Map<String, String>> indentationCache;
 
-    /** Cached template locations. */
-    private volatile Reference<Map<String, String>> templateLocationsCache;
+    /**
+     * Cached templates.
+     * @since 1.3
+     */
+    private volatile Reference<Map<String, TemplateData>> templateCache;
 
-    /** Cached template profile properties. */
+    /**
+     * Cached template profile context properties.
+     * @since 1.3
+     */
+    private volatile Reference<Map<String, java.util.Properties>> templateProfileContextPropertiesCache;
+
+    /**
+     * Cached template profile properties.
+     * @since 1.3
+     */
     private volatile Reference<Map<String, java.util.Properties>> templateProfilePropertiesCache;
 
     /** Cached Java keywords. */
@@ -243,17 +275,20 @@ public class JomcTool
         this.indentation = tool.indentation;
         this.inputEncoding = tool.inputEncoding;
         this.lineSeparator = tool.lineSeparator;
-        this.listeners = tool.listeners != null ? new LinkedList<Listener>( tool.listeners ) : null;
+        this.listeners = tool.listeners != null ? new CopyOnWriteArrayList<Listener>( tool.listeners ) : null;
         this.logLevel = tool.logLevel;
         this.model = tool.model != null ? tool.model.clone() : null;
         this.outputEncoding = tool.outputEncoding;
-        this.templateEncoding = tool.templateEncoding;
+        this.defaultTemplateEncoding = tool.defaultTemplateEncoding;
         this.defaultTemplateProfile = tool.defaultTemplateProfile;
         this.templateProfile = tool.templateProfile;
         this.velocityEngine = tool.velocityEngine;
+        this.defaultVelocityEngine = tool.defaultVelocityEngine;
         this.locale = tool.locale;
         this.templateParameters =
-            tool.templateParameters != null ? new HashMap<String, Object>( tool.templateParameters ) : null;
+            tool.templateParameters != null
+            ? Collections.synchronizedMap( new HashMap<String, Object>( tool.templateParameters ) )
+            : null;
 
         this.templateLocation =
             tool.templateLocation != null ? new URL( tool.templateLocation.toExternalForm() ) : null;
@@ -274,7 +309,7 @@ public class JomcTool
     {
         if ( this.listeners == null )
         {
-            this.listeners = new LinkedList<Listener>();
+            this.listeners = new CopyOnWriteArrayList<Listener>();
         }
 
         return this.listeners;
@@ -2215,6 +2250,7 @@ public class JomcTool
             }
 
             this.velocityEngine = engine;
+            this.defaultVelocityEngine = true;
         }
 
         return this.velocityEngine;
@@ -2230,6 +2266,7 @@ public class JomcTool
     public final void setVelocityEngine( final VelocityEngine value )
     {
         this.velocityEngine = value;
+        this.defaultVelocityEngine = false;
     }
 
     /**
@@ -2244,13 +2281,11 @@ public class JomcTool
     public VelocityContext getVelocityContext() throws IOException
     {
         final Calendar now = Calendar.getInstance();
-        final VelocityContext ctx = new VelocityContext( Collections.synchronizedMap(
-            new HashMap<String, Object>( this.getTemplateParameters() ) ) );
+        final VelocityContext ctx =
+            new VelocityContext( new HashMap<String, Object>( this.getTemplateParameters() ) );
 
-        this.mergeTemplateProfileProperties( this.getTemplateProfile(), this.getLocale().getLanguage(), ctx );
-        this.mergeTemplateProfileProperties( this.getTemplateProfile(), null, ctx );
-        this.mergeTemplateProfileProperties( this.getDefaultTemplateProfile(), this.getLocale().getLanguage(), ctx );
-        this.mergeTemplateProfileProperties( this.getDefaultTemplateProfile(), null, ctx );
+        this.mergeTemplateProfileContextProperties( this.getTemplateProfile(), this.getLocale().getLanguage(), ctx );
+        this.mergeTemplateProfileContextProperties( this.getTemplateProfile(), null, ctx );
 
         final Model clonedModel = this.getModel().clone();
         final Modules clonedModules = ModelHelper.getModules( clonedModel );
@@ -2308,7 +2343,7 @@ public class JomcTool
     {
         if ( this.templateParameters == null )
         {
-            this.templateParameters = new HashMap<String, Object>();
+            this.templateParameters = Collections.synchronizedMap( new HashMap<String, Object>() );
         }
 
         return this.templateParameters;
@@ -2340,41 +2375,90 @@ public class JomcTool
     public final void setTemplateLocation( final URL value )
     {
         this.templateLocation = value;
+        this.templateProfileContextPropertiesCache = null;
+        this.templateProfilePropertiesCache = null;
+
+        if ( this.defaultVelocityEngine )
+        {
+            this.setVelocityEngine( null );
+        }
     }
 
     /**
-     * Gets the encoding to use for reading templates.
+     * Gets the default encoding used for reading templates.
      *
-     * @return The encoding to use for reading templates.
+     * @return The default encoding used for reading templates.
      *
-     * @see #setTemplateEncoding(java.lang.String)
+     * @see #setDefaultTemplateEncoding(java.lang.String)
+     *
+     * @since 1.3
      */
-    public final String getTemplateEncoding()
+    public final String getDefaultTemplateEncoding()
     {
-        if ( this.templateEncoding == null )
+        if ( this.defaultTemplateEncoding == null )
         {
-            this.templateEncoding = getMessage( "buildSourceEncoding" );
+            this.defaultTemplateEncoding = getMessage( "buildSourceEncoding" );
 
             if ( this.isLoggable( Level.CONFIG ) )
             {
-                this.log( Level.CONFIG, getMessage( "defaultTemplateEncoding", this.templateEncoding ), null );
+                this.log( Level.CONFIG, getMessage( "defaultTemplateEncoding", this.defaultTemplateEncoding ), null );
             }
         }
 
-        return this.templateEncoding;
+        return this.defaultTemplateEncoding;
     }
 
     /**
-     * Sets the encoding to use for reading templates.
+     * Sets the default encoding to use for reading templates.
      *
-     * @param value The new encoding to use for reading templates or {@code null}.
+     * @param value The new default encoding to use for reading templates or {@code null}.
      *
-     * @see #getTemplateEncoding()
+     * @see #getDefaultTemplateEncoding()
+     *
+     * @since 1.3
      */
-    public final void setTemplateEncoding( final String value )
+    public final void setDefaultTemplateEncoding( final String value )
     {
-        this.templateEncoding = value;
-        this.velocityEngine = null;
+        this.defaultTemplateEncoding = value;
+        this.templateCache = null;
+    }
+
+    /**
+     * Gets the template encoding of a given template profile.
+     *
+     * @param tp The template profile to get the template encoding of.
+     *
+     * @return The template encoding of the template profile identified by {@code tp} or the default template encoding
+     * if no such encoding is defined.
+     *
+     * @throws NullPointerException if {@code tp} is {@code null}.
+     *
+     * @see #getDefaultTemplateEncoding()
+     *
+     * @since 1.3
+     */
+    public final String getTemplateEncoding( final String tp )
+    {
+        if ( tp == null )
+        {
+            throw new NullPointerException( "tp" );
+        }
+
+        String te = null;
+
+        try
+        {
+            te = this.getTemplateProfileProperties( tp ).getProperty( TEMPLATE_ENCODING_PROFILE_PROPERTY_NAME );
+        }
+        catch ( final IOException e )
+        {
+            if ( this.isLoggable( Level.SEVERE ) )
+            {
+                this.log( Level.SEVERE, getMessage( e ), e );
+            }
+        }
+
+        return te != null ? te : this.getDefaultTemplateEncoding();
     }
 
     /**
@@ -2447,11 +2531,11 @@ public class JomcTool
 
     /**
      * Gets the default template profile.
-     * <p>The default template profile is controlled by system property
-     * {@code org.jomc.tools.JomcTool.defaultTemplateProfile} holding the name of the template profile to use by
-     * default. If that property is not set, the {@code jomc-java} default is returned.</p>
+     * <p>The default template profile is the implicit parent profile of any template profile not specifying a parent
+     * template profile.</p>
      *
      * @return The default template profile.
+     *
      *
      * @see #setDefaultTemplateProfile(java.lang.String)
      */
@@ -2459,9 +2543,7 @@ public class JomcTool
     {
         if ( this.defaultTemplateProfile == null )
         {
-            this.defaultTemplateProfile = System.getProperty( "org.jomc.tools.JomcTool.defaultTemplateProfile",
-                                                              DEFAULT_TEMPLATE_PROFILE );
-
+            this.defaultTemplateProfile = "jomc-java";
         }
 
         return this.defaultTemplateProfile;
@@ -2515,6 +2597,49 @@ public class JomcTool
     }
 
     /**
+     * Gets the parent template profile of a given template profile.
+     *
+     * @param tp The template profile to get the parent template profile of.
+     *
+     * @return The parent template profile of the template profile identified by {@code tp}; the default template
+     * profile, if no such parent template profile is defined; {@code null}, if {@code tp} denotes the default template
+     * profile.
+     *
+     * @throws NullPointerException if {@code tp} is {@code null}.
+     *
+     * @see #getDefaultTemplateProfile()
+     *
+     * @since 1.3
+     */
+    public final String getParentTemplateProfile( final String tp )
+    {
+        if ( tp == null )
+        {
+            throw new NullPointerException( "tp" );
+        }
+
+        String parentTemplateProfile = null;
+
+        try
+        {
+            parentTemplateProfile =
+                this.getTemplateProfileProperties( tp ).getProperty( PARENT_TEMPLATE_PROFILE_PROPERTY_NAME );
+
+        }
+        catch ( final IOException e )
+        {
+            if ( this.isLoggable( Level.SEVERE ) )
+            {
+                this.log( Level.SEVERE, getMessage( e ), e );
+            }
+        }
+
+        return parentTemplateProfile != null ? parentTemplateProfile
+               : tp.equals( this.getDefaultTemplateProfile() ) ? null : this.getDefaultTemplateProfile();
+
+    }
+
+    /**
      * Gets the indentation string of the instance.
      *
      * @return The indentation string of the instance.
@@ -2560,7 +2685,7 @@ public class JomcTool
 
         if ( map == null )
         {
-            map = new HashMap<String, String>();
+            map = new ConcurrentHashMap<String, String>( 8 );
             this.indentationCache = new SoftReference<Map<String, String>>( map );
         }
 
@@ -2671,12 +2796,13 @@ public class JomcTool
 
     /**
      * Gets a velocity template for a given name.
-     * <p>This method searches templates at the following locations in the shown order.
+     * <p>This method searches templates at the following locations recursively in the shown order stopping whenever
+     * a matching template is found.
      * <ol>
      *  <li><code>org/jomc/tools/templates/{@link #getTemplateProfile() profile}/{@link #getLocale() language}/<i>templateName</i></code></li>
+     *  <li><code>org/jomc/tools/templates/{@link #getParentTemplateProfile(java.lang.String) parent profile}/{@link #getLocale() language}/<i>templateName</i></code></li>
      *  <li><code>org/jomc/tools/templates/{@link #getTemplateProfile() profile}/<i>templateName</i></code></li>
-     *  <li><code>org/jomc/tools/templates/{@link #getDefaultTemplateProfile() default profile}/{@link #getLocale() language}/<i>templateName</i></code></li>
-     *  <li><code>org/jomc/tools/templates/{@link #getDefaultTemplateProfile() default profile}/<i>templateName</i></code></li>
+     *  <li><code>org/jomc/tools/templates/{@link #getParentTemplateProfile(java.lang.String) parent profile}/{@link #getLocale() language}/<i>templateName</i></code></li>
      * </ol></p>
      *
      * @param templateName The name of the template to get.
@@ -2684,83 +2810,23 @@ public class JomcTool
      * @return The template matching {@code templateName}.
      *
      * @throws NullPointerException if {@code templateName} is {@code null}.
+     * @throws FileNotFoundException if no such template is found.
      * @throws IOException if getting the template fails.
      *
-     * @see #getLocale()
      * @see #getTemplateProfile()
-     * @see #getTemplateEncoding()
+     * @see #getParentTemplateProfile(java.lang.String)
+     * @see #getLocale()
+     * @see #getTemplateEncoding(java.lang.String)
      * @see #getVelocityEngine()
      */
-    public Template getVelocityTemplate( final String templateName ) throws IOException
+    public Template getVelocityTemplate( final String templateName ) throws FileNotFoundException, IOException
     {
         if ( templateName == null )
         {
             throw new NullPointerException( "templateName" );
         }
 
-        String location = null;
-        Template template = null;
-        final String key = this.getLocale() + "|" + this.getTemplateProfile() + "|" + this.getDefaultTemplateProfile()
-                           + "|" + templateName;
-
-        Map<String, String> map = this.templateLocationsCache == null ? null : this.templateLocationsCache.get();
-
-        if ( map == null )
-        {
-            map = new HashMap<String, String>( 32 );
-            this.templateLocationsCache = new SoftReference<Map<String, String>>( map );
-        }
-
-        location = map.get( key );
-
-        if ( location == null && !map.containsKey( key ) )
-        {
-            if ( !StringUtils.EMPTY.equals( this.getLocale().getLanguage() ) )
-            {
-                location = TEMPLATE_PREFIX + this.getTemplateProfile() + "/" + this.getLocale().getLanguage() + "/"
-                           + templateName;
-
-                template = this.findVelocityTemplate( location );
-            }
-
-            if ( template == null )
-            {
-                location = TEMPLATE_PREFIX + this.getTemplateProfile() + "/" + templateName;
-                template = this.findVelocityTemplate( location );
-            }
-
-            if ( template == null && !StringUtils.EMPTY.equals( this.getLocale().getLanguage() ) )
-            {
-                location = TEMPLATE_PREFIX + this.getDefaultTemplateProfile() + "/" + this.getLocale().getLanguage()
-                           + "/" + templateName;
-
-                template = this.findVelocityTemplate( location );
-            }
-
-            if ( template == null )
-            {
-                location = TEMPLATE_PREFIX + this.getDefaultTemplateProfile() + "/" + templateName;
-                template = this.findVelocityTemplate( location );
-            }
-
-            map.put( key, location );
-        }
-        else if ( location != null )
-        {
-            template = this.findVelocityTemplate( location );
-        }
-
-        if ( template == null )
-        {
-            throw new IOException( getMessage( "noSuchTemplate", templateName ) );
-        }
-
-        if ( this.isLoggable( Level.FINER ) )
-        {
-            this.log( Level.FINER, getMessage( "templateInfo", templateName, location ), null );
-        }
-
-        return template;
+        return this.getVelocityTemplate( this.getTemplateProfile(), templateName );
     }
 
     /**
@@ -2802,11 +2868,11 @@ public class JomcTool
         return idx != -1 ? identifier.substring( 0, idx ) : "";
     }
 
-    private Template findVelocityTemplate( final String location ) throws IOException
+    private Template findVelocityTemplate( final String location, final String encoding ) throws IOException
     {
         try
         {
-            return this.getVelocityEngine().getTemplate( location, this.getTemplateEncoding() );
+            return this.getVelocityEngine().getTemplate( location, encoding );
         }
         catch ( final ResourceNotFoundException e )
         {
@@ -2835,16 +2901,16 @@ public class JomcTool
         }
     }
 
-    private java.util.Properties getTemplateProfileProperties( final String profileName, final String language )
+    private java.util.Properties getTemplateProfileContextProperties( final String profileName, final String language )
         throws IOException
     {
-        Map<String, java.util.Properties> map =
-            this.templateProfilePropertiesCache == null ? null : this.templateProfilePropertiesCache.get();
+        Map<String, java.util.Properties> map = this.templateProfileContextPropertiesCache == null
+                                                ? null : this.templateProfileContextPropertiesCache.get();
 
         if ( map == null )
         {
-            map = new HashMap<String, java.util.Properties>();
-            this.templateProfilePropertiesCache = new SoftReference<Map<String, java.util.Properties>>( map );
+            map = new ConcurrentHashMap<String, java.util.Properties>();
+            this.templateProfileContextPropertiesCache = new SoftReference<Map<String, java.util.Properties>>( map );
         }
 
         final String key = profileName + "|" + language;
@@ -2854,19 +2920,41 @@ public class JomcTool
         if ( profileProperties == null )
         {
             InputStream in = null;
+            URL url = null;
             profileProperties = new java.util.Properties();
-            final String resourceName = "/" + TEMPLATE_PREFIX + profileName + ( language == null ? "" : "/" + language )
+            map.put( key, profileProperties );
+
+            final String resourceName = TEMPLATE_PREFIX + profileName + ( language == null ? "" : "/" + language )
                                         + "/context.properties";
 
             try
             {
-                in = this.getClass().getResourceAsStream( resourceName );
+                url = this.getClass().getResource( "/" + resourceName );
 
-                if ( in != null )
+                if ( url != null )
+                {
+                    in = url.openStream();
+
+                    if ( this.isLoggable( Level.CONFIG ) )
+                    {
+                        this.log( Level.CONFIG, getMessage( "contextPropertiesFound", url.toExternalForm() ), null );
+                    }
+
+                    profileProperties.load( in );
+                }
+                else if ( this.getTemplateLocation() != null )
                 {
                     if ( this.isLoggable( Level.CONFIG ) )
                     {
-                        this.log( Level.CONFIG, getMessage( "contextPropertiesFound", resourceName ), null );
+                        this.log( Level.CONFIG, getMessage( "contextPropertiesNotFound", resourceName ), null );
+                    }
+
+                    url = new URL( this.getTemplateLocation(), resourceName );
+                    in = url.openStream();
+
+                    if ( this.isLoggable( Level.CONFIG ) )
+                    {
+                        this.log( Level.CONFIG, getMessage( "contextPropertiesFound", url.toExternalForm() ), null );
                     }
 
                     profileProperties.load( in );
@@ -2876,8 +2964,14 @@ public class JomcTool
                     this.log( Level.CONFIG, getMessage( "contextPropertiesNotFound", resourceName ), null );
                 }
 
-                map.put( key, profileProperties );
                 suppressExceptionOnClose = false;
+            }
+            catch ( final FileNotFoundException e )
+            {
+                if ( this.isLoggable( Level.CONFIG ) )
+                {
+                    this.log( Level.CONFIG, getMessage( "contextPropertiesNotFound", url.toExternalForm() ), null );
+                }
             }
             finally
             {
@@ -2905,80 +2999,189 @@ public class JomcTool
         return profileProperties;
     }
 
-    private void mergeTemplateProfileProperties( final String profileName, final String language,
-                                                 final VelocityContext velocityContext ) throws IOException
+    private void mergeTemplateProfileContextProperties( final String profileName, final String language,
+                                                        final VelocityContext velocityContext ) throws IOException
     {
-        final java.util.Properties templateProfileProperties =
-            this.getTemplateProfileProperties( profileName, language );
-
-        for ( final Enumeration<?> e = templateProfileProperties.propertyNames(); e.hasMoreElements(); )
+        if ( profileName != null )
         {
-            final String name = e.nextElement().toString();
-            final String value = templateProfileProperties.getProperty( name );
-            final String[] values = value.split( "\\|" );
+            final java.util.Properties templateProfileProperties =
+                this.getTemplateProfileContextProperties( profileName, language );
 
-            if ( !velocityContext.containsKey( name ) )
+            for ( final Enumeration<?> e = templateProfileProperties.propertyNames(); e.hasMoreElements(); )
             {
-                final String className = values[0];
+                final String name = e.nextElement().toString();
+                final String value = templateProfileProperties.getProperty( name );
+                final String[] values = value.split( "\\|" );
 
-                try
+                if ( !velocityContext.containsKey( name ) )
                 {
-                    if ( values.length > 1 )
+                    final String className = values[0];
+
+                    try
                     {
-                        final Class<?> valueClass = Class.forName( className );
-                        velocityContext.put( name, valueClass.getConstructor( String.class ).newInstance( values[1] ) );
+                        if ( values.length > 1 )
+                        {
+                            final Class<?> valueClass = Class.forName( className );
+                            velocityContext.put( name,
+                                                 valueClass.getConstructor( String.class ).newInstance( values[1] ) );
+                        }
+                        else if ( value.contains( "|" ) )
+                        {
+                            velocityContext.put( name, Class.forName( values[0] ).newInstance() );
+                        }
+                        else
+                        {
+                            velocityContext.put( name, value );
+                        }
                     }
-                    else if ( value.contains( "|" ) )
+                    catch ( final InstantiationException ex )
                     {
-                        velocityContext.put( name, Class.forName( values[0] ).newInstance() );
+                        // JDK: As of JDK 6, "new IOException( message, cause )".
+                        throw (IOException) new IOException( getMessage(
+                            "contextPropertiesException", profileName + ( language != null ? ", " + language : "" ) ) ).
+                            initCause( ex );
+
                     }
-                    else
+                    catch ( final IllegalAccessException ex )
                     {
-                        velocityContext.put( name, value );
+                        // JDK: As of JDK 6, "new IOException( message, cause )".
+                        throw (IOException) new IOException( getMessage(
+                            "contextPropertiesException", profileName + ( language != null ? ", " + language : "" ) ) ).
+                            initCause( ex );
+
+                    }
+                    catch ( final InvocationTargetException ex )
+                    {
+                        // JDK: As of JDK 6, "new IOException( message, cause )".
+                        throw (IOException) new IOException( getMessage(
+                            "contextPropertiesException", profileName + ( language != null ? ", " + language : "" ) ) ).
+                            initCause( ex );
+
+                    }
+                    catch ( final NoSuchMethodException ex )
+                    {
+                        // JDK: As of JDK 6, "new IOException( message, cause )".
+                        throw (IOException) new IOException( getMessage(
+                            "contextPropertiesException", profileName + ( language != null ? ", " + language : "" ) ) ).
+                            initCause( ex );
+
+                    }
+                    catch ( final ClassNotFoundException ex )
+                    {
+                        // JDK: As of JDK 6, "new IOException( message, cause )".
+                        throw (IOException) new IOException( getMessage(
+                            "contextPropertiesException", profileName + ( language != null ? ", " + language : "" ) ) ).
+                            initCause( ex );
+
                     }
                 }
-                catch ( final InstantiationException ex )
-                {
-                    // JDK: As of JDK 6, "new IOException( message, cause )".
-                    throw (IOException) new IOException( getMessage(
-                        "contextPropertiesException", profileName + ( language != null ? ", " + language : "" ) ) ).
-                        initCause( ex );
+            }
 
-                }
-                catch ( final IllegalAccessException ex )
-                {
-                    // JDK: As of JDK 6, "new IOException( message, cause )".
-                    throw (IOException) new IOException( getMessage(
-                        "contextPropertiesException", profileName + ( language != null ? ", " + language : "" ) ) ).
-                        initCause( ex );
+            this.mergeTemplateProfileContextProperties( this.getParentTemplateProfile( profileName ), language,
+                                                        velocityContext );
 
-                }
-                catch ( final InvocationTargetException ex )
-                {
-                    // JDK: As of JDK 6, "new IOException( message, cause )".
-                    throw (IOException) new IOException( getMessage(
-                        "contextPropertiesException", profileName + ( language != null ? ", " + language : "" ) ) ).
-                        initCause( ex );
+        }
+    }
 
-                }
-                catch ( final NoSuchMethodException ex )
-                {
-                    // JDK: As of JDK 6, "new IOException( message, cause )".
-                    throw (IOException) new IOException( getMessage(
-                        "contextPropertiesException", profileName + ( language != null ? ", " + language : "" ) ) ).
-                        initCause( ex );
+    private java.util.Properties getTemplateProfileProperties( final String profileName ) throws IOException
+    {
+        Map<String, java.util.Properties> map = this.templateProfilePropertiesCache == null
+                                                ? null : this.templateProfilePropertiesCache.get();
 
-                }
-                catch ( final ClassNotFoundException ex )
+        if ( map == null )
+        {
+            map = new ConcurrentHashMap<String, java.util.Properties>();
+            this.templateProfilePropertiesCache = new SoftReference<Map<String, java.util.Properties>>( map );
+        }
+
+        java.util.Properties profileProperties = map.get( profileName );
+        boolean suppressExceptionOnClose = true;
+
+        if ( profileProperties == null )
+        {
+            InputStream in = null;
+            profileProperties = new java.util.Properties();
+            map.put( profileName, profileProperties );
+
+            final String resourceName = TEMPLATE_PREFIX + profileName + "/profile.properties";
+            URL url = null;
+
+            try
+            {
+                url = this.getClass().getResource( "/" + resourceName );
+
+                if ( url != null )
                 {
-                    // JDK: As of JDK 6, "new IOException( message, cause )".
-                    throw (IOException) new IOException( getMessage(
-                        "contextPropertiesException", profileName + ( language != null ? ", " + language : "" ) ) ).
-                        initCause( ex );
+                    in = url.openStream();
+
+                    if ( this.isLoggable( Level.CONFIG ) )
+                    {
+                        this.log( Level.CONFIG, getMessage( "templateProfilePropertiesFound", url.toExternalForm() ),
+                                  null );
+
+                    }
+
+                    profileProperties.load( in );
+                }
+                else if ( this.getTemplateLocation() != null )
+                {
+                    if ( this.isLoggable( Level.CONFIG ) )
+                    {
+                        this.log( Level.CONFIG, getMessage( "templateProfilePropertiesNotFound", resourceName ), null );
+                    }
+
+                    url = new URL( this.getTemplateLocation(), resourceName );
+                    in = url.openStream();
+
+                    if ( this.isLoggable( Level.CONFIG ) )
+                    {
+                        this.log( Level.CONFIG, getMessage( "templateProfilePropertiesFound", url.toExternalForm() ),
+                                  null );
+
+                    }
+
+                    profileProperties.load( in );
+                }
+                else if ( this.isLoggable( Level.CONFIG ) )
+                {
+                    this.log( Level.CONFIG, getMessage( "templateProfilePropertiesNotFound", resourceName ), null );
+                }
+
+                suppressExceptionOnClose = false;
+            }
+            catch ( final FileNotFoundException e )
+            {
+                if ( this.isLoggable( Level.CONFIG ) )
+                {
+                    this.log( Level.CONFIG, getMessage( "templateProfilePropertiesNotFound", url.toExternalForm() ),
+                              null );
 
                 }
             }
+            finally
+            {
+                try
+                {
+                    if ( in != null )
+                    {
+                        in.close();
+                    }
+                }
+                catch ( final IOException e )
+                {
+                    if ( suppressExceptionOnClose )
+                    {
+                        this.log( Level.SEVERE, getMessage( e ), e );
+                    }
+                    else
+                    {
+                        throw e;
+                    }
+                }
+            }
         }
+
+        return profileProperties;
     }
 
     private Set<String> getJavaKeywords()
@@ -2990,14 +3193,13 @@ public class JomcTool
         {
             if ( set == null )
             {
-                set = new HashSet<String>( 64 );
+                in = new InputStreamReader( this.getClass().getResourceAsStream(
+                    "/" + this.getClass().getPackage().getName().replace( ".", "/" ) + "/JavaKeywords.txt" ), "UTF-8" );
+
+                set = new CopyOnWriteArraySet<String>( IOUtils.readLines( in ) );
+
                 this.javaKeywordsCache = new SoftReference<Set<String>>( set );
             }
-
-            in = new InputStreamReader( this.getClass().getResourceAsStream(
-                "/" + this.getClass().getPackage().getName().replace( ".", "/" ) + "/JavaKeywords.txt" ), "UTF-8" );
-
-            set.addAll( IOUtils.readLines( in ) );
         }
         catch ( final IOException e )
         {
@@ -3021,6 +3223,85 @@ public class JomcTool
         return set;
     }
 
+    private Template getVelocityTemplate( final String tp, final String tn ) throws IOException
+    {
+        Template template = null;
+
+        if ( tp != null )
+        {
+            final String key = this.getLocale() + "|" + this.getTemplateProfile() + "|"
+                               + this.getDefaultTemplateProfile() + "|" + tn;
+
+            Map<String, TemplateData> map = this.templateCache == null
+                                            ? null : this.templateCache.get();
+
+            if ( map == null )
+            {
+                map = new ConcurrentHashMap<String, TemplateData>( 32 );
+                this.templateCache = new SoftReference<Map<String, TemplateData>>( map );
+            }
+
+            TemplateData templateData = map.get( key );
+
+            if ( templateData == null )
+            {
+                templateData = new TemplateData();
+
+                if ( !StringUtils.EMPTY.equals( this.getLocale().getLanguage() ) )
+                {
+                    templateData.location = TEMPLATE_PREFIX + tp + "/" + this.getLocale().getLanguage() + "/" + tn;
+                    templateData.template =
+                        this.findVelocityTemplate( templateData.location, this.getTemplateEncoding( tp ) );
+
+                }
+
+                if ( templateData.template == null )
+                {
+                    templateData.location = TEMPLATE_PREFIX + tp + "/" + tn;
+                    templateData.template =
+                        this.findVelocityTemplate( templateData.location, this.getTemplateEncoding( tp ) );
+
+                }
+
+                if ( templateData.template == null )
+                {
+                    template = this.getVelocityTemplate( this.getParentTemplateProfile( tp ), tn );
+
+                    if ( template == null )
+                    {
+                        map.put( key, new TemplateData() );
+                        throw new FileNotFoundException( getMessage( "noSuchTemplate", tn ) );
+                    }
+                }
+                else
+                {
+                    if ( this.isLoggable( Level.FINER ) )
+                    {
+                        this.log( Level.FINER, getMessage( "templateInfo", tn, templateData.location ), null );
+                    }
+
+                    template = templateData.template;
+                    map.put( key, templateData );
+                }
+            }
+            else if ( templateData.template == null )
+            {
+                throw new FileNotFoundException( getMessage( "noSuchTemplate", tn ) );
+            }
+            else
+            {
+                if ( this.isLoggable( Level.FINER ) )
+                {
+                    this.log( Level.FINER, getMessage( "templateInfo", tn, templateData.location ), null );
+                }
+
+                template = templateData.template;
+            }
+        }
+
+        return template;
+    }
+
     private static String getMessage( final String key, final Object... arguments )
     {
         return MessageFormat.format( ResourceBundle.getBundle(
@@ -3031,6 +3312,16 @@ public class JomcTool
     private static String getMessage( final Throwable t )
     {
         return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
+    }
+
+    /** @since 1.3 */
+    private static class TemplateData
+    {
+
+        private String location;
+
+        private Template template;
+
     }
 
 }
