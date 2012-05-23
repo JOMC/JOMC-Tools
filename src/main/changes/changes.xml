@@ -241,6 +241,25 @@
       </action>
     </release>
     <!-- *********************************************************************************************************** -->
+    <release version="1.2.8" date="2012-05-23">
+      <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-model</code> dependency from
+      <code>1.2.3</code> to <code>1.2.4</code>.
+      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-model-1.2.4/changes-report.html">Changes report</a>.]]>
+      </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-tools</code> dependency from
+      <code>1.2.3</code> to <code>1.2.5</code>.
+      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2.5/changes-report.html">Changes report</a>.]]>
+      </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-ant-tasks</code> dependency
+      from <code>1.2.4</code> to <code>1.2.6</code>.
+      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-ant-tasks-1.2.6/changes-report.html">Changes report</a>.]]>
+      </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>maven-jomc-plugin</code> dependency
+      from <code>1.2.4</code> to <code>1.2.6</code>.
+      See the <a href="http://jomc.sourceforge.net/jomc/1.2/maven-jomc-plugin-1.2.6/changes-report.html">Changes report</a>.]]>
+      </action>
+    </release>
+    <!-- *********************************************************************************************************** -->
     <release version="2.0">
       <action dev="schulte2005" type="add"><![CDATA[Added option <code>default-template-encoding</code> to commands
       <code>commit-classes</code>, <code>generate-resources</code>, <code>manage-sources</code> and
