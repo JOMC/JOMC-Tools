@@ -182,7 +182,7 @@ public class JomcTool
 
     /**
      * Flag indicating the default {@code VelocityEngine}.
-     * @since 1.3
+     * @since 1.2.4
      */
     private boolean defaultVelocityEngine;
 
