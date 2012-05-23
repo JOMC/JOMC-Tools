@@ -189,18 +189,7 @@
       </action>
     </release>
     <!-- *********************************************************************************************************** -->
-    <release version="2.0">
-      <action dev="schulte2005" type="add"><![CDATA[Added <code>getJavaFieldName</code> methods, method
-      <code>getJavaConstantName</code>, method <code>getJavaMethodParameterName(java.lang.String)</code> and method
-      <code>getJavaClasspathLocation(java.lang.String,boolean)</code> to class <code>org.jomc.tools.JomcTool</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.3/jomc-tools-1.3/clirr-report.html">CLIRR</a> report.]]>
-      </action>
-      <action dev="schulte2005" type="add"><![CDATA[Added methods <code>getTemplateEncoding(java.lang.String)</code>
-      and <code>getParentTemplateProfile(java.lang.String)</code> to class <code>org.jomc.tools.JomcTool</code> adding
-      support for <code>profile.properties</code> resources supporting properties <code>parent-template-profile</code>
-      and <code>template-encoding</code> and updated methods <code>getVelocityContext</code> and
-      <code>getVelocityTemplate(java.lang.String)</code> to make use of these template profile properties.]]>
-      </action>
+    <release version="1.2.4" date="2012-05-23">
       <action dev="schulte2005" type="fix"><![CDATA[Updated method <code>getIndentation(int)</code> of class
       <code>org.jomc.tools.JomcTool</code> to correct a concurrency issue.]]>
       </action>
@@ -219,6 +208,32 @@
       <action dev="schulte2005" type="fix"><![CDATA[Updated method <code>getVelocityContext</code> of class
       <code>org.jomc.tools.JomcTool</code> to honour template locations specified using method
       <code>setTemplateLocation(java.net.URL)</code> when searching for <code>context.properties</code> resources.]]>
+      </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-model</code> dependency from
+      <code>1.2.3</code> to <code>1.2.4</code>.
+      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-model-1.2.4/changes-report.html">Changes report</a>.]]>
+      </action>
+    </release>
+    <!-- *********************************************************************************************************** -->
+    <release version="1.2.5" date="2012-05-23">
+      <action dev="schulte2005" type="fix"><![CDATA[Updated method <code>getVelocityContext</code> of class
+      <code>org.jomc.tools.JomcTool</code> to not log <code>java.io.FileNotFoundException</code>s for non-existent
+      <code>context.properties</code> files and to stop caching <code>context.properties</code> when reading the
+      resource fails.]]>
+      </action>
+    </release>
+    <!-- *********************************************************************************************************** -->
+    <release version="2.0">
+      <action dev="schulte2005" type="add"><![CDATA[Added <code>getJavaFieldName</code> methods, method
+      <code>getJavaConstantName</code>, method <code>getJavaMethodParameterName(java.lang.String)</code> and method
+      <code>getJavaClasspathLocation(java.lang.String,boolean)</code> to class <code>org.jomc.tools.JomcTool</code>.
+      See the <a href="http://jomc.sourceforge.net/jomc/1.3/jomc-tools-1.3/clirr-report.html">CLIRR</a> report.]]>
+      </action>
+      <action dev="schulte2005" type="add"><![CDATA[Added methods <code>getTemplateEncoding(java.lang.String)</code>
+      and <code>getParentTemplateProfile(java.lang.String)</code> to class <code>org.jomc.tools.JomcTool</code> adding
+      support for <code>profile.properties</code> resources supporting properties <code>parent-template-profile</code>
+      and <code>template-encoding</code> and updated methods <code>getVelocityContext</code> and
+      <code>getVelocityTemplate(java.lang.String)</code> to make use of these template profile properties.]]>
       </action>
       <action dev="schulte2005" type="update"><![CDATA[Updated method <code>getVelocityContext</code> of class
       <code>org.jomc.tools.JomcTool</code> adding <code>java.io.IOException</code> to the list of exceptions.]]>
