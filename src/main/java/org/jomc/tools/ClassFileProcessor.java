@@ -2213,6 +2213,8 @@ public class ClassFileProcessor extends JomcTool
                     }
                     else
                     {
+                        this.log( Level.SEVERE, null, e.getCause() );
+
                         final String currentMessage = getMessage( e.getCause() );
 
                         if ( currentMessage != null )
@@ -2460,6 +2462,8 @@ public class ClassFileProcessor extends JomcTool
                     }
                     else
                     {
+                        this.log( Level.SEVERE, null, e.getCause() );
+
                         final String currentMessage = getMessage( e.getCause() );
 
                         if ( currentMessage != null )
@@ -2721,6 +2725,8 @@ public class ClassFileProcessor extends JomcTool
                     }
                     else
                     {
+                        this.log( Level.SEVERE, null, e.getCause() );
+
                         final String currentMessage = getMessage( e.getCause() );
 
                         if ( currentMessage != null )
@@ -2997,6 +3003,8 @@ public class ClassFileProcessor extends JomcTool
                     }
                     else
                     {
+                        this.log( Level.SEVERE, null, e.getCause() );
+
                         final String currentMessage = getMessage( e.getCause() );
 
                         if ( currentMessage != null )

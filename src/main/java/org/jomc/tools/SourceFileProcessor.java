@@ -381,6 +381,8 @@ public class SourceFileProcessor extends JomcTool
                         }
                         else
                         {
+                            this.log( Level.SEVERE, null, e.getCause() );
+
                             final String currentMessage = getMessage( e.getCause() );
 
                             if ( currentMessage != null )
