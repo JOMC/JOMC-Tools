@@ -253,6 +253,9 @@
       <code>org.jomc.tools.ResourceFileProcessor</code> and <code>org.jomc.tools.SourceFileProcessor</code> to
       to use multiple threads based on the number of available processors.]]>
       </action>
+      <action dev="schulte2005" type="update"><![CDATA[Updated class <code>org.jomc.tools.ClassFileProcessor</code>
+      to use file-locking when operating on file system class files.]]>
+      </action>
       <action dev="schulte2005" type="remove"><![CDATA[Removed methods <code>getTemplateEncoding</code> and
       <code>setTemplateEncoding</code> of class <code>org.jomc.tools.JomcTool</code>.
       See the <a href="http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0/clirr-report.html">CLIRR</a> report.]]>
