@@ -67,7 +67,7 @@
     </specification>
 
     <!-- *********************************************************************************************************** -->
-    <specification identifier="SingletonSpecification" class="Specification" classDeclaration="true"
+    <specification identifier="SingletonSpecification" class="SingletonSpecification" classDeclaration="true"
                    scope="Singleton" vendor="${project.organization.name}" version="${project.version}">
 
       <documentation defaultLanguage="en">
