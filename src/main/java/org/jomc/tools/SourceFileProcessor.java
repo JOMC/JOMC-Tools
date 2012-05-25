@@ -1053,11 +1053,14 @@ public class SourceFileProcessor extends JomcTool
 
                     if ( !edited.equals( content ) || edited.length() == 0 )
                     {
-                        if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
+                        synchronized ( sourcesDirectory )
                         {
-                            throw new IOException( getMessage(
-                                "failedCreatingDirectory", f.getParentFile().getAbsolutePath() ) );
+                            if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
+                            {
+                                throw new IOException( getMessage(
+                                    "failedCreatingDirectory", f.getParentFile().getAbsolutePath() ) );
 
+                            }
                         }
 
                         if ( isLoggable( Level.INFO ) )
