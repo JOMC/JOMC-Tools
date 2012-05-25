@@ -3150,6 +3150,7 @@ public class ClassFileProcessor extends JomcTool
             fileChannel = out.getChannel();
             fileLock = fileChannel.lock();
             javaClass.dump( out );
+            suppressExceptionOnClose = false;
         }
         finally
         {
