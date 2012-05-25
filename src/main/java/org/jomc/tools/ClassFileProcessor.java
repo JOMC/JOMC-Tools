@@ -38,7 +38,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.RandomAccessFile;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
@@ -1626,7 +1625,12 @@ public class ClassFileProcessor extends JomcTool
                             new JAXBSource( marshaller, objectFactory.createSpecification( decodedSpecification ) );
 
                         final JAXBResult result = new JAXBResult( unmarshaller );
-                        transformers.get( i ).transform( source, result );
+                        final Transformer transformer = transformers.get( i );
+
+                        synchronized ( transformer )
+                        {
+                            transformer.transform( source, result );
+                        }
 
                         if ( result.getResult() instanceof JAXBElement<?>
                              && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Specification )
@@ -1757,7 +1761,11 @@ public class ClassFileProcessor extends JomcTool
                             new JAXBSource( marshaller, of.createDependencies( decodedDependencies ) );
 
                         final JAXBResult result = new JAXBResult( unmarshaller );
-                        transformer.transform( source, result );
+
+                        synchronized ( transformer )
+                        {
+                            transformer.transform( source, result );
+                        }
 
                         if ( result.getResult() instanceof JAXBElement<?>
                              && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Dependencies )
@@ -1776,7 +1784,11 @@ public class ClassFileProcessor extends JomcTool
                     {
                         final JAXBSource source = new JAXBSource( marshaller, of.createMessages( decodedMessages ) );
                         final JAXBResult result = new JAXBResult( unmarshaller );
-                        transformer.transform( source, result );
+
+                        synchronized ( transformer )
+                        {
+                            transformer.transform( source, result );
+                        }
 
                         if ( result.getResult() instanceof JAXBElement<?>
                              && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Messages )
@@ -1795,7 +1807,11 @@ public class ClassFileProcessor extends JomcTool
                     {
                         final JAXBSource source = new JAXBSource( marshaller, of.createProperties( decodedProperties ) );
                         final JAXBResult result = new JAXBResult( unmarshaller );
-                        transformer.transform( source, result );
+
+                        synchronized ( transformer )
+                        {
+                            transformer.transform( source, result );
+                        }
 
                         if ( result.getResult() instanceof JAXBElement<?>
                              && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Properties )
@@ -1816,7 +1832,11 @@ public class ClassFileProcessor extends JomcTool
                             new JAXBSource( marshaller, of.createSpecifications( decodedSpecifications ) );
 
                         final JAXBResult result = new JAXBResult( unmarshaller );
-                        transformer.transform( source, result );
+
+                        synchronized ( transformer )
+                        {
+                            transformer.transform( source, result );
+                        }
 
                         if ( result.getResult() instanceof JAXBElement<?>
                              && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Specifications )
