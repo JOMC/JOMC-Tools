@@ -98,11 +98,11 @@
 
       </authors>
       <specifications>
-        <reference identifier="org.jomc.tools.JavaBundles" version="${project.version}"/>
+        <reference identifier="org.jomc.tools.ResourceFileProcessor" version="${project.version}"/>
       </specifications>
       <dependencies>
         <dependency identifier="java.util.Locale" name="Locale" implementationName="default" version="1.1"/>
-        <dependency identifier="org.jomc.tools.JavaBundles" name="JavaBundles"/>
+        <dependency identifier="org.jomc.tools.ResourceFileProcessor" name="ResourceFileProcessor"/>
       </dependencies>
       <properties>
         <property name="TestStringProperty" value="Test"/>
@@ -130,11 +130,11 @@
 
       </authors>
       <specifications>
-        <reference identifier="org.jomc.tools.JavaSources" version="${project.version}"/>
+        <reference identifier="org.jomc.tools.SourceFileProcessor" version="${project.version}"/>
       </specifications>
       <dependencies>
         <dependency identifier="java.util.Locale" name="Locale" implementationName="default" version="1.1"/>
-        <dependency identifier="org.jomc.tools.JavaSources" name="JavaSources"/>
+        <dependency identifier="org.jomc.tools.SourceFileProcessor" name="SourceFileProcessor"/>
       </dependencies>
       <properties>
         <property name="TestStringProperty" value="Test"/>
@@ -162,11 +162,11 @@
 
       </authors>
       <specifications>
-        <reference identifier="org.jomc.tools.JavaClasses" version="${project.version}"/>
+        <reference identifier="org.jomc.tools.ClassFileProcessor" version="${project.version}"/>
       </specifications>
       <dependencies>
         <dependency identifier="java.util.Locale" name="Locale" implementationName="default" version="1.1"/>
-        <dependency identifier="org.jomc.tools.JavaClasses" name="JavaClasses"/>
+        <dependency identifier="org.jomc.tools.ClassFileProcessor" name="ClassFileProcessor"/>
       </dependencies>
       <properties>
         <property name="TestStringProperty" value="Test"/>
