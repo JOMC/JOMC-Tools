@@ -32,7 +32,10 @@ package org.jomc.tools;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
@@ -2279,27 +2282,9 @@ public class ClassFileProcessor extends JomcTool
                 this.log( Level.INFO, getMessage( "committing", classFile.getAbsolutePath() ), null );
             }
 
-            RandomAccessFile randomAccessFile = null;
-            FileChannel fileChannel = null;
-            FileLock fileLock = null;
-            boolean suppressExceptionOnClose = true;
-
-            try
-            {
-                randomAccessFile = new RandomAccessFile( classFile, "rw" );
-                fileChannel = randomAccessFile.getChannel();
-                fileLock = fileChannel.lock();
-
-                final JavaClass javaClass = new ClassParser( classFile.getAbsolutePath() ).parse();
-                this.commitModelObjects( specification, marshaller, javaClass );
-                javaClass.dump( classFile );
-
-                suppressExceptionOnClose = false;
-            }
-            finally
-            {
-                this.releaseAndClose( fileLock, fileChannel, randomAccessFile, suppressExceptionOnClose );
-            }
+            final JavaClass javaClass = this.readJavaClass( classFile );
+            this.commitModelObjects( specification, marshaller, javaClass );
+            this.writeJavaClass( javaClass, classFile );
         }
     }
 
@@ -2329,27 +2314,9 @@ public class ClassFileProcessor extends JomcTool
                 this.log( Level.INFO, getMessage( "committing", classFile.getAbsolutePath() ), null );
             }
 
-            RandomAccessFile randomAccessFile = null;
-            FileChannel fileChannel = null;
-            FileLock fileLock = null;
-            boolean suppressExceptionOnClose = true;
-
-            try
-            {
-                randomAccessFile = new RandomAccessFile( classFile, "rw" );
-                fileChannel = randomAccessFile.getChannel();
-                fileLock = fileChannel.lock();
-
-                final JavaClass javaClass = new ClassParser( classFile.getAbsolutePath() ).parse();
-                this.commitModelObjects( implementation, marshaller, javaClass );
-                javaClass.dump( classFile );
-
-                suppressExceptionOnClose = false;
-            }
-            finally
-            {
-                this.releaseAndClose( fileLock, fileChannel, randomAccessFile, suppressExceptionOnClose );
-            }
+            final JavaClass javaClass = this.readJavaClass( classFile );
+            this.commitModelObjects( implementation, marshaller, javaClass );
+            this.writeJavaClass( javaClass, classFile );
         }
     }
 
@@ -2533,28 +2500,11 @@ public class ClassFileProcessor extends JomcTool
                 this.log( Level.INFO, getMessage( "validating", classFile.getAbsolutePath() ), null );
             }
 
-            RandomAccessFile randomAccessFile = null;
-            FileChannel fileChannel = null;
-            FileLock fileLock = null;
-            boolean suppressExceptionOnClose = true;
+            final JavaClass javaClass = this.readJavaClass( classFile );
 
-            try
-            {
-                randomAccessFile = new RandomAccessFile( classFile, "r" );
-                fileChannel = randomAccessFile.getChannel();
-                fileLock = fileChannel.lock( 0L, classFile.length(), true );
+            report.getDetails().addAll(
+                this.validateModelObjects( specification, unmarshaller, javaClass ).getDetails() );
 
-                final ModelValidationReport current = this.validateModelObjects(
-                    specification, unmarshaller, new ClassParser( classFile.getAbsolutePath() ).parse() );
-
-                report.getDetails().addAll( current.getDetails() );
-
-                suppressExceptionOnClose = false;
-            }
-            finally
-            {
-                this.releaseAndClose( fileLock, fileChannel, randomAccessFile, suppressExceptionOnClose );
-            }
         }
 
         return report;
@@ -2589,28 +2539,11 @@ public class ClassFileProcessor extends JomcTool
                 this.log( Level.INFO, getMessage( "validating", classFile.getAbsolutePath() ), null );
             }
 
-            RandomAccessFile randomAccessFile = null;
-            FileChannel fileChannel = null;
-            FileLock fileLock = null;
-            boolean suppressExceptionOnClose = true;
+            final JavaClass javaClass = this.readJavaClass( classFile );
 
-            try
-            {
-                randomAccessFile = new RandomAccessFile( classFile, "r" );
-                fileChannel = randomAccessFile.getChannel();
-                fileLock = fileChannel.lock( 0L, classFile.length(), true );
+            report.getDetails().addAll(
+                this.validateModelObjects( implementation, unmarshaller, javaClass ).getDetails() );
 
-                final ModelValidationReport current = this.validateModelObjects(
-                    implementation, unmarshaller, new ClassParser( classFile.getAbsolutePath() ).parse() );
-
-                report.getDetails().addAll( current.getDetails() );
-
-                suppressExceptionOnClose = false;
-            }
-            finally
-            {
-                this.releaseAndClose( fileLock, fileChannel, randomAccessFile, suppressExceptionOnClose );
-            }
         }
 
         return report;
@@ -2821,8 +2754,9 @@ public class ClassFileProcessor extends JomcTool
                 }
             }
 
-            final ModelValidationReport current = this.validateModelObjects( specification, unmarshaller, javaClass );
-            report.getDetails().addAll( current.getDetails() );
+            report.getDetails().addAll(
+                this.validateModelObjects( specification, unmarshaller, javaClass ).getDetails() );
+
         }
 
         return report;
@@ -2882,8 +2816,9 @@ public class ClassFileProcessor extends JomcTool
                 }
             }
 
-            final ModelValidationReport current = this.validateModelObjects( implementation, unmarshaller, javaClass );
-            report.getDetails().addAll( current.getDetails() );
+            report.getDetails().addAll(
+                this.validateModelObjects( implementation, unmarshaller, javaClass ).getDetails() );
+
         }
 
         return report;
@@ -3070,27 +3005,9 @@ public class ClassFileProcessor extends JomcTool
                 this.log( Level.INFO, getMessage( "transforming", classFile.getAbsolutePath() ), null );
             }
 
-            RandomAccessFile randomAccessFile = null;
-            FileChannel fileChannel = null;
-            FileLock fileLock = null;
-            boolean suppressExceptionOnClose = true;
-
-            try
-            {
-                randomAccessFile = new RandomAccessFile( classFile, "rw" );
-                fileChannel = randomAccessFile.getChannel();
-                fileLock = fileChannel.lock();
-
-                final JavaClass javaClass = new ClassParser( classFile.getAbsolutePath() ).parse();
-                this.transformModelObjects( specification, marshaller, unmarshaller, javaClass, transformers );
-                javaClass.dump( classFile );
-
-                suppressExceptionOnClose = false;
-            }
-            finally
-            {
-                this.releaseAndClose( fileLock, fileChannel, randomAccessFile, suppressExceptionOnClose );
-            }
+            final JavaClass javaClass = this.readJavaClass( classFile );
+            this.transformModelObjects( specification, marshaller, unmarshaller, javaClass, transformers );
+            this.writeJavaClass( javaClass, classFile );
         }
     }
 
@@ -3121,27 +3038,9 @@ public class ClassFileProcessor extends JomcTool
                 this.log( Level.INFO, getMessage( "transforming", classFile.getAbsolutePath() ), null );
             }
 
-            RandomAccessFile randomAccessFile = null;
-            FileChannel fileChannel = null;
-            FileLock fileLock = null;
-            boolean suppressExceptionOnClose = true;
-
-            try
-            {
-                randomAccessFile = new RandomAccessFile( classFile, "rw" );
-                fileChannel = randomAccessFile.getChannel();
-                fileLock = fileChannel.lock();
-
-                final JavaClass javaClass = new ClassParser( classFile.getAbsolutePath() ).parse();
-                this.transformModelObjects( implementation, marshaller, unmarshaller, javaClass, transformers );
-                javaClass.dump( classFile );
-
-                suppressExceptionOnClose = false;
-            }
-            finally
-            {
-                this.releaseAndClose( fileLock, fileChannel, randomAccessFile, suppressExceptionOnClose );
-            }
+            final JavaClass javaClass = this.readJavaClass( classFile );
+            this.transformModelObjects( implementation, marshaller, unmarshaller, javaClass, transformers );
+            this.writeJavaClass( javaClass, classFile );
         }
     }
 
@@ -3215,8 +3114,51 @@ public class ClassFileProcessor extends JomcTool
 
     }
 
+    private JavaClass readJavaClass( final File classFile ) throws IOException
+    {
+        FileInputStream in = null;
+        FileChannel fileChannel = null;
+        FileLock fileLock = null;
+        boolean suppressExceptionOnClose = true;
+
+        try
+        {
+            in = new FileInputStream( classFile );
+            fileChannel = in.getChannel();
+            fileLock = fileChannel.lock( 0, classFile.length(), true );
+
+            final JavaClass javaClass = new ClassParser( in, classFile.getAbsolutePath() ).parse();
+            suppressExceptionOnClose = false;
+            return javaClass;
+        }
+        finally
+        {
+            this.releaseAndClose( fileLock, fileChannel, in, suppressExceptionOnClose );
+        }
+    }
+
+    private void writeJavaClass( final JavaClass javaClass, final File classFile ) throws IOException
+    {
+        FileOutputStream out = null;
+        FileChannel fileChannel = null;
+        FileLock fileLock = null;
+        boolean suppressExceptionOnClose = true;
+
+        try
+        {
+            out = new FileOutputStream( classFile );
+            fileChannel = out.getChannel();
+            fileLock = fileChannel.lock();
+            javaClass.dump( out );
+        }
+        finally
+        {
+            this.releaseAndClose( fileLock, fileChannel, out, suppressExceptionOnClose );
+        }
+    }
+
     private void releaseAndClose( final FileLock fileLock, final FileChannel fileChannel,
-                                  final RandomAccessFile randomAccessFile, final boolean suppressExceptions )
+                                  final Closeable closeable, final boolean suppressExceptions )
         throws IOException
     {
         try
@@ -3261,9 +3203,9 @@ public class ClassFileProcessor extends JomcTool
             {
                 try
                 {
-                    if ( randomAccessFile != null )
+                    if ( closeable != null )
                     {
-                        randomAccessFile.close();
+                        closeable.close();
                     }
                 }
                 catch ( final IOException e )
