@@ -559,11 +559,14 @@ public class ResourceFileProcessor extends JomcTool
 
             fallbackProperties = p;
 
-            if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
+            synchronized ( resourcesDirectory )
             {
-                throw new IOException( getMessage( "failedCreatingDirectory",
-                                                   file.getParentFile().getAbsolutePath() ) );
+                if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
+                {
+                    throw new IOException( getMessage( "failedCreatingDirectory",
+                                                       file.getParentFile().getAbsolutePath() ) );
 
+                }
             }
 
             if ( this.isLoggable( Level.INFO ) )
@@ -610,11 +613,15 @@ public class ResourceFileProcessor extends JomcTool
         if ( defProperties != null )
         {
             final File file = new File( resourcesDirectory, bundlePath + ".properties" );
-            if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
-            {
-                throw new IOException( getMessage( "failedCreatingDirectory",
-                                                   file.getParentFile().getAbsolutePath() ) );
 
+            synchronized ( resourcesDirectory )
+            {
+                if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
+                {
+                    throw new IOException( getMessage( "failedCreatingDirectory",
+                                                       file.getParentFile().getAbsolutePath() ) );
+
+                }
             }
 
             if ( this.isLoggable( Level.INFO ) )
