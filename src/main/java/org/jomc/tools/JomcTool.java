@@ -2852,7 +2852,12 @@ public class JomcTool
         {
             for ( int i = this.getListeners().size() - 1; i >= 0; i-- )
             {
-                this.getListeners().get( i ).onLog( level, message, throwable );
+                final Listener listener = this.getListeners().get( i );
+
+                synchronized ( listener )
+                {
+                    listener.onLog( level, message, throwable );
+                }
             }
         }
     }
