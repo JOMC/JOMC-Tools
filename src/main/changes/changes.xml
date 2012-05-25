@@ -235,6 +235,11 @@
       and <code>template-encoding</code> and updated methods <code>getVelocityContext</code> and
       <code>getVelocityTemplate(java.lang.String)</code> to make use of these template profile properties.]]>
       </action>
+      <action dev="schulte2005" type="add"><![CDATA[Added method <code>getExecutorService</code>
+      to class <code>org.jomc.tools.JomcTool</code> and updated classes <code>org.jomc.tools.ClassFileProcessor</code>,
+      <code>org.jomc.tools.ResourceFileProcessor</code> and <code>org.jomc.tools.SourceFileProcessor</code> to
+      to use multiple threads based on the number of available processors.]]>
+      </action>
       <action dev="schulte2005" type="add"><![CDATA[Added inner interface <code>SourceFileEditorFactory</code> to class
       <code>org.jomc.tools.SourceFileProcessor</code> and added methods <code>getSourceFileEditorFactory</code>
       and <code>setSourceFileEditorFactory</code>.]]>
@@ -248,10 +253,6 @@
       </action>
       <action dev="schulte2005" type="update"><![CDATA[Updated class <code>org.jomc.tool.JomcTool</code> to log warnings
       whenever an attribute value of a model object leads to an invalid Java identifier or constant name.]]>
-      </action>
-      <action dev="schulte2005" type="update"><![CDATA[Updated classes <code>org.jomc.tools.ClassFileProcessor</code>,
-      <code>org.jomc.tools.ResourceFileProcessor</code> and <code>org.jomc.tools.SourceFileProcessor</code> to
-      to use multiple threads based on the number of available processors.]]>
       </action>
       <action dev="schulte2005" type="update"><![CDATA[Updated class <code>org.jomc.tools.ClassFileProcessor</code>
       to use file-locking when operating on file system class files.]]>

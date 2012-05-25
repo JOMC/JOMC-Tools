@@ -44,8 +44,6 @@ import java.util.ResourceBundle;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import org.apache.commons.lang.StringUtils;
@@ -285,8 +283,6 @@ public class SourceFileProcessor extends JomcTool
         }
 
         final List<Future<Void>> futures = new LinkedList<Future<Void>>();
-        final ExecutorService executorService =
-            Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors() );
 
         try
         {
@@ -294,8 +290,6 @@ public class SourceFileProcessor extends JomcTool
             {
                 if ( module.getSpecifications() != null )
                 {
-                    this.getVelocityEngine().init();
-
                     final CountDownLatch latch =
                         new CountDownLatch( module.getSpecifications().getSpecification().size() );
 
@@ -303,7 +297,7 @@ public class SourceFileProcessor extends JomcTool
                     {
                         final Specification s = module.getSpecifications().getSpecification().get( i );
 
-                        futures.add( executorService.submit( new Callable<Void>()
+                        futures.add( this.getExecutorService().submit( new Callable<Void>()
                         {
 
                             public Void call() throws IOException
@@ -328,8 +322,6 @@ public class SourceFileProcessor extends JomcTool
 
                 if ( module.getImplementations() != null )
                 {
-                    this.getVelocityEngine().init();
-
                     final CountDownLatch latch =
                         new CountDownLatch( module.getImplementations().getImplementation().size() );
 
@@ -337,7 +329,7 @@ public class SourceFileProcessor extends JomcTool
                     {
                         final Implementation in = module.getImplementations().getImplementation().get( i );
 
-                        futures.add( executorService.submit( new Callable<Void>()
+                        futures.add( this.getExecutorService().submit( new Callable<Void>()
                         {
 
                             public Void call() throws IOException
@@ -417,10 +409,6 @@ public class SourceFileProcessor extends JomcTool
         {
             this.log( Level.SEVERE, getMessage( e ), e );
             Thread.currentThread().interrupt();
-        }
-        finally
-        {
-            executorService.shutdownNow();
         }
     }
 

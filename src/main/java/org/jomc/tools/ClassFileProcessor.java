@@ -48,8 +48,6 @@ import java.util.ResourceBundle;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.zip.GZIPInputStream;
@@ -2130,9 +2128,6 @@ public class ClassFileProcessor extends JomcTool
                                      final Context context, final File classesDirectory )
         throws ModelException, IOException
     {
-        final ExecutorService executorService =
-            Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors() );
-
         final List<Future<Void>> futures = new LinkedList<Future<Void>>();
 
         try
@@ -2145,7 +2140,7 @@ public class ClassFileProcessor extends JomcTool
                 {
                     final Specification s = specifications.getSpecification().get( i );
 
-                    futures.add( executorService.submit( new Callable<Void>()
+                    futures.add( this.getExecutorService().submit( new Callable<Void>()
                     {
 
                         public Void call() throws ModelException, IOException
@@ -2175,7 +2170,7 @@ public class ClassFileProcessor extends JomcTool
                 {
                     final Implementation in = implementations.getImplementation().get( i );
 
-                    futures.add( executorService.submit( new Callable<Void>()
+                    futures.add( this.getExecutorService().submit( new Callable<Void>()
                     {
 
                         public Void call() throws ModelException, IOException
@@ -2270,10 +2265,6 @@ public class ClassFileProcessor extends JomcTool
             this.log( Level.SEVERE, getMessage( e ), e );
             Thread.currentThread().interrupt();
         }
-        finally
-        {
-            executorService.shutdownNow();
-        }
     }
 
     private void commitModelObjects( final Specification specification, final Marshaller marshaller,
@@ -2347,8 +2338,6 @@ public class ClassFileProcessor extends JomcTool
     {
         final ModelValidationReport report = new ModelValidationReport();
         final List<Future<ModelValidationReport>> futures = new LinkedList<Future<ModelValidationReport>>();
-        final ExecutorService executorService =
-            Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors() );
 
         try
         {
@@ -2360,7 +2349,7 @@ public class ClassFileProcessor extends JomcTool
                 {
                     final Specification s = specifications.getSpecification().get( i );
 
-                    futures.add( executorService.submit( new Callable<ModelValidationReport>()
+                    futures.add( this.getExecutorService().submit( new Callable<ModelValidationReport>()
                     {
 
                         public ModelValidationReport call() throws ModelException, IOException
@@ -2389,7 +2378,7 @@ public class ClassFileProcessor extends JomcTool
                 {
                     final Implementation in = implementations.getImplementation().get( i );
 
-                    futures.add( executorService.submit( new Callable<ModelValidationReport>()
+                    futures.add( this.getExecutorService().submit( new Callable<ModelValidationReport>()
                     {
 
                         public ModelValidationReport call() throws ModelException, IOException
@@ -2483,10 +2472,6 @@ public class ClassFileProcessor extends JomcTool
             this.log( Level.SEVERE, getMessage( e ), e );
             Thread.currentThread().interrupt();
         }
-        finally
-        {
-            executorService.shutdownNow();
-        }
 
         return report;
     }
@@ -2576,8 +2561,6 @@ public class ClassFileProcessor extends JomcTool
     {
         final ModelValidationReport report = new ModelValidationReport();
         final List<Future<ModelValidationReport>> futures = new LinkedList<Future<ModelValidationReport>>();
-        final ExecutorService executorService =
-            Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors() );
 
         try
         {
@@ -2589,7 +2572,7 @@ public class ClassFileProcessor extends JomcTool
                 {
                     final Specification s = specifications.getSpecification().get( i );
 
-                    futures.add( executorService.submit( new Callable<ModelValidationReport>()
+                    futures.add( this.getExecutorService().submit( new Callable<ModelValidationReport>()
                     {
 
                         public ModelValidationReport call() throws ModelException, IOException
@@ -2618,7 +2601,7 @@ public class ClassFileProcessor extends JomcTool
                 {
                     final Implementation in = implementations.getImplementation().get( i );
 
-                    futures.add( executorService.submit( new Callable<ModelValidationReport>()
+                    futures.add( this.getExecutorService().submit( new Callable<ModelValidationReport>()
                     {
 
                         public ModelValidationReport call() throws ModelException, IOException
@@ -2711,10 +2694,6 @@ public class ClassFileProcessor extends JomcTool
         {
             this.log( Level.SEVERE, getMessage( e ), e );
             Thread.currentThread().interrupt();
-        }
-        finally
-        {
-            executorService.shutdownNow();
         }
 
         return report;
@@ -2850,8 +2829,6 @@ public class ClassFileProcessor extends JomcTool
         throws ModelException, IOException
     {
         final List<Future<Void>> futures = new LinkedList<Future<Void>>();
-        final ExecutorService executorService =
-            Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors() );
 
         try
         {
@@ -2863,7 +2840,7 @@ public class ClassFileProcessor extends JomcTool
                 {
                     final Specification s = specifications.getSpecification().get( i );
 
-                    futures.add( executorService.submit( new Callable<Void>()
+                    futures.add( this.getExecutorService().submit( new Callable<Void>()
                     {
 
                         public Void call() throws ModelException, IOException
@@ -2895,7 +2872,7 @@ public class ClassFileProcessor extends JomcTool
                 {
                     final Implementation in = implementations.getImplementation().get( i );
 
-                    futures.add( executorService.submit( new Callable<Void>()
+                    futures.add( this.getExecutorService().submit( new Callable<Void>()
                     {
 
                         public Void call() throws ModelException, IOException
@@ -2991,10 +2968,6 @@ public class ClassFileProcessor extends JomcTool
         {
             this.log( Level.SEVERE, getMessage( e ), e );
             Thread.currentThread().interrupt();
-        }
-        finally
-        {
-            executorService.shutdownNow();
         }
     }
 

@@ -45,8 +45,6 @@ import java.util.ResourceBundle;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import org.apache.velocity.VelocityContext;
@@ -190,14 +188,11 @@ public class ResourceFileProcessor extends JomcTool
         }
 
         final List<Future<Void>> futures = new LinkedList<Future<Void>>();
-        final ExecutorService executorService =
-            Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors() );
 
         try
         {
             if ( this.getModules() != null && this.getModules().getModule( module.getName() ) != null )
             {
-
                 if ( module.getSpecifications() != null )
                 {
                     final CountDownLatch latch =
@@ -207,7 +202,7 @@ public class ResourceFileProcessor extends JomcTool
                     {
                         final Specification s = module.getSpecifications().getSpecification().get( i );
 
-                        futures.add( executorService.submit( new Callable<Void>()
+                        futures.add( this.getExecutorService().submit( new Callable<Void>()
                         {
 
                             public Void call() throws IOException
@@ -238,7 +233,7 @@ public class ResourceFileProcessor extends JomcTool
                     {
                         final Implementation in = module.getImplementations().getImplementation().get( i );
 
-                        futures.add( executorService.submit( new Callable<Void>()
+                        futures.add( this.getExecutorService().submit( new Callable<Void>()
                         {
 
                             public Void call() throws IOException
@@ -318,13 +313,6 @@ public class ResourceFileProcessor extends JomcTool
         {
             this.log( Level.SEVERE, getMessage( e ), e );
             Thread.currentThread().interrupt();
-        }
-        finally
-        {
-            if ( executorService != null )
-            {
-                executorService.shutdownNow();
-            }
         }
     }
 

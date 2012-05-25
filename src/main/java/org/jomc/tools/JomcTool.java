@@ -61,6 +61,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
@@ -249,6 +251,12 @@ public class JomcTool
     /** Cached Java keywords. */
     private volatile Reference<Set<String>> javaKeywordsCache;
 
+    /**
+     * {@code ExecutorService} initialized to a pool of threads sized to the number of available processors.
+     * @since 1.3
+     */
+    private ExecutorService executorService;
+
     /** Creates a new {@code JomcTool} instance. */
     public JomcTool()
     {
@@ -293,6 +301,25 @@ public class JomcTool
         this.templateLocation =
             tool.templateLocation != null ? new URL( tool.templateLocation.toExternalForm() ) : null;
 
+    }
+
+    /**
+     * Gets the {@code ExecutorService} of the instance.
+     *
+     * @return An {@code ExecutorService} initialized to a pool of threads sized to the number of available processors.
+     *
+     * @see Runtime#availableProcessors()
+     *
+     * @since 1.3
+     */
+    public ExecutorService getExecutorService()
+    {
+        if ( this.executorService == null )
+        {
+            this.executorService = Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors() );
+        }
+
+        return this.executorService;
     }
 
     /**
@@ -2927,7 +2954,6 @@ public class JomcTool
             InputStream in = null;
             URL url = null;
             profileProperties = new java.util.Properties();
-            map.put( key, profileProperties );
 
             final String resourceName = TEMPLATE_PREFIX + profileName + ( language == null ? "" : "/" + language )
                                         + "/context.properties";
@@ -2980,6 +3006,8 @@ public class JomcTool
             }
             finally
             {
+                map.put( key, profileProperties );
+
                 try
                 {
                     if ( in != null )
@@ -3106,7 +3134,6 @@ public class JomcTool
         {
             InputStream in = null;
             profileProperties = new java.util.Properties();
-            map.put( profileName, profileProperties );
 
             final String resourceName = TEMPLATE_PREFIX + profileName + "/profile.properties";
             URL url = null;
@@ -3165,6 +3192,8 @@ public class JomcTool
             }
             finally
             {
+                map.put( profileName, profileProperties );
+
                 try
                 {
                     if ( in != null )
