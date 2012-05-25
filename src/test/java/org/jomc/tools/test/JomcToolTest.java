@@ -59,6 +59,7 @@ import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelContextFactory;
 import org.jomc.modlet.ModelException;
+import org.jomc.modlet.ModelValidationReport;
 import org.jomc.tools.JomcTool;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
@@ -349,6 +350,20 @@ public class JomcToolTest
                 }
 
                 m = this.getModelContext().processModel( m );
+
+                if ( m != null )
+                {
+                    final ModelValidationReport validationReport = this.getModelContext().validateModel( m );
+
+                    for ( int i = 0, s0 = validationReport.getDetails().size(); i < s0; i++ )
+                    {
+                        System.out.println( validationReport.getDetails().get( i ) );
+                    }
+
+                    assertTrue( "Unexpected invalid '" + m.getIdentifier() + "' model.",
+                                validationReport.isModelValid() );
+
+                }
             }
 
             return m;

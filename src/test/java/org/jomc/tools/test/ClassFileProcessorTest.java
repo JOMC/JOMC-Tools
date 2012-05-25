@@ -67,6 +67,7 @@ import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelContextFactory;
 import org.jomc.modlet.ModelException;
+import org.jomc.modlet.ModelValidationReport;
 import org.jomc.tools.ClassFileProcessor;
 import org.jomc.tools.ResourceFileProcessor;
 import org.jomc.tools.SourceFileProcessor;
@@ -131,6 +132,20 @@ public class ClassFileProcessorTest extends JomcToolTest
                 }
 
                 m = this.getModelContext().processModel( m );
+
+                if ( m != null )
+                {
+                    final ModelValidationReport validationReport = this.getModelContext().validateModel( m );
+
+                    for ( int i = 0, s0 = validationReport.getDetails().size(); i < s0; i++ )
+                    {
+                        System.out.println( validationReport.getDetails().get( i ) );
+                    }
+
+                    assertTrue( "Unexpected invalid '" + m.getIdentifier() + "' model.",
+                                validationReport.isModelValid() );
+
+                }
             }
 
             return m;
@@ -1530,7 +1545,7 @@ public class ClassFileProcessorTest extends JomcToolTest
         dependency.setImplementationName( null );
         dependency.setVersion( Integer.toString( Integer.MAX_VALUE ) );
 
-        dependency = classFileProcessorImpl.getDependencies().getDependency( "JavaClasses" );
+        dependency = classFileProcessorImpl.getDependencies().getDependency( "ClassFileProcessor" );
         assertNotNull( dependency );
         assertNotNull( classFileProcessorImpl.getDependencies().getDependency().remove( dependency ) );
 
@@ -1539,7 +1554,7 @@ public class ClassFileProcessorTest extends JomcToolTest
         dependency.setImplementationName( null );
         dependency.setVersion( Integer.toString( Integer.MAX_VALUE ) );
 
-        dependency = resourceFileProcessorImpl.getDependencies().getDependency( "JavaBundles" );
+        dependency = resourceFileProcessorImpl.getDependencies().getDependency( "ResourceFileProcessor" );
         assertNotNull( dependency );
         assertNotNull( resourceFileProcessorImpl.getDependencies().getDependency().remove( dependency ) );
 
@@ -1548,7 +1563,7 @@ public class ClassFileProcessorTest extends JomcToolTest
         dependency.setImplementationName( null );
         dependency.setVersion( Integer.toString( Integer.MAX_VALUE ) );
 
-        dependency = sourceFileProcessorImpl.getDependencies().getDependency( "JavaSources" );
+        dependency = sourceFileProcessorImpl.getDependencies().getDependency( "SourceFileProcessor" );
         assertNotNull( dependency );
         assertNotNull( sourceFileProcessorImpl.getDependencies().getDependency().remove( dependency ) );
 
