@@ -1118,66 +1118,7 @@ public class SourceFileProcessor extends JomcTool
             }
             finally
             {
-                try
-                {
-                    if ( fileLock != null )
-                    {
-                        fileLock.release();
-                    }
-                }
-                catch ( final IOException e )
-                {
-                    if ( suppressExceptionOnClose )
-                    {
-                        log( Level.SEVERE, null, e );
-                    }
-                    else
-                    {
-                        throw e;
-                    }
-                }
-                finally
-                {
-                    try
-                    {
-                        if ( fileChannel != null )
-                        {
-                            fileChannel.close();
-                        }
-                    }
-                    catch ( final IOException e )
-                    {
-                        if ( suppressExceptionOnClose )
-                        {
-                            log( Level.SEVERE, null, e );
-                        }
-                        else
-                        {
-                            throw e;
-                        }
-                    }
-                    finally
-                    {
-                        try
-                        {
-                            if ( randomAccessFile != null )
-                            {
-                                randomAccessFile.close();
-                            }
-                        }
-                        catch ( final IOException e )
-                        {
-                            if ( suppressExceptionOnClose )
-                            {
-                                log( Level.SEVERE, null, e );
-                            }
-                            else
-                            {
-                                throw e;
-                            }
-                        }
-                    }
-                }
+                this.releaseAndClose( fileLock, fileChannel, randomAccessFile, suppressExceptionOnClose );
             }
         }
 
@@ -1211,16 +1152,44 @@ public class SourceFileProcessor extends JomcTool
             }
             finally
             {
+                this.releaseAndClose( fileLock, fileChannel, randomAccessFile, suppressExceptionOnClose );
+            }
+        }
+
+        private void releaseAndClose( final FileLock fileLock, final FileChannel fileChannel,
+                                      final RandomAccessFile randomAccessFile, final boolean suppressExceptions )
+            throws IOException
+        {
+            try
+            {
+                if ( fileLock != null )
+                {
+                    fileLock.release();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( suppressExceptions )
+                {
+                    log( Level.SEVERE, null, e );
+                }
+                else
+                {
+                    throw e;
+                }
+            }
+            finally
+            {
                 try
                 {
-                    if ( fileLock != null )
+                    if ( fileChannel != null )
                     {
-                        fileLock.release();
+                        fileChannel.close();
                     }
                 }
                 catch ( final IOException e )
                 {
-                    if ( suppressExceptionOnClose )
+                    if ( suppressExceptions )
                     {
                         log( Level.SEVERE, null, e );
                     }
@@ -1233,41 +1202,20 @@ public class SourceFileProcessor extends JomcTool
                 {
                     try
                     {
-                        if ( fileChannel != null )
+                        if ( randomAccessFile != null )
                         {
-                            fileChannel.close();
+                            randomAccessFile.close();
                         }
                     }
                     catch ( final IOException e )
                     {
-                        if ( suppressExceptionOnClose )
+                        if ( suppressExceptions )
                         {
                             log( Level.SEVERE, null, e );
                         }
                         else
                         {
                             throw e;
-                        }
-                    }
-                    finally
-                    {
-                        try
-                        {
-                            if ( randomAccessFile != null )
-                            {
-                                randomAccessFile.close();
-                            }
-                        }
-                        catch ( final IOException e )
-                        {
-                            if ( suppressExceptionOnClose )
-                            {
-                                log( Level.SEVERE, null, e );
-                            }
-                            else
-                            {
-                                throw e;
-                            }
                         }
                     }
                 }
