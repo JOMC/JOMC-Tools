@@ -294,6 +294,8 @@ public class SourceFileProcessor extends JomcTool
             {
                 if ( module.getSpecifications() != null )
                 {
+                    this.getVelocityEngine().init();
+
                     final CountDownLatch latch =
                         new CountDownLatch( module.getSpecifications().getSpecification().size() );
 
@@ -326,6 +328,8 @@ public class SourceFileProcessor extends JomcTool
 
                 if ( module.getImplementations() != null )
                 {
+                    this.getVelocityEngine().init();
+
                     final CountDownLatch latch =
                         new CountDownLatch( module.getImplementations().getImplementation().size() );
 
