@@ -546,6 +546,7 @@ public class SourceFileProcessorTest extends JomcToolTest
     @Test
     public final void testSourceFileProcessorModelObjectsNotFound() throws Exception
     {
+        final File tmpDir = new File( System.getProperty( "java.io.tmpdir", "/tmp" ) );
         final Module m = new Module();
         m.setName( "DOES_NOT_EXIST" );
 
@@ -561,10 +562,10 @@ public class SourceFileProcessorTest extends JomcToolTest
         assertNull( this.getJomcTool().getSourceFilesType( s ) );
         assertNull( this.getJomcTool().getSourceFilesType( i ) );
 
-        this.getJomcTool().manageSourceFiles( new File( "/tmp" ) );
-        this.getJomcTool().manageSourceFiles( m, new File( "/tmp" ) );
-        this.getJomcTool().manageSourceFiles( s, new File( "/tmp" ) );
-        this.getJomcTool().manageSourceFiles( i, new File( "/tmp" ) );
+        this.getJomcTool().manageSourceFiles( tmpDir );
+        this.getJomcTool().manageSourceFiles( m, tmpDir );
+        this.getJomcTool().manageSourceFiles( s, tmpDir );
+        this.getJomcTool().manageSourceFiles( i, tmpDir );
 
         this.getJomcTool().setModel( oldModel );
     }

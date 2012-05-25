@@ -282,6 +282,7 @@ public class ResourceFileProcessorTest extends JomcToolTest
     @Test
     public final void testResourceFileProcessorModelObjectsNotFound() throws Exception
     {
+        final File tmpDir = new File( System.getProperty( "java.io.tmpdir", "/tmp" ) );
         final Module m = new Module();
         m.setName( "DOES_NOT_EXIST" );
 
@@ -297,10 +298,10 @@ public class ResourceFileProcessorTest extends JomcToolTest
         assertNull( this.getJomcTool().getResourceBundleResources( i ) );
         assertNull( this.getJomcTool().getResourceBundleResources( s ) );
 
-        this.getJomcTool().writeResourceBundleResourceFiles( new File( "/tmp" ) );
-        this.getJomcTool().writeResourceBundleResourceFiles( m, new File( "/tmp" ) );
-        this.getJomcTool().writeResourceBundleResourceFiles( s, new File( "/tmp" ) );
-        this.getJomcTool().writeResourceBundleResourceFiles( i, new File( "/tmp" ) );
+        this.getJomcTool().writeResourceBundleResourceFiles( tmpDir );
+        this.getJomcTool().writeResourceBundleResourceFiles( m, tmpDir );
+        this.getJomcTool().writeResourceBundleResourceFiles( s, tmpDir );
+        this.getJomcTool().writeResourceBundleResourceFiles( i, tmpDir );
 
         this.getJomcTool().setModel( oldModel );
     }
