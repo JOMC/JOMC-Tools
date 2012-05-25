@@ -37,8 +37,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -160,11 +167,9 @@ public class ClassFileProcessor extends JomcTool
         {
             if ( this.getModules() != null )
             {
-                final Marshaller m = context.createMarshaller( this.getModel().getIdentifier() );
-                m.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
-
+                final Context ctx = new Context( context, this.getModel().getIdentifier() );
                 this.commitModelObjects( this.getModules().getSpecifications(), this.getModules().getImplementations(),
-                                         m, classesDirectory );
+                                         ctx, classesDirectory );
 
             }
             else if ( this.isLoggable( Level.WARNING ) )
@@ -212,10 +217,10 @@ public class ClassFileProcessor extends JomcTool
         {
             if ( this.getModules() != null && this.getModules().getModule( module.getName() ) != null )
             {
-                final Marshaller m = context.createMarshaller( this.getModel().getIdentifier() );
-                m.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+                final Context ctx = new Context( context, this.getModel().getIdentifier() );
+                this.commitModelObjects( module.getSpecifications(), module.getImplementations(), ctx,
+                                         classesDirectory );
 
-                this.commitModelObjects( module.getSpecifications(), module.getImplementations(), m, classesDirectory );
             }
             else if ( this.isLoggable( Level.WARNING ) )
             {
@@ -501,10 +506,9 @@ public class ClassFileProcessor extends JomcTool
 
             if ( this.getModules() != null )
             {
-                final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
-                u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+                final Context ctx = new Context( context, this.getModel().getIdentifier() );
                 report = this.validateModelObjects( this.getModules().getSpecifications(),
-                                                    this.getModules().getImplementations(), u, context );
+                                                    this.getModules().getImplementations(), ctx );
 
             }
             else if ( this.isLoggable( Level.WARNING ) )
@@ -553,11 +557,8 @@ public class ClassFileProcessor extends JomcTool
 
             if ( this.getModules() != null && this.getModules().getModule( module.getName() ) != null )
             {
-                final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
-                u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
-                report = this.validateModelObjects( module.getSpecifications(), module.getImplementations(), u,
-                                                    context );
-
+                final Context ctx = new Context( context, this.getModel().getIdentifier() );
+                report = this.validateModelObjects( module.getSpecifications(), module.getImplementations(), ctx );
             }
             else if ( this.isLoggable( Level.WARNING ) )
             {
@@ -706,10 +707,9 @@ public class ClassFileProcessor extends JomcTool
 
             if ( this.getModules() != null )
             {
-                final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
-                u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
+                final Context ctx = new Context( context, this.getModel().getIdentifier() );
                 report = this.validateModelObjects( this.getModules().getSpecifications(),
-                                                    this.getModules().getImplementations(), u, classesDirectory );
+                                                    this.getModules().getImplementations(), ctx, classesDirectory );
 
             }
             else if ( this.isLoggable( Level.WARNING ) )
@@ -763,9 +763,8 @@ public class ClassFileProcessor extends JomcTool
 
             if ( this.getModules() != null && this.getModules().getModule( module.getName() ) != null )
             {
-                final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
-                u.setSchema( context.createSchema( this.getModel().getIdentifier() ) );
-                report = this.validateModelObjects( module.getSpecifications(), module.getImplementations(), u,
+                final Context ctx = new Context( context, this.getModel().getIdentifier() );
+                report = this.validateModelObjects( module.getSpecifications(), module.getImplementations(), ctx,
                                                     classesDirectory );
 
             }
@@ -1355,15 +1354,10 @@ public class ClassFileProcessor extends JomcTool
         {
             if ( this.getModules() != null )
             {
-                final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
-                final Marshaller m = context.createMarshaller( this.getModel().getIdentifier() );
-                final Schema s = context.createSchema( this.getModel().getIdentifier() );
-                u.setSchema( s );
-                m.setSchema( s );
-
+                final Context ctx = new Context( context, this.getModel().getIdentifier() );
                 this.transformModelObjects( this.getModules().getSpecifications(),
                                             this.getModules().getImplementations(),
-                                            u, m, classesDirectory, transformers );
+                                            ctx, classesDirectory, transformers );
 
             }
             else if ( this.isLoggable( Level.WARNING ) )
@@ -1422,13 +1416,8 @@ public class ClassFileProcessor extends JomcTool
         {
             if ( this.getModules() != null && this.getModules().getModule( module.getName() ) != null )
             {
-                final Unmarshaller u = context.createUnmarshaller( this.getModel().getIdentifier() );
-                final Marshaller m = context.createMarshaller( this.getModel().getIdentifier() );
-                final Schema s = context.createSchema( this.getModel().getIdentifier() );
-                u.setSchema( s );
-                m.setSchema( s );
-
-                this.transformModelObjects( module.getSpecifications(), module.getImplementations(), u, m,
+                final Context ctx = new Context( context, this.getModel().getIdentifier() );
+                this.transformModelObjects( module.getSpecifications(), module.getImplementations(), ctx,
                                             classesDirectory, transformers );
 
             }
@@ -2112,22 +2101,150 @@ public class ClassFileProcessor extends JomcTool
     }
 
     private void commitModelObjects( final Specifications specifications, final Implementations implementations,
-                                     final Marshaller marshaller, final File classesDirectory ) throws IOException
+                                     final Context context, final File classesDirectory )
+        throws ModelException, IOException
     {
-        if ( specifications != null )
+        final ExecutorService executorService =
+            Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors() );
+
+        final List<Future<Void>> futures = new LinkedList<Future<Void>>();
+
+        try
         {
-            for ( int i = specifications.getSpecification().size() - 1; i >= 0; i-- )
+            if ( specifications != null )
             {
-                this.commitModelObjects( specifications.getSpecification().get( i ), marshaller, classesDirectory );
+                final CountDownLatch latch = new CountDownLatch( specifications.getSpecification().size() );
+
+                for ( int i = specifications.getSpecification().size() - 1; i >= 0; i-- )
+                {
+                    final Specification s = specifications.getSpecification().get( i );
+
+                    futures.add( executorService.submit( new Callable<Void>()
+                    {
+
+                        public Void call() throws ModelException, IOException
+                        {
+                            try
+                            {
+                                commitModelObjects( s, context.getMarshaller(), classesDirectory );
+                                return null;
+                            }
+                            finally
+                            {
+                                latch.countDown();
+                            }
+                        }
+
+                    } ) );
+                }
+
+                latch.await();
+            }
+
+            if ( implementations != null )
+            {
+                final CountDownLatch latch = new CountDownLatch( implementations.getImplementation().size() );
+
+                for ( int i = implementations.getImplementation().size() - 1; i >= 0; i-- )
+                {
+                    final Implementation in = implementations.getImplementation().get( i );
+
+                    futures.add( executorService.submit( new Callable<Void>()
+                    {
+
+                        public Void call() throws ModelException, IOException
+                        {
+                            try
+                            {
+                                commitModelObjects( in, context.getMarshaller(), classesDirectory );
+                                return null;
+                            }
+                            finally
+                            {
+                                latch.countDown();
+                            }
+                        }
+
+                    } ) );
+                }
+
+                latch.await();
+            }
+
+            final StringBuilder ioExceptionMessage = new StringBuilder( futures.size() * 200 );
+            final StringBuilder modelExceptionMessage = new StringBuilder( futures.size() * 200 );
+            final StringBuilder errorMessage = new StringBuilder( futures.size() * 200 );
+            boolean ioException = false;
+            boolean modelException = false;
+            boolean error = false;
+
+            for ( final Future<Void> future : futures )
+            {
+                try
+                {
+                    future.get();
+                }
+                catch ( final ExecutionException e )
+                {
+                    if ( e.getCause() instanceof IOException )
+                    {
+                        final String currentMessage = getMessage( e.getCause() );
+
+                        if ( currentMessage != null )
+                        {
+                            ioExceptionMessage.append( ' ' ).append( currentMessage );
+                        }
+
+                        ioException = true;
+                    }
+                    else if ( e.getCause() instanceof ModelException )
+                    {
+                        final String currentMessage = getMessage( e.getCause() );
+
+                        if ( currentMessage != null )
+                        {
+                            modelExceptionMessage.append( ' ' ).append( currentMessage );
+                        }
+
+                        modelException = true;
+                    }
+                    else
+                    {
+                        final String currentMessage = getMessage( e.getCause() );
+
+                        if ( currentMessage != null )
+                        {
+                            errorMessage.append( ' ' ).append( currentMessage );
+                        }
+
+                        error = true;
+                    }
+                }
+            }
+
+            if ( ioException )
+            {
+                throw new IOException( ioExceptionMessage.length() > 0 ? ioExceptionMessage.substring( 1 ) : null );
+            }
+            if ( modelException )
+            {
+                throw new ModelException(
+                    modelExceptionMessage.length() > 0 ? modelExceptionMessage.substring( 1 ) : null );
+
+            }
+            if ( error )
+            {
+                throw new AssertionError( errorMessage.length() > 0 ? errorMessage.substring( 1 ) : null );
             }
         }
-
-        if ( implementations != null )
+        catch ( final InterruptedException e )
         {
-            for ( int i = implementations.getImplementation().size() - 1; i >= 0; i-- )
-            {
-                this.commitModelObjects( implementations.getImplementation().get( i ), marshaller, classesDirectory );
-            }
+            this.log( Level.SEVERE, getMessage( e ), e );
+            Thread.currentThread().interrupt();
+        }
+        finally
+        {
+            executorService.shutdownNow();
         }
     }
 
@@ -2197,31 +2314,148 @@ public class ClassFileProcessor extends JomcTool
 
     private ModelValidationReport validateModelObjects( final Specifications specifications,
                                                         final Implementations implementations,
-                                                        final Unmarshaller unmarshaller, final File classesDirectory )
-        throws IOException
+                                                        final Context context, final File classesDirectory )
+        throws ModelException, IOException
     {
         final ModelValidationReport report = new ModelValidationReport();
+        final List<Future<ModelValidationReport>> futures = new LinkedList<Future<ModelValidationReport>>();
+        final ExecutorService executorService =
+            Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors() );
 
-        if ( specifications != null )
+        try
         {
-            for ( int i = 0, s0 = specifications.getSpecification().size(); i < s0; i++ )
+            if ( specifications != null )
             {
-                final ModelValidationReport current = this.validateModelObjects(
-                    specifications.getSpecification().get( i ), unmarshaller, classesDirectory );
+                final CountDownLatch latch = new CountDownLatch( specifications.getSpecification().size() );
 
-                report.getDetails().addAll( current.getDetails() );
+                for ( int i = specifications.getSpecification().size() - 1; i >= 0; i-- )
+                {
+                    final Specification s = specifications.getSpecification().get( i );
+
+                    futures.add( executorService.submit( new Callable<ModelValidationReport>()
+                    {
+
+                        public ModelValidationReport call() throws ModelException, IOException
+                        {
+                            try
+                            {
+                                return validateModelObjects( s, context.getUnmarshaller(), classesDirectory );
+                            }
+                            finally
+                            {
+                                latch.countDown();
+                            }
+                        }
+
+                    } ) );
+                }
+
+                latch.await();
+            }
+
+            if ( implementations != null )
+            {
+                final CountDownLatch latch = new CountDownLatch( implementations.getImplementation().size() );
+
+                for ( int i = implementations.getImplementation().size() - 1; i >= 0; i-- )
+                {
+                    final Implementation in = implementations.getImplementation().get( i );
+
+                    futures.add( executorService.submit( new Callable<ModelValidationReport>()
+                    {
+
+                        public ModelValidationReport call() throws ModelException, IOException
+                        {
+                            try
+                            {
+                                return validateModelObjects( in, context.getUnmarshaller(), classesDirectory );
+                            }
+                            finally
+                            {
+                                latch.countDown();
+                            }
+                        }
+
+                    } ) );
+                }
+
+                latch.await();
+            }
+
+            final StringBuilder ioExceptionMessage = new StringBuilder( futures.size() * 200 );
+            final StringBuilder modelExceptionMessage = new StringBuilder( futures.size() * 200 );
+            final StringBuilder errorMessage = new StringBuilder( futures.size() * 200 );
+            boolean ioException = false;
+            boolean modelException = false;
+            boolean error = false;
+
+            for ( final Future<ModelValidationReport> future : futures )
+            {
+                try
+                {
+                    report.getDetails().addAll( future.get().getDetails() );
+                }
+                catch ( final ExecutionException e )
+                {
+                    if ( e.getCause() instanceof IOException )
+                    {
+                        final String currentMessage = getMessage( e.getCause() );
+
+                        if ( currentMessage != null )
+                        {
+                            ioExceptionMessage.append( ' ' ).append( currentMessage );
+                        }
+
+                        ioException = true;
+                    }
+                    else if ( e.getCause() instanceof ModelException )
+                    {
+                        final String currentMessage = getMessage( e.getCause() );
+
+                        if ( currentMessage != null )
+                        {
+                            modelExceptionMessage.append( ' ' ).append( currentMessage );
+                        }
+
+                        modelException = true;
+                    }
+                    else
+                    {
+                        final String currentMessage = getMessage( e.getCause() );
+
+                        if ( currentMessage != null )
+                        {
+                            errorMessage.append( ' ' ).append( currentMessage );
+                        }
+
+                        error = true;
+                    }
+                }
+            }
+
+            if ( ioException )
+            {
+                throw new IOException( ioExceptionMessage.length() > 0 ? ioExceptionMessage.substring( 1 ) : null );
+            }
+            if ( modelException )
+            {
+                throw new ModelException(
+                    modelExceptionMessage.length() > 0 ? modelExceptionMessage.substring( 1 ) : null );
+
+            }
+            if ( error )
+            {
+                throw new AssertionError( errorMessage.length() > 0 ? errorMessage.substring( 1 ) : null );
             }
         }
-
-        if ( implementations != null )
+        catch ( final InterruptedException e )
         {
-            for ( int i = 0, s0 = implementations.getImplementation().size(); i < s0; i++ )
-            {
-                final ModelValidationReport current = this.validateModelObjects(
-                    implementations.getImplementation().get( i ), unmarshaller, classesDirectory );
-
-                report.getDetails().addAll( current.getDetails() );
-            }
+            this.log( Level.SEVERE, getMessage( e ), e );
+            Thread.currentThread().interrupt();
+        }
+        finally
+        {
+            executorService.shutdownNow();
         }
 
         return report;
@@ -2305,31 +2539,148 @@ public class ClassFileProcessor extends JomcTool
 
     private ModelValidationReport validateModelObjects( final Specifications specifications,
                                                         final Implementations implementations,
-                                                        final Unmarshaller unmarshaller, final ModelContext context )
-        throws IOException, ModelException
+                                                        final Context context )
+        throws ModelException, IOException
     {
         final ModelValidationReport report = new ModelValidationReport();
+        final List<Future<ModelValidationReport>> futures = new LinkedList<Future<ModelValidationReport>>();
+        final ExecutorService executorService =
+            Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors() );
 
-        if ( specifications != null )
+        try
         {
-            for ( int i = 0, s0 = specifications.getSpecification().size(); i < s0; i++ )
+            if ( specifications != null )
             {
-                final ModelValidationReport current = this.validateModelObjects(
-                    specifications.getSpecification().get( i ), unmarshaller, context );
+                final CountDownLatch latch = new CountDownLatch( specifications.getSpecification().size() );
 
-                report.getDetails().addAll( current.getDetails() );
+                for ( int i = specifications.getSpecification().size() - 1; i >= 0; i-- )
+                {
+                    final Specification s = specifications.getSpecification().get( i );
+
+                    futures.add( executorService.submit( new Callable<ModelValidationReport>()
+                    {
+
+                        public ModelValidationReport call() throws ModelException, IOException
+                        {
+                            try
+                            {
+                                return validateModelObjects( s, context.getUnmarshaller(), context.getModelContext() );
+                            }
+                            finally
+                            {
+                                latch.countDown();
+                            }
+                        }
+
+                    } ) );
+                }
+
+                latch.await();
+            }
+
+            if ( implementations != null )
+            {
+                final CountDownLatch latch = new CountDownLatch( implementations.getImplementation().size() );
+
+                for ( int i = implementations.getImplementation().size() - 1; i >= 0; i-- )
+                {
+                    final Implementation in = implementations.getImplementation().get( i );
+
+                    futures.add( executorService.submit( new Callable<ModelValidationReport>()
+                    {
+
+                        public ModelValidationReport call() throws ModelException, IOException
+                        {
+                            try
+                            {
+                                return validateModelObjects( in, context.getUnmarshaller(), context.getModelContext() );
+                            }
+                            finally
+                            {
+                                latch.countDown();
+                            }
+                        }
+
+                    } ) );
+                }
+
+                latch.await();
+            }
+
+            final StringBuilder ioExceptionMessage = new StringBuilder( futures.size() * 200 );
+            final StringBuilder modelExceptionMessage = new StringBuilder( futures.size() * 200 );
+            final StringBuilder errorMessage = new StringBuilder( futures.size() * 200 );
+            boolean ioException = false;
+            boolean modelException = false;
+            boolean error = false;
+
+            for ( final Future<ModelValidationReport> future : futures )
+            {
+                try
+                {
+                    report.getDetails().addAll( future.get().getDetails() );
+                }
+                catch ( final ExecutionException e )
+                {
+                    if ( e.getCause() instanceof IOException )
+                    {
+                        final String currentMessage = getMessage( e.getCause() );
+
+                        if ( currentMessage != null )
+                        {
+                            ioExceptionMessage.append( ' ' ).append( currentMessage );
+                        }
+
+                        ioException = true;
+                    }
+                    else if ( e.getCause() instanceof ModelException )
+                    {
+                        final String currentMessage = getMessage( e.getCause() );
+
+                        if ( currentMessage != null )
+                        {
+                            modelExceptionMessage.append( ' ' ).append( currentMessage );
+                        }
+
+                        modelException = true;
+                    }
+                    else
+                    {
+                        final String currentMessage = getMessage( e.getCause() );
+
+                        if ( currentMessage != null )
+                        {
+                            errorMessage.append( ' ' ).append( currentMessage );
+                        }
+
+                        error = true;
+                    }
+                }
+            }
+
+            if ( ioException )
+            {
+                throw new IOException( ioExceptionMessage.length() > 0 ? ioExceptionMessage.substring( 1 ) : null );
+            }
+            if ( modelException )
+            {
+                throw new ModelException(
+                    modelExceptionMessage.length() > 0 ? modelExceptionMessage.substring( 1 ) : null );
+
+            }
+            if ( error )
+            {
+                throw new AssertionError( errorMessage.length() > 0 ? errorMessage.substring( 1 ) : null );
             }
         }
-
-        if ( implementations != null )
+        catch ( final InterruptedException e )
         {
-            for ( int i = 0, s0 = implementations.getImplementation().size(); i < s0; i++ )
-            {
-                final ModelValidationReport current = this.validateModelObjects(
-                    implementations.getImplementation().get( i ), unmarshaller, context );
-
-                report.getDetails().addAll( current.getDetails() );
-            }
+            this.log( Level.SEVERE, getMessage( e ), e );
+            Thread.currentThread().interrupt();
+        }
+        finally
+        {
+            executorService.shutdownNow();
         }
 
         return report;
@@ -2458,28 +2809,154 @@ public class ClassFileProcessor extends JomcTool
     }
 
     private void transformModelObjects( final Specifications specifications, final Implementations implementations,
-                                        final Unmarshaller unmarshaller, final Marshaller marshaller,
-                                        final File classesDirectory, final List<Transformer> transformers )
-        throws IOException
+                                        final Context context, final File classesDirectory,
+                                        final List<Transformer> transformers )
+        throws ModelException, IOException
     {
-        if ( specifications != null )
-        {
-            for ( int i = 0, s0 = specifications.getSpecification().size(); i < s0; i++ )
-            {
-                this.transformModelObjects( specifications.getSpecification().get( i ), marshaller, unmarshaller,
-                                            classesDirectory, transformers );
+        final List<Future<Void>> futures = new LinkedList<Future<Void>>();
+        final ExecutorService executorService =
+            Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors() );
 
+        try
+        {
+            if ( specifications != null )
+            {
+                final CountDownLatch latch = new CountDownLatch( specifications.getSpecification().size() );
+
+                for ( int i = specifications.getSpecification().size() - 1; i >= 0; i-- )
+                {
+                    final Specification s = specifications.getSpecification().get( i );
+
+                    futures.add( executorService.submit( new Callable<Void>()
+                    {
+
+                        public Void call() throws ModelException, IOException
+                        {
+                            try
+                            {
+                                transformModelObjects( s, context.getMarshaller(), context.getUnmarshaller(),
+                                                       classesDirectory, transformers );
+
+                                return null;
+                            }
+                            finally
+                            {
+                                latch.countDown();
+                            }
+                        }
+
+                    } ) );
+                }
+
+                latch.await();
+            }
+
+            if ( implementations != null )
+            {
+                final CountDownLatch latch = new CountDownLatch( implementations.getImplementation().size() );
+
+                for ( int i = implementations.getImplementation().size() - 1; i >= 0; i-- )
+                {
+                    final Implementation in = implementations.getImplementation().get( i );
+
+                    futures.add( executorService.submit( new Callable<Void>()
+                    {
+
+                        public Void call() throws ModelException, IOException
+                        {
+                            try
+                            {
+                                transformModelObjects( in, context.getMarshaller(), context.getUnmarshaller(),
+                                                       classesDirectory, transformers );
+
+                                return null;
+                            }
+                            finally
+                            {
+                                latch.countDown();
+                            }
+                        }
+
+                    } ) );
+                }
+
+                latch.await();
+            }
+
+            final StringBuilder ioExceptionMessage = new StringBuilder( futures.size() * 200 );
+            final StringBuilder modelExceptionMessage = new StringBuilder( futures.size() * 200 );
+            final StringBuilder errorMessage = new StringBuilder( futures.size() * 200 );
+            boolean ioException = false;
+            boolean modelException = false;
+            boolean error = false;
+
+            for ( final Future<Void> future : futures )
+            {
+                try
+                {
+                    future.get();
+                }
+                catch ( final ExecutionException e )
+                {
+                    if ( e.getCause() instanceof IOException )
+                    {
+                        final String currentMessage = getMessage( e.getCause() );
+
+                        if ( currentMessage != null )
+                        {
+                            ioExceptionMessage.append( ' ' ).append( currentMessage );
+                        }
+
+                        ioException = true;
+                    }
+                    else if ( e.getCause() instanceof ModelException )
+                    {
+                        final String currentMessage = getMessage( e.getCause() );
+
+                        if ( currentMessage != null )
+                        {
+                            modelExceptionMessage.append( ' ' ).append( currentMessage );
+                        }
+
+                        modelException = true;
+                    }
+                    else
+                    {
+                        final String currentMessage = getMessage( e.getCause() );
+
+                        if ( currentMessage != null )
+                        {
+                            errorMessage.append( ' ' ).append( currentMessage );
+                        }
+
+                        error = true;
+                    }
+                }
+            }
+
+            if ( ioException )
+            {
+                throw new IOException( ioExceptionMessage.length() > 0 ? ioExceptionMessage.substring( 1 ) : null );
+            }
+            if ( modelException )
+            {
+                throw new ModelException(
+                    modelExceptionMessage.length() > 0 ? modelExceptionMessage.substring( 1 ) : null );
+
+            }
+            if ( error )
+            {
+                throw new AssertionError( errorMessage.length() > 0 ? errorMessage.substring( 1 ) : null );
             }
         }
-
-        if ( implementations != null )
+        catch ( final InterruptedException e )
         {
-            for ( int i = 0, s0 = implementations.getImplementation().size(); i < s0; i++ )
-            {
-                this.transformModelObjects( implementations.getImplementation().get( i ), marshaller, unmarshaller,
-                                            classesDirectory, transformers );
-
-            }
+            this.log( Level.SEVERE, getMessage( e ), e );
+            Thread.currentThread().interrupt();
+        }
+        finally
+        {
+            executorService.shutdownNow();
         }
     }
 
@@ -2547,6 +3024,76 @@ public class ClassFileProcessor extends JomcTool
             this.transformModelObjects( implementation, marshaller, unmarshaller, javaClass, transformers );
             javaClass.dump( classFile );
         }
+    }
+
+    private static class Context
+    {
+
+        private final ModelContext modelContext;
+
+        private final String modelIdentifier;
+
+        private final ThreadLocal<Marshaller> threadLocalMarshaller = new ThreadLocal<Marshaller>();
+
+        private final ThreadLocal<Unmarshaller> threadLocalUnmarshaller = new ThreadLocal<Unmarshaller>();
+
+        private final ThreadLocal<Schema> threadLocalSchema = new ThreadLocal<Schema>();
+
+        private Context( final ModelContext modelContext, final String modelIdentifier ) throws ModelException
+        {
+            super();
+            this.modelContext = modelContext;
+            this.modelIdentifier = modelIdentifier;
+            this.modelContext.getModlets();
+        }
+
+        private ModelContext getModelContext()
+        {
+            return this.modelContext;
+        }
+
+        private Marshaller getMarshaller() throws ModelException
+        {
+            Marshaller m = this.threadLocalMarshaller.get();
+
+            if ( m == null )
+            {
+                m = this.modelContext.createMarshaller( this.modelIdentifier );
+                m.setSchema( this.getSchema() );
+                this.threadLocalMarshaller.set( m );
+            }
+
+            return m;
+        }
+
+        private Unmarshaller getUnmarshaller() throws ModelException
+        {
+            Unmarshaller u = this.threadLocalUnmarshaller.get();
+
+            if ( u == null )
+            {
+                u = this.modelContext.createUnmarshaller( this.modelIdentifier );
+                u.setSchema( this.getSchema() );
+                this.threadLocalUnmarshaller.set( u );
+            }
+
+            return u;
+
+        }
+
+        private Schema getSchema() throws ModelException
+        {
+            Schema s = this.threadLocalSchema.get();
+
+            if ( s == null )
+            {
+                s = this.modelContext.createSchema( this.modelIdentifier );
+                this.threadLocalSchema.set( s );
+            }
+
+            return s;
+        }
+
     }
 
     private static String getMessage( final String key, final Object... arguments )

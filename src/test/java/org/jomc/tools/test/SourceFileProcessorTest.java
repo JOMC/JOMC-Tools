@@ -187,7 +187,7 @@ public class SourceFileProcessorTest extends JomcToolTest
         assertNotNull( this.getJomcTool().getSourceFilesType(
             this.getJomcTool().getModules().getSpecification( "Specification" ) ) );
 
-        assertNotNull( this.getJomcTool().getSourceFileEditor() );
+        assertNotNull( this.getJomcTool().getSourceFileEditorFactory() );
     }
 
     @Test
@@ -519,11 +519,11 @@ public class SourceFileProcessorTest extends JomcToolTest
     }
 
     @Test
-    public final void testSourceFileEditor() throws Exception
+    public final void testSourceFileEditorFactory() throws Exception
     {
-        assertNotNull( this.getJomcTool().getSourceFileEditor() );
-        this.getJomcTool().setSourceFileEditor( null );
-        assertNotNull( this.getJomcTool().getSourceFileEditor() );
+        assertNotNull( this.getJomcTool().getSourceFileEditorFactory() );
+        this.getJomcTool().setSourceFileEditorFactory( null );
+        assertNotNull( this.getJomcTool().getSourceFileEditorFactory() );
     }
 
     @Test
