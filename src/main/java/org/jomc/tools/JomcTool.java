@@ -61,8 +61,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
@@ -251,12 +249,6 @@ public class JomcTool
     /** Cached Java keywords. */
     private volatile Reference<Set<String>> javaKeywordsCache;
 
-    /**
-     * {@code ExecutorService} initialized to a pool of threads sized to the number of available processors.
-     * @since 1.3
-     */
-    private ExecutorService executorService;
-
     /** Creates a new {@code JomcTool} instance. */
     public JomcTool()
     {
@@ -301,25 +293,6 @@ public class JomcTool
         this.templateLocation =
             tool.templateLocation != null ? new URL( tool.templateLocation.toExternalForm() ) : null;
 
-    }
-
-    /**
-     * Gets the {@code ExecutorService} of the instance.
-     *
-     * @return An {@code ExecutorService} initialized to a pool of threads sized to the number of available processors.
-     *
-     * @see Runtime#availableProcessors()
-     *
-     * @since 1.3
-     */
-    public ExecutorService getExecutorService()
-    {
-        if ( this.executorService == null )
-        {
-            this.executorService = Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors() );
-        }
-
-        return this.executorService;
     }
 
     /**
@@ -2879,12 +2852,7 @@ public class JomcTool
         {
             for ( int i = this.getListeners().size() - 1; i >= 0; i-- )
             {
-                final Listener listener = this.getListeners().get( i );
-
-                synchronized ( listener )
-                {
-                    listener.onLog( level, message, throwable );
-                }
+                this.getListeners().get( i ).onLog( level, message, throwable );
             }
         }
     }

@@ -36,16 +36,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import java.util.logging.Level;
 import org.apache.velocity.VelocityContext;
 import org.jomc.model.Implementation;
@@ -187,132 +181,31 @@ public class ResourceFileProcessor extends JomcTool
             throw new NullPointerException( "resourcesDirectory" );
         }
 
-        final List<Future<Void>> futures = new LinkedList<Future<Void>>();
-
-        try
+        if ( this.getModules() != null && this.getModules().getModule( module.getName() ) != null )
         {
-            if ( this.getModules() != null && this.getModules().getModule( module.getName() ) != null )
+            if ( module.getSpecifications() != null )
             {
-                if ( module.getSpecifications() != null )
+                for ( int i = 0, s0 = module.getSpecifications().getSpecification().size(); i < s0; i++ )
                 {
-                    final CountDownLatch latch =
-                        new CountDownLatch( module.getSpecifications().getSpecification().size() );
+                    this.writeResourceBundleResourceFiles( module.getSpecifications().getSpecification().get( i ),
+                                                           resourcesDirectory );
 
-                    for ( int i = 0, s0 = module.getSpecifications().getSpecification().size(); i < s0; i++ )
-                    {
-                        final Specification s = module.getSpecifications().getSpecification().get( i );
-
-                        futures.add( this.getExecutorService().submit( new Callable<Void>()
-                        {
-
-                            public Void call() throws IOException
-                            {
-                                try
-                                {
-                                    writeResourceBundleResourceFiles( s, resourcesDirectory );
-                                    return null;
-                                }
-                                finally
-                                {
-                                    latch.countDown();
-                                }
-                            }
-
-                        } ) );
-                    }
-
-                    latch.await();
-                }
-
-                if ( module.getImplementations() != null )
-                {
-                    final CountDownLatch latch =
-                        new CountDownLatch( module.getImplementations().getImplementation().size() );
-
-                    for ( int i = 0, s0 = module.getImplementations().getImplementation().size(); i < s0; i++ )
-                    {
-                        final Implementation in = module.getImplementations().getImplementation().get( i );
-
-                        futures.add( this.getExecutorService().submit( new Callable<Void>()
-                        {
-
-                            public Void call() throws IOException
-                            {
-                                try
-                                {
-                                    writeResourceBundleResourceFiles( in, resourcesDirectory );
-                                    return null;
-                                }
-                                finally
-                                {
-                                    latch.countDown();
-                                }
-                            }
-
-                        } ) );
-                    }
-
-                    latch.await();
-                }
-
-                final StringBuilder exceptionMessage = new StringBuilder( futures.size() * 200 );
-                final StringBuilder errorMessage = new StringBuilder( futures.size() * 200 );
-                boolean exception = false;
-                boolean error = false;
-
-                for ( final Future<Void> future : futures )
-                {
-                    try
-                    {
-                        future.get();
-                    }
-                    catch ( final ExecutionException e )
-                    {
-                        if ( e.getCause() instanceof IOException )
-                        {
-                            final String currentMessage = getMessage( e.getCause() );
-
-                            if ( currentMessage != null )
-                            {
-                                exceptionMessage.append( ' ' ).append( currentMessage );
-                            }
-
-                            exception = true;
-                        }
-                        else
-                        {
-                            this.log( Level.SEVERE, null, e.getCause() );
-
-                            final String currentMessage = getMessage( e.getCause() );
-
-                            if ( currentMessage != null )
-                            {
-                                errorMessage.append( ' ' ).append( currentMessage );
-                            }
-
-                            error = true;
-                        }
-                    }
-                }
-
-                if ( exception )
-                {
-                    throw new IOException( exceptionMessage.length() > 0 ? exceptionMessage.substring( 1 ) : null );
-                }
-                if ( error )
-                {
-                    throw new AssertionError( errorMessage.length() > 0 ? errorMessage.substring( 1 ) : null );
                 }
             }
-            else if ( this.isLoggable( Level.WARNING ) )
+
+            if ( module.getImplementations() != null )
             {
-                this.log( Level.WARNING, getMessage( "moduleNotFound", module.getName() ), null );
+                for ( int i = 0, s0 = module.getImplementations().getImplementation().size(); i < s0; i++ )
+                {
+                    this.writeResourceBundleResourceFiles( module.getImplementations().getImplementation().get( i ),
+                                                           resourcesDirectory );
+
+                }
             }
         }
-        catch ( final InterruptedException e )
+        else if ( this.isLoggable( Level.WARNING ) )
         {
-            this.log( Level.SEVERE, getMessage( e ), e );
-            Thread.currentThread().interrupt();
+            this.log( Level.WARNING, getMessage( "moduleNotFound", module.getName() ), null );
         }
     }
 
@@ -547,14 +440,11 @@ public class ResourceFileProcessor extends JomcTool
 
             fallbackProperties = p;
 
-            synchronized ( resourcesDirectory )
+            if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
             {
-                if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
-                {
-                    throw new IOException( getMessage( "failedCreatingDirectory",
-                                                       file.getParentFile().getAbsolutePath() ) );
+                throw new IOException( getMessage( "failedCreatingDirectory",
+                                                   file.getParentFile().getAbsolutePath() ) );
 
-                }
             }
 
             if ( this.isLoggable( Level.INFO ) )
@@ -601,15 +491,11 @@ public class ResourceFileProcessor extends JomcTool
         if ( defProperties != null )
         {
             final File file = new File( resourcesDirectory, bundlePath + ".properties" );
-
-            synchronized ( resourcesDirectory )
+            if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
             {
-                if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
-                {
-                    throw new IOException( getMessage( "failedCreatingDirectory",
-                                                       file.getParentFile().getAbsolutePath() ) );
+                throw new IOException( getMessage( "failedCreatingDirectory",
+                                                   file.getParentFile().getAbsolutePath() ) );
 
-                }
             }
 
             if ( this.isLoggable( Level.INFO ) )

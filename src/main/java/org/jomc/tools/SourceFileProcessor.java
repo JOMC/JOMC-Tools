@@ -38,13 +38,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.text.MessageFormat;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import java.util.logging.Level;
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.Template;
@@ -80,8 +74,8 @@ import org.jomc.util.TrailingWhitespaceEditor;
 public class SourceFileProcessor extends JomcTool
 {
 
-    /** The source file editor factory of the instance. */
-    private SourceFileProcessor.SourceFileEditorFactory sourceFileEditorFactory;
+    /** The source file editor of the instance. */
+    private SourceFileProcessor.SourceFileEditor sourceFileEditor;
 
     /** Creates a new {@code SourceFileProcessor} instance. */
     public SourceFileProcessor()
@@ -101,7 +95,7 @@ public class SourceFileProcessor extends JomcTool
     public SourceFileProcessor( final SourceFileProcessor tool ) throws IOException
     {
         super( tool );
-        this.sourceFileEditorFactory = tool.sourceFileEditorFactory;
+        this.sourceFileEditor = tool.sourceFileEditor;
     }
 
     /**
@@ -173,60 +167,39 @@ public class SourceFileProcessor extends JomcTool
     }
 
     /**
-     * Gets the source file editor factory of the instance.
+     * Gets the source file editor of the instance.
      *
-     * @return The source file editor factory of the instance.
+     * @return The source file editor of the instance.
      *
-     * @since 1.3
+     * @since 1.2
      *
-     * @see #setSourceFileEditorFactory(org.jomc.tools.SourceFileProcessor.SourceFileEditorFactory)
+     * @see #setSourceFileEditor(org.jomc.tools.SourceFileProcessor.SourceFileEditor)
      */
-    public final SourceFileProcessor.SourceFileEditorFactory getSourceFileEditorFactory()
+    public final SourceFileProcessor.SourceFileEditor getSourceFileEditor()
     {
-        if ( this.sourceFileEditorFactory == null )
+        if ( this.sourceFileEditor == null )
         {
-            this.sourceFileEditorFactory = new SourceFileEditorFactory()
-            {
+            this.sourceFileEditor =
+                new SourceFileProcessor.SourceFileEditor( new TrailingWhitespaceEditor( this.getLineSeparator() ),
+                                                          this.getLineSeparator() );
 
-                public SourceFileProcessor.SourceFileEditor createSourceFileEditor()
-                {
-                    return new SourceFileProcessor.SourceFileEditor();
-                }
-
-                public SourceFileProcessor.SourceFileEditor createSourceFileEditor( final String lineSeparator )
-                {
-                    return new SourceFileProcessor.SourceFileEditor( lineSeparator );
-                }
-
-                public SourceFileProcessor.SourceFileEditor createSourceFileEditor( final LineEditor lineEditor )
-                {
-                    return new SourceFileProcessor.SourceFileEditor( lineEditor );
-                }
-
-                public SourceFileProcessor.SourceFileEditor createSourceFileEditor( final LineEditor lineEditor,
-                                                                                    final String lineSeparator )
-                {
-                    return new SourceFileProcessor.SourceFileEditor( lineEditor, lineSeparator );
-                }
-
-            };
         }
 
-        return this.sourceFileEditorFactory;
+        return this.sourceFileEditor;
     }
 
     /**
-     * Sets the source file editor factory of the instance.
+     * Sets the source file editor of the instance.
      *
-     * @param value The new source file editor factory of the instance or {@code null}.
+     * @param value The new source file editor of the instance or {@code null}.
      *
-     * @since 1.3
+     * @since 1.2
      *
-     * @see #getSourceFileEditorFactory()
+     * @see #getSourceFileEditor()
      */
-    public final void setSourceFileEditorFactory( final SourceFileProcessor.SourceFileEditorFactory value )
+    public final void setSourceFileEditor( final SourceFileProcessor.SourceFileEditor value )
     {
-        this.sourceFileEditorFactory = value;
+        this.sourceFileEditor = value;
     }
 
     /**
@@ -282,133 +255,26 @@ public class SourceFileProcessor extends JomcTool
             throw new NullPointerException( "sourcesDirectory" );
         }
 
-        final List<Future<Void>> futures = new LinkedList<Future<Void>>();
-
-        try
+        if ( this.getModules() != null && this.getModules().getModule( module.getName() ) != null )
         {
-            if ( this.getModules() != null && this.getModules().getModule( module.getName() ) != null )
+            if ( module.getSpecifications() != null )
             {
-                if ( module.getSpecifications() != null )
+                for ( int i = 0, s0 = module.getSpecifications().getSpecification().size(); i < s0; i++ )
                 {
-                    final CountDownLatch latch =
-                        new CountDownLatch( module.getSpecifications().getSpecification().size() );
-
-                    for ( int i = 0, s0 = module.getSpecifications().getSpecification().size(); i < s0; i++ )
-                    {
-                        final Specification s = module.getSpecifications().getSpecification().get( i );
-
-                        futures.add( this.getExecutorService().submit( new Callable<Void>()
-                        {
-
-                            public Void call() throws IOException
-                            {
-                                try
-                                {
-                                    manageSourceFiles( s, sourcesDirectory );
-                                    return null;
-                                }
-                                finally
-                                {
-                                    latch.countDown();
-                                }
-                            }
-
-                        } ) );
-
-                    }
-
-                    latch.await();
-                }
-
-                if ( module.getImplementations() != null )
-                {
-                    final CountDownLatch latch =
-                        new CountDownLatch( module.getImplementations().getImplementation().size() );
-
-                    for ( int i = 0, s0 = module.getImplementations().getImplementation().size(); i < s0; i++ )
-                    {
-                        final Implementation in = module.getImplementations().getImplementation().get( i );
-
-                        futures.add( this.getExecutorService().submit( new Callable<Void>()
-                        {
-
-                            public Void call() throws IOException
-                            {
-                                try
-                                {
-                                    manageSourceFiles( in, sourcesDirectory );
-                                    return null;
-                                }
-                                finally
-                                {
-                                    latch.countDown();
-                                }
-                            }
-
-                        } ) );
-                    }
-
-                    latch.await();
-                }
-
-                final StringBuilder exceptionMessage = new StringBuilder( futures.size() * 200 );
-                final StringBuilder errorMessage = new StringBuilder( futures.size() * 200 );
-                boolean exception = false;
-                boolean error = false;
-
-                for ( final Future<Void> future : futures )
-                {
-                    try
-                    {
-                        future.get();
-                    }
-                    catch ( final ExecutionException e )
-                    {
-                        if ( e.getCause() instanceof IOException )
-                        {
-                            final String currentMessage = getMessage( e.getCause() );
-
-                            if ( currentMessage != null )
-                            {
-                                exceptionMessage.append( ' ' ).append( currentMessage );
-                            }
-
-                            exception = true;
-                        }
-                        else
-                        {
-                            this.log( Level.SEVERE, null, e.getCause() );
-
-                            final String currentMessage = getMessage( e.getCause() );
-
-                            if ( currentMessage != null )
-                            {
-                                errorMessage.append( ' ' ).append( currentMessage );
-                            }
-
-                            error = true;
-                        }
-                    }
-                }
-
-                if ( exception )
-                {
-                    throw new IOException( exceptionMessage.length() > 0 ? exceptionMessage.substring( 1 ) : null );
-                }
-                if ( error )
-                {
-                    throw new AssertionError( errorMessage.length() > 0 ? errorMessage.substring( 1 ) : null );
+                    this.manageSourceFiles( module.getSpecifications().getSpecification().get( i ), sourcesDirectory );
                 }
             }
-            else if ( this.isLoggable( Level.WARNING ) )
+            if ( module.getImplementations() != null )
             {
-                this.log( Level.WARNING, getMessage( "moduleNotFound", module.getName() ), null );
+                for ( int i = 0, s0 = module.getImplementations().getImplementation().size(); i < s0; i++ )
+                {
+                    this.manageSourceFiles( module.getImplementations().getImplementation().get( i ), sourcesDirectory );
+                }
             }
         }
-        catch ( final InterruptedException e )
+        else if ( this.isLoggable( Level.WARNING ) )
         {
-            this.log( Level.SEVERE, getMessage( e ), e );
-            Thread.currentThread().interrupt();
+            this.log( Level.WARNING, getMessage( "moduleNotFound", module.getName() ), null );
         }
     }
 
@@ -466,9 +332,8 @@ public class SourceFileProcessor extends JomcTool
                     {
                         for ( int i = 0, s0 = model.getSourceFile().size(); i < s0; i++ )
                         {
-                            this.getSourceFileEditorFactory().createSourceFileEditor(
-                                new TrailingWhitespaceEditor( this.getLineSeparator() ), this.getLineSeparator() ).
-                                edit( specification, model.getSourceFile().get( i ), sourcesDirectory );
+                            this.getSourceFileEditor().edit(
+                                specification, model.getSourceFile().get( i ), sourcesDirectory );
 
                         }
                     }
@@ -516,9 +381,8 @@ public class SourceFileProcessor extends JomcTool
                 {
                     for ( int i = 0, s0 = model.getSourceFile().size(); i < s0; i++ )
                     {
-                        this.getSourceFileEditorFactory().createSourceFileEditor(
-                            new TrailingWhitespaceEditor( this.getLineSeparator() ), this.getLineSeparator() ).
-                            edit( implementation, model.getSourceFile().get( i ), sourcesDirectory );
+                        this.getSourceFileEditor().edit(
+                            implementation, model.getSourceFile().get( i ), sourcesDirectory );
 
                     }
                 }
@@ -545,54 +409,6 @@ public class SourceFileProcessor extends JomcTool
     private static String getMessage( final Throwable t )
     {
         return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
-    }
-
-    /**
-     * Interface to creating {@code SourceFileEditor} objects.
-     *
-     * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
-     * @version $JOMC$
-     * @since 1.3
-     */
-    public interface SourceFileEditorFactory
-    {
-
-        /**
-         * Creates a new {@code SourceFileEditor} instance.
-         *
-         * @return A new {@code SourceFileEditor} instance.
-         */
-        SourceFileEditor createSourceFileEditor();
-
-        /**
-         * Creates a new {@code SourceFileEditor} instance taking a string to use for separating lines.
-         *
-         * @param lineSeparator String to use for separating lines.
-         *
-         * @return A new {@code SourceFileEditor} instance.
-         */
-        SourceFileEditor createSourceFileEditor( String lineSeparator );
-
-        /**
-         * Creates a new {@code SourceFileEditor} instance taking an editor to chain.
-         *
-         * @param lineEditor The editor to chain.
-         *
-         * @return A new {@code SourceFileEditor} instance.
-         */
-        SourceFileEditor createSourceFileEditor( LineEditor lineEditor );
-
-        /**
-         * Creates a new {@code SourceFileEditor} instance taking an editor to chain and a string to use for separating
-         * lines.
-         *
-         * @param lineEditor The editor to chain.
-         * @param lineSeparator String to use for separating lines.
-         *
-         * @return A new {@code SourceFileEditor} instance.
-         */
-        SourceFileEditor createSourceFileEditor( LineEditor lineEditor, String lineSeparator );
-
     }
 
     /**
@@ -1041,14 +857,11 @@ public class SourceFileProcessor extends JomcTool
 
                     if ( !edited.equals( content ) || edited.length() == 0 )
                     {
-                        synchronized ( sourcesDirectory )
+                        if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
                         {
-                            if ( !f.getParentFile().exists() && !f.getParentFile().mkdirs() )
-                            {
-                                throw new IOException( getMessage(
-                                    "failedCreatingDirectory", f.getParentFile().getAbsolutePath() ) );
+                            throw new IOException( getMessage(
+                                "failedCreatingDirectory", f.getParentFile().getAbsolutePath() ) );
 
-                            }
                         }
 
                         if ( isLoggable( Level.INFO ) )
