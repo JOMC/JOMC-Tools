@@ -42,6 +42,7 @@ import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -166,11 +167,13 @@ public class ClassFileProcessor extends JomcTool
             throw new NullPointerException( "classesDirectory" );
         }
 
+        Context ctx = null;
+
         try
         {
             if ( this.getModules() != null )
             {
-                final Context ctx = new Context( context, this.getModel().getIdentifier() );
+                ctx = new Context( context, this.getModel().getIdentifier() );
                 this.commitModelObjects( this.getModules().getSpecifications(), this.getModules().getImplementations(),
                                          ctx, classesDirectory );
 
@@ -184,6 +187,13 @@ public class ClassFileProcessor extends JomcTool
         {
             // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
+        }
+        finally
+        {
+            if ( ctx != null )
+            {
+                ctx.reset();
+            }
         }
     }
 
@@ -216,11 +226,13 @@ public class ClassFileProcessor extends JomcTool
             throw new NullPointerException( "classesDirectory" );
         }
 
+        Context ctx = null;
+
         try
         {
             if ( this.getModules() != null && this.getModules().getModule( module.getName() ) != null )
             {
-                final Context ctx = new Context( context, this.getModel().getIdentifier() );
+                ctx = new Context( context, this.getModel().getIdentifier() );
                 this.commitModelObjects( module.getSpecifications(), module.getImplementations(), ctx,
                                          classesDirectory );
 
@@ -234,6 +246,13 @@ public class ClassFileProcessor extends JomcTool
         {
             // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
+        }
+        finally
+        {
+            if ( ctx != null )
+            {
+                ctx.reset();
+            }
         }
     }
 
@@ -503,13 +522,15 @@ public class ClassFileProcessor extends JomcTool
             throw new NullPointerException( "context" );
         }
 
+        Context ctx = null;
+
         try
         {
             ModelValidationReport report = null;
 
             if ( this.getModules() != null )
             {
-                final Context ctx = new Context( context, this.getModel().getIdentifier() );
+                ctx = new Context( context, this.getModel().getIdentifier() );
                 report = this.validateModelObjects( this.getModules().getSpecifications(),
                                                     this.getModules().getImplementations(), ctx );
 
@@ -525,6 +546,13 @@ public class ClassFileProcessor extends JomcTool
         {
             // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
+        }
+        finally
+        {
+            if ( ctx != null )
+            {
+                ctx.reset();
+            }
         }
     }
 
@@ -554,13 +582,15 @@ public class ClassFileProcessor extends JomcTool
             throw new NullPointerException( "context" );
         }
 
+        Context ctx = null;
+
         try
         {
             ModelValidationReport report = null;
 
             if ( this.getModules() != null && this.getModules().getModule( module.getName() ) != null )
             {
-                final Context ctx = new Context( context, this.getModel().getIdentifier() );
+                ctx = new Context( context, this.getModel().getIdentifier() );
                 report = this.validateModelObjects( module.getSpecifications(), module.getImplementations(), ctx );
             }
             else if ( this.isLoggable( Level.WARNING ) )
@@ -574,6 +604,13 @@ public class ClassFileProcessor extends JomcTool
         {
             // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
+        }
+        finally
+        {
+            if ( ctx != null )
+            {
+                ctx.reset();
+            }
         }
     }
 
@@ -704,13 +741,15 @@ public class ClassFileProcessor extends JomcTool
             throw new NullPointerException( "classesDirectory" );
         }
 
+        Context ctx = null;
+
         try
         {
             ModelValidationReport report = null;
 
             if ( this.getModules() != null )
             {
-                final Context ctx = new Context( context, this.getModel().getIdentifier() );
+                ctx = new Context( context, this.getModel().getIdentifier() );
                 report = this.validateModelObjects( this.getModules().getSpecifications(),
                                                     this.getModules().getImplementations(), ctx, classesDirectory );
 
@@ -726,6 +765,13 @@ public class ClassFileProcessor extends JomcTool
         {
             // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
+        }
+        finally
+        {
+            if ( ctx != null )
+            {
+                ctx.reset();
+            }
         }
     }
 
@@ -760,13 +806,15 @@ public class ClassFileProcessor extends JomcTool
             throw new NullPointerException( "classesDirectory" );
         }
 
+        Context ctx = null;
+
         try
         {
             ModelValidationReport report = null;
 
             if ( this.getModules() != null && this.getModules().getModule( module.getName() ) != null )
             {
-                final Context ctx = new Context( context, this.getModel().getIdentifier() );
+                ctx = new Context( context, this.getModel().getIdentifier() );
                 report = this.validateModelObjects( module.getSpecifications(), module.getImplementations(), ctx,
                                                     classesDirectory );
 
@@ -782,6 +830,13 @@ public class ClassFileProcessor extends JomcTool
         {
             // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
+        }
+        finally
+        {
+            if ( ctx != null )
+            {
+                ctx.reset();
+            }
         }
     }
 
@@ -1353,11 +1408,13 @@ public class ClassFileProcessor extends JomcTool
             throw new IOException( getMessage( "directoryNotFound", classesDirectory.getAbsolutePath() ) );
         }
 
+        Context ctx = null;
+
         try
         {
             if ( this.getModules() != null )
             {
-                final Context ctx = new Context( context, this.getModel().getIdentifier() );
+                ctx = new Context( context, this.getModel().getIdentifier() );
                 this.transformModelObjects( this.getModules().getSpecifications(),
                                             this.getModules().getImplementations(),
                                             ctx, classesDirectory, transformers );
@@ -1372,6 +1429,13 @@ public class ClassFileProcessor extends JomcTool
         {
             // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
+        }
+        finally
+        {
+            if ( ctx != null )
+            {
+                ctx.reset();
+            }
         }
     }
 
@@ -1415,11 +1479,13 @@ public class ClassFileProcessor extends JomcTool
             throw new IOException( getMessage( "directoryNotFound", classesDirectory.getAbsolutePath() ) );
         }
 
+        Context ctx = null;
+
         try
         {
             if ( this.getModules() != null && this.getModules().getModule( module.getName() ) != null )
             {
-                final Context ctx = new Context( context, this.getModel().getIdentifier() );
+                ctx = new Context( context, this.getModel().getIdentifier() );
                 this.transformModelObjects( module.getSpecifications(), module.getImplementations(), ctx,
                                             classesDirectory, transformers );
 
@@ -1433,6 +1499,13 @@ public class ClassFileProcessor extends JomcTool
         {
             // JDK: As of JDK 6, "new IOException( message, cause )".
             throw (IOException) new IOException( getMessage( e ) ).initCause( e );
+        }
+        finally
+        {
+            if ( ctx != null )
+            {
+                ctx.reset();
+            }
         }
     }
 
@@ -3050,12 +3123,39 @@ public class ClassFileProcessor extends JomcTool
 
         private final ThreadLocal<Schema> threadLocalSchema = new ThreadLocal<Schema>();
 
+        private final List<ModelContext.Listener> modelContextListeners;
+
         private Context( final ModelContext modelContext, final String modelIdentifier ) throws ModelException
         {
             super();
             this.modelContext = modelContext;
             this.modelIdentifier = modelIdentifier;
             this.modelContext.getModlets();
+            this.modelContextListeners = new ArrayList<ModelContext.Listener>( modelContext.getListeners().size() );
+            this.modelContextListeners.addAll( modelContext.getListeners() );
+            modelContext.getListeners().clear();
+
+            if ( !this.modelContextListeners.isEmpty() )
+            {
+                modelContext.getListeners().add( new ModelContext.Listener()
+                {
+
+                    @Override
+                    public void onLog( final Level level, final String message, final Throwable t )
+                    {
+                        super.onLog( level, message, t );
+
+                        for ( final ModelContext.Listener l : modelContextListeners )
+                        {
+                            synchronized ( l )
+                            {
+                                l.onLog( level, message, t );
+                            }
+                        }
+                    }
+
+                } );
+            }
         }
 
         private ModelContext getModelContext()
@@ -3103,6 +3203,12 @@ public class ClassFileProcessor extends JomcTool
             }
 
             return s;
+        }
+
+        private void reset()
+        {
+            this.modelContext.getListeners().clear();
+            this.modelContext.getListeners().addAll( this.modelContextListeners );
         }
 
     }
