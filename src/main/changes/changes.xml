@@ -235,10 +235,6 @@
       and <code>template-encoding</code> and updated methods <code>getVelocityContext</code> and
       <code>getVelocityTemplate(java.lang.String)</code> to make use of these template profile properties.]]>
       </action>
-      <action dev="schulte2005" type="add"><![CDATA[Added inner interface <code>SourceFileEditorFactory</code> to class
-      <code>org.jomc.tools.SourceFileProcessor</code> and added methods <code>getSourceFileEditorFactory</code>
-      and <code>setSourceFileEditorFactory</code>.]]>
-      </action>
       <action dev="schulte2005" type="update"><![CDATA[Updated method <code>getVelocityContext</code> of class
       <code>org.jomc.tools.JomcTool</code> adding <code>java.io.IOException</code> to the list of exceptions.]]>
       </action>
