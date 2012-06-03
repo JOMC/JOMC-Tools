@@ -35,10 +35,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.RandomAccessFile;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.text.MessageFormat;
@@ -2583,22 +2584,31 @@ public class ClassFileProcessor extends JomcTool
 
     private void writeJavaClass( final JavaClass javaClass, final File classFile ) throws IOException
     {
-        FileOutputStream out = null;
+        RandomAccessFile randomAccessFile = null;
         FileChannel fileChannel = null;
         FileLock fileLock = null;
         boolean suppressExceptionOnClose = true;
 
+        final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        javaClass.dump( byteStream );
+        byteStream.close();
+
+        final byte[] bytes = byteStream.toByteArray();
+
         try
         {
-            out = new FileOutputStream( classFile );
-            fileChannel = out.getChannel();
+            randomAccessFile = new RandomAccessFile( classFile, "rw" );
+            fileChannel = randomAccessFile.getChannel();
             fileLock = fileChannel.lock();
-            javaClass.dump( out );
+            fileChannel.truncate( bytes.length );
+            fileChannel.position( 0L );
+            fileChannel.write( ByteBuffer.wrap( bytes ) );
+            fileChannel.force( true );
             suppressExceptionOnClose = false;
         }
         finally
         {
-            this.releaseAndClose( fileLock, fileChannel, out, suppressExceptionOnClose );
+            this.releaseAndClose( fileLock, fileChannel, randomAccessFile, suppressExceptionOnClose );
         }
     }
 

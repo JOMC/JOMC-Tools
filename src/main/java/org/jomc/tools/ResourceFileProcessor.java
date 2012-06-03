@@ -30,10 +30,14 @@
  */
 package org.jomc.tools;
 
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Locale;
@@ -452,35 +456,7 @@ public class ResourceFileProcessor extends JomcTool
                 this.log( Level.INFO, getMessage( "writing", file.getCanonicalPath() ), null );
             }
 
-            OutputStream out = null;
-            boolean suppressExceptionOnClose = true;
-            try
-            {
-                out = new FileOutputStream( file );
-                p.store( out, toolName + ' ' + toolVersion + " - See " + toolUrl );
-                suppressExceptionOnClose = false;
-            }
-            finally
-            {
-                try
-                {
-                    if ( out != null )
-                    {
-                        out.close();
-                    }
-                }
-                catch ( final IOException ex )
-                {
-                    if ( suppressExceptionOnClose )
-                    {
-                        this.log( Level.SEVERE, getMessage( ex ), ex );
-                    }
-                    else
-                    {
-                        throw ex;
-                    }
-                }
-            }
+            this.writePropertiesFile( p, toolName + ' ' + toolVersion + " - See " + toolUrl, file );
         }
 
         if ( defProperties == null )
@@ -491,6 +467,7 @@ public class ResourceFileProcessor extends JomcTool
         if ( defProperties != null )
         {
             final File file = new File( resourcesDirectory, bundlePath + ".properties" );
+
             if ( !file.getParentFile().exists() && !file.getParentFile().mkdirs() )
             {
                 throw new IOException( getMessage( "failedCreatingDirectory",
@@ -503,35 +480,7 @@ public class ResourceFileProcessor extends JomcTool
                 this.log( Level.INFO, getMessage( "writing", file.getCanonicalPath() ), null );
             }
 
-            OutputStream out = null;
-            boolean suppressExceptionOnClose = true;
-            try
-            {
-                out = new FileOutputStream( file );
-                defProperties.store( out, toolName + ' ' + toolVersion + " - See " + toolUrl );
-                suppressExceptionOnClose = false;
-            }
-            finally
-            {
-                try
-                {
-                    if ( out != null )
-                    {
-                        out.close();
-                    }
-                }
-                catch ( final IOException e )
-                {
-                    if ( suppressExceptionOnClose )
-                    {
-                        this.log( Level.SEVERE, getMessage( e ), e );
-                    }
-                    else
-                    {
-                        throw e;
-                    }
-                }
-            }
+            this.writePropertiesFile( defProperties, toolName + ' ' + toolVersion + " - See " + toolUrl, file );
         }
     }
 
@@ -563,6 +512,103 @@ public class ResourceFileProcessor extends JomcTool
                     for ( int j = m.getTemplate().getText().size() - 1; j >= 0; j-- )
                     {
                         new MessageFormat( m.getTemplate().getText().get( j ).getValue() );
+                    }
+                }
+            }
+        }
+    }
+
+    private void writePropertiesFile( final Properties properties, final String comments, final File propertiesFile )
+        throws IOException
+    {
+        RandomAccessFile randomAccessFile = null;
+        FileChannel fileChannel = null;
+        FileLock fileLock = null;
+        boolean suppressExceptionOnClose = true;
+
+        final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        properties.store( byteStream, comments );
+        byteStream.close();
+
+        final byte[] bytes = byteStream.toByteArray();
+
+        try
+        {
+            randomAccessFile = new RandomAccessFile( propertiesFile, "rw" );
+            fileChannel = randomAccessFile.getChannel();
+            fileLock = fileChannel.lock();
+            fileChannel.truncate( bytes.length );
+            fileChannel.position( 0L );
+            fileChannel.write( ByteBuffer.wrap( bytes ) );
+            fileChannel.force( true );
+            suppressExceptionOnClose = false;
+        }
+        finally
+        {
+            this.releaseAndClose( fileLock, fileChannel, randomAccessFile, suppressExceptionOnClose );
+        }
+    }
+
+    private void releaseAndClose( final FileLock fileLock, final FileChannel fileChannel,
+                                  final Closeable closeable, final boolean suppressExceptions )
+        throws IOException
+    {
+        try
+        {
+            if ( fileLock != null )
+            {
+                fileLock.release();
+            }
+        }
+        catch ( final IOException e )
+        {
+            if ( suppressExceptions )
+            {
+                this.log( Level.SEVERE, null, e );
+            }
+            else
+            {
+                throw e;
+            }
+        }
+        finally
+        {
+            try
+            {
+                if ( fileChannel != null )
+                {
+                    fileChannel.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( suppressExceptions )
+                {
+                    this.log( Level.SEVERE, null, e );
+                }
+                else
+                {
+                    throw e;
+                }
+            }
+            finally
+            {
+                try
+                {
+                    if ( closeable != null )
+                    {
+                        closeable.close();
+                    }
+                }
+                catch ( final IOException e )
+                {
+                    if ( suppressExceptions )
+                    {
+                        this.log( Level.SEVERE, null, e );
+                    }
+                    else
+                    {
+                        throw e;
                     }
                 }
             }
