@@ -36,7 +36,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -53,6 +52,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Path;
+import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelContextFactory;
 import org.jomc.modlet.ModelException;
@@ -521,6 +521,8 @@ public class ProjectClassLoader extends URLClassLoader
      * Closes the class loader.
      * @throws IOException if closing the class loader fails.
      */
+    @Override
+    @IgnoreJRERequirement
     public void close() throws IOException
     {
         for ( final Iterator<File> it = this.temporaryResources.iterator(); it.hasNext(); )
@@ -534,8 +536,8 @@ public class ProjectClassLoader extends URLClassLoader
         }
 
         if ( Closeable.class.isAssignableFrom( ProjectClassLoader.class ) )
-        { // JDK: As of JDK 7, super.close();
-            this.jdk7Close();
+        {
+            super.close();
         }
     }
 
@@ -851,26 +853,6 @@ public class ProjectClassLoader extends URLClassLoader
         }
 
         this.getExcludedServices().getService().add( service );
-    }
-
-    private void jdk7Close()
-    {
-        try
-        {
-            URLClassLoader.class.getMethod( "close" ).invoke( this );
-        }
-        catch ( final NoSuchMethodException e )
-        {
-            this.project.log( Messages.getMessage( e ), e, Project.MSG_DEBUG );
-        }
-        catch ( final IllegalAccessException e )
-        {
-            this.project.log( Messages.getMessage( e ), e, Project.MSG_DEBUG );
-        }
-        catch ( final InvocationTargetException e )
-        {
-            this.project.log( Messages.getMessage( e ), e, Project.MSG_DEBUG );
-        }
     }
 
     private static Set<String> readDefaultExcludes( final String location ) throws IOException

@@ -104,6 +104,9 @@
       <code>commit-classes</code>, <code>generate-resources</code>, <code>manage-sources</code>,
       <code>validate-classes</code> and <code>validate-classpath</code>.]]>
       </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Updated class <code>org.jomc.ant.ProjectClassLoader</code> to
+      correct a <code>java.lang.StackOverflowError</code> thrown using JDK 7 and to correctly close the class loader.]]>
+      </action>
       <action dev="schulte2005" type="remove"><![CDATA[Removed attribute <code>templateEncoding</code> of tasks
       <code>commit-classes</code>, <code>generate-resources</code>, <code>manage-sources</code>,
       <code>validate-classes</code> and <code>validate-classpath</code>.]]>
