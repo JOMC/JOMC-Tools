@@ -265,6 +265,10 @@
       <code>commit-classes</code>, <code>generate-resources</code>, <code>manage-sources</code> and
       <code>validate-classes</code>.]]>
       </action>
+      <action dev="schulte2005" type="fix"><![CDATA[Updated class
+      <code>org.jomc.cli.commands.AbstractModletCommand.CommandLineClassLoader</code> to correct a
+      <code>java.lang.StackOverflowError</code> thrown using JDK 7 and to correctly close the class loader.]]>
+      </action>
       <action dev="schulte2005" type="remove"><![CDATA[Removed option <code>template-encoding</code> from commands
       <code>commit-classes</code>, <code>generate-resources</code>, <code>manage-sources</code> and
       <code>validate-classes</code>.]]>

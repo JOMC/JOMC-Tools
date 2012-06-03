@@ -44,7 +44,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -69,6 +68,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.io.IOUtils;
+import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 import org.jomc.model.ModelObject;
 import org.jomc.modlet.DefaultModelContext;
 import org.jomc.modlet.DefaultModletProvider;
@@ -761,6 +761,8 @@ public abstract class AbstractModletCommand extends AbstractCommand
          * Closes the class loader.
          * @throws IOException if closing the class loader fails.
          */
+        @Override
+        @IgnoreJRERequirement
         public void close() throws IOException
         {
             for ( final Iterator<File> it = this.temporaryResources.iterator(); it.hasNext(); )
@@ -774,8 +776,8 @@ public abstract class AbstractModletCommand extends AbstractCommand
             }
 
             if ( Closeable.class.isAssignableFrom( CommandLineClassLoader.class ) )
-            { // JDK: As of JDK 7, super.close();
-                this.jdk7Close();
+            {
+                super.close();
             }
         }
 
@@ -1008,26 +1010,6 @@ public abstract class AbstractModletCommand extends AbstractCommand
             }
 
             return filteredSchemas || filteredServices;
-        }
-
-        private void jdk7Close()
-        {
-            try
-            {
-                URLClassLoader.class.getMethod( "close" ).invoke( this );
-            }
-            catch ( final NoSuchMethodException e )
-            {
-                log( Level.FINEST, null, e );
-            }
-            catch ( final IllegalAccessException e )
-            {
-                log( Level.FINEST, null, e );
-            }
-            catch ( final InvocationTargetException e )
-            {
-                log( Level.FINEST, null, e );
-            }
         }
 
     }

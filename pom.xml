@@ -589,6 +589,11 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>animal-sniffer-annotations</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
       <groupId>org.jomc</groupId>
       <artifactId>jomc-ri</artifactId>
       <scope>runtime</scope>
@@ -705,10 +710,10 @@
                   <requireJavaVersion>
                     <message>
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!! This project must be released using JDK 6 or any later version.                            !!
+!! This project must be released using JDK 7 or any later version.                            !!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     </message>
-                    <version>[1.6.0,)</version>
+                    <version>[1.7.0,)</version>
                   </requireJavaVersion>
                   <requireMavenVersion>
                     <message>
