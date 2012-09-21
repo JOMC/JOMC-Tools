@@ -55,13 +55,13 @@ import java.lang.*;
  * </table>
  * </ul></p>
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a> 1.0
  * @version $JOMC$
  */
 // SECTION-END
 // SECTION-START[Annotations]
 @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                             comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-5-SNAPSHOT/jomc-tools" )
+                             comments = "See http://www.jomc.org/jomc/1.0-alpha-5-SNAPSHOT/jomc-tools" )
 // SECTION-END
 public  class Implementation
 {
@@ -71,7 +71,7 @@ public  class Implementation
 
     /** Creates a new {@code Implementation} instance. */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-5-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://www.jomc.org/jomc/1.0-alpha-5-SNAPSHOT/jomc-tools" )
     public Implementation()
     {
         // SECTION-START[Default Constructor]
@@ -87,7 +87,7 @@ public  class Implementation
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-5-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://www.jomc.org/jomc/1.0-alpha-5-SNAPSHOT/jomc-tools" )
     private java.lang.String getProperty()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager().getProperty( this, "property" );
@@ -110,7 +110,7 @@ public  class Implementation
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                                 comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-5-SNAPSHOT/jomc-tools" )
+                                 comments = "See http://www.jomc.org/jomc/1.0-alpha-5-SNAPSHOT/jomc-tools" )
     private String getMessageMessage( final java.util.Locale locale, final java.lang.String test )
     {
         final String _m = org.jomc.ObjectManagerFactory.getObjectManager().getMessage( this, "message", locale, new Object[] { test, null } );

@@ -100,7 +100,7 @@ import org.jomc.modlet.Model;
 /**
  * Base tool class.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  */
 public class JomcTool

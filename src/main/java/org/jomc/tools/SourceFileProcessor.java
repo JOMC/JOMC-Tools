@@ -68,7 +68,7 @@ import org.jomc.util.TrailingWhitespaceEditor;
  * <li>{@link #manageSourceFiles(Implementation, File) }</li>
  * </ul></p>
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  */
 public class SourceFileProcessor extends JomcTool
@@ -414,7 +414,7 @@ public class SourceFileProcessor extends JomcTool
     /**
      * Extension to {@code SectionEditor} adding support for editing source code files.
      *
-     * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+     * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
      * @version $JOMC$
      *
      * @see #edit(org.jomc.model.Specification, org.jomc.tools.model.SourceFileType, java.io.File)

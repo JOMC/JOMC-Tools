@@ -49,13 +49,13 @@ import java.lang.*;
  *
  * <p>This specification does not apply to any scope. A new object is returned whenever requested.</p>
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a> 1.0
  * @version $JOMC$
  */
 // SECTION-END
 // SECTION-START[Annotations]
 @javax.annotation.Generated( value = "org.jomc.tools.JavaSources",
-                             comments = "See http://jomc.sourceforge.net/jomc/1.0-alpha-5-SNAPSHOT/jomc-tools" )
+                             comments = "See http://www.jomc.org/jomc/1.0-alpha-5-SNAPSHOT/jomc-tools" )
 public interface Specification
 {
     // SECTION-START[Specification]

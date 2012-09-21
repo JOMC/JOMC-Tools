@@ -66,7 +66,7 @@ import static org.jomc.tools.modlet.ToolsModletConstants.*;
 /**
  * Object management and configuration tools {@code ModelProvider} implementation.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  * @see ModelContext#findModel(java.lang.String)
  * @since 1.2

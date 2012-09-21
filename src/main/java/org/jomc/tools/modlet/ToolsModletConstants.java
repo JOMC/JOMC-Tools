@@ -33,7 +33,7 @@ package org.jomc.tools.modlet;
 /**
  * Object management and configuration tools modlet constants.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  */
 interface ToolsModletConstants
