@@ -49,7 +49,7 @@ import org.jomc.tools.ResourceFileProcessor;
 /**
  * Base class for writing resource files.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  */
 public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo

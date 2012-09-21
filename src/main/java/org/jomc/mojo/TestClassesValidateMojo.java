@@ -36,7 +36,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 /**
  * Validates a projects' test class file model objects.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  *
  * @phase process-test-classes

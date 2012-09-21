@@ -120,7 +120,7 @@ import org.jomc.modlet.Modlets;
  * &lt;/transformer&gt;
  * </pre></p>
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  * @plexus.component role="org.apache.maven.plugins.shade.resource.ResourceTransformer"
  *                   role-hint="JOMC"

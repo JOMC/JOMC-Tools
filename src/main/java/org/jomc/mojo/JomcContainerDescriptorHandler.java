@@ -127,7 +127,7 @@ import org.jomc.modlet.Modlets;
  * &lt;/containerDescriptorHandler&gt;
  * </pre></p>
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  * @since 1.2
  * @plexus.component role="org.apache.maven.plugin.assembly.filter.ContainerDescriptorHandler"

@@ -45,7 +45,7 @@ import org.jomc.tools.SourceFileProcessor;
 /**
  * Base class for managing source code files.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  */
 public abstract class AbstractSourcesManageMojo extends AbstractJomcMojo

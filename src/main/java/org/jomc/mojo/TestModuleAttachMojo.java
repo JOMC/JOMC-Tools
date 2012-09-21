@@ -35,7 +35,7 @@ import java.io.File;
 /**
  * Attaches a project's test module artifact.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  *
  * @phase process-test-resources

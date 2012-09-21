@@ -36,7 +36,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 /**
  * Manages a projects' main source files.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  *
  * @phase process-resources

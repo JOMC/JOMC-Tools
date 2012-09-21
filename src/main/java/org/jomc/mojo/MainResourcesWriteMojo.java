@@ -38,7 +38,7 @@ import org.apache.maven.project.MavenProject;
 /**
  * Writes a projects' main resource files.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  *
  * @phase process-resources
