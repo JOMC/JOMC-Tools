@@ -143,7 +143,7 @@
       </action>
       <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-tools</code> dependency from
       <code>1.2</code> to <code>1.2.1</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2.1/changes-report.html">Changes report</a>.]]>
+      See the <a href="http://www.jomc.org/jomc/1.2/jomc-tools-1.2.1/changes-report.html">Changes report</a>.]]>
       </action>
       <action dev="schulte2005" type="update"><![CDATA[Updated the version of the <code>jomc-ant-tasks</code> from
       <code>1.2</code> to <code>1.2.1</code>.]]>
@@ -159,34 +159,34 @@
     <release version="1.2.3" date="2012-03-05">
       <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-tools</code> dependency from
       <code>1.2.1</code> to <code>1.2.2</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2.2/changes-report.html">Changes report</a>.]]>
+      See the <a href="http://www.jomc.org/jomc/1.2/jomc-tools-1.2.2/changes-report.html">Changes report</a>.]]>
       </action>
       <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-ri</code> dependency from
       <code>1.2</code> to <code>1.2.1</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-ri-1.2.1/changes-report.html">Changes report</a>.]]>
+      See the <a href="http://www.jomc.org/jomc/1.2/jomc-ri-1.2.1/changes-report.html">Changes report</a>.]]>
       </action>
       <action dev="schulte2005" type="update"><![CDATA[Updated the version of the <code>maven-jomc-plugin</code> from
       <code>1.2.1</code> to <code>1.2.2</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.2/mave-jomc-plugin-1.2.2/changes-report.html">Changes report</a>.]]>
+      See the <a href="http://www.jomc.org/jomc/1.2/mave-jomc-plugin-1.2.2/changes-report.html">Changes report</a>.]]>
       </action>
       <action dev="schulte2005" type="update"><![CDATA[Updated the version of the <code>jomc-ant-tasks</code> from
       <code>1.2.1</code> to <code>1.2.2</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-ant-tasks-1.2.2/changes-report.html">Changes report</a>.]]>
+      See the <a href="http://www.jomc.org/jomc/1.2/jomc-ant-tasks-1.2.2/changes-report.html">Changes report</a>.]]>
       </action>
     </release>
     <!-- *********************************************************************************************************** -->
     <release version="1.2.4" date="2012-03-15">
       <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-model</code> dependency from
       <code>1.2</code> to <code>1.2.1</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-model-1.2.1/changes-report.html">Changes report</a>.]]>
+      See the <a href="http://www.jomc.org/jomc/1.2/jomc-model-1.2.1/changes-report.html">Changes report</a>.]]>
       </action>
       <action dev="schulte2005" type="update"><![CDATA[Updated the version of the <code>maven-jomc-plugin</code> from
       <code>1.2.2</code> to <code>1.2.3</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.2/mave-jomc-plugin-1.2.3/changes-report.html">Changes report</a>.]]>
+      See the <a href="http://www.jomc.org/jomc/1.2/mave-jomc-plugin-1.2.3/changes-report.html">Changes report</a>.]]>
       </action>
       <action dev="schulte2005" type="update"><![CDATA[Updated the version of the <code>jomc-ant-tasks</code> from
       <code>1.2.2</code> to <code>1.2.3</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-ant-tasks-1.2.3/changes-report.html">Changes report</a>.]]>
+      See the <a href="http://www.jomc.org/jomc/1.2/jomc-ant-tasks-1.2.3/changes-report.html">Changes report</a>.]]>
       </action>
       <action dev="schulte2005" type="update"><![CDATA[Updated the version of the <code>jaxp-api</code> artifact from
       <code>1.4.2</code> to <code>1.4.5</code>.]]>
@@ -199,64 +199,64 @@
     <release version="1.2.5" date="2012-03-28">
       <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-model</code> dependency from
       <code>1.2.1</code> to <code>1.2.2</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-model-1.2.2/changes-report.html">Changes report</a>.]]>
+      See the <a href="http://www.jomc.org/jomc/1.2/jomc-model-1.2.2/changes-report.html">Changes report</a>.]]>
       </action>
       <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-ri</code> dependency from
       <code>1.2.1</code> to <code>1.2.2</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-ri-1.2.2/changes-report.html">Changes report</a>.]]>
+      See the <a href="http://www.jomc.org/jomc/1.2/jomc-ri-1.2.2/changes-report.html">Changes report</a>.]]>
       </action>
     </release>
     <!-- *********************************************************************************************************** -->
     <release version="1.2.6" date="2012-04-01">
       <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-modlet</code> dependency from
       <code>1.2</code> to <code>1.2.1</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-modlet-1.2.1/changes-report.html">Changes report</a>.]]>
+      See the <a href="http://www.jomc.org/jomc/1.2/jomc-modlet-1.2.1/changes-report.html">Changes report</a>.]]>
       </action>
       <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-model</code> dependency from
       <code>1.2.2</code> to <code>1.2.3</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-model-1.2.3/changes-report.html">Changes report</a>.]]>
+      See the <a href="http://www.jomc.org/jomc/1.2/jomc-model-1.2.3/changes-report.html">Changes report</a>.]]>
       </action>
       <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-ri</code> dependency from
       <code>1.2.2</code> to <code>1.2.3</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-ri-1.2.2/changes-report.html">Changes report</a>.]]>
+      See the <a href="http://www.jomc.org/jomc/1.2/jomc-ri-1.2.2/changes-report.html">Changes report</a>.]]>
       </action>
       <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-tools</code> dependency from
       <code>1.2.2</code> to <code>1.2.3</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2.3/changes-report.html">Changes report</a>.]]>
+      See the <a href="http://www.jomc.org/jomc/1.2/jomc-tools-1.2.3/changes-report.html">Changes report</a>.]]>
       </action>
       <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-ant-tasks</code> dependency
       from <code>1.2.3</code> to <code>1.2.4</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-ant-tasks-1.2.4/changes-report.html">Changes report</a>.]]>
+      See the <a href="http://www.jomc.org/jomc/1.2/jomc-ant-tasks-1.2.4/changes-report.html">Changes report</a>.]]>
       </action>
       <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>maven-jomc-plugin</code> dependency
       from <code>1.2.3</code> to <code>1.2.4</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.2/maven-jomc-plugin-1.2.4/changes-report.html">Changes report</a>.]]>
+      See the <a href="http://www.jomc.org/jomc/1.2/maven-jomc-plugin-1.2.4/changes-report.html">Changes report</a>.]]>
       </action>
     </release>
     <!-- *********************************************************************************************************** -->
     <release version="1.2.7" date="2012-04-23">
       <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-ri</code> dependency from
       <code>1.2.3</code> to <code>1.2.4</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-ri-1.2.4/changes-report.html">Changes report</a>.]]>
+      See the <a href="http://www.jomc.org/jomc/1.2/jomc-ri-1.2.4/changes-report.html">Changes report</a>.]]>
       </action>
     </release>
     <!-- *********************************************************************************************************** -->
     <release version="1.2.8" date="2012-05-23">
       <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-model</code> dependency from
       <code>1.2.3</code> to <code>1.2.4</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-model-1.2.4/changes-report.html">Changes report</a>.]]>
+      See the <a href="http://www.jomc.org/jomc/1.2/jomc-model-1.2.4/changes-report.html">Changes report</a>.]]>
       </action>
       <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-tools</code> dependency from
       <code>1.2.3</code> to <code>1.2.5</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-tools-1.2.5/changes-report.html">Changes report</a>.]]>
+      See the <a href="http://www.jomc.org/jomc/1.2/jomc-tools-1.2.5/changes-report.html">Changes report</a>.]]>
       </action>
       <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>jomc-ant-tasks</code> dependency
       from <code>1.2.4</code> to <code>1.2.6</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.2/jomc-ant-tasks-1.2.6/changes-report.html">Changes report</a>.]]>
+      See the <a href="http://www.jomc.org/jomc/1.2/jomc-ant-tasks-1.2.6/changes-report.html">Changes report</a>.]]>
       </action>
       <action dev="schulte2005" type="fix"><![CDATA[Updated the version of the <code>maven-jomc-plugin</code> dependency
       from <code>1.2.4</code> to <code>1.2.6</code>.
-      See the <a href="http://jomc.sourceforge.net/jomc/1.2/maven-jomc-plugin-1.2.6/changes-report.html">Changes report</a>.]]>
+      See the <a href="http://www.jomc.org/jomc/1.2/maven-jomc-plugin-1.2.6/changes-report.html">Changes report</a>.]]>
       </action>
     </release>
     <!-- *********************************************************************************************************** -->

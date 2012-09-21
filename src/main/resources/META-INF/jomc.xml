@@ -49,7 +49,7 @@
         <text language="en">Command.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -62,7 +62,7 @@
         <text language="en">Application option.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -75,7 +75,7 @@
         <text language="en">Command option.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -95,7 +95,7 @@
         <text language="en" type="text/x-javadoc">Creates {@code Option} objects describing a single command-line option by maintaining information regarding the short-name, the long-name, a flag indicating if an argument is required, and a self-documenting description.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -163,7 +163,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -199,7 +199,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -228,7 +228,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -265,7 +265,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -294,7 +294,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -333,7 +333,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -372,7 +372,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -408,7 +408,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -445,7 +445,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -481,7 +481,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -518,7 +518,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -554,7 +554,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -591,7 +591,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -621,7 +621,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -651,7 +651,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -688,7 +688,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -725,7 +725,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -762,7 +762,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -799,7 +799,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -836,7 +836,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -873,7 +873,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -910,7 +910,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -947,7 +947,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -984,7 +984,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1021,7 +1021,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1058,7 +1058,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1095,7 +1095,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1132,7 +1132,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1169,7 +1169,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1206,7 +1206,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1243,7 +1243,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1280,7 +1280,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1320,7 +1320,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1360,7 +1360,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1397,7 +1397,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1433,7 +1433,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1470,7 +1470,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1507,7 +1507,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1544,7 +1544,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1584,7 +1584,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1624,7 +1624,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1661,7 +1661,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1698,7 +1698,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1735,7 +1735,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1772,7 +1772,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1809,7 +1809,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1846,7 +1846,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1883,7 +1883,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1913,7 +1913,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1943,7 +1943,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -1973,7 +1973,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -2013,7 +2013,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -2043,7 +2043,7 @@
                     vendor="${project.organization.name}" final="true" createDate="2009-07-25T19:56:45Z">
 
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -2079,7 +2079,7 @@
         <text language="en">JOMC command line interface.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -2223,7 +2223,7 @@
         <text language="en">Command execution exception.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -2238,7 +2238,7 @@
         <text language="en">${project.name} command implementation.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -2337,7 +2337,7 @@
         <text language="en">${project.name} modlet based command implementation.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -2517,7 +2517,7 @@
         <text language="en">${project.name} model based command implementation.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -2552,7 +2552,7 @@
         <text language="en" type="text/x-javadoc">${project.name} {@code JomcTool} based command implementation.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.2" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.2" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -2628,7 +2628,7 @@
         <text language="en" type="text/x-javadoc">${project.name} {@code ClassFileProcessor} based command implementation.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.2" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.2" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -2662,7 +2662,7 @@
         <text language="en" type="text/x-javadoc">${project.name} {@code ResourceFileProcessor} based command implementation.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.2" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.2" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -2703,7 +2703,7 @@
         <text language="en" type="text/x-javadoc">${project.name} {@code SourceFileProcessor} based command implementation.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.2" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.2" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -2744,7 +2744,7 @@
         <text language="en" type="text/x-javadoc">${project.name} {@code generate-resources} command implementation.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -2814,7 +2814,7 @@
         <text language="en" type="text/x-javadoc">${project.name} {@code manage-sources} command implementation.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -2872,7 +2872,7 @@
         <text language="en" type="text/x-javadoc">${project.name} {@code commit-classes} command implementation.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -2939,7 +2939,7 @@
         <text language="en" type="text/x-javadoc">${project.name} {@code validate-classes} command implementation.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -2995,7 +2995,7 @@
         <text language="en" type="text/x-javadoc">${project.name} {@code validate-model} command implementation.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -3045,7 +3045,7 @@
         <text language="en" type="text/x-javadoc">${project.name} {@code merge-modules} command implementation.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -3159,7 +3159,7 @@
         <text language="en" type="text/x-javadoc">${project.name} {@code merge-modlets} command implementation.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -3271,7 +3271,7 @@
         <text language="en" type="text/x-javadoc">${project.name} {@code show-model} command implementation.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>

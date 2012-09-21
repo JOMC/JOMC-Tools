@@ -103,8 +103,8 @@
     <xsl:variable name="value" select="string(.)"/>
     <xsl:attribute name="{name()}">
       <xsl:choose>
-        <xsl:when test="starts-with($value, 'http://jomc.sourceforge.net/model')">
-          <xsl:value-of select="concat('http://jomc.sourceforge.net/model', substring-after($value, 'http://jomc.sourceforge.net/model'))"/>
+        <xsl:when test="starts-with($value, 'http://www.jomc.org/model')">
+          <xsl:value-of select="concat('http://www.jomc.org/model', substring-after($value, 'http://www.jomc.org/model'))"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="."/>

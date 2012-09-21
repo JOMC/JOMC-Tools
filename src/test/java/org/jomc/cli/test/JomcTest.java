@@ -78,14 +78,14 @@ import static org.junit.Assert.assertTrue;
  *   <dt><b>Stateless:</b></dt><dd>No</dd>
  * </dl>
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a> 1.0
  * @version 2.0-SNAPSHOT
  */
 // </editor-fold>
 // SECTION-END
 // SECTION-START[Annotations]
 // <editor-fold defaultstate="collapsed" desc=" Generated Annotations ">
-@javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+@javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
 // </editor-fold>
 // SECTION-END
 public class JomcTest
@@ -717,7 +717,7 @@ public class JomcTest
     // SECTION-START[Constructors]
     // <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
     /** Creates a new {@code JomcTest} instance. */
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     public JomcTest()
     {
         // SECTION-START[Default Constructor]
@@ -739,7 +739,7 @@ public class JomcTest
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @SuppressWarnings("unused")
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getClassesDirectory()
     {
         final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "classesDirectory" );
@@ -755,7 +755,7 @@ public class JomcTest
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @SuppressWarnings("unused")
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getResourcesDirectory()
     {
         final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "resourcesDirectory" );
@@ -771,7 +771,7 @@ public class JomcTest
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @SuppressWarnings("unused")
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTemplatesDirectory()
     {
         final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "templatesDirectory" );
@@ -787,7 +787,7 @@ public class JomcTest
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @SuppressWarnings("unused")
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestClassesDirectory()
     {
         final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testClassesDirectory" );
@@ -803,7 +803,7 @@ public class JomcTest
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @SuppressWarnings("unused")
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModelDocument()
     {
         final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocument" );
@@ -819,7 +819,7 @@ public class JomcTest
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @SuppressWarnings("unused")
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModelDocumentIllegal()
     {
         final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocumentIllegal" );
@@ -835,7 +835,7 @@ public class JomcTest
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @SuppressWarnings("unused")
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModelDocumentIllegalSchemaConstraints()
     {
         final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocumentIllegalSchemaConstraints" );
@@ -851,7 +851,7 @@ public class JomcTest
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @SuppressWarnings("unused")
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModelDocumentNonExistentClasses()
     {
         final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocumentNonExistentClasses" );
@@ -867,7 +867,7 @@ public class JomcTest
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @SuppressWarnings("unused")
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModelOutputDocument()
     {
         final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelOutputDocument" );
@@ -883,7 +883,7 @@ public class JomcTest
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @SuppressWarnings("unused")
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModelStylesheet()
     {
         final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelStylesheet" );
@@ -899,7 +899,7 @@ public class JomcTest
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @SuppressWarnings("unused")
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.lang.String getTestModletName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModletName" );
@@ -915,7 +915,7 @@ public class JomcTest
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @SuppressWarnings("unused")
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModletOutputDocument()
     {
         final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModletOutputDocument" );
@@ -931,7 +931,7 @@ public class JomcTest
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @SuppressWarnings("unused")
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModletStylesheet()
     {
         final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModletStylesheet" );
@@ -947,7 +947,7 @@ public class JomcTest
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @SuppressWarnings("unused")
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.lang.String getTestModuleName()
     {
         final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModuleName" );
@@ -963,7 +963,7 @@ public class JomcTest
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @SuppressWarnings("unused")
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestResourcesDirectory()
     {
         final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testResourcesDirectory" );
@@ -979,7 +979,7 @@ public class JomcTest
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @SuppressWarnings("unused")
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestShowInstanceOutputDocument()
     {
         final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testShowInstanceOutputDocument" );
@@ -995,7 +995,7 @@ public class JomcTest
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @SuppressWarnings("unused")
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestShowModelOutputDocument()
     {
         final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testShowModelOutputDocument" );
@@ -1011,7 +1011,7 @@ public class JomcTest
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @SuppressWarnings("unused")
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestShowSpecificationAndInstanceOutputDocument()
     {
         final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testShowSpecificationAndInstanceOutputDocument" );
@@ -1027,7 +1027,7 @@ public class JomcTest
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @SuppressWarnings("unused")
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestShowSpecificationOutputDocument()
     {
         final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testShowSpecificationOutputDocument" );
@@ -1043,7 +1043,7 @@ public class JomcTest
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
     @SuppressWarnings("unused")
-    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestSourcesDirectory()
     {
         final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testSourcesDirectory" );

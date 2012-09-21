@@ -48,7 +48,7 @@
         <text language="en" type="text/x-javadoc">Tests the {@code Jomc} CLI class.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
                 createDate="2005-07-25T19:56:45Z"/>
 
       </authors>
@@ -164,7 +164,7 @@
         <text language="en" type="text/x-javadoc">Test cases for class {@code org.jomc.cli.commands.CommandExecutionException}.</text>
       </documentation>
       <authors>
-        <author name="Christian Schulte" version="1.2" mail="schulte2005@users.sourceforge.net"
+        <author name="Christian Schulte" version="1.2" mail="cs@schulte.it"
                 createDate="2012-01-13T04:07:45Z"/>
 
       </authors>

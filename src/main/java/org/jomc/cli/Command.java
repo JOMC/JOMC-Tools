@@ -52,7 +52,7 @@ import org.apache.commons.cli.Options;
  *   <dt><b>Scope:</b></dt><dd>None</dd>
  * </dl>
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a> 1.0
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a> 1.0
  * @version 1.0
  * @see org.jomc.ObjectManager#getObject(java.lang.Class) getObject(Command[].class)
  * @see org.jomc.ObjectManager#getObject(java.lang.Class,java.lang.String) getObject(Command.class, "<i>implementation name</i>")
@@ -62,7 +62,7 @@ import org.apache.commons.cli.Options;
 // SECTION-END
 // SECTION-START[Annotations]
 // <editor-fold defaultstate="collapsed" desc=" Generated Annotations ">
-@javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://jomc.sourceforge.net/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+@javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
 // </editor-fold>
 // SECTION-END
 public interface Command
