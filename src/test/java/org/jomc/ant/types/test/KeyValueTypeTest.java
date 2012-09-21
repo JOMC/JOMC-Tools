@@ -43,7 +43,7 @@ import static org.junit.Assert.fail;
 /**
  * Test cases for class {@code org.jomc.ant.types.KeyValueType}.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  */
 public class KeyValueTypeTest

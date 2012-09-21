@@ -36,7 +36,7 @@ import org.apache.tools.ant.Location;
 /**
  * Gets thrown whenever processing resource files fails.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  */
 public class ResourceProcessingException extends BuildException

@@ -71,7 +71,7 @@ import org.jomc.util.VersionParser;
 /**
  * Class loader supporting JOMC resources backed by a project.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  */
 public class ProjectClassLoader extends URLClassLoader

@@ -41,7 +41,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Provides static methods for testing various assertions related to Ant executions.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  */
 public abstract class Assert

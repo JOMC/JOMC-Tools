@@ -37,8 +37,7 @@
 Installing JOMC Ant Tasks
 
   The JOMC Ant Tasks are part of the JOMC binary distribution which can be
-  downloaded from the
-  {{{http://jomc.sourceforge.net/project/files}Sourceforge File Release System}}.
+  downloaded from {{{http://www.jomc.org/project/files}here}}.
 
   To install the tasks, add a corresponding class path to your project and a type
   definition referencing that classpath. For example:

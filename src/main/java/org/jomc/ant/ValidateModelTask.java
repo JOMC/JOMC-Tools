@@ -39,7 +39,7 @@ import org.jomc.modlet.ModelValidationReport;
 /**
  * Task for validating model objects.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  */
 public final class ValidateModelTask extends JomcModelTask

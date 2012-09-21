@@ -75,7 +75,7 @@ import org.jomc.modlet.ObjectFactory;
 /**
  * Task for merging modlet resources.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  */
 public final class MergeModletsTask extends JomcTask

@@ -45,7 +45,7 @@ import org.junit.Test;
 /**
  * Test cases for class {@code org.jomc.ant.ValidateClasspathTask}.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  */
 public class ValidateClasspathTaskTest extends ClassFileProcessorTaskTest

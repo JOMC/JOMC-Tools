@@ -51,7 +51,7 @@ import org.jomc.tools.ClassFileProcessor;
 /**
  * Task for validating class file model objects.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  */
 public final class ValidateClassesTask extends ClassFileProcessorTask

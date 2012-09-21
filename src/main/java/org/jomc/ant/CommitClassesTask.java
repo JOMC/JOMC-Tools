@@ -57,7 +57,7 @@ import org.jomc.tools.ClassFileProcessor;
 /**
  * Task for committing model objects to class files.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  */
 public final class CommitClassesTask extends ClassFileProcessorTask

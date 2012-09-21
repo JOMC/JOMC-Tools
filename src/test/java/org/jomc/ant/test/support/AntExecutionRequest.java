@@ -35,7 +35,7 @@ import org.apache.tools.ant.Project;
 /**
  * Request to execute a target on an Ant project.
  *
- * @author <a href="mailto:schulte2005@users.sourceforge.net">Christian Schulte</a>
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  */
 public class AntExecutionRequest
