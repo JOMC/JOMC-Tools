@@ -635,8 +635,8 @@
   </dependencies>
   <distributionManagement>
     <site>
-      <id>jomc.sourceforge.net</id>
-      <name>JOMC Site</name>
+      <id>${jomc.artifacts.distribution.id}</id>
+      <name>${jomc.artifacts.distribution.name}</name>
       <url>${jomc.artifacts.distribution.url}/${project.artifactId}-${project.version}</url>
     </site>
   </distributionManagement>
@@ -1120,6 +1120,26 @@
                 </execution>
               </executions>
             </plugin>
+            <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>wagon-maven-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>default-upload</id>
+                  <phase>deploy</phase>
+                  <goals>
+                    <goal>upload</goal>
+                  </goals>
+                  <configuration>
+                    <fromDir>${project.build.directory}</fromDir>
+                    <includes>jomc-*.zip*, *.gz*, *.bz2*</includes>
+                    <serverId>${jomc.frs.distribution.id}</serverId>
+                    <toDir>jomc-${jomc.base.version}</toDir>
+                    <url>${jomc.frs.distribution.url}</url>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
           </plugins>
         </pluginManagement>
         <plugins>
@@ -1143,47 +1163,16 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
           </plugin>
-        </plugins>
-      </build>
-      <properties>
-        <jomc.verbose>true</jomc.verbose>
-        <jomc.sourceProcessing>false</jomc.sourceProcessing>
-      </properties>
-    </profile>
-    <profile>
-      <id>jomc-sourceforge-release</id>
-      <build>
-        <pluginManagement>
-          <plugins>
-            <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>wagon-maven-plugin</artifactId>
-              <executions>
-                <execution>
-                  <id>default-upload</id>
-                  <phase>deploy</phase>
-                  <goals>
-                    <goal>upload</goal>
-                  </goals>
-                  <configuration>
-                    <fromDir>${project.build.directory}</fromDir>
-                    <includes>jomc-*.zip*, *.gz*, *.bz2*</includes>
-                    <serverId>jomc.sourceforge.net</serverId>
-                    <toDir>jomc-${jomc.base.version}</toDir>
-                    <url>sftp://frs.sourceforge.net/home/frs/project/j/jo/jomc</url>
-                  </configuration>
-                </execution>
-              </executions>
-            </plugin>
-          </plugins>
-        </pluginManagement>
-        <plugins>
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>wagon-maven-plugin</artifactId>
           </plugin>
         </plugins>
       </build>
+      <properties>
+        <jomc.verbose>true</jomc.verbose>
+        <jomc.sourceProcessing>false</jomc.sourceProcessing>
+      </properties>
     </profile>
   </profiles>
 </project>
