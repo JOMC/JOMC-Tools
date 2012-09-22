@@ -260,7 +260,7 @@
               </configuration>
             </execution>
             <execution>
-              <id>default-package-unpack</id>
+              <id>default-unpack</id>
               <phase>package</phase>
               <goals>
                 <goal>unpack</goal>
@@ -328,7 +328,7 @@
               </configuration>
             </execution>
             <execution>
-              <id>default-package-copy</id>
+              <id>default-copy</id>
               <phase>package</phase>
               <goals>
                 <goal>copy</goal>
@@ -364,13 +364,6 @@
                   </artifactItem>
                   <artifactItem>
                     <groupId>org.jomc</groupId>
-                    <artifactId>jomc-ant-tasks</artifactId>
-                    <classifier>changes</classifier>
-                    <type>xhtml</type>
-                    <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
-                  </artifactItem>
-                  <artifactItem>
-                    <groupId>org.jomc</groupId>
                     <artifactId>maven-jomc-plugin</artifactId>
                     <type>jar</type>
                     <outputDirectory>${project.build.directory}/maven-jomc-plugin</outputDirectory>
@@ -380,28 +373,6 @@
                     <artifactId>maven-jomc-plugin</artifactId>
                     <type>pom</type>
                     <outputDirectory>${project.build.directory}/maven-jomc-plugin</outputDirectory>
-                  </artifactItem>
-                  <artifactItem>
-                    <groupId>org.jomc</groupId>
-                    <artifactId>maven-jomc-plugin</artifactId>
-                    <classifier>changes</classifier>
-                    <type>xhtml</type>
-                    <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
-                  </artifactItem>
-                  <artifactItem>
-                    <groupId>${project.groupId}</groupId>
-                    <artifactId>${project.artifactId}</artifactId>
-                    <classifier>changes</classifier>
-                    <type>xhtml</type>
-                    <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
-                  </artifactItem>
-                  <artifactItem>
-                    <groupId>${project.parent.groupId}</groupId>
-                    <artifactId>${project.parent.artifactId}</artifactId>
-                    <version>${project.parent.version}</version>
-                    <classifier>changes</classifier>
-                    <type>xhtml</type>
-                    <outputDirectory>${project.build.directory}/jomc-changes</outputDirectory>
                   </artifactItem>
                 </artifactItems>
               </configuration>
@@ -535,6 +506,10 @@
       <plugin>
         <groupId>org.jomc</groupId>
         <artifactId>maven-jomc-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -926,7 +901,7 @@
                   </configuration>
                 </execution>
                 <execution>
-                  <id>default-package-copy</id>
+                  <id>default-copy</id>
                   <phase>pre-integration-test</phase>
                   <configuration>
                     <artifactItems combine.children="append">
