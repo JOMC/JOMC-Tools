@@ -39,7 +39,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>maven-jomc-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <name>Maven JOMC Plugin</name>
+  <name>JOMC :: Maven Plugin</name>
   <description>Object management and configuration tools for Apache Maven.</description>
   <url>${jomc.artifacts.url}/${project.artifactId}-${project.version}</url>
   <build>
