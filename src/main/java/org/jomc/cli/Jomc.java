@@ -57,8 +57,8 @@ import org.jomc.modlet.DefaultModletProvider;
  * JOMC command line interface.
  *
  * <dl>
- *   <dt><b>Identifier:</b></dt><dd>JOMC CLI Application</dd>
- *   <dt><b>Name:</b></dt><dd>JOMC CLI</dd>
+ *   <dt><b>Identifier:</b></dt><dd>JOMC :: CLI Application</dd>
+ *   <dt><b>Name:</b></dt><dd>JOMC :: CLI</dd>
  *   <dt><b>Abstract:</b></dt><dd>No</dd>
  *   <dt><b>Final:</b></dt><dd>No</dd>
  *   <dt><b>Stateless:</b></dt><dd>No</dd>
@@ -563,7 +563,7 @@ public final class Jomc
     /**
      * Gets the {@code <Commands>} dependency.
      * <p>
-     *   This method returns any available object of the {@code <JOMC CLI Command>} specification at specification level 1.0.
+     *   This method returns any available object of the {@code <JOMC :: CLI Command>} specification at specification level 1.0.
      *   That specification does not apply to any scope. A new object is returned whenever requested.
      * </p>
      * <dl>
@@ -583,7 +583,7 @@ public final class Jomc
     /**
      * Gets the {@code <DebugOption>} dependency.
      * <p>
-     *   This method returns the {@code <JOMC CLI Debug Option>} object of the {@code <JOMC CLI Application Option>} specification at specification level 1.2.
+     *   This method returns the {@code <JOMC :: CLI Debug Option>} object of the {@code <JOMC :: CLI Application Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
      * <dl>
@@ -603,7 +603,7 @@ public final class Jomc
     /**
      * Gets the {@code <FailOnWarningsOption>} dependency.
      * <p>
-     *   This method returns the {@code <JOMC CLI Fail-On-Warnings Option>} object of the {@code <JOMC CLI Application Option>} specification at specification level 1.2.
+     *   This method returns the {@code <JOMC :: CLI Fail-On-Warnings Option>} object of the {@code <JOMC :: CLI Application Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
      * <dl>
@@ -643,7 +643,7 @@ public final class Jomc
     /**
      * Gets the {@code <VerboseOption>} dependency.
      * <p>
-     *   This method returns the {@code <JOMC CLI Verbose Option>} object of the {@code <JOMC CLI Application Option>} specification at specification level 1.2.
+     *   This method returns the {@code <JOMC :: CLI Verbose Option>} object of the {@code <JOMC :: CLI Application Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
      * <dl>

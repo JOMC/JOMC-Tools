@@ -47,7 +47,7 @@ import org.apache.commons.cli.Options;
  * Command.
  *
  * <dl>
- *   <dt><b>Identifier:</b></dt><dd>JOMC CLI Command</dd>
+ *   <dt><b>Identifier:</b></dt><dd>JOMC :: CLI Command</dd>
  *   <dt><b>Multiplicity:</b></dt><dd>Many</dd>
  *   <dt><b>Scope:</b></dt><dd>None</dd>
  * </dl>

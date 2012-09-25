@@ -55,13 +55,13 @@ import org.jomc.tools.modlet.ToolsModelProvider;
 // SECTION-START[Documentation]
 // <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 /**
- * JOMC CLI model based command implementation.
+ * JOMC :: CLI model based command implementation.
  *
  * <dl>
- *   <dt><b>Identifier:</b></dt><dd>JOMC CLI Model Command</dd>
- *   <dt><b>Name:</b></dt><dd>JOMC CLI Model Command</dd>
+ *   <dt><b>Identifier:</b></dt><dd>JOMC :: CLI Model Command</dd>
+ *   <dt><b>Name:</b></dt><dd>JOMC :: CLI Model Command</dd>
  *   <dt><b>Specifications:</b></dt>
- *     <dd>JOMC CLI Command @ 1.0</dd>
+ *     <dd>JOMC :: CLI Command @ 1.0</dd>
  *   <dt><b>Abstract:</b></dt><dd>Yes</dd>
  *   <dt><b>Final:</b></dt><dd>No</dd>
  *   <dt><b>Stateless:</b></dt><dd>No</dd>
@@ -240,7 +240,7 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
     /**
      * Gets the {@code <ClasspathOption>} dependency.
      * <p>
-     *   This method returns the {@code <JOMC CLI Classpath Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   This method returns the {@code <JOMC :: CLI Classpath Option>} object of the {@code <JOMC :: CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
      * <dl>
@@ -260,7 +260,7 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
     /**
      * Gets the {@code <DocumentsOption>} dependency.
      * <p>
-     *   This method returns the {@code <JOMC CLI Documents Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   This method returns the {@code <JOMC :: CLI Documents Option>} object of the {@code <JOMC :: CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
      * <dl>
@@ -300,7 +300,7 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
     /**
      * Gets the {@code <ModelContextFactoryOption>} dependency.
      * <p>
-     *   This method returns the {@code <JOMC CLI ModelContextFactory Class Name Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   This method returns the {@code <JOMC :: CLI ModelContextFactory Class Name Option>} object of the {@code <JOMC :: CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
      * <dl>
@@ -320,7 +320,7 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
     /**
      * Gets the {@code <ModelOption>} dependency.
      * <p>
-     *   This method returns the {@code <JOMC CLI Model Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   This method returns the {@code <JOMC :: CLI Model Option>} object of the {@code <JOMC :: CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
      * <dl>
@@ -340,7 +340,7 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
     /**
      * Gets the {@code <ModletLocationOption>} dependency.
      * <p>
-     *   This method returns the {@code <JOMC CLI Modlet Location Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   This method returns the {@code <JOMC :: CLI Modlet Location Option>} object of the {@code <JOMC :: CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
      * <dl>
@@ -360,7 +360,7 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
     /**
      * Gets the {@code <ModletSchemaSystemIdOption>} dependency.
      * <p>
-     *   This method returns the {@code <JOMC CLI Modlet Schema System Id Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   This method returns the {@code <JOMC :: CLI Modlet Schema System Id Option>} object of the {@code <JOMC :: CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
      * <dl>
@@ -380,7 +380,7 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
     /**
      * Gets the {@code <ModuleLocationOption>} dependency.
      * <p>
-     *   This method returns the {@code <JOMC CLI Module Location Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   This method returns the {@code <JOMC :: CLI Module Location Option>} object of the {@code <JOMC :: CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
      * <dl>
@@ -400,7 +400,7 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
     /**
      * Gets the {@code <NoClasspathResolutionOption>} dependency.
      * <p>
-     *   This method returns the {@code <JOMC CLI No Classpath Resolution Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   This method returns the {@code <JOMC :: CLI No Classpath Resolution Option>} object of the {@code <JOMC :: CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
      * <dl>
@@ -420,7 +420,7 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
     /**
      * Gets the {@code <NoModelProcessingOption>} dependency.
      * <p>
-     *   This method returns the {@code <JOMC CLI No Model Processing Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   This method returns the {@code <JOMC :: CLI No Model Processing Option>} object of the {@code <JOMC :: CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
      * <dl>
@@ -440,7 +440,7 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
     /**
      * Gets the {@code <NoModelResourceValidation>} dependency.
      * <p>
-     *   This method returns the {@code <JOMC CLI No Model Resource Validation Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   This method returns the {@code <JOMC :: CLI No Model Resource Validation Option>} object of the {@code <JOMC :: CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
      * <dl>
@@ -460,7 +460,7 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
     /**
      * Gets the {@code <NoModletResourceValidation>} dependency.
      * <p>
-     *   This method returns the {@code <JOMC CLI No Modlet Resource Validation Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   This method returns the {@code <JOMC :: CLI No Modlet Resource Validation Option>} object of the {@code <JOMC :: CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
      * <dl>
@@ -480,7 +480,7 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
     /**
      * Gets the {@code <PlatformProviderLocationOption>} dependency.
      * <p>
-     *   This method returns the {@code <JOMC CLI Platform Provider Location Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   This method returns the {@code <JOMC :: CLI Platform Provider Location Option>} object of the {@code <JOMC :: CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
      * <dl>
@@ -500,7 +500,7 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
     /**
      * Gets the {@code <ProviderLocationOption>} dependency.
      * <p>
-     *   This method returns the {@code <JOMC CLI Provider Location Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   This method returns the {@code <JOMC :: CLI Provider Location Option>} object of the {@code <JOMC :: CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
      * <dl>
@@ -520,7 +520,7 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
     /**
      * Gets the {@code <TransformerLocationOption>} dependency.
      * <p>
-     *   This method returns the {@code <JOMC CLI Transformer Location Option>} object of the {@code <JOMC CLI Command Option>} specification at specification level 1.2.
+     *   This method returns the {@code <JOMC :: CLI Transformer Location Option>} object of the {@code <JOMC :: CLI Command Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
      * </p>
      * <dl>
@@ -1065,62 +1065,6 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
      *       <th align="left" scope="col" nowrap><b>Specification</b></th>
      *       <th align="left" scope="col" nowrap><b>Implementation</b></th>
      *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
-     *       <td align="left" valign="top" nowrap>JOMC CLI Classpath Option</td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
-     *       <td align="left" valign="top" nowrap>JOMC CLI Documents Option</td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
-     *       <td align="left" valign="top" nowrap>JOMC CLI ModelContextFactory Class Name Option</td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
-     *       <td align="left" valign="top" nowrap>JOMC CLI Model Option</td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
-     *       <td align="left" valign="top" nowrap>JOMC CLI Modlet Location Option</td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
-     *       <td align="left" valign="top" nowrap>JOMC CLI Modlet Schema System Id Option</td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
-     *       <td align="left" valign="top" nowrap>JOMC CLI Module Location Option</td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
-     *       <td align="left" valign="top" nowrap>JOMC CLI No Classpath Resolution Option</td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
-     *       <td align="left" valign="top" nowrap>JOMC CLI No Model Processing Option</td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
-     *       <td align="left" valign="top" nowrap>JOMC CLI No Model Resource Validation Option</td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
-     *       <td align="left" valign="top" nowrap>JOMC CLI No Modlet Resource Validation Option</td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
-     *       <td align="left" valign="top" nowrap>JOMC CLI Platform Provider Location Option</td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
-     *       <td align="left" valign="top" nowrap>JOMC CLI Provider Location Option</td>
-     *     </tr>
-     *     <tr class="TableRow">
-     *       <td align="left" valign="top" nowrap>JOMC CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
-     *       <td align="left" valign="top" nowrap>JOMC CLI Transformer Location Option</td>
-     *     </tr>
      *   </table>
      * </p>
      * @return The options of the command.
@@ -1130,20 +1074,6 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
     public org.apache.commons.cli.Options getOptions()
     {
         final org.apache.commons.cli.Options options = new org.apache.commons.cli.Options();
-        options.addOption( this.getClasspathOption() );
-        options.addOption( this.getDocumentsOption() );
-        options.addOption( this.getModelContextFactoryOption() );
-        options.addOption( this.getModelOption() );
-        options.addOption( this.getModletLocationOption() );
-        options.addOption( this.getModletSchemaSystemIdOption() );
-        options.addOption( this.getModuleLocationOption() );
-        options.addOption( this.getNoClasspathResolutionOption() );
-        options.addOption( this.getNoModelProcessingOption() );
-        options.addOption( this.getNoModelResourceValidation() );
-        options.addOption( this.getNoModletResourceValidation() );
-        options.addOption( this.getPlatformProviderLocationOption() );
-        options.addOption( this.getProviderLocationOption() );
-        options.addOption( this.getTransformerLocationOption() );
         return options;
     }
     // </editor-fold>
