@@ -58,7 +58,7 @@
 ## @param isoDateTime The current date and time formatted using an ISO-8601 format style.
 #set($dependencies = $modules.getDependencies($implementation.getIdentifier()))
 #if($dependencies)
-#set($options = $dependencies.getDependenciesBySpecification("JOMC CLI Command Option"))
+#set($options = $dependencies.getDependenciesBySpecification("JOMC :: CLI Command Option"))
 #if($with-editor-fold)
 ${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generated Options ">
 #end

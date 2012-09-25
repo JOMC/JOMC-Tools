@@ -1530,6 +1530,98 @@ public final class MergeModulesCommand extends AbstractModelCommand
      *       <th align="left" scope="col" nowrap><b>Specification</b></th>
      *       <th align="left" scope="col" nowrap><b>Implementation</b></th>
      *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Classpath Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Document Encoding Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Document Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Documents Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI ModelContextFactory Class Name Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Model Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Modlet Location Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Modlet Schema System Id Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Module Excludes Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Module Includes Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Module Location Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Module Name Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Module Vendor Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Module Version Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI No Classpath Resolution Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI No Model Processing Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI No Model Resource Validation Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI No Modlet Resource Validation Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Platform Provider Location Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Provider Location Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Resources Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Stylesheet Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC :: CLI Transformer Location Option</td>
+     *     </tr>
      *   </table>
      * </p>
      * @return The options of the command.
@@ -1539,6 +1631,29 @@ public final class MergeModulesCommand extends AbstractModelCommand
     public org.apache.commons.cli.Options getOptions()
     {
         final org.apache.commons.cli.Options options = new org.apache.commons.cli.Options();
+        options.addOption( this.getClasspathOption() );
+        options.addOption( this.getDocumentEncodingOption() );
+        options.addOption( this.getDocumentOption() );
+        options.addOption( this.getDocumentsOption() );
+        options.addOption( this.getModelContextFactoryOption() );
+        options.addOption( this.getModelOption() );
+        options.addOption( this.getModletLocationOption() );
+        options.addOption( this.getModletSchemaSystemIdOption() );
+        options.addOption( this.getModuleExcludesOption() );
+        options.addOption( this.getModuleIncludesOption() );
+        options.addOption( this.getModuleLocationOption() );
+        options.addOption( this.getModuleNameOption() );
+        options.addOption( this.getModuleVendorOption() );
+        options.addOption( this.getModuleVersionOption() );
+        options.addOption( this.getNoClasspathResolutionOption() );
+        options.addOption( this.getNoModelProcessingOption() );
+        options.addOption( this.getNoModelResourceValidation() );
+        options.addOption( this.getNoModletResourceValidation() );
+        options.addOption( this.getPlatformProviderLocationOption() );
+        options.addOption( this.getProviderLocationOption() );
+        options.addOption( this.getResourcesOption() );
+        options.addOption( this.getStylesheetOption() );
+        options.addOption( this.getTransformerLocationOption() );
         return options;
     }
     // </editor-fold>
