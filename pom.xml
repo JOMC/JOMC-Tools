@@ -39,7 +39,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jomc-ant-tasks</artifactId>
   <packaging>jar</packaging>
-  <name>JOMC :: Ant Tasks</name>
+  <name>JOMC ⁑ Ant Tasks</name>
   <description>Object management and configuration tools for Apache Ant.</description>
   <url>${jomc.artifacts.url}/${project.artifactId}-${project.version}</url>
   <build>
