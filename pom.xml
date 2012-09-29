@@ -38,7 +38,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jomc-tools</artifactId>
-  <name>JOMC :: Tools</name>
+  <name>JOMC ⁑ Tools</name>
   <description>Object management and configuration tools.</description>
   <url>${jomc.artifacts.url}/${project.artifactId}-${project.version}</url>
   <build>
