@@ -41,8 +41,8 @@ package org.jomc.cli.commands;
  * Command execution exception.
  *
  * <dl>
- *   <dt><b>Identifier:</b></dt><dd>JOMC :: CLI Command Execution Exception</dd>
- *   <dt><b>Name:</b></dt><dd>JOMC :: CLI</dd>
+ *   <dt><b>Identifier:</b></dt><dd>JOMC &#8273; CLI &#8273; Command Execution Exception</dd>
+ *   <dt><b>Name:</b></dt><dd>JOMC &#8273; CLI &#8273; Command Execution Exception</dd>
  *   <dt><b>Abstract:</b></dt><dd>No</dd>
  *   <dt><b>Final:</b></dt><dd>No</dd>
  *   <dt><b>Stateless:</b></dt><dd>No</dd>

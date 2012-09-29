@@ -44,13 +44,13 @@ import org.apache.commons.cli.CommandLine;
 // SECTION-START[Documentation]
 // <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 /**
- * JOMC :: CLI command implementation.
+ * JOMC &#8273; CLI &#8273; command implementation.
  *
  * <dl>
- *   <dt><b>Identifier:</b></dt><dd>JOMC :: CLI Command</dd>
- *   <dt><b>Name:</b></dt><dd>JOMC :: CLI Command</dd>
+ *   <dt><b>Identifier:</b></dt><dd>JOMC &#8273; CLI &#8273; Command</dd>
+ *   <dt><b>Name:</b></dt><dd>JOMC &#8273; CLI &#8273; Command</dd>
  *   <dt><b>Specifications:</b></dt>
- *     <dd>JOMC :: CLI Command @ 1.0</dd>
+ *     <dd>JOMC &#8273; CLI &#8273; Command @ 1.0</dd>
  *   <dt><b>Abstract:</b></dt><dd>Yes</dd>
  *   <dt><b>Final:</b></dt><dd>No</dd>
  *   <dt><b>Stateless:</b></dt><dd>No</dd>

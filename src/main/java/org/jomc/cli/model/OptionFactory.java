@@ -44,8 +44,8 @@ import org.apache.commons.cli.Option;
  * Creates {@code Option} objects describing a single command-line option by maintaining information regarding the short-name, the long-name, a flag indicating if an argument is required, and a self-documenting description.
  *
  * <dl>
- *   <dt><b>Identifier:</b></dt><dd>JOMC :: CLI Option Factory</dd>
- *   <dt><b>Name:</b></dt><dd>JOMC :: CLI</dd>
+ *   <dt><b>Identifier:</b></dt><dd>JOMC &#8273; CLI &#8273; Option Factory</dd>
+ *   <dt><b>Name:</b></dt><dd>JOMC &#8273; CLI &#8273; Option Factory</dd>
  *   <dt><b>Abstract:</b></dt><dd>Yes</dd>
  *   <dt><b>Final:</b></dt><dd>No</dd>
  *   <dt><b>Stateless:</b></dt><dd>No</dd>

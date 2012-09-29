@@ -33,7 +33,7 @@
 <module xmlns="http://jomc.org/model"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://jomc.org/model http://xml.jomc.org/model/jomc-1.2.xsd"
-        name="${project.name} Tests" version="${project.version}" vendor="${project.organization.name}" modelVersion="1.2">
+        name="${project.name} ⁑ Tests" version="${project.version}" vendor="${project.organization.name}" modelVersion="1.2">
 
   <documentation defaultLanguage="en">
     <text language="en">${project.description}</text>
@@ -41,7 +41,7 @@
 
   <implementations>
     <!-- **********************************************************************************************************  -->
-    <implementation identifier="org.jomc.cli.test.JomcTest" name="${project.name} Tests"
+    <implementation identifier="org.jomc.cli.test.JomcTest" name="${project.name} ⁑ Tests ⁑ JomcTest"
                     class="org.jomc.cli.test.JomcTest" classDeclaration="true" vendor="${project.organization.name}"
                     version="${project.version}" createDate="2009-07-25T19:56:45Z">
       <documentation defaultLanguage="en">
@@ -88,7 +88,7 @@
             <text language="en" type="text/x-javadoc">File to write a transformed model to.</text>
           </documentation>
         </property>
-        <property name="testModletName" value="${project.name} Tests">
+        <property name="testModletName" value="${project.name} ⁑ Tests">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">Test module name.</text>
           </documentation>
@@ -156,7 +156,8 @@
       </properties>
     </implementation>
     <!-- **********************************************************************************************************  -->
-    <implementation identifier="${project.name} Command Execution Exception Test" name="${project.name}"
+    <implementation identifier="${project.name} ⁑ Tests ⁑ Command Execution Exception Test"
+                    name="${project.name} ⁑ Tests ⁑ Command Execution Exception Test"
                     class="org.jomc.cli.commands.test.CommandExecutionExceptionTest" classDeclaration="true"
                     vendor="${project.organization.name}" version="${project.version}" createDate="2012-01-13T04:07:45Z">
 

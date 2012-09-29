@@ -72,7 +72,7 @@ import static org.junit.Assert.assertTrue;
  *
  * <dl>
  *   <dt><b>Identifier:</b></dt><dd>org.jomc.cli.test.JomcTest</dd>
- *   <dt><b>Name:</b></dt><dd>JOMC :: CLI Tests</dd>
+ *   <dt><b>Name:</b></dt><dd>JOMC &#8273; CLI &#8273; Tests &#8273; JomcTest</dd>
  *   <dt><b>Abstract:</b></dt><dd>No</dd>
  *   <dt><b>Final:</b></dt><dd>No</dd>
  *   <dt><b>Stateless:</b></dt><dd>No</dd>
@@ -364,14 +364,14 @@ public class JomcTest
         {
             "merge-modules", "-df", '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-xs",
             '"' + this.getTestModelStylesheet().getAbsolutePath() + '"', "-mn", '"' + this.getTestModuleName() + '"',
-            "-d", '"' + this.getTestModelOutputDocument().getAbsolutePath() + '"', "-minc", "\"JOMC CLI\"", "-D"
+            "-d", '"' + this.getTestModelOutputDocument().getAbsolutePath() + '"', "-minc=\"JOMC ⁑ CLI\"", "-D"
         };
 
         final String[] excludesArg = new String[]
         {
             "merge-modules", "-df", '"' + this.getTestModelDocument().getAbsolutePath() + '"', "-xs",
             '"' + this.getTestModelStylesheet().getAbsolutePath() + '"', "-mn", '"' + this.getTestModuleName() + '"',
-            "-d", '"' + this.getTestModelOutputDocument().getAbsolutePath() + '"', "-mexc", "\"JOMC CLI\"", "-D"
+            "-d", '"' + this.getTestModelOutputDocument().getAbsolutePath() + '"', "-mexc=\"JOMC ⁑ CLI\"", "-D"
         };
 
         final String[] unsupportedOption = new String[]
@@ -468,15 +468,16 @@ public class JomcTest
         {
             "merge-modlets", "-xs", '"' + this.getTestModletStylesheet().getAbsolutePath() + '"', "-mdn",
             '"' + this.getTestModletName() + '"', "-d",
-            '"' + this.getTestModletOutputDocument().getAbsolutePath() + '"', "-mdinc", "JOMC Model", "-cp", "."
+            '"' + this.getTestModletOutputDocument().getAbsolutePath() + '"', "-mdinc=\"JOMC ⁑ Model\"", "-cp", "."
         };
 
         final String[] excludeArgs = new String[]
         {
             "merge-modlets", "-xs", '"' + this.getTestModletStylesheet().getAbsolutePath() + '"', "-mdn",
             '"' + this.getTestModletName() + '"', "-d",
-            '"' + this.getTestModletOutputDocument().getAbsolutePath() + '"', "-mdexc",
-            "JOMC Model" + File.pathSeparatorChar + "JOMC Tools" + File.pathSeparatorChar + "JOMC Modlet", "-cp", "."
+            '"' + this.getTestModletOutputDocument().getAbsolutePath() + '"',
+            "-mdexc=\"JOMC ⁑ Model" + File.pathSeparatorChar + "JOMC ⁑ Tools" + File.pathSeparatorChar
+            + "JOMC ⁑ Modlet\"", "-cp", "."
         };
 
         final String[] unsupportedOption = new String[]
@@ -551,37 +552,39 @@ public class JomcTest
 
         final String[] showSpecification = new String[]
         {
-            "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-spec", "JOMC CLI Command"
+            "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-spec=\"JOMC ⁑ CLI ⁑ Command\""
         };
 
         final String[] writeSpecification = new String[]
         {
-            "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-spec", "JOMC CLI Command", "-d",
-            '"' + this.getTestShowSpecificationOutputDocument().getAbsolutePath() + '"'
+            "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-spec=\"JOMC ⁑ CLI ⁑ Command\"",
+            "-d", '"' + this.getTestShowSpecificationOutputDocument().getAbsolutePath() + '"'
         };
 
         final String[] showInstance = new String[]
         {
-            "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-impl", "JOMC CLI show-model Command"
+            "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"',
+            "-impl=\"JOMC ⁑ CLI ⁑ Default show-model Command\""
         };
 
         final String[] writeInstance = new String[]
         {
-            "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-impl", "JOMC CLI show-model Command",
-            "-d",
-            '"' + this.getTestShowInstanceOutputDocument().getAbsolutePath() + '"'
+            "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"',
+            "-impl=\"JOMC ⁑ CLI ⁑ Default show-model Command\"",
+            "-d", '"' + this.getTestShowInstanceOutputDocument().getAbsolutePath() + '"'
         };
 
         final String[] showSpecificationAndInstance = new String[]
         {
-            "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-spec", "JOMC CLI Command", "-impl",
-            "JOMC CLI show-model Command"
+            "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-spec=\"JOMC ⁑ CLI ⁑ Command\"",
+            "-impl=\"JOMC ⁑ CLI ⁑ Default show-model Command\""
         };
 
         final String[] writeSpecificationAndInstance = new String[]
         {
-            "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"', "-spec", "JOMC CLI Command", "-impl",
-            "JOMC CLI show-model Command", "-d",
+            "show-model", "-cp", '"' + classesDirectory.getAbsolutePath() + '"',
+            "-spec=\"JOMC ⁑ CLI ⁑ Command\"",
+            "-impl=\"JOMC ⁑ CLI ⁑ Default show-model Command\"", "-d",
             '"' + this.getTestShowSpecificationAndInstanceOutputDocument().getAbsolutePath() + '"'
         };
 
