@@ -2927,13 +2927,13 @@
   jomc generate-resources -cp examples/lib/commons-cli-1.2.jar \
                           -rd /tmp/rsrc \
                           -df examples/xml/jomc-cli.xml \
-                          -mn "JOMC CLI" \
+                          -mn "JOMC ⁑ CLI" \
                           -v
 
   jomc manage-sources -cp examples/lib/commons-cli-1.2.jar \
                       -sd /tmp/src \
                       -df examples/xml/jomc-cli.xml \
-                      -mn "JOMC CLI" \
+                      -mn "JOMC ⁑ CLI" \
                       -tp "jomc-cli-bundles" \
                       -tl "examples/vm" \
                       -v]]></text>
@@ -2941,13 +2941,13 @@
   jomc generate-resources -cp examples/lib/commons-cli-1.2.jar \
                           -rd /tmp/rsrc \
                           -df examples/xml/jomc-cli.xml \
-                          -mn "JOMC CLI" \
+                          -mn "JOMC ⁑ CLI" \
                           -v
 
   jomc manage-sources -cp examples/lib/commons-cli-1.2.jar \
                       -sd /tmp/src \
                       -df examples/xml/jomc-cli.xml \
-                      -mn "JOMC CLI" \
+                      -mn "JOMC ⁑ CLI" \
                       -tp "jomc-cli-bundles" \
                       -tl "examples/vm" \
                       -v]]></text>
@@ -2998,7 +2998,7 @@
   jomc manage-sources -cp examples/lib/commons-cli-1.2.jar \
                       -sd /tmp/src \
                       -df examples/xml/jomc-cli.xml \
-                      -mn "JOMC CLI" \
+                      -mn "JOMC ⁑ CLI" \
                       -tp "jomc-cli" \
                       -tl "examples/vm" \
                       -v]]></text>
@@ -3006,7 +3006,7 @@
   jomc manage-sources -cp examples/lib/commons-cli-1.2.jar \
                       -sd /tmp/src \
                       -df examples/xml/jomc-cli.xml \
-                      -mn "JOMC CLI" \
+                      -mn "JOMC ⁑ CLI" \
                       -tp "jomc-cli" \
                       -tl "examples/vm" \
                       -v]]></text>
@@ -3070,13 +3070,13 @@
   jomc commit-classes -cp examples/lib/commons-cli-1.2.jar \
                       -df examples/xml/jomc-cli.xml \
                       -cd target/classes \
-                      -mn "JOMC CLI" \
+                      -mn "JOMC ⁑ CLI" \
                       -v]]></text>
             <text language="de"><![CDATA[Beispiel:
   jomc commit-classes -cp examples/lib/commons-cli-1.2.jar \
                       -df examples/xml/jomc-cli.xml \
                       -cd target/classes \
-                      -mn "JOMC CLI" \
+                      -mn "JOMC ⁑ CLI" \
                       -v]]></text>
           </template>
         </message>
