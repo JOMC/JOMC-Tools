@@ -32,13 +32,14 @@ package org.jomc.tools.modlet;
 
 import java.lang.reflect.Field;
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.jomc.model.Dependencies;
 import org.jomc.model.Implementation;
+import org.jomc.model.JavaTypeName;
 import org.jomc.model.Messages;
+import org.jomc.model.ModelObjectException;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.Properties;
@@ -49,7 +50,6 @@ import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelException;
 import org.jomc.modlet.ModelProcessor;
-import org.jomc.tools.JomcTool;
 import org.jomc.tools.model.SourceFileType;
 import org.jomc.tools.model.SourceFilesType;
 import org.jomc.tools.model.SourceSectionType;
@@ -323,9 +323,6 @@ public class ToolsModelProcessor implements ModelProcessor
                     }
                 }
 
-                final JomcTool tool = new JomcTool();
-                tool.setModel( processed );
-
                 if ( modules.getSpecifications() != null )
                 {
                     for ( int i = 0, s0 = modules.getSpecifications().getSpecification().size(); i < s0; i++ )
@@ -335,7 +332,7 @@ public class ToolsModelProcessor implements ModelProcessor
 
                         if ( sourceFilesType != null )
                         {
-                            this.applyDefaults( tool, specification, sourceFilesType );
+                            this.applyDefaults( context, modules, specification, sourceFilesType );
                         }
                     }
                 }
@@ -349,7 +346,7 @@ public class ToolsModelProcessor implements ModelProcessor
 
                         if ( sourceFilesType != null )
                         {
-                            this.applyDefaults( tool, implementation, sourceFilesType );
+                            this.applyDefaults( context, modules, implementation, sourceFilesType );
                         }
                     }
                 }
@@ -373,18 +370,24 @@ public class ToolsModelProcessor implements ModelProcessor
     /**
      * Updates any optional attributes to default values.
      *
-     * @param tool The tool to use for creating type names.
+     * @param context The context to apply defaults with.
+     * @param modules The model to to apply defaults with.
      * @param specification The specification corresponding to {@code sourceFilesType}.
      * @param sourceFilesType The model to update.
      *
-     * @throws NullPointerException if {@code tool}, {@code specification} or {@code sourceFilesType} is {@code null}.
+     * @throws NullPointerException if {@code context}, {@code modules}, {@code specification} or
+     * {@code sourceFilesType} is {@code null}.
      */
-    private void applyDefaults( final JomcTool tool, final Specification specification,
+    private void applyDefaults( final ModelContext context, final Modules modules, final Specification specification,
                                 final SourceFilesType sourceFilesType )
     {
-        if ( tool == null )
+        if ( context == null )
         {
-            throw new NullPointerException( "tool" );
+            throw new NullPointerException( "context" );
+        }
+        if ( modules == null )
+        {
+            throw new NullPointerException( "modules" );
         }
         if ( specification == null )
         {
@@ -403,36 +406,51 @@ public class ToolsModelProcessor implements ModelProcessor
             {
                 s.setTemplate( SPECIFICATION_TEMPLATE );
             }
-            if ( s.getLocation() == null && specification.getClazz() != null )
+            if ( s.getLocation() == null )
             {
-                s.setLocation( new StringBuilder( specification.getClazz().length() + 5 ).append(
-                    specification.getClazz().replace( '.', '/' ) ).append( ".java" ).toString() );
+                try
+                {
+                    final JavaTypeName javaTypeName = specification.getJavaTypeName();
 
+                    if ( javaTypeName != null )
+                    {
+                        s.setLocation( javaTypeName.getQualifiedName().replace( '.', '/' ) + ".java" );
+                    }
+                }
+                catch ( final ModelObjectException e )
+                {
+                    context.log( Level.WARNING, getMessage( e ), null );
+                }
             }
             if ( s.getHeadComment() == null )
             {
                 s.setHeadComment( "//" );
             }
 
-            this.applyDefaults( tool, specification, s.getSourceSections() );
+            this.applyDefaults( context, modules, specification, s.getSourceSections() );
         }
     }
 
     /**
      * Updates any optional attributes to default values.
      *
-     * @param tool The tool to use for creating type names.
+     * @param context The context to apply defaults with.
+     * @param modules The model to to apply defaults with.
      * @param specification The specification corresponding to {@code sourceSectionsType}.
      * @param sourceSectionsType The model to update or {@code null}.
      *
-     * @throws NullPointerException if {@code tool} or {@code specification} is {@code null}.
+     * @throws NullPointerException if {@code context}, {@code modules} or {@code specification} is {@code null}.
      */
-    private void applyDefaults( final JomcTool tool, final Specification specification,
+    private void applyDefaults( final ModelContext context, final Modules modules, final Specification specification,
                                 final SourceSectionsType sourceSectionsType )
     {
-        if ( tool == null )
+        if ( context == null )
         {
-            throw new NullPointerException( "tool" );
+            throw new NullPointerException( "context" );
+        }
+        if ( modules == null )
+        {
+            throw new NullPointerException( "modules" );
         }
         if ( specification == null )
         {
@@ -479,23 +497,31 @@ public class ToolsModelProcessor implements ModelProcessor
                         }
                     }
 
-                    final String javaTypeName = tool.getJavaTypeName( specification, false );
-                    if ( javaTypeName != null )
+                    try
                     {
-                        if ( javaTypeName.equals( s.getName() ) )
+                        final JavaTypeName javaTypeName = specification.getJavaTypeName();
+
+                        if ( javaTypeName != null )
                         {
-                            if ( !isFieldSet( s, "editable" ) )
+                            if ( javaTypeName.getName( false ).equals( s.getName() ) )
                             {
-                                s.setEditable( true );
-                            }
-                            if ( !isFieldSet( s, "indentationLevel" ) )
-                            {
-                                s.setIndentationLevel( 1 );
+                                if ( !isFieldSet( s, "editable" ) )
+                                {
+                                    s.setEditable( true );
+                                }
+                                if ( !isFieldSet( s, "indentationLevel" ) )
+                                {
+                                    s.setIndentationLevel( 1 );
+                                }
                             }
                         }
                     }
+                    catch ( final ModelObjectException e )
+                    {
+                        context.log( Level.WARNING, getMessage( e ), null );
+                    }
 
-                    this.applyDefaults( tool, specification, s.getSourceSections() );
+                    this.applyDefaults( context, modules, specification, s.getSourceSections() );
                 }
             }
         }
@@ -508,18 +534,24 @@ public class ToolsModelProcessor implements ModelProcessor
     /**
      * Updates any optional attributes to default values.
      *
-     * @param tool The tool to use for creating type names.
+     * @param context The context to apply defaults with.
+     * @param modules The model to to apply defaults with.
      * @param implementation The implementation corresponding to {@code sourceFilesType}.
      * @param sourceFilesType The model to update.
      *
-     * @throws NullPointerException if {@code tool}, {@code implementation} or {@code sourceFilesType} is {@code null}.
+     * @throws NullPointerException if {@code context}, {@code modules}, {@code implementation} or
+     * {@code sourceFilesType} is {@code null}.
      */
-    private void applyDefaults( final JomcTool tool, final Implementation implementation,
+    private void applyDefaults( final ModelContext context, final Modules modules, final Implementation implementation,
                                 final SourceFilesType sourceFilesType )
     {
-        if ( tool == null )
+        if ( context == null )
         {
-            throw new NullPointerException( "tool" );
+            throw new NullPointerException( "context" );
+        }
+        if ( modules == null )
+        {
+            throw new NullPointerException( "modules" );
         }
         if ( implementation == null )
         {
@@ -538,48 +570,66 @@ public class ToolsModelProcessor implements ModelProcessor
             {
                 s.setTemplate( IMPLEMENTATION_TEMPLATE );
             }
-            if ( s.getLocation() == null && implementation.getClazz() != null )
+            if ( s.getLocation() == null )
             {
-                s.setLocation( new StringBuilder( implementation.getClazz().length() + 5 ).append(
-                    implementation.getClazz().replace( '.', '/' ) ).append( ".java" ).toString() );
+                try
+                {
+                    final JavaTypeName javaTypeName = implementation.getJavaTypeName();
 
+                    if ( javaTypeName != null )
+                    {
+                        s.setLocation( javaTypeName.getQualifiedName().replace( '.', '/' ) + ".java" );
+                    }
+                }
+                catch ( final ModelObjectException e )
+                {
+                    context.log( Level.WARNING, getMessage( e ), null );
+                }
             }
             if ( s.getHeadComment() == null )
             {
                 s.setHeadComment( "//" );
             }
 
-            this.applyDefaults( tool, implementation, s.getSourceSections() );
+            this.applyDefaults( context, modules, implementation, s.getSourceSections() );
         }
     }
 
     /**
      * Updates any optional attributes to default values.
      *
-     * @param tool The tool to use for creating type names.
+     * @param context The context to apply defaults with.
+     * @param modules The model to to apply defaults with.
      * @param implementation The implementation corresponding to {@code sourceSectionsType}.
      * @param sourceSectionsType The model to update or {@code null}.
      *
-     * @throws NullPointerException if {@code tool} or {@code implementation} is {@code null}.
+     * @throws NullPointerException if {@code context}, {@code modules} or {@code implementation} is {@code null}.
      */
-    private void applyDefaults( final JomcTool tool, final Implementation implementation,
+    private void applyDefaults( final ModelContext context, final Modules modules, final Implementation implementation,
                                 final SourceSectionsType sourceSectionsType )
     {
-        if ( tool == null )
+        if ( context == null )
         {
-            throw new NullPointerException( "tool" );
+            throw new NullPointerException( "context" );
+        }
+        if ( modules == null )
+        {
+            throw new NullPointerException( "modules" );
         }
         if ( implementation == null )
         {
             throw new NullPointerException( "implementation" );
         }
 
+        final Specifications specifications = modules.getSpecifications( implementation.getIdentifier() );
+        final Dependencies dependencies = modules.getDependencies( implementation.getIdentifier() );
+        final Messages messages = modules.getMessages( implementation.getIdentifier() );
+        final Properties properties = modules.getProperties( implementation.getIdentifier() );
+
         try
         {
             if ( sourceSectionsType != null )
             {
-                final Modules modules = ModelHelper.getModules( tool.getModel() );
-
                 for ( int i = 0, s0 = sourceSectionsType.getSourceSection().size(); i < s0; i++ )
                 {
                     final SourceSectionType s = sourceSectionsType.getSourceSection().get( i );
@@ -632,9 +682,6 @@ public class ToolsModelProcessor implements ModelProcessor
                         }
                         if ( !isFieldSet( s, "optional" ) )
                         {
-                            final Specifications specifications =
-                                modules != null ? modules.getSpecifications( implementation.getIdentifier() ) : null;
-
                             s.setOptional( specifications == null || ( specifications.getSpecification().isEmpty()
                                                                        && specifications.getReference().isEmpty() ) );
 
@@ -661,9 +708,6 @@ public class ToolsModelProcessor implements ModelProcessor
                     {
                         if ( !isFieldSet( s, "optional" ) )
                         {
-                            final Dependencies dependencies =
-                                modules != null ? modules.getDependencies( implementation.getIdentifier() ) : null;
-
                             s.setOptional( dependencies == null || dependencies.getDependency().isEmpty() );
                         }
                         if ( !isFieldSet( s, "indentationLevel" ) )
@@ -680,9 +724,6 @@ public class ToolsModelProcessor implements ModelProcessor
                     {
                         if ( !isFieldSet( s, "optional" ) )
                         {
-                            final Properties properties =
-                                modules != null ? modules.getProperties( implementation.getIdentifier() ) : null;
-
                             s.setOptional( properties == null || properties.getProperty().isEmpty() );
                         }
                         if ( !isFieldSet( s, "indentationLevel" ) )
@@ -699,9 +740,6 @@ public class ToolsModelProcessor implements ModelProcessor
                     {
                         if ( !isFieldSet( s, "optional" ) )
                         {
-                            final Messages messages =
-                                modules != null ? modules.getMessages( implementation.getIdentifier() ) : null;
-
                             s.setOptional( messages == null || messages.getMessage().isEmpty() );
                         }
                         if ( !isFieldSet( s, "indentationLevel" ) )
@@ -714,43 +752,61 @@ public class ToolsModelProcessor implements ModelProcessor
                         }
                     }
 
-                    final List<String> implementedJavaTypeNames =
-                        tool.getImplementedJavaTypeNames( implementation, false );
-
-                    for ( int j = 0, s1 = implementedJavaTypeNames.size(); j < s1; j++ )
+                    if ( specifications != null )
                     {
-                        final String interfaceName = implementedJavaTypeNames.get( j );
-
-                        if ( interfaceName.equals( s.getName() ) )
+                        for ( final Specification specification : specifications.getSpecification() )
                         {
-                            if ( !isFieldSet( s, "editable" ) )
+                            try
                             {
-                                s.setEditable( true );
+                                final JavaTypeName javaTypeName = specification.getJavaTypeName();
+
+                                if ( javaTypeName != null )
+                                {
+                                    if ( javaTypeName.getName( false ).equals( s.getName() ) )
+                                    {
+                                        if ( !isFieldSet( s, "editable" ) )
+                                        {
+                                            s.setEditable( true );
+                                        }
+                                        if ( !isFieldSet( s, "indentationLevel" ) )
+                                        {
+                                            s.setIndentationLevel( 1 );
+                                        }
+                                    }
+                                }
                             }
-                            if ( !isFieldSet( s, "indentationLevel" ) )
+                            catch ( final ModelObjectException e )
                             {
-                                s.setIndentationLevel( 1 );
+                                context.log( Level.WARNING, getMessage( e ), null );
                             }
                         }
                     }
 
-                    final String javaTypeName = tool.getJavaTypeName( implementation, false );
-                    if ( javaTypeName != null )
+                    try
                     {
-                        if ( javaTypeName.equals( s.getName() ) )
+                        final JavaTypeName javaTypeName = implementation.getJavaTypeName();
+
+                        if ( javaTypeName != null )
                         {
-                            if ( !isFieldSet( s, "editable" ) )
+                            if ( javaTypeName.getName( false ).equals( s.getName() ) )
                             {
-                                s.setEditable( true );
-                            }
-                            if ( !isFieldSet( s, "indentationLevel" ) )
-                            {
-                                s.setIndentationLevel( 1 );
+                                if ( !isFieldSet( s, "editable" ) )
+                                {
+                                    s.setEditable( true );
+                                }
+                                if ( !isFieldSet( s, "indentationLevel" ) )
+                                {
+                                    s.setIndentationLevel( 1 );
+                                }
                             }
                         }
                     }
+                    catch ( final ModelObjectException e )
+                    {
+                        context.log( Level.WARNING, getMessage( e ), null );
+                    }
 
-                    this.applyDefaults( tool, implementation, s.getSourceSections() );
+                    this.applyDefaults( context, modules, implementation, s.getSourceSections() );
                 }
             }
         }
@@ -778,6 +834,11 @@ public class ToolsModelProcessor implements ModelProcessor
         {
             field.setAccessible( accessible );
         }
+    }
+
+    private static String getMessage( final Throwable t )
+    {
+        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
     private static String getMessage( final String key, final Object... args )

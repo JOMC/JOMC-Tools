@@ -59,8 +59,8 @@
 ## @param isoDateTime The current date and time formatted using an ISO-8601 format style.
 ${tool.getIndentation(0)}// SECTION-START[License Header]
 ${tool.getIndentation(0)}// SECTION-END
-#if(!$tool.isJavaDefaultPackage($implementation))
-${tool.getIndentation(0)}package ${tool.getJavaPackageName($implementation)};
+#if(!$implementation.getJavaTypeName().isUnnamedPackage())
+${tool.getIndentation(0)}package ${implementation.getJavaTypeName().getPackageName()};
 #end
 
 ${tool.getIndentation(0)}import java.lang.*;
@@ -69,27 +69,28 @@ ${tool.getIndentation(0)}// SECTION-START[Documentation]
 ${tool.getIndentation(0)}// SECTION-END
 ${tool.getIndentation(0)}// SECTION-START[Annotations]
 ${tool.getIndentation(0)}// SECTION-END
-${tool.getIndentation(0)}public#if($implementation.isAbstract()) abstract#end class ${tool.getJavaTypeName($implementation,false)}
-#set($interfaces = $tool.getImplementedJavaTypeNames($implementation,true))
-#if(!$interfaces.isEmpty())
+${tool.getIndentation(0)}public#if($implementation.isAbstract()) abstract#end class ${implementation.getJavaTypeName().getName(false)}
+#set($interfaces = $modules.getImplementedJavaTypeNames($implementation.getIdentifier()))
+#if($interfaces)
 ${tool.getIndentation(1)}implements
 #set($i = $interfaces.size())
 #foreach($interface in $interfaces)
 #set($i = $i - 1)
-${tool.getIndentation(1)}$interface#if($i > 0),#end
+${tool.getIndentation(1)}$interface.getName(true)#if($i > 0),#end
 
 #end
 #end
 ${tool.getIndentation(0)}{
-#set($interfaces = $tool.getImplementedJavaTypeNames($implementation,false))
-#if(!$interfaces.isEmpty())
+#if($interfaces)
 #foreach($interface in $interfaces)
-${tool.getIndentation(1)}// SECTION-START[$interface]
+${tool.getIndentation(1)}// SECTION-START[$interface.getName(false)]
 ${tool.getIndentation(1)}// SECTION-END
 #end
 #end
-${tool.getIndentation(1)}// SECTION-START[${tool.getJavaTypeName($implementation,false)}]
+#if(!$interfaces || !$interfaces.contains($implementation.getJavaTypeName()))
+${tool.getIndentation(1)}// SECTION-START[${implementation.getJavaTypeName().getName(false)}]
 ${tool.getIndentation(1)}// SECTION-END
+#end
 ${tool.getIndentation(1)}// SECTION-START[Constructors]
 ${tool.getIndentation(2)}// SECTION-START[Default Constructor]
 ${tool.getIndentation(2)}// SECTION-END

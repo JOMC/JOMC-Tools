@@ -70,7 +70,7 @@ ${tool.getIndentation(1)} * <p><dl>
 ${tool.getIndentation(1)} *   <dt><b>Final:</b></dt><dd>$tool.getBooleanString($property.isFinal())</dd>
 ${tool.getIndentation(1)} * </dl></p>
 #if($property.getDocumentation())
-${tool.getIndentation(1)} * @return $tool.getJavadocComment($property.getDocumentation(), 1, " * ")
+${tool.getIndentation(1)} * @return $property.getDocumentation().getText($tool.getLocale()).getJavadocComment($tool.getLineSeparator(), $tool.getIndentation(1))
 #end
 #if(!$property.getDocumentation())
 ${tool.getIndentation(1)} * @return The value of the {@code <$property.getName()>} property.
@@ -87,18 +87,14 @@ ${tool.getIndentation(1)}@SuppressWarnings("$with-suppress-warnings")
 #if($with-jsr-250)
 ${tool.getIndentation(1)}@javax.annotation.Generated( value = "$toolName $toolVersion", comments = "See $toolUrl" )
 #end
-${tool.getIndentation(1)}$tool.getJavaModifierName($implementation,$property) $tool.getJavaTypeName($property,false) $tool.getJavaGetterMethodName($property)()
+${tool.getIndentation(1)}$modules.getPropertyJavaModifierName($implementation.getIdentifier(), $property.getName()) $property.getJavaTypeName().getName(true) $property.getJavaGetterMethodName()()
 ${tool.getIndentation(1)}{
 #if($with-assertions)
-${tool.getIndentation(2)}final $tool.getJavaTypeName($property,true) _p = ($tool.getJavaTypeName($property,true)) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "$property.getName()" );
-${tool.getIndentation(2)}assert _p != null : "'$property.getName()' property not found.";
-#if($tool.isJavaPrimitiveType($property))
-${tool.getIndentation(2)}return _p.$tool.getJavaTypeName($property,false)Value();
+${tool.getIndentation(2)}final #if($property.getJavaTypeName().isPrimitive())$property.getJavaTypeName().getBoxedName().getName(true)#else$property.getJavaTypeName().getName(true)#end _p = (#if($property.getJavaTypeName().isPrimitive())$property.getJavaTypeName().getBoxedName().getName(true)#else$property.getJavaTypeName().getName(true)#end) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "${tool.getJavaString($property.getName())}" );
+${tool.getIndentation(2)}assert _p != null : "'${tool.getJavaString($property.getName())}' property not found.";
+${tool.getIndentation(2)}return _p#if($property.getJavaTypeName().isPrimitive()).$property.getJavaTypeName().getName(true)Value()#end;
 #else
-${tool.getIndentation(2)}return _p;
-#end
-#else
-${tool.getIndentation(2)}return ( ($tool.getJavaTypeName($property,true)) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "$property.getName()" ) )#if($tool.isJavaPrimitiveType($property)).$tool.getJavaTypeName($property,false)Value()#end;
+${tool.getIndentation(2)}return ((#if($property.getJavaTypeName().isPrimitive())$property.getJavaTypeName().getBoxedName().getName(true)#else$property.getJavaTypeName().getName(true)#end) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "${tool.getJavaString($property.getName())}" ) )#if($property.getJavaTypeName().isPrimitiveType()).$property.getJavaTypeName().getName(true)Value()#end;
 #end
 ${tool.getIndentation(1)}}
 #end

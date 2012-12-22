@@ -47,8 +47,10 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.velocity.VelocityContext;
 import org.jomc.model.Implementation;
+import org.jomc.model.JavaTypeName;
 import org.jomc.model.Message;
 import org.jomc.model.Messages;
+import org.jomc.model.ModelObjectException;
 import org.jomc.model.Module;
 import org.jomc.model.Specification;
 import org.jomc.model.Text;
@@ -138,10 +140,12 @@ public class ResourceFileProcessor extends JomcTool
      *
      * @throws NullPointerException if {@code resourcesDirectory} is {@code null}.
      * @throws IOException if writing resource bundle resource files fails.
+     * @throws ModelObjectException if compiling the name of a referenced type fails.
      *
      * @see #writeResourceBundleResourceFiles(org.jomc.model.Module, java.io.File)
      */
-    public void writeResourceBundleResourceFiles( final File resourcesDirectory ) throws IOException
+    public void writeResourceBundleResourceFiles( final File resourcesDirectory )
+        throws IOException, ModelObjectException
     {
         if ( resourcesDirectory == null )
         {
@@ -169,12 +173,13 @@ public class ResourceFileProcessor extends JomcTool
      *
      * @throws NullPointerException if {@code module} or {@code resourcesDirectory} is {@code null}.
      * @throws IOException if writing resource bundle resource files fails.
+     * @throws ModelObjectException if compiling the name of a referenced type fails.
      *
      * @see #writeResourceBundleResourceFiles(org.jomc.model.Specification, java.io.File)
      * @see #writeResourceBundleResourceFiles(org.jomc.model.Implementation, java.io.File)
      */
     public void writeResourceBundleResourceFiles( final Module module, final File resourcesDirectory )
-        throws IOException
+        throws IOException, ModelObjectException
     {
         if ( module == null )
         {
@@ -221,11 +226,12 @@ public class ResourceFileProcessor extends JomcTool
      *
      * @throws NullPointerException if {@code specification} or {@code resourcesDirectory} is {@code null}.
      * @throws IOException if writing resource bundle resource files fails.
+     * @throws ModelObjectException if compiling the name of the type referenced by the specification fails.
      *
      * @see #getResourceBundleResources(org.jomc.model.Specification)
      */
     public void writeResourceBundleResourceFiles( final Specification specification, final File resourcesDirectory )
-        throws IOException
+        throws IOException, ModelObjectException
     {
         if ( specification == null )
         {
@@ -248,12 +254,15 @@ public class ResourceFileProcessor extends JomcTool
 
                 this.assertValidTemplates( specification );
 
-                final String bundlePath =
-                    this.getJavaTypeName( specification, true ).replace( '.', File.separatorChar );
+                final JavaTypeName javaTypeName = specification.getJavaTypeName();
 
-                this.writeResourceBundleResourceFiles(
-                    this.getResourceBundleResources( specification ), resourcesDirectory, bundlePath );
+                if ( javaTypeName != null )
+                {
+                    final String bundlePath = javaTypeName.getQualifiedName().replace( '.', File.separatorChar );
+                    this.writeResourceBundleResourceFiles(
+                        this.getResourceBundleResources( specification ), resourcesDirectory, bundlePath );
 
+                }
             }
         }
         else if ( this.isLoggable( Level.WARNING ) )
@@ -270,11 +279,12 @@ public class ResourceFileProcessor extends JomcTool
      *
      * @throws NullPointerException if {@code implementation} or {@code resourcesDirectory} is {@code null}.
      * @throws IOException if writing resource bundle resource files fails.
+     * @throws ModelObjectException if compiling the name of the type referenced by the implementation fails.
      *
      * @see #getResourceBundleResources(org.jomc.model.Implementation)
      */
     public void writeResourceBundleResourceFiles( final Implementation implementation, final File resourcesDirectory )
-        throws IOException
+        throws IOException, ModelObjectException
     {
         if ( implementation == null )
         {
@@ -297,12 +307,15 @@ public class ResourceFileProcessor extends JomcTool
 
                 this.assertValidTemplates( implementation );
 
-                final String bundlePath =
-                    this.getJavaTypeName( implementation, true ).replace( '.', File.separatorChar );
+                final JavaTypeName javaTypeName = implementation.getJavaTypeName();
 
-                this.writeResourceBundleResourceFiles(
-                    this.getResourceBundleResources( implementation ), resourcesDirectory, bundlePath );
+                if ( javaTypeName != null )
+                {
+                    final String bundlePath = javaTypeName.getQualifiedName().replace( '.', File.separatorChar );
+                    this.writeResourceBundleResourceFiles(
+                        this.getResourceBundleResources( implementation ), resourcesDirectory, bundlePath );
 
+                }
             }
         }
         else if ( this.isLoggable( Level.WARNING ) )
@@ -625,11 +638,6 @@ public class ResourceFileProcessor extends JomcTool
         return MessageFormat.format( ResourceBundle.getBundle(
             ResourceFileProcessor.class.getName().replace( '.', '/' ) ).getString( key ), arguments );
 
-    }
-
-    private static String getMessage( final Throwable t )
-    {
-        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
 }

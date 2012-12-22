@@ -32,6 +32,7 @@ package org.jomc.tools.modlet;
 
 import java.lang.reflect.Field;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -44,7 +45,9 @@ import javax.xml.namespace.QName;
 import org.jomc.model.Dependencies;
 import org.jomc.model.Implementation;
 import org.jomc.model.InheritanceModel;
+import org.jomc.model.JavaTypeName;
 import org.jomc.model.Messages;
+import org.jomc.model.ModelObjectException;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.Properties;
@@ -55,7 +58,6 @@ import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelException;
 import org.jomc.modlet.ModelProvider;
-import org.jomc.tools.JomcTool;
 import org.jomc.tools.model.ObjectFactory;
 import org.jomc.tools.model.SourceFileType;
 import org.jomc.tools.model.SourceFilesType;
@@ -333,9 +335,6 @@ public class ToolsModelProvider implements ModelProvider
                     }
                 }
 
-                final JomcTool tool = new JomcTool();
-                tool.setModel( provided );
-
                 if ( modules.getSpecifications() != null )
                 {
                     for ( int i = 0, s0 = modules.getSpecifications().getSpecification().size(); i < s0; i++ )
@@ -346,7 +345,7 @@ public class ToolsModelProvider implements ModelProvider
                         if ( specification.isClassDeclaration() )
                         {
                             final SourceFilesType defaultSourceFiles =
-                                this.getDefaultSourceFilesType( tool, specification );
+                                this.getDefaultSourceFilesType( context, modules, specification );
 
                             if ( sourceFilesType != null )
                             {
@@ -355,7 +354,7 @@ public class ToolsModelProvider implements ModelProvider
                             else
                             {
                                 specification.getAny().add( new ObjectFactory().createSourceFiles(
-                                    this.getDefaultSourceFilesType( tool, specification ) ) );
+                                    this.getDefaultSourceFilesType( context, modules, specification ) ) );
 
                             }
                         }
@@ -372,7 +371,6 @@ public class ToolsModelProvider implements ModelProvider
                     for ( int i = 0, s0 = modules.getImplementations().getImplementation().size(); i < s0; i++ )
                     {
                         final Implementation implementation = modules.getImplementations().getImplementation().get( i );
-                        final SourceFileType sourceFileType = implementation.getAnyObject( SourceFileType.class );
                         final SourceFilesType sourceFilesType = implementation.getAnyObject( SourceFilesType.class );
 
                         if ( sourceFilesType != null )
@@ -382,7 +380,7 @@ public class ToolsModelProvider implements ModelProvider
                         else if ( implementation.isClassDeclaration() )
                         {
                             final SourceFilesType defaultSourceFiles =
-                                this.getDefaultSourceFilesType( tool, implementation );
+                                this.getDefaultSourceFilesType( context, modules, implementation );
 
                             boolean finalAncestor = false;
 
@@ -416,8 +414,8 @@ public class ToolsModelProvider implements ModelProvider
 
                     for ( final Map.Entry<Implementation, SourceFilesType> e : userSourceFiles.entrySet() )
                     {
-                        this.overwriteSourceFiles( e.getValue(), this.getDefaultSourceFilesType( tool, e.getKey() ),
-                                                   true );
+                        this.overwriteSourceFiles( e.getValue(), this.getDefaultSourceFilesType(
+                            context, modules, e.getKey() ), true );
 
                     }
 
@@ -471,18 +469,24 @@ public class ToolsModelProvider implements ModelProvider
     /**
      * Creates a new default source files model for a given specification.
      *
-     * @param tool The tool to use for generating type names.
+     * @param context The context to create a new default source files model with.
+     * @param modules The model to create a new default source files model with.
      * @param specification The specification to create a new default source files model for.
      *
      * @return A new default source files model for {@code specification}.
      *
-     * @throws NullPointerExeption if {@code tool} or {@code specification} is {@code null}.
+     * @throws NullPointerExeption if {@code context}, {@code modules} or {@code specification} is {@code null}.
      */
-    private SourceFilesType getDefaultSourceFilesType( final JomcTool tool, final Specification specification )
+    private SourceFilesType getDefaultSourceFilesType( final ModelContext context, final Modules modules,
+                                                       final Specification specification )
     {
-        if ( tool == null )
+        if ( context == null )
         {
-            throw new NullPointerException( "tool" );
+            throw new NullPointerException( "context" );
+        }
+        if ( modules == null )
+        {
+            throw new NullPointerException( "modules" );
         }
         if ( specification == null )
         {
@@ -523,14 +527,22 @@ public class ToolsModelProvider implements ModelProvider
         s.setOptional( true );
         sourceFileType.getSourceSections().getSourceSection().add( s );
 
-        final String javaTypeName = tool.getJavaTypeName( specification, false );
-        if ( javaTypeName != null )
+        try
         {
-            s = new SourceSectionType();
-            s.setName( javaTypeName );
-            s.setIndentationLevel( 1 );
-            s.setEditable( true );
-            sourceFileType.getSourceSections().getSourceSection().add( s );
+            final JavaTypeName javaTypeName = specification.getJavaTypeName();
+
+            if ( javaTypeName != null )
+            {
+                s = new SourceSectionType();
+                s.setName( javaTypeName.getName( false ) );
+                s.setIndentationLevel( 1 );
+                s.setEditable( true );
+                sourceFileType.getSourceSections().getSourceSection().add( s );
+            }
+        }
+        catch ( final ModelObjectException e )
+        {
+            context.log( Level.WARNING, getMessage( e ), null );
         }
 
         return sourceFilesType;
@@ -539,18 +551,24 @@ public class ToolsModelProvider implements ModelProvider
     /**
      * Creates a new default source files model for a given implementation.
      *
-     * @param tool The tool to use for generating type names.
+     * @param context The context to create a new default source files model with.
+     * @param modules The model to create a new default source files model with.
      * @param implementation The implementation to create a new default source files model for.
      *
      * @return A new default source files model for {@code implementation}.
      *
-     * @throws NullPointerExeption if {@code tool} or {@code implementation} is {@code null}.
+     * @throws NullPointerExeption if {@code context}, {@code modules} or {@code implementation} is {@code null}.
      */
-    private SourceFilesType getDefaultSourceFilesType( final JomcTool tool, final Implementation implementation )
+    private SourceFilesType getDefaultSourceFilesType( final ModelContext context, final Modules modules,
+                                                       final Implementation implementation )
     {
-        if ( tool == null )
+        if ( context == null )
         {
-            throw new NullPointerException( "tool" );
+            throw new NullPointerException( "context" );
+        }
+        if ( modules == null )
+        {
+            throw new NullPointerException( "modules" );
         }
         if ( implementation == null )
         {
@@ -561,19 +579,10 @@ public class ToolsModelProvider implements ModelProvider
         final SourceFileType sourceFileType = new SourceFileType();
         sourceFilesType.getSourceFile().add( sourceFileType );
 
-        final Modules modules = ModelHelper.getModules( tool.getModel() );
-        Specifications specifications = null;
-        Dependencies dependencies = null;
-        Messages messages = null;
-        Properties properties = null;
-
-        if ( modules != null )
-        {
-            specifications = modules.getSpecifications( implementation.getIdentifier() );
-            dependencies = modules.getDependencies( implementation.getIdentifier() );
-            messages = modules.getMessages( implementation.getIdentifier() );
-            properties = modules.getProperties( implementation.getIdentifier() );
-        }
+        final Specifications specifications = modules.getSpecifications( implementation.getIdentifier() );
+        final Dependencies dependencies = modules.getDependencies( implementation.getIdentifier() );
+        final Messages messages = modules.getMessages( implementation.getIdentifier() );
+        final Properties properties = modules.getProperties( implementation.getIdentifier() );
 
         sourceFileType.setIdentifier( "Default" );
 
@@ -605,24 +614,55 @@ public class ToolsModelProvider implements ModelProvider
         s.setOptional( true );
         sourceFileType.getSourceSections().getSourceSection().add( s );
 
-        final List<String> implementedJavaTypeNames = tool.getImplementedJavaTypeNames( implementation, false );
-        for ( int i = 0, s0 = implementedJavaTypeNames.size(); i < s0; i++ )
+        List<JavaTypeName> javaTypeNames = null;
+
+        if ( specifications != null )
         {
-            s = new SourceSectionType();
-            s.setName( implementedJavaTypeNames.get( i ) );
-            s.setIndentationLevel( 1 );
-            s.setEditable( true );
-            sourceFileType.getSourceSections().getSourceSection().add( s );
+            javaTypeNames = new ArrayList<JavaTypeName>( specifications.getSpecification().size() );
+
+            for ( final Specification specification : specifications.getSpecification() )
+            {
+                try
+                {
+                    final JavaTypeName javaTypeName = specification.getJavaTypeName();
+
+                    if ( javaTypeName != null && !javaTypeNames.contains( javaTypeName ) )
+                    {
+                        javaTypeNames.add( javaTypeName );
+                    }
+                }
+                catch ( final ModelObjectException e )
+                {
+                    context.log( Level.WARNING, getMessage( e ), null );
+                }
+            }
+
+            for ( int i = 0, s0 = javaTypeNames.size(); i < s0; i++ )
+            {
+                s = new SourceSectionType();
+                s.setName( javaTypeNames.get( i ).getName( false ) );
+                s.setIndentationLevel( 1 );
+                s.setEditable( true );
+                sourceFileType.getSourceSections().getSourceSection().add( s );
+            }
         }
 
-        final String javaTypeName = tool.getJavaTypeName( implementation, false );
-        if ( javaTypeName != null && !implementedJavaTypeNames.contains( javaTypeName ) )
+        try
         {
-            s = new SourceSectionType();
-            s.setName( javaTypeName );
-            s.setIndentationLevel( 1 );
-            s.setEditable( true );
-            sourceFileType.getSourceSections().getSourceSection().add( s );
+            final JavaTypeName javaTypeName = implementation.getJavaTypeName();
+
+            if ( javaTypeName != null && ( javaTypeNames == null || !javaTypeNames.contains( javaTypeName ) ) )
+            {
+                s = new SourceSectionType();
+                s.setName( javaTypeName.getName( false ) );
+                s.setIndentationLevel( 1 );
+                s.setEditable( true );
+                sourceFileType.getSourceSections().getSourceSection().add( s );
+            }
+        }
+        catch ( final ModelObjectException e )
+        {
+            context.log( Level.WARNING, getMessage( e ), null );
         }
 
         s = new SourceSectionType();
@@ -887,6 +927,11 @@ public class ToolsModelProvider implements ModelProvider
         }
 
         return null;
+    }
+
+    private static String getMessage( final Throwable t )
+    {
+        return t != null ? t.getMessage() != null ? t.getMessage() : getMessage( t.getCause() ) : null;
     }
 
     private static String getMessage( final String key, final Object... args )

@@ -47,6 +47,7 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.MessageFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -62,7 +63,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.logging.Level;
-import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -79,19 +79,19 @@ import org.apache.velocity.runtime.log.LogChute;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.apache.velocity.runtime.resource.loader.URLResourceLoader;
 import org.jomc.model.Argument;
-import org.jomc.model.ArgumentType;
 import org.jomc.model.Dependency;
 import org.jomc.model.Implementation;
 import org.jomc.model.InheritanceModel;
+import org.jomc.model.JavaIdentifier;
+import org.jomc.model.JavaTypeName;
 import org.jomc.model.Message;
 import org.jomc.model.ModelObject;
+import org.jomc.model.ModelObjectException;
 import org.jomc.model.Modules;
 import org.jomc.model.Multiplicity;
-import org.jomc.model.Properties;
 import org.jomc.model.Property;
 import org.jomc.model.Specification;
 import org.jomc.model.SpecificationReference;
-import org.jomc.model.Specifications;
 import org.jomc.model.Text;
 import org.jomc.model.Texts;
 import org.jomc.model.modlet.ModelHelper;
@@ -416,18 +416,28 @@ public class JomcTool
      *
      * @param specification The specification to get the Java package name of.
      *
-     * @return The Java package name of {@code specification} or {@code null}.
+     * @return The Java package name of {@code specification} or {@code null}, if the specification does not reference a
+     * type.
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the referenced type to a {@code JavaTypeName} fails.
+     *
+     * @see Specification#getJavaTypeName()
+     * @see JavaTypeName#getPackageName()
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Specification#getJavaTypeName()}. This method will be
+     * removed in JOMC 2.0.
      */
-    public String getJavaPackageName( final Specification specification )
+    @Deprecated
+    public String getJavaPackageName( final Specification specification ) throws ModelObjectException
     {
         if ( specification == null )
         {
             throw new NullPointerException( "specification" );
         }
 
-        return specification.getClazz() != null ? this.getJavaPackageName( specification.getClazz() ) : null;
+        final JavaTypeName javaTypeName = specification.getJavaTypeName();
+        return javaTypeName != null ? javaTypeName.getPackageName() : null;
     }
 
     /**
@@ -437,37 +447,29 @@ public class JomcTool
      * @param qualified {@code true}, to return the fully qualified type name (with package name prepended);
      * {@code false}, to return the short type name (without package name prepended).
      *
-     * @return The Java type name of {@code specification} or {@code null}.
+     * @return The Java type name of the type referenced by the specification or {@code null}, if the specification does
+     * not reference a type.
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the referenced type to a {@code JavaTypeName} fails.
      *
-     * @see #getJavaPackageName(org.jomc.model.Specification)
+     * @see Specification#getJavaTypeName()
+     * @see JavaTypeName#getName(boolean)
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Specification#getJavaTypeName()}. This method will be
+     * removed in JOMC 2.0.
      */
+    @Deprecated
     public String getJavaTypeName( final Specification specification, final boolean qualified )
+        throws ModelObjectException
     {
         if ( specification == null )
         {
             throw new NullPointerException( "specification" );
         }
 
-        if ( specification.getClazz() != null )
-        {
-            final StringBuilder typeName = new StringBuilder( specification.getClazz().length() );
-            final String javaPackageName = this.getJavaPackageName( specification );
-
-            if ( qualified && javaPackageName.length() > 0 )
-            {
-                typeName.append( javaPackageName ).append( '.' );
-            }
-
-            typeName.append( javaPackageName.length() > 0
-                             ? specification.getClazz().substring( javaPackageName.length() + 1 )
-                             : specification.getClazz() );
-
-            return typeName.toString();
-        }
-
-        return null;
+        final JavaTypeName javaTypeName = specification.getJavaTypeName();
+        return javaTypeName != null ? javaTypeName.getName( qualified ) : null;
     }
 
     /**
@@ -475,24 +477,28 @@ public class JomcTool
      *
      * @param specification The specification to return the Java class path location of.
      *
-     * @return The Java class path location of {@code specification} or {@code null}.
+     * @return The Java class path location of {@code specification} or {@code null}, if the specification does not
+     * reference a type.
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the referenced type to a {@code JavaTypeName} fails.
      *
-     * @see #getJavaTypeName(org.jomc.model.Specification, boolean)
-     * @see #getJavaClasspathLocation(java.lang.String, boolean)
+     * @see Specification#getJavaTypeName()
+     * @see JavaTypeName#getQualifiedName()
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Specification#getJavaTypeName()}. This method will be
+     * removed in JOMC 2.0.
      */
-    public String getJavaClasspathLocation( final Specification specification )
+    @Deprecated
+    public String getJavaClasspathLocation( final Specification specification ) throws ModelObjectException
     {
         if ( specification == null )
         {
             throw new NullPointerException( "specification" );
         }
 
-        return specification.getClazz() != null
-               ? ( this.getJavaClasspathLocation( this.getJavaTypeName( specification, true ), false ) )
-               : null;
-
+        final JavaTypeName javaTypeName = specification.getJavaTypeName();
+        return javaTypeName != null ? javaTypeName.getQualifiedName().replace( '.', '/' ) : null;
     }
 
     /**
@@ -500,13 +506,21 @@ public class JomcTool
      *
      * @param reference The specification reference to get the Java package name of.
      *
-     * @return The Java package name of {@code reference} or {@code null}.
+     * @return The Java package name of {@code reference} or {@code null}, if the referenced specification is not found
+     * or does not reference a type.
      *
      * @throws NullPointerException if {@code reference} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the referenced type to a {@code JavaTypeName} fails.
      *
-     * @see #getJavaPackageName(org.jomc.model.Specification)
+     * @see Modules#getSpecification(java.lang.String)
+     * @see Specification#getJavaTypeName()
+     * @see JavaTypeName#getPackageName()
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Specification#getJavaTypeName()}. This method will be
+     * removed in JOMC 2.0.
      */
-    public String getJavaPackageName( final SpecificationReference reference )
+    @Deprecated
+    public String getJavaPackageName( final SpecificationReference reference ) throws ModelObjectException
     {
         if ( reference == null )
         {
@@ -519,7 +533,8 @@ public class JomcTool
         if ( this.getModules() != null
              && ( s = this.getModules().getSpecification( reference.getIdentifier() ) ) != null )
         {
-            javaPackageName = s.getClazz() != null ? this.getJavaPackageName( s ) : null;
+            final JavaTypeName javaTypeName = s.getJavaTypeName();
+            javaPackageName = javaTypeName != null ? javaTypeName.getPackageName() : null;
         }
         else if ( this.isLoggable( Level.WARNING ) )
         {
@@ -536,13 +551,22 @@ public class JomcTool
      * @param qualified {@code true}, to return the fully qualified type name (with package name prepended);
      * {@code false}, to return the short type name (without package name prepended).
      *
-     * @return The Java type name of {@code reference} or {@code null}.
+     * @return The Java type name of {@code reference} or {@code null}, if the referenced specification is not found
+     * or does not reference a type.
      *
      * @throws NullPointerException if {@code reference} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the referenced type to a {@code JavaTypeName} fails.
      *
-     * @see #getJavaTypeName(org.jomc.model.Specification, boolean)
+     * @see Modules#getSpecification(java.lang.String)
+     * @see Specification#getJavaTypeName()
+     * @see JavaTypeName#getName(boolean)
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Specification#getJavaTypeName()}. This method will be
+     * removed in JOMC 2.0.
      */
+    @Deprecated
     public String getJavaTypeName( final SpecificationReference reference, final boolean qualified )
+        throws ModelObjectException
     {
         if ( reference == null )
         {
@@ -550,19 +574,20 @@ public class JomcTool
         }
 
         Specification s = null;
-        String javaTypeName = null;
+        String typeName = null;
 
         if ( this.getModules() != null
              && ( s = this.getModules().getSpecification( reference.getIdentifier() ) ) != null )
         {
-            javaTypeName = s.getClazz() != null ? this.getJavaTypeName( s, qualified ) : null;
+            final JavaTypeName javaTypeName = s.getJavaTypeName();
+            typeName = javaTypeName != null ? javaTypeName.getName( qualified ) : null;
         }
         else if ( this.isLoggable( Level.WARNING ) )
         {
             this.log( Level.WARNING, getMessage( "specificationNotFound", reference.getIdentifier() ), null );
         }
 
-        return javaTypeName;
+        return typeName;
     }
 
     /**
@@ -570,18 +595,28 @@ public class JomcTool
      *
      * @param implementation The implementation to get the Java package name of.
      *
-     * @return The Java package name of {@code implementation} or {@code null}.
+     * @return The Java package name of {@code implementation} or {@code null}, if the implementation does not reference
+     * a type.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the referenced type to a {@code JavaTypeName} fails.
+     *
+     * @see Implementation#getJavaTypeName()
+     * @see JavaTypeName#getPackageName()
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Implementation#getJavaTypeName()}. This method will be
+     * removed in JOMC 2.0.
      */
-    public String getJavaPackageName( final Implementation implementation )
+    @Deprecated
+    public String getJavaPackageName( final Implementation implementation ) throws ModelObjectException
     {
         if ( implementation == null )
         {
             throw new NullPointerException( "implementation" );
         }
 
-        return implementation.getClazz() != null ? this.getJavaPackageName( implementation.getClazz() ) : null;
+        final JavaTypeName javaTypeName = implementation.getJavaTypeName();
+        return javaTypeName != null ? javaTypeName.getPackageName() : null;
     }
 
     /**
@@ -591,37 +626,29 @@ public class JomcTool
      * @param qualified {@code true}, to return the fully qualified type name (with package name prepended);
      * {@code false}, to return the short type name (without package name prepended).
      *
-     * @return The Java type name of {@code implementation} or {@code null}.
+     * @return The Java type name of the type referenced by the implementation or {@code null}, if the implementation
+     * does not reference a type.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the referenced type to a {@code JavaTypeName} fails.
      *
-     * @see #getJavaPackageName(org.jomc.model.Implementation)
+     * @see Implementation#getJavaTypeName()
+     * @see JavaTypeName#getName(boolean)
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Implementation#getJavaTypeName()}. This method will be
+     * removed in JOMC 2.0.
      */
+    @Deprecated
     public String getJavaTypeName( final Implementation implementation, final boolean qualified )
+        throws ModelObjectException
     {
         if ( implementation == null )
         {
             throw new NullPointerException( "implementation" );
         }
 
-        if ( implementation.getClazz() != null )
-        {
-            final StringBuilder typeName = new StringBuilder( implementation.getClazz().length() );
-            final String javaPackageName = this.getJavaPackageName( implementation );
-
-            if ( qualified && javaPackageName.length() > 0 )
-            {
-                typeName.append( javaPackageName ).append( '.' );
-            }
-
-            typeName.append( javaPackageName.length() > 0
-                             ? implementation.getClazz().substring( javaPackageName.length() + 1 )
-                             : implementation.getClazz() );
-
-            return typeName.toString();
-        }
-
-        return null;
+        final JavaTypeName javaTypeName = implementation.getJavaTypeName();
+        return javaTypeName != null ? javaTypeName.getName( qualified ) : null;
     }
 
     /**
@@ -629,23 +656,28 @@ public class JomcTool
      *
      * @param implementation The implementation to return the Java class path location of.
      *
-     * @return The Java class path location of {@code implementation} or {@code null}.
+     * @return The Java class path location of {@code implementation} or {@code null}, if the implementation does not
+     * reference a type.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the referenced type to a {@code JavaTypeName} fails.
      *
-     * @see #getJavaClasspathLocation(java.lang.String, boolean)
+     * @see Implementation#getJavaTypeName()
+     * @see JavaTypeName#getQualifiedName()
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Implementation#getJavaTypeName()}. This method will be
+     * removed in JOMC 2.0.
      */
-    public String getJavaClasspathLocation( final Implementation implementation )
+    @Deprecated
+    public String getJavaClasspathLocation( final Implementation implementation ) throws ModelObjectException
     {
         if ( implementation == null )
         {
             throw new NullPointerException( "implementation" );
         }
 
-        return implementation.getClazz() != null
-               ? ( this.getJavaClasspathLocation( this.getJavaTypeName( implementation, true ), false ) )
-               : null;
-
+        final JavaTypeName javaTypeName = implementation.getJavaTypeName();
+        return javaTypeName != null ? javaTypeName.getQualifiedName().replace( '.', '/' ) : null;
     }
 
     /**
@@ -658,12 +690,18 @@ public class JomcTool
      * @return An unmodifiable list of names of all Java types implemented by {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
+     * @throws ModelObjectException if compiling the name of a referenced type to a {@code JavaTypeName} fails.
      *
      * @since 1.2
      *
-     * @see #getJavaTypeName(org.jomc.model.Specification, boolean)
+     * @see Implementation#getJavaTypeNames(org.jomc.model.Modules)
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Modules#getImplementedJavaTypeNames(java.lang.String)}.
+     * This method will be removed in JOMC 2.0.
      */
+    @Deprecated
     public List<String> getImplementedJavaTypeNames( final Implementation implementation, final boolean qualified )
+        throws ModelObjectException
     {
         if ( implementation == null )
         {
@@ -674,23 +712,18 @@ public class JomcTool
 
         if ( this.getModules() != null )
         {
-            final Specifications specs = this.getModules().getSpecifications( implementation.getIdentifier() );
-            col = new ArrayList<String>( specs == null ? 0 : specs.getSpecification().size() );
+            final List<JavaTypeName> javaTypeNames =
+                this.getModules().getImplementedJavaTypeNames( implementation.getIdentifier() );
 
-            if ( specs != null )
+            if ( javaTypeNames != null )
             {
-                for ( int i = 0, s0 = specs.getSpecification().size(); i < s0; i++ )
+                col = new ArrayList<String>( javaTypeNames.size() );
+
+                for ( int i = 0, s0 = javaTypeNames.size(); i < s0; i++ )
                 {
-                    final Specification s = specs.getSpecification().get( i );
-
-                    if ( s.getClazz() != null )
+                    if ( !col.contains( javaTypeNames.get( i ).getName( qualified ) ) )
                     {
-                        final String typeName = this.getJavaTypeName( s, qualified );
-
-                        if ( !col.contains( typeName ) )
-                        {
-                            col.add( typeName );
-                        }
+                        col.add( javaTypeNames.get( i ).getName( qualified ) );
                     }
                 }
             }
@@ -708,29 +741,28 @@ public class JomcTool
      *
      * @param argument The argument to get the Java type name of.
      *
-     * @return The Java type name of {@code argument}.
+     * @return The Java type name of the type referenced by the argument or {@code null}, if the argument does not
+     * reference a type.
      *
      * @throws NullPointerException if {@code argument} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the referenced type to a {@code JavaTypeName} fails.
+     *
+     * @see Argument#getJavaTypeName()
+     * @see JavaTypeName#getName(boolean)
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Argument#getJavaTypeName()}. This method will be removed in
+     * JOMC 2.0.
      */
-    public String getJavaTypeName( final Argument argument )
+    @Deprecated
+    public String getJavaTypeName( final Argument argument ) throws ModelObjectException
     {
         if ( argument == null )
         {
             throw new NullPointerException( "argument" );
         }
 
-        String javaTypeName = "java.lang.String";
-
-        if ( argument.getType() == ArgumentType.DATE || argument.getType() == ArgumentType.TIME )
-        {
-            javaTypeName = "java.util.Date";
-        }
-        else if ( argument.getType() == ArgumentType.NUMBER )
-        {
-            javaTypeName = "java.lang.Number";
-        }
-
-        return javaTypeName;
+        final JavaTypeName javaTypeName = argument.getJavaTypeName();
+        return javaTypeName != null ? javaTypeName.getName( true ) : null;
     }
 
     /**
@@ -741,12 +773,17 @@ public class JomcTool
      * @return The Java method parameter name of {@code argument}.
      *
      * @throws NullPointerException if {@code argument} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the argument to a {@code JavaIdentifier} fails.
      *
-     * @see #getJavaMethodParameterName(java.lang.String)
+     * @see Argument#getJavaVariableName()
      *
      * @since 1.2
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Argument#getJavaVariableName()}. This method will be
+     * removed in JOMC 2.0.
      */
-    public String getJavaMethodParameterName( final Argument argument )
+    @Deprecated
+    public String getJavaMethodParameterName( final Argument argument ) throws ModelObjectException
     {
         if ( argument == null )
         {
@@ -763,61 +800,40 @@ public class JomcTool
      * @param boxify {@code true}, to return the name of the Java wrapper class when the type is a Java primitive type;
      * {@code false}, to return the exact binary name (unboxed name) of the Java type.
      *
-     * @return The Java type name of {@code property}.
+     * @return The Java type name of the type referenced by the property or {@code null}, if the property does not
+     * reference a type.
      *
      * @throws NullPointerException if {@code property} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the referenced type to a {@code JavaTypeName} fails.
+     *
+     * @see Property#getJavaTypeName()
+     * @see JavaTypeName#getBoxedName()
+     * @see JavaTypeName#getName(boolean)
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Property#getJavaTypeName()}. This method will be removed in
+     * JOMC 2.0.
      */
-    public String getJavaTypeName( final Property property, final boolean boxify )
+    @Deprecated
+    public String getJavaTypeName( final Property property, final boolean boxify ) throws ModelObjectException
     {
         if ( property == null )
         {
             throw new NullPointerException( "property" );
         }
 
-        if ( property.getType() != null )
-        {
-            final String typeName = property.getType();
+        JavaTypeName javaTypeName = property.getJavaTypeName();
 
-            if ( boxify )
+        if ( javaTypeName != null )
+        {
+            if ( boxify && javaTypeName.isPrimitive() )
             {
-                if ( Boolean.TYPE.getName().equals( typeName ) )
-                {
-                    return Boolean.class.getName();
-                }
-                if ( Byte.TYPE.getName().equals( typeName ) )
-                {
-                    return Byte.class.getName();
-                }
-                if ( Character.TYPE.getName().equals( typeName ) )
-                {
-                    return Character.class.getName();
-                }
-                if ( Double.TYPE.getName().equals( typeName ) )
-                {
-                    return Double.class.getName();
-                }
-                if ( Float.TYPE.getName().equals( typeName ) )
-                {
-                    return Float.class.getName();
-                }
-                if ( Integer.TYPE.getName().equals( typeName ) )
-                {
-                    return Integer.class.getName();
-                }
-                if ( Long.TYPE.getName().equals( typeName ) )
-                {
-                    return Long.class.getName();
-                }
-                if ( Short.TYPE.getName().equals( typeName ) )
-                {
-                    return Short.class.getName();
-                }
+                javaTypeName = javaTypeName.getBoxedName();
             }
 
-            return typeName;
+            return javaTypeName.getName( true );
         }
 
-        return property.getAny() != null ? Object.class.getName() : String.class.getName();
+        return null;
     }
 
     /**
@@ -825,20 +841,28 @@ public class JomcTool
      *
      * @param property The property to query.
      *
-     * @return {@code true}, if the Java type of {@code property} is primitive; {@code false}, if not.
+     * @return {@code true}, if the Java type referenced by the property is primitive or {@code false}, if the property
+     * does not reference a type or if the Java type referenced by the property is not primitive.
      *
      * @throws NullPointerException if {@code property} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the referenced type to a {@code JavaTypeName} fails.
      *
-     * @see #getJavaTypeName(org.jomc.model.Property, boolean)
+     * @see Property#getJavaTypeName()
+     * @see JavaTypeName#isPrimitive()
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Property#getJavaTypeName()}. This method will be removed in
+     * JOMC 2.0.
      */
-    public boolean isJavaPrimitiveType( final Property property )
+    @Deprecated
+    public boolean isJavaPrimitiveType( final Property property ) throws ModelObjectException
     {
         if ( property == null )
         {
             throw new NullPointerException( "property" );
         }
 
-        return !this.getJavaTypeName( property, false ).equals( this.getJavaTypeName( property, true ) );
+        final JavaTypeName javaTypeName = property.getJavaTypeName();
+        return javaTypeName != null && javaTypeName.isPrimitive();
     }
 
     /**
@@ -849,10 +873,15 @@ public class JomcTool
      * @return The Java getter method name of {@code property}.
      *
      * @throws NullPointerException if {@code property} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the property to a {@code JavaIdentifier} fails.
      *
-     * @see #getJavaIdentifier(java.lang.String, boolean)
+     * @see Property#getJavaGetterMethodName()
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Property#getJavaGetterMethodName()}. This method will be
+     * removed in JOMC 2.0.
      */
-    public String getJavaGetterMethodName( final Property property )
+    @Deprecated
+    public String getJavaGetterMethodName( final Property property ) throws ModelObjectException
     {
         if ( property == null )
         {
@@ -878,12 +907,17 @@ public class JomcTool
      * @return The Java setter method name of {@code property}.
      *
      * @throws NullPointerException if {@code property} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the property to a {@code JavaIdentifier} fails.
      *
-     * @see #getJavaIdentifier(java.lang.String, boolean)
+     * @see Property#getJavaSetterMethodName()
      *
      * @since 1.2
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Property#getJavaSetterMethodName()}. This method will be
+     * removed in JOMC 2.0.
      */
-    public String getJavaSetterMethodName( final Property property )
+    @Deprecated
+    public String getJavaSetterMethodName( final Property property ) throws ModelObjectException
     {
         if ( property == null )
         {
@@ -901,12 +935,17 @@ public class JomcTool
      * @return The Java method parameter name of {@code property}.
      *
      * @throws NullPointerException if {@code property} is {@code null}.
+     * @throws ModelObjectException if copmiling the name of the property to a {@code JavaIdentifier} fails.
      *
-     * @see #getJavaMethodParameterName(java.lang.String)
+     * @see Property#getJavaVariableName()
      *
      * @since 1.2
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Property#getJavaVariableName()}. This method will be
+     * removed in JOMC 2.0.
      */
-    public String getJavaMethodParameterName( final Property property )
+    @Deprecated
+    public String getJavaMethodParameterName( final Property property ) throws ModelObjectException
     {
         if ( property == null )
         {
@@ -924,12 +963,17 @@ public class JomcTool
      * @return The Java field name of {@code property}.
      *
      * @throws NullPointerException if {@code property} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the property to a {@code JavaIdentifier} fails.
      *
-     * @see #getJavaFieldName(java.lang.String)
+     * @see Property#getJavaVariableName()
      *
      * @since 1.3
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Property#getJavaVariableName()}. This method will be removed
+     * in JOMC 2.0.
      */
-    public String getJavaFieldName( final Property property )
+    @Deprecated
+    public String getJavaFieldName( final Property property ) throws ModelObjectException
     {
         if ( property == null )
         {
@@ -944,13 +988,20 @@ public class JomcTool
      *
      * @param dependency The dependency to get a dependency Java type name of.
      *
-     * @return The Java type name of {@code dependency} or {@code null}.
+     * @return The Java type name of the dependency or {@code null}, if the referenced specification is not found or
+     * does not reference a type.
      *
      * @throws NullPointerException if {@code dependency} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the referenced type to a {@code JavaTypeName} fails.
      *
-     * @see #getJavaTypeName(org.jomc.model.Specification, boolean)
+     * @see Dependency#getJavaTypeName(org.jomc.model.Modules)
+     * @see JavaTypeName#getName(boolean)
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Modules#getDependencyJavaTypeName(java.lang.String, java.lang.String)}.
+     * This method will be removed in JOMC 2.0.
      */
-    public String getJavaTypeName( final Dependency dependency )
+    @Deprecated
+    public String getJavaTypeName( final Dependency dependency ) throws ModelObjectException
     {
         if ( dependency == null )
         {
@@ -958,30 +1009,40 @@ public class JomcTool
         }
 
         Specification s = null;
+        StringBuilder typeName = null;
         String javaTypeName = null;
 
-        if ( this.getModules() != null
-             && ( s = this.getModules().getSpecification( dependency.getIdentifier() ) ) != null )
+        try
         {
-            if ( s.getClazz() != null )
+            if ( this.getModules() != null
+                 && ( s = this.getModules().getSpecification( dependency.getIdentifier() ) ) != null )
             {
-                final StringBuilder typeName = new StringBuilder( s.getClazz().length() );
-                typeName.append( this.getJavaTypeName( s, true ) );
-
-                if ( s.getMultiplicity() == Multiplicity.MANY && dependency.getImplementationName() == null )
+                if ( s.getClazz() != null )
                 {
-                    typeName.append( "[]" );
+                    typeName = new StringBuilder( s.getClazz().length() );
+                    typeName.append( this.getJavaTypeName( s, true ) );
+
+                    if ( s.getMultiplicity() == Multiplicity.MANY && dependency.getImplementationName() == null )
+                    {
+                        typeName.append( "[]" );
+                    }
+
+                    javaTypeName = JavaTypeName.parse( typeName.toString() ).getName( true );
                 }
-
-                javaTypeName = typeName.toString();
             }
-        }
-        else if ( this.isLoggable( Level.WARNING ) )
-        {
-            this.log( Level.WARNING, getMessage( "specificationNotFound", dependency.getIdentifier() ), null );
-        }
+            else if ( this.isLoggable( Level.WARNING ) )
+            {
+                this.log( Level.WARNING, getMessage( "specificationNotFound", dependency.getIdentifier() ), null );
+            }
 
-        return javaTypeName;
+            return javaTypeName;
+        }
+        catch ( final ParseException e )
+        {
+            throw new ModelObjectException( getMessage( "dependencyJavaTypeNameParseException", typeName,
+                                                        getMessage( e ) ), e );
+
+        }
     }
 
     /**
@@ -992,10 +1053,15 @@ public class JomcTool
      * @return The Java getter method name of {@code dependency}.
      *
      * @throws NullPointerException if {@code dependency} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the dependency to a {@code JavaIdentifier} fails.
      *
-     * @see #getJavaIdentifier(java.lang.String, boolean)
+     * @see Dependency#getJavaGetterMethodName()
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Dependency#getJavaGetterMethodName()}. This method will be
+     * removed in JOMC 2.0.
      */
-    public String getJavaGetterMethodName( final Dependency dependency )
+    @Deprecated
+    public String getJavaGetterMethodName( final Dependency dependency ) throws ModelObjectException
     {
         if ( dependency == null )
         {
@@ -1013,12 +1079,17 @@ public class JomcTool
      * @return The Java setter method name of {@code dependency}.
      *
      * @throws NullPointerException if {@code dependency} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the dependency to a {@code JavaIdentifier} fails.
      *
-     * @see #getJavaIdentifier(java.lang.String, boolean)
+     * @see Dependency#getJavaSetterMethodName()
      *
      * @since 1.2
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Dependency#getJavaSetterMethodName()}. This method will be
+     * removed in JOMC 2.0.
      */
-    public String getJavaSetterMethodName( final Dependency dependency )
+    @Deprecated
+    public String getJavaSetterMethodName( final Dependency dependency ) throws ModelObjectException
     {
         if ( dependency == null )
         {
@@ -1036,12 +1107,17 @@ public class JomcTool
      * @return The Java method parameter name of {@code dependency}.
      *
      * @throws NullPointerException if {@code dependency} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the dependency to a {@code JavaIdentifier} fails.
      *
-     * @see #getJavaMethodParameterName(java.lang.String)
+     * @see Dependency#getJavaVariableName()
      *
      * @since 1.2
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Dependency#getJavaVariableName()}. This method will be
+     * removed in JOMC 2.0.
      */
-    public String getJavaMethodParameterName( final Dependency dependency )
+    @Deprecated
+    public String getJavaMethodParameterName( final Dependency dependency ) throws ModelObjectException
     {
         if ( dependency == null )
         {
@@ -1059,12 +1135,17 @@ public class JomcTool
      * @return The Java field name of {@code dependency}.
      *
      * @throws NullPointerException if {@code dependency} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the dependency to a {@code JavaIdentifier} fails.
      *
-     * @see #getJavaFieldName(java.lang.String)
+     * @see Dependency#getJavaVariableName()
      *
      * @since 1.3
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Dependency#getJavaVariableName()}. This method will be
+     * removed in JOMC 2.0.
      */
-    public String getJavaFieldName( final Dependency dependency )
+    @Deprecated
+    public String getJavaFieldName( final Dependency dependency ) throws ModelObjectException
     {
         if ( dependency == null )
         {
@@ -1082,10 +1163,15 @@ public class JomcTool
      * @return The Java getter method name of {@code message}.
      *
      * @throws NullPointerException if {@code message} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the message to a {@code JavaIdentifier} fails.
      *
-     * @see #getJavaIdentifier(java.lang.String, boolean)
+     * @see Message#getJavaGetterMethodName()
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Message#getJavaGetterMethodName()}. This method will be
+     * removed in JOMC 2.0.
      */
-    public String getJavaGetterMethodName( final Message message )
+    @Deprecated
+    public String getJavaGetterMethodName( final Message message ) throws ModelObjectException
     {
         if ( message == null )
         {
@@ -1103,12 +1189,17 @@ public class JomcTool
      * @return The Java setter method name of {@code message}.
      *
      * @throws NullPointerException if {@code message} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the message to a {@code JavaIdentifier} fails.
      *
-     * @see #getJavaIdentifier(java.lang.String, boolean)
+     * @see Message#getJavaSetterMethodName()
      *
      * @since 1.2
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Message#getJavaSetterMethodName()}. This method will be
+     * removed in JOMC 2.0.
      */
-    public String getJavaSetterMethodName( final Message message )
+    @Deprecated
+    public String getJavaSetterMethodName( final Message message ) throws ModelObjectException
     {
         if ( message == null )
         {
@@ -1126,12 +1217,17 @@ public class JomcTool
      * @return The Java method parameter name of {@code message}.
      *
      * @throws NullPointerException if {@code message} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the message to a {@code JavaIdentifier} fails.
      *
-     * @see #getJavaMethodParameterName(java.lang.String)
+     * @see Message#getJavaVariableName()
      *
      * @since 1.2
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Message#getJavaVariableName()}. This method will be removed
+     * in JOMC 2.0.
      */
-    public String getJavaMethodParameterName( final Message message )
+    @Deprecated
+    public String getJavaMethodParameterName( final Message message ) throws ModelObjectException
     {
         if ( message == null )
         {
@@ -1149,12 +1245,17 @@ public class JomcTool
      * @return The Java field name of {@code message}.
      *
      * @throws NullPointerException if {@code message} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the message to a {@code JavaIdentifier} fails.
      *
-     * @see #getJavaFieldName(java.lang.String)
+     * @see Message#getJavaVariableName()
      *
      * @since 1.3
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Message#getJavaVariableName()}. This method will be removed
+     * in JOMC 2.0.
      */
-    public String getJavaFieldName( final Message message )
+    @Deprecated
+    public String getJavaFieldName( final Message message ) throws ModelObjectException
     {
         if ( message == null )
         {
@@ -1173,7 +1274,11 @@ public class JomcTool
      * @return The Java modifier name of {@code dependency} of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} or {@code dependency} is {@code null}.
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Modules#getDependencyJavaModifierName(java.lang.String, java.lang.String)}.
+     * This method will be removed in JOMC 2.0.
      */
+    @Deprecated
     public String getJavaModifierName( final Implementation implementation, final Dependency dependency )
     {
         if ( implementation == null )
@@ -1185,7 +1290,20 @@ public class JomcTool
             throw new NullPointerException( "dependency" );
         }
 
-        return "private";
+        String modifierName = "private";
+
+        if ( this.getModules() != null )
+        {
+            modifierName =
+                this.getModules().getDependencyJavaModifierName( implementation.getIdentifier(), dependency.getName() );
+
+            if ( modifierName == null )
+            {
+                modifierName = "private";
+            }
+        }
+
+        return modifierName;
     }
 
     /**
@@ -1197,7 +1315,11 @@ public class JomcTool
      * @return The Java modifier name of {@code message} of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} or {@code message} is {@code null}.
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Modules#getMessageJavaModifierName(java.lang.String, java.lang.String)}.
+     * This method will be removed in JOMC 2.0.
      */
+    @Deprecated
     public String getJavaModifierName( final Implementation implementation, final Message message )
     {
         if ( implementation == null )
@@ -1209,7 +1331,20 @@ public class JomcTool
             throw new NullPointerException( "message" );
         }
 
-        return "private";
+        String modifierName = "private";
+
+        if ( this.getModules() != null )
+        {
+            modifierName =
+                this.getModules().getMessageJavaModifierName( implementation.getIdentifier(), message.getName() );
+
+            if ( modifierName == null )
+            {
+                modifierName = "private";
+            }
+        }
+
+        return modifierName;
     }
 
     /**
@@ -1221,7 +1356,11 @@ public class JomcTool
      * @return The Java modifier name of {@code property} of {@code implementation}.
      *
      * @throws NullPointerException if {@code implementation} or {@code property} is {@code null}.
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Modules#getPropertyJavaModifierName(java.lang.String, java.lang.String)}.
+     * This method will be removed in JOMC 2.0.
      */
+    @Deprecated
     public String getJavaModifierName( final Implementation implementation, final Property property )
     {
         if ( implementation == null )
@@ -1233,23 +1372,20 @@ public class JomcTool
             throw new NullPointerException( "property" );
         }
 
-        String javaModifierName = "private";
+        String modifierName = "private";
 
         if ( this.getModules() != null )
         {
-            final Properties specified = this.getModules().getSpecifiedProperties( implementation.getIdentifier() );
+            modifierName =
+                this.getModules().getPropertyJavaModifierName( implementation.getIdentifier(), property.getName() );
 
-            if ( specified != null && specified.getProperty( property.getName() ) != null )
+            if ( modifierName == null )
             {
-                javaModifierName = "public";
+                modifierName = "private";
             }
         }
-        else if ( this.isLoggable( Level.WARNING ) )
-        {
-            this.log( Level.WARNING, getMessage( "modulesNotFound", this.getModel().getIdentifier() ), null );
-        }
 
-        return javaModifierName;
+        return modifierName;
     }
 
     /**
@@ -1263,8 +1399,14 @@ public class JomcTool
      *
      * @throws NullPointerException if {@code text} or {@code linePrefix} is {@code null}.
      * @throws IllegalArgumentException if {@code indentationLevel} is negative.
+     * @throws ModelObjectException if compiling the type of the text to a {@code MimeType} fails.
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Text#getJavadocComment(java.lang.String, java.lang.String)}.
+     * This method will be removed in JOMC 2.0.
      */
+    @Deprecated
     public String getJavadocComment( final Text text, final int indentationLevel, final String linePrefix )
+        throws ModelObjectException
     {
         if ( text == null )
         {
@@ -1305,7 +1447,7 @@ public class JomcTool
                     javadoc =
                         builder.substring( this.getLineSeparator().length() + indent.length() + linePrefix.length() );
 
-                    if ( !new MimeType( text.getType() ).match( "text/html" ) )
+                    if ( !text.getMimeType().match( "text/html" ) )
                     {
                         javadoc = StringEscapeUtils.escapeHtml( javadoc );
                     }
@@ -1358,12 +1500,18 @@ public class JomcTool
      *
      * @throws NullPointerException if {@code texts} or {@code linePrefix} is {@code null}.
      * @throws IllegalArgumentException if {@code indentationLevel} is negative.
+     * @throws ModelObjectException if compiling a referenced type to a {@code MimeType} fails.
      *
      * @see #getLocale()
      *
      * @since 1.2
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Text#getJavadocComment(java.lang.String, java.lang.String)}.
+     * This method will be removed in JOMC 2.0.
      */
+    @Deprecated
     public String getJavadocComment( final Texts texts, final int indentationLevel, final String linePrefix )
+        throws ModelObjectException
     {
         if ( texts == null )
         {
@@ -1405,7 +1553,11 @@ public class JomcTool
      * @return {@code str} formatted to a Java class path location.
      *
      * @since 1.3
+     *
+     * @deprecated As of JOMC 1.4, please use {@link JavaTypeName#getQualifiedName()}. This method will be removed in
+     * JOMC 2.0.
      */
+    @Deprecated
     public String getJavaClasspathLocation( final String str, final boolean absolute )
     {
         String classpathLocation = null;
@@ -1433,7 +1585,11 @@ public class JomcTool
      * @return {@code str} formatted to a Java identifier or {@code null}.
      *
      * @since 1.2
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link #toJavaVariableName(java.lang.String)}. This method will be
+     * removed in JOMC 2.0.
      */
+    @Deprecated
     public String getJavaIdentifier( final String str, final boolean capitalize )
     {
         String identifier = null;
@@ -1496,7 +1652,11 @@ public class JomcTool
      * @return {@code str} formatted to a Java method parameter name or {@code null}.
      *
      * @since 1.3
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link #toJavaVariableName(java.lang.String)}. This method will be
+     * removed in JOMC 2.0.
      */
+    @Deprecated
     public String getJavaMethodParameterName( final String str )
     {
         String methodParameterName = null;
@@ -1554,7 +1714,11 @@ public class JomcTool
      * @return {@code str} formatted to a Java field name or {@code null}.
      *
      * @since 1.3
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link #toJavaVariableName(java.lang.String)}. This method will be
+     * removed in JOMC 2.0.
      */
+    @Deprecated
     public String getJavaFieldName( final String str )
     {
         String fieldName = null;
@@ -1612,7 +1776,11 @@ public class JomcTool
      * @return {@code str} formatted to a Java constant name or {@code null}.
      *
      * @since 1.3
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link #toJavaConstantName(java.lang.String)}. This method will be
+     * removed in JOMC 2.0.
      */
+    @Deprecated
     public String getJavaConstantName( final String str )
     {
         String name = null;
@@ -1664,43 +1832,145 @@ public class JomcTool
     }
 
     /**
-     * Gets a flag indicating the class of a given specification is located in the Java default package.
+     * Formats a string to a Java constant name.
+     *
+     * @param str The string to format or {@code null}.
+     *
+     * @return {@code str} formatted to a Java constant name or {@code null}.
+     *
+     * @throws ParseException if normalizing {@code str} to a {@code JavaIdentifier} fails.
+     *
+     * @since 1.3
+     *
+     * @see JavaIdentifier#normalize(java.lang.String, org.jomc.model.JavaIdentifier.NormalizationMode)
+     * @see org.jomc.model.JavaIdentifier.NormalizationMode#CONSTANT_NAME_CONVENTION
+     */
+    public JavaIdentifier toJavaConstantName( final String str ) throws ParseException
+    {
+        JavaIdentifier constantName = null;
+
+        if ( str != null )
+        {
+            constantName = JavaIdentifier.normalize( str, JavaIdentifier.NormalizationMode.CONSTANT_NAME_CONVENTION );
+        }
+
+        return constantName;
+    }
+
+    /**
+     * Compiles a string to a Java method name.
+     *
+     * @param str The string to compile or {@code null}.
+     *
+     * @return {@code str} compiled to a {@code JavaIdentifier} or {@code null}, if {@code str} is {@code null}.
+     *
+     * @throws ParseException if compiling {@code str} to a {@code JavaIdentifier} fails.
+     *
+     * @since 1.4
+     *
+     * @see JavaIdentifier#normalize(java.lang.String, org.jomc.model.JavaIdentifier.NormalizationMode)
+     * @see org.jomc.model.JavaIdentifier.NormalizationMode#METHOD_NAME_CONVENTION
+     */
+    public JavaIdentifier toJavaMethodName( final String str ) throws ParseException
+    {
+        JavaIdentifier variableName = null;
+
+        if ( str != null )
+        {
+            variableName =
+                JavaIdentifier.normalize( str, JavaIdentifier.NormalizationMode.METHOD_NAME_CONVENTION );
+
+        }
+
+        return variableName;
+    }
+
+    /**
+     * Compiles a string to a Java variable name.
+     *
+     * @param str The string to compile or {@code null}.
+     *
+     * @return {@code str} compiled to a {@code JavaIdentifier} or {@code null}, if {@code str} is {@code null}.
+     *
+     * @throws ParseException if compiling {@code str} to a {@code JavaIdentifier} fails.
+     *
+     * @since 1.4
+     *
+     * @see JavaIdentifier#normalize(java.lang.String, org.jomc.model.JavaIdentifier.NormalizationMode)
+     * @see org.jomc.model.JavaIdentifier.NormalizationMode#VARIABLE_NAME_CONVENTION
+     */
+    public JavaIdentifier toJavaVariableName( final String str ) throws ParseException
+    {
+        JavaIdentifier variableName = null;
+
+        if ( str != null )
+        {
+            variableName =
+                JavaIdentifier.normalize( str, JavaIdentifier.NormalizationMode.VARIABLE_NAME_CONVENTION );
+
+        }
+
+        return variableName;
+    }
+
+    /**
+     * Gets a flag indicating the type referenced by a given specification is located in an unnamed Java package.
      *
      * @param specification The specification to query.
      *
-     * @return {@code true}, if the class of {@code specification} is located in the Java default package;
-     * {@code false}, else.
+     * @return {@code true}, if the type referenced by {@code specification} is located in an unnamed Java package;
+     * {@code false}, if the specification does not reference a type or if the referenced type is not located in an
+     * unnamed Java package.
      *
      * @throws NullPointerException if {@code specification} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the referenced type to a {@code JavaTypeName} fails.
+     *
+     * @see Specification#getJavaTypeName()
+     * @see JavaTypeName#isUnnamedPackage()
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Specification#getJavaTypeName()}. This method will be
+     * removed in JOMC 2.0.
      */
-    public boolean isJavaDefaultPackage( final Specification specification )
+    @Deprecated
+    public boolean isJavaDefaultPackage( final Specification specification ) throws ModelObjectException
     {
         if ( specification == null )
         {
             throw new NullPointerException( "specification" );
         }
 
-        return specification.getClazz() != null && this.getJavaPackageName( specification ).length() == 0;
+        final JavaTypeName javaTypeName = specification.getJavaTypeName();
+        return javaTypeName != null && javaTypeName.isUnnamedPackage();
     }
 
     /**
-     * Gets a flag indicating the class of a given implementation is located in the Java default package.
+     * Gets a flag indicating the type referenced by a given implementation is located in an unnamed Java package.
      *
      * @param implementation The implementation to query.
      *
-     * @return {@code true}, if the class of {@code implementation} is located in the Java default package;
-     * {@code false}, else.
+     * @return {@code true}, if the type referenced by {@code implementation} is located in an unnamed Java package;
+     * {@code false}, if the implementation does not reference a type or if the referenced type is not located in an
+     * unnamed Java package.
      *
      * @throws NullPointerException if {@code implementation} is {@code null}.
+     * @throws ModelObjectException if compiling the name of the referenced type to a {@code JavaTypeName} fails.
+     *
+     * @see Implementation#getJavaTypeName()
+     * @see JavaTypeName#isUnnamedPackage()
+     *
+     * @deprecated As of JOMC 1.4, please use method {@link Implementation#getJavaTypeName()}. This method will be
+     * removed in JOMC 2.0.
      */
-    public boolean isJavaDefaultPackage( final Implementation implementation )
+    @Deprecated
+    public boolean isJavaDefaultPackage( final Implementation implementation ) throws ModelObjectException
     {
         if ( implementation == null )
         {
             throw new NullPointerException( "implementation" );
         }
 
-        return implementation.getClazz() != null && this.getJavaPackageName( implementation ).length() == 0;
+        final JavaTypeName javaTypeName = implementation.getJavaTypeName();
+        return javaTypeName != null && javaTypeName.isUnnamedPackage();
     }
 
     /**
@@ -2855,17 +3125,6 @@ public class JomcTool
                 this.getListeners().get( i ).onLog( level, message, throwable );
             }
         }
-    }
-
-    private String getJavaPackageName( final String identifier )
-    {
-        if ( identifier == null )
-        {
-            throw new NullPointerException( "identifier" );
-        }
-
-        final int idx = identifier.lastIndexOf( '.' );
-        return idx != -1 ? identifier.substring( 0, idx ) : "";
     }
 
     private Template findVelocityTemplate( final String location, final String encoding ) throws IOException

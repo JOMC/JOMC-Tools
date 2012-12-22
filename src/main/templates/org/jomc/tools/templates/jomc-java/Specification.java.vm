@@ -59,8 +59,8 @@
 ## @param isoDateTime The current date and time formatted using an ISO-8601 format style.
 ${tool.getIndentation(0)}// SECTION-START[License Header]
 ${tool.getIndentation(0)}// SECTION-END
-#if(!$tool.isJavaDefaultPackage($specification))
-${tool.getIndentation(0)}package ${tool.getJavaPackageName($specification)};
+#if(!$specification.getJavaTypeName().isUnnamedPackage())
+${tool.getIndentation(0)}package ${specification.getJavaTypeName().getPackageName()};
 #end
 
 ${tool.getIndentation(0)}import java.lang.*;
@@ -69,8 +69,8 @@ ${tool.getIndentation(0)}// SECTION-START[Documentation]
 ${tool.getIndentation(0)}// SECTION-END
 ${tool.getIndentation(0)}// SECTION-START[Annotations]
 ${tool.getIndentation(0)}// SECTION-END
-${tool.getIndentation(0)}public interface ${tool.getJavaTypeName($specification,false)}
+${tool.getIndentation(0)}public interface ${specification.getJavaTypeName().getName(false)}
 ${tool.getIndentation(0)}{
-${tool.getIndentation(1)}// SECTION-START[${tool.getJavaTypeName($specification,false)}]
+${tool.getIndentation(1)}// SECTION-START[${specification.getJavaTypeName().getName(false)}]
 ${tool.getIndentation(1)}// SECTION-END
 ${tool.getIndentation(0)}}

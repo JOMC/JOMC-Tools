@@ -79,7 +79,7 @@ ${tool.getIndentation(0)} *   Copyright (C) $author.getName(), $tool.getIsoDate(
 ${tool.getIndentation(0)} *   Copyright (C) $author.getName(), ${isoDate}
 #end
 #if($author.getDocumentation())
-${tool.getIndentation(0)} *     $tool.getJavadocComment($author.getDocumentation(), 0, " *     ")
+${tool.getIndentation(0)} * $author.getDocumentation().getText($tool.getLocale()).getJavadocComment($tool.getLineSeparator(), $tool.getIndentation(0))
 ${tool.getIndentation(0)} *
 #end
 #end

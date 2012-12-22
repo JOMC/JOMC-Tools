@@ -90,8 +90,8 @@ ${tool.getIndentation(1)} *     </tr>
 #foreach($property in $dependency.getProperties().getProperty())
 ${tool.getIndentation(1)} *     <tr class="TableRow">
 ${tool.getIndentation(1)} *       <td align="left" valign="top" nowrap>{@code <$property.getName()>}</td>
-${tool.getIndentation(1)} *       <td align="left" valign="top" nowrap>{@code $tool.getJavaTypeName($property,false)}</td>
-${tool.getIndentation(1)} *       <td align="left" valign="top">#if($property.getDocumentation())$tool.getJavadocComment($property.getDocumentation(), 1, " * ")#end</td>
+${tool.getIndentation(1)} *       <td align="left" valign="top" nowrap>{@code $property.getJavaTypeName().getName(true)}</td>
+${tool.getIndentation(1)} *       <td align="left" valign="top">#if($property.getDocumentation())$property.getDocumentation().getText($tool.getLocale()).getJavadocComment($tool.getLineSeparator(), $tool.getIndentation(1))#end</td>
 ${tool.getIndentation(1)} *     </tr>
 #end
 ${tool.getIndentation(1)} *   </table>
@@ -101,7 +101,7 @@ ${tool.getIndentation(1)} * <dl>
 ${tool.getIndentation(1)} *   <dt><b>Final:</b></dt><dd>$tool.getBooleanString($dependency.isFinal())</dd>
 ${tool.getIndentation(1)} * </dl>
 #if($dependency.getDocumentation())
-${tool.getIndentation(1)} * @return $tool.getJavadocComment($dependency.getDocumentation(), 1, " * ")
+${tool.getIndentation(1)} * @return $dependency.getDocumentation().getText($tool.getLocale()).getJavadocComment($tool.getLineSeparator(), $tool.getIndentation(1))
 #else
 ${tool.getIndentation(1)} * @return The {@code <$dependency.getName()>} dependency.
 #end
@@ -120,13 +120,13 @@ ${tool.getIndentation(1)}@SuppressWarnings("$with-suppress-warnings")
 #if($with-jsr-250)
 ${tool.getIndentation(1)}@javax.annotation.Generated( value = "$toolName $toolVersion", comments = "See $toolUrl" )
 #end
-${tool.getIndentation(1)}$tool.getJavaModifierName($implementation,$dependency) $tool.getJavaTypeName($dependency) $tool.getJavaGetterMethodName($dependency)()
+${tool.getIndentation(1)}$modules.getDependencyJavaModifierName($implementation.getIdentifier(),$dependency.getName()) $modules.getDependencyJavaTypeName($implementation.getIdentifier(), $dependency.getName()).getName(true) $dependency.getJavaGetterMethodName()()
 ${tool.getIndentation(1)}{
 #if($dependency.isOptional() || !$with-assertions)
-${tool.getIndentation(2)}return ($tool.getJavaTypeName($dependency)) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "$dependency.getName()" );
+${tool.getIndentation(2)}return ($modules.getDependencyJavaTypeName($implementation.getIdentifier(), $dependency.getName()).getName(true)) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "${tool.getJavaString($dependency.getName())}" );
 #else
-${tool.getIndentation(2)}final $tool.getJavaTypeName($dependency) _d = ($tool.getJavaTypeName($dependency)) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "$dependency.getName()" );
-${tool.getIndentation(2)}assert _d != null : "'$dependency.getName()' dependency not found.";
+${tool.getIndentation(2)}final $modules.getDependencyJavaTypeName($implementation.getIdentifier(), $dependency.getName()).getName(true) _d = ($modules.getDependencyJavaTypeName($implementation.getIdentifier(), $dependency.getName()).getName(true)) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "${tool.getJavaString($dependency.getName())}" );
+${tool.getIndentation(2)}assert _d != null : "'${tool.getJavaString($dependency.getName())}' dependency not found.";
 ${tool.getIndentation(2)}return _d;
 #end
 ${tool.getIndentation(1)}}

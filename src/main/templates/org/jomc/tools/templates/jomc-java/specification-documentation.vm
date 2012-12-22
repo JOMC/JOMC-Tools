@@ -63,7 +63,7 @@ ${tool.getIndentation(0)}// <editor-fold defaultstate="collapsed" desc=" Generat
 #if($with-javadoc)
 ${tool.getIndentation(0)}/**
 #if($specification.getDocumentation())
-${tool.getIndentation(0)} * $tool.getJavadocComment($specification.getDocumentation(), 0, " * ")
+${tool.getIndentation(0)} * $specification.getDocumentation().getText($tool.getLocale()).getJavadocComment($tool.getLineSeparator(), $tool.getIndentation(0))
 #else
 ${tool.getIndentation(0)} * Specification {@code <$specification.getIdentifier()>}.
 #end
