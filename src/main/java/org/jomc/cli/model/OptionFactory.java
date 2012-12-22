@@ -131,7 +131,7 @@ public final class OptionFactory
     // SECTION-START[Properties]
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
     /**
-     * Gets the value of the {@code <longOpt>} property.
+     * Gets the value of the {@code <Long Opt>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -142,12 +142,12 @@ public final class OptionFactory
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.lang.String getLongOpt()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "longOpt" );
-        assert _p != null : "'longOpt' property not found.";
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Long Opt" );
+        assert _p != null : "'Long Opt' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <numberOfArgs>} property.
+     * Gets the value of the {@code <Number Of Args>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -158,12 +158,12 @@ public final class OptionFactory
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private int getNumberOfArgs()
     {
-        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "numberOfArgs" );
-        assert _p != null : "'numberOfArgs' property not found.";
+        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Number Of Args" );
+        assert _p != null : "'Number Of Args' property not found.";
         return _p.intValue();
     }
     /**
-     * Gets the value of the {@code <opt>} property.
+     * Gets the value of the {@code <Opt>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -174,12 +174,12 @@ public final class OptionFactory
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.lang.String getOpt()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "opt" );
-        assert _p != null : "'opt' property not found.";
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Opt" );
+        assert _p != null : "'Opt' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <optionalArg>} property.
+     * Gets the value of the {@code <Optional Arg>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -190,12 +190,12 @@ public final class OptionFactory
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private boolean isOptionalArg()
     {
-        final java.lang.Boolean _p = (java.lang.Boolean) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "optionalArg" );
-        assert _p != null : "'optionalArg' property not found.";
+        final java.lang.Boolean _p = (java.lang.Boolean) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Optional Arg" );
+        assert _p != null : "'Optional Arg' property not found.";
         return _p.booleanValue();
     }
     /**
-     * Gets the value of the {@code <required>} property.
+     * Gets the value of the {@code <Required>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -206,12 +206,12 @@ public final class OptionFactory
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private boolean isRequired()
     {
-        final java.lang.Boolean _p = (java.lang.Boolean) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "required" );
-        assert _p != null : "'required' property not found.";
+        final java.lang.Boolean _p = (java.lang.Boolean) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Required" );
+        assert _p != null : "'Required' property not found.";
         return _p.booleanValue();
     }
     /**
-     * Gets the value of the {@code <valueSeparator>} property.
+     * Gets the value of the {@code <Value Separator>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -222,8 +222,8 @@ public final class OptionFactory
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private char getValueSeparator()
     {
-        final java.lang.Character _p = (java.lang.Character) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "valueSeparator" );
-        assert _p != null : "'valueSeparator' property not found.";
+        final java.lang.Character _p = (java.lang.Character) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Value Separator" );
+        assert _p != null : "'Value Separator' property not found.";
         return _p.charValue();
     }
     // </editor-fold>
@@ -231,7 +231,7 @@ public final class OptionFactory
     // SECTION-START[Messages]
     // <editor-fold defaultstate="collapsed" desc=" Generated Messages ">
     /**
-     * Gets the text of the {@code <argumentDescription>} message.
+     * Gets the text of the {@code <Argument Description>} message.
      * <p><dl>
      *   <dt><b>Languages:</b></dt>
      *     <dd>English (default)</dd>
@@ -245,12 +245,12 @@ public final class OptionFactory
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getArgumentDescription( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "argumentDescription", locale );
-        assert _m != null : "'argumentDescription' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "Argument Description", locale );
+        assert _m != null : "'Argument Description' message not found.";
         return _m;
     }
     /**
-     * Gets the text of the {@code <description>} message.
+     * Gets the text of the {@code <Description>} message.
      * <p><dl>
      *   <dt><b>Languages:</b></dt>
      *     <dd>English (default)</dd>
@@ -265,8 +265,8 @@ public final class OptionFactory
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getDescription( final java.util.Locale locale, final java.lang.String valueSeparator )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "description", locale, valueSeparator );
-        assert _m != null : "'description' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "Description", locale, valueSeparator );
+        assert _m != null : "'Description' message not found.";
         return _m;
     }
     // </editor-fold>

@@ -112,39 +112,39 @@
         <dependency identifier="java.util.Locale" name="Locale" version="1.1" implementationName="default"/>
       </dependencies>
       <properties>
-        <property name="opt">
+        <property name="Opt">
           <documentation defaultLanguage="en">
             <text language="en">Name of the option.</text>
           </documentation>
         </property>
-        <property name="longOpt">
+        <property name="Long Opt">
           <documentation defaultLanguage="en">
             <text language="en">Long name of the option.</text>
           </documentation>
         </property>
-        <property name="numberOfArgs" type="int" value="0">
+        <property name="Number Of Args" type="int" value="0">
           <documentation defaultLanguage="en">
             <text language="en">Number of argument values the option can take.</text>
           </documentation>
         </property>
-        <property name="required" type="boolean" value="false">
+        <property name="Required" type="boolean" value="false">
           <documentation defaultLanguage="en">
             <text language="en">Query to see if the option is required.</text>
           </documentation>
         </property>
-        <property name="optionalArg" type="boolean" value="false">
+        <property name="Optional Arg" type="boolean" value="false">
           <documentation defaultLanguage="en">
             <text language="en">Query to see if the option can have an optional argument.</text>
           </documentation>
         </property>
-        <property name="valueSeparator" type="char" value=":">
+        <property name="Value Separator" type="char" value=":">
           <documentation defaultLanguage="en">
             <text language="en">Value separator of the option.</text>
           </documentation>
         </property>
       </properties>
       <messages>
-        <message name="description">
+        <message name="Description">
           <documentation defaultLanguage="en">
             <text language="en">Display description of the option.</text>
           </documentation>
@@ -152,10 +152,10 @@
             <text language="en"/>
           </template>
           <arguments>
-            <argument index="0" name="valueSeparator"/>
+            <argument index="0" name="Value Separator"/>
           </arguments>
         </message>
-        <message name="argumentDescription">
+        <message name="Argument Description">
           <documentation defaultLanguage="en">
             <text language="en">Display name for the argument value of the option.</text>
           </documentation>
@@ -185,18 +185,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="m" override="true"/>
-        <property name="longOpt" value="model" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="m" override="true"/>
+        <property name="Long Opt" value="model" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Identifier of the model to process.</text>
             <text language="de">Bezeichner des zu verarbeitenden Modells.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">identifier</text>
             <text language="de">Bezeichner</text>
@@ -224,11 +224,11 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="v" override="true"/>
-        <property name="longOpt" value="verbose" override="true"/>
+        <property name="Opt" value="v" override="true"/>
+        <property name="Long Opt" value="verbose" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Enables verbose output.</text>
             <text language="de">Aktiviert ausführliche Ausgaben.</text>
@@ -256,19 +256,19 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="D" override="true"/>
-        <property name="longOpt" value="debug" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
-        <property name="optionalArg" type="boolean" value="true" override="true"/>
+        <property name="Opt" value="D" override="true"/>
+        <property name="Long Opt" value="debug" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
+        <property name="Optional Arg" type="boolean" value="true" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Log level (default: ALL).</text>
             <text language="de">Protokollierungsstufe (Standard: ALL).</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">level</text>
             <text language="de">Stufe</text>
@@ -296,11 +296,11 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="fw" override="true"/>
-        <property name="longOpt" value="fail-on-warnings" override="true"/>
+        <property name="Opt" value="fw" override="true"/>
+        <property name="Long Opt" value="fail-on-warnings" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Exit with failure on warnings.</text>
             <text language="de">Bei Warnungen Fehler melden.</text>
@@ -328,21 +328,21 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="cp" override="true"/>
-        <property name="longOpt" value="classpath" override="true"/>
-        <property name="numberOfArgs" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
+        <property name="Opt" value="cp" override="true"/>
+        <property name="Long Opt" value="classpath" override="true"/>
+        <property name="Number Of Args" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Class path elements separated by ''{0}''. If starting with a ''@'' character, a file name of a file holding class path elements.</text>
             <text language="de">Klassenpfad-Elemente mit ''{0}'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Klassenpfad-Elementen.</text>
           </template>
           <arguments>
-            <argument index="0" name="valueSeparator"/>
+            <argument index="0" name="Value Separator"/>
           </arguments>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">elements</text>
             <text language="de">Elemente</text>
@@ -370,21 +370,21 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="df" override="true"/>
-        <property name="longOpt" value="documents" override="true"/>
-        <property name="numberOfArgs" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
+        <property name="Opt" value="df" override="true"/>
+        <property name="Long Opt" value="documents" override="true"/>
+        <property name="Number Of Args" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Document filenames separated by ''{0}''. If starting with a ''@'' character, a file name of a file holding document filenames.</text>
             <text language="de">Dokument-Dateinamen mit ''{0}'' getrennt. Wenn mit ''@'' beginnend, Dateiname einer Textdatei mit Dokument-Dateinamen.</text>
           </template>
           <arguments>
-            <argument index="0" name="valueSeparator"/>
+            <argument index="0" name="Value Separator"/>
           </arguments>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">files</text>
             <text language="de">Dateien</text>
@@ -412,18 +412,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="ml" override="true"/>
-        <property name="longOpt" value="module-location" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="ml" override="true"/>
+        <property name="Long Opt" value="module-location" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Location of class path modules.</text>
             <text language="de">Ort der Klassenpfad-Module.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">location</text>
             <text language="de">Ort</text>
@@ -451,18 +451,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="mdl" override="true"/>
-        <property name="longOpt" value="modlet-location" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="mdl" override="true"/>
+        <property name="Long Opt" value="modlet-location" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Location of class path modlets.</text>
             <text language="de">Ort der Klassenpfad-Modlets.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">location</text>
             <text language="de">Ort</text>
@@ -490,18 +490,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="trl" override="true"/>
-        <property name="longOpt" value="transformer-location" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="trl" override="true"/>
+        <property name="Long Opt" value="transformer-location" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Location of class path transformers.</text>
             <text language="de">Ort der Klassenpfad-Transformatoren.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">location</text>
             <text language="de">Ort</text>
@@ -529,18 +529,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="pl" override="true"/>
-        <property name="longOpt" value="provider-location" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="pl" override="true"/>
+        <property name="Long Opt" value="provider-location" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Location of class path providers.</text>
             <text language="de">Ort der Klassenpfad-Provider.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">location</text>
             <text language="de">Ort</text>
@@ -568,18 +568,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="ppl" override="true"/>
-        <property name="longOpt" value="platform-provider-location" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="ppl" override="true"/>
+        <property name="Long Opt" value="platform-provider-location" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Location of platform providers.</text>
             <text language="de">Ort der Plattform-Provider.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">location</text>
             <text language="de">Ort</text>
@@ -607,18 +607,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="mn" override="true"/>
-        <property name="longOpt" value="module" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="mn" override="true"/>
+        <property name="Long Opt" value="module" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Name of the module to process.</text>
             <text language="de">Name des zu verarbeitenden Moduls.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">name</text>
             <text language="de">Name</text>
@@ -646,11 +646,11 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="ncr" override="true"/>
-        <property name="longOpt" value="no-classpath-resolution" override="true"/>
+        <property name="Opt" value="ncr" override="true"/>
+        <property name="Long Opt" value="no-classpath-resolution" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Deactivates class path resolution.</text>
             <text language="de">Deaktiviert die Klassenpfad-Auflösung.</text>
@@ -678,11 +678,11 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="nmp" override="true"/>
-        <property name="longOpt" value="no-model-processing" override="true"/>
+        <property name="Opt" value="nmp" override="true"/>
+        <property name="Long Opt" value="no-model-processing" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Deactivates model processing.</text>
             <text language="de">Deaktiviert die Modell-Bearbeitung.</text>
@@ -710,18 +710,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="l" override="true"/>
-        <property name="longOpt" value="language" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="l" override="true"/>
+        <property name="Long Opt" value="language" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Language.</text>
             <text language="de">Sprache.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">ISO-639 language code</text>
             <text language="de">ISO-639 Sprachcode</text>
@@ -749,18 +749,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="c" override="true"/>
-        <property name="longOpt" value="country" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="c" override="true"/>
+        <property name="Long Opt" value="country" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Country.</text>
             <text language="de">Land.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">ISO-3166 country code</text>
             <text language="de">ISO-3166 Ländercode</text>
@@ -788,18 +788,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="lv" override="true"/>
-        <property name="longOpt" value="locale-variant" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="lv" override="true"/>
+        <property name="Long Opt" value="locale-variant" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Locale variant.</text>
             <text language="de">Standortvariante.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Locale variant</text>
             <text language="de">Standortvariante</text>
@@ -827,18 +827,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="rd" override="true"/>
-        <property name="longOpt" value="resource-dir" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="rd" override="true"/>
+        <property name="Long Opt" value="resource-dir" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Directory to write resource files to.</text>
             <text language="de">Verzeichnis, in das Ressource-Dateien geschrieben werden sollen.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">directory</text>
             <text language="de">Verzeichnis</text>
@@ -866,18 +866,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="sd" override="true"/>
-        <property name="longOpt" value="source-dir" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="sd" override="true"/>
+        <property name="Long Opt" value="source-dir" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Directory holding the source files to manage.</text>
             <text language="de">Verzeichnis, in dem sich die zu verwaltenden Quelltextdateien befinden.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">directory</text>
             <text language="de">Verzeichnis</text>
@@ -905,18 +905,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="tp" override="true"/>
-        <property name="longOpt" value="template-profile" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="tp" override="true"/>
+        <property name="Long Opt" value="template-profile" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Template profile to use.</text>
             <text language="de">Zu verwendendes Vorlagen-Profil.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">profile</text>
             <text language="de">Profil</text>
@@ -944,18 +944,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="dtp" override="true"/>
-        <property name="longOpt" value="default-template-profile" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="dtp" override="true"/>
+        <property name="Long Opt" value="default-template-profile" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Default template profile to use.</text>
             <text language="de">Zu verwendendes Standard-Vorlagen-Profil.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">profile</text>
             <text language="de">Profil</text>
@@ -983,18 +983,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="dte" override="true"/>
-        <property name="longOpt" value="default-template-encoding" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="dte" override="true"/>
+        <property name="Long Opt" value="default-template-encoding" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Default template encoding.</text>
             <text language="de">Standard Vorlagenkodierung.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">encoding</text>
             <text language="de">Kodierung</text>
@@ -1022,18 +1022,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="tl" override="true"/>
-        <property name="longOpt" value="template-location" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="tl" override="true"/>
+        <property name="Long Opt" value="template-location" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Location to search for templates in addition to searching the class path of the application.</text>
             <text language="de">Ort, an dem zusätzlich zum Klassenpfad der Anwendung nach Vorlagen gesucht werden soll.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">location</text>
             <text language="de">Ort</text>
@@ -1061,18 +1061,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="ie" override="true"/>
-        <property name="longOpt" value="input-encoding" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="ie" override="true"/>
+        <property name="Long Opt" value="input-encoding" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Input encoding.</text>
             <text language="de">Eingabekodierung.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">encoding</text>
             <text language="de">Kodierung</text>
@@ -1100,18 +1100,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="oe" override="true"/>
-        <property name="longOpt" value="output-encoding" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="oe" override="true"/>
+        <property name="Long Opt" value="output-encoding" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Output encoding.</text>
             <text language="de">Ausgabekodierung.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">encoding</text>
             <text language="de">Kodierung</text>
@@ -1139,18 +1139,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="cd" override="true"/>
-        <property name="longOpt" value="classes-dir" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="cd" override="true"/>
+        <property name="Long Opt" value="classes-dir" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Directory holding the class files to process.</text>
             <text language="de">Verzeichnis, in dem sich die zu verarbeitenden Klassendateien befinden.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">directory</text>
             <text language="de">Verzeichnis</text>
@@ -1178,18 +1178,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="d" override="true"/>
-        <property name="longOpt" value="document" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="d" override="true"/>
+        <property name="Long Opt" value="document" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Name of the file to write the document to.</text>
             <text language="de">Name der Datei, in die das Dokument geschrieben werden soll.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">filename</text>
             <text language="de">Dateiname</text>
@@ -1217,18 +1217,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="de" override="true"/>
-        <property name="longOpt" value="document-encoding" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="de" override="true"/>
+        <property name="Long Opt" value="document-encoding" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Encoding of the document to write.</text>
             <text language="de">Kodierung des zu schreibenden Dokuments.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">encoding</text>
             <text language="de">Kodierung</text>
@@ -1256,18 +1256,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="xs" override="true"/>
-        <property name="longOpt" value="stylesheet" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="xs" override="true"/>
+        <property name="Long Opt" value="stylesheet" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Name of a XSLT file to use for transforming documents.</text>
             <text language="de">Name einer XSLT Datei, mit der Dokumente transformiert werden sollen.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">filename</text>
             <text language="de">Dateiname</text>
@@ -1295,18 +1295,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="mv" override="true"/>
-        <property name="longOpt" value="module-version" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="mv" override="true"/>
+        <property name="Long Opt" value="module-version" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Version of the merged module.</text>
             <text language="de">Version des Ergebnis-Moduls.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">version</text>
             <text language="de">Version</text>
@@ -1334,18 +1334,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="mve" override="true"/>
-        <property name="longOpt" value="module-vendor" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="mve" override="true"/>
+        <property name="Long Opt" value="module-vendor" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Vendor of the merged module.</text>
             <text language="de">Hersteller des Ergebnis-Moduls.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">vendor</text>
             <text language="de">Hersteller</text>
@@ -1373,21 +1373,21 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="minc" override="true"/>
-        <property name="longOpt" value="module-includes" override="true"/>
-        <property name="numberOfArgs" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
+        <property name="Opt" value="minc" override="true"/>
+        <property name="Long Opt" value="module-includes" override="true"/>
+        <property name="Number Of Args" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Module names separated by ''{0}'' of modules to include.</text>
             <text language="de">Modul-Namen einzuschließender Module mit ''{0}'' getrennt.</text>
           </template>
           <arguments>
-            <argument index="0" name="valueSeparator"/>
+            <argument index="0" name="Value Separator"/>
           </arguments>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">names</text>
             <text language="de">Namen</text>
@@ -1415,21 +1415,21 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="mexc" override="true"/>
-        <property name="longOpt" value="module-excludes" override="true"/>
-        <property name="numberOfArgs" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
+        <property name="Opt" value="mexc" override="true"/>
+        <property name="Long Opt" value="module-excludes" override="true"/>
+        <property name="Number Of Args" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Module names separated by ''{0}'' of modules to exclude.</text>
             <text language="de">Modul-Namen auszuschließender Module mit ''{0}'' getrennt.</text>
           </template>
           <arguments>
-            <argument index="0" name="valueSeparator"/>
+            <argument index="0" name="Value Separator"/>
           </arguments>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">names</text>
             <text language="de">Namen</text>
@@ -1457,18 +1457,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="idt" override="true"/>
-        <property name="longOpt" value="indentation" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="idt" override="true"/>
+        <property name="Long Opt" value="indentation" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Indentation string (''\t'' for tab).</text>
             <text language="de">Leerraumzeichen (''\t'' für Tabulator).</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">characters</text>
             <text language="de">Zeichen</text>
@@ -1496,18 +1496,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="ls" override="true"/>
-        <property name="longOpt" value="line-separator" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="ls" override="true"/>
+        <property name="Long Opt" value="line-separator" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Line separator. (''\r\n'' for DOS, ''\r'' for Mac, ''\n'' for Unix). Defaults to the system''s line separator.</text>
             <text language="de">Zeilenvorschub. (''\r\n'' für DOS, ''\r'' für Mac, ''\n'' für Unix). Verwendet standardmäßig den System-Zeilenvorschub.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">line separator</text>
             <text language="de">Zeilenvorschub</text>
@@ -1534,18 +1534,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="mdn" override="true"/>
-        <property name="longOpt" value="modlet-name" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="mdn" override="true"/>
+        <property name="Long Opt" value="modlet-name" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Name of the modlet to create.</text>
             <text language="de">Name des zu erstellenden Modlets.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">name</text>
             <text language="de">Name</text>
@@ -1573,18 +1573,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="mdv" override="true"/>
-        <property name="longOpt" value="modlet-version" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="mdv" override="true"/>
+        <property name="Long Opt" value="modlet-version" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Version of the merged modlet.</text>
             <text language="de">Version des Ergebnis-Modlets.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">version</text>
             <text language="de">Version</text>
@@ -1612,18 +1612,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="mdve" override="true"/>
-        <property name="longOpt" value="modlet-vendor" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="mdve" override="true"/>
+        <property name="Long Opt" value="modlet-vendor" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Vendor of the merged modlet.</text>
             <text language="de">Hersteller des Ergebnis-Modlets.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">vendor</text>
             <text language="de">Hersteller</text>
@@ -1651,21 +1651,21 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="mdinc" override="true"/>
-        <property name="longOpt" value="modlet-includes" override="true"/>
-        <property name="numberOfArgs" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
+        <property name="Opt" value="mdinc" override="true"/>
+        <property name="Long Opt" value="modlet-includes" override="true"/>
+        <property name="Number Of Args" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Modlet names separated by ''{0}'' of modlets to include.</text>
             <text language="de">Modlet-Namen einzuschließender Modlets mit ''{0}'' getrennt.</text>
           </template>
           <arguments>
-            <argument index="0" name="valueSeparator"/>
+            <argument index="0" name="Value Separator"/>
           </arguments>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">names</text>
             <text language="de">Namen</text>
@@ -1693,21 +1693,21 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="mdexc" override="true"/>
-        <property name="longOpt" value="modlet-excludes" override="true"/>
-        <property name="numberOfArgs" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
+        <property name="Opt" value="mdexc" override="true"/>
+        <property name="Long Opt" value="modlet-excludes" override="true"/>
+        <property name="Number Of Args" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Modlet names separated by ''{0}'' of modlets to exclude.</text>
             <text language="de">Modlet-Namen auszuschließender Modlets mit ''{0}'' getrennt.</text>
           </template>
           <arguments>
-            <argument index="0" name="valueSeparator"/>
+            <argument index="0" name="Value Separator"/>
           </arguments>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">names</text>
             <text language="de">Namen</text>
@@ -1735,18 +1735,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="impl" override="true"/>
-        <property name="longOpt" value="implementation" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="impl" override="true"/>
+        <property name="Long Opt" value="implementation" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Identifier of the implementation to process.</text>
             <text language="de">Bezeichner der zu verarbeitenden Implementierung.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">identifier</text>
             <text language="de">Bezeichner</text>
@@ -1774,18 +1774,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="spec" override="true"/>
-        <property name="longOpt" value="specification" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="spec" override="true"/>
+        <property name="Long Opt" value="specification" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Identifier of the specification to process.</text>
             <text language="de">Bezeichner der zu verarbeitenden Spezifikation.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">identifier</text>
             <text language="de">Bezeichner</text>
@@ -1813,18 +1813,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="cfpc" override="true"/>
-        <property name="longOpt" value="class-file-processor-class" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="cfpc" override="true"/>
+        <property name="Long Opt" value="class-file-processor-class" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Class name of the ''ClassFileProcessor'' to use.</text>
             <text language="de">Klassenname des zu verwendenden ''ClassFileProcessor''s.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">name</text>
             <text language="de">Name</text>
@@ -1852,18 +1852,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="rfpc" override="true"/>
-        <property name="longOpt" value="resource-file-processor-class" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="rfpc" override="true"/>
+        <property name="Long Opt" value="resource-file-processor-class" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Class name of the ''ResourceFileProcessor'' to use.</text>
             <text language="de">Klassenname des zu verwendenden ''ResourceFileProcessor''s.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">name</text>
             <text language="de">Name</text>
@@ -1891,18 +1891,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="sfpc" override="true"/>
-        <property name="longOpt" value="source-file-processor-class" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="sfpc" override="true"/>
+        <property name="Long Opt" value="source-file-processor-class" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Class name of the ''SourceFileProcessor'' to use.</text>
             <text language="de">Klassenname des zu verwendenden ''SourceFileProcessor''s.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">name</text>
             <text language="de">Name</text>
@@ -1930,18 +1930,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="mcfc" override="true"/>
-        <property name="longOpt" value="model-context-factory-class" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="mcfc" override="true"/>
+        <property name="Long Opt" value="model-context-factory-class" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Class name of the ''ModelContextFactory'' to use.</text>
             <text language="de">Klassenname der zu verwendenden ''ModelContextFactory''.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">name</text>
             <text language="de">Name</text>
@@ -1969,18 +1969,18 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="mssid" override="true"/>
-        <property name="longOpt" value="modlet-schema-system-id" override="true"/>
-        <property name="numberOfArgs" type="int" value="1" override="true"/>
+        <property name="Opt" value="mssid" override="true"/>
+        <property name="Long Opt" value="modlet-schema-system-id" override="true"/>
+        <property name="Number Of Args" type="int" value="1" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">System ID of the ''modlet'' schema.</text>
             <text language="de">System ID des ''modlet'' schemas.</text>
           </template>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">URI</text>
             <text language="de">URI</text>
@@ -2008,11 +2008,11 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="ncp" override="true"/>
-        <property name="longOpt" value="no-class-processing" override="true"/>
+        <property name="Opt" value="ncp" override="true"/>
+        <property name="Long Opt" value="no-class-processing" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Deactivates class file processing.</text>
             <text language="de">Deaktiviert die Klassendatei-Verarbeitung.</text>
@@ -2040,11 +2040,11 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="nsp" override="true"/>
-        <property name="longOpt" value="no-source-processing" override="true"/>
+        <property name="Opt" value="nsp" override="true"/>
+        <property name="Long Opt" value="no-source-processing" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Deactivates source file processing.</text>
             <text language="de">Deaktiviert die Quelltextdatei-Verarbeitung.</text>
@@ -2072,11 +2072,11 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="nrp" override="true"/>
-        <property name="longOpt" value="no-resource-processing" override="true"/>
+        <property name="Opt" value="nrp" override="true"/>
+        <property name="Long Opt" value="no-resource-processing" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Deactivates resource file processing.</text>
             <text language="de">Deaktiviert die Ressourcedatei-Verarbeitung.</text>
@@ -2104,21 +2104,21 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="rn" override="true"/>
-        <property name="longOpt" value="resource-names" override="true"/>
-        <property name="numberOfArgs" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
+        <property name="Opt" value="rn" override="true"/>
+        <property name="Long Opt" value="resource-names" override="true"/>
+        <property name="Number Of Args" type="int" value="-2" override="true"/> <!-- Options.UNLIMITED_VALUES -->
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Resource names separated by ''{0}'' of resources to include.</text>
             <text language="de">Ressourcen-Namen einzuschließender Ressourcen mit ''{0}'' getrennt.</text>
           </template>
           <arguments>
-            <argument index="0" name="valueSeparator"/>
+            <argument index="0" name="Value Separator"/>
           </arguments>
         </message>
-        <message name="argumentDescription" override="true">
+        <message name="Argument Description" override="true">
           <template defaultLanguage="en">
             <text language="en">names</text>
             <text language="de">Namen</text>
@@ -2146,11 +2146,11 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="nmdrv" override="true"/>
-        <property name="longOpt" value="no-modlet-resource-validation" override="true"/>
+        <property name="Opt" value="nmdrv" override="true"/>
+        <property name="Long Opt" value="no-modlet-resource-validation" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Deactivates JAXP schema validation of modlet resources.</text>
             <text language="de">Deaktiviert die JAXP Schema-Validierung von Modlet-Ressourcen.</text>
@@ -2178,11 +2178,11 @@
         <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="opt" value="nmrv" override="true"/>
-        <property name="longOpt" value="no-model-resource-validation" override="true"/>
+        <property name="Opt" value="nmrv" override="true"/>
+        <property name="Long Opt" value="no-model-resource-validation" override="true"/>
       </properties>
       <messages>
-        <message name="description" override="true">
+        <message name="Description" override="true">
           <template defaultLanguage="en">
             <text language="en">Deactivates JAXP schema validation of model resources.</text>
             <text language="de">Deaktiviert die JAXP Schema-Validierung von Modell-Ressourcen.</text>
@@ -2215,19 +2215,19 @@
         <!-- dependency name="CommandLineParser" identifier="org.apache.commons.cli.CommandLineParser"
                     implementationName="Commons CLI - Basic Command Line Parser" bound="false"/ -->
 
-        <dependency name="CommandLineParser" identifier="org.apache.commons.cli.CommandLineParser"
+        <dependency name="Command Line Parser" identifier="org.apache.commons.cli.CommandLineParser"
                     implementationName="Commons CLI - GNU Command Line Parser" bound="false"/>
 
         <!-- dependency name="CommandLineParser" identifier="org.apache.commons.cli.CommandLineParser"
                     implementationName="Commons CLI - Posix Command Line Parser" bound="false"/ -->
 
-        <dependency name="DebugOption" identifier="${project.name} ⁑ Application Option" version="${jomc.cli.application.option.version}"
+        <dependency name="Debug Option" identifier="${project.name} ⁑ Application Option" version="${jomc.cli.application.option.version}"
                     implementationName="${project.name} ⁑ Debug Option"/>
 
-        <dependency name="FailOnWarningsOption" identifier="${project.name} ⁑ Application Option" version="${jomc.cli.application.option.version}"
+        <dependency name="Fail On Warnings Option" identifier="${project.name} ⁑ Application Option" version="${jomc.cli.application.option.version}"
                     implementationName="${project.name} ⁑ Fail-On-Warnings Option"/>
 
-        <dependency name="VerboseOption" identifier="${project.name} ⁑ Application Option" version="${jomc.cli.application.option.version}"
+        <dependency name="Verbose Option" identifier="${project.name} ⁑ Application Option" version="${jomc.cli.application.option.version}"
                     implementationName="${project.name} ⁑ Verbose Option"/>
 
       </dependencies>
@@ -2237,64 +2237,64 @@
             <text language="en">The number of characters per line for the usage statement.</text>
           </documentation>
         </property>
-        <property name="leftPad" type="int" value="2">
+        <property name="Left Pad" type="int" value="2">
           <documentation defaultLanguage="en">
             <text language="en">The number of characters of padding to be prefixed to each line.</text>
           </documentation>
         </property>
-        <property name="descPad" type="int" value="2">
+        <property name="Desc Pad" type="int" value="2">
           <documentation defaultLanguage="en">
             <text language="en">The number of characters of padding to be prefixed to each description line.</text>
           </documentation>
         </property>
-        <property name="helpCommandName" value="help">
+        <property name="Help Command Name" value="help">
           <documentation defaultLanguage="en">
             <text language="en">The name of the command used to request help.</text>
           </documentation>
         </property>
       </properties>
       <messages>
-        <message name="usage">
+        <message name="Usage">
           <template defaultLanguage="en">
             <text language="en"><![CDATA[Type »jomc <command> {0}« for further information.]]></text>
             <text language="de"><![CDATA[Geben Sie »jomc <Befehl> {0}« für weitere Informationen ein.]]></text>
           </template>
           <arguments>
-            <argument index="0" name="helpCommandName"/>
+            <argument index="0" name="Help Command Name"/>
           </arguments>
         </message>
-        <message name="illegalArgumentsInfo">
+        <message name="Illegal Arguments Info">
           <template defaultLanguage="en">
             <text language="en">Illegal arguments. Type »jomc {0} {1}« for further information.</text>
             <text language="de">Ungültige Argumente. Geben Sie »jomc {0} {1}« für weitere Informationen ein.</text>
           </template>
           <arguments>
-            <argument index="0" name="command"/>
-            <argument index="1" name="helpCommandName"/>
+            <argument index="0" name="Command"/>
+            <argument index="1" name="Help Command Name"/>
           </arguments>
         </message>
-        <message name="defaultLogLevelInfo">
+        <message name="Default Log Level Info">
           <template defaultLanguage="en">
             <text language="en">Default log level: ''{0}''</text>
             <text language="de">Standard Protokollierungsstufe: ''{0}''</text>
           </template>
           <arguments>
-            <argument index="0" name="defaultLogLevel"/>
+            <argument index="0" name="Default Log Level"/>
           </arguments>
         </message>
-        <message name="defaultExceptionMessage">
+        <message name="Default Exception Message">
           <template defaultLanguage="en">
             <text language="en">No details available.</text>
             <text language="de">Keine Details verfügbar.</text>
           </template>
         </message>
-        <message name="timeInfo">
+        <message name="Time Info">
           <template defaultLanguage="en">
             <text language="en">{0,time,HH:mm:ss.SSS}</text>
             <text language="de">{0,time,HH:mm:ss.SSS}</text>
           </template>
           <arguments>
-            <argument index="0" name="time" type="Time"/>
+            <argument index="0" name="Time" type="Time"/>
           </arguments>
         </message>
       </messages>
@@ -2387,72 +2387,72 @@
         <dependency name="Locale" identifier="java.util.Locale" version="1.1" implementationName="default"/>
       </dependencies>
       <properties>
-        <property name="commandName" value="no-operation">
+        <property name="Command Name" value="no-operation">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
         </property>
-        <property name="abbreviatedCommandName" value="noop">
+        <property name="Abbreviated Command Name" value="noop">
           <documentation defaultLanguage="en">
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
       </properties>
       <messages>
-        <message name="shortDescriptionMessage">
+        <message name="Short Description Message">
           <template defaultLanguage="en">
             <text language="en"/>
           </template>
         </message>
-        <message name="longDescriptionMessage">
+        <message name="Long Description Message">
           <template defaultLanguage="en">
             <text language="en"/>
           </template>
         </message>
-        <message name="separator">
+        <message name="Separator">
           <template defaultLanguage="en">
             <text language="en">--------------------------------------------------------------------------------</text>
           </template>
         </message>
-        <message name="applicationTitle">
+        <message name="Application Title">
           <template defaultLanguage="en">
             <text language="en">${project.name} ${project.version} (${build.date})</text>
           </template>
         </message>
-        <message name="commandInfoMessage">
+        <message name="Command Info Message">
           <template defaultLanguage="en">
             <text language="en">Executing command {0} ...</text>
             <text language="de">Führt Befehl {0} aus ... </text>
           </template>
           <arguments>
-            <argument index="0" name="toolName"/>
+            <argument index="0" name="Tool Name"/>
           </arguments>
         </message>
-        <message name="commandSuccessMessage">
+        <message name="Command Success Message">
           <template defaultLanguage="en">
             <text language="en">{0} successful.</text>
             <text language="de">{0} erfolgreich.</text>
           </template>
           <arguments>
-            <argument index="0" name="toolName"/>
+            <argument index="0" name="Tool Name"/>
           </arguments>
         </message>
-        <message name="commandFailureMessage">
+        <message name="Command Failure Message">
           <template defaultLanguage="en">
             <text language="en">{0} failure.</text>
             <text language="de">{0} fehlgeschlagen.</text>
           </template>
           <arguments>
-            <argument index="0" name="toolName"/>
+            <argument index="0" name="Tool Name"/>
           </arguments>
         </message>
-        <message name="defaultLogLevelInfo">
+        <message name="Default Log Level Info">
           <template defaultLanguage="en">
             <text language="en">Default log level: ''{0}''</text>
             <text language="de">Standard-Protokollierungsstufe: ''{0}''</text>
           </template>
           <arguments>
-            <argument index="0" name="defaultLogLevel"/>
+            <argument index="0" name="Default Log Level"/>
           </arguments>
         </message>
       </messages>
@@ -2485,164 +2485,164 @@
         <reference identifier="${project.name} ⁑ Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="ClasspathOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Classpath Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Classpath Option"/>
 
-        <dependency name="DocumentsOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Documents Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Documents Option"/>
 
-        <dependency name="ModelContextFactoryOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Model Context Factory Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ ModelContextFactory Class Name Option"/>
 
-        <dependency name="ModelOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Model Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Model Option"/>
 
-        <dependency name="ModletSchemaSystemIdOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Modlet Schema System Id Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Modlet Schema System Id Option"/>
 
-        <dependency name="ModletLocationOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Modlet Location Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Modlet Location Option"/>
 
-        <dependency name="ProviderLocationOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Provider Location Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Provider Location Option"/>
 
-        <dependency name="PlatformProviderLocationOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Platform Provider Location Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Platform Provider Location Option"/>
 
-        <dependency name="NoModletResourceValidation" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="No Modlet Resource Validation" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ No Modlet Resource Validation Option"/>
 
       </dependencies>
       <properties>
-        <property name="applicationModlet" value="${project.name}" final="true">
+        <property name="Application Modlet" value="${project.name}" final="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the 'shaded' application modlet.</text>
           </documentation>
         </property>
-        <property name="providerExcludes" value="org.jomc.modlet.DefaultModletProvider" final="true">
+        <property name="Provider Excludes" value="org.jomc.modlet.DefaultModletProvider" final="true">
           <documentation defaultLanguage="en">
-            <text language="en">List of providers to exclude from any {@code META-INF/services} files separated by {@code :}.</text>
+            <text language="en" type="text/x-javadoc">List of providers to exclude from any {@code META-INF/services} files separated by {@code :}.</text>
           </documentation>
         </property>
-        <property name="schemaExcludes" value="org.jomc.model:org.jomc.tools.model" final="true">
+        <property name="Schema Excludes" value="org.jomc.model:org.jomc.tools.model" final="true">
           <documentation defaultLanguage="en">
-            <text language="en">List of schema context-ids to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.</text>
+            <text language="en" type="text/x-javadoc">List of schema context-ids to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.</text>
           </documentation>
         </property>
-        <property name="serviceExcludes" value="org.jomc.model.modlet.DefaultModelProvider:org.jomc.model.modlet.DefaultModelProcessor:org.jomc.model.modlet.DefaultModelValidator:org.jomc.tools.modlet.ToolsModelProvider:org.jomc.tools.modlet.ToolsModelProcessor:org.jomc.tools.modlet.ToolsModelValidator" final="true">
+        <property name="Service Excludes" value="org.jomc.model.modlet.DefaultModelProvider:org.jomc.model.modlet.DefaultModelProcessor:org.jomc.model.modlet.DefaultModelValidator:org.jomc.tools.modlet.ToolsModelProvider:org.jomc.tools.modlet.ToolsModelProcessor:org.jomc.tools.modlet.ToolsModelValidator" final="true">
           <documentation defaultLanguage="en">
-            <text language="en">List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.</text>
+            <text language="en" type="text/x-javadoc">List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.</text>
           </documentation>
         </property>
-        <property name="modletExcludes" value="JOMC Modlet:JOMC ⁑ Modlet:JOMC Model:JOMC ⁑ Model:JOMC Tools:JOMC ⁑ Tools:JOMC CLI:JOMC ⁑ CLI" final="true">
+        <property name="Modlet Excludes" value="JOMC Modlet:JOMC ⁑ Modlet:JOMC Model:JOMC ⁑ Model:JOMC Tools:JOMC ⁑ Tools:JOMC CLI:JOMC ⁑ CLI" final="true">
           <documentation defaultLanguage="en">
-            <text language="en">List of modlet names to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.</text>
+            <text language="en" type="text/x-javadoc">List of modlet names to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.</text>
           </documentation>
         </property>
       </properties>
       <messages>
-        <message name="classpathElementInfo">
+        <message name="Classpath Element Info">
           <template defaultLanguage="en">
             <text language="en">Class path element: ''{0}''</text>
             <text language="de">Klassenpfad-Element: ''{0}''</text>
           </template>
           <arguments>
-            <argument index="0" name="classpathElement"/>
+            <argument index="0" name="Classpath Element"/>
           </arguments>
         </message>
-        <message name="classpathElementNotFoundWarning">
+        <message name="Classpath Element Not Found Warning">
           <template defaultLanguage="en">
             <text language="en">Class path element ''{0}'' ignored. File not found.</text>
             <text language="de">Klassenpfad-Element ''{0}'' ignoriert. Datei nicht gefunden.</text>
           </template>
           <arguments>
-            <argument index="0" name="fileName"/>
+            <argument index="0" name="File Name"/>
           </arguments>
         </message>
-        <message name="documentFileInfo">
+        <message name="Document File Info">
           <template defaultLanguage="en">
             <text language="en">Document file: ''{0}''</text>
             <text language="de">Dokument-Datei: ''{0}''</text>
           </template>
           <arguments>
-            <argument index="0" name="documentFile"/>
+            <argument index="0" name="Document File"/>
           </arguments>
         </message>
-        <message name="documentFileNotFoundWarning">
+        <message name="Document File Not Found Warning">
           <template defaultLanguage="en">
             <text language="en">Document file ''{0}'' ignored. File not found.</text>
             <text language="de">Dokument-Datei ''{0}'' ignoriert. Datei nicht gefunden.</text>
           </template>
           <arguments>
-            <argument index="0" name="fileName"/>
+            <argument index="0" name="File Name"/>
           </arguments>
         </message>
-        <message name="excludedProviderInfo">
+        <message name="Excluded Provider Info">
           <template defaultLanguage="en">
             <text language="en">Provider ''{1}'' from class path resource ''{0}'' ignored.</text>
             <text language="de">Provider ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</text>
           </template>
           <arguments>
-            <argument index="0" name="resourceName"/>
-            <argument index="1" name="providerName"/>
+            <argument index="0" name="Resource Name"/>
+            <argument index="1" name="Provider Name"/>
           </arguments>
         </message>
-        <message name="excludedServiceInfo">
+        <message name="Excluded Service Info">
           <template defaultLanguage="en">
             <text language="en">Service ''{1}'' from class path resource ''{0}'' ignored.</text>
             <text language="de">Service ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</text>
           </template>
           <arguments>
-            <argument index="0" name="resourceName"/>
-            <argument index="1" name="serviceName"/>
+            <argument index="0" name="Resource Name"/>
+            <argument index="1" name="Service Name"/>
           </arguments>
         </message>
-        <message name="excludedSchemaInfo">
+        <message name="Excluded Schema Info">
           <template defaultLanguage="en">
             <text language="en">Context ''{1}'' from class path resource ''{0}'' ignored.</text>
             <text language="de">Kontext ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</text>
           </template>
           <arguments>
-            <argument index="0" name="resourceName"/>
-            <argument index="1" name="contextId"/>
+            <argument index="0" name="Resource Name"/>
+            <argument index="1" name="Context Id"/>
           </arguments>
         </message>
-        <message name="excludedModletInfo">
+        <message name="Excluded Modlet Info">
           <template defaultLanguage="en">
             <text language="en">Modlet ''{1}'' from class path resource ''{0}'' ignored.</text>
             <text language="de">Modlet ''{1}'' aus Klassenpfad-Ressource ''{0}'' ignoriert.</text>
           </template>
           <arguments>
-            <argument index="0" name="resourceName"/>
-            <argument index="1" name="modletIdentifier"/>
+            <argument index="0" name="Resource Name"/>
+            <argument index="1" name="Modlet Identifier"/>
           </arguments>
         </message>
-        <message name="invalidModelMessage">
+        <message name="Invalid Model Message">
           <template defaultLanguage="en">
             <text language="en">Invalid ''{0}'' model.</text>
             <text language="de">Ungültiges ''{0}'' Modell.</text>
           </template>
           <arguments>
-            <argument index="0" name="modelIdentifier"/>
+            <argument index="0" name="Model Identifier"/>
           </arguments>
         </message>
-        <message name="cannotProcessMessage">
+        <message name="Cannot Process Message">
           <template defaultLanguage="en">
             <text language="en">Cannot process ''{0}'': {1}</text>
             <text language="de">Kann ''{0}'' nicht verarbeiten: {1}</text>
           </template>
           <arguments>
-            <argument index="0" name="itemInfo"/>
-            <argument index="1" name="detailMessage"/>
+            <argument index="0" name="Item Info"/>
+            <argument index="1" name="Detail Message"/>
           </arguments>
         </message>
-        <message name="readingMessage">
+        <message name="Reading Message">
           <template defaultLanguage="en">
             <text language="en">Reading ''{0}''.</text>
             <text language="de">Ließt ''{0}''.</text>
           </template>
           <arguments>
-            <argument index="0" name="locationInfo"/>
+            <argument index="0" name="Location Info"/>
           </arguments>
         </message>
       </messages>
@@ -2667,19 +2667,19 @@
         <reference identifier="${project.name} ⁑ Modlet Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="ModuleLocationOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Module Location Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Module Location Option"/>
 
-        <dependency name="TransformerLocationOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Transformer Location Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Transformer Location Option"/>
 
-        <dependency name="NoClasspathResolutionOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="No Classpath Resolution Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ No Classpath Resolution Option"/>
 
-        <dependency name="NoModelProcessingOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="No Model Processing Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ No Model Processing Option"/>
 
-        <dependency name="NoModelResourceValidation" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="No Model Resource Validation" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ No Model Resource Validation Option"/>
 
       </dependencies>
@@ -2704,62 +2704,62 @@
         <reference identifier="${project.name} ⁑ Model Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="TemplateProfileOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Template Profile Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Template Profile Option"/>
 
-        <dependency name="DefaultTemplateEncodingOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Default Template Encoding Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Default Template Encoding Option"/>
 
-        <dependency name="DefaultTemplateProfileOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Default Template Profile Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Default Template Profile Option"/>
 
-        <dependency name="TemplateLocationOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Template Location Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Template Location Option"/>
 
-        <dependency name="OutputEncodingOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Output Encoding Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Output Encoding Option"/>
 
-        <dependency name="InputEncodingOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Input Encoding Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Input Encoding Option"/>
 
-        <dependency name="IndentationStringOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Indentation String Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Indentation String Option"/>
 
-        <dependency name="LineSeparatorOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Line Separator Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Line Separator Option"/>
 
-        <dependency name="LanguageOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Language Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Language Option"/>
 
-        <dependency name="CountryOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Country Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Country Option"/>
 
-        <dependency name="LocaleVariantOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Locale Variant Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Locale Variant Option"/>
 
-        <dependency name="ImplementationOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Implementation Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Implementation Option"/>
 
-        <dependency name="ModuleNameOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Module Name Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Module Name Option"/>
 
-        <dependency name="SpecificationOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Specification Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Specification Option"/>
 
       </dependencies>
       <messages>
-        <message name="failedCreatingObjectMessage">
+        <message name="Failed Creating Object Message">
           <template defaultLanguage="en">
             <text language="en">Failure creating a new ''{0}'' object.</text>
             <text language="de">Fehler bei der Erstellung eines neuen ''{0}'' Objekts.</text>
           </template>
           <arguments>
-            <argument index="0" name="objectInfo"/>
+            <argument index="0" name="Object Info"/>
           </arguments>
         </message>
-        <reference name="moduleNotFoundWarning" final="true"/>
-        <reference name="implementationNotFoundWarning" final="true"/>
-        <reference name="specificationNotFoundWarning" final="true"/>
+        <reference name="Module Not Found Warning" final="true"/>
+        <reference name="Implementation Not Found Warning" final="true"/>
+        <reference name="Specification Not Found Warning" final="true"/>
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
@@ -2782,15 +2782,15 @@
         <reference identifier="${project.name} ⁑ JomcTool Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="ClassFileProcessorOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Class File Processor Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ ClassFileProcessor Class Name Option"/>
 
-        <dependency name="NoClassProcessingOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="No Class Processing Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ No Class File Processing Option"/>
 
       </dependencies>
       <messages>
-        <message name="disabledMessage">
+        <message name="Disabled Message">
           <template defaultLanguage="en">
             <text language="en">Class file processing disabled.</text>
             <text language="de">Klassendateiverarbeitung deaktiviert.</text>
@@ -2818,22 +2818,22 @@
         <reference identifier="${project.name} ⁑ JomcTool Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="ResourceFileProcessorOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Resource File Processor Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ ResourceFileProcessor Class Name Option"/>
 
-        <dependency name="NoResourceProcessingOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="No Resource Processing Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ No Resource File Processing Option"/>
 
-        <dependency name="ResourceDirectoryOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Resource Directory Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Resource Directory Option">
 
           <properties>
-            <property name="required" type="boolean" value="true" override="true"/>
+            <property name="Required" type="boolean" value="true" override="true"/>
           </properties>
         </dependency>
       </dependencies>
       <messages>
-        <message name="disabledMessage">
+        <message name="Disabled Message">
           <template defaultLanguage="en">
             <text language="en">Resource file processing disabled.</text>
             <text language="de">Ressourcedateiverarbeitung deaktiviert.</text>
@@ -2861,22 +2861,22 @@
         <reference identifier="${project.name} ⁑ JomcTool Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="SourceFileProcessorOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Source File Processor Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ SourceFileProcessor Class Name Option"/>
 
-        <dependency name="NoSourceProcessingOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="No Source Processing Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ No Source File Processing Option"/>
 
-        <dependency name="SourceDirectoryOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Source Directory Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Source Directory Option">
 
           <properties>
-            <property name="required" type="boolean" value="true" override="true"/>
+            <property name="Required" type="boolean" value="true" override="true"/>
           </properties>
         </dependency>
       </dependencies>
       <messages>
-        <message name="disabledMessage">
+        <message name="Disabled Message">
           <template defaultLanguage="en">
             <text language="en">Source file processing disabled.</text>
             <text language="de">Quelltextdateiverarbeitung deaktiviert.</text>
@@ -2903,25 +2903,25 @@
         <reference identifier="${project.name} ⁑ ResourceFileProcessor Command" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="commandName" value="generate-resources" override="true">
+        <property name="Command Name" value="generate-resources" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
         </property>
-        <property name="abbreviatedCommandName" value="gr" override="true">
+        <property name="Abbreviated Command Name" value="gr" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
       </properties>
       <messages>
-        <message name="shortDescriptionMessage" override="true">
+        <message name="Short Description Message" override="true">
           <template defaultLanguage="en">
             <text language="en">Generates resource files.</text>
             <text language="de">Generiert Ressource-Dateien.</text>
           </template>
         </message>
-        <message name="longDescriptionMessage" override="true">
+        <message name="Long Description Message" override="true">
           <template defaultLanguage="en">
             <text language="en"><![CDATA[Example:
   jomc generate-resources -cp examples/lib/commons-cli-1.2.jar \
@@ -2974,25 +2974,25 @@
         <reference identifier="${project.name} ⁑ SourceFileProcessor Command" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="commandName" value="manage-sources" override="true">
+        <property name="Command Name" value="manage-sources" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
         </property>
-        <property name="abbreviatedCommandName" value="ms" override="true">
+        <property name="Abbreviated Command Name" value="ms" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
       </properties>
       <messages>
-        <message name="shortDescriptionMessage" override="true">
+        <message name="Short Description Message" override="true">
           <template defaultLanguage="en">
             <text language="en">Manages source files.</text>
             <text language="de">Verwaltet Quelltext-Dateien.</text>
           </template>
         </message>
-        <message name="longDescriptionMessage" override="true">
+        <message name="Long Description Message" override="true">
           <template defaultLanguage="en">
             <text language="en"><![CDATA[Example:
   jomc manage-sources -cp examples/lib/commons-cli-1.2.jar \
@@ -3033,38 +3033,38 @@
         <reference identifier="${project.name} ⁑ ClassFileProcessor Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="ClassesDirectoryOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Classes Directory Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Classes Directory Option">
 
           <properties>
-            <property name="required" type="boolean" value="true" override="true"/>
+            <property name="Required" type="boolean" value="true" override="true"/>
           </properties>
         </dependency>
 
-        <dependency name="StylesheetOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Stylesheet Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Stylesheet Option"/>
 
       </dependencies>
       <properties>
-        <property name="commandName" value="commit-classes" override="true">
+        <property name="Command Name" value="commit-classes" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
         </property>
-        <property name="abbreviatedCommandName" value="cc" override="true">
+        <property name="Abbreviated Command Name" value="cc" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
       </properties>
       <messages>
-        <message name="shortDescriptionMessage" override="true">
+        <message name="Short Description Message" override="true">
           <template defaultLanguage="en">
             <text language="en">Commits model objects to class files.</text>
             <text language="de">Schreibt Klassendateien fest.</text>
           </template>
         </message>
-        <message name="longDescriptionMessage" override="true">
+        <message name="Long Description Message" override="true">
           <template defaultLanguage="en">
             <text language="en"><![CDATA[Example:
   jomc commit-classes -cp examples/lib/commons-cli-1.2.jar \
@@ -3101,31 +3101,31 @@
         <reference identifier="${project.name} ⁑ ClassFileProcessor Command" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="commandName" value="validate-classes" override="true">
+        <property name="Command Name" value="validate-classes" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
         </property>
-        <property name="abbreviatedCommandName" value="vc" override="true">
+        <property name="Abbreviated Command Name" value="vc" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
       </properties>
       <messages>
-        <message name="invalidClassesMessage">
+        <message name="Invalid Classes Message">
           <template defaultLanguage="en">
             <text language="en">Invalid class files.</text>
             <text language="de">Ungültige Klassendateien.</text>
           </template>
         </message>
-        <message name="shortDescriptionMessage" override="true">
+        <message name="Short Description Message" override="true">
           <template defaultLanguage="en">
             <text language="en">Validates model objects of class files.</text>
             <text language="de">Prüft Klassendateien.</text>
           </template>
         </message>
-        <message name="longDescriptionMessage" override="true">
+        <message name="Long Description Message" override="true">
           <template defaultLanguage="en">
             <text language="en"><![CDATA[Example:
   jomc validate-classes -cp examples/lib/commons-cli-1.2.jar:target/classes \
@@ -3158,25 +3158,25 @@
         <reference identifier="${project.name} ⁑ Model Command" version="${project.version}" final="true"/>
       </implementations>
       <properties>
-        <property name="commandName" value="validate-model" override="true">
+        <property name="Command Name" value="validate-model" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
         </property>
-        <property name="abbreviatedCommandName" value="vm" override="true">
+        <property name="Abbreviated Command Name" value="vm" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
       </properties>
       <messages>
-        <message name="shortDescriptionMessage" override="true">
+        <message name="Short Description Message" override="true">
           <template defaultLanguage="en">
             <text language="en">Validates a model.</text>
             <text language="de">Prüft ein Modell.</text>
           </template>
         </message>
-        <message name="longDescriptionMessage" override="true">
+        <message name="Long Description Message" override="true">
           <template defaultLanguage="en">
             <text language="en"><![CDATA[Example:
   jomc validate-model -cp examples/lib/commons-cli-1.2.jar \
@@ -3209,63 +3209,63 @@
         <reference identifier="${project.name} ⁑ Model Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="DocumentOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Document Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Document Option">
 
           <properties>
-            <property name="required" type="boolean" value="true" override="true"/>
+            <property name="Required" type="boolean" value="true" override="true"/>
           </properties>
         </dependency>
 
-        <dependency name="DocumentEncodingOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Document Encoding Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Document Encoding Option"/>
 
-        <dependency name="StylesheetOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Stylesheet Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Stylesheet Option"/>
 
-        <dependency name="ModuleNameOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Module Name Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Module Name Option">
 
           <properties>
-            <property name="required" type="boolean" value="true" override="true"/>
+            <property name="Required" type="boolean" value="true" override="true"/>
           </properties>
         </dependency>
-        <dependency name="ModuleVersionOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Module Version Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Module Version Option"/>
 
-        <dependency name="ModuleVendorOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Module Vendor Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Module Vendor Option"/>
 
-        <dependency name="ModuleIncludesOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Module Includes Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Module Includes Option"/>
 
-        <dependency name="ModuleExcludesOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Module Excludes Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Module Excludes Option"/>
 
-        <dependency name="ResourcesOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Resources Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Resources Option"/>
 
       </dependencies>
       <properties>
-        <property name="commandName" value="merge-modules" override="true">
+        <property name="Command Name" value="merge-modules" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
         </property>
-        <property name="abbreviatedCommandName" value="mm" override="true">
+        <property name="Abbreviated Command Name" value="mm" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
       </properties>
       <messages>
-        <message name="shortDescriptionMessage" override="true">
+        <message name="Short Description Message" override="true">
           <template defaultLanguage="en">
             <text language="en">Merges modules.</text>
             <text language="de">Fügt Module zusammen.</text>
           </template>
         </message>
-        <message name="longDescriptionMessage" override="true">
+        <message name="Long Description Message" override="true">
           <template defaultLanguage="en">
             <text language="en"><![CDATA[Example:
   jomc merge-modules -cp examples/lib/commons-cli-1.2.jar \
@@ -3283,26 +3283,26 @@
                      -v]]></text>
           </template>
         </message>
-        <message name="includingModuleInfo">
+        <message name="Including Module Info">
           <template defaultLanguage="en">
             <text language="en">Including module ''{0}''.</text>
             <text language="de">Schließt Modul ''{0}'' ein.</text>
           </template>
           <arguments>
-            <argument index="0" name="moduleName"/>
+            <argument index="0" name="Module Name"/>
           </arguments>
         </message>
-        <message name="excludingModuleInfo">
+        <message name="Excluding Module Info">
           <template defaultLanguage="en">
             <text language="en">Excluding module ''{0}''.</text>
             <text language="de">Schließt Modul ''{0}'' aus.</text>
           </template>
           <arguments>
-            <argument index="0" name="moduleName"/>
+            <argument index="0" name="Module Name"/>
           </arguments>
         </message>
-        <reference name="illegalTransformationResultError"/>
-        <reference name="writeInfo"/>
+        <reference name="Illegal Transformation Result Error"/>
+        <reference name="Write Info"/>
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
@@ -3324,63 +3324,63 @@
         <reference identifier="${project.name} ⁑ Modlet Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="DocumentOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Document Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Document Option">
 
           <properties>
-            <property name="required" type="boolean" value="true" override="true"/>
+            <property name="Required" type="boolean" value="true" override="true"/>
           </properties>
         </dependency>
 
-        <dependency name="DocumentEncodingOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Document Encoding Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Document Encoding Option"/>
 
-        <dependency name="StylesheetOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Stylesheet Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Stylesheet Option"/>
 
-        <dependency name="ModletNameOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Modlet Name Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Modlet Name Option">
 
           <properties>
-            <property name="required" type="boolean" value="true" override="true"/>
+            <property name="Required" type="boolean" value="true" override="true"/>
           </properties>
         </dependency>
-        <dependency name="ModletVersionOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Modlet Version Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Modlet Version Option"/>
 
-        <dependency name="ModletVendorOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Modlet Vendor Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Modlet Vendor Option"/>
 
-        <dependency name="ModletIncludesOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Modlet Includes Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Modlet Includes Option"/>
 
-        <dependency name="ModletExcludesOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Modlet Excludes Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Modlet Excludes Option"/>
 
-        <dependency name="ResourcesOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Resources Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Resources Option"/>
 
       </dependencies>
       <properties>
-        <property name="commandName" value="merge-modlets" override="true">
+        <property name="Command Name" value="merge-modlets" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
         </property>
-        <property name="abbreviatedCommandName" value="mmd" override="true">
+        <property name="Abbreviated Command Name" value="mmd" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
       </properties>
       <messages>
-        <message name="shortDescriptionMessage" override="true">
+        <message name="Short Description Message" override="true">
           <template defaultLanguage="en">
             <text language="en">Merges modlets.</text>
             <text language="de">Fügt Modlets zusammen.</text>
           </template>
         </message>
-        <message name="longDescriptionMessage" override="true">
+        <message name="Long Description Message" override="true">
           <template defaultLanguage="en">
             <text language="en"><![CDATA[Example:
   jomc merge-modlets -cp examples/lib/commons-cli-1.2.jar \
@@ -3396,26 +3396,26 @@
                      -v]]></text>
           </template>
         </message>
-        <message name="includingModletInfo">
+        <message name="Including Modlet Info">
           <template defaultLanguage="en">
             <text language="en">Including modlet ''{0}''.</text>
             <text language="de">Schließt Modlet ''{0}'' ein.</text>
           </template>
           <arguments>
-            <argument index="0" name="modletName"/>
+            <argument index="0" name="Modlet Name"/>
           </arguments>
         </message>
-        <message name="excludingModletInfo">
+        <message name="Excluding Modlet Info">
           <template defaultLanguage="en">
             <text language="en">Excluding modlet ''{0}''.</text>
             <text language="de">Schließt Modlet ''{0}'' aus.</text>
           </template>
           <arguments>
-            <argument index="0" name="modletName"/>
+            <argument index="0" name="Modlet Name"/>
           </arguments>
         </message>
-        <reference name="illegalTransformationResultError"/>
-        <reference name="writeInfo"/>
+        <reference name="Illegal Transformation Result Error"/>
+        <reference name="Write Info"/>
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
@@ -3437,42 +3437,42 @@
         <reference identifier="${project.name} ⁑ Model Command" version="${project.version}" final="true"/>
       </implementations>
       <dependencies>
-        <dependency name="DocumentOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Document Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Document Option"/>
 
-        <dependency name="DocumentEncodingOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Document Encoding Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Document Encoding Option"/>
 
-        <dependency name="ImplementationOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Implementation Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Implementation Option"/>
 
-        <dependency name="ModuleNameOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Module Name Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Module Name Option"/>
 
-        <dependency name="SpecificationOption" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+        <dependency name="Specification Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ Specification Option"/>
 
       </dependencies>
       <properties>
-        <property name="commandName" value="show-model" override="true">
+        <property name="Command Name" value="show-model" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Name of the command.</text>
           </documentation>
         </property>
-        <property name="abbreviatedCommandName" value="sm" override="true">
+        <property name="Abbreviated Command Name" value="sm" override="true">
           <documentation defaultLanguage="en">
             <text language="en">Abbreviated name of the command.</text>
           </documentation>
         </property>
       </properties>
       <messages>
-        <message name="shortDescriptionMessage" override="true">
+        <message name="Short Description Message" override="true">
           <template defaultLanguage="en">
             <text language="en">Displays model information.</text>
             <text language="de">Zeigt Modell-Informationen.</text>
           </template>
         </message>
-        <message name="longDescriptionMessage" override="true">
+        <message name="Long Description Message" override="true">
           <template defaultLanguage="en">
             <text language="en"><![CDATA[Example:
   jomc show-model -cp examples/lib/commons-cli-1.2.jar \
@@ -3484,62 +3484,62 @@
                   -v]]></text>
           </template>
         </message>
-        <reference name="moduleNotFoundWarning" final="true"/>
-        <reference name="implementationNotFoundWarning" final="true"/>
-        <reference name="specificationNotFoundWarning" final="true"/>
-        <reference name="writeInfo" final="true"/>
+        <reference name="Module Not Found Warning" final="true"/>
+        <reference name="Implementation Not Found Warning" final="true"/>
+        <reference name="Specification Not Found Warning" final="true"/>
+        <reference name="Write Info" final="true"/>
       </messages>
     </implementation>
   </implementations>
   <messages>
     <!-- *********************************************************************************************************** -->
-    <message name="writeInfo">
+    <message name="Write Info">
       <template defaultLanguage="en">
         <text language="en">Writing ''{0}''.</text>
         <text language="de">Schreibt ''{0}''.</text>
       </template>
       <arguments>
-        <argument index="0" name="fileName"/>
+        <argument index="0" name="File Name"/>
       </arguments>
     </message>
     <!-- *********************************************************************************************************** -->
-    <message name="moduleNotFoundWarning">
+    <message name="Module Not Found Warning">
       <template defaultLanguage="en">
         <text language="en">Module ''{0}'' not found.</text>
         <text language="de">Modul ''{0}'' nicht gefunden.</text>
       </template>
       <arguments>
-        <argument index="0" name="moduleName"/>
+        <argument index="0" name="Module Name"/>
       </arguments>
     </message>
     <!-- *********************************************************************************************************** -->
-    <message name="specificationNotFoundWarning">
+    <message name="Specification Not Found Warning">
       <template defaultLanguage="en">
         <text language="en">Specification ''{0}'' not found.</text>
         <text language="de">Spezifikation ''{0}'' nicht gefunden.</text>
       </template>
       <arguments>
-        <argument index="0" name="specificationIdentifier"/>
+        <argument index="0" name="Specification Identifier"/>
       </arguments>
     </message>
     <!-- *********************************************************************************************************** -->
-    <message name="implementationNotFoundWarning">
+    <message name="Implementation Not Found Warning">
       <template defaultLanguage="en">
         <text language="en">Implementation ''{0}'' not found.</text>
         <text language="de">Implementierung ''{0}'' nicht gefunden.</text>
       </template>
       <arguments>
-        <argument index="0" name="implementationIdentifier"/>
+        <argument index="0" name="Implementation Identifier"/>
       </arguments>
     </message>
     <!-- *********************************************************************************************************** -->
-    <message name="illegalTransformationResultError">
+    <message name="Illegal Transformation Result Error">
       <template defaultLanguage="en">
         <text language="en">Failure transforming result document using ''{0}''. Illegal transformation result.</text>
         <text language="de">Fehler bei der Transformation des Ergebniss-Dokuments mit ''{0}''. Ungültiges Transformations-Ergebniss.</text>
       </template>
       <arguments>
-        <argument index="0" name="stylesheetInfo"/>
+        <argument index="0" name="Stylesheet Info"/>
       </arguments>
     </message>
   </messages>

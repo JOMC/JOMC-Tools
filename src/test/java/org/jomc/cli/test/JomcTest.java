@@ -734,7 +734,7 @@ public class JomcTest
     // SECTION-START[Properties]
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
     /**
-     * Gets the value of the {@code <classesDirectory>} property.
+     * Gets the value of the {@code <Classes Directory>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -745,12 +745,12 @@ public class JomcTest
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getClassesDirectory()
     {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "classesDirectory" );
-        assert _p != null : "'classesDirectory' property not found.";
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Classes Directory" );
+        assert _p != null : "'Classes Directory' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <resourcesDirectory>} property.
+     * Gets the value of the {@code <Resources Directory>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -761,12 +761,12 @@ public class JomcTest
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getResourcesDirectory()
     {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "resourcesDirectory" );
-        assert _p != null : "'resourcesDirectory' property not found.";
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Resources Directory" );
+        assert _p != null : "'Resources Directory' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <templatesDirectory>} property.
+     * Gets the value of the {@code <Templates Directory>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -777,12 +777,12 @@ public class JomcTest
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTemplatesDirectory()
     {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "templatesDirectory" );
-        assert _p != null : "'templatesDirectory' property not found.";
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Templates Directory" );
+        assert _p != null : "'Templates Directory' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <testClassesDirectory>} property.
+     * Gets the value of the {@code <Test Classes Directory>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -793,12 +793,12 @@ public class JomcTest
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestClassesDirectory()
     {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testClassesDirectory" );
-        assert _p != null : "'testClassesDirectory' property not found.";
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Classes Directory" );
+        assert _p != null : "'Test Classes Directory' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <testModelDocument>} property.
+     * Gets the value of the {@code <Test Model Document>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -809,12 +809,12 @@ public class JomcTest
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModelDocument()
     {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocument" );
-        assert _p != null : "'testModelDocument' property not found.";
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Model Document" );
+        assert _p != null : "'Test Model Document' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <testModelDocumentIllegal>} property.
+     * Gets the value of the {@code <Test Model Document Illegal>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -825,12 +825,12 @@ public class JomcTest
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModelDocumentIllegal()
     {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocumentIllegal" );
-        assert _p != null : "'testModelDocumentIllegal' property not found.";
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Model Document Illegal" );
+        assert _p != null : "'Test Model Document Illegal' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <testModelDocumentIllegalSchemaConstraints>} property.
+     * Gets the value of the {@code <Test Model Document Illegal Schema Constraints>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -841,12 +841,12 @@ public class JomcTest
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModelDocumentIllegalSchemaConstraints()
     {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocumentIllegalSchemaConstraints" );
-        assert _p != null : "'testModelDocumentIllegalSchemaConstraints' property not found.";
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Model Document Illegal Schema Constraints" );
+        assert _p != null : "'Test Model Document Illegal Schema Constraints' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <testModelDocumentNonExistentClasses>} property.
+     * Gets the value of the {@code <Test Model Document Non Existent Classes>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -857,12 +857,12 @@ public class JomcTest
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModelDocumentNonExistentClasses()
     {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelDocumentNonExistentClasses" );
-        assert _p != null : "'testModelDocumentNonExistentClasses' property not found.";
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Model Document Non Existent Classes" );
+        assert _p != null : "'Test Model Document Non Existent Classes' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <testModelOutputDocument>} property.
+     * Gets the value of the {@code <Test Model Output Document>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -873,12 +873,12 @@ public class JomcTest
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModelOutputDocument()
     {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelOutputDocument" );
-        assert _p != null : "'testModelOutputDocument' property not found.";
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Model Output Document" );
+        assert _p != null : "'Test Model Output Document' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <testModelStylesheet>} property.
+     * Gets the value of the {@code <Test Model Stylesheet>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -889,12 +889,12 @@ public class JomcTest
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModelStylesheet()
     {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModelStylesheet" );
-        assert _p != null : "'testModelStylesheet' property not found.";
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Model Stylesheet" );
+        assert _p != null : "'Test Model Stylesheet' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <testModletName>} property.
+     * Gets the value of the {@code <Test Modlet Name>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -905,12 +905,12 @@ public class JomcTest
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.lang.String getTestModletName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModletName" );
-        assert _p != null : "'testModletName' property not found.";
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Modlet Name" );
+        assert _p != null : "'Test Modlet Name' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <testModletOutputDocument>} property.
+     * Gets the value of the {@code <Test Modlet Output Document>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -921,12 +921,12 @@ public class JomcTest
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModletOutputDocument()
     {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModletOutputDocument" );
-        assert _p != null : "'testModletOutputDocument' property not found.";
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Modlet Output Document" );
+        assert _p != null : "'Test Modlet Output Document' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <testModletStylesheet>} property.
+     * Gets the value of the {@code <Test Modlet Stylesheet>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -937,12 +937,12 @@ public class JomcTest
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModletStylesheet()
     {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModletStylesheet" );
-        assert _p != null : "'testModletStylesheet' property not found.";
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Modlet Stylesheet" );
+        assert _p != null : "'Test Modlet Stylesheet' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <testModuleName>} property.
+     * Gets the value of the {@code <Test Module Name>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -953,12 +953,12 @@ public class JomcTest
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.lang.String getTestModuleName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testModuleName" );
-        assert _p != null : "'testModuleName' property not found.";
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Module Name" );
+        assert _p != null : "'Test Module Name' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <testResourcesDirectory>} property.
+     * Gets the value of the {@code <Test Resources Directory>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -969,12 +969,12 @@ public class JomcTest
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestResourcesDirectory()
     {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testResourcesDirectory" );
-        assert _p != null : "'testResourcesDirectory' property not found.";
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Resources Directory" );
+        assert _p != null : "'Test Resources Directory' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <testShowInstanceOutputDocument>} property.
+     * Gets the value of the {@code <Test Show Instance Output Document>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -985,12 +985,12 @@ public class JomcTest
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestShowInstanceOutputDocument()
     {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testShowInstanceOutputDocument" );
-        assert _p != null : "'testShowInstanceOutputDocument' property not found.";
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Show Instance Output Document" );
+        assert _p != null : "'Test Show Instance Output Document' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <testShowModelOutputDocument>} property.
+     * Gets the value of the {@code <Test Show Model Output Document>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -1001,12 +1001,12 @@ public class JomcTest
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestShowModelOutputDocument()
     {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testShowModelOutputDocument" );
-        assert _p != null : "'testShowModelOutputDocument' property not found.";
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Show Model Output Document" );
+        assert _p != null : "'Test Show Model Output Document' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <testShowSpecificationAndInstanceOutputDocument>} property.
+     * Gets the value of the {@code <Test Show Specification And Instance Output Document>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -1017,12 +1017,12 @@ public class JomcTest
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestShowSpecificationAndInstanceOutputDocument()
     {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testShowSpecificationAndInstanceOutputDocument" );
-        assert _p != null : "'testShowSpecificationAndInstanceOutputDocument' property not found.";
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Show Specification And Instance Output Document" );
+        assert _p != null : "'Test Show Specification And Instance Output Document' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <testShowSpecificationOutputDocument>} property.
+     * Gets the value of the {@code <Test Show Specification Output Document>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -1033,12 +1033,12 @@ public class JomcTest
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestShowSpecificationOutputDocument()
     {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testShowSpecificationOutputDocument" );
-        assert _p != null : "'testShowSpecificationOutputDocument' property not found.";
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Show Specification Output Document" );
+        assert _p != null : "'Test Show Specification Output Document' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <testSourcesDirectory>} property.
+     * Gets the value of the {@code <Test Sources Directory>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -1049,8 +1049,8 @@ public class JomcTest
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestSourcesDirectory()
     {
-        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "testSourcesDirectory" );
-        assert _p != null : "'testSourcesDirectory' property not found.";
+        final java.io.File _p = (java.io.File) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Test Sources Directory" );
+        assert _p != null : "'Test Sources Directory' property not found.";
         return _p;
     }
     // </editor-fold>

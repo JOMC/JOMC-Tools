@@ -541,7 +541,7 @@ public final class Jomc
     // SECTION-START[Dependencies]
     // <editor-fold defaultstate="collapsed" desc=" Generated Dependencies ">
     /**
-     * Gets the {@code <CommandLineParser>} dependency.
+     * Gets the {@code <Command Line Parser>} dependency.
      * <p>
      *   This method returns the {@code <Commons CLI - GNU Command Line Parser>} object of the {@code <org.apache.commons.cli.CommandLineParser>} specification at any specification level.
      *   That specification does not apply to any scope. A new object is returned whenever requested.
@@ -549,15 +549,15 @@ public final class Jomc
      * <dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl>
-     * @return The {@code <CommandLineParser>} dependency.
+     * @return The {@code <Command Line Parser>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.CommandLineParser getCommandLineParser()
     {
-        final org.apache.commons.cli.CommandLineParser _d = (org.apache.commons.cli.CommandLineParser) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "CommandLineParser" );
-        assert _d != null : "'CommandLineParser' dependency not found.";
+        final org.apache.commons.cli.CommandLineParser _d = (org.apache.commons.cli.CommandLineParser) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "Command Line Parser" );
+        assert _d != null : "'Command Line Parser' dependency not found.";
         return _d;
     }
     /**
@@ -581,7 +581,7 @@ public final class Jomc
         return _d;
     }
     /**
-     * Gets the {@code <DebugOption>} dependency.
+     * Gets the {@code <Debug Option>} dependency.
      * <p>
      *   This method returns the {@code <JOMC ⁑ CLI ⁑ Debug Option>} object of the {@code <JOMC ⁑ CLI ⁑ Application Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
@@ -589,19 +589,19 @@ public final class Jomc
      * <dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl>
-     * @return The {@code <DebugOption>} dependency.
+     * @return The {@code <Debug Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getDebugOption()
     {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "DebugOption" );
-        assert _d != null : "'DebugOption' dependency not found.";
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "Debug Option" );
+        assert _d != null : "'Debug Option' dependency not found.";
         return _d;
     }
     /**
-     * Gets the {@code <FailOnWarningsOption>} dependency.
+     * Gets the {@code <Fail On Warnings Option>} dependency.
      * <p>
      *   This method returns the {@code <JOMC ⁑ CLI ⁑ Fail-On-Warnings Option>} object of the {@code <JOMC ⁑ CLI ⁑ Application Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
@@ -609,15 +609,15 @@ public final class Jomc
      * <dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl>
-     * @return The {@code <FailOnWarningsOption>} dependency.
+     * @return The {@code <Fail On Warnings Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getFailOnWarningsOption()
     {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "FailOnWarningsOption" );
-        assert _d != null : "'FailOnWarningsOption' dependency not found.";
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "Fail On Warnings Option" );
+        assert _d != null : "'Fail On Warnings Option' dependency not found.";
         return _d;
     }
     /**
@@ -641,7 +641,7 @@ public final class Jomc
         return _d;
     }
     /**
-     * Gets the {@code <VerboseOption>} dependency.
+     * Gets the {@code <Verbose Option>} dependency.
      * <p>
      *   This method returns the {@code <JOMC ⁑ CLI ⁑ Verbose Option>} object of the {@code <JOMC ⁑ CLI ⁑ Application Option>} specification at specification level 1.2.
      *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
@@ -649,15 +649,15 @@ public final class Jomc
      * <dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl>
-     * @return The {@code <VerboseOption>} dependency.
+     * @return The {@code <Verbose Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
     @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getVerboseOption()
     {
-        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "VerboseOption" );
-        assert _d != null : "'VerboseOption' dependency not found.";
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "Verbose Option" );
+        assert _d != null : "'Verbose Option' dependency not found.";
         return _d;
     }
     // </editor-fold>
@@ -665,7 +665,7 @@ public final class Jomc
     // SECTION-START[Properties]
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
     /**
-     * Gets the value of the {@code <descPad>} property.
+     * Gets the value of the {@code <Desc Pad>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -676,12 +676,12 @@ public final class Jomc
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private int getDescPad()
     {
-        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "descPad" );
-        assert _p != null : "'descPad' property not found.";
+        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Desc Pad" );
+        assert _p != null : "'Desc Pad' property not found.";
         return _p.intValue();
     }
     /**
-     * Gets the value of the {@code <helpCommandName>} property.
+     * Gets the value of the {@code <Help Command Name>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -692,12 +692,12 @@ public final class Jomc
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.lang.String getHelpCommandName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "helpCommandName" );
-        assert _p != null : "'helpCommandName' property not found.";
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Help Command Name" );
+        assert _p != null : "'Help Command Name' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <leftPad>} property.
+     * Gets the value of the {@code <Left Pad>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -708,8 +708,8 @@ public final class Jomc
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private int getLeftPad()
     {
-        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "leftPad" );
-        assert _p != null : "'leftPad' property not found.";
+        final java.lang.Integer _p = (java.lang.Integer) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Left Pad" );
+        assert _p != null : "'Left Pad' property not found.";
         return _p.intValue();
     }
     /**
@@ -733,7 +733,7 @@ public final class Jomc
     // SECTION-START[Messages]
     // <editor-fold defaultstate="collapsed" desc=" Generated Messages ">
     /**
-     * Gets the text of the {@code <defaultExceptionMessage>} message.
+     * Gets the text of the {@code <Default Exception Message>} message.
      * <p><dl>
      *   <dt><b>Languages:</b></dt>
      *     <dd>English (default)</dd>
@@ -741,19 +741,19 @@ public final class Jomc
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
      * @param locale The locale of the message to return.
-     * @return The text of the {@code <defaultExceptionMessage>} message for {@code locale}.
+     * @return The text of the {@code <Default Exception Message>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getDefaultExceptionMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "defaultExceptionMessage", locale );
-        assert _m != null : "'defaultExceptionMessage' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "Default Exception Message", locale );
+        assert _m != null : "'Default Exception Message' message not found.";
         return _m;
     }
     /**
-     * Gets the text of the {@code <defaultLogLevelInfo>} message.
+     * Gets the text of the {@code <Default Log Level Info>} message.
      * <p><dl>
      *   <dt><b>Languages:</b></dt>
      *     <dd>English (default)</dd>
@@ -762,19 +762,19 @@ public final class Jomc
      * </dl></p>
      * @param locale The locale of the message to return.
      * @param defaultLogLevel Format argument.
-     * @return The text of the {@code <defaultLogLevelInfo>} message for {@code locale}.
+     * @return The text of the {@code <Default Log Level Info>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getDefaultLogLevelInfo( final java.util.Locale locale, final java.lang.String defaultLogLevel )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "defaultLogLevelInfo", locale, defaultLogLevel );
-        assert _m != null : "'defaultLogLevelInfo' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "Default Log Level Info", locale, defaultLogLevel );
+        assert _m != null : "'Default Log Level Info' message not found.";
         return _m;
     }
     /**
-     * Gets the text of the {@code <illegalArgumentsInfo>} message.
+     * Gets the text of the {@code <Illegal Arguments Info>} message.
      * <p><dl>
      *   <dt><b>Languages:</b></dt>
      *     <dd>English (default)</dd>
@@ -784,19 +784,19 @@ public final class Jomc
      * @param locale The locale of the message to return.
      * @param command Format argument.
      * @param helpCommandName Format argument.
-     * @return The text of the {@code <illegalArgumentsInfo>} message for {@code locale}.
+     * @return The text of the {@code <Illegal Arguments Info>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getIllegalArgumentsInfo( final java.util.Locale locale, final java.lang.String command, final java.lang.String helpCommandName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "illegalArgumentsInfo", locale, command, helpCommandName );
-        assert _m != null : "'illegalArgumentsInfo' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "Illegal Arguments Info", locale, command, helpCommandName );
+        assert _m != null : "'Illegal Arguments Info' message not found.";
         return _m;
     }
     /**
-     * Gets the text of the {@code <timeInfo>} message.
+     * Gets the text of the {@code <Time Info>} message.
      * <p><dl>
      *   <dt><b>Languages:</b></dt>
      *     <dd>English (default)</dd>
@@ -805,19 +805,19 @@ public final class Jomc
      * </dl></p>
      * @param locale The locale of the message to return.
      * @param time Format argument.
-     * @return The text of the {@code <timeInfo>} message for {@code locale}.
+     * @return The text of the {@code <Time Info>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getTimeInfo( final java.util.Locale locale, final java.util.Date time )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "timeInfo", locale, time );
-        assert _m != null : "'timeInfo' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "Time Info", locale, time );
+        assert _m != null : "'Time Info' message not found.";
         return _m;
     }
     /**
-     * Gets the text of the {@code <usage>} message.
+     * Gets the text of the {@code <Usage>} message.
      * <p><dl>
      *   <dt><b>Languages:</b></dt>
      *     <dd>English (default)</dd>
@@ -826,15 +826,15 @@ public final class Jomc
      * </dl></p>
      * @param locale The locale of the message to return.
      * @param helpCommandName Format argument.
-     * @return The text of the {@code <usage>} message for {@code locale}.
+     * @return The text of the {@code <Usage>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getUsage( final java.util.Locale locale, final java.lang.String helpCommandName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "usage", locale, helpCommandName );
-        assert _m != null : "'usage' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "Usage", locale, helpCommandName );
+        assert _m != null : "'Usage' message not found.";
         return _m;
     }
     // </editor-fold>

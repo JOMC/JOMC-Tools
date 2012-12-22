@@ -44,7 +44,7 @@ import org.apache.commons.cli.CommandLine;
 // SECTION-START[Documentation]
 // <editor-fold defaultstate="collapsed" desc=" Generated Documentation ">
 /**
- * JOMC &#8273; CLI &#8273; command implementation.
+ * JOMC ⁑ CLI ⁑ command implementation.
  *
  * <dl>
  *   <dt><b>Identifier:</b></dt><dd>JOMC &#8273; CLI &#8273; Command</dd>
@@ -408,7 +408,7 @@ public abstract class AbstractCommand
     // SECTION-START[Properties]
     // <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
     /**
-     * Gets the value of the {@code <abbreviatedCommandName>} property.
+     * Gets the value of the {@code <Abbreviated Command Name>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -419,12 +419,12 @@ public abstract class AbstractCommand
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.lang.String getAbbreviatedCommandName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "abbreviatedCommandName" );
-        assert _p != null : "'abbreviatedCommandName' property not found.";
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Abbreviated Command Name" );
+        assert _p != null : "'Abbreviated Command Name' property not found.";
         return _p;
     }
     /**
-     * Gets the value of the {@code <commandName>} property.
+     * Gets the value of the {@code <Command Name>} property.
      * <p><dl>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
@@ -435,8 +435,8 @@ public abstract class AbstractCommand
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.lang.String getCommandName()
     {
-        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "commandName" );
-        assert _p != null : "'commandName' property not found.";
+        final java.lang.String _p = (java.lang.String) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "Command Name" );
+        assert _p != null : "'Command Name' property not found.";
         return _p;
     }
     // </editor-fold>
@@ -444,26 +444,26 @@ public abstract class AbstractCommand
     // SECTION-START[Messages]
     // <editor-fold defaultstate="collapsed" desc=" Generated Messages ">
     /**
-     * Gets the text of the {@code <applicationTitle>} message.
+     * Gets the text of the {@code <Application Title>} message.
      * <p><dl>
      *   <dt><b>Languages:</b></dt>
      *     <dd>English (default)</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
      * @param locale The locale of the message to return.
-     * @return The text of the {@code <applicationTitle>} message for {@code locale}.
+     * @return The text of the {@code <Application Title>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getApplicationTitle( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "applicationTitle", locale );
-        assert _m != null : "'applicationTitle' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "Application Title", locale );
+        assert _m != null : "'Application Title' message not found.";
         return _m;
     }
     /**
-     * Gets the text of the {@code <commandFailureMessage>} message.
+     * Gets the text of the {@code <Command Failure Message>} message.
      * <p><dl>
      *   <dt><b>Languages:</b></dt>
      *     <dd>English (default)</dd>
@@ -472,19 +472,19 @@ public abstract class AbstractCommand
      * </dl></p>
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
-     * @return The text of the {@code <commandFailureMessage>} message for {@code locale}.
+     * @return The text of the {@code <Command Failure Message>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getCommandFailureMessage( final java.util.Locale locale, final java.lang.String toolName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "commandFailureMessage", locale, toolName );
-        assert _m != null : "'commandFailureMessage' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "Command Failure Message", locale, toolName );
+        assert _m != null : "'Command Failure Message' message not found.";
         return _m;
     }
     /**
-     * Gets the text of the {@code <commandInfoMessage>} message.
+     * Gets the text of the {@code <Command Info Message>} message.
      * <p><dl>
      *   <dt><b>Languages:</b></dt>
      *     <dd>English (default)</dd>
@@ -493,19 +493,19 @@ public abstract class AbstractCommand
      * </dl></p>
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
-     * @return The text of the {@code <commandInfoMessage>} message for {@code locale}.
+     * @return The text of the {@code <Command Info Message>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getCommandInfoMessage( final java.util.Locale locale, final java.lang.String toolName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "commandInfoMessage", locale, toolName );
-        assert _m != null : "'commandInfoMessage' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "Command Info Message", locale, toolName );
+        assert _m != null : "'Command Info Message' message not found.";
         return _m;
     }
     /**
-     * Gets the text of the {@code <commandSuccessMessage>} message.
+     * Gets the text of the {@code <Command Success Message>} message.
      * <p><dl>
      *   <dt><b>Languages:</b></dt>
      *     <dd>English (default)</dd>
@@ -514,19 +514,19 @@ public abstract class AbstractCommand
      * </dl></p>
      * @param locale The locale of the message to return.
      * @param toolName Format argument.
-     * @return The text of the {@code <commandSuccessMessage>} message for {@code locale}.
+     * @return The text of the {@code <Command Success Message>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getCommandSuccessMessage( final java.util.Locale locale, final java.lang.String toolName )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "commandSuccessMessage", locale, toolName );
-        assert _m != null : "'commandSuccessMessage' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "Command Success Message", locale, toolName );
+        assert _m != null : "'Command Success Message' message not found.";
         return _m;
     }
     /**
-     * Gets the text of the {@code <defaultLogLevelInfo>} message.
+     * Gets the text of the {@code <Default Log Level Info>} message.
      * <p><dl>
      *   <dt><b>Languages:</b></dt>
      *     <dd>English (default)</dd>
@@ -535,72 +535,72 @@ public abstract class AbstractCommand
      * </dl></p>
      * @param locale The locale of the message to return.
      * @param defaultLogLevel Format argument.
-     * @return The text of the {@code <defaultLogLevelInfo>} message for {@code locale}.
+     * @return The text of the {@code <Default Log Level Info>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getDefaultLogLevelInfo( final java.util.Locale locale, final java.lang.String defaultLogLevel )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "defaultLogLevelInfo", locale, defaultLogLevel );
-        assert _m != null : "'defaultLogLevelInfo' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "Default Log Level Info", locale, defaultLogLevel );
+        assert _m != null : "'Default Log Level Info' message not found.";
         return _m;
     }
     /**
-     * Gets the text of the {@code <longDescriptionMessage>} message.
+     * Gets the text of the {@code <Long Description Message>} message.
      * <p><dl>
      *   <dt><b>Languages:</b></dt>
      *     <dd>English (default)</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
      * @param locale The locale of the message to return.
-     * @return The text of the {@code <longDescriptionMessage>} message for {@code locale}.
+     * @return The text of the {@code <Long Description Message>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getLongDescriptionMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "longDescriptionMessage", locale );
-        assert _m != null : "'longDescriptionMessage' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "Long Description Message", locale );
+        assert _m != null : "'Long Description Message' message not found.";
         return _m;
     }
     /**
-     * Gets the text of the {@code <separator>} message.
+     * Gets the text of the {@code <Separator>} message.
      * <p><dl>
      *   <dt><b>Languages:</b></dt>
      *     <dd>English (default)</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
      * @param locale The locale of the message to return.
-     * @return The text of the {@code <separator>} message for {@code locale}.
+     * @return The text of the {@code <Separator>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getSeparator( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "separator", locale );
-        assert _m != null : "'separator' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "Separator", locale );
+        assert _m != null : "'Separator' message not found.";
         return _m;
     }
     /**
-     * Gets the text of the {@code <shortDescriptionMessage>} message.
+     * Gets the text of the {@code <Short Description Message>} message.
      * <p><dl>
      *   <dt><b>Languages:</b></dt>
      *     <dd>English (default)</dd>
      *   <dt><b>Final:</b></dt><dd>No</dd>
      * </dl></p>
      * @param locale The locale of the message to return.
-     * @return The text of the {@code <shortDescriptionMessage>} message for {@code locale}.
+     * @return The text of the {@code <Short Description Message>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
     @SuppressWarnings("unused")
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getShortDescriptionMessage( final java.util.Locale locale )
     {
-        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "shortDescriptionMessage", locale );
-        assert _m != null : "'shortDescriptionMessage' message not found.";
+        final String _m = org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getMessage( this, "Short Description Message", locale );
+        assert _m != null : "'Short Description Message' message not found.";
         return _m;
     }
     // </editor-fold>

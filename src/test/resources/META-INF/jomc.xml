@@ -53,102 +53,102 @@
 
       </authors>
       <properties>
-        <property name="testModelDocument" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/resources/jomc.xml">
+        <property name="Test Model Document" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/resources/jomc.xml">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">Valid model document.</text>
           </documentation>
         </property>
-        <property name="testModelDocumentIllegal" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/resources/illegal-module.xml">
+        <property name="Test Model Document Illegal" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/resources/illegal-module.xml">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">Model document with invalid model.</text>
           </documentation>
         </property>
-        <property name="testModelDocumentIllegalSchemaConstraints" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/resources/illegal-module-document.xml">
+        <property name="Test Model Document Illegal Schema Constraints" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/resources/illegal-module-document.xml">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">Model document not valid to the JOMC JAXP schema.</text>
           </documentation>
         </property>
-        <property name="testModelDocumentNonExistentClasses" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/resources/module-nonexistent-classes.xml">
+        <property name="Test Model Document Non Existent Classes" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/resources/module-nonexistent-classes.xml">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">Model document referencing non-existent classes.</text>
           </documentation>
         </property>
-        <property name="testModuleName" value="${project.name}">
+        <property name="Test Module Name" value="${project.name}">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">Test module name.</text>
           </documentation>
         </property>
-        <property name="testModelStylesheet" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/resources/model-relocations.xsl">
+        <property name="Test Model Stylesheet" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/resources/model-relocations.xsl">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">Valid model object stylesheet.</text>
           </documentation>
         </property>
-        <property name="testModelOutputDocument" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/transformed-model.xml">
+        <property name="Test Model Output Document" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/transformed-model.xml">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">File to write a transformed model to.</text>
           </documentation>
         </property>
-        <property name="testModletName" value="${project.name} ⁑ Tests">
+        <property name="Test Modlet Name" value="${project.name} ⁑ Tests">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">Test module name.</text>
           </documentation>
         </property>
-        <property name="testModletStylesheet" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/resources/modlet-relocations.xsl">
+        <property name="Test Modlet Stylesheet" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/resources/modlet-relocations.xsl">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">Valid modlet object stylesheet.</text>
           </documentation>
         </property>
-        <property name="testModletOutputDocument" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/transformed-modlet.xml">
+        <property name="Test Modlet Output Document" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/transformed-modlet.xml">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">File to write a transformed modlet to.</text>
           </documentation>
         </property>
-        <property name="testSourcesDirectory" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/jomc-test-generated-sources">
+        <property name="Test Sources Directory" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/jomc-test-generated-sources">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">Directory holding source code files to manage.</text>
           </documentation>
         </property>
-        <property name="testResourcesDirectory" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/jomc-test-generated-resources">
+        <property name="Test Resources Directory" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/jomc-test-generated-resources">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">Directory to generate resources to.</text>
           </documentation>
         </property>
-        <property name="testClassesDirectory" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/jomc-test-generated-classes">
+        <property name="Test Classes Directory" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/jomc-test-generated-classes">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">Directory holding class files to commit to and to validate.</text>
           </documentation>
         </property>
-        <property name="testShowModelOutputDocument" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/shown-model.xml">
+        <property name="Test Show Model Output Document" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/shown-model.xml">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">File to write a model to.</text>
           </documentation>
         </property>
-        <property name="testShowSpecificationOutputDocument" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/shown-specification.xml">
+        <property name="Test Show Specification Output Document" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/shown-specification.xml">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">File to write a specification to.</text>
           </documentation>
         </property>
-        <property name="testShowInstanceOutputDocument" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/shown-instance.xml">
+        <property name="Test Show Instance Output Document" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/shown-instance.xml">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">File to write an instance to.</text>
           </documentation>
         </property>
-        <property name="testShowSpecificationAndInstanceOutputDocument" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/shown-specification-and-instance.xml">
+        <property name="Test Show Specification And Instance Output Document" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/shown-specification-and-instance.xml">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">File to write a model holding a specification and an instance to.</text>
           </documentation>
         </property>
-        <property name="classesDirectory" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/classes">
+        <property name="Classes Directory" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/classes">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">Directory holding class files.</text>
           </documentation>
         </property>
-        <property name="resourcesDirectory" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/resources">
+        <property name="Resources Directory" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/resources">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">Directory holding resources.</text>
           </documentation>
         </property>
-        <property name="templatesDirectory" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/templates">
+        <property name="Templates Directory" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/templates">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">Directory holding templates.</text>
           </documentation>

@@ -93,7 +93,7 @@ ${tool.getIndentation(1)}public org.apache.commons.cli.Options getOptions()
 ${tool.getIndentation(1)}{
 ${tool.getIndentation(2)}final org.apache.commons.cli.Options options = new org.apache.commons.cli.Options();
 #foreach($option in $options)
-${tool.getIndentation(2)}options.addOption( this.$tool.getJavaGetterMethodName($option)() );
+${tool.getIndentation(2)}options.addOption( this.${option.getJavaGetterMethodName()}() );
 #end
 ${tool.getIndentation(2)}return options;
 ${tool.getIndentation(1)}}
