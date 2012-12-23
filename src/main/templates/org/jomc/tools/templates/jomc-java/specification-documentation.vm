@@ -89,11 +89,11 @@ ${tool.getIndentation(0)} * @version This specification does not support version
 #end
 #set( $H = '#' )
 #if($specification.getMultiplicity().value() == "One")
-${tool.getIndentation(0)} * @see org.jomc.ObjectManager${H}getObject(java.lang.Class) getObject(${tool.getHtmlString($tool.getJavaTypeName($specification,false))}.class)
+${tool.getIndentation(0)} * @see org.jomc.ObjectManager${H}getObject(java.lang.Class) getObject(${tool.getHtmlString($specification.getJavaTypeName().getName(false))}.class)
 #elseif($specification.getMultiplicity().value() == "Many")
-${tool.getIndentation(0)} * @see org.jomc.ObjectManager${H}getObject(java.lang.Class) getObject(${tool.getHtmlString($tool.getJavaTypeName($specification,false))}[].class)
+${tool.getIndentation(0)} * @see org.jomc.ObjectManager${H}getObject(java.lang.Class) getObject(${tool.getHtmlString($specification.getJavaTypeName().getName(false))}[].class)
 #end
-${tool.getIndentation(0)} * @see org.jomc.ObjectManager${H}getObject(java.lang.Class,java.lang.String) getObject(${tool.getHtmlString($tool.getJavaTypeName($specification,false))}.class, "<i>implementation name</i>")
+${tool.getIndentation(0)} * @see org.jomc.ObjectManager${H}getObject(java.lang.Class,java.lang.String) getObject(${tool.getHtmlString($specification.getJavaTypeName().getName(false))}.class, "<i>implementation name</i>")
 ${tool.getIndentation(0)} * @see org.jomc.ObjectManagerFactory
 ${tool.getIndentation(0)} */
 #end

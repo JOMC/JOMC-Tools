@@ -499,11 +499,18 @@ public class ToolsModelProvider implements ModelProvider
 
         sourceFileType.setIdentifier( "Default" );
 
-        if ( specification.getClazz() != null )
+        try
         {
-            sourceFileType.setLocation( new StringBuilder( specification.getClazz().length() + 5 ).append(
-                specification.getClazz().replace( '.', '/' ) ).append( ".java" ).toString() );
+            if ( specification.getJavaTypeName() != null )
+            {
+                sourceFileType.setLocation(
+                    specification.getJavaTypeName().getQualifiedName().replace( '.', '/' ) + ".java" );
 
+            }
+        }
+        catch ( final ModelObjectException e )
+        {
+            context.log( Level.WARNING, getMessage( e ), null );
         }
 
         sourceFileType.setTemplate( SPECIFICATION_TEMPLATE );
@@ -586,11 +593,18 @@ public class ToolsModelProvider implements ModelProvider
 
         sourceFileType.setIdentifier( "Default" );
 
-        if ( implementation.getClazz() != null )
+        try
         {
-            sourceFileType.setLocation( new StringBuilder( implementation.getClazz().length() + 5 ).append(
-                implementation.getClazz().replace( '.', '/' ) ).append( ".java" ).toString() );
+            if ( implementation.getJavaTypeName() != null )
+            {
+                sourceFileType.setLocation(
+                    implementation.getJavaTypeName().getQualifiedName().replace( '.', '/' ) + ".java" );
 
+            }
+        }
+        catch ( final ModelObjectException e )
+        {
+            context.log( Level.WARNING, getMessage( e ), null );
         }
 
         sourceFileType.setTemplate( IMPLEMENTATION_TEMPLATE );
