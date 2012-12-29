@@ -275,14 +275,13 @@
       </includes>
     </fileSet>
     <fileSet>
-      <directory>${project.build.directory}/jomc-changes</directory>
+      <directory>${project.build.directory}/compat</directory>
       <fileMode>0444</fileMode>
       <directoryMode>0755</directoryMode>
-      <outputDirectory>/doc</outputDirectory>
+      <outputDirectory>/lib/tools/compat</outputDirectory>
       <filtered>false</filtered>
-      <lineEnding>keep</lineEnding>
       <includes>
-        <include>**/**.xhtml</include>
+        <include>**/*.jar</include>
       </includes>
     </fileSet>
     <fileSet>

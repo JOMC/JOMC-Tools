@@ -374,6 +374,14 @@
                     <type>pom</type>
                     <outputDirectory>${project.build.directory}/maven-jomc-plugin</outputDirectory>
                   </artifactItem>
+                  <artifactItem>
+                    <groupId>org.jomc</groupId>
+                    <artifactId>jomc-tools</artifactId>
+                    <classifier>templates</classifier>
+                    <type>jar</type>
+                    <version>1.3</version>
+                    <outputDirectory>${project.build.directory}/compat</outputDirectory>
+                  </artifactItem>
                 </artifactItems>
               </configuration>
             </execution>
