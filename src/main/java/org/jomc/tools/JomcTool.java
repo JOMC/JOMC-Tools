@@ -491,13 +491,13 @@ public class JomcTool
      *
      * @return {@code str} formatted to a HTML string with HTML entities or {@code null}.
      *
-     * @see StringEscapeUtils#escapeHtml(java.lang.String)
-     *
      * @since 1.2
      */
     public String getHtmlString( final String str )
     {
-        return StringEscapeUtils.escapeHtml( str );
+        return str != null ? str.replace( "<", "&lt;" ).replace( ">", "&gt;" ).replace( "&", "&amp;" ).
+            replace( "\"", "&quot;" ).replace( "*", "&lowast;" ) : null;
+
     }
 
     /**
