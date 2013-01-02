@@ -2420,7 +2420,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             context.setAttribute( ToolsModelProcessor.MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME,
                                   this.modelObjectClasspathResolutionEnabled );
 
-            context.setAttribute( DefaultModletProvider.VALIDATING_ATTRIBUTE_NAME, this.modletResourceValidationEnabled );
+            context.setAttribute( DefaultModletProvider.VALIDATING_ATTRIBUTE_NAME,
+                                  this.modletResourceValidationEnabled );
+
             context.setAttribute( DefaultModelProvider.VALIDATING_ATTRIBUTE_NAME, this.modelResourceValidationEnabled );
 
             if ( this.modelContextAttributes != null )
