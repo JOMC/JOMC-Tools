@@ -75,6 +75,7 @@ import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.modlet.DefaultModelProcessor;
 import org.jomc.model.modlet.DefaultModelProvider;
+import org.jomc.model.modlet.DefaultModelValidator;
 import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.DefaultModelContext;
 import org.jomc.modlet.DefaultModletProvider;
@@ -562,6 +563,15 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @since 1.2
      */
     private boolean modletResourceValidationEnabled;
+
+    /**
+     * Flag controlling Java validation.
+     *
+     * @parameter default-value="true" expression="${jomc.javaValidationEnabled}"
+     *
+     * @since 1.4
+     */
+    private boolean javaValidationEnabled;
 
     /**
      * The Maven project of the instance.
@@ -2424,6 +2434,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                                   this.modletResourceValidationEnabled );
 
             context.setAttribute( DefaultModelProvider.VALIDATING_ATTRIBUTE_NAME, this.modelResourceValidationEnabled );
+            context.setAttribute( DefaultModelValidator.VALIDATE_JAVA_ATTRIBUTE_NAME, this.javaValidationEnabled );
 
             if ( this.modelContextAttributes != null )
             {
