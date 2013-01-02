@@ -1009,6 +1009,12 @@ public class JomcToolTest
         this.getJomcTool().setDefaultTemplateEncoding( null );
     }
 
+    @Test
+    public final void testHtmlString() throws Exception
+    {
+        assertEquals( "&lt;&gt;&quot;&lowast;&amp;", this.getJomcTool().getHtmlString( "<>\"*&" ) );
+    }
+
     public static void assertNullPointerException( final NullPointerException e )
     {
         assertNotNull( e );

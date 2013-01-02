@@ -495,7 +495,7 @@ public class JomcTool
      */
     public String getHtmlString( final String str )
     {
-        return str != null ? str.replace( "<", "&lt;" ).replace( ">", "&gt;" ).replace( "&", "&amp;" ).
+        return str != null ? str.replace( "&", "&amp;" ).replace( "<", "&lt;" ).replace( ">", "&gt;" ).
             replace( "\"", "&quot;" ).replace( "*", "&lowast;" ) : null;
 
     }
