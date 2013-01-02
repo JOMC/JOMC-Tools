@@ -83,6 +83,9 @@ Task and Type Reference
 |                                             |                                            | system's default       |
 |                                             |                                            | encoding.              |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<javaValidationEnabled>>>                 | A flag indicating Java validation is       | No. Defaults to true.  |
+|                                             | enabled.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
 |                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
 |                                             |                                            | separator.             |
@@ -263,6 +266,9 @@ Task and Type Reference
 | <<<inputEncoding>>>                         | The encoding to use for reading files.     | No. Defaults to the    |
 |                                             |                                            | system's default       |
 |                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<javaValidationEnabled>>>                 | A flag indicating Java validation is       | No. Defaults to true.  |
+|                                             | enabled.                                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
 |                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
@@ -454,6 +460,9 @@ Task and Type Reference
 | <<<inputEncoding>>>                         | The encoding to use for reading files.     | No. Defaults to the    |
 |                                             |                                            | system's default       |
 |                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<javaValidationEnabled>>>                 | A flag indicating Java validation is       | No. Defaults to true.  |
+|                                             | enabled.                                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
 |                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
@@ -651,6 +660,9 @@ Task and Type Reference
 |                                             |                                            | system's default       |
 |                                             |                                            | encoding.              |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<javaValidationEnabled>>>                 | A flag indicating Java validation is       | No. Defaults to true.  |
+|                                             | enabled.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<lineSeparator>>>                         | The line separator ('\r\n' for DOS, '\r'   | No.                    |
 |                                             | for Mac, '\n' for Unix).                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -834,6 +846,9 @@ Task and Type Reference
 |                                             |                                            | system's default       |
 |                                             |                                            | encoding.              |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<javaValidationEnabled>>>                 | A flag indicating Java validation is       | No. Defaults to true.  |
+|                                             | enabled.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
 |                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
 |                                             |                                            | separator.             |
@@ -989,6 +1004,9 @@ Task and Type Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<if>>>                                    | Object controlling the execution of the    | No.                    |
 |                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<javaValidationEnabled>>>                 | A flag indicating Java validation is       | No. Defaults to true.  |
+|                                             | enabled.                                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |

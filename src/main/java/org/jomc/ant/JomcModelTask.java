@@ -53,6 +53,7 @@ import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.modlet.DefaultModelProcessor;
 import org.jomc.model.modlet.DefaultModelProvider;
+import org.jomc.model.modlet.DefaultModelValidator;
 import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
@@ -83,6 +84,9 @@ public class JomcModelTask extends JomcTask
 
     /** The flag indicating JAXP schema validation of model resources is enabled. */
     private boolean modelResourceValidationEnabled = true;
+
+    /** The flag indicating Java validation is enabled. */
+    private boolean javaValidationEnabled = true;
 
     /** Creates a new {@code JomcModelTask} instance. */
     public JomcModelTask()
@@ -220,6 +224,34 @@ public class JomcModelTask extends JomcTask
     public final void setModelResourceValidationEnabled( final boolean value )
     {
         this.modelResourceValidationEnabled = value;
+    }
+
+    /**
+     * Gets a flag indicating Java validation is enabled.
+     * 
+     * @return {@code true}, if Java validation is enabled; {@code false}, else.
+     * 
+     * @see #setJavaValidationEnabled(boolean) 
+     * 
+     * @since 1.4
+     */
+    public final boolean isJavaValidationEnabled()
+    {
+        return this.javaValidationEnabled;
+    }
+
+    /**
+     * Sets the flag indicating Java validation is enabled.
+     *
+     * @param value {@code true}, to enable Java validation; {@code false}, to disable Java validation.
+     *
+     * @see #isJavaValidationEnabled()
+     *
+     * @since 1.4
+     */
+    public final void setJavaValidationEnabled( final boolean value )
+    {
+        this.javaValidationEnabled = value;
     }
 
     /**
@@ -438,6 +470,8 @@ public class JomcModelTask extends JomcTask
 
         modelContext.setAttribute( DefaultModelProvider.VALIDATING_ATTRIBUTE_NAME,
                                    this.isModelResourceValidationEnabled() );
+
+        modelContext.setAttribute( DefaultModelValidator.VALIDATE_JAVA_ATTRIBUTE_NAME, this.isJavaValidationEnabled() );
 
         for ( int i = 0, s0 = this.getModelContextAttributes().size(); i < s0; i++ )
         {

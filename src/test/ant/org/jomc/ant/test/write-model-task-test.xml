@@ -136,7 +136,8 @@
                       modletSchemaSystemId="TEST"
                       platformProviderLocation="TEST"
                       modletResourceValidationEnabled="false"
-                      modelResourceValidationEnabled="false">
+                      modelResourceValidationEnabled="false"
+                      javaValidationEnabled="false">
       <jomc:classpath>
         <pathelement path="${empty.dir}"/>
       </jomc:classpath>

@@ -311,7 +311,8 @@
                              classFileProcessorClass="org.jomc.tools.ClassFileProcessor"
                              templateLocation="${empty.dir}"
                              modletResourceValidationEnabled="false"
-                             modelResourceValidationEnabled="false">
+                             modelResourceValidationEnabled="false"
+                             javaValidationEnabled="false">
       <jomc:classpath>
         <pathelement location="${classes.dir}"/>
       </jomc:classpath>
