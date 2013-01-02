@@ -72,7 +72,7 @@ import static org.junit.Assert.assertTrue;
  *
  * <dl>
  *   <dt><b>Identifier:</b></dt><dd>org.jomc.cli.test.JomcTest</dd>
- *   <dt><b>Name:</b></dt><dd>JOMC &#8273; CLI &#8273; Tests &#8273; JomcTest</dd>
+ *   <dt><b>Name:</b></dt><dd>JOMC ⁑ CLI ⁑ Tests ⁑ JomcTest</dd>
  *   <dt><b>Abstract:</b></dt><dd>No</dd>
  *   <dt><b>Final:</b></dt><dd>No</dd>
  *   <dt><b>Stateless:</b></dt><dd>No</dd>

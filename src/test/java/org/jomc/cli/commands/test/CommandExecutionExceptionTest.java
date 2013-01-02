@@ -46,8 +46,8 @@ import static org.junit.Assert.assertEquals;
  * Test cases for class {@code org.jomc.cli.commands.CommandExecutionException}.
  *
  * <dl>
- *   <dt><b>Identifier:</b></dt><dd>JOMC &#8273; CLI &#8273; Tests &#8273; Command Execution Exception Test</dd>
- *   <dt><b>Name:</b></dt><dd>JOMC &#8273; CLI &#8273; Tests &#8273; Command Execution Exception Test</dd>
+ *   <dt><b>Identifier:</b></dt><dd>JOMC ⁑ CLI ⁑ Tests ⁑ Command Execution Exception Test</dd>
+ *   <dt><b>Name:</b></dt><dd>JOMC ⁑ CLI ⁑ Tests ⁑ Command Execution Exception Test</dd>
  *   <dt><b>Abstract:</b></dt><dd>No</dd>
  *   <dt><b>Final:</b></dt><dd>No</dd>
  *   <dt><b>Stateless:</b></dt><dd>No</dd>
