@@ -2191,6 +2191,38 @@
       </messages>
     </implementation>
     <!-- *********************************************************************************************************** -->
+    <implementation identifier="${project.name} ⁑ No Java Validation Option"
+                    name="${project.name} ⁑ No Java Validation Option"
+                    class="org.jomc.cli.model.OptionFactory"
+                    final="true"
+                    vendor="${project.organization.name}" version="${project.version}"
+                    createDate="2013-01-02T05:57:06Z">
+
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
+                createDate="2013-01-02T05:57:06Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}" final="true"/>
+      </specifications>
+      <implementations>
+        <reference identifier="${project.name} ⁑ Option Factory" version="${project.version}" final="true"/>
+      </implementations>
+      <properties>
+        <property name="Opt" value="njv" override="true"/>
+        <property name="Long Opt" value="no-java-validation" override="true"/>
+      </properties>
+      <messages>
+        <message name="Description" override="true">
+          <template defaultLanguage="en">
+            <text language="en">Deactivates Java validation.</text>
+            <text language="de">Deaktiviert Java-Validierung.</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
     <!--                                                                                                             -->
     <!-- Application                                                                                                 -->
     <!--                                                                                                             -->
@@ -2681,6 +2713,9 @@
 
         <dependency name="No Model Resource Validation" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
                     implementationName="${project.name} ⁑ No Model Resource Validation Option"/>
+
+        <dependency name="No Java Validation Option" identifier="${project.name} ⁑ Command Option" version="${jomc.cli.command.option.version}"
+                    implementationName="${project.name} ⁑ No Java Validation Option"/>
 
       </dependencies>
     </implementation>

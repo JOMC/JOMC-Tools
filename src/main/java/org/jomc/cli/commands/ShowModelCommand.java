@@ -523,6 +523,26 @@ public final class ShowModelCommand extends AbstractModelCommand
         return _d;
     }
     /**
+     * Gets the {@code <No Java Validation Option>} dependency.
+     * <p>
+     *   This method returns the {@code <JOMC ⁑ CLI ⁑ No Java Validation Option>} object of the {@code <JOMC ⁑ CLI ⁑ Command Option>} specification at specification level 1.2.
+     *   That specification does not apply to any scope. A new object is returned whenever requested and bound to this instance.
+     * </p>
+     * <dl>
+     *   <dt><b>Final:</b></dt><dd>No</dd>
+     * </dl>
+     * @return The {@code <No Java Validation Option>} dependency.
+     * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+     */
+    @SuppressWarnings("unused")
+    @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
+    private org.apache.commons.cli.Option getNoJavaValidationOption()
+    {
+        final org.apache.commons.cli.Option _d = (org.apache.commons.cli.Option) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "No Java Validation Option" );
+        assert _d != null : "'No Java Validation Option' dependency not found.";
+        return _d;
+    }
+    /**
      * Gets the {@code <No Model Processing Option>} dependency.
      * <p>
      *   This method returns the {@code <JOMC ⁑ CLI ⁑ No Model Processing Option>} object of the {@code <JOMC ⁑ CLI ⁑ Command Option>} specification at specification level 1.2.
@@ -1326,6 +1346,10 @@ public final class ShowModelCommand extends AbstractModelCommand
      *     </tr>
      *     <tr class="TableRow">
      *       <td align="left" valign="top" nowrap>JOMC &#8273; CLI &#8273; Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
+     *       <td align="left" valign="top" nowrap>JOMC &#8273; CLI &#8273; No Java Validation Option</td>
+     *     </tr>
+     *     <tr class="TableRow">
+     *       <td align="left" valign="top" nowrap>JOMC &#8273; CLI &#8273; Command Option {@code (org.apache.commons.cli.Option)} @ 1.2</td>
      *       <td align="left" valign="top" nowrap>JOMC &#8273; CLI &#8273; No Model Processing Option</td>
      *     </tr>
      *     <tr class="TableRow">
@@ -1373,6 +1397,7 @@ public final class ShowModelCommand extends AbstractModelCommand
         options.addOption( this.getModuleLocationOption() );
         options.addOption( this.getModuleNameOption() );
         options.addOption( this.getNoClasspathResolutionOption() );
+        options.addOption( this.getNoJavaValidationOption() );
         options.addOption( this.getNoModelProcessingOption() );
         options.addOption( this.getNoModelResourceValidation() );
         options.addOption( this.getNoModletResourceValidation() );
