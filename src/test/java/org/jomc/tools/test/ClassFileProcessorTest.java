@@ -687,7 +687,9 @@ public class ClassFileProcessorTest extends JomcToolTest
         }
         try
         {
-            this.getJomcTool().transformModelObjects( new Implementation(), marshaller, unmarshaller, objectClass, null );
+            this.getJomcTool().transformModelObjects( new Implementation(), marshaller, unmarshaller, objectClass,
+                                                      null );
+
             fail( "Expected NullPointerException not thrown." );
         }
         catch ( final NullPointerException e )
@@ -1640,8 +1642,8 @@ public class ClassFileProcessorTest extends JomcToolTest
 
         try
         {
-            this.getJomcTool().validateModelObjects(
-                classFileProcessorImpl, ModelContextFactory.newInstance().newModelContext( implementationClassesLoader ) );
+            this.getJomcTool().validateModelObjects( classFileProcessorImpl, ModelContextFactory.newInstance().
+                newModelContext( implementationClassesLoader ) );
 
             fail( "Expected IOException not thrown." );
         }

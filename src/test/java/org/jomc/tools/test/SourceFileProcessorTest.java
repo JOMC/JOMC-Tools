@@ -475,7 +475,9 @@ public class SourceFileProcessorTest extends JomcToolTest
         String edited = this.toString( f );
         editor.edit( edited );
         assertFalse( editor.isSectionPresent( "Constructors" ) );
-        this.copyResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "ImplementationWithoutDefaultConstructorSection.java.txt", f );
+        this.copyResource( ABSOLUTE_RESOURCE_NAME_PREFIX + "ImplementationWithoutDefaultConstructorSection.java.txt",
+                           f );
+
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
 

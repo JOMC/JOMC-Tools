@@ -50,6 +50,7 @@ import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelContextFactory;
 import org.jomc.modlet.ModelValidationReport;
+import org.jomc.tools.model.ObjectFactory;
 import org.jomc.tools.model.SourceFileType;
 import org.jomc.tools.model.SourceFilesType;
 import org.jomc.tools.model.SourceSectionType;
@@ -169,16 +170,16 @@ public class ToolsModelValidatorTest
         sourceSections2.getSourceSection().add( sourceSection1 );
         sourceSections2.getSourceSection().add( sourceSection2 );
 
-        model.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFile( sourceFile1 ) );
-        model.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFile( sourceFile2 ) );
-        model.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFiles( sourceFiles1 ) );
-        model.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFiles( sourceFiles2 ) );
-        model.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFiles( new SourceFilesType() ) );
-        model.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSection( sourceSection1 ) );
-        model.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSection( sourceSection2 ) );
-        model.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSections( sourceSections1 ) );
-        model.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSections( sourceSections2 ) );
-        model.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSections( new SourceSectionsType() ) );
+        model.getAny().add( new ObjectFactory().createSourceFile( sourceFile1 ) );
+        model.getAny().add( new ObjectFactory().createSourceFile( sourceFile2 ) );
+        model.getAny().add( new ObjectFactory().createSourceFiles( sourceFiles1 ) );
+        model.getAny().add( new ObjectFactory().createSourceFiles( sourceFiles2 ) );
+        model.getAny().add( new ObjectFactory().createSourceFiles( new SourceFilesType() ) );
+        model.getAny().add( new ObjectFactory().createSourceSection( sourceSection1 ) );
+        model.getAny().add( new ObjectFactory().createSourceSection( sourceSection2 ) );
+        model.getAny().add( new ObjectFactory().createSourceSections( sourceSections1 ) );
+        model.getAny().add( new ObjectFactory().createSourceSections( sourceSections2 ) );
+        model.getAny().add( new ObjectFactory().createSourceSections( new SourceSectionsType() ) );
 
         final Modules modules = new Modules();
         ModelHelper.setModules( model, modules );
@@ -189,46 +190,44 @@ public class ToolsModelValidatorTest
         module.setImplementations( new Implementations() );
         module.setName( this.getClass().getSimpleName() );
 
-        module.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFile( sourceFile1 ) );
-        module.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFile( sourceFile2 ) );
-        module.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFiles( sourceFiles1 ) );
-        module.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFiles( sourceFiles2 ) );
-        module.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFiles( new SourceFilesType() ) );
-        module.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSection( sourceSection1 ) );
-        module.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSection( sourceSection2 ) );
-        module.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSections( sourceSections1 ) );
-        module.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSections( sourceSections2 ) );
-        module.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSections( new SourceSectionsType() ) );
+        module.getAny().add( new ObjectFactory().createSourceFile( sourceFile1 ) );
+        module.getAny().add( new ObjectFactory().createSourceFile( sourceFile2 ) );
+        module.getAny().add( new ObjectFactory().createSourceFiles( sourceFiles1 ) );
+        module.getAny().add( new ObjectFactory().createSourceFiles( sourceFiles2 ) );
+        module.getAny().add( new ObjectFactory().createSourceFiles( new SourceFilesType() ) );
+        module.getAny().add( new ObjectFactory().createSourceSection( sourceSection1 ) );
+        module.getAny().add( new ObjectFactory().createSourceSection( sourceSection2 ) );
+        module.getAny().add( new ObjectFactory().createSourceSections( sourceSections1 ) );
+        module.getAny().add( new ObjectFactory().createSourceSections( sourceSections2 ) );
+        module.getAny().add( new ObjectFactory().createSourceSections( new SourceSectionsType() ) );
         module.setMessages( new Messages() );
 
         final Specification specification = new Specification();
         specification.setIdentifier( this.getClass().getSimpleName() );
-        specification.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFile( sourceFile1 ) );
-        specification.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFile( sourceFile2 ) );
-        specification.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFiles( sourceFiles1 ) );
-        specification.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFiles( sourceFiles2 ) );
-        specification.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFiles( new SourceFilesType() ) );
-        specification.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSection( sourceSection1 ) );
-        specification.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSection( sourceSection2 ) );
-        specification.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSections( sourceSections1 ) );
-        specification.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSections( sourceSections2 ) );
-        specification.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSections(
-            new SourceSectionsType() ) );
+        specification.getAny().add( new ObjectFactory().createSourceFile( sourceFile1 ) );
+        specification.getAny().add( new ObjectFactory().createSourceFile( sourceFile2 ) );
+        specification.getAny().add( new ObjectFactory().createSourceFiles( sourceFiles1 ) );
+        specification.getAny().add( new ObjectFactory().createSourceFiles( sourceFiles2 ) );
+        specification.getAny().add( new ObjectFactory().createSourceFiles( new SourceFilesType() ) );
+        specification.getAny().add( new ObjectFactory().createSourceSection( sourceSection1 ) );
+        specification.getAny().add( new ObjectFactory().createSourceSection( sourceSection2 ) );
+        specification.getAny().add( new ObjectFactory().createSourceSections( sourceSections1 ) );
+        specification.getAny().add( new ObjectFactory().createSourceSections( sourceSections2 ) );
+        specification.getAny().add( new ObjectFactory().createSourceSections( new SourceSectionsType() ) );
 
         final Implementation implementation = new Implementation();
         implementation.setIdentifier( this.getClass().getSimpleName() );
         implementation.setName( this.getClass().getSimpleName() );
-        implementation.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFile( sourceFile1 ) );
-        implementation.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFile( sourceFile2 ) );
-        implementation.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFiles( sourceFiles1 ) );
-        implementation.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFiles( sourceFiles2 ) );
-        implementation.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFiles( new SourceFilesType() ) );
-        implementation.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSection( sourceSection1 ) );
-        implementation.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSection( sourceSection2 ) );
-        implementation.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSections( sourceSections1 ) );
-        implementation.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSections( sourceSections2 ) );
-        implementation.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSections(
-            new SourceSectionsType() ) );
+        implementation.getAny().add( new ObjectFactory().createSourceFile( sourceFile1 ) );
+        implementation.getAny().add( new ObjectFactory().createSourceFile( sourceFile2 ) );
+        implementation.getAny().add( new ObjectFactory().createSourceFiles( sourceFiles1 ) );
+        implementation.getAny().add( new ObjectFactory().createSourceFiles( sourceFiles2 ) );
+        implementation.getAny().add( new ObjectFactory().createSourceFiles( new SourceFilesType() ) );
+        implementation.getAny().add( new ObjectFactory().createSourceSection( sourceSection1 ) );
+        implementation.getAny().add( new ObjectFactory().createSourceSection( sourceSection2 ) );
+        implementation.getAny().add( new ObjectFactory().createSourceSections( sourceSections1 ) );
+        implementation.getAny().add( new ObjectFactory().createSourceSections( sourceSections2 ) );
+        implementation.getAny().add( new ObjectFactory().createSourceSections( new SourceSectionsType() ) );
 
         implementation.setDependencies( new Dependencies() );
         implementation.setMessages( new Messages() );
@@ -236,17 +235,16 @@ public class ToolsModelValidatorTest
         final Dependency dependency = new Dependency();
         dependency.setName( this.getClass().getSimpleName() );
         dependency.setIdentifier( this.getClass().getSimpleName() );
-        dependency.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFile( sourceFile1 ) );
-        dependency.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFile( sourceFile2 ) );
-        dependency.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFiles( sourceFiles1 ) );
-        dependency.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFiles( sourceFiles2 ) );
-        dependency.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFiles( new SourceFilesType() ) );
-        dependency.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSection( sourceSection1 ) );
-        dependency.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSection( sourceSection2 ) );
-        dependency.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSections( sourceSections1 ) );
-        dependency.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSections( sourceSections2 ) );
-        dependency.getAny().add(
-            new org.jomc.tools.model.ObjectFactory().createSourceSections( new SourceSectionsType() ) );
+        dependency.getAny().add( new ObjectFactory().createSourceFile( sourceFile1 ) );
+        dependency.getAny().add( new ObjectFactory().createSourceFile( sourceFile2 ) );
+        dependency.getAny().add( new ObjectFactory().createSourceFiles( sourceFiles1 ) );
+        dependency.getAny().add( new ObjectFactory().createSourceFiles( sourceFiles2 ) );
+        dependency.getAny().add( new ObjectFactory().createSourceFiles( new SourceFilesType() ) );
+        dependency.getAny().add( new ObjectFactory().createSourceSection( sourceSection1 ) );
+        dependency.getAny().add( new ObjectFactory().createSourceSection( sourceSection2 ) );
+        dependency.getAny().add( new ObjectFactory().createSourceSections( sourceSections1 ) );
+        dependency.getAny().add( new ObjectFactory().createSourceSections( sourceSections2 ) );
+        dependency.getAny().add( new ObjectFactory().createSourceSections( new SourceSectionsType() ) );
 
         final Message message = new Message();
         message.setName( this.getClass().getSimpleName() );
@@ -257,16 +255,16 @@ public class ToolsModelValidatorTest
         text.setLanguage( "en" );
         message.getTemplate().getText().add( text );
 
-        message.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFile( sourceFile1 ) );
-        message.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFile( sourceFile2 ) );
-        message.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFiles( sourceFiles1 ) );
-        message.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFiles( sourceFiles2 ) );
-        message.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFiles( new SourceFilesType() ) );
-        message.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSection( sourceSection1 ) );
-        message.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSection( sourceSection2 ) );
-        message.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSections( sourceSections1 ) );
-        message.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSections( sourceSections2 ) );
-        message.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceSections( new SourceSectionsType() ) );
+        message.getAny().add( new ObjectFactory().createSourceFile( sourceFile1 ) );
+        message.getAny().add( new ObjectFactory().createSourceFile( sourceFile2 ) );
+        message.getAny().add( new ObjectFactory().createSourceFiles( sourceFiles1 ) );
+        message.getAny().add( new ObjectFactory().createSourceFiles( sourceFiles2 ) );
+        message.getAny().add( new ObjectFactory().createSourceFiles( new SourceFilesType() ) );
+        message.getAny().add( new ObjectFactory().createSourceSection( sourceSection1 ) );
+        message.getAny().add( new ObjectFactory().createSourceSection( sourceSection2 ) );
+        message.getAny().add( new ObjectFactory().createSourceSections( sourceSections1 ) );
+        message.getAny().add( new ObjectFactory().createSourceSections( sourceSections2 ) );
+        message.getAny().add( new ObjectFactory().createSourceSections( new SourceSectionsType() ) );
 
         implementation.getDependencies().getDependency().add( dependency );
         implementation.getMessages().getMessage().add( message );
@@ -277,12 +275,12 @@ public class ToolsModelValidatorTest
 
         final Specification deprecatedSpecification = new Specification();
         deprecatedSpecification.setIdentifier( this.getClass().getSimpleName() + " 2" );
-        deprecatedSpecification.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFile( sourceFile1 ) );
+        deprecatedSpecification.getAny().add( new ObjectFactory().createSourceFile( sourceFile1 ) );
 
         final Implementation deprecatedImplementation = new Implementation();
         deprecatedImplementation.setIdentifier( this.getClass().getSimpleName() + " 2" );
         deprecatedImplementation.setName( this.getClass().getSimpleName() );
-        deprecatedImplementation.getAny().add( new org.jomc.tools.model.ObjectFactory().createSourceFile( sourceFile1 ) );
+        deprecatedImplementation.getAny().add( new ObjectFactory().createSourceFile( sourceFile1 ) );
 
         module.getSpecifications().getSpecification().add( deprecatedSpecification );
         module.getImplementations().getImplementation().add( deprecatedImplementation );
