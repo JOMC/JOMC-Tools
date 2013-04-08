@@ -357,7 +357,7 @@ public abstract class AbstractCommand
     }
 
     /**
-     * Gets a message of a given throwable recursively.
+     * Gets a message of a given {@code Throwable} recursively.
      *
      * @param t The {@code Throwable} to get the message of or {@code null}.
      *
@@ -365,7 +365,12 @@ public abstract class AbstractCommand
      */
     protected static String getExceptionMessage( final Throwable t )
     {
-        return t != null ? t.getMessage() != null ? t.getMessage() : getExceptionMessage( t.getCause() ) : null;
+        return t != null
+               ? t.getMessage() != null && t.getMessage().trim().length() > 0
+                 ? t.getMessage()
+                 : getExceptionMessage( t.getCause() )
+               : null;
+
     }
 
     // SECTION-END
