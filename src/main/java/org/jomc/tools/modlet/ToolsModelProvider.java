@@ -63,7 +63,28 @@ import org.jomc.tools.model.SourceFileType;
 import org.jomc.tools.model.SourceFilesType;
 import org.jomc.tools.model.SourceSectionType;
 import org.jomc.tools.model.SourceSectionsType;
-import static org.jomc.tools.modlet.ToolsModletConstants.*;
+import static org.jomc.tools.modlet.ToolsModletConstants.ANNOTATIONS_SECTION_NAME;
+import static org.jomc.tools.modlet.ToolsModletConstants.CONSTRUCTORS_HEAD_TEMPLATE;
+import static org.jomc.tools.modlet.ToolsModletConstants.CONSTRUCTORS_SECTION_NAME;
+import static org.jomc.tools.modlet.ToolsModletConstants.CONSTRUCTORS_TAIL_TEMPLATE;
+import static org.jomc.tools.modlet.ToolsModletConstants.DEFAULT_CONSTRUCTOR_SECTION_NAME;
+import static org.jomc.tools.modlet.ToolsModletConstants.DEFAULT_CONSTRUCTOR_TEMPLATE;
+import static org.jomc.tools.modlet.ToolsModletConstants.DEPENDENCIES_SECTION_NAME;
+import static org.jomc.tools.modlet.ToolsModletConstants.DEPENDENCIES_TEMPLATE;
+import static org.jomc.tools.modlet.ToolsModletConstants.DOCUMENTATION_SECTION_NAME;
+import static org.jomc.tools.modlet.ToolsModletConstants.IMPLEMENTATION_ANNOTATIONS_TEMPLATE;
+import static org.jomc.tools.modlet.ToolsModletConstants.IMPLEMENTATION_DOCUMENTATION_TEMPLATE;
+import static org.jomc.tools.modlet.ToolsModletConstants.IMPLEMENTATION_LICENSE_TEMPLATE;
+import static org.jomc.tools.modlet.ToolsModletConstants.IMPLEMENTATION_TEMPLATE;
+import static org.jomc.tools.modlet.ToolsModletConstants.LICENSE_SECTION_NAME;
+import static org.jomc.tools.modlet.ToolsModletConstants.MESSAGES_SECTION_NAME;
+import static org.jomc.tools.modlet.ToolsModletConstants.MESSAGES_TEMPLATE;
+import static org.jomc.tools.modlet.ToolsModletConstants.PROPERTIES_SECTION_NAME;
+import static org.jomc.tools.modlet.ToolsModletConstants.PROPERTIES_TEMPLATE;
+import static org.jomc.tools.modlet.ToolsModletConstants.SPECIFICATION_ANNOTATIONS_TEMPLATE;
+import static org.jomc.tools.modlet.ToolsModletConstants.SPECIFICATION_DOCUMENTATION_TEMPLATE;
+import static org.jomc.tools.modlet.ToolsModletConstants.SPECIFICATION_LICENSE_TEMPLATE;
+import static org.jomc.tools.modlet.ToolsModletConstants.SPECIFICATION_TEMPLATE;
 
 /**
  * Object management and configuration tools {@code ModelProvider} implementation.
