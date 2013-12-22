@@ -403,13 +403,13 @@ public class JomcTool
     }
 
     /**
-     * Formats a string to a Java constant name.
+     * Compiles a string to a Java constant name.
      *
-     * @param str The string to format or {@code null}.
+     * @param str The string to compile or {@code null}.
      *
-     * @return {@code str} formatted to a Java constant name or {@code null}.
+     * @return {@code str} compiled to a {@code JavaIdentifier} or {@code null}, if {@code str} is {@code null}.
      *
-     * @throws ParseException if normalizing {@code str} to a {@code JavaIdentifier} fails.
+     * @throws ParseException if compiling {@code str} to a {@code JavaIdentifier} fails.
      *
      * @since 1.3
      *
