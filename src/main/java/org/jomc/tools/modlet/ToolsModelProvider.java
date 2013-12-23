@@ -34,7 +34,7 @@ import java.lang.reflect.Field;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -374,8 +374,8 @@ public class ToolsModelProvider implements ModelProvider
                             }
                             else
                             {
-                                specification.getAny().add( new ObjectFactory().createSourceFiles(
-                                    this.getDefaultSourceFilesType( context, modules, specification ) ) );
+                                specification.getAny().add(
+                                    new ObjectFactory().createSourceFiles( defaultSourceFiles ) );
 
                             }
                         }
@@ -385,7 +385,8 @@ public class ToolsModelProvider implements ModelProvider
                 if ( modules.getImplementations() != null )
                 {
                     final Map<Implementation, SourceFilesType> userSourceFiles =
-                        new HashMap<Implementation, SourceFilesType>();
+                        new HashMap<Implementation, SourceFilesType>(
+                            modules.getImplementations().getImplementation().size() );
 
                     InheritanceModel imodel = new InheritanceModel( modules );
 
@@ -514,6 +515,12 @@ public class ToolsModelProvider implements ModelProvider
             throw new NullPointerException( "specification" );
         }
 
+        final Set<String> uniquenessWarnings = new HashSet<String>( 16 );
+        final Set<String> sectionNames = new HashSet<String>( 16 );
+        sectionNames.add( LICENSE_SECTION_NAME );
+        sectionNames.add( ANNOTATIONS_SECTION_NAME );
+        sectionNames.add( DOCUMENTATION_SECTION_NAME );
+
         final SourceFilesType sourceFilesType = new SourceFilesType();
         final SourceFileType sourceFileType = new SourceFileType();
         sourceFilesType.getSourceFile().add( sourceFileType );
@@ -561,11 +568,24 @@ public class ToolsModelProvider implements ModelProvider
 
             if ( javaTypeName != null )
             {
-                s = new SourceSectionType();
-                s.setName( javaTypeName.getName( false ) );
-                s.setIndentationLevel( 1 );
-                s.setEditable( true );
-                sourceFileType.getSourceSections().getSourceSection().add( s );
+                if ( !sectionNames.contains( javaTypeName.getName( false ) ) )
+                {
+                    s = new SourceSectionType();
+                    s.setName( javaTypeName.getName( false ) );
+                    s.setIndentationLevel( 1 );
+                    s.setEditable( true );
+                    sourceFileType.getSourceSections().getSourceSection().add( s );
+                }
+                else if ( !uniquenessWarnings.contains( javaTypeName.getName( false ) ) )
+                {
+                    uniquenessWarnings.add( javaTypeName.getName( false ) );
+                    context.log( Level.WARNING, getMessage( "specificationSectionNameUniqueness",
+                                                            specification.getIdentifier(),
+                                                            sourceFileType.getIdentifier(),
+                                                            javaTypeName.getName( false ) ),
+                                 null );
+
+                }
             }
         }
         catch ( final ModelObjectException e )
@@ -602,6 +622,17 @@ public class ToolsModelProvider implements ModelProvider
         {
             throw new NullPointerException( "implementation" );
         }
+
+        final Set<String> uniquenessWarnings = new HashSet<String>( 16 );
+        final ArrayList<String> sectionNames = new ArrayList<String>( 16 );
+        sectionNames.add( LICENSE_SECTION_NAME );
+        sectionNames.add( ANNOTATIONS_SECTION_NAME );
+        sectionNames.add( DOCUMENTATION_SECTION_NAME );
+        sectionNames.add( CONSTRUCTORS_SECTION_NAME );
+        sectionNames.add( DEFAULT_CONSTRUCTOR_SECTION_NAME );
+        sectionNames.add( DEPENDENCIES_SECTION_NAME );
+        sectionNames.add( PROPERTIES_SECTION_NAME );
+        sectionNames.add( MESSAGES_SECTION_NAME );
 
         final SourceFilesType sourceFilesType = new SourceFilesType();
         final SourceFileType sourceFileType = new SourceFileType();
@@ -649,11 +680,9 @@ public class ToolsModelProvider implements ModelProvider
         s.setOptional( true );
         sourceFileType.getSourceSections().getSourceSection().add( s );
 
-        List<JavaTypeName> javaTypeNames = null;
-
         if ( specifications != null )
         {
-            javaTypeNames = new ArrayList<JavaTypeName>( specifications.getSpecification().size() );
+            sectionNames.ensureCapacity( sectionNames.size() + specifications.getSpecification().size() );
 
             for ( final Specification specification : specifications.getSpecification() )
             {
@@ -661,9 +690,28 @@ public class ToolsModelProvider implements ModelProvider
                 {
                     final JavaTypeName javaTypeName = specification.getJavaTypeName();
 
-                    if ( javaTypeName != null && !javaTypeNames.contains( javaTypeName ) )
+                    if ( javaTypeName != null )
                     {
-                        javaTypeNames.add( javaTypeName );
+                        if ( !sectionNames.contains( javaTypeName.getName( false ) ) )
+                        {
+                            sectionNames.add( javaTypeName.getName( false ) );
+
+                            s = new SourceSectionType();
+                            s.setName( javaTypeName.getName( false ) );
+                            s.setIndentationLevel( 1 );
+                            s.setEditable( true );
+                            sourceFileType.getSourceSections().getSourceSection().add( s );
+                        }
+                        else if ( !uniquenessWarnings.contains( javaTypeName.getName( false ) ) )
+                        {
+                            uniquenessWarnings.add( javaTypeName.getName( false ) );
+                            context.log( Level.WARNING, getMessage( "implementationSectionNameUniqueness",
+                                                                    implementation.getIdentifier(),
+                                                                    sourceFileType.getIdentifier(),
+                                                                    javaTypeName.getName( false ) ),
+                                         null );
+
+                        }
                     }
                 }
                 catch ( final ModelObjectException e )
@@ -671,28 +719,32 @@ public class ToolsModelProvider implements ModelProvider
                     context.log( Level.WARNING, getMessage( e ), null );
                 }
             }
-
-            for ( int i = 0, s0 = javaTypeNames.size(); i < s0; i++ )
-            {
-                s = new SourceSectionType();
-                s.setName( javaTypeNames.get( i ).getName( false ) );
-                s.setIndentationLevel( 1 );
-                s.setEditable( true );
-                sourceFileType.getSourceSections().getSourceSection().add( s );
-            }
         }
 
         try
         {
             final JavaTypeName javaTypeName = implementation.getJavaTypeName();
 
-            if ( javaTypeName != null && ( javaTypeNames == null || !javaTypeNames.contains( javaTypeName ) ) )
+            if ( javaTypeName != null )
             {
-                s = new SourceSectionType();
-                s.setName( javaTypeName.getName( false ) );
-                s.setIndentationLevel( 1 );
-                s.setEditable( true );
-                sourceFileType.getSourceSections().getSourceSection().add( s );
+                if ( !sectionNames.contains( javaTypeName.getName( false ) ) )
+                {
+                    s = new SourceSectionType();
+                    s.setName( javaTypeName.getName( false ) );
+                    s.setIndentationLevel( 1 );
+                    s.setEditable( true );
+                    sourceFileType.getSourceSections().getSourceSection().add( s );
+                }
+                else if ( !uniquenessWarnings.contains( javaTypeName.getName( false ) ) )
+                {
+                    uniquenessWarnings.add( javaTypeName.getName( false ) );
+                    context.log( Level.WARNING, getMessage( "implementationSectionNameUniqueness",
+                                                            implementation.getIdentifier(),
+                                                            sourceFileType.getIdentifier(),
+                                                            javaTypeName.getName( false ) ),
+                                 null );
+
+                }
             }
         }
         catch ( final ModelObjectException e )
