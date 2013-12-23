@@ -30,18 +30,25 @@
  */
 package org.jomc.tools.modlet.test;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Level;
 import org.jomc.model.Implementation;
 import org.jomc.model.Implementations;
 import org.jomc.model.ModelObject;
 import org.jomc.model.Module;
 import org.jomc.model.Modules;
 import org.jomc.model.Specification;
+import org.jomc.model.SpecificationReference;
 import org.jomc.model.Specifications;
 import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelContextFactory;
+import org.jomc.tools.model.SourceFileType;
 import org.jomc.tools.model.SourceFilesType;
+import org.jomc.tools.model.SourceSectionType;
+import org.jomc.tools.model.SourceSectionsType;
 import org.jomc.tools.modlet.ToolsModelProvider;
 import org.junit.Test;
 import static org.junit.Assert.assertFalse;
@@ -101,6 +108,24 @@ public class ToolsModelProviderTest
     public final void testFindModel() throws Exception
     {
         final ModelContext context = ModelContextFactory.newInstance().newModelContext();
+        context.setLogLevel( Level.ALL );
+        context.getListeners().add( new ModelContext.Listener()
+        {
+
+            @Override
+            public void onLog( final Level level, final String message, final Throwable t )
+            {
+                super.onLog( level, message, t );
+                System.out.println( "[" + level.getLocalizedName() + "] " + message );
+
+                if ( t != null )
+                {
+                    t.printStackTrace( System.out );
+                }
+            }
+
+        } );
+
         Model model = new Model();
         model.setIdentifier( ModelObject.MODEL_PUBLIC_ID );
 
@@ -112,14 +137,17 @@ public class ToolsModelProviderTest
 
         Specification specification = new Specification();
         specification.setClassDeclaration( true );
-        specification.setClazz( this.getClass().getName() );
+        specification.setClazz( "specification.Documentation" );
         specification.setIdentifier( this.getClass().getName() + " Specification" );
 
         Implementation implementation = new Implementation();
         implementation.setClassDeclaration( true );
-        implementation.setClazz( this.getClass().getName() );
+        implementation.setClazz( "implementation.Documentation" );
         implementation.setIdentifier( this.getClass().getName() + " Implementation" );
         implementation.setName( this.getClass().getName() + " Implementation" );
+        implementation.setSpecifications( new Specifications() );
+        implementation.getSpecifications().getReference().add( new SpecificationReference() );
+        implementation.getSpecifications().getReference().get( 0 ).setIdentifier( specification.getIdentifier() );
 
         module.getSpecifications().getSpecification().add( specification );
         module.getImplementations().getImplementation().add( implementation );
@@ -161,8 +189,19 @@ public class ToolsModelProviderTest
         implementation = modules.getImplementation( this.getClass().getName() + " Implementation" );
         assertNotNull( implementation );
 
-        assertNotNull( specification.getAnyObject( SourceFilesType.class ) );
-        assertNotNull( implementation.getAnyObject( SourceFilesType.class ) );
+        final SourceFilesType specificationSourceFiles = specification.getAnyObject( SourceFilesType.class );
+        final SourceFilesType implementationSourceFiles = implementation.getAnyObject( SourceFilesType.class );
+
+        assertNotNull( specificationSourceFiles );
+        assertNotNull( implementationSourceFiles );
+
+        final SourceFileType specificationSourceFile = specificationSourceFiles.getSourceFile( "Default" );
+        final SourceFileType implementationSourceFile = implementationSourceFiles.getSourceFile( "Default" );
+
+        assertNotNull( specificationSourceFile );
+        assertSectionNameUniqueness( specificationSourceFile.getSourceSections() );
+        assertNotNull( implementationSourceFile );
+        assertSectionNameUniqueness( implementationSourceFile.getSourceSections() );
 
         this.getModelProvider().setEnabled( false );
 
@@ -212,6 +251,21 @@ public class ToolsModelProviderTest
         this.getModelProvider().findModel( ModelContextFactory.newInstance().newModelContext(), model );
         ToolsModelProvider.setDefaultEnabled( null );
         this.getModelProvider().setEnabled( null );
+    }
+
+    private static void assertSectionNameUniqueness( final SourceSectionsType sections )
+    {
+        if ( sections != null )
+        {
+            final Set<String> sectionNames = new HashSet<String>( sections.getSourceSection().size() );
+
+            for ( int i = 0, s0 = sections.getSourceSection().size(); i < s0; i++ )
+            {
+                final SourceSectionType section = sections.getSourceSection().get( i );
+                assertTrue( "Multiple '" + section.getName() + "' sections.", sectionNames.add( section.getName() ) );
+                assertSectionNameUniqueness( section.getSourceSections() );
+            }
+        }
     }
 
 }
