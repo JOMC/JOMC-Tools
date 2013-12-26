@@ -568,7 +568,7 @@ public class ToolsModelProvider implements ModelProvider
 
             if ( javaTypeName != null )
             {
-                if ( !sectionIdentifiers.contains( javaTypeName.getName( false ) ) )
+                if ( sectionIdentifiers.add( javaTypeName.getName( false ) ) )
                 {
                     s = new SourceSectionType();
                     s.setName( javaTypeName.getName( false ) );
@@ -727,6 +727,8 @@ public class ToolsModelProvider implements ModelProvider
             {
                 if ( !sectionIdentifiers.contains( javaTypeName.getName( false ) ) )
                 {
+                    sectionIdentifiers.add( javaTypeName.getName( false ) );
+
                     s = new SourceSectionType();
                     s.setName( javaTypeName.getName( false ) );
                     s.setIndentationLevel( 1 );
