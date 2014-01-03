@@ -41,9 +41,17 @@ Model Context Attributes Reference
 *--------------------------------------------------------------------------------*-------------------------------------*
 | <<<org.jomc.tools.modlet.ToolsModelProcessor.enabledAttribute>>>               | <<<java.lang.Boolean>>>             |
 *--------------------------------------------------------------------------------*-------------------------------------*
+| <<<org.jomc.tools.modlet.ToolsModelProcessor.headCommentAttribute>>>           | <<<java.lang.String>>>              |
+*--------------------------------------------------------------------------------*-------------------------------------*
 | <<<org.jomc.tools.modlet.ToolsModelProcessor.modelObjectClasspathResolutionEnabledAttribute>>> | <<<java.lang.Boolean>>> |
+*--------------------------------------------------------------------------------*-------------------------------------*
+| <<<org.jomc.tools.modlet.ToolsModelProcessor.tailCommentAttribute>>>           | <<<java.lang.String>>>              |
 *--------------------------------------------------------------------------------*-------------------------------------*
 | <<<org.jomc.tools.modlet.ToolsModelProvider.enabledAttribute>>>                | <<<java.lang.Boolean>>>             |
 *--------------------------------------------------------------------------------*-------------------------------------*
+| <<<org.jomc.tools.modlet.ToolsModelProvider.headCommentAttribute>>>            | <<<java.lang.String>>>              |
+*--------------------------------------------------------------------------------*-------------------------------------*
 | <<<org.jomc.tools.modlet.ToolsModelProvider.modelObjectClasspathResolutionEnabledAttribute>>> | <<<java.lang.Boolean>>> |
+*--------------------------------------------------------------------------------*-------------------------------------*
+| <<<org.jomc.tools.modlet.ToolsModelProvider.tailCommentAttribute>>>            | <<<java.lang.String>>>              |
 *--------------------------------------------------------------------------------*-------------------------------------*

@@ -144,6 +144,78 @@ public class ToolsModelProcessor implements ModelProcessor
     /** Flag indicating model object class path resolution is enabled. */
     private Boolean modelObjectClasspathResolutionEnabled;
 
+    /**
+     * Constant for the name of the model context attribute backing property {@code headComment}.
+     * @see #processModel(org.jomc.modlet.ModelContext, org.jomc.modlet.Model)
+     * @see ModelContext#getAttribute(java.lang.String)
+     * @since 1.6
+     */
+    public static final String HEAD_COMMENT_ATTRIBUTE_NAME =
+        "org.jomc.tools.modlet.ToolsModelProcessor.headCommentAttribute";
+
+    /**
+     * Constant for the name of the system property controlling property {@code defaultHeadComment}.
+     * @see #getDefaultHeadComment()
+     * @since 1.6
+     */
+    private static final String DEFAULT_HEAD_COMMENT_PROPERTY_NAME =
+        "org.jomc.tools.modlet.ToolsModelProcessor.defaultHeadComment";
+
+    /**
+     * Default head comment the processor is applying by default.
+     * @see #getDefaultHeadComment()
+     * @since 1.6
+     */
+    private static final String DEFAULT_HEAD_COMMENT = "//";
+
+    /**
+     * Head comment the processor is applying by default.
+     * @since 1.6
+     */
+    private static volatile String defaultHeadComment;
+
+    /**
+     * Head comment the processor is applying.
+     * @since 1.6
+     */
+    private String headComment;
+
+    /**
+     * Constant for the name of the model context attribute backing property {@code tailComment}.
+     * @see #processModel(org.jomc.modlet.ModelContext, org.jomc.modlet.Model)
+     * @see ModelContext#getAttribute(java.lang.String)
+     * @since 1.6
+     */
+    public static final String TAIL_COMMENT_ATTRIBUTE_NAME =
+        "org.jomc.tools.modlet.ToolsModelProcessor.tailCommentAttribute";
+
+    /**
+     * Constant for the name of the system property controlling property {@code defaultTailComment}.
+     * @see #getDefaultTailComment()
+     * @since 1.6
+     */
+    private static final String DEFAULT_TAIL_COMMENT_PROPERTY_NAME =
+        "org.jomc.tools.modlet.ToolsModelProcessor.defaultTailComment";
+
+    /**
+     * Default tail comment the processor is applying by default.
+     * @see #getDefaultTailComment()
+     * @since 1.6
+     */
+    private static final String DEFAULT_TAIL_COMMENT = null;
+
+    /**
+     * Tail comment the processor is applying by default.
+     * @since 1.6
+     */
+    private static volatile String defaultTailComment;
+
+    /**
+     * Tail comment the processor is applying.
+     * @since 1.6
+     */
+    private String tailComment;
+
     /** Creates a new {@code ToolsModelProcessor} instance. */
     public ToolsModelProcessor()
     {
@@ -285,12 +357,148 @@ public class ToolsModelProcessor implements ModelProcessor
     }
 
     /**
+     * Gets the head comment the processor is applying by default.
+     * <p>The default head comment is controlled by system property
+     * {@code org.jomc.tools.modlet.ToolsModelProcessor.defaultHeadComment} holding the head comment the processor is
+     * applying by default. If that property is not set, the {@code //} default is returned.</p>
+     *
+     * @return The head comment the processor is applying by default or {@code null}.
+     *
+     * @see #setDefaultHeadComment(java.lang.String)
+     * @since 1.6
+     */
+    public static String getDefaultHeadComment()
+    {
+        if ( defaultHeadComment == null )
+        {
+            defaultHeadComment = System.getProperty( DEFAULT_HEAD_COMMENT_PROPERTY_NAME, DEFAULT_HEAD_COMMENT );
+        }
+
+        return defaultHeadComment;
+    }
+
+    /**
+     * Sets the head comment the processor is applying by default.
+     *
+     * @param value The new head comment the processor is applying by default or {@code null}.
+     *
+     * @see #getDefaultHeadComment()
+     * @since 1.6
+     */
+    public static void setDefaultHeadComment( final String value )
+    {
+        defaultHeadComment = value;
+    }
+
+    /**
+     * Gets the head comment the processor is applying.
+     *
+     * @return The head comment the processor is applying or {@code null}.
+     *
+     * @see #getDefaultHeadComment()
+     * @see #setDefaultHeadComment(java.lang.String)
+     * @since 1.6
+     */
+    public final String getHeadComment()
+    {
+        if ( this.headComment == null )
+        {
+            this.headComment = getDefaultHeadComment();
+        }
+
+        return this.headComment;
+    }
+
+    /**
+     * Sets the head comment the processor is applying.
+     *
+     * @param value The new head comment the processor is applying or {@code null}.
+     *
+     * @see #getHeadComment()
+     * @since 1.6
+     */
+    public final void setHeadComment( final String value )
+    {
+        this.headComment = value;
+    }
+
+    /**
+     * Gets the tail comment the processor is applying by default.
+     * <p>The default tail comment is controlled by system property
+     * {@code org.jomc.tools.modlet.ToolsModelProcessor.defaultTailComment} holding the tail comment the processor is
+     * applying by default. If that property is not set, the {@code null} default is returned.</p>
+     *
+     * @return The tail comment the processor is applying by default or {@code null}.
+     *
+     * @see #setDefaultTailComment(java.lang.String)
+     * @since 1.6
+     */
+    public static String getDefaultTailComment()
+    {
+        if ( defaultTailComment == null )
+        {
+            defaultTailComment = System.getProperty( DEFAULT_TAIL_COMMENT_PROPERTY_NAME, DEFAULT_TAIL_COMMENT );
+        }
+
+        return defaultTailComment;
+    }
+
+    /**
+     * Sets the tail comment the processor is applying by default.
+     *
+     * @param value The new tail comment the processor is applying by default or {@code null}.
+     *
+     * @see #getDefaultTailComment()
+     * @since 1.6
+     */
+    public static void setDefaultTailComment( final String value )
+    {
+        defaultTailComment = value;
+    }
+
+    /**
+     * Gets the tail comment the processor is applying.
+     *
+     * @return The tail comment the processor is applying or {@code null}.
+     *
+     * @see #getDefaultTailComment()
+     * @see #setDefaultTailComment(java.lang.String)
+     * @since 1.6
+     */
+    public final String getTailComment()
+    {
+        if ( this.tailComment == null )
+        {
+            this.tailComment = getDefaultTailComment();
+        }
+
+        return this.tailComment;
+    }
+
+    /**
+     * Sets the tail comment the processor is applying.
+     *
+     * @param value The new tail comment the processor is applying or {@code null}.
+     *
+     * @see #getTailComment()
+     * @since 1.6
+     */
+    public final void setTailComment( final String value )
+    {
+        this.tailComment = value;
+    }
+
+    /**
      * {@inheritDoc}
      *
      * @see #isEnabled()
      * @see #isModelObjectClasspathResolutionEnabled()
+     * @see #getHeadComment()
+     * @see #getTailComment()
      * @see #ENABLED_ATTRIBUTE_NAME
      * @see #MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME
+     * @see #HEAD_COMMENT_ATTRIBUTE_NAME
+     * @see #TAIL_COMMENT_ATTRIBUTE_NAME
      */
     public Model processModel( final ModelContext context, final Model model ) throws ModelException
     {
@@ -389,6 +597,210 @@ public class ToolsModelProcessor implements ModelProcessor
     }
 
     /**
+     * Gets the default source code file location for a given specification.
+     * <p>If the specification provides a Java type name, this method returns a Java source code file location based on
+     * that Java type name.</p>
+     *
+     * @param context The context to get the default location with.
+     * @param modules The model to get the default location with.
+     * @param specification The specification to get the default location for.
+     *
+     * @return The default location for {@code specification} or {@code null}.
+     *
+     * @throws NullPointerExeption if {@code context}, {@code modules} or {@code specification} is {@code null}.
+     *
+     * @see SourceFileType#getLocation()
+     * @see Specification#getJavaTypeName()
+     * @since 1.6
+     */
+    protected String getDefaultSourceFileLocation( final ModelContext context, final Modules modules,
+                                                   final Specification specification )
+    {
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+        if ( modules == null )
+        {
+            throw new NullPointerException( "modules" );
+        }
+        if ( specification == null )
+        {
+            throw new NullPointerException( "specification" );
+        }
+
+        String location = null;
+
+        try
+        {
+            if ( specification.getJavaTypeName() != null )
+            {
+                location = specification.getJavaTypeName().getQualifiedName().replace( '.', '/' ) + ".java";
+            }
+        }
+        catch ( final ModelObjectException e )
+        {
+            context.log( Level.WARNING, getMessage( e ), null );
+        }
+
+        return location;
+    }
+
+    /**
+     * Gets the default source code file location for a given implementation.
+     * <p>If the implementation provides a Java type name, this method returns a Java source code file location based on
+     * that Java type name.</p>
+     *
+     * @param context The context to get the default location with.
+     * @param modules The model to get the default location with.
+     * @param implementation The implementation to get the default location for.
+     *
+     * @return The default location for {@code implementation} or {@code null}.
+     *
+     * @throws NullPointerExeption if {@code context}, {@code modules} or {@code implementation} is {@code null}.
+     *
+     * @see SourceFileType#getLocation()
+     * @see Implementation#getJavaTypeName()
+     * @since 1.6
+     */
+    protected String getDefaultSourceFileLocation( final ModelContext context, final Modules modules,
+                                                   final Implementation implementation )
+    {
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+        if ( modules == null )
+        {
+            throw new NullPointerException( "modules" );
+        }
+        if ( implementation == null )
+        {
+            throw new NullPointerException( "implementation" );
+        }
+
+        String location = null;
+
+        try
+        {
+            if ( implementation.getJavaTypeName() != null )
+            {
+                location = implementation.getJavaTypeName().getQualifiedName().replace( '.', '/' ) + ".java";
+            }
+        }
+        catch ( final ModelObjectException e )
+        {
+            context.log( Level.WARNING, getMessage( e ), null );
+        }
+
+        return location;
+    }
+
+    /**
+     * Gets the default source section name for a given specification.
+     * <p>If the specification provides a Java type name, this method returns a section name based on that Java type
+     * name.</p>
+     *
+     * @param context The context to get the default section name with.
+     * @param modules The model to get the default section name with.
+     * @param specification The specification to get the default section name for.
+     *
+     * @return The default source section name for {@code specification} or {@code null}.
+     *
+     * @throws NullPointerExeption if {@code context}, {@code modules} or {@code specification} is {@code null}.
+     *
+     * @see SourceSectionType#getName()
+     * @see Specification#getJavaTypeName()
+     * @since 1.6
+     */
+    protected String getDefaultSourceSectionName( final ModelContext context, final Modules modules,
+                                                  final Specification specification )
+    {
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+        if ( modules == null )
+        {
+            throw new NullPointerException( "modules" );
+        }
+        if ( specification == null )
+        {
+            throw new NullPointerException( "specification" );
+        }
+
+        String sectionName = null;
+
+        try
+        {
+            final JavaTypeName javaTypeName = specification.getJavaTypeName();
+
+            if ( javaTypeName != null )
+            {
+                sectionName = javaTypeName.getName( false );
+            }
+        }
+        catch ( final ModelObjectException e )
+        {
+            context.log( Level.WARNING, getMessage( e ), null );
+        }
+
+        return sectionName;
+    }
+
+    /**
+     * Gets the default source section name for a given implementation.
+     * <p>If the implementation provides a Java type name, this method returns a section name based that Java type
+     * name.</p>
+     *
+     * @param context The context to get the default section name with.
+     * @param modules The model to get the default section name with.
+     * @param implementation The implementation to get the default section name for.
+     *
+     * @return The default source section name for {@code implementation} or {@code null}.
+     *
+     * @throws NullPointerExeption if {@code context}, {@code modules} or {@code implementation} is {@code null}.
+     *
+     * @see SourceSectionType#getName()
+     * @see Implementation#getJavaTypeName()
+     * @since 1.6
+     */
+    protected String getDefaultSourceSectionName( final ModelContext context, final Modules modules,
+                                                  final Implementation implementation )
+    {
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+        if ( modules == null )
+        {
+            throw new NullPointerException( "modules" );
+        }
+        if ( implementation == null )
+        {
+            throw new NullPointerException( "implementation" );
+        }
+
+        String sectionName = null;
+
+        try
+        {
+            final JavaTypeName javaTypeName = implementation.getJavaTypeName();
+
+            if ( javaTypeName != null )
+            {
+                sectionName = javaTypeName.getName( false );
+            }
+        }
+        catch ( final ModelObjectException e )
+        {
+            context.log( Level.WARNING, getMessage( e ), null );
+        }
+
+        return sectionName;
+    }
+
+    /**
      * Updates any optional attributes to default values.
      *
      * @param context The context to apply defaults with.
@@ -419,6 +831,34 @@ public class ToolsModelProcessor implements ModelProcessor
             throw new NullPointerException( "sourceFilesType" );
         }
 
+        String contextHeadComment = this.getHeadComment();
+        if ( ( DEFAULT_HEAD_COMMENT != null
+               ? DEFAULT_HEAD_COMMENT.equals( contextHeadComment )
+               : contextHeadComment == null )
+             && context.getAttribute( HEAD_COMMENT_ATTRIBUTE_NAME ) instanceof String )
+        {
+            contextHeadComment = (String) context.getAttribute( HEAD_COMMENT_ATTRIBUTE_NAME );
+        }
+
+        if ( contextHeadComment != null && contextHeadComment.length() == 0 )
+        {
+            contextHeadComment = null;
+        }
+
+        String contextTailComment = this.getTailComment();
+        if ( ( DEFAULT_TAIL_COMMENT != null
+               ? DEFAULT_TAIL_COMMENT.equals( contextTailComment )
+               : contextTailComment == null )
+             && context.getAttribute( TAIL_COMMENT_ATTRIBUTE_NAME ) instanceof String )
+        {
+            contextTailComment = (String) context.getAttribute( TAIL_COMMENT_ATTRIBUTE_NAME );
+        }
+
+        if ( contextTailComment != null && contextTailComment.length() == 0 )
+        {
+            contextTailComment = null;
+        }
+
         for ( int i = 0, s0 = sourceFilesType.getSourceFile().size(); i < s0; i++ )
         {
             final SourceFileType s = sourceFilesType.getSourceFile().get( i );
@@ -429,23 +869,15 @@ public class ToolsModelProcessor implements ModelProcessor
             }
             if ( s.getLocation() == null )
             {
-                try
-                {
-                    final JavaTypeName javaTypeName = specification.getJavaTypeName();
-
-                    if ( javaTypeName != null )
-                    {
-                        s.setLocation( javaTypeName.getQualifiedName().replace( '.', '/' ) + ".java" );
-                    }
-                }
-                catch ( final ModelObjectException e )
-                {
-                    context.log( Level.WARNING, getMessage( e ), null );
-                }
+                s.setLocation( this.getDefaultSourceFileLocation( context, modules, specification ) );
             }
             if ( s.getHeadComment() == null )
             {
-                s.setHeadComment( "//" );
+                s.setHeadComment( contextHeadComment );
+            }
+            if ( s.getTailComment() == null )
+            {
+                s.setTailComment( contextTailComment );
             }
 
             this.applyDefaults( context, modules, specification, s.getSourceSections() );
@@ -518,28 +950,18 @@ public class ToolsModelProcessor implements ModelProcessor
                         }
                     }
 
-                    try
-                    {
-                        final JavaTypeName javaTypeName = specification.getJavaTypeName();
+                    final String sectionName = this.getDefaultSourceSectionName( context, modules, specification );
 
-                        if ( javaTypeName != null )
-                        {
-                            if ( javaTypeName.getName( false ).equals( s.getName() ) )
-                            {
-                                if ( !isFieldSet( s, "editable" ) )
-                                {
-                                    s.setEditable( true );
-                                }
-                                if ( !isFieldSet( s, "indentationLevel" ) )
-                                {
-                                    s.setIndentationLevel( 1 );
-                                }
-                            }
-                        }
-                    }
-                    catch ( final ModelObjectException e )
+                    if ( sectionName != null && sectionName.equals( s.getName() ) )
                     {
-                        context.log( Level.WARNING, getMessage( e ), null );
+                        if ( !isFieldSet( s, "editable" ) )
+                        {
+                            s.setEditable( true );
+                        }
+                        if ( !isFieldSet( s, "indentationLevel" ) )
+                        {
+                            s.setIndentationLevel( 1 );
+                        }
                     }
 
                     this.applyDefaults( context, modules, specification, s.getSourceSections() );
@@ -583,6 +1005,34 @@ public class ToolsModelProcessor implements ModelProcessor
             throw new NullPointerException( "sourceFilesType" );
         }
 
+        String contextHeadComment = this.getHeadComment();
+        if ( ( DEFAULT_HEAD_COMMENT != null
+               ? DEFAULT_HEAD_COMMENT.equals( contextHeadComment )
+               : contextHeadComment == null )
+             && context.getAttribute( HEAD_COMMENT_ATTRIBUTE_NAME ) instanceof String )
+        {
+            contextHeadComment = (String) context.getAttribute( HEAD_COMMENT_ATTRIBUTE_NAME );
+        }
+
+        if ( contextHeadComment != null && contextHeadComment.length() == 0 )
+        {
+            contextHeadComment = null;
+        }
+
+        String contextTailComment = this.getTailComment();
+        if ( ( DEFAULT_TAIL_COMMENT != null
+               ? DEFAULT_TAIL_COMMENT.equals( contextTailComment )
+               : contextTailComment == null )
+             && context.getAttribute( TAIL_COMMENT_ATTRIBUTE_NAME ) instanceof String )
+        {
+            contextTailComment = (String) context.getAttribute( TAIL_COMMENT_ATTRIBUTE_NAME );
+        }
+
+        if ( contextTailComment != null && contextTailComment.length() == 0 )
+        {
+            contextTailComment = null;
+        }
+
         for ( int i = 0, s0 = sourceFilesType.getSourceFile().size(); i < s0; i++ )
         {
             final SourceFileType s = sourceFilesType.getSourceFile().get( i );
@@ -593,23 +1043,15 @@ public class ToolsModelProcessor implements ModelProcessor
             }
             if ( s.getLocation() == null )
             {
-                try
-                {
-                    final JavaTypeName javaTypeName = implementation.getJavaTypeName();
-
-                    if ( javaTypeName != null )
-                    {
-                        s.setLocation( javaTypeName.getQualifiedName().replace( '.', '/' ) + ".java" );
-                    }
-                }
-                catch ( final ModelObjectException e )
-                {
-                    context.log( Level.WARNING, getMessage( e ), null );
-                }
+                s.setLocation( this.getDefaultSourceFileLocation( context, modules, implementation ) );
             }
             if ( s.getHeadComment() == null )
             {
-                s.setHeadComment( "//" );
+                s.setHeadComment( contextHeadComment );
+            }
+            if ( s.getTailComment() == null )
+            {
+                s.setTailComment( contextTailComment );
             }
 
             this.applyDefaults( context, modules, implementation, s.getSourceSections() );
@@ -777,39 +1219,10 @@ public class ToolsModelProcessor implements ModelProcessor
                     {
                         for ( final Specification specification : specifications.getSpecification() )
                         {
-                            try
-                            {
-                                final JavaTypeName javaTypeName = specification.getJavaTypeName();
+                            final String sectionName =
+                                this.getDefaultSourceSectionName( context, modules, specification );
 
-                                if ( javaTypeName != null )
-                                {
-                                    if ( javaTypeName.getName( false ).equals( s.getName() ) )
-                                    {
-                                        if ( !isFieldSet( s, "editable" ) )
-                                        {
-                                            s.setEditable( true );
-                                        }
-                                        if ( !isFieldSet( s, "indentationLevel" ) )
-                                        {
-                                            s.setIndentationLevel( 1 );
-                                        }
-                                    }
-                                }
-                            }
-                            catch ( final ModelObjectException e )
-                            {
-                                context.log( Level.WARNING, getMessage( e ), null );
-                            }
-                        }
-                    }
-
-                    try
-                    {
-                        final JavaTypeName javaTypeName = implementation.getJavaTypeName();
-
-                        if ( javaTypeName != null )
-                        {
-                            if ( javaTypeName.getName( false ).equals( s.getName() ) )
+                            if ( sectionName != null && sectionName.equals( s.getName() ) )
                             {
                                 if ( !isFieldSet( s, "editable" ) )
                                 {
@@ -822,9 +1235,19 @@ public class ToolsModelProcessor implements ModelProcessor
                             }
                         }
                     }
-                    catch ( final ModelObjectException e )
+
+                    final String sectionName = this.getDefaultSourceSectionName( context, modules, implementation );
+
+                    if ( sectionName != null && sectionName.equals( s.getName() ) )
                     {
-                        context.log( Level.WARNING, getMessage( e ), null );
+                        if ( !isFieldSet( s, "editable" ) )
+                        {
+                            s.setEditable( true );
+                        }
+                        if ( !isFieldSet( s, "indentationLevel" ) )
+                        {
+                            s.setIndentationLevel( 1 );
+                        }
                     }
 
                     this.applyDefaults( context, modules, implementation, s.getSourceSections() );

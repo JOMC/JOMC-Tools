@@ -156,6 +156,78 @@ public class ToolsModelProvider implements ModelProvider
     /** Flag indicating model object class path resolution is enabled. */
     private Boolean modelObjectClasspathResolutionEnabled;
 
+    /**
+     * Constant for the name of the model context attribute backing property {@code headComment}.
+     * @see #findModel(org.jomc.modlet.ModelContext, org.jomc.modlet.Model)
+     * @see ModelContext#getAttribute(java.lang.String)
+     * @since 1.6
+     */
+    public static final String HEAD_COMMENT_ATTRIBUTE_NAME =
+        "org.jomc.tools.modlet.ToolsModelProvider.headCommentAttribute";
+
+    /**
+     * Constant for the name of the system property controlling property {@code defaultHeadComment}.
+     * @see #getDefaultHeadComment()
+     * @since 1.6
+     */
+    private static final String DEFAULT_HEAD_COMMENT_PROPERTY_NAME =
+        "org.jomc.tools.modlet.ToolsModelProvider.defaultHeadComment";
+
+    /**
+     * Default head comment the provider is providing by default.
+     * @see #getDefaultHeadComment()
+     * @since 1.6
+     */
+    private static final String DEFAULT_HEAD_COMMENT = "//";
+
+    /**
+     * Head comment the provider is providing by default.
+     * @since 1.6
+     */
+    private static volatile String defaultHeadComment;
+
+    /**
+     * Head comment the provider is providing.
+     * @since 1.6
+     */
+    private String headComment;
+
+    /**
+     * Constant for the name of the model context attribute backing property {@code tailComment}.
+     * @see #findModel(org.jomc.modlet.ModelContext, org.jomc.modlet.Model)
+     * @see ModelContext#getAttribute(java.lang.String)
+     * @since 1.6
+     */
+    public static final String TAIL_COMMENT_ATTRIBUTE_NAME =
+        "org.jomc.tools.modlet.ToolsModelProvider.tailCommentAttribute";
+
+    /**
+     * Constant for the name of the system property controlling property {@code defaultTailComment}.
+     * @see #getDefaultTailComment()
+     * @since 1.6
+     */
+    private static final String DEFAULT_TAIL_COMMENT_PROPERTY_NAME =
+        "org.jomc.tools.modlet.ToolsModelProvider.defaultTailComment";
+
+    /**
+     * Default tail comment the provider is providing by default.
+     * @see #getDefaultTailComment()
+     * @since 1.6
+     */
+    private static final String DEFAULT_TAIL_COMMENT = null;
+
+    /**
+     * Tail comment the provider is providing by default.
+     * @since 1.6
+     */
+    private static volatile String defaultTailComment;
+
+    /**
+     * Tail comment the provider is providing.
+     * @since 1.6
+     */
+    private String tailComment;
+
     /** Creates a new {@code ToolsModelProvider} instance. */
     public ToolsModelProvider()
     {
@@ -297,12 +369,148 @@ public class ToolsModelProvider implements ModelProvider
     }
 
     /**
+     * Gets the head comment the provider is providing by default.
+     * <p>The default head comment is controlled by system property
+     * {@code org.jomc.tools.modlet.ToolsModelProvider.defaultHeadComment} holding the head comment the provider is
+     * providing by default. If that property is not set, the {@code //} default is returned.</p>
+     *
+     * @return The head comment the provider is providing by default or {@code null}.
+     *
+     * @see #setDefaultHeadComment(java.lang.String)
+     * @since 1.6
+     */
+    public static String getDefaultHeadComment()
+    {
+        if ( defaultHeadComment == null )
+        {
+            defaultHeadComment = System.getProperty( DEFAULT_HEAD_COMMENT_PROPERTY_NAME, DEFAULT_HEAD_COMMENT );
+        }
+
+        return defaultHeadComment;
+    }
+
+    /**
+     * Sets the head comment the provider is providing by default.
+     *
+     * @param value The new head comment the provider is providing by default or {@code null}.
+     *
+     * @see #getDefaultHeadComment()
+     * @since 1.6
+     */
+    public static void setDefaultHeadComment( final String value )
+    {
+        defaultHeadComment = value;
+    }
+
+    /**
+     * Gets the head comment the provider is providing.
+     *
+     * @return The head comment the provider is providing or {@code null}.
+     *
+     * @see #getDefaultHeadComment()
+     * @see #setDefaultHeadComment(java.lang.String)
+     * @since 1.6
+     */
+    public final String getHeadComment()
+    {
+        if ( this.headComment == null )
+        {
+            this.headComment = getDefaultHeadComment();
+        }
+
+        return this.headComment;
+    }
+
+    /**
+     * Sets the head comment the provider is providing.
+     *
+     * @param value The new head comment the provider is providing or {@code null}.
+     *
+     * @see #getHeadComment()
+     * @since 1.6
+     */
+    public final void setHeadComment( final String value )
+    {
+        this.headComment = value;
+    }
+
+    /**
+     * Gets the tail comment the provider is providing by default.
+     * <p>The default tail comment is controlled by system property
+     * {@code org.jomc.tools.modlet.ToolsModelProvider.defaultTailComment} holding the tail comment the provider is
+     * providing by default. If that property is not set, the {@code null} default is returned.</p>
+     *
+     * @return The tail comment the provider is providing by default or {@code null}.
+     *
+     * @see #setDefaultTailComment(java.lang.String)
+     * @since 1.6
+     */
+    public static String getDefaultTailComment()
+    {
+        if ( defaultTailComment == null )
+        {
+            defaultTailComment = System.getProperty( DEFAULT_TAIL_COMMENT_PROPERTY_NAME, DEFAULT_TAIL_COMMENT );
+        }
+
+        return defaultTailComment;
+    }
+
+    /**
+     * Sets the tail comment the provider is providing by default.
+     *
+     * @param value The new tail comment the provider is providing by default or {@code null}.
+     *
+     * @see #getDefaultTailComment()
+     * @since 1.6
+     */
+    public static void setDefaultTailComment( final String value )
+    {
+        defaultTailComment = value;
+    }
+
+    /**
+     * Gets the tail comment the provider is providing.
+     *
+     * @return The tail comment the provider is providing or {@code null}.
+     *
+     * @see #getDefaultTailComment()
+     * @see #setDefaultTailComment(java.lang.String)
+     * @since 1.6
+     */
+    public final String getTailComment()
+    {
+        if ( this.tailComment == null )
+        {
+            this.tailComment = getDefaultTailComment();
+        }
+
+        return this.tailComment;
+    }
+
+    /**
+     * Sets the tail comment the provider is providing.
+     *
+     * @param value The new tail comment the provider is providing or {@code null}.
+     *
+     * @see #getTailComment()
+     * @since 1.6
+     */
+    public final void setTailComment( final String value )
+    {
+        this.tailComment = value;
+    }
+
+    /**
      * {@inheritDoc}
      *
      * @see #isEnabled()
      * @see #isModelObjectClasspathResolutionEnabled()
+     * @see #getHeadComment()
+     * @see #getTailComment()
      * @see #ENABLED_ATTRIBUTE_NAME
      * @see #MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME
+     * @see #HEAD_COMMENT_ATTRIBUTE_NAME
+     * @see #TAIL_COMMENT_ATTRIBUTE_NAME
      */
     public Model findModel( final ModelContext context, final Model model ) throws ModelException
     {
@@ -489,6 +697,210 @@ public class ToolsModelProvider implements ModelProvider
     }
 
     /**
+     * Gets the default source code file location for a given specification.
+     * <p>If the specification provides a Java type name, this method returns a Java source code file location based on
+     * that Java type name.</p>
+     *
+     * @param context The context to get the default location with.
+     * @param modules The model to get the default location with.
+     * @param specification The specification to get the default location for.
+     *
+     * @return The default location for {@code specification} or {@code null}.
+     *
+     * @throws NullPointerExeption if {@code context}, {@code modules} or {@code specification} is {@code null}.
+     *
+     * @see SourceFileType#getLocation()
+     * @see Specification#getJavaTypeName()
+     * @since 1.6
+     */
+    protected String getDefaultSourceFileLocation( final ModelContext context, final Modules modules,
+                                                   final Specification specification )
+    {
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+        if ( modules == null )
+        {
+            throw new NullPointerException( "modules" );
+        }
+        if ( specification == null )
+        {
+            throw new NullPointerException( "specification" );
+        }
+
+        String location = null;
+
+        try
+        {
+            if ( specification.getJavaTypeName() != null )
+            {
+                location = specification.getJavaTypeName().getQualifiedName().replace( '.', '/' ) + ".java";
+            }
+        }
+        catch ( final ModelObjectException e )
+        {
+            context.log( Level.WARNING, getMessage( e ), null );
+        }
+
+        return location;
+    }
+
+    /**
+     * Gets the default source code file location for a given implementation.
+     * <p>If the implementation provides a Java type name, this method returns a Java source code file location based on
+     * that Java type name.</p>
+     *
+     * @param context The context to get the default location with.
+     * @param modules The model to get the default location with.
+     * @param implementation The implementation to get the default location for.
+     *
+     * @return The default location for {@code implementation} or {@code null}.
+     *
+     * @throws NullPointerExeption if {@code context}, {@code modules} or {@code implementation} is {@code null}.
+     *
+     * @see SourceFileType#getLocation()
+     * @see Implementation#getJavaTypeName()
+     * @since 1.6
+     */
+    protected String getDefaultSourceFileLocation( final ModelContext context, final Modules modules,
+                                                   final Implementation implementation )
+    {
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+        if ( modules == null )
+        {
+            throw new NullPointerException( "modules" );
+        }
+        if ( implementation == null )
+        {
+            throw new NullPointerException( "implementation" );
+        }
+
+        String location = null;
+
+        try
+        {
+            if ( implementation.getJavaTypeName() != null )
+            {
+                location = implementation.getJavaTypeName().getQualifiedName().replace( '.', '/' ) + ".java";
+            }
+        }
+        catch ( final ModelObjectException e )
+        {
+            context.log( Level.WARNING, getMessage( e ), null );
+        }
+
+        return location;
+    }
+
+    /**
+     * Gets the default source section name for a given specification.
+     * <p>If the specification provides a Java type name, this method returns a section name based on that Java type
+     * name.</p>
+     *
+     * @param context The context to get the default section name with.
+     * @param modules The model to get the default section name with.
+     * @param specification The specification to get the default section name for.
+     *
+     * @return The default source section name for {@code specification} or {@code null}.
+     *
+     * @throws NullPointerExeption if {@code context}, {@code modules} or {@code specification} is {@code null}.
+     *
+     * @see SourceSectionType#getName()
+     * @see Specification#getJavaTypeName()
+     * @since 1.6
+     */
+    protected String getDefaultSourceSectionName( final ModelContext context, final Modules modules,
+                                                  final Specification specification )
+    {
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+        if ( modules == null )
+        {
+            throw new NullPointerException( "modules" );
+        }
+        if ( specification == null )
+        {
+            throw new NullPointerException( "specification" );
+        }
+
+        String sectionName = null;
+
+        try
+        {
+            final JavaTypeName javaTypeName = specification.getJavaTypeName();
+
+            if ( javaTypeName != null )
+            {
+                sectionName = javaTypeName.getName( false );
+            }
+        }
+        catch ( final ModelObjectException e )
+        {
+            context.log( Level.WARNING, getMessage( e ), null );
+        }
+
+        return sectionName;
+    }
+
+    /**
+     * Gets the default source section name for a given implementation.
+     * <p>If the implementation provides a Java type name, this method returns a section name based that Java type
+     * name.</p>
+     *
+     * @param context The context to get the default section name with.
+     * @param modules The model to get the default section name with.
+     * @param implementation The implementation to get the default section name for.
+     *
+     * @return The default source section name for {@code implementation} or {@code null}.
+     *
+     * @throws NullPointerExeption if {@code context}, {@code modules} or {@code implementation} is {@code null}.
+     *
+     * @see SourceSectionType#getName()
+     * @see Implementation#getJavaTypeName()
+     * @since 1.6
+     */
+    protected String getDefaultSourceSectionName( final ModelContext context, final Modules modules,
+                                                  final Implementation implementation )
+    {
+        if ( context == null )
+        {
+            throw new NullPointerException( "context" );
+        }
+        if ( modules == null )
+        {
+            throw new NullPointerException( "modules" );
+        }
+        if ( implementation == null )
+        {
+            throw new NullPointerException( "implementation" );
+        }
+
+        String sectionName = null;
+
+        try
+        {
+            final JavaTypeName javaTypeName = implementation.getJavaTypeName();
+
+            if ( javaTypeName != null )
+            {
+                sectionName = javaTypeName.getName( false );
+            }
+        }
+        catch ( final ModelObjectException e )
+        {
+            context.log( Level.WARNING, getMessage( e ), null );
+        }
+
+        return sectionName;
+    }
+
+    /**
      * Creates a new default source files model for a given specification.
      *
      * @param context The context to create a new default source files model with.
@@ -515,34 +927,50 @@ public class ToolsModelProvider implements ModelProvider
             throw new NullPointerException( "specification" );
         }
 
-        final Set<String> uniqueSectionIdentifiers = new HashSet<String>( 16 );
-        final Set<String> sectionIdentifiers = new HashSet<String>( 16 );
-        sectionIdentifiers.add( LICENSE_SECTION_NAME );
-        sectionIdentifiers.add( ANNOTATIONS_SECTION_NAME );
-        sectionIdentifiers.add( DOCUMENTATION_SECTION_NAME );
+        String contextHeadComment = this.getHeadComment();
+        if ( ( DEFAULT_HEAD_COMMENT != null
+               ? DEFAULT_HEAD_COMMENT.equals( contextHeadComment )
+               : contextHeadComment == null )
+             && context.getAttribute( HEAD_COMMENT_ATTRIBUTE_NAME ) instanceof String )
+        {
+            contextHeadComment = (String) context.getAttribute( HEAD_COMMENT_ATTRIBUTE_NAME );
+        }
+
+        if ( contextHeadComment != null && contextHeadComment.length() == 0 )
+        {
+            contextHeadComment = null;
+        }
+
+        String contextTailComment = this.getTailComment();
+        if ( ( DEFAULT_TAIL_COMMENT != null
+               ? DEFAULT_TAIL_COMMENT.equals( contextTailComment )
+               : contextTailComment == null )
+             && context.getAttribute( TAIL_COMMENT_ATTRIBUTE_NAME ) instanceof String )
+        {
+            contextTailComment = (String) context.getAttribute( TAIL_COMMENT_ATTRIBUTE_NAME );
+        }
+
+        if ( contextTailComment != null && contextTailComment.length() == 0 )
+        {
+            contextTailComment = null;
+        }
+
+        final Set<String> uniqueSectionNames = new HashSet<String>( 16 );
+        final Set<String> sectionNames = new HashSet<String>( 16 );
+        sectionNames.add( LICENSE_SECTION_NAME );
+        sectionNames.add( ANNOTATIONS_SECTION_NAME );
+        sectionNames.add( DOCUMENTATION_SECTION_NAME );
 
         final SourceFilesType sourceFilesType = new SourceFilesType();
         final SourceFileType sourceFileType = new SourceFileType();
         sourceFilesType.getSourceFile().add( sourceFileType );
 
         sourceFileType.setIdentifier( "Default" );
-
-        try
-        {
-            if ( specification.getJavaTypeName() != null )
-            {
-                sourceFileType.setLocation(
-                    specification.getJavaTypeName().getQualifiedName().replace( '.', '/' ) + ".java" );
-
-            }
-        }
-        catch ( final ModelObjectException e )
-        {
-            context.log( Level.WARNING, getMessage( e ), null );
-        }
+        sourceFileType.setLocation( this.getDefaultSourceFileLocation( context, modules, specification ) );
 
         sourceFileType.setTemplate( SPECIFICATION_TEMPLATE );
-        sourceFileType.setHeadComment( "//" );
+        sourceFileType.setHeadComment( contextHeadComment );
+        sourceFileType.setTailComment( contextTailComment );
         sourceFileType.setSourceSections( new SourceSectionsType() );
 
         SourceSectionType s = new SourceSectionType();
@@ -562,34 +990,27 @@ public class ToolsModelProvider implements ModelProvider
         s.setOptional( true );
         sourceFileType.getSourceSections().getSourceSection().add( s );
 
-        try
-        {
-            final JavaTypeName javaTypeName = specification.getJavaTypeName();
+        final String sectionName = this.getDefaultSourceSectionName( context, modules, specification );
 
-            if ( javaTypeName != null )
+        if ( sectionName != null )
+        {
+            if ( sectionNames.add( sectionName ) )
             {
-                if ( sectionIdentifiers.add( javaTypeName.getName( false ) ) )
-                {
-                    s = new SourceSectionType();
-                    s.setName( javaTypeName.getName( false ) );
-                    s.setIndentationLevel( 1 );
-                    s.setEditable( true );
-                    sourceFileType.getSourceSections().getSourceSection().add( s );
-                }
-                else if ( uniqueSectionIdentifiers.add( javaTypeName.getName( false ) ) )
-                {
-                    context.log( Level.WARNING, getMessage( "specificationSectionIdentifierUniqueness",
-                                                            specification.getIdentifier(),
-                                                            sourceFileType.getIdentifier(),
-                                                            javaTypeName.getName( false ) ),
-                                 null );
-
-                }
+                s = new SourceSectionType();
+                s.setName( sectionName );
+                s.setIndentationLevel( 1 );
+                s.setEditable( true );
+                sourceFileType.getSourceSections().getSourceSection().add( s );
             }
-        }
-        catch ( final ModelObjectException e )
-        {
-            context.log( Level.WARNING, getMessage( e ), null );
+            else if ( uniqueSectionNames.add( sectionName ) )
+            {
+                context.log( Level.WARNING, getMessage( "specificationSectionNameUniqueness",
+                                                        specification.getIdentifier(),
+                                                        sourceFileType.getIdentifier(),
+                                                        sectionName ),
+                             null );
+
+            }
         }
 
         return sourceFilesType;
@@ -622,16 +1043,44 @@ public class ToolsModelProvider implements ModelProvider
             throw new NullPointerException( "implementation" );
         }
 
-        final Set<String> uniqueSectionIdentifiers = new HashSet<String>( 16 );
-        final ArrayList<String> sectionIdentifiers = new ArrayList<String>( 16 );
-        sectionIdentifiers.add( LICENSE_SECTION_NAME );
-        sectionIdentifiers.add( ANNOTATIONS_SECTION_NAME );
-        sectionIdentifiers.add( DOCUMENTATION_SECTION_NAME );
-        sectionIdentifiers.add( CONSTRUCTORS_SECTION_NAME );
-        sectionIdentifiers.add( DEFAULT_CONSTRUCTOR_SECTION_NAME );
-        sectionIdentifiers.add( DEPENDENCIES_SECTION_NAME );
-        sectionIdentifiers.add( PROPERTIES_SECTION_NAME );
-        sectionIdentifiers.add( MESSAGES_SECTION_NAME );
+        String contextHeadComment = this.getHeadComment();
+        if ( ( DEFAULT_HEAD_COMMENT != null
+               ? DEFAULT_HEAD_COMMENT.equals( contextHeadComment )
+               : contextHeadComment == null )
+             && context.getAttribute( HEAD_COMMENT_ATTRIBUTE_NAME ) instanceof String )
+        {
+            contextHeadComment = (String) context.getAttribute( HEAD_COMMENT_ATTRIBUTE_NAME );
+        }
+
+        if ( contextHeadComment != null && contextHeadComment.length() == 0 )
+        {
+            contextHeadComment = null;
+        }
+
+        String contextTailComment = this.getTailComment();
+        if ( ( DEFAULT_TAIL_COMMENT != null
+               ? DEFAULT_TAIL_COMMENT.equals( contextTailComment )
+               : contextTailComment == null )
+             && context.getAttribute( TAIL_COMMENT_ATTRIBUTE_NAME ) instanceof String )
+        {
+            contextTailComment = (String) context.getAttribute( TAIL_COMMENT_ATTRIBUTE_NAME );
+        }
+
+        if ( contextTailComment != null && contextTailComment.length() == 0 )
+        {
+            contextTailComment = null;
+        }
+
+        final Set<String> uniqueSectionNames = new HashSet<String>( 16 );
+        final ArrayList<String> sectionNames = new ArrayList<String>( 16 );
+        sectionNames.add( LICENSE_SECTION_NAME );
+        sectionNames.add( ANNOTATIONS_SECTION_NAME );
+        sectionNames.add( DOCUMENTATION_SECTION_NAME );
+        sectionNames.add( CONSTRUCTORS_SECTION_NAME );
+        sectionNames.add( DEFAULT_CONSTRUCTOR_SECTION_NAME );
+        sectionNames.add( DEPENDENCIES_SECTION_NAME );
+        sectionNames.add( PROPERTIES_SECTION_NAME );
+        sectionNames.add( MESSAGES_SECTION_NAME );
 
         final SourceFilesType sourceFilesType = new SourceFilesType();
         final SourceFileType sourceFileType = new SourceFileType();
@@ -643,23 +1092,11 @@ public class ToolsModelProvider implements ModelProvider
         final Properties properties = modules.getProperties( implementation.getIdentifier() );
 
         sourceFileType.setIdentifier( "Default" );
-
-        try
-        {
-            if ( implementation.getJavaTypeName() != null )
-            {
-                sourceFileType.setLocation(
-                    implementation.getJavaTypeName().getQualifiedName().replace( '.', '/' ) + ".java" );
-
-            }
-        }
-        catch ( final ModelObjectException e )
-        {
-            context.log( Level.WARNING, getMessage( e ), null );
-        }
+        sourceFileType.setLocation( this.getDefaultSourceFileLocation( context, modules, implementation ) );
 
         sourceFileType.setTemplate( IMPLEMENTATION_TEMPLATE );
-        sourceFileType.setHeadComment( "//" );
+        sourceFileType.setHeadComment( contextHeadComment );
+        sourceFileType.setTailComment( contextTailComment );
         sourceFileType.setSourceSections( new SourceSectionsType() );
 
         SourceSectionType s = new SourceSectionType();
@@ -681,74 +1118,60 @@ public class ToolsModelProvider implements ModelProvider
 
         if ( specifications != null )
         {
-            sectionIdentifiers.ensureCapacity( sectionIdentifiers.size() + specifications.getSpecification().size() );
+            sectionNames.ensureCapacity( sectionNames.size() + specifications.getSpecification().size() );
 
             for ( final Specification specification : specifications.getSpecification() )
             {
-                try
+                final String sectionName = this.getDefaultSourceSectionName( context, modules, specification );
+
+                if ( sectionName != null )
                 {
-                    final JavaTypeName javaTypeName = specification.getJavaTypeName();
-
-                    if ( javaTypeName != null )
+                    if ( !sectionNames.contains( sectionName ) )
                     {
-                        if ( !sectionIdentifiers.contains( javaTypeName.getName( false ) ) )
-                        {
-                            sectionIdentifiers.add( javaTypeName.getName( false ) );
+                        sectionNames.add( sectionName );
 
-                            s = new SourceSectionType();
-                            s.setName( javaTypeName.getName( false ) );
-                            s.setIndentationLevel( 1 );
-                            s.setEditable( true );
-                            sourceFileType.getSourceSections().getSourceSection().add( s );
-                        }
-                        else if ( uniqueSectionIdentifiers.add( javaTypeName.getName( false ) ) )
-                        {
-                            context.log( Level.WARNING, getMessage( "implementationSectionIdentifierUniqueness",
-                                                                    implementation.getIdentifier(),
-                                                                    sourceFileType.getIdentifier(),
-                                                                    javaTypeName.getName( false ) ),
-                                         null );
+                        s = new SourceSectionType();
+                        s.setName( sectionName );
+                        s.setIndentationLevel( 1 );
+                        s.setEditable( true );
+                        sourceFileType.getSourceSections().getSourceSection().add( s );
+                    }
+                    else if ( uniqueSectionNames.add( sectionName ) )
+                    {
+                        context.log( Level.WARNING, getMessage( "implementationSectionNameUniqueness",
+                                                                implementation.getIdentifier(),
+                                                                sourceFileType.getIdentifier(),
+                                                                sectionName ),
+                                     null );
 
-                        }
                     }
                 }
-                catch ( final ModelObjectException e )
-                {
-                    context.log( Level.WARNING, getMessage( e ), null );
-                }
             }
         }
 
-        try
-        {
-            final JavaTypeName javaTypeName = implementation.getJavaTypeName();
+        final String sectionName = this.getDefaultSourceSectionName( context, modules, implementation );
 
-            if ( javaTypeName != null )
+        if ( sectionName != null )
+        {
+            if ( !sectionNames.contains( sectionName ) )
             {
-                if ( !sectionIdentifiers.contains( javaTypeName.getName( false ) ) )
-                {
-                    sectionIdentifiers.add( javaTypeName.getName( false ) );
+                sectionNames.add( sectionName );
 
-                    s = new SourceSectionType();
-                    s.setName( javaTypeName.getName( false ) );
-                    s.setIndentationLevel( 1 );
-                    s.setEditable( true );
-                    sourceFileType.getSourceSections().getSourceSection().add( s );
-                }
-                else if ( uniqueSectionIdentifiers.contains( javaTypeName.getName( false ) ) )
-                {
-                    context.log( Level.WARNING, getMessage( "implementationSectionIdentifierUniqueness",
-                                                            implementation.getIdentifier(),
-                                                            sourceFileType.getIdentifier(),
-                                                            javaTypeName.getName( false ) ),
-                                 null );
-
-                }
+                s = new SourceSectionType();
+                s.setName( sectionName );
+                s.setIndentationLevel( 1 );
+                s.setEditable( true );
+                sourceFileType.getSourceSections().getSourceSection().add( s );
             }
-        }
-        catch ( final ModelObjectException e )
-        {
-            context.log( Level.WARNING, getMessage( e ), null );
+            else if ( uniqueSectionNames.add( sectionName ) )
+            {
+                context.log( Level.WARNING, getMessage( "implementationSectionNameUniqueness",
+                                                        implementation.getIdentifier(),
+                                                        sourceFileType.getIdentifier(),
+                                                        sectionName ),
+                             null );
+
+            }
         }
 
         s = new SourceSectionType();

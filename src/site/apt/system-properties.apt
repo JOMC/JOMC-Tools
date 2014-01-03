@@ -43,9 +43,17 @@ System Properties Reference
 *---------------------------------------------*-------------------------------*----------------------------------------*
 | <<<org.jomc.tools.modlet.ToolsModelProcessor.defaultEnabled>>> | <<<java.lang.Boolean>>> | <<<true>>> |
 *---------------------------------------------*-------------------------------*----------------------------------------*
+| <<<org.jomc.tools.modlet.ToolsModelProcessor.defaultHeadComment>>> | <<<java.lang.String>>> | <<<//>>> |
+*---------------------------------------------*-------------------------------*----------------------------------------*
 | <<<org.jomc.tools.modlet.ToolsModelProcessor.defaultModelObjectClasspathResolutionEnabled>>> | <<<java.lang.Boolean>>> | <<<true>>> |
+*---------------------------------------------*-------------------------------*----------------------------------------*
+| <<<org.jomc.tools.modlet.ToolsModelProcessor.defaultTailComment>>> | <<<java.lang.String>>> | <<<null>>> |
 *---------------------------------------------*-------------------------------*----------------------------------------*
 | <<<org.jomc.tools.modlet.ToolsModelProvider.defaultEnabled>>> | <<<java.lang.Boolean>>> | <<<true>>> |
 *---------------------------------------------*-------------------------------*----------------------------------------*
+| <<<org.jomc.tools.modlet.ToolsModelProvider.defaultHeadComment>>> | <<<java.lang.String>>> | <<<//>>> |
+*---------------------------------------------*-------------------------------*----------------------------------------*
 | <<<org.jomc.tools.modlet.ToolsModelProvider.defaultModelObjectClasspathResolutionEnabled>>> | <<<java.lang.Boolean>>> | <<<true>>> |
+*---------------------------------------------*-------------------------------*----------------------------------------*
+| <<<org.jomc.tools.modlet.ToolsModelProvider.defaultTailComment>>> | <<<java.lang.String>>> | <<<null>>> |
 *---------------------------------------------*-------------------------------*----------------------------------------*
