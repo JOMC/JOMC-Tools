@@ -57,20 +57,28 @@
 ## @param mediumDateTime The current date and time formatted using a 'MEDIUM' format style.
 ## @param longDateTime The current date and time formatted using a 'LONG' format style.
 ## @param isoDateTime The current date and time formatted using an ISO-8601 format style.
-${tool.getIndentation(0)}// SECTION-START[License Header]
-${tool.getIndentation(0)}// SECTION-END
+${tool.getIndentation(0)}${smodel.getHeadComment()} SECTION-START[License Header]#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+${tool.getIndentation(0)}${smodel.getHeadComment()} SECTION-END#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
 #if(!$specification.getJavaTypeName().isUnnamedPackage())
 ${tool.getIndentation(0)}package ${specification.getJavaTypeName().getPackageName()};
 #end
 
 ${tool.getIndentation(0)}import java.lang.*;
 
-${tool.getIndentation(0)}// SECTION-START[Documentation]
-${tool.getIndentation(0)}// SECTION-END
-${tool.getIndentation(0)}// SECTION-START[Annotations]
-${tool.getIndentation(0)}// SECTION-END
+${tool.getIndentation(0)}${smodel.getHeadComment()} SECTION-START[Documentation]#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+${tool.getIndentation(0)}${smodel.getHeadComment()} SECTION-END#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+${tool.getIndentation(0)}${smodel.getHeadComment()} SECTION-START[Annotations]#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+${tool.getIndentation(0)}${smodel.getHeadComment()} SECTION-END#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
 ${tool.getIndentation(0)}public interface ${specification.getJavaTypeName().getName(false)}
 ${tool.getIndentation(0)}{
-${tool.getIndentation(1)}// SECTION-START[${specification.getJavaTypeName().getName(false)}]
-${tool.getIndentation(1)}// SECTION-END
+${tool.getIndentation(1)}${smodel.getHeadComment()} SECTION-START[${specification.getJavaTypeName().getName(false)}]#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+${tool.getIndentation(1)}${smodel.getHeadComment()} SECTION-END#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
 ${tool.getIndentation(0)}}

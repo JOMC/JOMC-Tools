@@ -58,7 +58,8 @@
 ## @param longDateTime The current date and time formatted using a 'LONG' format style.
 ## @param isoDateTime The current date and time formatted using an ISO-8601 format style.
 #if($with-editor-fold)
-${tool.getIndentation(0)}// <editor-fold defaultstate="collapsed" desc=" Generated Annotations ">
+${tool.getIndentation(0)}${smodel.getHeadComment()} <editor-fold defaultstate="collapsed" desc=" Generated Annotations ">#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
 #end
 #if($implementation.isDeprecated())
 ${tool.getIndentation(0)}@Deprecated
@@ -67,5 +68,6 @@ ${tool.getIndentation(0)}@Deprecated
 ${tool.getIndentation(0)}@javax.annotation.Generated( value = "$toolName $toolVersion", comments = "See $toolUrl" )
 #end
 #if($with-editor-fold)
-${tool.getIndentation(0)}// </editor-fold>
+${tool.getIndentation(0)}${smodel.getHeadComment()} </editor-fold>#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
 #end

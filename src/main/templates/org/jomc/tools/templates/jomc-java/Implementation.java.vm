@@ -57,18 +57,24 @@
 ## @param mediumDateTime The current date and time formatted using a 'MEDIUM' format style.
 ## @param longDateTime The current date and time formatted using a 'LONG' format style.
 ## @param isoDateTime The current date and time formatted using an ISO-8601 format style.
-${tool.getIndentation(0)}// SECTION-START[License Header]
-${tool.getIndentation(0)}// SECTION-END
+${tool.getIndentation(0)}${smodel.getHeadComment()} SECTION-START[License Header]#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+${tool.getIndentation(0)}${smodel.getHeadComment()} SECTION-END#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
 #if(!$implementation.getJavaTypeName().isUnnamedPackage())
 ${tool.getIndentation(0)}package ${implementation.getJavaTypeName().getPackageName()};
 #end
 
 ${tool.getIndentation(0)}import java.lang.*;
 
-${tool.getIndentation(0)}// SECTION-START[Documentation]
-${tool.getIndentation(0)}// SECTION-END
-${tool.getIndentation(0)}// SECTION-START[Annotations]
-${tool.getIndentation(0)}// SECTION-END
+${tool.getIndentation(0)}${smodel.getHeadComment()} SECTION-START[Documentation]#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+${tool.getIndentation(0)}${smodel.getHeadComment()} SECTION-END#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+${tool.getIndentation(0)}${smodel.getHeadComment()} SECTION-START[Annotations]#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+${tool.getIndentation(0)}${smodel.getHeadComment()} SECTION-END#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
 ${tool.getIndentation(0)}public#if($implementation.isAbstract()) abstract#end class ${implementation.getJavaTypeName().getName(false)}
 #set($interfaces = $modules.getImplementedJavaTypeNames($implementation.getIdentifier()))
 #if($interfaces)
@@ -83,22 +89,36 @@ ${tool.getIndentation(1)}$interface.getName(true)#if($i > 0),#end
 ${tool.getIndentation(0)}{
 #if($interfaces)
 #foreach($interface in $interfaces)
-${tool.getIndentation(1)}// SECTION-START[$interface.getName(false)]
-${tool.getIndentation(1)}// SECTION-END
+${tool.getIndentation(1)}${smodel.getHeadComment()} SECTION-START[$interface.getName(false)]#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+${tool.getIndentation(1)}${smodel.getHeadComment()} SECTION-END#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
 #end
 #end
 #if(!$interfaces || !$interfaces.contains($implementation.getJavaTypeName()))
-${tool.getIndentation(1)}// SECTION-START[${implementation.getJavaTypeName().getName(false)}]
-${tool.getIndentation(1)}// SECTION-END
+${tool.getIndentation(1)}${smodel.getHeadComment()} SECTION-START[${implementation.getJavaTypeName().getName(false)}]#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+${tool.getIndentation(1)}${smodel.getHeadComment()} SECTION-END#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
 #end
-${tool.getIndentation(1)}// SECTION-START[Constructors]
-${tool.getIndentation(2)}// SECTION-START[Default Constructor]
-${tool.getIndentation(2)}// SECTION-END
-${tool.getIndentation(1)}// SECTION-END
-${tool.getIndentation(1)}// SECTION-START[Dependencies]
-${tool.getIndentation(1)}// SECTION-END
-${tool.getIndentation(1)}// SECTION-START[Properties]
-${tool.getIndentation(1)}// SECTION-END
-${tool.getIndentation(1)}// SECTION-START[Messages]
-${tool.getIndentation(1)}// SECTION-END
+${tool.getIndentation(1)}${smodel.getHeadComment()} SECTION-START[Constructors]#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+${tool.getIndentation(2)}${smodel.getHeadComment()} SECTION-START[Default Constructor]#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+${tool.getIndentation(2)}${smodel.getHeadComment()} SECTION-END#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+${tool.getIndentation(1)}${smodel.getHeadComment()} SECTION-END#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+${tool.getIndentation(1)}${smodel.getHeadComment()} SECTION-START[Dependencies]#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+${tool.getIndentation(1)}${smodel.getHeadComment()} SECTION-END#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+${tool.getIndentation(1)}${smodel.getHeadComment()} SECTION-START[Properties]#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+${tool.getIndentation(1)}${smodel.getHeadComment()} SECTION-END#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+${tool.getIndentation(1)}${smodel.getHeadComment()} SECTION-START[Messages]#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+${tool.getIndentation(1)}${smodel.getHeadComment()} SECTION-END#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
 ${tool.getIndentation(0)}}

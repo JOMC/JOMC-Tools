@@ -59,5 +59,6 @@
 ## @param isoDateTime The current date and time formatted using an ISO-8601 format style.
 ${tool.getIndentation(1)}}
 #if($with-editor-fold)
-${tool.getIndentation(1)}// </editor-fold>
+${tool.getIndentation(1)}${smodel.getHeadComment()} </editor-fold>#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
 #end

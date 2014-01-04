@@ -60,7 +60,8 @@
 #set($properties = $modules.getProperties($implementation.getIdentifier()))
 #if($properties)
 #if($with-editor-fold)
-${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generated Properties ">
+${tool.getIndentation(1)}${smodel.getHeadComment()} <editor-fold defaultstate="collapsed" desc=" Generated Properties ">#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
 #end
 #foreach($property in $properties.getProperty())
 #if($with-javadoc)
@@ -99,6 +100,7 @@ ${tool.getIndentation(2)}return ((#if($property.getJavaTypeName().isPrimitive())
 ${tool.getIndentation(1)}}
 #end
 #if($with-editor-fold)
-${tool.getIndentation(1)}// </editor-fold>
+${tool.getIndentation(1)}${smodel.getHeadComment()} </editor-fold>#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
 #end
 #end

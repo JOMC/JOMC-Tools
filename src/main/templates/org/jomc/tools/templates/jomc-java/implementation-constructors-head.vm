@@ -58,7 +58,8 @@
 ## @param longDateTime The current date and time formatted using a 'LONG' format style.
 ## @param isoDateTime The current date and time formatted using an ISO-8601 format style.
 #if($with-editor-fold)
-${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">
+${tool.getIndentation(1)}${smodel.getHeadComment()} <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
 #end
 #if($with-javadoc)
 ${tool.getIndentation(1)}/** Creates a new {@code $implementation.getJavaTypeName().getName(false)} instance. */

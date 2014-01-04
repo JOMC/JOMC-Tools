@@ -58,7 +58,8 @@
 ## @param longDateTime The current date and time formatted using a 'LONG' format style.
 ## @param isoDateTime The current date and time formatted using an ISO-8601 format style.
 #if($with-editor-fold)
-${tool.getIndentation(0)}// <editor-fold defaultstate="collapsed" desc=" Generated License ">
+${tool.getIndentation(0)}${smodel.getHeadComment()} <editor-fold defaultstate="collapsed" desc=" Generated License ">#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
 #end
 ${tool.getIndentation(0)}/*
 #if($with-project-name)
@@ -116,5 +117,6 @@ ${tool.getIndentation(0)} *
 #end
 ${tool.getIndentation(0)} */
 #if($with-editor-fold)
-${tool.getIndentation(0)}// </editor-fold>
+${tool.getIndentation(0)}${smodel.getHeadComment()} </editor-fold>#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
 #end
