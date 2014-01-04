@@ -51,6 +51,7 @@ import org.jomc.tools.model.SourceSectionType;
 import org.jomc.tools.model.SourceSectionsType;
 import org.jomc.tools.modlet.ToolsModelProvider;
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -251,6 +252,69 @@ public class ToolsModelProviderTest
         this.getModelProvider().findModel( ModelContextFactory.newInstance().newModelContext(), model );
         ToolsModelProvider.setDefaultEnabled( null );
         this.getModelProvider().setEnabled( null );
+    }
+
+    @Test
+    public final void testDefaultHeadComment() throws Exception
+    {
+        System.clearProperty( "org.jomc.tools.modlet.ToolsModelProvider.defaultHeadComment" );
+        ToolsModelProvider.setDefaultHeadComment( null );
+        assertEquals( "//", ToolsModelProvider.getDefaultHeadComment() );
+
+        System.setProperty( "org.jomc.tools.modlet.ToolsModelProvider.defaultHeadComment", "/*" );
+        ToolsModelProvider.setDefaultHeadComment( null );
+        assertEquals( "/*", ToolsModelProvider.getDefaultHeadComment() );
+        System.clearProperty( "org.jomc.tools.modlet.ToolsModelProvider.defaultHeadComment" );
+        ToolsModelProvider.setDefaultHeadComment( null );
+        assertEquals( "//", ToolsModelProvider.getDefaultHeadComment() );
+    }
+
+    @Test
+    public final void testHeadComment() throws Exception
+    {
+        ToolsModelProvider.setDefaultHeadComment( null );
+        this.getModelProvider().setHeadComment( null );
+        assertEquals( "//", this.getModelProvider().getHeadComment() );
+
+        ToolsModelProvider.setDefaultHeadComment( "/*" );
+        this.getModelProvider().setHeadComment( null );
+        assertEquals( "/*", this.getModelProvider().getHeadComment() );
+
+        ToolsModelProvider.setDefaultHeadComment( null );
+        this.getModelProvider().setHeadComment( null );
+        assertEquals( "//", this.getModelProvider().getHeadComment() );
+    }
+
+    @Test
+    public final void testDefaultTailComment() throws Exception
+    {
+        System.clearProperty( "org.jomc.tools.modlet.ToolsModelProvider.defaultTailComment" );
+        ToolsModelProvider.setDefaultTailComment( null );
+        assertNull( ToolsModelProvider.getDefaultTailComment() );
+
+        System.setProperty( "org.jomc.tools.modlet.ToolsModelProvider.defaultTailComment", "*/" );
+        ToolsModelProvider.setDefaultTailComment( null );
+        assertEquals( "*/", ToolsModelProvider.getDefaultTailComment() );
+
+        System.clearProperty( "org.jomc.tools.modlet.ToolsModelProvider.defaultTailComment" );
+        ToolsModelProvider.setDefaultTailComment( null );
+        assertNull( ToolsModelProvider.getDefaultTailComment() );
+    }
+
+    @Test
+    public final void testTailComment() throws Exception
+    {
+        ToolsModelProvider.setDefaultTailComment( null );
+        this.getModelProvider().setTailComment( null );
+        assertNull( this.getModelProvider().getTailComment() );
+
+        ToolsModelProvider.setDefaultTailComment( "*/" );
+        this.getModelProvider().setTailComment( null );
+        assertEquals( "*/", this.getModelProvider().getTailComment() );
+
+        ToolsModelProvider.setDefaultTailComment( null );
+        this.getModelProvider().setTailComment( null );
+        assertNull( this.getModelProvider().getTailComment() );
     }
 
     private static void assertSectionNameUniqueness( final SourceSectionsType sections )

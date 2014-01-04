@@ -380,4 +380,67 @@ public class ToolsModelProcessorTest
         this.getModelProcessor().setEnabled( null );
     }
 
+    @Test
+    public final void testDefaultHeadComment() throws Exception
+    {
+        System.clearProperty( "org.jomc.tools.modlet.ToolsModelProcessor.defaultHeadComment" );
+        ToolsModelProcessor.setDefaultHeadComment( null );
+        assertEquals( "//", ToolsModelProcessor.getDefaultHeadComment() );
+
+        System.setProperty( "org.jomc.tools.modlet.ToolsModelProcessor.defaultHeadComment", "/*" );
+        ToolsModelProcessor.setDefaultHeadComment( null );
+        assertEquals( "/*", ToolsModelProcessor.getDefaultHeadComment() );
+        System.clearProperty( "org.jomc.tools.modlet.ToolsModelProcessor.defaultHeadComment" );
+        ToolsModelProcessor.setDefaultHeadComment( null );
+        assertEquals( "//", ToolsModelProcessor.getDefaultHeadComment() );
+    }
+
+    @Test
+    public final void testHeadComment() throws Exception
+    {
+        ToolsModelProcessor.setDefaultHeadComment( null );
+        this.getModelProcessor().setHeadComment( null );
+        assertEquals( "//", this.getModelProcessor().getHeadComment() );
+
+        ToolsModelProcessor.setDefaultHeadComment( "/*" );
+        this.getModelProcessor().setHeadComment( null );
+        assertEquals( "/*", this.getModelProcessor().getHeadComment() );
+
+        ToolsModelProcessor.setDefaultHeadComment( null );
+        this.getModelProcessor().setHeadComment( null );
+        assertEquals( "//", this.getModelProcessor().getHeadComment() );
+    }
+
+    @Test
+    public final void testDefaultTailComment() throws Exception
+    {
+        System.clearProperty( "org.jomc.tools.modlet.ToolsModelProcessor.defaultTailComment" );
+        ToolsModelProcessor.setDefaultTailComment( null );
+        assertNull( ToolsModelProcessor.getDefaultTailComment() );
+
+        System.setProperty( "org.jomc.tools.modlet.ToolsModelProcessor.defaultTailComment", "*/" );
+        ToolsModelProcessor.setDefaultTailComment( null );
+        assertEquals( "*/", ToolsModelProcessor.getDefaultTailComment() );
+
+        System.clearProperty( "org.jomc.tools.modlet.ToolsModelProcessor.defaultTailComment" );
+        ToolsModelProcessor.setDefaultTailComment( null );
+        assertNull( ToolsModelProcessor.getDefaultTailComment() );
+    }
+
+    @Test
+    public final void testTailComment() throws Exception
+    {
+        ToolsModelProcessor.setDefaultTailComment( null );
+        this.getModelProcessor().setTailComment( null );
+        assertNull( this.getModelProcessor().getTailComment() );
+
+        ToolsModelProcessor.setDefaultTailComment( "*/" );
+        this.getModelProcessor().setTailComment( null );
+        assertEquals( "*/", this.getModelProcessor().getTailComment() );
+
+        ToolsModelProcessor.setDefaultTailComment( null );
+        this.getModelProcessor().setTailComment( null );
+        assertNull( this.getModelProcessor().getTailComment() );
+    }
+
 }

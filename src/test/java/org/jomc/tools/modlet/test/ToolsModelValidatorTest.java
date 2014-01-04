@@ -356,7 +356,7 @@ public class ToolsModelValidatorTest
     }
 
     private static void assertModelValidationReportDetail( final ModelValidationReport report, final String identifier,
-                                                           final Number count )
+                                                           final int count )
     {
         final List<ModelValidationReport.Detail> details = report.getDetails( identifier );
 
