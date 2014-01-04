@@ -30,6 +30,7 @@
 ## @param model The model declaring the modules of the implementation to render.
 ## @param modules The modules declaring the implementation to render.
 ## @param imodel The inheritance model of the modules declaring the implementation to render.
+## @param smodel The source file model to render.
 ## @param implementation The implementation to render.
 ## @param tool The tool merging the template.
 ## @param toolName The name of the tool merging the template.
@@ -60,7 +61,8 @@
 #if($dependencies)
 #set($options = $dependencies.getDependenciesBySpecification("JOMC ⁑ CLI ⁑ Command Option"))
 #if($with-editor-fold)
-${tool.getIndentation(1)}// <editor-fold defaultstate="collapsed" desc=" Generated Options ">
+${tool.getIndentation(1)}${smodel.getHeadComment()} <editor-fold defaultstate="collapsed" desc=" Generated Options ">#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
 #end
 #if($with-javadoc)
 ${tool.getIndentation(1)}/**
@@ -98,6 +100,7 @@ ${tool.getIndentation(2)}options.addOption( this.${option.getJavaGetterMethodNam
 ${tool.getIndentation(2)}return options;
 ${tool.getIndentation(1)}}
 #if($with-editor-fold)
-${tool.getIndentation(1)}// </editor-fold>
+${tool.getIndentation(1)}${smodel.getHeadComment()} </editor-fold>#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
 #end
 #end
