@@ -1012,8 +1012,10 @@ public class ToolsModelProvider implements ModelProvider
             }
             else if ( uniqueSectionNames.add( sectionName ) )
             {
+                final Module module = modules.getModuleOfSpecification( specification.getIdentifier() );
                 context.log( Level.WARNING, getMessage( "specificationSectionNameUniqueness",
                                                         specification.getIdentifier(),
+                                                        module.getName(),
                                                         sourceFileType.getIdentifier(),
                                                         sectionName ),
                              null );
@@ -1150,8 +1152,10 @@ public class ToolsModelProvider implements ModelProvider
                     }
                     else if ( uniqueSectionNames.add( sectionName ) )
                     {
+                        final Module module = modules.getModuleOfImplementation( implementation.getIdentifier() );
                         context.log( Level.WARNING, getMessage( "implementationSectionNameUniqueness",
                                                                 implementation.getIdentifier(),
+                                                                module.getName(),
                                                                 sourceFileType.getIdentifier(),
                                                                 sectionName ),
                                      null );
@@ -1177,8 +1181,10 @@ public class ToolsModelProvider implements ModelProvider
             }
             else if ( uniqueSectionNames.add( sectionName ) )
             {
+                final Module module = modules.getModuleOfImplementation( implementation.getIdentifier() );
                 context.log( Level.WARNING, getMessage( "implementationSectionNameUniqueness",
                                                         implementation.getIdentifier(),
+                                                        module.getName(),
                                                         sourceFileType.getIdentifier(),
                                                         sectionName ),
                              null );
