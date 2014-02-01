@@ -86,7 +86,7 @@ Customizing code generation
 <templateParameter key="with-revision-keyword" value="Id"/>
 
 <!-- Since 1.3: Flag indicating generated code to contain '@SuppressWarnings' annotations with the given value.  -->
-<templateParameter key="with-suppress-warnings" value="unused"/>
+<templateParameter key="with-suppress-warnings" value="&quot;unused&quot;"/>
 
 <!-- Flag indicating generated code to contain copyright notices based on model object vendor information. -->
 <templateParameter key="with-vendor-copyright" value="true" type="java.lang.Boolean"/>
