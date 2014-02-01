@@ -165,7 +165,7 @@ Customizing code generation
             <!-- Since 1.3: Flag indicating generated code to contain '@SuppressWarnings' annotations with the given value. -->
             <templateParameter>
               <key>with-suppress-warnings</key>
-              <value>unused</value>
+              <value>&quot;unused&quot;</value>
             </templateParameter>
 
             <!-- Flag indicating generated code to contain copyright notices based on model object vendor information. -->
