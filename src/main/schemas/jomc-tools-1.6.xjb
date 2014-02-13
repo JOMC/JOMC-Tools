@@ -38,7 +38,7 @@
                xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
                version="2.0">
 
-  <jaxb:bindings schemaLocation="jomc-tools-1.2.xsd">
+  <jaxb:bindings schemaLocation="jomc-tools-1.6.xsd">
     <!-- *********************************************************************************************************** -->
     <jaxb:bindings node="xs:complexType[@name='ToolsType']">
       <ci:code><![CDATA[
@@ -413,6 +413,39 @@
     public <T> java.util.List<T> getAnyObjects( final Class<T> clazz )
     {
         return this.getAnyObjects( this.getAny(), clazz );
+    }
+
+    /**
+     * Gets a template parameter for a given name from the list of template parameters.
+     *
+     * @param name The name of the template parameter to return.
+     *
+     * @return The first matching template parameter or {@code null}, if no such template parameter is found.
+     *
+     * @throws NullPointerException if {@code name} is {@code null}.
+     *
+     * @see #getTemplateParameter()
+     * @see TemplateParameterType#getName()
+     * @since 1.6
+     */
+    public TemplateParameterType getTemplateParameter( final String name )
+    {
+        if ( name == null )
+        {
+            throw new NullPointerException( "name" );
+        }
+
+        for ( int i = 0, s0 = this.getTemplateParameter().size(); i < s0; i++ )
+        {
+            final TemplateParameterType t = this.getTemplateParameter().get( i );
+
+            if ( name.equals( t.getName() ) )
+            {
+                return t;
+            }
+        }
+
+        return null;
     }]]>
       </ci:code>
     </jaxb:bindings>
@@ -551,8 +584,292 @@
     public <T> java.util.List<T> getAnyObjects( final Class<T> clazz )
     {
         return this.getAnyObjects( this.getAny(), clazz );
+    }
+
+    /**
+     * Gets a template parameter for a given name from the list of template parameters.
+     *
+     * @param name The name of the template parameter to return.
+     *
+     * @return The first matching template parameter or {@code null}, if no such template parameter is found.
+     *
+     * @throws NullPointerException if {@code name} is {@code null}.
+     *
+     * @see #getTemplateParameter()
+     * @see TemplateParameterType#getName()
+     * @since 1.6
+     */
+    public TemplateParameterType getTemplateParameter( final String name )
+    {
+        if ( name == null )
+        {
+            throw new NullPointerException( "name" );
+        }
+
+        for ( int i = 0, s0 = this.getTemplateParameter().size(); i < s0; i++ )
+        {
+            final TemplateParameterType t = this.getTemplateParameter().get( i );
+
+            if ( name.equals( t.getName() ) )
+            {
+                return t;
+            }
+        }
+
+        return null;
     }]]>
       </ci:code>
+    </jaxb:bindings>
+    <!-- *********************************************************************************************************** -->
+    <jaxb:bindings node="xs:complexType[@name='TemplateParameterType']">
+      <ci:code><![CDATA[
+    /**
+     * Gets the Java value of the template parameter.
+     * <p>
+     * The Java value of the template parameter is computed based on the following rules:
+     * <ol>
+     * <li>If property {@code any} is set, the Java value is computed based on the object returned by method
+     * {@code getAny()} by possibly unwrapping any {@code JAXBElement} instances. If that object declares a
+     * <blockquote><pre>public Object getJavaValue( ClassLoader )</pre></blockquote> method, the value returned by this
+     * method is the object returned by a call to that method. If that object does not declare such a method, the value
+     * returned by this method is that (possibly unwrapped) object.</li>
+     * <li>If property {@code value} is set, the Java value is computed based on the values of properties {@code type}
+     * and {@code value}. If property {@code type} is not set or equals {@code java.lang.String}, the value returned
+     * by this method is the string value returned by method {@code getValue()}. If property {@code type} equals a name
+     * of a Java primitive type, an instance of the wrapper class corresponding to that primitive type name is returned
+     * instantiated by passing the value of property {@code value} to the public constructor of that wrapper class
+     * taking a single {@code java.lang.String} argument. For all other values of property {@code type} an instance of
+     * a class with a name equal to the value of property {@code type} is returned, either instantiated by passing the
+     * value of property {@code value} to the public constructor of that class taking a single {@code java.lang.String}
+     * argument, or, failing that, by passing the value of property {@code value} to the static {@code valueOf} method
+     * of that class taking a single {@code java.lang.String} argument.</li>
+     * <li>If properties {@code any} and {@code value} are both {@code null}, this method returns {@code null}.</li>
+     * </ol></p>
+     *
+     * @param classLoader The class loader to use for getting the Java value; {@code null} to use the platform's
+     * bootstrap class loader.
+     *
+     * @return The Java value of the template parameter or {@code null}.
+     *
+     * @throws org.jomc.model.ModelObjectException if getting the Java value of the template parameter fails
+     * unexpectedly.
+     *
+     * @see #getJavaTypeName()
+     */
+    public Object getJavaValue( final ClassLoader classLoader ) throws org.jomc.model.ModelObjectException
+    {
+        try
+        {
+            if ( this.getAny() != null )
+            {
+                if ( this.getType() == null )
+                {
+                    throw new org.jomc.model.ModelObjectException( getMessage( "mandatoryType", this.getName() ) );
+                }
+
+                final Object anyObject = this.getAny() instanceof JAXBElement
+                                             ? ( (JAXBElement) this.getAny() ).getValue() : this.getAny();
+
+                return this.getJavaValue( classLoader, anyObject,
+                                          this.getJavaTypeName().getClass( classLoader, false ) );
+
+            }
+            else
+            {
+                if ( this.getJavaTypeName().isPrimitive() && this.getValue() == null )
+                {
+                    throw new org.jomc.model.ModelObjectException( getMessage( "mandatoryPrimitiveValue",
+                                                                               this.getName(), this.getType() ) );
+
+                }
+
+                return this.getJavaValue( this.getJavaTypeName().isPrimitive()
+                                              ? this.getJavaTypeName().getBoxedName().getClass( classLoader, false )
+                                              : this.getJavaTypeName().getClass( classLoader, false ),
+                                          this.getValue() );
+
+            }
+        }
+        catch ( final ClassNotFoundException e )
+        {
+            throw new org.jomc.model.ModelObjectException( getMessage( "classNotFound", this.getName(),
+                                                                       this.getType() ), e );
+
+        }
+    }
+
+    /**
+     * Gets the Java type name of the template parameter.
+     *
+     * @return The Java type name of the type referenced by the template parameter or {@code null}, if the template
+     * parameter does not reference a type.
+     *
+     * @throws org.jomc.model.ModelObjectException if compiling the name of the type referenced by the template
+     * parameter to a {@code JavaTypeName} fails.
+     */
+    public org.jomc.model.JavaTypeName getJavaTypeName() throws org.jomc.model.ModelObjectException
+    {
+        final String typeName = this.getType() == null
+                                    ? this.getAny() == null
+                                          ? String.class.getName()
+                                          : Object.class.getName()
+                                    : this.getType();
+
+        try
+        {
+            return org.jomc.model.JavaTypeName.parse( typeName );
+        }
+        catch ( final java.text.ParseException e )
+        {
+            throw new org.jomc.model.ModelObjectException( getMessage( "javaTypeNameParseException", typeName,
+                                                                       getMessage( e ) ), e );
+
+        }
+    }
+
+    private Object getJavaValue( final ClassLoader classLoader, final Object any, final Class<?> returnType )
+        throws org.jomc.model.ModelObjectException
+    {
+        if ( any != null )
+        {
+            final String methodName = "getJavaValue";
+
+            try
+            {
+                final java.lang.reflect.Method m = any.getClass().getMethod( methodName, ClassLoader.class );
+                final Object result = m.invoke( any, classLoader );
+
+                if ( result != null && !returnType.isAssignableFrom( result.getClass() ) )
+                {
+                    throw new org.jomc.model.ModelObjectException( getMessage( "illegalMethodInvocationResult",
+                                                                               methodName, any.getClass().getName(),
+                                                                               result.getClass().getName(),
+                                                                               returnType.getName() ) );
+
+                }
+
+                return result;
+            }
+            catch ( final IllegalAccessException e )
+            {
+                throw new org.jomc.model.ModelObjectException( getMessage( "methodAccessDenied", methodName,
+                                                                           any.getClass().getName() ), e );
+
+            }
+            catch ( final IllegalArgumentException e )
+            {
+                throw new AssertionError( e );
+            }
+            catch ( final InvocationTargetException e )
+            {
+                throw new org.jomc.model.ModelObjectException( getMessage( "methodInvocationFailure", methodName,
+                                                                           any.getClass().getName() ), e );
+
+            }
+            catch ( final SecurityException e )
+            {
+                throw new org.jomc.model.ModelObjectException( getMessage( "methodAccessDenied", methodName,
+                                                                           any.getClass().getName() ), e );
+
+            }
+            catch ( final NoSuchMethodException e )
+            {
+                // Optional method not provided.
+            }
+        }
+
+        return any;
+    }
+
+    private Object getJavaValue( final Class<?> type, final String value ) throws org.jomc.model.ModelObjectException
+    {
+        if ( value != null )
+        {
+            try
+            {
+                if ( type == Character.class )
+                {
+                    if ( value.length() != 1 )
+                    {
+                        throw new org.jomc.model.ModelObjectException( getMessage( "illegalValue", value,
+                                                                                   Character.class.getName() ) );
+
+                    }
+
+                    return type.getConstructor( char.class ).newInstance( value.charAt( 0 ) );
+                }
+                else if ( type == String.class )
+                {
+                    return value;
+                }
+                else
+                {
+                    try
+                    {
+                        return type.getConstructor( String.class ).newInstance( value );
+                    }
+                    catch ( final NoSuchMethodException e )
+                    {
+                        final java.lang.reflect.Method valueOf = type.getMethod( "valueOf", String.class );
+
+                        if ( !type.isAssignableFrom( valueOf.getReturnType() ) )
+                        {
+                            throw new org.jomc.model.ModelObjectException( getMessage(
+                                "notAssignable", valueOf.getReturnType().getName(), valueOf.getName(), type.getName(),
+                                type.getName(), this.getName() ) );
+
+                        }
+
+                        return valueOf.invoke( null, value );
+                    }
+                }
+            }
+            catch ( final InstantiationException e )
+            {
+                throw new org.jomc.model.ModelObjectException( getMessage( "instantiationException", type.getName() ),
+                                                               e );
+
+            }
+            catch ( final IllegalAccessException e )
+            {
+                throw new org.jomc.model.ModelObjectException( getMessage( "accessDenied", type.getName() ), e );
+            }
+            catch ( final IllegalArgumentException e )
+            {
+                throw new AssertionError( e );
+            }
+            catch ( final InvocationTargetException e )
+            {
+                throw new org.jomc.model.ModelObjectException( getMessage( "invocationFailure", type.getName() ), e );
+            }
+            catch ( final NoSuchMethodException e )
+            {
+                throw new org.jomc.model.ModelObjectException( getMessage( "constructorNotFound", type.getName() ), e );
+            }
+        }
+
+        return value;
+    }
+
+    private static String getMessage( final Throwable t )
+    {
+        return t != null
+                   ? t.getMessage() != null && t.getMessage().trim().length() > 0
+                         ? t.getMessage()
+                         : getMessage( t.getCause() )
+                   : null;
+
+    }
+
+    private static String getMessage( final String key, final Object... arguments )
+    {
+        return java.text.MessageFormat.format(
+            java.util.ResourceBundle.getBundle( TemplateParameterType.class.getName().replace( '.', '/' ),
+                                                java.util.Locale.getDefault() ).getString( key ),
+            arguments );
+
+    }
+]]></ci:code>
     </jaxb:bindings>
   </jaxb:bindings>
 </jaxb:bindings>

@@ -55,6 +55,7 @@ import org.jomc.tools.model.SourceFileType;
 import org.jomc.tools.model.SourceFilesType;
 import org.jomc.tools.model.SourceSectionType;
 import org.jomc.tools.model.SourceSectionsType;
+import org.jomc.tools.model.TemplateParameterType;
 import org.jomc.tools.modlet.ToolsModelValidator;
 import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
@@ -144,9 +145,17 @@ public class ToolsModelValidatorTest
 
         final SourceFileType sourceFile1 = new SourceFileType();
         sourceFile1.setIdentifier( this.getClass().getSimpleName() + " 1" );
+        sourceFile1.getTemplateParameter().add( new TemplateParameterType() );
+        sourceFile1.getTemplateParameter().get( 0 ).setName( "SourceFile1" );
+        sourceFile1.getTemplateParameter().get( 0 ).setType( "DOES_NOT_EXIST" );
+        sourceFile1.getTemplateParameter().get( 0 ).setValue( "TEST" );
 
         final SourceFileType sourceFile2 = new SourceFileType();
         sourceFile2.setIdentifier( this.getClass().getSimpleName() + " 2" );
+        sourceFile2.getTemplateParameter().add( new TemplateParameterType() );
+        sourceFile2.getTemplateParameter().get( 0 ).setName( "SourceFile2" );
+        sourceFile2.getTemplateParameter().get( 0 ).setType( "DOES_NOT_EXIST" );
+        sourceFile2.getTemplateParameter().get( 0 ).setValue( "TEST" );
 
         final SourceFilesType sourceFiles1 = new SourceFilesType();
         sourceFiles1.getSourceFile().add( sourceFile1 );
@@ -158,9 +167,23 @@ public class ToolsModelValidatorTest
 
         final SourceSectionType sourceSection1 = new SourceSectionType();
         sourceSection1.setName( this.getClass().getSimpleName() + " 1" );
+        sourceSection1.getTemplateParameter().add( new TemplateParameterType() );
+        sourceSection1.getTemplateParameter().get( 0 ).setName( "SourceSection1" );
+        sourceSection1.getTemplateParameter().get( 0 ).setType( "DOES_NOT_EXIST" );
+        sourceSection1.getTemplateParameter().get( 0 ).setValue( "TEST" );
+        sourceSection1.setSourceSections( new SourceSectionsType() );
+        sourceSection1.getSourceSections().getSourceSection().add( sourceSection1.clone() );
+        sourceSection1.getSourceSections().getSourceSection().get( 0 ).setName( "SourceSection1 - nested" );
 
         final SourceSectionType sourceSection2 = new SourceSectionType();
         sourceSection2.setName( this.getClass().getSimpleName() + " 2" );
+        sourceSection2.getTemplateParameter().add( new TemplateParameterType() );
+        sourceSection2.getTemplateParameter().get( 0 ).setName( "SourceSection2" );
+        sourceSection2.getTemplateParameter().get( 0 ).setType( "DOES_NOT_EXIST" );
+        sourceSection2.getTemplateParameter().get( 0 ).setValue( "TEST" );
+        sourceSection2.setSourceSections( new SourceSectionsType() );
+        sourceSection2.getSourceSections().getSourceSection().add( sourceSection2.clone() );
+        sourceSection2.getSourceSections().getSourceSection().get( 0 ).setName( "SourceSection2 - nested" );
 
         final SourceSectionsType sourceSections1 = new SourceSectionsType();
         sourceSections1.getSourceSection().add( sourceSection1 );
@@ -169,6 +192,9 @@ public class ToolsModelValidatorTest
         final SourceSectionsType sourceSections2 = new SourceSectionsType();
         sourceSections2.getSourceSection().add( sourceSection1 );
         sourceSections2.getSourceSection().add( sourceSection2 );
+
+        sourceFile1.setSourceSections( sourceSections1 );
+        sourceFile2.setSourceSections( sourceSections2 );
 
         model.getAny().add( new ObjectFactory().createSourceFile( sourceFile1 ) );
         model.getAny().add( new ObjectFactory().createSourceFile( sourceFile2 ) );
@@ -319,6 +345,69 @@ public class ToolsModelValidatorTest
         assertModelValidationReportDetail( report, "SPECIFICATION_SOURCE_SECTION_CONSTRAINT", 6 );
         assertModelValidationReportDetail( report, "SPECIFICATION_SOURCE_SECTIONS_CONSTRAINT", 1 );
         assertModelValidationReportDetail( report, "SPECIFICATION_SOURCE_FILE_INFORMATION", 1 );
+        assertModelValidationReportDetail( report, "MODEL_SOURCE_FILE_TEMPLATE_PARAMETER_JAVA_VALUE_CONSTRAINT", 6 );
+        assertModelValidationReportDetail( report, "MODEL_SOURCE_FILE_SECTION_TEMPLATE_PARAMETER_JAVA_VALUE_CONSTRAINT",
+                                           24 );
+
+        assertModelValidationReportDetail( report, "MODEL_SOURCE_SECTION_TEMPLATE_PARAMETER_JAVA_VALUE_CONSTRAINT",
+                                           12 );
+
+        assertModelValidationReportDetail( report, "MODULE_SOURCE_FILE_TEMPLATE_PARAMETER_JAVA_VALUE_CONSTRAINT", 6 );
+
+        assertModelValidationReportDetail( report,
+                                           "MODULE_SOURCE_FILE_SECTION_TEMPLATE_PARAMETER_JAVA_VALUE_CONSTRAINT",
+                                           24 );
+
+        assertModelValidationReportDetail( report, "MODULE_SOURCE_SECTION_TEMPLATE_PARAMETER_JAVA_VALUE_CONSTRAINT",
+                                           12 );
+
+        assertModelValidationReportDetail( report,
+                                           "IMPLEMENTATION_SOURCE_FILE_TEMPLATE_PARAMETER_JAVA_VALUE_CONSTRAINT",
+                                           7 );
+
+        assertModelValidationReportDetail( report,
+                                           "IMPLEMENTATION_SOURCE_FILE_SECTION_TEMPLATE_PARAMETER_JAVA_VALUE_CONSTRAINT",
+                                           28 );
+
+        assertModelValidationReportDetail( report,
+                                           "IMPLEMENTATION_SOURCE_SECTION_TEMPLATE_PARAMETER_JAVA_VALUE_CONSTRAINT",
+                                           12 );
+
+        assertModelValidationReportDetail( report,
+                                           "IMPLEMENTATION_DEPENDENCY_SOURCE_FILE_TEMPLATE_PARAMETER_JAVA_VALUE_CONSTRAINT",
+                                           6 );
+
+        assertModelValidationReportDetail( report,
+                                           "IMPLEMENTATION_DEPENDENCY_SOURCE_FILE_SECTION_TEMPLATE_PARAMETER_JAVA_VALUE_CONSTRAINT",
+                                           24 );
+
+        assertModelValidationReportDetail( report,
+                                           "IMPLEMENTATION_DEPENDENCY_SOURCE_SECTION_TEMPLATE_PARAMETER_JAVA_VALUE_CONSTRAINT",
+                                           12 );
+
+        assertModelValidationReportDetail( report,
+                                           "IMPLEMENTATION_MESSAGE_SOURCE_FILE_TEMPLATE_PARAMETER_JAVA_VALUE_CONSTRAINT",
+                                           6 );
+
+        assertModelValidationReportDetail( report,
+                                           "IMPLEMENTATION_MESSAGE_SOURCE_FILE_SECTION_TEMPLATE_PARAMETER_JAVA_VALUE_CONSTRAINT",
+                                           24 );
+
+        assertModelValidationReportDetail( report,
+                                           "IMPLEMENTATION_MESSAGE_SOURCE_SECTION_TEMPLATE_PARAMETER_JAVA_VALUE_CONSTRAINT",
+                                           12 );
+
+        assertModelValidationReportDetail( report,
+                                           "SPECIFICATION_SOURCE_FILE_TEMPLATE_PARAMETER_JAVA_VALUE_CONSTRAINT",
+                                           7 );
+
+        assertModelValidationReportDetail( report,
+                                           "SPECIFICATION_SOURCE_FILE_SECTION_TEMPLATE_PARAMETER_JAVA_VALUE_CONSTRAINT",
+                                           28 );
+
+        assertModelValidationReportDetail( report,
+                                           "SPECIFICATION_SOURCE_SECTION_TEMPLATE_PARAMETER_JAVA_VALUE_CONSTRAINT",
+                                           12 );
     }
 
     private static void assertValidModel( final ModelValidationReport report )
@@ -363,7 +452,7 @@ public class ToolsModelValidatorTest
         if ( details.size() != count )
         {
             System.out.println( ">>>Unexpected number of '" + identifier + "' details. Expected " + count + " - found "
-                                + details.size() + "." );
+                                    + details.size() + "." );
 
             logModelValidationReport( report );
             fail( report.toString() );

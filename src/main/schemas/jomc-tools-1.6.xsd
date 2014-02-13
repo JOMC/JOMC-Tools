@@ -29,7 +29,7 @@
 
   $JOMC$
 
-  Location: http://xml.jomc.org/tools/model/jomc-tools-1.2.xsd
+  Location: http://xml.jomc.org/tools/model/jomc-tools-1.6.xsd
 
 -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -68,7 +68,7 @@
 
   $JOMC$
 
-  Location: http://xml.jomc.org/tools/model/jomc-tools-1.2.xsd
+  Location: http://xml.jomc.org/tools/model/jomc-tools-1.6.xsd
 
 ]]>
     </xsd:documentation>
@@ -78,7 +78,7 @@
     <xsd:annotation>
       <xsd:documentation xml:lang="en">Base tools type.</xsd:documentation>
     </xsd:annotation>
-    <xsd:attribute name="modelVersion" type="xsd:string" use="optional" default="1.2"/>
+    <xsd:attribute name="modelVersion" type="xsd:string" use="optional" default="1.6"/>
   </xsd:complexType>
   <!-- ************************************************************************************************************* -->
   <xsd:element name="source-files" type="tools:SourceFilesType">
@@ -113,7 +113,15 @@
     </xsd:complexContent>
   </xsd:complexType>
   <!-- ************************************************************************************************************* -->
-  <xsd:element name="source-file" type="tools:SourceFileType"/>
+  <xsd:element name="source-file" type="tools:SourceFileType">
+    <xsd:key name="source-file-template-parameter-key">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">Key of a source file template parameter.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:selector xpath="tools:template-parameter"/>
+      <xsd:field xpath="@name"/>
+    </xsd:key>
+  </xsd:element>
   <xsd:complexType name="SourceFileType">
     <xsd:annotation>
       <xsd:documentation xml:lang="en">Model of a source code file.</xsd:documentation>
@@ -126,6 +134,7 @@
               <xsd:documentation xml:lang="en">Sections of the source file.</xsd:documentation>
             </xsd:annotation>
           </xsd:element>
+          <xsd:element name="template-parameter" type="tools:TemplateParameterType" minOccurs="0" maxOccurs="unbounded"/>
           <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
         <xsd:attribute name="identifier" type="xsd:string" use="required">
@@ -189,7 +198,15 @@
     </xsd:complexContent>
   </xsd:complexType>
   <!-- ************************************************************************************************************* -->
-  <xsd:element name="source-section" type="tools:SourceSectionType"/>
+  <xsd:element name="source-section" type="tools:SourceSectionType">
+    <xsd:key name="source-section-template-parameter-key">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">Key of a source section template parameter.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:selector xpath="tools:template-parameter"/>
+      <xsd:field xpath="@name"/>
+    </xsd:key>
+  </xsd:element>
   <xsd:complexType name="SourceSectionType">
     <xsd:annotation>
       <xsd:documentation xml:lang="en">Model of a source code file section.</xsd:documentation>
@@ -202,6 +219,7 @@
               <xsd:documentation xml:lang="en">Child sections of the section.</xsd:documentation>
             </xsd:annotation>
           </xsd:element>
+          <xsd:element name="template-parameter" type="tools:TemplateParameterType" minOccurs="0" maxOccurs="unbounded"/>
           <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
         <xsd:attribute name="name" type="xsd:string" use="required">
@@ -234,6 +252,22 @@
             <xsd:documentation xml:lang="en">Flag indicating the section is editable.</xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ************************************************************************************************************* -->
+  <xsd:complexType name="TemplateParameterType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Model of a template parameter.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tools:ToolsType">
+        <xsd:sequence>
+          <xsd:any namespace="##other" minOccurs="0" maxOccurs="1" processContents="lax"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:token" use="required"/>
+        <xsd:attribute name="type" type="xsd:token" use="optional"/>
+        <xsd:attribute name="value" type="xsd:string" use="optional"/>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
