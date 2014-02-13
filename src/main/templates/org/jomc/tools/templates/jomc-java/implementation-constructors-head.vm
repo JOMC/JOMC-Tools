@@ -31,6 +31,7 @@
 ## @param modules The modules declaring the implementation to render.
 ## @param imodel The inheritance model of the modules declaring the implementation to render.
 ## @param smodel The source file model to render.
+## @param ssection The source section model to render.
 ## @param implementation The implementation to render.
 ## @param tool The tool merging the template.
 ## @param toolName The name of the tool merging the template.

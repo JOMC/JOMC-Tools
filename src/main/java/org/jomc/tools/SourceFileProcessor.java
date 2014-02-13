@@ -119,7 +119,7 @@ public class SourceFileProcessor extends JomcTool
         SourceFilesType sourceFiles = null;
 
         if ( this.getModules() != null
-             && this.getModules().getSpecification( specification.getIdentifier() ) != null )
+                 && this.getModules().getSpecification( specification.getIdentifier() ) != null )
         {
             sourceFiles = specification.getAnyObject( SourceFilesType.class );
         }
@@ -152,7 +152,7 @@ public class SourceFileProcessor extends JomcTool
         SourceFilesType sourceFiles = null;
 
         if ( this.getModules() != null
-             && this.getModules().getImplementation( implementation.getIdentifier() ) != null )
+                 && this.getModules().getImplementation( implementation.getIdentifier() ) != null )
         {
             final Instance instance = this.getModules().getInstance( implementation.getIdentifier() );
             assert instance != null : "Instance '" + implementation.getIdentifier() + "' not found.";
@@ -302,7 +302,7 @@ public class SourceFileProcessor extends JomcTool
         }
 
         if ( this.getModules() != null
-             && this.getModules().getSpecification( specification.getIdentifier() ) != null )
+                 && this.getModules().getSpecification( specification.getIdentifier() ) != null )
         {
             if ( specification.isClassDeclaration() )
             {
@@ -371,7 +371,7 @@ public class SourceFileProcessor extends JomcTool
         }
 
         if ( this.getModules() != null
-             && this.getModules().getImplementation( implementation.getIdentifier() ) != null )
+                 && this.getModules().getImplementation( implementation.getIdentifier() ) != null )
         {
             if ( implementation.isClassDeclaration() )
             {
@@ -409,10 +409,10 @@ public class SourceFileProcessor extends JomcTool
     private static String getMessage( final Throwable t )
     {
         return t != null
-               ? t.getMessage() != null && t.getMessage().trim().length() > 0
-                 ? t.getMessage()
-                 : getMessage( t.getCause() )
-               : null;
+                   ? t.getMessage() != null && t.getMessage().trim().length() > 0
+                         ? t.getMessage()
+                         : getMessage( t.getCause() )
+                   : null;
 
     }
 
@@ -520,7 +520,7 @@ public class SourceFileProcessor extends JomcTool
             try
             {
                 if ( getModules() != null
-                     && getModules().getSpecification( specification.getIdentifier() ) != null )
+                         && getModules().getSpecification( specification.getIdentifier() ) != null )
                 {
                     this.specification = specification;
                     this.sourceFileType = sourceFileType;
@@ -576,7 +576,7 @@ public class SourceFileProcessor extends JomcTool
             try
             {
                 if ( getModules() != null
-                     && getModules().getImplementation( implementation.getIdentifier() ) != null )
+                         && getModules().getImplementation( implementation.getIdentifier() ) != null )
                 {
                     this.implementation = implementation;
                     this.sourceFileType = sourceFileType;
@@ -649,42 +649,48 @@ public class SourceFileProcessor extends JomcTool
                         if ( s.getStartingLine() != null )
                         {
                             s.setStartingLine( getIndentation( sourceSectionType.getIndentationLevel() )
-                                               + s.getStartingLine().trim() );
+                                                   + s.getStartingLine().trim() );
 
                         }
                         if ( s.getEndingLine() != null )
                         {
                             s.setEndingLine( getIndentation( sourceSectionType.getIndentationLevel() )
-                                             + s.getEndingLine().trim() );
+                                                 + s.getEndingLine().trim() );
 
                         }
 
                         if ( sourceSectionType.getHeadTemplate() != null
-                             && ( !sourceSectionType.isEditable()
-                                  || s.getHeadContent().toString().trim().length() == 0 ) )
+                                 && ( !sourceSectionType.isEditable()
+                                      || s.getHeadContent().toString().trim().length() == 0 ) )
                         {
                             final StringWriter writer = new StringWriter();
                             final Template template = getVelocityTemplate( sourceSectionType.getHeadTemplate() );
                             final VelocityContext ctx = getVelocityContext();
                             ctx.put( "template", template );
+                            ctx.put( "ssection", sourceSectionType );
                             template.merge( ctx, writer );
                             writer.close();
                             s.getHeadContent().setLength( 0 );
                             s.getHeadContent().append( writer.toString() );
+                            ctx.remove( "template" );
+                            ctx.remove( "ssection" );
                         }
 
                         if ( sourceSectionType.getTailTemplate() != null
-                             && ( !sourceSectionType.isEditable()
-                                  || s.getTailContent().toString().trim().length() == 0 ) )
+                                 && ( !sourceSectionType.isEditable()
+                                      || s.getTailContent().toString().trim().length() == 0 ) )
                         {
                             final StringWriter writer = new StringWriter();
                             final Template template = getVelocityTemplate( sourceSectionType.getTailTemplate() );
                             final VelocityContext ctx = getVelocityContext();
                             ctx.put( "template", template );
+                            ctx.put( "ssection", sourceSectionType );
                             template.merge( ctx, writer );
                             writer.close();
                             s.getTailContent().setLength( 0 );
                             s.getTailContent().append( writer.toString() );
+                            ctx.remove( "template" );
+                            ctx.remove( "ssection" );
                         }
                     }
                     else
@@ -694,16 +700,15 @@ public class SourceFileProcessor extends JomcTool
                             if ( this.implementation != null )
                             {
                                 log( Level.WARNING, getMessage(
-                                    "unknownImplementationSection", this.implementation.getIdentifier(),
-                                    model.getIdentifier(), s.getName() ), null );
-
+                                     "unknownImplementationSection", this.implementation.getIdentifier(),
+                                     model.getIdentifier(), s.getName() ), null );
 
                             }
                             else if ( this.specification != null )
                             {
                                 log( Level.WARNING, getMessage(
-                                    "unknownSpecificationSection", this.specification.getIdentifier(),
-                                    model.getIdentifier(), s.getName() ), null );
+                                     "unknownSpecificationSection", this.specification.getIdentifier(),
+                                     model.getIdentifier(), s.getName() ), null );
 
                             }
                         }
@@ -758,7 +763,7 @@ public class SourceFileProcessor extends JomcTool
                         if ( isLoggable( Level.FINE ) )
                         {
                             log( Level.FINE, getMessage(
-                                "addedSection", sourceFileType.getIdentifier(), childSection.getName() ), null );
+                                 "addedSection", sourceFileType.getIdentifier(), childSection.getName() ), null );
 
                         }
                     }
@@ -845,6 +850,7 @@ public class SourceFileProcessor extends JomcTool
                             template.merge( ctx, writer );
                             writer.close();
                             content = writer.toString();
+                            ctx.remove( "template" );
                             creating = true;
                         }
                     }
@@ -882,7 +888,7 @@ public class SourceFileProcessor extends JomcTool
                         if ( isLoggable( Level.INFO ) )
                         {
                             log( Level.INFO, getMessage(
-                                creating ? "creating" : "editing", f.getAbsolutePath() ), null );
+                                 creating ? "creating" : "editing", f.getAbsolutePath() ), null );
 
                         }
 
