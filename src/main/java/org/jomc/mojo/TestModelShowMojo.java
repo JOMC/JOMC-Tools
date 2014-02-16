@@ -30,8 +30,8 @@
  */
 package org.jomc.mojo;
 
+import javax.xml.bind.JAXBElement;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 
 /**
@@ -62,9 +62,9 @@ public final class TestModelShowMojo extends AbstractModelShowMojo
     }
 
     @Override
-    protected Model getDisplayModel( final ModelContext modelContext ) throws MojoExecutionException
+    protected JAXBElement<?> getDisplayModel( final ModelContext modelContext ) throws MojoExecutionException
     {
-        return this.getModel( modelContext );
+        return new org.jomc.modlet.ObjectFactory().createModel( this.getModel( modelContext ) );
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) Christian Schulte, 2005-206
+ *   Copyright (C) Christian Schulte, 2014-046
  *   All rights reserved.
  *
  *   Redistribution and use in source and binary forms, with or without
@@ -32,31 +32,43 @@ package org.jomc.mojo;
 
 import javax.xml.bind.JAXBElement;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.jomc.model.Module;
+import org.jomc.model.Modules;
+import org.jomc.model.modlet.ModelHelper;
+import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 
 /**
- * Displays a project's main model.
+ * Displays a module from the project's main model.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  *
- * @goal show-main-model
+ * @goal show-main-module
  * @threadSafe
  * @requiresDependencyResolution test
- * @since 1.1
+ * @since 1.6
  */
-public final class MainModelShowMojo extends AbstractModelShowMojo
+public final class MainModuleShowMojo extends AbstractModelShowMojo
 {
+
+    /**
+     * Identifier of the module to show.
+     *
+     * @parameter expression="${jomc.identifier}"
+     * @required
+     */
+    private String identifier;
 
     /**
      * Execution strategy of the goal ({@code always} or {@code once-per-session}).
      *
-     * @parameter default-value="once-per-session" expression="${jomc.showMainModelExecutionStrategy}"
+     * @parameter default-value="once-per-session" expression="${jomc.showMainModuleExecutionStrategy}"
      */
-    private String showMainModelExecutionStrategy;
+    private String showMainModuleExecutionStrategy;
 
-    /** Creates a new {@code MainModelShowMojo} instance. */
-    public MainModelShowMojo()
+    /** Creates a new {@code MainModuleShowMojo} instance. */
+    public MainModuleShowMojo()
     {
         super();
     }
@@ -64,7 +76,17 @@ public final class MainModelShowMojo extends AbstractModelShowMojo
     @Override
     protected JAXBElement<?> getDisplayModel( final ModelContext modelContext ) throws MojoExecutionException
     {
-        return new org.jomc.modlet.ObjectFactory().createModel( this.getModel( modelContext ) );
+        final Model model = this.getModel( modelContext );
+        final Modules modules = ModelHelper.getModules( model );
+        final Module module = modules != null ? modules.getModule( this.identifier ) : null;
+        JAXBElement<?> displayModel = null;
+
+        if ( module != null )
+        {
+            displayModel = new org.jomc.model.ObjectFactory().createModule( module );
+        }
+
+        return displayModel;
     }
 
     @Override
@@ -76,13 +98,13 @@ public final class MainModelShowMojo extends AbstractModelShowMojo
     @Override
     protected String getGoal() throws MojoExecutionException
     {
-        return "show-main-model";
+        return "show-main-module";
     }
 
     @Override
     protected String getExecutionStrategy() throws MojoExecutionException
     {
-        return this.showMainModelExecutionStrategy;
+        return this.showMainModuleExecutionStrategy;
     }
 
 }

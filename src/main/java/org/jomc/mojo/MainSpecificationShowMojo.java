@@ -30,16 +30,16 @@
  */
 package org.jomc.mojo;
 
+import javax.xml.bind.JAXBElement;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.jomc.model.Modules;
-import org.jomc.model.ObjectFactory;
 import org.jomc.model.Specification;
 import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
 
 /**
- * Displays a project's main specification.
+ * Displays a specification from the project's main model.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
@@ -74,18 +74,16 @@ public final class MainSpecificationShowMojo extends AbstractModelShowMojo
     }
 
     @Override
-    protected Model getDisplayModel( final ModelContext modelContext ) throws MojoExecutionException
+    protected JAXBElement<?> getDisplayModel( final ModelContext modelContext ) throws MojoExecutionException
     {
         final Model model = this.getModel( modelContext );
         final Modules modules = ModelHelper.getModules( model );
         final Specification specification = modules != null ? modules.getSpecification( this.identifier ) : null;
-        Model displayModel = null;
+        JAXBElement<?> displayModel = null;
 
         if ( specification != null )
         {
-            displayModel = new Model();
-            displayModel.setIdentifier( model.getIdentifier() );
-            displayModel.getAny().add( new ObjectFactory().createSpecification( specification ) );
+            displayModel = new org.jomc.model.ObjectFactory().createSpecification( specification );
         }
 
         return displayModel;

@@ -36,16 +36,20 @@
 
 Displaying model information
 
-  The JOMC Plugin provides six goals to use for displaying model information. The <<<show-main-model>>> goal is used
-  to display a project's main model. The <<<show-main-instance>>> goal is used to display a project's main instance.
-  The <<<show-main-specification>>> goal is used to display a project's main specification. The <<<show-test-model>>>
-  goal is used to display a project's test model. The <<<show-test-instance>>> goal is used to display a project's test
-  instance. The <<<show-test-specification>>> goal is used to display a project's test specification. All goals should
-  be invoked directly instead of being added to a project's <<<pom.xml>>>.
+  The JOMC Plugin provides eight goals to use for displaying and dumping model information. The <<<show-main-model>>>
+  goal is used to display or dump a project's main model. The <<<show-main-module>>> goal is used to display or dump a
+  module from the project's main model. The <<<show-main-instance>>> goal is used to display or dump an instance from
+  the project's main model. The <<<show-main-specification>>> goal is used to display or dump a specification from the
+  project's main model. The <<<show-test-model>>> goal is used to display or dump a project's test model. The
+  <<<show-test-module>>> goal is used to display or dump a module from the project's test model. The
+  <<<show-test-instance>>> goal is used to display or dump an instance from the project's test model.
+  The <<<show-test-specification>>> goal is used to display or dump a specification from the project's test model.
 
 +-----------------+
 mvn process-resources jomc:show-main-model
 mvn process-resources jomc:show-main-model -Djomc.document=/tmp/main-model.xml
+mvn process-resources jomc:show-main-module -Djomc.identifier=<identifier>
+mvn process-resources jomc:show-main-module -Djomc.identifier=<identifier> -Djomc.document=/tmp/main-module.xml
 mvn process-resources jomc:show-main-instance -Djomc.identifier=<identifer>
 mvn process-resources jomc:show-main-instance -Djomc.identifier=<identifer> -Djomc.document=/tmp/main-instance.xml
 mvn process-resources jomc:show-main-specification -Djomc.identifier=<identifer>
@@ -55,6 +59,8 @@ mvn process-resources jomc:show-main-specification -Djomc.identifier=<identifer>
 +-----------------+
 mvn process-test-resources jomc:show-test-model
 mvn process-test-resources jomc:show-test-model -Djomc.document=/tmp/test-model.xml
+mvn process-test-resources jomc:show-test-module -Djomc.identifier=<identifier>
+mvn process-test-resources jomc:show-test-module -Djomc.identifier=<identifier> -Djomc.document=/tmp/test-module.xml
 mvn process-test-resources jomc:show-test-instance -Djomc.identifier=<identifer>
 mvn process-test-resources jomc:show-test-instance -Djomc.identifier=<identifer> -Djomc.document=/tmp/test-instance.xml
 mvn process-test-resources jomc:show-test-specification -Djomc.identifier=<identifer>

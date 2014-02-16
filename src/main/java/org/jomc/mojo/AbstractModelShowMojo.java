@@ -33,11 +33,10 @@ package org.jomc.mojo;
 import java.io.File;
 import java.io.StringWriter;
 import java.util.logging.Level;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.jomc.modlet.Model;
 import org.jomc.modlet.ModelContext;
-import org.jomc.modlet.ObjectFactory;
 
 /**
  * Base class for displaying and dumping model objects.
@@ -80,7 +79,7 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
 
         final ModelContext modelContext = this.createModelContext( this.getDisplayClassLoader() );
         final Marshaller m = modelContext.createMarshaller( this.getModel() );
-        final Model displayModel = this.getDisplayModel( modelContext );
+        final JAXBElement<?> displayModel = this.getDisplayModel( modelContext );
         m.setSchema( modelContext.createSchema( this.getModel() ) );
         m.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
 
@@ -89,7 +88,7 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
             if ( this.document == null )
             {
                 final StringWriter stringWriter = new StringWriter();
-                m.marshal( new ObjectFactory().createModel( displayModel ), stringWriter );
+                m.marshal( displayModel, stringWriter );
 
                 final boolean verbose = this.isVerbose();
                 try
@@ -111,19 +110,19 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
                 if ( this.document.exists() && !this.document.delete() && this.isLoggable( Level.WARNING ) )
                 {
                     this.log( Level.WARNING, Messages.getMessage(
-                        "failedDeletingFile", this.document.getAbsolutePath() ), null );
+                              "failedDeletingFile", this.document.getAbsolutePath() ), null );
 
                 }
 
                 if ( this.isLoggable( Level.INFO ) )
                 {
                     this.log( Level.INFO, Messages.getMessage(
-                        "writingEncoded", this.document.getAbsolutePath(), this.documentEncoding ), null );
+                              "writingEncoded", this.document.getAbsolutePath(), this.documentEncoding ), null );
 
                 }
 
                 m.setProperty( Marshaller.JAXB_ENCODING, this.documentEncoding );
-                m.marshal( new ObjectFactory().createModel( displayModel ), this.document );
+                m.marshal( displayModel, this.document );
             }
 
             this.logToolSuccess( TOOLNAME );
@@ -135,15 +134,15 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
     }
 
     /**
-     * Gets the model to display or dump.
+     * Gets the model object to display or dump.
      *
      * @param modelContext The model context to use for getting the model.
      *
-     * @return The model to display or dump.
+     * @return The model object to display or dump.
      *
      * @throws MojoExecutionException if getting the model fails.
      */
-    protected abstract Model getDisplayModel( ModelContext modelContext ) throws MojoExecutionException;
+    protected abstract JAXBElement<?> getDisplayModel( ModelContext modelContext ) throws MojoExecutionException;
 
     /**
      * Gets the class loader to use for displaying or dumping model objects.

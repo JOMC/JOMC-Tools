@@ -72,13 +72,17 @@ Maven JOMC Plugin
 
   * {{{./show-test-model-mojo.html}jomc:show-test-model}} Displays a project's test model.
 
-  * {{{./show-main-instance-mojo.html}jomc:show-main-instance}} Displays a project's main instance.
+  * {{{./show-main-module-mojo.html}jomc:show-main-module}} Displays a module from the project's main model.
 
-  * {{{./show-test-instance-mojo.html}jomc:show-test-instance}} Displays a project's test instance.
+  * {{{./show-test-module-mojo.html}jomc:show-test-module}} Displays a module from the project's test model.
 
-  * {{{./show-main-specification-mojo.html}jomc:show-main-specification}} Displays a project's main specification.
+  * {{{./show-main-instance-mojo.html}jomc:show-main-instance}} Displays an instance from the project's main model.
 
-  * {{{./show-test-specification-mojo.html}jomc:show-test-specification}} Displays a project's test specification.
+  * {{{./show-test-instance-mojo.html}jomc:show-test-instance}} Displays an instance from the a project's test model.
+
+  * {{{./show-main-specification-mojo.html}jomc:show-main-specification}} Displays a specification from the project's main model.
+
+  * {{{./show-test-specification-mojo.html}jomc:show-test-specification}} Displays a specification from the project's test model.
 
   []
 
