@@ -78,6 +78,24 @@ public final class WriteModelTask extends JomcModelTask
     /** File to write the model to. */
     private File modelFile;
 
+    /**
+     * File to write the specification to.
+     * @since 1.6
+     */
+    private File specificationModelFile;
+
+    /**
+     * File to write the instance to.
+     * @since 1.6
+     */
+    private File instanceModelFile;
+
+    /**
+     * File to write the module to.
+     * @since 1.6
+     */
+    private File moduleModelFile;
+
     /** Creates a new {@code WriteModelTask} instance. */
     public WriteModelTask()
     {
@@ -135,6 +153,90 @@ public final class WriteModelTask extends JomcModelTask
     public void setModelFile( final File value )
     {
         this.modelFile = value;
+    }
+
+    /**
+     * Gets the file to write the specification to.
+     *
+     * @return The file to write the specification to or {@code null}.
+     *
+     * @see #setSpecificationModelFile(java.io.File)
+     *
+     * @since 1.6
+     */
+    public File getSpecificationModelFile()
+    {
+        return this.specificationModelFile;
+    }
+
+    /**
+     * Sets the file to write the specification to.
+     *
+     * @param value The new file to write the specification to or {@code null}.
+     *
+     * @see #getSpecificationModelFile()
+     *
+     * @since 1.6
+     */
+    public void setSpecificationModelFile( final File value )
+    {
+        this.specificationModelFile = value;
+    }
+
+    /**
+     * Gets the file to write the instance to.
+     *
+     * @return The file to write the instance to or {@code null}.
+     *
+     * @see #setInstanceModelFile(java.io.File)
+     *
+     * @since 1.6
+     */
+    public File getInstanceModelFile()
+    {
+        return this.instanceModelFile;
+    }
+
+    /**
+     * Sets the file to write the instance to.
+     *
+     * @param value The new file to write the instance to or {@code null}.
+     *
+     * @see #getInstanceModelFile()
+     *
+     * @since 1.6
+     */
+    public void setInstanceModelFile( final File value )
+    {
+        this.instanceModelFile = value;
+    }
+
+    /**
+     * Gets the file to write the module to.
+     *
+     * @return The file to write the module to or {@code null}.
+     *
+     * @see #setModuleModelFile(java.io.File)
+     *
+     * @since 1.6
+     */
+    public File getModuleModelFile()
+    {
+        return this.moduleModelFile;
+    }
+
+    /**
+     * Sets the file to write the module to.
+     *
+     * @param value The new file to write the module to or {@code null}.
+     *
+     * @see #getModuleModelFile()
+     *
+     * @since 1.6
+     */
+    public void setModuleModelFile( final File value )
+    {
+        this.moduleModelFile = value;
     }
 
     /**
@@ -350,19 +452,52 @@ public final class WriteModelTask extends JomcModelTask
             final Specification s = this.getSpecification( model );
             if ( s != null )
             {
-                displayModel.getAny().add( s );
+                displayModel.getAny().add( new org.jomc.model.ObjectFactory().createSpecification( s ) );
+
+                if ( this.getSpecificationModelFile() != null )
+                {
+                    this.log( Messages.getMessage( "writingSpecification", s.getIdentifier(),
+                                                   this.getSpecificationModelFile().getAbsolutePath() ),
+                              Project.MSG_INFO );
+
+                    marshaller.marshal( new org.jomc.model.ObjectFactory().createSpecification( s ),
+                                        this.getSpecificationModelFile() );
+
+                }
             }
 
             final Instance i = this.getInstance( model );
             if ( i != null )
             {
-                displayModel.getAny().add( i );
+                displayModel.getAny().add( new org.jomc.model.ObjectFactory().createInstance( i ) );
+
+                if ( this.getInstanceModelFile() != null )
+                {
+                    this.log( Messages.getMessage( "writingInstance", i.getIdentifier(),
+                                                   this.getInstanceModelFile().getAbsolutePath() ),
+                              Project.MSG_INFO );
+
+                    marshaller.marshal( new org.jomc.model.ObjectFactory().createInstance( i ),
+                                        this.getInstanceModelFile() );
+
+                }
             }
 
             final Module m = this.getModule( model );
             if ( m != null )
             {
-                displayModel.getAny().add( m );
+                displayModel.getAny().add( new org.jomc.model.ObjectFactory().createModule( m ) );
+
+                if ( this.getModuleModelFile() != null )
+                {
+                    this.log( Messages.getMessage( "writingModule", m.getName(),
+                                                   this.getModuleModelFile().getAbsolutePath() ),
+                              Project.MSG_INFO );
+
+                    marshaller.marshal( new org.jomc.model.ObjectFactory().createModule( m ),
+                                        this.getModuleModelFile() );
+
+                }
             }
 
             if ( displayModel.getAny().isEmpty() )

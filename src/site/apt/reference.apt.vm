@@ -1338,6 +1338,9 @@ Task and Type Reference
 | <<<implementation>>>                        | The identifier of an implementation to     | No.                    |
 |                                             | write.                                     |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<instanceModelFile>>>                     | File to write the instance to.             | No.                    |
+|                                             | <Since 1.6>                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
 |                                             | process.                                   | JOMC model public id.  |
 |                                             |                                            | {{{C}[C]}}             |
@@ -1375,6 +1378,9 @@ Task and Type Reference
 | <<<moduleLocation>>>                        | The class path location searched for       | No. {{{G}[G]}}         |
 |                                             | modules.                                   |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleModelFile>>>                       | File to write the module to.               | No.                    |
+|                                             | <Since 1.6>                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
 | <<<platformProviderLocation>>>              | The location searched for platform         | No. {{{H}[H]}}         |
 |                                             | provider resources.                        |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
@@ -1383,6 +1389,9 @@ Task and Type Reference
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<specification>>>                         | The identifier of a specification to       | No.                    |
 |                                             | write.                                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<specificationModelFile>>>                | File to write the specification to.        | No.                    |
+|                                             | <Since 1.6>                                |                        |
 *---------------------------------------------+--------------------------------------------+------------------------+
 | <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
 |                                             | transformers.                              |                        |
