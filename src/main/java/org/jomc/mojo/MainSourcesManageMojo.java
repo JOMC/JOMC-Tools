@@ -31,6 +31,7 @@
 package org.jomc.mojo;
 
 import java.io.File;
+import java.util.logging.Level;
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
@@ -76,7 +77,36 @@ public final class MainSourcesManageMojo extends AbstractSourcesManageMojo
     @Override
     protected File getSourcesDirectory() throws MojoExecutionException
     {
-        return this.getSourceDirectory();
+        final File sourcesDirectory = this.getSourceDirectory();
+        boolean compileSourceRoot = false;
+
+        for ( int i = 0, l0 = this.getMavenProject().getCompileSourceRoots().size(); i < l0; i++ )
+        {
+            final String element = (String) this.getMavenProject().getCompileSourceRoots().get( i );
+
+            if ( sourcesDirectory.equals( this.getAbsoluteFile( element ) ) )
+            {
+                compileSourceRoot = true;
+                break;
+            }
+        }
+
+        if ( !compileSourceRoot )
+        {
+            if ( !sourcesDirectory.exists() && !sourcesDirectory.mkdirs() )
+            {
+                throw new MojoExecutionException( Messages.getMessage(
+                    "failedCreatingDirectory", sourcesDirectory.getAbsolutePath() ) );
+
+            }
+
+            this.getMavenProject().addCompileSourceRoot( sourcesDirectory.getAbsolutePath() );
+            this.log( Level.INFO, Messages.getMessage(
+                      "addedCompileSourceRoot", sourcesDirectory.getAbsolutePath() ), null );
+
+        }
+
+        return sourcesDirectory;
     }
 
     @Override
