@@ -71,6 +71,7 @@ import org.jomc.model.Implementations;
 import org.jomc.model.Message;
 import org.jomc.model.Messages;
 import org.jomc.model.ModelObject;
+import org.jomc.model.ModelObjectException;
 import org.jomc.model.Module;
 import org.jomc.model.ObjectFactory;
 import org.jomc.model.Properties;
@@ -2123,7 +2124,8 @@ public class ClassFileProcessor extends JomcTool
     }
 
     private void commitModelObjects( final Specifications specifications, final Implementations implementations,
-                                     final Marshaller marshaller, final File classesDirectory ) throws IOException
+                                     final Marshaller marshaller, final File classesDirectory )
+        throws IOException, ModelObjectException
     {
         if ( specifications != null )
         {
@@ -2143,11 +2145,13 @@ public class ClassFileProcessor extends JomcTool
     }
 
     private void commitModelObjects( final Specification specification, final Marshaller marshaller,
-                                     final File classesDirectory ) throws IOException
+                                     final File classesDirectory ) throws IOException, ModelObjectException
     {
-        if ( specification.isClassDeclaration() )
+        if ( specification.isClassDeclaration() && specification.getJavaTypeName() != null )
         {
-            final String classLocation = specification.getClazz().replace( '.', File.separatorChar ) + ".class";
+            final String classLocation =
+                specification.getJavaTypeName().getClassName().replace( '.', File.separatorChar ) + ".class";
+
             final File classFile = new File( classesDirectory, classLocation );
 
             if ( !classesDirectory.isDirectory() )
@@ -2175,11 +2179,13 @@ public class ClassFileProcessor extends JomcTool
     }
 
     private void commitModelObjects( final Implementation implementation, final Marshaller marshaller,
-                                     final File classesDirectory ) throws IOException
+                                     final File classesDirectory ) throws IOException, ModelObjectException
     {
-        if ( implementation.isClassDeclaration() )
+        if ( implementation.isClassDeclaration() && implementation.getJavaTypeName() != null )
         {
-            final String classLocation = implementation.getClazz().replace( '.', File.separatorChar ) + ".class";
+            final String classLocation =
+                implementation.getJavaTypeName().getClassName().replace( '.', File.separatorChar ) + ".class";
+
             final File classFile = new File( classesDirectory, classLocation );
 
             if ( !classesDirectory.isDirectory() )
@@ -2209,7 +2215,7 @@ public class ClassFileProcessor extends JomcTool
     private ModelValidationReport validateModelObjects( final Specifications specifications,
                                                         final Implementations implementations,
                                                         final Unmarshaller unmarshaller, final File classesDirectory )
-        throws IOException
+        throws IOException, ModelObjectException
     {
         final ModelValidationReport report = new ModelValidationReport();
 
@@ -2240,13 +2246,16 @@ public class ClassFileProcessor extends JomcTool
 
     private ModelValidationReport validateModelObjects( final Specification specification,
                                                         final Unmarshaller unmarshaller,
-                                                        final File classesDirectory ) throws IOException
+                                                        final File classesDirectory )
+        throws IOException, ModelObjectException
     {
         final ModelValidationReport report = new ModelValidationReport();
 
-        if ( specification.isClassDeclaration() )
+        if ( specification.isClassDeclaration() && specification.getJavaTypeName() != null )
         {
-            final String classLocation = specification.getClazz().replace( '.', File.separatorChar ) + ".class";
+            final String classLocation =
+                specification.getJavaTypeName().getClassName().replace( '.', File.separatorChar ) + ".class";
+
             final File classFile = new File( classesDirectory, classLocation );
 
             if ( !classesDirectory.isDirectory() )
@@ -2279,13 +2288,16 @@ public class ClassFileProcessor extends JomcTool
 
     private ModelValidationReport validateModelObjects( final Implementation implementation,
                                                         final Unmarshaller unmarshaller,
-                                                        final File classesDirectory ) throws IOException
+                                                        final File classesDirectory )
+        throws IOException, ModelObjectException
     {
         final ModelValidationReport report = new ModelValidationReport();
 
-        if ( implementation.isClassDeclaration() )
+        if ( implementation.isClassDeclaration() && implementation.getJavaTypeName() != null )
         {
-            final String classLocation = implementation.getClazz().replace( '.', File.separatorChar ) + ".class";
+            final String classLocation =
+                implementation.getJavaTypeName().getClassName().replace( '.', File.separatorChar ) + ".class";
+
             final File classFile = new File( classesDirectory, classLocation );
 
             if ( !classesDirectory.isDirectory() )
@@ -2354,9 +2366,10 @@ public class ClassFileProcessor extends JomcTool
     {
         final ModelValidationReport report = new ModelValidationReport();
 
-        if ( specification.isClassDeclaration() )
+        if ( specification.isClassDeclaration() && specification.getJavaTypeName() != null )
         {
-            final String classLocation = specification.getClazz().replace( '.', '/' ) + ".class";
+            final String classLocation =
+                specification.getJavaTypeName().getClassName().replace( '.', '/' ) + ".class";
 
             final URL classUrl = context.findResource( classLocation );
 
@@ -2416,10 +2429,9 @@ public class ClassFileProcessor extends JomcTool
     {
         final ModelValidationReport report = new ModelValidationReport();
 
-        if ( implementation.isClassDeclaration() )
+        if ( implementation.isClassDeclaration() && implementation.getJavaTypeName() != null )
         {
-            final String classLocation = implementation.getClazz().replace( '.', '/' ) + ".class";
-
+            final String classLocation = implementation.getJavaTypeName().getClassName().replace( '.', '/' ) + ".class";
             final URL classUrl = context.findResource( classLocation );
 
             if ( classUrl == null )
@@ -2475,7 +2487,7 @@ public class ClassFileProcessor extends JomcTool
     private void transformModelObjects( final Specifications specifications, final Implementations implementations,
                                         final Unmarshaller unmarshaller, final Marshaller marshaller,
                                         final File classesDirectory, final List<Transformer> transformers )
-        throws IOException
+        throws IOException, ModelObjectException
     {
         if ( specifications != null )
         {
@@ -2500,11 +2512,13 @@ public class ClassFileProcessor extends JomcTool
 
     private void transformModelObjects( final Specification specification, final Marshaller marshaller,
                                         final Unmarshaller unmarshaller, final File classesDirectory,
-                                        final List<Transformer> transformers ) throws IOException
+                                        final List<Transformer> transformers ) throws IOException, ModelObjectException
     {
-        if ( specification.isClassDeclaration() )
+        if ( specification.isClassDeclaration() && specification.getJavaTypeName() != null )
         {
-            final String classLocation = specification.getClazz().replace( '.', File.separatorChar ) + ".class";
+            final String classLocation =
+                specification.getJavaTypeName().getClassName().replace( '.', File.separatorChar ) + ".class";
+
             final File classFile = new File( classesDirectory, classLocation );
 
             if ( !classesDirectory.isDirectory() )
@@ -2533,11 +2547,13 @@ public class ClassFileProcessor extends JomcTool
 
     private void transformModelObjects( final Implementation implementation, final Marshaller marshaller,
                                         final Unmarshaller unmarshaller, final File classesDirectory,
-                                        final List<Transformer> transformers ) throws IOException
+                                        final List<Transformer> transformers ) throws IOException, ModelObjectException
     {
-        if ( implementation.isClassDeclaration() )
+        if ( implementation.isClassDeclaration() && implementation.getJavaTypeName() != null )
         {
-            final String classLocation = implementation.getClazz().replace( '.', File.separatorChar ) + ".class";
+            final String classLocation =
+                implementation.getJavaTypeName().getClassName().replace( '.', File.separatorChar ) + ".class";
+
             final File classFile = new File( classesDirectory, classLocation );
 
             if ( !classesDirectory.isDirectory() )
