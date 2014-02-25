@@ -63,10 +63,10 @@ ${tool.getIndentation(1)}${smodel.getHeadComment()} <editor-fold defaultstate="c
 
 #end
 #if($with-javadoc)
-${tool.getIndentation(1)}/** Creates a new {@code $implementation.getJavaTypeName().getName(false)} instance. */
+${tool.getIndentation(1)}/** Creates a new {@code $implementation.getJavaTypeName().getSimpleName()} instance. */
 #end
 #if($with-jsr-250)
 ${tool.getIndentation(1)}@javax.annotation.Generated( value = "$toolName $toolVersion", comments = "See $toolUrl" )
 #end
-${tool.getIndentation(1)}public $implementation.getJavaTypeName().getName(false)()
+${tool.getIndentation(1)}public $implementation.getJavaTypeName().getSimpleName()()
 ${tool.getIndentation(1)}{
