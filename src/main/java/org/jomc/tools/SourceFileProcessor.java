@@ -699,15 +699,21 @@ public class SourceFileProcessor extends JomcTool
                         {
                             if ( this.implementation != null )
                             {
+                                final Module m =
+                                    getModules().getModuleOfImplementation( this.implementation.getIdentifier() );
+
                                 log( Level.WARNING, getMessage(
-                                     "unknownImplementationSection", this.implementation.getIdentifier(),
+                                     "unknownImplementationSection", m.getName(), this.implementation.getIdentifier(),
                                      model.getIdentifier(), s.getName() ), null );
 
                             }
                             else if ( this.specification != null )
                             {
+                                final Module m =
+                                    getModules().getModuleOfSpecification( this.specification.getIdentifier() );
+
                                 log( Level.WARNING, getMessage(
-                                     "unknownSpecificationSection", this.specification.getIdentifier(),
+                                     "unknownSpecificationSection", m.getName(), this.specification.getIdentifier(),
                                      model.getIdentifier(), s.getName() ), null );
 
                             }
