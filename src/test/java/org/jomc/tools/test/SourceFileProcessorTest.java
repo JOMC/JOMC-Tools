@@ -146,7 +146,6 @@ public class SourceFileProcessorTest extends JomcToolTest
             assertNullPointerException( e );
         }
 
-
         try
         {
             this.getJomcTool().manageSourceFiles( new Module(), null );
@@ -278,7 +277,17 @@ public class SourceFileProcessorTest extends JomcToolTest
         assertTrue( implementationSourceFile.exists() );
         assertEquals( implementationSourceFileLength, implementationSourceFile.length() );
 
+        this.getJomcTool().getTemplateParameters().put( "with-assertions", Boolean.FALSE );
+        this.getJomcTool().getTemplateParameters().put( "with-author-copyright", Boolean.FALSE );
+        this.getJomcTool().getTemplateParameters().put( "with-editor-fold", Boolean.FALSE );
         this.getJomcTool().getTemplateParameters().put( "with-javadoc", Boolean.FALSE );
+        this.getJomcTool().getTemplateParameters().put( "with-javadoc-author", Boolean.FALSE );
+        this.getJomcTool().getTemplateParameters().put( "with-javadoc-version", Boolean.FALSE );
+        this.getJomcTool().getTemplateParameters().put( "with-jsr-250", Boolean.FALSE );
+        this.getJomcTool().getTemplateParameters().put( "with-project-name", null );
+        this.getJomcTool().getTemplateParameters().put( "with-revision-keyword", null );
+        this.getJomcTool().getTemplateParameters().put( "with-suppress-warnings", null );
+        this.getJomcTool().getTemplateParameters().put( "with-vendor-copyright", null );
 
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
                                               implementationDirectory );
@@ -287,6 +296,30 @@ public class SourceFileProcessorTest extends JomcToolTest
         assertTrue( implementationSourceFile.length() < implementationSourceFileLength );
 
         this.getJomcTool().getTemplateParameters().clear();
+
+        this.getJomcTool().setTemplateProfile( "jomc-java-bundles" );
+
+        this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
+                                              implementationDirectory );
+
+        this.getJomcTool().getTemplateParameters().put( "with-assertions", Boolean.FALSE );
+        this.getJomcTool().getTemplateParameters().put( "with-author-copyright", Boolean.FALSE );
+        this.getJomcTool().getTemplateParameters().put( "with-editor-fold", Boolean.FALSE );
+        this.getJomcTool().getTemplateParameters().put( "with-javadoc", Boolean.FALSE );
+        this.getJomcTool().getTemplateParameters().put( "with-javadoc-author", Boolean.FALSE );
+        this.getJomcTool().getTemplateParameters().put( "with-javadoc-version", Boolean.FALSE );
+        this.getJomcTool().getTemplateParameters().put( "with-jsr-250", Boolean.FALSE );
+        this.getJomcTool().getTemplateParameters().put( "with-project-name", null );
+        this.getJomcTool().getTemplateParameters().put( "with-revision-keyword", null );
+        this.getJomcTool().getTemplateParameters().put( "with-suppress-warnings", null );
+        this.getJomcTool().getTemplateParameters().put( "with-vendor-copyright", null );
+
+        this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getImplementation( "Implementation" ),
+                                              implementationDirectory );
+
+        this.getJomcTool().getTemplateParameters().clear();
+
+        this.getJomcTool().setTemplateProfile( null );
 
         this.getJomcTool().manageSourceFiles(
             this.getJomcTool().getModules().getImplementation( "ImplementationWithSourceFilesModel" ),
@@ -301,8 +334,22 @@ public class SourceFileProcessorTest extends JomcToolTest
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getSpecification( "Specification" ),
                                               specificationDirectory );
 
+        this.getJomcTool().getTemplateParameters().put( "with-assertions", Boolean.FALSE );
+        this.getJomcTool().getTemplateParameters().put( "with-author-copyright", Boolean.FALSE );
+        this.getJomcTool().getTemplateParameters().put( "with-editor-fold", Boolean.FALSE );
+        this.getJomcTool().getTemplateParameters().put( "with-javadoc", Boolean.FALSE );
+        this.getJomcTool().getTemplateParameters().put( "with-javadoc-author", Boolean.FALSE );
+        this.getJomcTool().getTemplateParameters().put( "with-javadoc-version", Boolean.FALSE );
+        this.getJomcTool().getTemplateParameters().put( "with-jsr-250", Boolean.FALSE );
+        this.getJomcTool().getTemplateParameters().put( "with-project-name", null );
+        this.getJomcTool().getTemplateParameters().put( "with-revision-keyword", null );
+        this.getJomcTool().getTemplateParameters().put( "with-suppress-warnings", null );
+        this.getJomcTool().getTemplateParameters().put( "with-vendor-copyright", null );
+
         this.getJomcTool().manageSourceFiles( this.getJomcTool().getModules().getSpecification( "Specification" ),
                                               specificationDirectory );
+
+        this.getJomcTool().getTemplateParameters().clear();
 
         this.getJomcTool().manageSourceFiles(
             this.getJomcTool().getModules().getSpecification( "SpecificationWithSourceFilesModel" ),
@@ -431,7 +478,7 @@ public class SourceFileProcessorTest extends JomcToolTest
 
         f = new File( implementationDirectory, "ImplementationOfSpecification.java" );
         this.copyResource( ABSOLUTE_RESOURCE_NAME_PREFIX
-                           + "ImplementationOfSpecificationWithoutConstructorsSection.java.txt", f );
+                               + "ImplementationOfSpecificationWithoutConstructorsSection.java.txt", f );
 
         this.getJomcTool().manageSourceFiles(
             this.getJomcTool().getModules().getImplementation( "ImplementationOfSpecification" ),
