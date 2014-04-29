@@ -96,7 +96,7 @@ ${tool.getIndentation(2)}final #if($property.getJavaTypeName().isPrimitive())$pr
 ${tool.getIndentation(2)}assert _p != null : "'${tool.getJavaString($property.getName())}' property not found.";
 ${tool.getIndentation(2)}return _p#if($property.getJavaTypeName().isPrimitive()).$property.getJavaTypeName().getName(true)Value()#end;
 #else
-${tool.getIndentation(2)}return ((#if($property.getJavaTypeName().isPrimitive())$property.getJavaTypeName().getBoxedName().getName(true)#else$property.getJavaTypeName().getName(true)#end) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "${tool.getJavaString($property.getName())}" ) )#if($property.getJavaTypeName().isPrimitiveType()).$property.getJavaTypeName().getName(true)Value()#end;
+${tool.getIndentation(2)}return ((#if($property.getJavaTypeName().isPrimitive())$property.getJavaTypeName().getBoxedName().getName(true)#else$property.getJavaTypeName().getName(true)#end) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getProperty( this, "${tool.getJavaString($property.getName())}" ) )#if($property.getJavaTypeName().isPrimitive()).$property.getJavaTypeName().getName(true)Value()#end;
 #end
 ${tool.getIndentation(1)}}
 #end
