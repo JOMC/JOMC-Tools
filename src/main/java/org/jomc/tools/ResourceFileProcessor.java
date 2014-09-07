@@ -47,13 +47,13 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.apache.velocity.VelocityContext;
 import org.jomc.model.Implementation;
-import org.jomc.model.JavaTypeName;
 import org.jomc.model.Message;
 import org.jomc.model.Messages;
 import org.jomc.model.ModelObjectException;
 import org.jomc.model.Module;
 import org.jomc.model.Specification;
 import org.jomc.model.Text;
+import org.jomc.util.JavaTypeName;
 
 /**
  * Processes resource files.

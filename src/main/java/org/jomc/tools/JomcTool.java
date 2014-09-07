@@ -71,11 +71,11 @@ import org.apache.velocity.runtime.log.LogChute;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.apache.velocity.runtime.resource.loader.URLResourceLoader;
 import org.jomc.model.InheritanceModel;
-import org.jomc.model.JavaIdentifier;
 import org.jomc.model.ModelObject;
 import org.jomc.model.Modules;
 import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.Model;
+import org.jomc.util.JavaIdentifier;
 
 /**
  * Base tool class.
