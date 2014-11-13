@@ -93,11 +93,12 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
      *   &lt;/modelObjectStylesheetResource>
      * &lt;/modelObjectStylesheetResources>
      * </pre>
-     * <p>The location value is used to first search the class path of the plugin. If a class path resource is found,
-     * that resource is used. If no class path resource is found, an attempt is made to parse the location value to an
-     * URL. On successful parsing, that URL is used. Otherwise the location value is interpreted as a file name relative
-     * to the base directory of the project. If that file exists, that file is used. If nothing is found at the given
-     * location, depending on the optional flag, a warning message is logged or a build failure is produced.</p>
+     * <p>The location value is used to first search the class path of the plugin and the project's main or test class
+     * path. If a class path resource is found, that resource is used. If no class path resource is found, an attempt is
+     * made to parse the location value to an URL. On successful parsing, that URL is used. Otherwise the location value
+     * is interpreted as a file name relative to the base directory of the project. If that file exists, that file is
+     * used. If nothing is found at the given location, depending on the optional flag, a warning message is logged or a
+     * build failure is produced.</p>
      * <p>The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
      * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false</p>
      * <p>The connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
@@ -126,7 +127,11 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
      * @throws MojoExecutionException if getting the transformers fails.
      *
      * @since 1.2
+     * @deprecated As of JOMC 1.8, replaced by method {@link #getTransformers(org.jomc.modlet.ModelContext)}. This
+     * method will be removed in JOMC 2.0.
      */
+    @Deprecated
+    @SuppressWarnings( "deprecation" )
     protected List<Transformer> getTransformers() throws MojoExecutionException
     {
         final List<Transformer> transformers = new ArrayList<Transformer>(
@@ -137,6 +142,45 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
             for ( int i = 0, s0 = this.modelObjectStylesheetResources.size(); i < s0; i++ )
             {
                 final Transformer transformer = this.getTransformer( this.modelObjectStylesheetResources.get( i ) );
+
+                if ( transformer != null )
+                {
+                    transformers.add( transformer );
+                }
+            }
+        }
+
+        return transformers;
+    }
+
+    /**
+     * Gets transformers to use for transforming model objects.
+     *
+     * @param modelContext The model context to search.
+     *
+     * @return A list of transformers to use for transforming model objects.
+     *
+     * @throws NullPointerException if {@code modelContext} is {@code null}.
+     * @throws MojoExecutionException if getting the transformers fails.
+     *
+     * @since 1.8
+     */
+    protected List<Transformer> getTransformers( final ModelContext modelContext ) throws MojoExecutionException
+    {
+        if ( modelContext == null )
+        {
+            throw new NullPointerException( "modelContext" );
+        }
+
+        final List<Transformer> transformers = new ArrayList<Transformer>(
+            this.modelObjectStylesheetResources != null ? this.modelObjectStylesheetResources.size() : 0 );
+
+        if ( this.modelObjectStylesheetResources != null )
+        {
+            for ( int i = 0, s0 = this.modelObjectStylesheetResources.size(); i < s0; i++ )
+            {
+                final Transformer transformer =
+                    this.getTransformer( modelContext, this.modelObjectStylesheetResources.get( i ) );
 
                 if ( transformer != null )
                 {
@@ -168,7 +212,7 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
             final ModelContext context = this.createModelContext( classLoader );
             final ClassFileProcessor tool = this.createClassFileProcessor( context );
             final JAXBContext jaxbContext = context.createContext( this.getModel() );
-            final List<Transformer> transformers = this.getTransformers();
+            final List<Transformer> transformers = this.getTransformers( context );
             final Source source = new JAXBSource( jaxbContext, new ObjectFactory().createModel( tool.getModel() ) );
             final ModelValidationReport validationReport = context.validateModel( this.getModel(), source );
 

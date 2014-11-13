@@ -34,6 +34,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.jomc.modlet.ModelContext;
+import org.jomc.modlet.ModelException;
 
 /**
  * Datatype holding a {@code key}, {@code value} and {@code type} property.
@@ -141,7 +143,10 @@ public class KeyValueType implements Cloneable
      *
      * @see #getType()
      * @see #getValue()
+     * @deprecated As of JOMC 1.8, replaced by method {@link #getObject(org.jomc.modlet.ModelContext)}. This method
+     * will be removed in JOMC 2.0.
      */
+    @Deprecated
     public Object getObject() throws InstantiationException // JDK: As of JDK 7, "throws ReflectiveOperationException".
     {
         Class<?> javaClass = null;
@@ -164,7 +169,7 @@ public class KeyValueType implements Cloneable
                         final Method valueOf = javaClass.getMethod( "valueOf", String.class );
 
                         if ( Modifier.isStatic( valueOf.getModifiers() )
-                             && valueOf.getReturnType().equals( javaClass ) )
+                                 && valueOf.getReturnType().equals( javaClass ) )
                         {
                             o = valueOf.invoke( null, o );
                         }
@@ -188,7 +193,113 @@ public class KeyValueType implements Cloneable
         catch ( final ClassNotFoundException e )
         {
             throw (InstantiationException) new InstantiationException(
+                Messages.getMessage( "classNotFound", this.getType() ) ).initCause( e );
+
+        }
+        catch ( final NoSuchMethodException e )
+        {
+            throw (InstantiationException) new InstantiationException(
+                Messages.getMessage( "noSuchMethodCreatingObject", this.getType(), this.getValue(),
+                                     javaClass.getSimpleName() ) ).initCause( e );
+
+        }
+        catch ( final IllegalAccessException e )
+        {
+            throw (InstantiationException) new InstantiationException(
                 Messages.getMessage( "failedCreatingObject", this.getType() ) ).initCause( e );
+
+        }
+        catch ( final InvocationTargetException e )
+        {
+            throw (InstantiationException) new InstantiationException(
+                Messages.getMessage( "failedCreatingObject", this.getType() ) ).initCause( e );
+
+        }
+    }
+
+    /**
+     * Gets the object of the instance.
+     *
+     * @param modelContext The context to use for getting the object of the instance.
+     *
+     * @return The object of the instance or {@code null}.
+     *
+     * @throws NullPointerException if {@code modelContext} is {@code null}.
+     * @throws InstantiationException if getting the object of the instance fails.
+     *
+     * @see #getType()
+     * @see #getValue()
+     *
+     * @since 1.8
+     */
+    public Object getObject( final ModelContext modelContext ) throws InstantiationException // JDK: As of JDK 7, "throws ReflectiveOperationException".
+    {
+        if ( modelContext == null )
+        {
+            throw new NullPointerException( "modelContext" );
+        }
+
+        Class<?> javaClass = null;
+        Object o = this.getValue();
+
+        try
+        {
+            if ( o != null )
+            {
+                if ( this.getType() != null && !String.class.getName().equals( this.getType() ) )
+                {
+                    javaClass = modelContext.findClass( this.getType() );
+
+                    if ( javaClass == null )
+                    {
+                        throw (InstantiationException) new InstantiationException(
+                            Messages.getMessage( "classNotFound", this.getType() ) );
+
+                    }
+
+                    try
+                    {
+                        o = javaClass.getConstructor( String.class ).newInstance( o );
+                    }
+                    catch ( final NoSuchMethodException e )
+                    {
+                        final Method valueOf = javaClass.getMethod( "valueOf", String.class );
+
+                        if ( Modifier.isStatic( valueOf.getModifiers() )
+                                 && valueOf.getReturnType().equals( javaClass ) )
+                        {
+                            o = valueOf.invoke( null, o );
+                        }
+                        else
+                        {
+                            throw (InstantiationException) new InstantiationException(
+                                Messages.getMessage( "noSuchMethodCreatingObject", this.getType(), this.getValue(),
+                                                     javaClass.getSimpleName() ) ).initCause( e );
+
+                        }
+                    }
+                }
+            }
+            else if ( this.getType() != null )
+            {
+                javaClass = modelContext.findClass( this.getType() );
+
+                if ( javaClass == null )
+                {
+                    throw (InstantiationException) new InstantiationException(
+                        Messages.getMessage( "classNotFound", this.getType() ) );
+
+                }
+
+                o = javaClass.newInstance();
+            }
+
+            return o;
+        }
+        catch ( final ModelException e )
+        {
+            throw (InstantiationException) new InstantiationException(
+                Messages.getMessage( "failedSearchingClass", this.getType() ) ).initCause( e );
 
         }
         catch ( final NoSuchMethodException e )

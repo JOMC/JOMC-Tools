@@ -938,7 +938,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
         {
             for ( ModelContextAttribute e : this.modelContextAttributes )
             {
-                final Object object = e.getObject();
+                final Object object = e.getObject( modelContext );
 
                 if ( object != null )
                 {

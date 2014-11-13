@@ -921,7 +921,7 @@ public class JomcContainerDescriptorHandler extends AbstractLogEnabled implement
         {
             for ( ModelContextAttribute e : this.modelContextAttributes )
             {
-                final Object object = e.getObject();
+                final Object object = e.getObject( modelContext );
 
                 if ( object != null )
                 {

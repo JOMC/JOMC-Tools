@@ -366,11 +366,12 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *   &lt;/velocityPropertyResource>
      * &lt;/velocityPropertyResources>
      * </pre>
-     * <p>The location value is used to first search the class path of the plugin. If a class path resource is found,
-     * that resource is used. If no class path resource is found, an attempt is made to parse the location value to an
-     * URL. On successful parsing, that URL is used. Otherwise the location value is interpreted as a file name relative
-     * to the base directory of the project. If that file exists, that file is used. If nothing is found at the given
-     * location, depending on the optional flag, a warning message is logged or a build failure is produced.</p>
+     * <p>The location value is used to first search the class path of the plugin and the project's main or test class
+     * path. If a class path resource is found, that resource is used. If no class path resource is found, an attempt is
+     * made to parse the location value to an URL. On successful parsing, that URL is used. Otherwise the location value
+     * is interpreted as a file name relative to the base directory of the project. If that file exists, that file is
+     * used. If nothing is found at the given location, depending on the optional flag, a warning message is logged or a
+     * build failure is produced.</p>
      * <p>The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
      * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false</p>
      * <p>The format value is used to specify the format of the properties resource. Supported values are {@code plain}
@@ -417,11 +418,12 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *   &lt;/templateParameterResource>
      * &lt;/templateParameterResources>
      * </pre>
-     * <p>The location value is used to first search the class path of the plugin. If a class path resource is found,
-     * that resource is used. If no class path resource is found, an attempt is made to parse the location value to an
-     * URL. On successful parsing, that URL is used. Otherwise the location value is interpreted as a file name relative
-     * to the base directory of the project. If that file exists, that file is used. If nothing is found at the given
-     * location, depending on the optional flag, a warning message is logged or a build failure is produced.</p>
+     * <p>The location value is used to first search the class path of the plugin and the project's main or test class
+     * path. If a class path resource is found, that resource is used. If no class path resource is found, an attempt is
+     * made to parse the location value to an URL. On successful parsing, that URL is used. Otherwise the location value
+     * is interpreted as a file name relative to the base directory of the project. If that file exists, that file is
+     * used. If nothing is found at the given location, depending on the optional flag, a warning message is logged or a
+     * build failure is produced.</p>
      * <p>The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
      * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false</p>
      * <p>The format value is used to specify the format of the properties resource. Supported values are {@code plain}
@@ -485,11 +487,12 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *   &lt;/transformationParameterResource>
      * &lt;/transformationParameterResources>
      * </pre>
-     * <p>The location value is used to first search the class path of the plugin. If a class path resource is found,
-     * that resource is used. If no class path resource is found, an attempt is made to parse the location value to an
-     * URL. On successful parsing, that URL is used. Otherwise the location value is interpreted as a file name relative
-     * to the base directory of the project. If that file exists, that file is used. If nothing is found at the given
-     * location, depending on the optional flag, a warning message is logged or a build failure is produced.</p>
+     * <p>The location value is used to first search the class path of the plugin and the project's main or test class
+     * path. If a class path resource is found, that resource is used. If no class path resource is found, an attempt is
+     * made to parse the location value to an URL. On successful parsing, that URL is used. Otherwise the location value
+     * is interpreted as a file name relative to the base directory of the project. If that file exists, that file is
+     * used. If nothing is found at the given location, depending on the optional flag, a warning message is logged or a
+     * build failure is produced.</p>
      * <p>The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
      * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false</p>
      * <p>The format value is used to specify the format of the properties resource. Supported values are {@code plain}
@@ -1537,7 +1540,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             throw new NullPointerException( "type" );
         }
 
-        final T tool = this.createObject( className, type );
+        final T tool = this.createObject( context, className, type );
         this.setupJomcTool( context, tool );
         return tool;
     }
@@ -1555,7 +1558,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @throws MojoExecutionException if creating a new object fails.
      *
      * @since 1.2
+     * @deprecated As of JOMC 1.8, replaced by method {@link #createObject(org.jomc.modlet.ModelContext, java.lang.String, java.lang.Class)}.
+     * This method will be removed in JOMC 2.0.
      */
+    @Deprecated
+    @SuppressWarnings( "deprecation" )
     protected <T> T createObject( final String className, final Class<T> type ) throws MojoExecutionException
     {
         if ( className == null )
@@ -1590,6 +1597,69 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
+     * Creates a new object for a given class name and type.
+     *
+     * @param modelContext The model context to search.
+     * @param className The name of the class to create an object of.
+     * @param type The class of the type of object to create.
+     * @param <T> The type of the object to create.
+     *
+     * @return A new instance of the class with name {@code className}.
+     *
+     * @throws NullPointerException if {@code modelContext}, {@code className} or {@code type} is {@code null}.
+     * @throws MojoExecutionException if creating a new object fails.
+     *
+     * @since 1.8
+     */
+    protected <T> T createObject( final ModelContext modelContext, final String className, final Class<T> type )
+        throws MojoExecutionException
+    {
+        if ( modelContext == null )
+        {
+            throw new NullPointerException( "modelContext" );
+        }
+        if ( className == null )
+        {
+            throw new NullPointerException( "className" );
+        }
+        if ( type == null )
+        {
+            throw new NullPointerException( "type" );
+        }
+
+        try
+        {
+            final Class<?> javaClass = modelContext.findClass( className );
+
+            if ( javaClass == null )
+            {
+                throw new MojoExecutionException( Messages.getMessage( "classNotFound", className ) );
+            }
+
+            return javaClass.asSubclass( type ).newInstance();
+        }
+        catch ( final ModelException e )
+        {
+            String m = Messages.getMessage( e );
+            m = m == null ? "" : " " + m;
+
+            throw new MojoExecutionException( Messages.getMessage( "failedSearchingClass", className, m ), e );
+        }
+        catch ( final InstantiationException e )
+        {
+            throw new MojoExecutionException( Messages.getMessage( "failedCreatingObject", className ), e );
+        }
+        catch ( final IllegalAccessException e )
+        {
+            throw new MojoExecutionException( Messages.getMessage( "failedCreatingObject", className ), e );
+        }
+        catch ( final ClassCastException e )
+        {
+            throw new MojoExecutionException( Messages.getMessage( "failedCreatingObject", className ), e );
+        }
+    }
+
+    /**
      * Creates an {@code URL} for a given resource location.
      * <p>This method first searches the class path of the plugin for a single resource matching {@code location}. If
      * such a resource is found, the URL of that resource is returned. If no such resource is found, an attempt is made
@@ -1606,7 +1676,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @throws MojoExecutionException if creating an URL fails.
      *
      * @since 1.2
+     * @deprecated As of JOMC 1.8, replaced by method {@link #getResource(org.jomc.modlet.ModelContext, java.lang.String)}.
+     * This method will be removed in JOMC 2.0.
      */
+    @Deprecated
+    @SuppressWarnings( "deprecation" )
     protected URL getResource( final String location ) throws MojoExecutionException
     {
         if ( location == null )
@@ -1651,6 +1725,91 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
 
             return resource;
+        }
+        catch ( final MalformedURLException e )
+        {
+            String m = Messages.getMessage( e );
+            m = m == null ? "" : " " + m;
+
+            throw new MojoExecutionException( Messages.getMessage( "malformedLocation", location, m ), e );
+        }
+    }
+
+    /**
+     * Creates an {@code URL} for a given resource location.
+     * <p>This method first searches the given model context for a single resource matching {@code location}. If such a
+     * resource is found, the URL of that resource is returned. If no such resource is found, an attempt is made to
+     * parse the given location to an URL. On successful parsing, that URL is returned. Failing that, the given location
+     * is interpreted as a file name relative to the project's base directory. If that file is found, the URL of that
+     * file is returned. Otherwise {@code null} is returned.</p>
+     *
+     * @param modelContext The model conext to search.
+     * @param location The location to create an {@code URL} from.
+     *
+     * @return An {@code URL} for {@code location} or {@code null}, if parsing {@code location} to an URL fails and
+     * {@code location} points to a non-existent resource.
+     *
+     * @throws NullPointerException if {@code modelContext} or {@code location} is {@code null}.
+     * @throws MojoExecutionException if creating an URL fails.
+     *
+     * @since 1.8
+     */
+    protected URL getResource( final ModelContext modelContext, final String location ) throws MojoExecutionException
+    {
+        if ( modelContext == null )
+        {
+            throw new NullPointerException( "modelContext" );
+        }
+        if ( location == null )
+        {
+            throw new NullPointerException( "location" );
+        }
+
+        try
+        {
+            String absolute = location;
+            if ( !absolute.startsWith( "/" ) )
+            {
+                absolute = "/" + location;
+            }
+
+            URL resource = modelContext.findResource( absolute );
+
+            if ( resource == null )
+            {
+                try
+                {
+                    resource = new URL( location );
+                }
+                catch ( final MalformedURLException e )
+                {
+                    if ( this.isLoggable( Level.FINEST ) )
+                    {
+                        this.log( Level.FINEST, Messages.getMessage( e ), e );
+                    }
+
+                    resource = null;
+                }
+            }
+
+            if ( resource == null )
+            {
+                final File f = this.getAbsoluteFile( location );
+
+                if ( f.isFile() )
+                {
+                    resource = f.toURI().toURL();
+                }
+            }
+
+            return resource;
+        }
+        catch ( final ModelException e )
+        {
+            String m = Messages.getMessage( e );
+            m = m == null ? "" : " " + m;
+
+            throw new MojoExecutionException( Messages.getMessage( "failedSearchingResource", location, m ), e );
         }
         catch ( final MalformedURLException e )
         {
@@ -1736,7 +1895,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *
      * @see #getResource(java.lang.String)
      * @since 1.2
+     * @deprecated As of JOMC 1.8, replaced by method {@link #getTransformer(org.jomc.modlet.ModelContext, org.jomc.mojo.TransformerResourceType)}.
+     * This method will be removed in JOMC 2.0.
      */
+    @Deprecated
+    @SuppressWarnings( "deprecation" )
     protected Transformer getTransformer( final TransformerResourceType resource ) throws MojoExecutionException
     {
         if ( resource == null )
@@ -1986,6 +2149,274 @@ public abstract class AbstractJomcMojo extends AbstractMojo
     }
 
     /**
+     * Creates a new {@code Transformer} from a given {@code TransformerResourceType}.
+     *
+     * @param modelContext The model context to search.
+     * @param resource The resource to initialize the transformer with.
+     *
+     * @return A {@code Transformer} for {@code resource} or {@code null}, if {@code resource} is not found and flagged
+     * optional.
+     *
+     * @throws NullPointerException if {@code modelContext} or {@code resource} is {@code null}.
+     * @throws MojoExecutionException if creating a transformer fails.
+     *
+     * @see #getResource(org.jomc.modlet.ModelContext, java.lang.String)
+     * @since 1.8
+     */
+    protected Transformer getTransformer( final ModelContext modelContext, final TransformerResourceType resource )
+        throws MojoExecutionException
+    {
+        if ( modelContext == null )
+        {
+            throw new NullPointerException( "modelContext" );
+        }
+        if ( resource == null )
+        {
+            throw new NullPointerException( "resource" );
+        }
+
+        InputStream in = null;
+        boolean suppressExceptionOnClose = true;
+        final URL url = this.getResource( modelContext, resource.getLocation() );
+        final ErrorListener errorListener = new ErrorListener()
+        {
+
+            public void warning( final TransformerException exception ) throws TransformerException
+            {
+                try
+                {
+                    log( Level.WARNING, Messages.getMessage( exception ), exception );
+                }
+                catch ( final MojoExecutionException e )
+                {
+                    getLog().warn( exception );
+                    getLog().error( e );
+                }
+            }
+
+            public void error( final TransformerException exception ) throws TransformerException
+            {
+                try
+                {
+                    log( Level.SEVERE, Messages.getMessage( exception ), exception );
+                }
+                catch ( final MojoExecutionException e )
+                {
+                    getLog().error( exception );
+                    getLog().error( e );
+                }
+
+                throw exception;
+            }
+
+            public void fatalError( final TransformerException exception ) throws TransformerException
+            {
+                try
+                {
+                    log( Level.SEVERE, Messages.getMessage( exception ), exception );
+                }
+                catch ( final MojoExecutionException e )
+                {
+                    getLog().error( exception );
+                    getLog().error( e );
+                }
+
+                throw exception;
+            }
+
+        };
+
+        try
+        {
+            if ( url != null )
+            {
+                if ( this.isLoggable( Level.FINER ) )
+                {
+                    this.log( Level.FINER, Messages.getMessage( "loadingTransformer", url.toExternalForm() ), null );
+                }
+
+                final URLConnection con = url.openConnection();
+                con.setConnectTimeout( resource.getConnectTimeout() );
+                con.setReadTimeout( resource.getReadTimeout() );
+                con.connect();
+                in = con.getInputStream();
+
+                final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                transformerFactory.setErrorListener( errorListener );
+                final Transformer transformer =
+                    transformerFactory.newTransformer( new StreamSource( in, url.toURI().toASCIIString() ) );
+
+                transformer.setErrorListener( errorListener );
+
+                for ( final Map.Entry<Object, Object> e : System.getProperties().entrySet() )
+                {
+                    transformer.setParameter( e.getKey().toString(), e.getValue() );
+                }
+
+                if ( this.getMavenProject().getProperties() != null )
+                {
+                    for ( final Map.Entry<Object, Object> e : this.getMavenProject().getProperties().entrySet() )
+                    {
+                        transformer.setParameter( e.getKey().toString(), e.getValue() );
+                    }
+                }
+
+                if ( this.transformationParameterResources != null )
+                {
+                    for ( int i = 0, s0 = this.transformationParameterResources.size(); i < s0; i++ )
+                    {
+                        for ( final Map.Entry<Object, Object> e : this.getProperties(
+                            modelContext, this.transformationParameterResources.get( i ) ).entrySet() )
+                        {
+                            transformer.setParameter( e.getKey().toString(), e.getValue() );
+                        }
+                    }
+                }
+
+                if ( this.transformationParameters != null )
+                {
+                    for ( final TransformationParameter e : this.transformationParameters )
+                    {
+                        transformer.setParameter( e.getKey(), e.getObject( modelContext ) );
+                    }
+                }
+
+                if ( this.transformationOutputProperties != null )
+                {
+                    for ( final TransformationOutputProperty e : this.transformationOutputProperties )
+                    {
+                        transformer.setOutputProperty( e.getKey(), e.getValue() );
+                    }
+                }
+
+                for ( int i = 0, s0 = resource.getTransformationParameterResources().size(); i < s0; i++ )
+                {
+                    for ( final Map.Entry<Object, Object> e : this.getProperties(
+                        modelContext, resource.getTransformationParameterResources().get( i ) ).entrySet() )
+                    {
+                        transformer.setParameter( e.getKey().toString(), e.getValue() );
+                    }
+                }
+
+                for ( final TransformationParameter e : resource.getTransformationParameters() )
+                {
+                    transformer.setParameter( e.getKey(), e.getObject( modelContext ) );
+                }
+
+                for ( final TransformationOutputProperty e : resource.getTransformationOutputProperties() )
+                {
+                    transformer.setOutputProperty( e.getKey(), e.getValue() );
+                }
+
+                suppressExceptionOnClose = false;
+                return transformer;
+            }
+            else if ( resource.isOptional() )
+            {
+                if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, Messages.getMessage(
+                              "transformerNotFound", resource.getLocation() ), null );
+
+                }
+            }
+            else
+            {
+                throw new MojoExecutionException( Messages.getMessage(
+                    "transformerNotFound", resource.getLocation() ) );
+
+            }
+        }
+        catch ( final InstantiationException e )
+        {
+            throw new MojoExecutionException( Messages.getMessage( e ), e );
+        }
+        catch ( final URISyntaxException e )
+        {
+            throw new MojoExecutionException( Messages.getMessage( e ), e );
+        }
+        catch ( final TransformerConfigurationException e )
+        {
+            String m = Messages.getMessage( e );
+            if ( m == null )
+            {
+                m = Messages.getMessage( e.getException() );
+            }
+
+            m = m == null ? "" : " " + m;
+
+            throw new MojoExecutionException( Messages.getMessage(
+                "failedCreatingTransformer", resource.getLocation(), m ), e );
+
+        }
+        catch ( final SocketTimeoutException e )
+        {
+            String m = Messages.getMessage( e );
+            m = m == null ? "" : " " + m;
+
+            if ( resource.isOptional() )
+            {
+                if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, Messages.getMessage(
+                              "failedLoadingTransformer", url.toExternalForm(), m ), e );
+
+                }
+            }
+            else
+            {
+                throw new MojoExecutionException( Messages.getMessage(
+                    "failedLoadingTransformer", url.toExternalForm(), m ), e );
+
+            }
+        }
+        catch ( final IOException e )
+        {
+            String m = Messages.getMessage( e );
+            m = m == null ? "" : " " + m;
+
+            if ( resource.isOptional() )
+            {
+                if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, Messages.getMessage(
+                              "failedLoadingTransformer", url.toExternalForm(), m ), e );
+
+                }
+            }
+            else
+            {
+                throw new MojoExecutionException( Messages.getMessage(
+                    "failedLoadingTransformer", url.toExternalForm(), m ), e );
+
+            }
+        }
+        finally
+        {
+            try
+            {
+                if ( in != null )
+                {
+                    in.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( suppressExceptionOnClose )
+                {
+                    this.getLog().error( e );
+                }
+                else
+                {
+                    throw new MojoExecutionException( Messages.getMessage( e ), e );
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Creates a new {@code Properties} instance from a {@code PropertiesResourceType}.
      *
      * @param propertiesResourceType The {@code PropertiesResourceType} specifying the properties to create.
@@ -1997,7 +2428,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *
      * @see #getResource(java.lang.String)
      * @since 1.2
+     * @deprecated As of JOMC 1.8, replaced by method {@link #getProperties(org.jomc.modlet.ModelContext, org.jomc.mojo.PropertiesResourceType)}.
+     * This method will be removed in JOMC 2.0.
      */
+    @Deprecated
+    @SuppressWarnings( "deprecation" )
     protected Properties getProperties( final PropertiesResourceType propertiesResourceType )
         throws MojoExecutionException
     {
@@ -2009,6 +2444,148 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         InputStream in = null;
         boolean suppressExceptionOnClose = true;
         final URL url = this.getResource( propertiesResourceType.getLocation() );
+        final Properties properties = new Properties();
+
+        try
+        {
+            if ( url != null )
+            {
+                if ( this.isLoggable( Level.FINER ) )
+                {
+                    this.log( Level.FINER, Messages.getMessage( "loadingProperties", url.toExternalForm() ), null );
+                }
+
+                final URLConnection con = url.openConnection();
+                con.setConnectTimeout( propertiesResourceType.getConnectTimeout() );
+                con.setReadTimeout( propertiesResourceType.getReadTimeout() );
+                con.connect();
+
+                in = con.getInputStream();
+
+                if ( PropertiesResourceType.PLAIN_FORMAT.equalsIgnoreCase( propertiesResourceType.getFormat() ) )
+                {
+                    properties.load( in );
+                }
+                else if ( PropertiesResourceType.XML_FORMAT.equalsIgnoreCase( propertiesResourceType.getFormat() ) )
+                {
+                    properties.loadFromXML( in );
+                }
+            }
+            else if ( propertiesResourceType.isOptional() )
+            {
+                if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, Messages.getMessage(
+                              "propertiesNotFound", propertiesResourceType.getLocation() ), null );
+
+                }
+            }
+            else
+            {
+                throw new MojoExecutionException( Messages.getMessage(
+                    "propertiesNotFound", propertiesResourceType.getLocation() ) );
+
+            }
+
+            suppressExceptionOnClose = false;
+        }
+        catch ( final SocketTimeoutException e )
+        {
+            String m = Messages.getMessage( e );
+            m = m == null ? "" : " " + m;
+
+            if ( propertiesResourceType.isOptional() )
+            {
+                if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, Messages.getMessage(
+                              "failedLoadingProperties", url.toExternalForm(), m ), e );
+
+                }
+            }
+            else
+            {
+                throw new MojoExecutionException( Messages.getMessage(
+                    "failedLoadingProperties", url.toExternalForm(), m ), e );
+
+            }
+        }
+        catch ( final IOException e )
+        {
+            String m = Messages.getMessage( e );
+            m = m == null ? "" : " " + m;
+
+            if ( propertiesResourceType.isOptional() )
+            {
+                if ( this.isLoggable( Level.WARNING ) )
+                {
+                    this.log( Level.WARNING, Messages.getMessage(
+                              "failedLoadingProperties", url.toExternalForm(), m ), e );
+
+                }
+            }
+            else
+            {
+                throw new MojoExecutionException( Messages.getMessage(
+                    "failedLoadingProperties", url.toExternalForm(), m ), e );
+
+            }
+        }
+        finally
+        {
+            try
+            {
+                if ( in != null )
+                {
+                    in.close();
+                }
+            }
+            catch ( final IOException e )
+            {
+                if ( suppressExceptionOnClose )
+                {
+                    this.getLog().error( e );
+                }
+                else
+                {
+                    throw new MojoExecutionException( Messages.getMessage( e ), e );
+                }
+            }
+        }
+
+        return properties;
+    }
+
+    /**
+     * Creates a new {@code Properties} instance from a {@code PropertiesResourceType}.
+     *
+     * @param modelContext The model context to search.
+     * @param propertiesResourceType The {@code PropertiesResourceType} specifying the properties to create.
+     *
+     * @return The properties for {@code propertiesResourceType}.
+     *
+     * @throws NullPointerException if {@code modelContext} or {@code propertiesResourceType} is {@code null}.
+     * @throws MojoExecutionException if loading properties fails.
+     *
+     * @see #getResource(org.jomc.modlet.ModelContext, java.lang.String)
+     * @since 1.8
+     */
+    protected Properties getProperties( final ModelContext modelContext,
+                                        final PropertiesResourceType propertiesResourceType )
+        throws MojoExecutionException
+    {
+        if ( modelContext == null )
+        {
+            throw new NullPointerException( "modelContext" );
+        }
+        if ( propertiesResourceType == null )
+        {
+            throw new NullPointerException( "propertiesResourceType" );
+        }
+
+        InputStream in = null;
+        boolean suppressExceptionOnClose = true;
+        final URL url = this.getResource( modelContext, propertiesResourceType.getLocation() );
         final Properties properties = new Properties();
 
         try
@@ -2460,7 +3037,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 for ( final ModelContextAttribute e : this.modelContextAttributes )
                 {
-                    final Object object = e.getObject();
+                    final Object object = e.getObject( context );
 
                     if ( object != null )
                     {
@@ -2593,7 +3170,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 for ( int i = 0, s0 = this.velocityPropertyResources.size(); i < s0; i++ )
                 {
                     for ( final Map.Entry<Object, Object> e : this.getProperties(
-                        this.velocityPropertyResources.get( i ) ).entrySet() )
+                        context, this.velocityPropertyResources.get( i ) ).entrySet() )
                     {
                         if ( e.getValue() != null )
                         {
@@ -2611,7 +3188,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 for ( final VelocityProperty e : this.velocityProperties )
                 {
-                    final Object object = e.getObject();
+                    final Object object = e.getObject( context );
 
                     if ( object != null )
                     {
@@ -2642,7 +3219,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 for ( int i = 0, s0 = this.templateParameterResources.size(); i < s0; i++ )
                 {
                     for ( final Map.Entry<Object, Object> e : this.getProperties(
-                        this.templateParameterResources.get( i ) ).entrySet() )
+                        context, this.templateParameterResources.get( i ) ).entrySet() )
                     {
                         if ( e.getValue() != null )
                         {
@@ -2660,7 +3237,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             {
                 for ( final TemplateParameter e : this.templateParameters )
                 {
-                    final Object object = e.getObject();
+                    final Object object = e.getObject( context );
 
                     if ( object != null )
                     {
