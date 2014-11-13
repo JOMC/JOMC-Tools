@@ -122,40 +122,6 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
     /**
      * Gets transformers to use for transforming model objects.
      *
-     * @return A list of transformers to use for transforming model objects.
-     *
-     * @throws MojoExecutionException if getting the transformers fails.
-     *
-     * @since 1.2
-     * @deprecated As of JOMC 1.8, replaced by method {@link #getTransformers(org.jomc.modlet.ModelContext)}. This
-     * method will be removed in JOMC 2.0.
-     */
-    @Deprecated
-    @SuppressWarnings( "deprecation" )
-    protected List<Transformer> getTransformers() throws MojoExecutionException
-    {
-        final List<Transformer> transformers = new ArrayList<Transformer>(
-            this.modelObjectStylesheetResources != null ? this.modelObjectStylesheetResources.size() : 0 );
-
-        if ( this.modelObjectStylesheetResources != null )
-        {
-            for ( int i = 0, s0 = this.modelObjectStylesheetResources.size(); i < s0; i++ )
-            {
-                final Transformer transformer = this.getTransformer( this.modelObjectStylesheetResources.get( i ) );
-
-                if ( transformer != null )
-                {
-                    transformers.add( transformer );
-                }
-            }
-        }
-
-        return transformers;
-    }
-
-    /**
-     * Gets transformers to use for transforming model objects.
-     *
      * @param modelContext The model context to search.
      *
      * @return A list of transformers to use for transforming model objects.
