@@ -413,8 +413,8 @@ public class JomcTool
      *
      * @since 1.3
      *
-     * @see JavaIdentifier#normalize(java.lang.String, org.jomc.model.JavaIdentifier.NormalizationMode)
-     * @see org.jomc.model.JavaIdentifier.NormalizationMode#CONSTANT_NAME_CONVENTION
+     * @see JavaIdentifier#normalize(java.lang.String, org.jomc.util.JavaIdentifier.NormalizationMode)
+     * @see org.jomc.util.JavaIdentifier.NormalizationMode#CONSTANT_NAME_CONVENTION
      */
     public JavaIdentifier toJavaConstantName( final String str ) throws ParseException
     {
@@ -439,8 +439,8 @@ public class JomcTool
      *
      * @since 1.4
      *
-     * @see JavaIdentifier#normalize(java.lang.String, org.jomc.model.JavaIdentifier.NormalizationMode)
-     * @see org.jomc.model.JavaIdentifier.NormalizationMode#METHOD_NAME_CONVENTION
+     * @see JavaIdentifier#normalize(java.lang.String, org.jomc.util.JavaIdentifier.NormalizationMode)
+     * @see org.jomc.util.JavaIdentifier.NormalizationMode#METHOD_NAME_CONVENTION
      */
     public JavaIdentifier toJavaMethodName( final String str ) throws ParseException
     {
@@ -467,8 +467,8 @@ public class JomcTool
      *
      * @since 1.4
      *
-     * @see JavaIdentifier#normalize(java.lang.String, org.jomc.model.JavaIdentifier.NormalizationMode)
-     * @see org.jomc.model.JavaIdentifier.NormalizationMode#VARIABLE_NAME_CONVENTION
+     * @see JavaIdentifier#normalize(java.lang.String, org.jomc.util.JavaIdentifier.NormalizationMode)
+     * @see org.jomc.util.JavaIdentifier.NormalizationMode#VARIABLE_NAME_CONVENTION
      */
     public JavaIdentifier toJavaVariableName( final String str ) throws ParseException
     {
