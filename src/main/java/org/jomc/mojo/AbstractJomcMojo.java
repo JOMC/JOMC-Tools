@@ -1519,7 +1519,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * @throws NullPointerException if {@code context}, {@code className} or {@code type} is {@code null}.
      * @throws MojoExecutionException if creating a new {@code JomcTool} object fails.
      *
-     * @see #createObject(java.lang.String, java.lang.Class)
+     * @see #createObject(org.jomc.modlet.ModelContext, java.lang.String, java.lang.Class)
      * @see #setupJomcTool(org.jomc.modlet.ModelContext, org.jomc.tools.JomcTool)
      *
      * @since 1.2
