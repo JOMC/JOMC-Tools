@@ -213,7 +213,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Classpath Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getClasspathOption()
     {
@@ -233,7 +233,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Country Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getCountryOption()
     {
@@ -253,7 +253,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Default Template Encoding Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getDefaultTemplateEncodingOption()
     {
@@ -273,7 +273,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Default Template Profile Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getDefaultTemplateProfileOption()
     {
@@ -293,7 +293,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Documents Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getDocumentsOption()
     {
@@ -313,7 +313,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Implementation Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getImplementationOption()
     {
@@ -333,7 +333,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Indentation String Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getIndentationStringOption()
     {
@@ -353,7 +353,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Input Encoding Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getInputEncodingOption()
     {
@@ -373,7 +373,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Language Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getLanguageOption()
     {
@@ -393,7 +393,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Line Separator Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getLineSeparatorOption()
     {
@@ -413,7 +413,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Locale>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.util.Locale getLocale()
     {
@@ -433,7 +433,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Locale Variant Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getLocaleVariantOption()
     {
@@ -453,7 +453,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Model Context Factory Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getModelContextFactoryOption()
     {
@@ -473,7 +473,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Model Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getModelOption()
     {
@@ -493,7 +493,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Modlet Location Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getModletLocationOption()
     {
@@ -513,7 +513,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Modlet Schema System Id Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getModletSchemaSystemIdOption()
     {
@@ -533,7 +533,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Module Location Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getModuleLocationOption()
     {
@@ -553,7 +553,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Module Name Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getModuleNameOption()
     {
@@ -573,7 +573,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <No Classpath Resolution Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getNoClasspathResolutionOption()
     {
@@ -593,7 +593,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <No Java Validation Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getNoJavaValidationOption()
     {
@@ -613,7 +613,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <No Model Processing Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getNoModelProcessingOption()
     {
@@ -633,7 +633,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <No Model Resource Validation>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getNoModelResourceValidation()
     {
@@ -653,7 +653,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <No Modlet Resource Validation>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getNoModletResourceValidation()
     {
@@ -673,7 +673,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <No Resource Processing Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getNoResourceProcessingOption()
     {
@@ -693,7 +693,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Output Encoding Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getOutputEncodingOption()
     {
@@ -713,7 +713,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Platform Provider Location Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getPlatformProviderLocationOption()
     {
@@ -733,7 +733,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Provider Location Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getProviderLocationOption()
     {
@@ -767,7 +767,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Resource Directory Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getResourceDirectoryOption()
     {
@@ -787,7 +787,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Resource File Processor Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getResourceFileProcessorOption()
     {
@@ -807,7 +807,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Specification Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getSpecificationOption()
     {
@@ -827,7 +827,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Template Location Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getTemplateLocationOption()
     {
@@ -847,7 +847,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Template Profile Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getTemplateProfileOption()
     {
@@ -867,7 +867,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The {@code <Transformer Location Option>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private org.apache.commons.cli.Option getTransformerLocationOption()
     {
@@ -887,7 +887,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return Abbreviated name of the command.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.lang.String getAbbreviatedCommandName()
     {
@@ -903,7 +903,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return Name of the 'shaded' application modlet.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.lang.String getApplicationModlet()
     {
@@ -919,7 +919,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return Name of the command.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.lang.String getCommandName()
     {
@@ -935,7 +935,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return List of modlet names to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.lang.String getModletExcludes()
     {
@@ -951,7 +951,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return List of providers to exclude from any {@code META-INF/services} files separated by {@code :}.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.lang.String getProviderExcludes()
     {
@@ -967,7 +967,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return List of schema context-ids to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.lang.String getSchemaExcludes()
     {
@@ -983,7 +983,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return List of service classes to exclude from any {@code META-INF/jomc-modlet.xml} files separated by {@code :}.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.lang.String getServiceExcludes()
     {
@@ -1006,7 +1006,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Application Title>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getApplicationTitle( final java.util.Locale locale )
     {
@@ -1028,7 +1028,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Cannot Process Message>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getCannotProcessMessage( final java.util.Locale locale, final java.lang.String itemInfo, final java.lang.String detailMessage )
     {
@@ -1049,7 +1049,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Classpath Element Info>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getClasspathElementInfo( final java.util.Locale locale, final java.lang.String classpathElement )
     {
@@ -1070,7 +1070,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Classpath Element Not Found Warning>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getClasspathElementNotFoundWarning( final java.util.Locale locale, final java.lang.String fileName )
     {
@@ -1091,7 +1091,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Command Failure Message>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getCommandFailureMessage( final java.util.Locale locale, final java.lang.String toolName )
     {
@@ -1112,7 +1112,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Command Info Message>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getCommandInfoMessage( final java.util.Locale locale, final java.lang.String toolName )
     {
@@ -1133,7 +1133,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Command Success Message>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getCommandSuccessMessage( final java.util.Locale locale, final java.lang.String toolName )
     {
@@ -1154,7 +1154,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Default Log Level Info>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getDefaultLogLevelInfo( final java.util.Locale locale, final java.lang.String defaultLogLevel )
     {
@@ -1174,7 +1174,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Disabled Message>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getDisabledMessage( final java.util.Locale locale )
     {
@@ -1195,7 +1195,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Document File Info>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getDocumentFileInfo( final java.util.Locale locale, final java.lang.String documentFile )
     {
@@ -1216,7 +1216,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Document File Not Found Warning>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getDocumentFileNotFoundWarning( final java.util.Locale locale, final java.lang.String fileName )
     {
@@ -1238,7 +1238,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Excluded Modlet Info>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getExcludedModletInfo( final java.util.Locale locale, final java.lang.String resourceName, final java.lang.String modletIdentifier )
     {
@@ -1260,7 +1260,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Excluded Provider Info>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getExcludedProviderInfo( final java.util.Locale locale, final java.lang.String resourceName, final java.lang.String providerName )
     {
@@ -1282,7 +1282,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Excluded Schema Info>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getExcludedSchemaInfo( final java.util.Locale locale, final java.lang.String resourceName, final java.lang.String contextId )
     {
@@ -1304,7 +1304,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Excluded Service Info>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getExcludedServiceInfo( final java.util.Locale locale, final java.lang.String resourceName, final java.lang.String serviceName )
     {
@@ -1325,7 +1325,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Failed Creating Object Message>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getFailedCreatingObjectMessage( final java.util.Locale locale, final java.lang.String objectInfo )
     {
@@ -1346,7 +1346,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Implementation Not Found Warning>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getImplementationNotFoundWarning( final java.util.Locale locale, final java.lang.String implementationIdentifier )
     {
@@ -1367,7 +1367,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Invalid Model Message>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getInvalidModelMessage( final java.util.Locale locale, final java.lang.String modelIdentifier )
     {
@@ -1387,7 +1387,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Long Description Message>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getLongDescriptionMessage( final java.util.Locale locale )
     {
@@ -1408,7 +1408,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Module Not Found Warning>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getModuleNotFoundWarning( final java.util.Locale locale, final java.lang.String moduleName )
     {
@@ -1429,7 +1429,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Reading Message>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getReadingMessage( final java.util.Locale locale, final java.lang.String locationInfo )
     {
@@ -1448,7 +1448,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Separator>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getSeparator( final java.util.Locale locale )
     {
@@ -1468,7 +1468,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Short Description Message>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getShortDescriptionMessage( final java.util.Locale locale )
     {
@@ -1489,7 +1489,7 @@ public final class GenerateResourcesCommand extends AbstractResourceFileProcesso
      * @return The text of the {@code <Specification Not Found Warning>} message for {@code locale}.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getSpecificationNotFoundWarning( final java.util.Locale locale, final java.lang.String specificationIdentifier )
     {

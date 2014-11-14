@@ -118,7 +118,7 @@ public final class OptionFactory
      * @return The {@code <Locale>} dependency.
      * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.util.Locale getLocale()
     {
@@ -138,7 +138,7 @@ public final class OptionFactory
      * @return Long name of the option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.lang.String getLongOpt()
     {
@@ -154,7 +154,7 @@ public final class OptionFactory
      * @return Number of argument values the option can take.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private int getNumberOfArgs()
     {
@@ -170,7 +170,7 @@ public final class OptionFactory
      * @return Name of the option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.lang.String getOpt()
     {
@@ -186,7 +186,7 @@ public final class OptionFactory
      * @return Query to see if the option can have an optional argument.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private boolean isOptionalArg()
     {
@@ -202,7 +202,7 @@ public final class OptionFactory
      * @return Query to see if the option is required.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private boolean isRequired()
     {
@@ -218,7 +218,7 @@ public final class OptionFactory
      * @return Value separator of the option.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private char getValueSeparator()
     {
@@ -241,7 +241,7 @@ public final class OptionFactory
      * @return Display name for the argument value of the option.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getArgumentDescription( final java.util.Locale locale )
     {
@@ -261,7 +261,7 @@ public final class OptionFactory
      * @return Display description of the option.
      * @throws org.jomc.ObjectManagementException if getting the message instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private String getDescription( final java.util.Locale locale, final java.lang.String valueSeparator )
     {

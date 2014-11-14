@@ -741,7 +741,7 @@ public class JomcTest
      * @return Directory holding class files.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getClassesDirectory()
     {
@@ -757,7 +757,7 @@ public class JomcTest
      * @return Directory holding resources.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getResourcesDirectory()
     {
@@ -773,7 +773,7 @@ public class JomcTest
      * @return Directory holding templates.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTemplatesDirectory()
     {
@@ -789,7 +789,7 @@ public class JomcTest
      * @return Directory holding class files to commit to and to validate.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestClassesDirectory()
     {
@@ -805,7 +805,7 @@ public class JomcTest
      * @return Valid model document.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModelDocument()
     {
@@ -821,7 +821,7 @@ public class JomcTest
      * @return Model document with invalid model.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModelDocumentIllegal()
     {
@@ -837,7 +837,7 @@ public class JomcTest
      * @return Model document not valid to the JOMC JAXP schema.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModelDocumentIllegalSchemaConstraints()
     {
@@ -853,7 +853,7 @@ public class JomcTest
      * @return Model document referencing non-existent classes.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModelDocumentNonExistentClasses()
     {
@@ -869,7 +869,7 @@ public class JomcTest
      * @return File to write a transformed model to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModelOutputDocument()
     {
@@ -885,7 +885,7 @@ public class JomcTest
      * @return Valid model object stylesheet.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModelStylesheet()
     {
@@ -901,7 +901,7 @@ public class JomcTest
      * @return Test module name.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.lang.String getTestModletName()
     {
@@ -917,7 +917,7 @@ public class JomcTest
      * @return File to write a transformed modlet to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModletOutputDocument()
     {
@@ -933,7 +933,7 @@ public class JomcTest
      * @return Valid modlet object stylesheet.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestModletStylesheet()
     {
@@ -949,7 +949,7 @@ public class JomcTest
      * @return Test module name.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.lang.String getTestModuleName()
     {
@@ -965,7 +965,7 @@ public class JomcTest
      * @return Directory to generate resources to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestResourcesDirectory()
     {
@@ -981,7 +981,7 @@ public class JomcTest
      * @return File to write an instance to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestShowInstanceOutputDocument()
     {
@@ -997,7 +997,7 @@ public class JomcTest
      * @return File to write a model to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestShowModelOutputDocument()
     {
@@ -1013,7 +1013,7 @@ public class JomcTest
      * @return File to write a model holding a specification and an instance to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestShowSpecificationAndInstanceOutputDocument()
     {
@@ -1029,7 +1029,7 @@ public class JomcTest
      * @return File to write a specification to.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestShowSpecificationOutputDocument()
     {
@@ -1045,7 +1045,7 @@ public class JomcTest
      * @return Directory holding source code files to manage.
      * @throws org.jomc.ObjectManagementException if getting the property instance fails.
      */
-    @SuppressWarnings({"unused", "PMD.UnnecessaryFullyQualifiedName"})
+    @SuppressWarnings({"unchecked", "unused", "PMD.UnnecessaryFullyQualifiedName"})
     @javax.annotation.Generated( value = "org.jomc.tools.SourceFileProcessor 2.0-SNAPSHOT", comments = "See http://www.jomc.org/jomc/2.0/jomc-tools-2.0-SNAPSHOT" )
     private java.io.File getTestSourcesDirectory()
     {
