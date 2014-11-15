@@ -328,7 +328,7 @@ public class JomcToolTest
         try
         {
             DefaultModelProvider.setDefaultModuleLocation( this.getClass().getPackage().getName().replace( '.', '/' )
-                                                           + "/jomc.xml" );
+                                                               + "/jomc.xml" );
 
             Model m = this.getModelContext().findModel( ModelObject.MODEL_PUBLIC_ID );
 
@@ -377,7 +377,6 @@ public class JomcToolTest
     }
 
     @Test
-    @SuppressWarnings( "deprecation" )
     public final void testJomcToolNullPointerException() throws Exception
     {
         assertNotNull( this.getJomcTool() );
@@ -574,7 +573,6 @@ public class JomcToolTest
     }
 
     @Test
-    @SuppressWarnings( "deprecation" )
     public final void testJomcToolNotNull() throws Exception
     {
         final Specification specification = new Specification();
