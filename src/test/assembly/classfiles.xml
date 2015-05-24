@@ -30,9 +30,9 @@
   $JOMC$
 
 -->
-<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.1"
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.1 http://maven.apache.org/xsd/assembly-1.1.1.xsd">
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
   <id>classfiles</id>
   <formats>
     <format>zip</format>
@@ -44,7 +44,7 @@
       <directoryMode>0755</directoryMode>
       <fileMode>0444</fileMode>
       <filtered>false</filtered>
-      <outputDirectory>/org/jomc/cli</outputDirectory>
+      <outputDirectory>org/jomc/cli</outputDirectory>
       <excludes>
         <exclude>**/templates/**</exclude>
       </excludes>
