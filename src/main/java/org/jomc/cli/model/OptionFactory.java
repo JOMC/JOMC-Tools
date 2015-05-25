@@ -78,7 +78,7 @@ public final class OptionFactory
         option.setRequired( this.isRequired() );
 
         if ( ( option.getArgs() > 0 || option.getArgs() == Option.UNLIMITED_VALUES )
-             && this.getArgumentDescription( this.getLocale() ).trim().length() > 0 )
+                 && this.getArgumentDescription( this.getLocale() ).trim().length() > 0 )
         {
             option.setArgName( this.getArgumentDescription( this.getLocale() ) );
         }
@@ -271,4 +271,5 @@ public final class OptionFactory
     }
     // </editor-fold>
     // SECTION-END
+
 }

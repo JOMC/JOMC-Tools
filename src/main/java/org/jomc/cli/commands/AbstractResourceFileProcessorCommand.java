@@ -90,8 +90,8 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
         }
 
         final String className = commandLine.hasOption( this.getResourceFileProcessorOption().getOpt() )
-                                 ? commandLine.getOptionValue( this.getResourceFileProcessorOption().getOpt() )
-                                 : ResourceFileProcessor.class.getName();
+                                     ? commandLine.getOptionValue( this.getResourceFileProcessorOption().getOpt() )
+                                     : ResourceFileProcessor.class.getName();
 
         final ResourceFileProcessor tool = this.createJomcTool( className, ResourceFileProcessor.class, commandLine );
 
@@ -103,7 +103,9 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
         return tool;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     protected final void executeCommand( final CommandLine commandLine ) throws CommandExecutionException
     {
         if ( commandLine == null )
@@ -1624,4 +1626,5 @@ public abstract class AbstractResourceFileProcessorCommand extends AbstractJomcT
     }
     // </editor-fold>
     // SECTION-END
+
 }

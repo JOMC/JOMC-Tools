@@ -80,20 +80,29 @@ public final class Jomc
 
     /**
      * Log level events are logged at by default.
+     *
      * @see #getDefaultLogLevel()
      */
     private static final Level DEFAULT_LOG_LEVEL = Level.WARNING;
 
-    /** Default log level. */
+    /**
+     * Default log level.
+     */
     private static volatile Level defaultLogLevel;
 
-    /** Print writer of the instance. */
+    /**
+     * Print writer of the instance.
+     */
     private PrintWriter printWriter;
 
-    /** Log level of the instance. */
+    /**
+     * Log level of the instance.
+     */
     private Level logLevel;
 
-    /** Greatest severity logged by the command. */
+    /**
+     * Greatest severity logged by the command.
+     */
     private Level severity = Level.ALL;
 
     /**
@@ -128,8 +137,10 @@ public final class Jomc
 
     /**
      * Gets the default log level events are logged at.
-     * <p>The default log level is controlled by system property {@code org.jomc.cli.Jomc.defaultLogLevel} holding the
-     * log level to log events at by default. If that property is not set, the {@code WARNING} default is returned.</p>
+     * <p>
+     * The default log level is controlled by system property {@code org.jomc.cli.Jomc.defaultLogLevel} holding the
+     * log level to log events at by default. If that property is not set, the {@code WARNING} default is returned.
+     * </p>
      *
      * @return The log level events are logged at by default.
      *
@@ -245,10 +256,10 @@ public final class Jomc
 
             final StringBuilder commandInfo = new StringBuilder();
 
-            for ( Command c : this.getCommands() )
+            for ( final Command c : this.getCommands() )
             {
                 if ( cmd == null && args != null && args.length > 0
-                     && ( args[0].equals( c.getName() ) || args[0].equals( c.getAbbreviatedName() ) ) )
+                         && ( args[0].equals( c.getName() ) || args[0].equals( c.getAbbreviatedName() ) ) )
                 {
                     cmd = c;
                 }
@@ -341,8 +352,8 @@ public final class Jomc
                 for ( int i = 0; i < args.length; i++ )
                 {
                     this.log( Level.FINER, new StringBuilder().append( "[" ).append( i ).append( "] -> '" ).
-                        append( args[i] ).append( "'" ).append( System.getProperty( "line.separator", "\n" ) ).
-                        toString(), null );
+                              append( args[i] ).append( "'" ).append( System.getProperty( "line.separator", "\n" ) ).
+                              toString(), null );
 
                 }
             }
@@ -351,7 +362,7 @@ public final class Jomc
 
             final int status = cmd.execute( commandLine );
             if ( status == Command.STATUS_SUCCESS && failOnWarnings
-                 && this.severity.intValue() >= Level.WARNING.intValue() )
+                     && this.severity.intValue() >= Level.WARNING.intValue() )
             {
                 return Command.STATUS_FAILURE;
             }
@@ -361,7 +372,7 @@ public final class Jomc
         catch ( final ParseException e )
         {
             this.log( Level.SEVERE, this.getIllegalArgumentsInfo(
-                this.getLocale(), cmd.getName(), this.getHelpCommandName() ), e );
+                      this.getLocale(), cmd.getName(), this.getHelpCommandName() ), e );
 
             return Command.STATUS_FAILURE;
         }
@@ -523,10 +534,10 @@ public final class Jomc
     private static String getMessage( final Throwable t )
     {
         return t != null
-               ? t.getMessage() != null && t.getMessage().trim().length() > 0
-                 ? t.getMessage()
-                 : getMessage( t.getCause() )
-               : null;
+                   ? t.getMessage() != null && t.getMessage().trim().length() > 0
+                         ? t.getMessage()
+                         : getMessage( t.getCause() )
+                   : null;
 
     }
 
@@ -844,4 +855,5 @@ public final class Jomc
     }
     // </editor-fold>
     // SECTION-END
+
 }

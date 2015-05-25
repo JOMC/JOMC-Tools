@@ -135,7 +135,7 @@ public final class ShowModelCommand extends AbstractModelCommand
                 else if ( this.isLoggable( Level.WARNING ) )
                 {
                     this.log( Level.WARNING, this.getImplementationNotFoundWarning(
-                        this.getLocale(), identifier ), null );
+                              this.getLocale(), identifier ), null );
 
                 }
             }
@@ -155,7 +155,7 @@ public final class ShowModelCommand extends AbstractModelCommand
                 else if ( this.isLoggable( Level.WARNING ) )
                 {
                     this.log( Level.WARNING, this.getSpecificationNotFoundWarning(
-                        this.getLocale(), identifier ), null );
+                              this.getLocale(), identifier ), null );
 
                 }
             }
@@ -1409,4 +1409,5 @@ public final class ShowModelCommand extends AbstractModelCommand
     }
     // </editor-fold>
     // SECTION-END
+
 }

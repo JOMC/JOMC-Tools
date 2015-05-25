@@ -69,7 +69,9 @@ public interface Command
 {
     // SECTION-START[Command]
 
-    /** Listener interface. */
+    /**
+     * Listener interface.
+     */
     public interface Listener
     {
 
@@ -86,10 +88,14 @@ public interface Command
 
     }
 
-    /** Status code when the command completed successfully. */
+    /**
+     * Status code when the command completed successfully.
+     */
     int STATUS_SUCCESS = 0;
 
-    /** Status code when the command failed. */
+    /**
+     * Status code when the command failed.
+     */
     int STATUS_FAILURE = 1;
 
     /**
@@ -127,7 +133,7 @@ public interface Command
     /**
      * Gets the abbreviated name of the command.
      *
-     * @return The abbreviated  name of the command.
+     * @return The abbreviated name of the command.
      */
     String getAbbreviatedName();
 

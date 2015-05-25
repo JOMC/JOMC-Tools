@@ -1741,4 +1741,5 @@ public final class CommitClassesCommand extends AbstractClassFileProcessorComman
     }
     // </editor-fold>
     // SECTION-END
+
 }

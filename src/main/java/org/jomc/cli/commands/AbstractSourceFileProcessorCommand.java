@@ -90,13 +90,15 @@ public abstract class AbstractSourceFileProcessorCommand extends AbstractJomcToo
         }
 
         final String className = commandLine.hasOption( this.getSourceFileProcessorOption().getOpt() )
-                                 ? commandLine.getOptionValue( this.getSourceFileProcessorOption().getOpt() )
-                                 : SourceFileProcessor.class.getName();
+                                     ? commandLine.getOptionValue( this.getSourceFileProcessorOption().getOpt() )
+                                     : SourceFileProcessor.class.getName();
 
         return this.createJomcTool( className, SourceFileProcessor.class, commandLine );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     protected final void executeCommand( final CommandLine commandLine ) throws CommandExecutionException
     {
         if ( commandLine == null )
@@ -1617,4 +1619,5 @@ public abstract class AbstractSourceFileProcessorCommand extends AbstractJomcToo
     }
     // </editor-fold>
     // SECTION-END
+
 }

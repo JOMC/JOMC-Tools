@@ -415,16 +415,16 @@ public abstract class AbstractJomcToolCommand extends AbstractModelCommand
         Locale locale = null;
 
         final String lc = commandLine.hasOption( this.getLanguageOption().getOpt() )
-                          ? commandLine.getOptionValue( this.getLanguageOption().getOpt() )
-                          : null;
+                              ? commandLine.getOptionValue( this.getLanguageOption().getOpt() )
+                              : null;
 
         final String cc = commandLine.hasOption( this.getCountryOption().getOpt() )
-                          ? commandLine.getOptionValue( this.getCountryOption().getOpt() )
-                          : null;
+                              ? commandLine.getOptionValue( this.getCountryOption().getOpt() )
+                              : null;
 
         final String lv = commandLine.hasOption( this.getLocaleVariantOption().getOpt() )
-                          ? commandLine.getOptionValue( this.getLocaleVariantOption().getOpt() )
-                          : null;
+                              ? commandLine.getOptionValue( this.getLocaleVariantOption().getOpt() )
+                              : null;
 
         if ( lc != null || cc != null || lv != null )
         {
@@ -1822,4 +1822,5 @@ public abstract class AbstractJomcToolCommand extends AbstractModelCommand
     }
     // </editor-fold>
     // SECTION-END
+
 }

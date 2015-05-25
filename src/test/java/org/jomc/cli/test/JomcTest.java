@@ -90,13 +90,19 @@ public class JomcTest
 {
     // SECTION-START[JomcTest]
 
-    /** Constant to prefix relative resource names with. */
+    /**
+     * Constant to prefix relative resource names with.
+     */
     private static final String ABSOLUTE_RESOURCE_NAME_PREFIX = "/org/jomc/cli/test/";
 
-    /** Constant for the name of the system property holding the output directory for the test. */
+    /**
+     * Constant for the name of the system property holding the output directory for the test.
+     */
     private static final String OUTPUT_DIRECTORY_PROPERTY_NAME = "jomc.test.outputDirectory";
 
-    /** Test resources to copy to the resources directory. */
+    /**
+     * Test resources to copy to the resources directory.
+     */
     private static final String[] TEST_RESOURCE_NAMES =
     {
         "model-relocations.xsl",
@@ -107,7 +113,9 @@ public class JomcTest
         "module-nonexistent-classes.xml"
     };
 
-    /** The output directory of the instance. */
+    /**
+     * The output directory of the instance.
+     */
     private File outputDirectory;
 
     /**
@@ -620,7 +628,7 @@ public class JomcTest
         FileUtils.deleteDirectory( resourcesDirectory );
         assertTrue( resourcesDirectory.mkdirs() );
 
-        for ( String testResourceName : TEST_RESOURCE_NAMES )
+        for ( final String testResourceName : TEST_RESOURCE_NAMES )
         {
             final URL rsrc = this.getClass().getResource( ABSOLUTE_RESOURCE_NAME_PREFIX + testResourceName );
             assertNotNull( rsrc );
@@ -1055,4 +1063,5 @@ public class JomcTest
     // SECTION-END
     // SECTION-START[Messages]
     // SECTION-END
+
 }

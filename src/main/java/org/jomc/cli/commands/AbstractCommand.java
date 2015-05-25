@@ -72,17 +72,23 @@ public abstract class AbstractCommand
 {
     // SECTION-START[Command]
 
-    /** The listeners of the instance. */
+    /**
+     * The listeners of the instance.
+     */
     private List<Listener> listeners;
 
-    /** Log level of the instance. */
+    /**
+     * Log level of the instance.
+     */
     private Level logLevel;
 
     /**
      * Gets the list of registered listeners.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * listeners property.</p>
+     * listeners property.
+     * </p>
      *
      * @return The list of registered listeners.
      *
@@ -217,14 +223,18 @@ public abstract class AbstractCommand
 
     // SECTION-END
     // SECTION-START[AbstractCommand]
-    /** Default log level. */
+    /**
+     * Default log level.
+     */
     private static volatile Level defaultLogLevel;
 
     /**
      * Gets the default log level events are logged at.
-     * <p>The default log level is controlled by system property
+     * <p>
+     * The default log level is controlled by system property
      * {@code org.jomc.cli.commands.AbstractCommand.defaultLogLevel} holding the log level to log events at by
-     * default. If that property is not set, the {@code WARNING} default is returned.</p>
+     * default. If that property is not set, the {@code WARNING} default is returned.
+     * </p>
      *
      * @return The log level events are logged at by default.
      *
@@ -301,7 +311,7 @@ public abstract class AbstractCommand
 
         if ( this.isLoggable( level ) )
         {
-            for ( Listener l : this.getListeners() )
+            for ( final Listener l : this.getListeners() )
             {
                 l.onLog( level, message, throwable );
             }
@@ -366,10 +376,10 @@ public abstract class AbstractCommand
     protected static String getExceptionMessage( final Throwable t )
     {
         return t != null
-               ? t.getMessage() != null && t.getMessage().trim().length() > 0
-                 ? t.getMessage()
-                 : getExceptionMessage( t.getCause() )
-               : null;
+                   ? t.getMessage() != null && t.getMessage().trim().length() > 0
+                         ? t.getMessage()
+                         : getExceptionMessage( t.getCause() )
+                   : null;
 
     }
 
@@ -632,4 +642,5 @@ public abstract class AbstractCommand
     }
     // </editor-fold>
     // SECTION-END
+
 }

@@ -161,7 +161,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
             final Transformer transformer = transformerFactory.newTransformer( source );
             transformer.setErrorListener( errorListener );
 
-            for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
+            for ( final Map.Entry<Object, Object> e : System.getProperties().entrySet() )
             {
                 transformer.setParameter( e.getKey().toString(), e.getValue() );
             }
@@ -272,8 +272,8 @@ public abstract class AbstractModletCommand extends AbstractCommand
         }
 
         return commandLine.hasOption( this.getModelOption().getOpt() )
-               ? commandLine.getOptionValue( this.getModelOption().getOpt() )
-               : ModelObject.MODEL_PUBLIC_ID;
+                   ? commandLine.getOptionValue( this.getModelOption().getOpt() )
+                   : ModelObject.MODEL_PUBLIC_ID;
 
     }
 
@@ -302,8 +302,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
 
         try
         {
-
-            for ( ModelValidationReport.Detail d : validationReport.getDetails() )
+            for ( final ModelValidationReport.Detail d : validationReport.getDetails() )
             {
                 if ( this.isLoggable( d.getLevel() ) )
                 {
@@ -361,7 +360,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
                 final String[] elements = commandLine.getOptionValues( this.getDocumentsOption().getOpt() );
                 if ( elements != null )
                 {
-                    for ( String e : elements )
+                    for ( final String e : elements )
                     {
                         if ( e.startsWith( "@" ) )
                         {
@@ -385,7 +384,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
                                             if ( this.isLoggable( Level.FINER ) )
                                             {
                                                 this.log( Level.FINER, this.getDocumentFileInfo(
-                                                    this.getLocale(), f.getAbsolutePath() ), null );
+                                                          this.getLocale(), f.getAbsolutePath() ), null );
 
                                             }
 
@@ -394,7 +393,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
                                         else if ( this.isLoggable( Level.WARNING ) )
                                         {
                                             this.log( Level.WARNING, this.getDocumentFileNotFoundWarning(
-                                                this.getLocale(), f.getAbsolutePath() ), null );
+                                                      this.getLocale(), f.getAbsolutePath() ), null );
 
                                         }
                                     }
@@ -433,7 +432,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
                                 if ( this.isLoggable( Level.FINER ) )
                                 {
                                     this.log( Level.FINER, this.getDocumentFileInfo(
-                                        this.getLocale(), file.getAbsolutePath() ), null );
+                                              this.getLocale(), file.getAbsolutePath() ), null );
 
                                 }
 
@@ -442,7 +441,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
                             else if ( this.isLoggable( Level.WARNING ) )
                             {
                                 this.log( Level.WARNING, this.getDocumentFileNotFoundWarning(
-                                    this.getLocale(), file.getAbsolutePath() ), null );
+                                          this.getLocale(), file.getAbsolutePath() ), null );
 
                             }
                         }
@@ -467,16 +466,24 @@ public abstract class AbstractModletCommand extends AbstractCommand
     public class CommandLineClassLoader extends URLClassLoader
     {
 
-        /** {@code Modlets} excluded by the instance. */
+        /**
+         * {@code Modlets} excluded by the instance.
+         */
         private Modlets excludedModlets;
 
-        /** Set of provider resource locations to filter. */
+        /**
+         * Set of provider resource locations to filter.
+         */
         private final Set<String> providerResourceLocations = new HashSet<String>();
 
-        /** Set of modlet resource locations to filter. */
+        /**
+         * Set of modlet resource locations to filter.
+         */
         private final Set<String> modletResourceLocations = new HashSet<String>();
 
-        /** Set of temporary resources. */
+        /**
+         * Set of temporary resources.
+         */
         private final Set<File> temporaryResources = new HashSet<File>();
 
         /**
@@ -500,7 +507,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
 
                     if ( elements != null )
                     {
-                        for ( String e : elements )
+                        for ( final String e : elements )
                         {
                             if ( e.startsWith( "@" ) )
                             {
@@ -526,7 +533,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
                                             else if ( isLoggable( Level.WARNING ) )
                                             {
                                                 log( Level.WARNING, getClasspathElementNotFoundWarning(
-                                                    getLocale(), f.getAbsolutePath() ), null );
+                                                     getLocale(), f.getAbsolutePath() ), null );
 
                                             }
                                         }
@@ -567,14 +574,14 @@ public abstract class AbstractModletCommand extends AbstractCommand
                                 else if ( isLoggable( Level.WARNING ) )
                                 {
                                     log( Level.WARNING, getClasspathElementNotFoundWarning(
-                                        getLocale(), file.getAbsolutePath() ), null );
+                                         getLocale(), file.getAbsolutePath() ), null );
 
                                 }
                             }
                         }
                     }
 
-                    for ( URI uri : uris )
+                    for ( final URI uri : uris )
                     {
                         if ( isLoggable( Level.FINEST ) )
                         {
@@ -588,7 +595,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
                     {
                         this.providerResourceLocations.add(
                             commandLine.getOptionValue( getProviderLocationOption().getOpt() )
-                            + "/" + ModletProvider.class.getName() );
+                                + "/" + ModletProvider.class.getName() );
 
                     }
                     else
@@ -759,6 +766,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
 
         /**
          * Closes the class loader.
+         *
          * @throws IOException if closing the class loader fails.
          */
         @Override
@@ -783,6 +791,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
 
         /**
          * Removes temporary resources.
+         *
          * @throws Throwable if finalization fails.
          */
         @Override
@@ -816,7 +825,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
                 final List<String> providerExcludes = Arrays.asList( getProviderExcludes().split( ":" ) );
                 final List<String> filteredLines = new ArrayList<String>( lines.size() );
 
-                for ( String line : lines )
+                for ( final String line : lines )
                 {
                     if ( !providerExcludes.contains( line.trim() ) )
                     {
@@ -967,7 +976,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
             {
                 final Schemas schemas = new Schemas();
 
-                for ( Schema s : modlet.getSchemas().getSchema() )
+                for ( final Schema s : modlet.getSchemas().getSchema() )
                 {
                     if ( !excludedSchemas.contains( s.getContextId() ) )
                     {
@@ -990,7 +999,7 @@ public abstract class AbstractModletCommand extends AbstractCommand
             {
                 final Services services = new Services();
 
-                for ( Service s : modlet.getServices().getService() )
+                for ( final Service s : modlet.getServices().getService() )
                 {
                     if ( !excludedServices.contains( s.getClazz() ) )
                     {
@@ -1815,4 +1824,5 @@ public abstract class AbstractModletCommand extends AbstractCommand
     }
     // </editor-fold>
     // SECTION-END
+
 }

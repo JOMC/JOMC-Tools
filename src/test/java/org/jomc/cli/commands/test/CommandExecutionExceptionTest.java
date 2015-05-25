@@ -67,7 +67,9 @@ public class CommandExecutionExceptionTest
 {
     // SECTION-START[CommandExecutionExceptionTest]
 
-    /** Constant to prefix relative resource names with. */
+    /**
+     * Constant to prefix relative resource names with.
+     */
     private static final String ABSOLUTE_RESOURCE_NAME_PREFIX = "/org/jomc/cli/commands/test/";
 
     @Test
@@ -101,4 +103,5 @@ public class CommandExecutionExceptionTest
     // SECTION-END
     // SECTION-START[Messages]
     // SECTION-END
+
 }

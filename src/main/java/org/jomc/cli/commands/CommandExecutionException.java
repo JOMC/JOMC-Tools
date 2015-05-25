@@ -62,7 +62,9 @@ public class CommandExecutionException extends Exception
 {
     // SECTION-START[CommandExecutionException]
 
-    /** Serial version UID for backwards compatibility with 1.2 object streams. */
+    /**
+     * Serial version UID for backwards compatibility with 1.2 object streams.
+     */
     private static final long serialVersionUID = 5113160867045764410L;
 
     /**
@@ -115,4 +117,5 @@ public class CommandExecutionException extends Exception
     // SECTION-END
     // SECTION-START[Messages]
     // SECTION-END
+
 }

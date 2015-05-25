@@ -84,7 +84,9 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
     // SECTION-END
     // SECTION-START[AbstractModelCommand]
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ModelContext createModelContext( final CommandLine commandLine, final ClassLoader classLoader )
         throws CommandExecutionException
@@ -154,7 +156,7 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
                     u.setSchema( context.createSchema( model.getIdentifier() ) );
                 }
 
-                for ( File f : this.getDocumentFiles( commandLine ) )
+                for ( final File f : this.getDocumentFiles( commandLine ) )
                 {
                     if ( this.isLoggable( Level.FINEST ) )
                     {
@@ -178,7 +180,7 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
                     else if ( this.isLoggable( Level.WARNING ) )
                     {
                         this.log( Level.WARNING, this.getCannotProcessMessage(
-                            this.getLocale(), f.getAbsolutePath(), o.toString() ), null );
+                                  this.getLocale(), f.getAbsolutePath(), o.toString() ), null );
 
                     }
                 }
@@ -1177,4 +1179,5 @@ public abstract class AbstractModelCommand extends AbstractModletCommand
     }
     // </editor-fold>
     // SECTION-END
+
 }

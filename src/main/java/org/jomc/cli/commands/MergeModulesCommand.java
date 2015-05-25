@@ -136,7 +136,7 @@ public final class MergeModulesCommand extends AbstractModelCommand
 
             if ( commandLine.hasOption( this.getDocumentsOption().getOpt() ) )
             {
-                for ( File f : this.getDocumentFiles( commandLine ) )
+                for ( final File f : this.getDocumentFiles( commandLine ) )
                 {
                     if ( this.isLoggable( Level.FINEST ) )
                     {
@@ -160,7 +160,7 @@ public final class MergeModulesCommand extends AbstractModelCommand
                     else if ( this.isLoggable( Level.WARNING ) )
                     {
                         this.log( Level.WARNING, this.getCannotProcessMessage(
-                            this.getLocale(), f.getAbsolutePath(), o.toString() ), null );
+                                  this.getLocale(), f.getAbsolutePath(), o.toString() ), null );
 
                     }
                 }
@@ -183,7 +183,7 @@ public final class MergeModulesCommand extends AbstractModelCommand
                     };
                 }
 
-                for ( String resource : resourceNames )
+                for ( final String resource : resourceNames )
                 {
                     for ( final Enumeration<URL> e = classLoader.getResources( resource ); e.hasMoreElements(); )
                     {
@@ -213,7 +213,7 @@ public final class MergeModulesCommand extends AbstractModelCommand
                         else if ( this.isLoggable( Level.WARNING ) )
                         {
                             this.log( Level.WARNING, this.getCannotProcessMessage(
-                                this.getLocale(), url.toExternalForm(), o.toString() ), null );
+                                      this.getLocale(), url.toExternalForm(), o.toString() ), null );
 
                         }
                     }
@@ -250,7 +250,7 @@ public final class MergeModulesCommand extends AbstractModelCommand
 
                 if ( values != null )
                 {
-                    for ( String exclude : values )
+                    for ( final String exclude : values )
                     {
                         final Module m = modules.getModule( exclude );
 
@@ -311,7 +311,7 @@ public final class MergeModulesCommand extends AbstractModelCommand
                 transformer.transform( source, result );
 
                 if ( result.getResult() instanceof JAXBElement<?>
-                     && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Module )
+                         && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Module )
                 {
                     mergedModule = (Module) ( (JAXBElement<?>) result.getResult() ).getValue();
                 }
@@ -1683,4 +1683,5 @@ public final class MergeModulesCommand extends AbstractModelCommand
     }
     // </editor-fold>
     // SECTION-END
+
 }
