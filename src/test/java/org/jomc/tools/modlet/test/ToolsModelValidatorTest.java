@@ -71,10 +71,14 @@ import static org.junit.Assert.fail;
 public class ToolsModelValidatorTest
 {
 
-    /** The {@code ToolsModelValidator} instance tests are performed with. */
+    /**
+     * The {@code ToolsModelValidator} instance tests are performed with.
+     */
     private ToolsModelValidator toolsModelValidator;
 
-    /** Creates a new {@code ToolsModelValidatorTest} instance. */
+    /**
+     * Creates a new {@code ToolsModelValidatorTest} instance.
+     */
     public ToolsModelValidatorTest()
     {
         super();
@@ -461,7 +465,7 @@ public class ToolsModelValidatorTest
 
     private static void logModelValidationReport( final ModelValidationReport report )
     {
-        for ( ModelValidationReport.Detail d : report.getDetails() )
+        for ( final ModelValidationReport.Detail d : report.getDetails() )
         {
             System.out.println( "\t" + d );
         }

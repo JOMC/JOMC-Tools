@@ -85,34 +85,42 @@ import static org.junit.Assert.fail;
 public class ClassFileProcessorTest extends JomcToolTest
 {
 
-    /** Creates a new {@code ClassFileProcessorTest} instance. */
+    /**
+     * Creates a new {@code ClassFileProcessorTest} instance.
+     */
     public ClassFileProcessorTest()
     {
         super();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClassFileProcessor getJomcTool()
     {
         return (ClassFileProcessor) super.getJomcTool();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ClassFileProcessor newJomcTool()
     {
         return new ClassFileProcessor();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Model newModel()
     {
         try
         {
             DefaultModelProvider.setDefaultModuleLocation( this.getClass().getPackage().getName().replace( '.', '/' )
-                                                           + "/jomc-tools.xml" );
+                                                               + "/jomc-tools.xml" );
 
             Model m = this.getModelContext().findModel( ModelObject.MODEL_PUBLIC_ID );
 
@@ -933,33 +941,33 @@ public class ClassFileProcessorTest extends JomcToolTest
 
         final File allClasses = this.getNextClassesDirectory();
         final ClassLoader allClassesLoader = new URLClassLoader( new URL[]
-            {
-                allClasses.toURI().toURL()
-            } );
+        {
+            allClasses.toURI().toURL()
+        } );
 
         final File moduleClasses = this.getNextClassesDirectory();
         final ClassLoader moduleClassesLoader = new URLClassLoader( new URL[]
-            {
-                moduleClasses.toURI().toURL()
-            } );
+        {
+            moduleClasses.toURI().toURL()
+        } );
 
         final File implementationClasses = this.getNextClassesDirectory();
         final ClassLoader implementationClassesLoader = new URLClassLoader( new URL[]
-            {
-                implementationClasses.toURI().toURL()
-            } );
+        {
+            implementationClasses.toURI().toURL()
+        } );
 
         final File specificationClasses = this.getNextClassesDirectory();
         final ClassLoader specificationClassesLoader = new URLClassLoader( new URL[]
-            {
-                specificationClasses.toURI().toURL()
-            } );
+        {
+            specificationClasses.toURI().toURL()
+        } );
 
         final File uncommittedClasses = this.getNextClassesDirectory();
         final ClassLoader uncommittedClassesLoader = new URLClassLoader( new URL[]
-            {
-                uncommittedClasses.toURI().toURL()
-            } );
+        {
+            uncommittedClasses.toURI().toURL()
+        } );
 
         final Module m = this.getJomcTool().getModules().getModule( "JOMC Tools" );
         final Specification s = this.getJomcTool().getModules().getSpecification( "org.jomc.tools.ClassFileProcessor" );
@@ -971,34 +979,34 @@ public class ClassFileProcessorTest extends JomcToolTest
         assertNotNull( i );
 
         final List<Transformer> transformers = Arrays.asList( new Transformer[]
-            {
-                this.getTransformer( "no-op.xsl" )
-            } );
+        {
+            this.getTransformer( "no-op.xsl" )
+        } );
 
         final List<Transformer> illegalSpecificationTransformers = Arrays.asList( new Transformer[]
-            {
-                this.getTransformer( "illegal-specification-transformation.xsl" )
-            } );
+        {
+            this.getTransformer( "illegal-specification-transformation.xsl" )
+        } );
 
         final List<Transformer> illegalSpecificationsTransformers = Arrays.asList( new Transformer[]
-            {
-                this.getTransformer( "illegal-specifications-transformation.xsl" )
-            } );
+        {
+            this.getTransformer( "illegal-specifications-transformation.xsl" )
+        } );
 
         final List<Transformer> illegalDependenciesTransformers = Arrays.asList( new Transformer[]
-            {
-                this.getTransformer( "illegal-dependencies-transformation.xsl" )
-            } );
+        {
+            this.getTransformer( "illegal-dependencies-transformation.xsl" )
+        } );
 
         final List<Transformer> illegalMessagesTransformers = Arrays.asList( new Transformer[]
-            {
-                this.getTransformer( "illegal-messages-transformation.xsl" )
-            } );
+        {
+            this.getTransformer( "illegal-messages-transformation.xsl" )
+        } );
 
         final List<Transformer> illegalPropertiesTransformers = Arrays.asList( new Transformer[]
-            {
-                this.getTransformer( "illegal-properties-transformation.xsl" )
-            } );
+        {
+            this.getTransformer( "illegal-properties-transformation.xsl" )
+        } );
 
         try
         {
@@ -1643,7 +1651,7 @@ public class ClassFileProcessorTest extends JomcToolTest
         try
         {
             this.getJomcTool().validateModelObjects( classFileProcessorImpl, ModelContextFactory.newInstance().
-                newModelContext( implementationClassesLoader ) );
+                                                     newModelContext( implementationClassesLoader ) );
 
             fail( "Expected IOException not thrown." );
         }

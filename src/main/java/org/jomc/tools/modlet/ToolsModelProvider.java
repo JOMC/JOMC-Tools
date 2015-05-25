@@ -97,11 +97,14 @@ import static org.jomc.tools.modlet.ToolsModletConstants.SPECIFICATION_TEMPLATE;
 public class ToolsModelProvider implements ModelProvider
 {
 
-    /** Constant for the qualified name of {@code source-files} elements. */
+    /**
+     * Constant for the qualified name of {@code source-files} elements.
+     */
     private static final QName SOURCE_FILES_QNAME = new ObjectFactory().createSourceFiles( null ).getName();
 
     /**
      * Constant for the name of the model context attribute backing property {@code enabled}.
+     *
      * @see #findModel(org.jomc.modlet.ModelContext, org.jomc.modlet.Model)
      * @see ModelContext#getAttribute(java.lang.String)
      */
@@ -109,6 +112,7 @@ public class ToolsModelProvider implements ModelProvider
 
     /**
      * Constant for the name of the system property controlling property {@code defaultEnabled}.
+     *
      * @see #isDefaultEnabled()
      */
     private static final String DEFAULT_ENABLED_PROPERTY_NAME =
@@ -116,14 +120,19 @@ public class ToolsModelProvider implements ModelProvider
 
     /**
      * Default value of the flag indicating the provider is enabled by default.
+     *
      * @see #isDefaultEnabled()
      */
     private static final Boolean DEFAULT_ENABLED = Boolean.TRUE;
 
-    /** Flag indicating the provider is enabled by default. */
+    /**
+     * Flag indicating the provider is enabled by default.
+     */
     private static volatile Boolean defaultEnabled;
 
-    /** Flag indicating the provider is enabled. */
+    /**
+     * Flag indicating the provider is enabled.
+     */
     private Boolean enabled;
 
     /**
@@ -139,6 +148,7 @@ public class ToolsModelProvider implements ModelProvider
     /**
      * Constant for the name of the system property controlling property
      * {@code defaultModelObjectClasspathResolutionEnabled}.
+     *
      * @see #isDefaultModelObjectClasspathResolutionEnabled()
      */
     private static final String DEFAULT_MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_PROPERTY_NAME =
@@ -146,18 +156,24 @@ public class ToolsModelProvider implements ModelProvider
 
     /**
      * Default value of the flag indicating model object class path resolution is enabled by default.
+     *
      * @see #isDefaultModelObjectClasspathResolutionEnabled()
      */
     private static final Boolean DEFAULT_MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED = Boolean.TRUE;
 
-    /** Flag indicating model object class path resolution is enabled by default. */
+    /**
+     * Flag indicating model object class path resolution is enabled by default.
+     */
     private static volatile Boolean defaultModelObjectClasspathResolutionEnabled;
 
-    /** Flag indicating model object class path resolution is enabled. */
+    /**
+     * Flag indicating model object class path resolution is enabled.
+     */
     private Boolean modelObjectClasspathResolutionEnabled;
 
     /**
      * Constant for the name of the model context attribute backing property {@code headComment}.
+     *
      * @see #findModel(org.jomc.modlet.ModelContext, org.jomc.modlet.Model)
      * @see ModelContext#getAttribute(java.lang.String)
      * @since 1.6
@@ -167,6 +183,7 @@ public class ToolsModelProvider implements ModelProvider
 
     /**
      * Constant for the name of the system property controlling property {@code defaultHeadComment}.
+     *
      * @see #getDefaultHeadComment()
      * @since 1.6
      */
@@ -175,6 +192,7 @@ public class ToolsModelProvider implements ModelProvider
 
     /**
      * Default head comment the provider is providing by default.
+     *
      * @see #getDefaultHeadComment()
      * @since 1.6
      */
@@ -182,18 +200,21 @@ public class ToolsModelProvider implements ModelProvider
 
     /**
      * Head comment the provider is providing by default.
+     *
      * @since 1.6
      */
     private static volatile String defaultHeadComment;
 
     /**
      * Head comment the provider is providing.
+     *
      * @since 1.6
      */
     private String headComment;
 
     /**
      * Constant for the name of the model context attribute backing property {@code tailComment}.
+     *
      * @see #findModel(org.jomc.modlet.ModelContext, org.jomc.modlet.Model)
      * @see ModelContext#getAttribute(java.lang.String)
      * @since 1.6
@@ -203,6 +224,7 @@ public class ToolsModelProvider implements ModelProvider
 
     /**
      * Constant for the name of the system property controlling property {@code defaultTailComment}.
+     *
      * @see #getDefaultTailComment()
      * @since 1.6
      */
@@ -211,6 +233,7 @@ public class ToolsModelProvider implements ModelProvider
 
     /**
      * Default tail comment the provider is providing by default.
+     *
      * @see #getDefaultTailComment()
      * @since 1.6
      */
@@ -218,17 +241,21 @@ public class ToolsModelProvider implements ModelProvider
 
     /**
      * Tail comment the provider is providing by default.
+     *
      * @since 1.6
      */
     private static volatile String defaultTailComment;
 
     /**
      * Tail comment the provider is providing.
+     *
      * @since 1.6
      */
     private String tailComment;
 
-    /** Creates a new {@code ToolsModelProvider} instance. */
+    /**
+     * Creates a new {@code ToolsModelProvider} instance.
+     */
     public ToolsModelProvider()
     {
         super();
@@ -236,9 +263,11 @@ public class ToolsModelProvider implements ModelProvider
 
     /**
      * Gets a flag indicating the provider is enabled by default.
-     * <p>The default enabled flag is controlled by system property
+     * <p>
+     * The default enabled flag is controlled by system property
      * {@code org.jomc.tools.modlet.ToolsModelProvider.defaultEnabled} holding a value indicating the provider is
-     * enabled by default. If that property is not set, the {@code true} default is returned.</p>
+     * enabled by default. If that property is not set, the {@code true} default is returned.
+     * </p>
      *
      * @return {@code true}, if the provider is enabled by default; {@code false}, if the provider is disabled by
      * default.
@@ -301,10 +330,12 @@ public class ToolsModelProvider implements ModelProvider
 
     /**
      * Gets a flag indicating model object class path resolution is enabled by default.
-     * <p>The model object class path resolution default enabled flag is controlled by system property
+     * <p>
+     * The model object class path resolution default enabled flag is controlled by system property
      * {@code org.jomc.tools.modlet.ToolsModelProvider.defaultModelObjectClasspathResolutionEnabled} holding a value
      * indicating model object class path resolution is enabled by default. If that property is not set, the
-     * {@code true} default is returned.</p>
+     * {@code true} default is returned.
+     * </p>
      *
      * @return {@code true}, if model object class path resolution is enabled by default; {@code false}, if model object
      * class path resolution is disabled by default.
@@ -370,9 +401,11 @@ public class ToolsModelProvider implements ModelProvider
 
     /**
      * Gets the head comment the provider is providing by default.
-     * <p>The default head comment is controlled by system property
+     * <p>
+     * The default head comment is controlled by system property
      * {@code org.jomc.tools.modlet.ToolsModelProvider.defaultHeadComment} holding the head comment the provider is
-     * providing by default. If that property is not set, the {@code //} default is returned.</p>
+     * providing by default. If that property is not set, the {@code //} default is returned.
+     * </p>
      *
      * @return The head comment the provider is providing by default or {@code null}.
      *
@@ -436,9 +469,11 @@ public class ToolsModelProvider implements ModelProvider
 
     /**
      * Gets the tail comment the provider is providing by default.
-     * <p>The default tail comment is controlled by system property
+     * <p>
+     * The default tail comment is controlled by system property
      * {@code org.jomc.tools.modlet.ToolsModelProvider.defaultTailComment} holding the tail comment the provider is
-     * providing by default. If that property is not set, the {@code null} default is returned.</p>
+     * providing by default. If that property is not set, the {@code null} default is returned.
+     * </p>
      *
      * @return The tail comment the provider is providing by default or {@code null}.
      *
@@ -533,7 +568,7 @@ public class ToolsModelProvider implements ModelProvider
 
         boolean contextModelObjectClasspathResolutionEnabled = this.isModelObjectClasspathResolutionEnabled();
         if ( contextModelObjectClasspathResolutionEnabled == DEFAULT_MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED
-             && context.getAttribute( MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME ) instanceof Boolean )
+                 && context.getAttribute( MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME ) instanceof Boolean )
         {
             contextModelObjectClasspathResolutionEnabled =
                 (Boolean) context.getAttribute( MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME );
@@ -554,7 +589,7 @@ public class ToolsModelProvider implements ModelProvider
                                                                   context.getClassLoader() );
 
                     if ( classpathModule != null
-                         && modules.getModule( Modules.getDefaultClasspathModuleName() ) == null )
+                             && modules.getModule( Modules.getDefaultClasspathModuleName() ) == null )
                     {
                         modules.getModule().add( classpathModule );
                     }
@@ -645,7 +680,7 @@ public class ToolsModelProvider implements ModelProvider
                     for ( final Map.Entry<Implementation, SourceFilesType> e : userSourceFiles.entrySet() )
                     {
                         this.overwriteSourceFiles( e.getValue(), this.getDefaultSourceFilesType(
-                            context, modules, e.getKey() ), true );
+                                                   context, modules, e.getKey() ), true );
 
                     }
 
@@ -698,8 +733,10 @@ public class ToolsModelProvider implements ModelProvider
 
     /**
      * Gets the default source code file location for a given specification.
-     * <p>If the specification provides a Java type name, this method returns a Java source code file location based on
-     * that Java type name.</p>
+     * <p>
+     * If the specification provides a Java type name, this method returns a Java source code file location based on
+     * that Java type name.
+     * </p>
      *
      * @param context The context to get the default location with.
      * @param modules The model to get the default location with.
@@ -707,7 +744,7 @@ public class ToolsModelProvider implements ModelProvider
      *
      * @return The default location for {@code specification} or {@code null}.
      *
-     * @throws NullPointerExeption if {@code context}, {@code modules} or {@code specification} is {@code null}.
+     * @throws NullPointerException if {@code context}, {@code modules} or {@code specification} is {@code null}.
      *
      * @see #getDefaultSourceFilesType(org.jomc.modlet.ModelContext, org.jomc.model.Modules, org.jomc.model.Specification)
      * @see SourceFileType#getLocation()
@@ -749,8 +786,10 @@ public class ToolsModelProvider implements ModelProvider
 
     /**
      * Gets the default source code file location for a given implementation.
-     * <p>If the implementation provides a Java type name, this method returns a Java source code file location based on
-     * that Java type name.</p>
+     * <p>
+     * If the implementation provides a Java type name, this method returns a Java source code file location based on
+     * that Java type name.
+     * </p>
      *
      * @param context The context to get the default location with.
      * @param modules The model to get the default location with.
@@ -758,7 +797,7 @@ public class ToolsModelProvider implements ModelProvider
      *
      * @return The default location for {@code implementation} or {@code null}.
      *
-     * @throws NullPointerExeption if {@code context}, {@code modules} or {@code implementation} is {@code null}.
+     * @throws NullPointerException if {@code context}, {@code modules} or {@code implementation} is {@code null}.
      *
      * @see #getDefaultSourceFilesType(org.jomc.modlet.ModelContext, org.jomc.model.Modules, org.jomc.model.Implementation)
      * @see SourceFileType#getLocation()
@@ -800,8 +839,10 @@ public class ToolsModelProvider implements ModelProvider
 
     /**
      * Gets the default source section name for a given specification.
-     * <p>If the specification provides a Java type name, this method returns a section name based on that Java type
-     * name.</p>
+     * <p>
+     * If the specification provides a Java type name, this method returns a section name based on that Java type
+     * name.
+     * </p>
      *
      * @param context The context to get the default section name with.
      * @param modules The model to get the default section name with.
@@ -809,7 +850,7 @@ public class ToolsModelProvider implements ModelProvider
      *
      * @return The default source section name for {@code specification} or {@code null}.
      *
-     * @throws NullPointerExeption if {@code context}, {@code modules} or {@code specification} is {@code null}.
+     * @throws NullPointerException if {@code context}, {@code modules} or {@code specification} is {@code null}.
      *
      * @see #getDefaultSourceFilesType(org.jomc.modlet.ModelContext, org.jomc.model.Modules, org.jomc.model.Specification)
      * @see SourceSectionType#getName()
@@ -853,8 +894,10 @@ public class ToolsModelProvider implements ModelProvider
 
     /**
      * Gets the default source section name for a given implementation.
-     * <p>If the implementation provides a Java type name, this method returns a section name based that Java type
-     * name.</p>
+     * <p>
+     * If the implementation provides a Java type name, this method returns a section name based that Java type
+     * name.
+     * </p>
      *
      * @param context The context to get the default section name with.
      * @param modules The model to get the default section name with.
@@ -862,7 +905,7 @@ public class ToolsModelProvider implements ModelProvider
      *
      * @return The default source section name for {@code implementation} or {@code null}.
      *
-     * @throws NullPointerExeption if {@code context}, {@code modules} or {@code implementation} is {@code null}.
+     * @throws NullPointerException if {@code context}, {@code modules} or {@code implementation} is {@code null}.
      *
      * @see #getDefaultSourceFilesType(org.jomc.modlet.ModelContext, org.jomc.model.Modules, org.jomc.model.Implementation)
      * @see SourceSectionType#getName()
@@ -913,7 +956,7 @@ public class ToolsModelProvider implements ModelProvider
      *
      * @return A new default source files model for {@code specification}.
      *
-     * @throws NullPointerExeption if {@code context}, {@code modules} or {@code specification} is {@code null}.
+     * @throws NullPointerException if {@code context}, {@code modules} or {@code specification} is {@code null}.
      *
      * @see #getDefaultSourceFileLocation(org.jomc.modlet.ModelContext, org.jomc.model.Modules, org.jomc.model.Specification)
      * @see #getDefaultSourceSectionName(org.jomc.modlet.ModelContext, org.jomc.model.Modules, org.jomc.model.Specification)
@@ -939,7 +982,7 @@ public class ToolsModelProvider implements ModelProvider
         if ( ( DEFAULT_HEAD_COMMENT != null
                ? DEFAULT_HEAD_COMMENT.equals( contextHeadComment )
                : contextHeadComment == null )
-             && context.getAttribute( HEAD_COMMENT_ATTRIBUTE_NAME ) instanceof String )
+                 && context.getAttribute( HEAD_COMMENT_ATTRIBUTE_NAME ) instanceof String )
         {
             contextHeadComment = (String) context.getAttribute( HEAD_COMMENT_ATTRIBUTE_NAME );
         }
@@ -953,7 +996,7 @@ public class ToolsModelProvider implements ModelProvider
         if ( ( DEFAULT_TAIL_COMMENT != null
                ? DEFAULT_TAIL_COMMENT.equals( contextTailComment )
                : contextTailComment == null )
-             && context.getAttribute( TAIL_COMMENT_ATTRIBUTE_NAME ) instanceof String )
+                 && context.getAttribute( TAIL_COMMENT_ATTRIBUTE_NAME ) instanceof String )
         {
             contextTailComment = (String) context.getAttribute( TAIL_COMMENT_ATTRIBUTE_NAME );
         }
@@ -1035,7 +1078,7 @@ public class ToolsModelProvider implements ModelProvider
      *
      * @return A new default source files model for {@code implementation}.
      *
-     * @throws NullPointerExeption if {@code context}, {@code modules} or {@code implementation} is {@code null}.
+     * @throws NullPointerException if {@code context}, {@code modules} or {@code implementation} is {@code null}.
      *
      * @see #getDefaultSourceFileLocation(org.jomc.modlet.ModelContext, org.jomc.model.Modules, org.jomc.model.Implementation)
      * @see #getDefaultSourceSectionName(org.jomc.modlet.ModelContext, org.jomc.model.Modules, org.jomc.model.Implementation)
@@ -1061,7 +1104,7 @@ public class ToolsModelProvider implements ModelProvider
         if ( ( DEFAULT_HEAD_COMMENT != null
                ? DEFAULT_HEAD_COMMENT.equals( contextHeadComment )
                : contextHeadComment == null )
-             && context.getAttribute( HEAD_COMMENT_ATTRIBUTE_NAME ) instanceof String )
+                 && context.getAttribute( HEAD_COMMENT_ATTRIBUTE_NAME ) instanceof String )
         {
             contextHeadComment = (String) context.getAttribute( HEAD_COMMENT_ATTRIBUTE_NAME );
         }
@@ -1075,7 +1118,7 @@ public class ToolsModelProvider implements ModelProvider
         if ( ( DEFAULT_TAIL_COMMENT != null
                ? DEFAULT_TAIL_COMMENT.equals( contextTailComment )
                : contextTailComment == null )
-             && context.getAttribute( TAIL_COMMENT_ATTRIBUTE_NAME ) instanceof String )
+                 && context.getAttribute( TAIL_COMMENT_ATTRIBUTE_NAME ) instanceof String )
         {
             contextTailComment = (String) context.getAttribute( TAIL_COMMENT_ATTRIBUTE_NAME );
         }
@@ -1459,10 +1502,10 @@ public class ToolsModelProvider implements ModelProvider
     private static String getMessage( final Throwable t )
     {
         return t != null
-               ? t.getMessage() != null && t.getMessage().trim().length() > 0
-                 ? t.getMessage()
-                 : getMessage( t.getCause() )
-               : null;
+                   ? t.getMessage() != null && t.getMessage().trim().length() > 0
+                         ? t.getMessage()
+                         : getMessage( t.getCause() )
+                   : null;
 
     }
 

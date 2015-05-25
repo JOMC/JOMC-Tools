@@ -52,20 +52,26 @@ import static org.junit.Assert.fail;
 public class ResourceFileProcessorTest extends JomcToolTest
 {
 
-    /** Creates a new {@code ResourceFileProcessorTest} instance. */
+    /**
+     * Creates a new {@code ResourceFileProcessorTest} instance.
+     */
     public ResourceFileProcessorTest()
     {
         super();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceFileProcessor getJomcTool()
     {
         return (ResourceFileProcessor) super.getJomcTool();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ResourceFileProcessor newJomcTool()
     {

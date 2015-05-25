@@ -67,10 +67,14 @@ import static org.junit.Assert.fail;
 public class ToolsModelProviderTest
 {
 
-    /** The {@code ToolsModelProvider} instance tests are performed with. */
+    /**
+     * The {@code ToolsModelProvider} instance tests are performed with.
+     */
     private ToolsModelProvider toolsModelProvider;
 
-    /** Creates a new {@code ToolsModelProviderTest} instance. */
+    /**
+     * Creates a new {@code ToolsModelProviderTest} instance.
+     */
     public ToolsModelProviderTest()
     {
         super();

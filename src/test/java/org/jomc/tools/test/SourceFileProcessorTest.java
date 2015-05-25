@@ -60,23 +60,31 @@ import static org.junit.Assert.fail;
 public class SourceFileProcessorTest extends JomcToolTest
 {
 
-    /** Constant to prefix relative resource names with. */
+    /**
+     * Constant to prefix relative resource names with.
+     */
     private static final String ABSOLUTE_RESOURCE_NAME_PREFIX = "/org/jomc/tools/test/";
 
-    /** Creates a new {@code SourceFileProcessorTest} instance. */
+    /**
+     * Creates a new {@code SourceFileProcessorTest} instance.
+     */
     public SourceFileProcessorTest()
     {
         super();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SourceFileProcessor getJomcTool()
     {
         return (SourceFileProcessor) super.getJomcTool();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected SourceFileProcessor newJomcTool()
     {

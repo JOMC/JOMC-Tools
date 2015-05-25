@@ -48,13 +48,17 @@ import static org.junit.Assert.fail;
 public class ToolsTypeTest
 {
 
-    /** Creates a new {@code ToolsTypeTest} instance. */
+    /**
+     * Creates a new {@code ToolsTypeTest} instance.
+     */
     public ToolsTypeTest()
     {
         super();
     }
 
-    /** Test {@code ToolsType}. */
+    /**
+     * Test {@code ToolsType}.
+     */
     public static class TestToolsType extends ToolsType
     {
 

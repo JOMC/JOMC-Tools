@@ -61,7 +61,8 @@ import org.jomc.util.TrailingWhitespaceEditor;
 /**
  * Processes source code files.
  *
- * <p><b>Use Cases:</b><br/><ul>
+ * <p>
+ * <b>Use Cases:</b><br/><ul>
  * <li>{@link #manageSourceFiles(File) }</li>
  * <li>{@link #manageSourceFiles(Module, File) }</li>
  * <li>{@link #manageSourceFiles(Specification, File) }</li>
@@ -74,10 +75,14 @@ import org.jomc.util.TrailingWhitespaceEditor;
 public class SourceFileProcessor extends JomcTool
 {
 
-    /** The source file editor of the instance. */
+    /**
+     * The source file editor of the instance.
+     */
     private SourceFileProcessor.SourceFileEditor sourceFileEditor;
 
-    /** Creates a new {@code SourceFileProcessor} instance. */
+    /**
+     * Creates a new {@code SourceFileProcessor} instance.
+     */
     public SourceFileProcessor()
     {
         super();
@@ -428,16 +433,24 @@ public class SourceFileProcessor extends JomcTool
     public class SourceFileEditor extends SectionEditor
     {
 
-        /** {@code Specification} of the instance or {@code null}. */
+        /**
+         * {@code Specification} of the instance or {@code null}.
+         */
         private Specification specification;
 
-        /** {@code Implementation} of the instance or {@code null}. */
+        /**
+         * {@code Implementation} of the instance or {@code null}.
+         */
         private Implementation implementation;
 
-        /** The source code file to edit. */
+        /**
+         * The source code file to edit.
+         */
         private SourceFileType sourceFileType;
 
-        /** The {@code VelocityContext} of the instance. */
+        /**
+         * The {@code VelocityContext} of the instance.
+         */
         private VelocityContext velocityContext;
 
         /**
@@ -602,8 +615,10 @@ public class SourceFileProcessor extends JomcTool
 
         /**
          * {@inheritDoc}
-         * <p>This method creates any sections declared in the model of the source file as returned by method
-         * {@code getSourceFileType} prior to rendering the output of the editor.</p>
+         * <p>
+         * This method creates any sections declared in the model of the source file as returned by method
+         * {@code getSourceFileType} prior to rendering the output of the editor.
+         * </p>
          *
          * @param section The section to start rendering the editor's output with.
          *
@@ -624,9 +639,11 @@ public class SourceFileProcessor extends JomcTool
 
         /**
          * {@inheritDoc}
-         * <p>This method searches the model of the source file for a section matching {@code s} and updates properties
+         * <p>
+         * This method searches the model of the source file for a section matching {@code s} and updates properties
          * {@code headContent} and {@code tailContent} of {@code s} according to the templates declared in the model
-         * as returned by method {@code getSourceFileType}.</p>
+         * as returned by method {@code getSourceFileType}.
+         * </p>
          *
          * @param s The section to edit.
          */

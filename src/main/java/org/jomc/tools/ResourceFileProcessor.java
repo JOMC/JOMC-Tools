@@ -58,7 +58,8 @@ import org.jomc.util.JavaTypeName;
 /**
  * Processes resource files.
  *
- * <p><b>Use Cases:</b><br/><ul>
+ * <p>
+ * <b>Use Cases:</b><br/><ul>
  * <li>{@link #writeResourceBundleResourceFiles(File) }</li>
  * <li>{@link #writeResourceBundleResourceFiles(Module, File) }</li>
  * <li>{@link #writeResourceBundleResourceFiles(Specification, File) }</li>
@@ -73,10 +74,14 @@ import org.jomc.util.JavaTypeName;
 public class ResourceFileProcessor extends JomcTool
 {
 
-    /** The language of the default language properties file of generated resource bundle resources. */
+    /**
+     * The language of the default language properties file of generated resource bundle resources.
+     */
     private Locale resourceBundleDefaultLocale;
 
-    /** Creates a new {@code ResourceFileProcessor} instance. */
+    /**
+     * Creates a new {@code ResourceFileProcessor} instance.
+     */
     public ResourceFileProcessor()
     {
         super();
@@ -243,7 +248,7 @@ public class ResourceFileProcessor extends JomcTool
         }
 
         if ( this.getModules() != null
-             && this.getModules().getSpecification( specification.getIdentifier() ) != null )
+                 && this.getModules().getSpecification( specification.getIdentifier() ) != null )
         {
             if ( specification.isClassDeclaration() )
             {
@@ -296,7 +301,7 @@ public class ResourceFileProcessor extends JomcTool
         }
 
         if ( this.getModules() != null
-             && this.getModules().getImplementation( implementation.getIdentifier() ) != null )
+                 && this.getModules().getImplementation( implementation.getIdentifier() ) != null )
         {
             if ( implementation.isClassDeclaration() )
             {
@@ -346,7 +351,7 @@ public class ResourceFileProcessor extends JomcTool
         Map<Locale, Properties> properties = null;
 
         if ( this.getModules() != null
-             && this.getModules().getSpecification( specification.getIdentifier() ) != null )
+                 && this.getModules().getSpecification( specification.getIdentifier() ) != null )
         {
             properties = new HashMap<Locale, Properties>();
         }
@@ -380,7 +385,7 @@ public class ResourceFileProcessor extends JomcTool
         Map<Locale, Properties> properties = null;
 
         if ( this.getModules() != null
-             && this.getModules().getImplementation( implementation.getIdentifier() ) != null )
+                 && this.getModules().getImplementation( implementation.getIdentifier() ) != null )
         {
             properties = new HashMap<Locale, java.util.Properties>( 10 );
             final Messages messages = this.getModules().getMessages( implementation.getIdentifier() );
@@ -444,7 +449,7 @@ public class ResourceFileProcessor extends JomcTool
         final String toolVersion = ctx.get( "toolVersion" ).toString();
         final String toolUrl = ctx.get( "toolUrl" ).toString();
 
-        for ( Map.Entry<Locale, Properties> e : resources.entrySet() )
+        for ( final Map.Entry<Locale, Properties> e : resources.entrySet() )
         {
             final String language = e.getKey().getLanguage().toLowerCase();
             final Properties p = e.getValue();

@@ -75,31 +75,49 @@ import static org.junit.Assert.fail;
 public class JomcToolTest
 {
 
-    /** Constant for the name of the system property holding the name of the encoding of resources backing the test. */
+    /**
+     * Constant for the name of the system property holding the name of the encoding of resources backing the test.
+     */
     private static final String RESOURCE_ENCODING_PROPERTY_NAME = "jomc.test.resourceEncoding";
 
-    /** Constant for the name of the system property holding the output directory for the test. */
+    /**
+     * Constant for the name of the system property holding the output directory for the test.
+     */
     private static final String OUTPUT_DIRECTORY_PROPERTY_NAME = "jomc.test.outputDirectory";
 
-    /** The {@code JomcTool} instance tests are performed with. */
+    /**
+     * The {@code JomcTool} instance tests are performed with.
+     */
     private JomcTool jomcTool;
 
-    /** The {@code ModelContext} of the instance. */
+    /**
+     * The {@code ModelContext} of the instance.
+     */
     private ModelContext modelContext;
 
-    /** The {@code Model} of the instance. */
+    /**
+     * The {@code Model} of the instance.
+     */
     private Model model;
 
-    /** The name of the encoding to use when reading or writing resources. */
+    /**
+     * The name of the encoding to use when reading or writing resources.
+     */
     private String resourceEncoding;
 
-    /** The output directory of the instance. */
+    /**
+     * The output directory of the instance.
+     */
     private File outputDirectory;
 
-    /** Serial number of next output directories. */
+    /**
+     * Serial number of next output directories.
+     */
     private volatile int outputDirectoryId;
 
-    /** Creates a new {@code JomcToolTest} instance. */
+    /**
+     * Creates a new {@code JomcToolTest} instance.
+     */
     public JomcToolTest()
     {
         super();

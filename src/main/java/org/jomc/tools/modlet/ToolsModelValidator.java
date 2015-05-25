@@ -73,6 +73,7 @@ public class ToolsModelValidator implements ModelValidator
 
     /**
      * Constant for the name of the model context attribute backing property {@code validateJava}.
+     *
      * @see ModelContext#getAttribute(java.lang.String)
      * @since 1.6
      */
@@ -81,6 +82,7 @@ public class ToolsModelValidator implements ModelValidator
 
     /**
      * Constant for the name of the system property controlling property {@code defaultValidateJava}.
+     *
      * @see #isDefaultValidateJava()
      * @since 1.6
      */
@@ -89,6 +91,7 @@ public class ToolsModelValidator implements ModelValidator
 
     /**
      * Default value of the flag indicating the validator is performing Java related validation by default.
+     *
      * @see #isDefaultValidateJava()
      * @since 1.6
      */
@@ -96,17 +99,21 @@ public class ToolsModelValidator implements ModelValidator
 
     /**
      * Flag indicating the validator is performing Java related validation by default.
+     *
      * @since 1.6
      */
     private static volatile Boolean defaultValidateJava;
 
     /**
      * Flag indicating the validator is performing Java related validation.
+     *
      * @since 1.6
      */
     private Boolean validateJava;
 
-    /** Creates a new {@code ToolsModelValidator} instance. */
+    /**
+     * Creates a new {@code ToolsModelValidator} instance.
+     */
     public ToolsModelValidator()
     {
         super();
@@ -118,7 +125,8 @@ public class ToolsModelValidator implements ModelValidator
      * The default validate Java flag is controlled by system property
      * {@code org.jomc.tools.modlet.ToolsModelValidator.defaultValidateJava} holding a value indicating the validator
      * is performing Java related validation by default. If that property is not set, the {@code true} default is
-     * returned.</p>
+     * returned.
+     * </p>
      *
      * @return {@code true}, if the validator is performing Java related validation by default; {@code false}, if the
      * validator is not performing Java related validation by default.

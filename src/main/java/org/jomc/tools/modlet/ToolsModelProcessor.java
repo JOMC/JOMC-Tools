@@ -90,6 +90,7 @@ public class ToolsModelProcessor implements ModelProcessor
 
     /**
      * Constant for the name of the model context attribute backing property {@code enabled}.
+     *
      * @see #processModel(org.jomc.modlet.ModelContext, org.jomc.modlet.Model)
      * @see ModelContext#getAttribute(java.lang.String)
      */
@@ -97,6 +98,7 @@ public class ToolsModelProcessor implements ModelProcessor
 
     /**
      * Constant for the name of the system property controlling property {@code defaultEnabled}.
+     *
      * @see #isDefaultEnabled()
      */
     private static final String DEFAULT_ENABLED_PROPERTY_NAME =
@@ -104,14 +106,19 @@ public class ToolsModelProcessor implements ModelProcessor
 
     /**
      * Default value of the flag indicating the processor is enabled by default.
+     *
      * @see #isDefaultEnabled()
      */
     private static final Boolean DEFAULT_ENABLED = Boolean.TRUE;
 
-    /** Flag indicating the processor is enabled by default. */
+    /**
+     * Flag indicating the processor is enabled by default.
+     */
     private static volatile Boolean defaultEnabled;
 
-    /** Flag indicating the processor is enabled. */
+    /**
+     * Flag indicating the processor is enabled.
+     */
     private Boolean enabled;
 
     /**
@@ -127,6 +134,7 @@ public class ToolsModelProcessor implements ModelProcessor
     /**
      * Constant for the name of the system property controlling property
      * {@code defaultModelObjectClasspathResolutionEnabled}.
+     *
      * @see #isDefaultModelObjectClasspathResolutionEnabled()
      */
     private static final String DEFAULT_MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_PROPERTY_NAME =
@@ -134,18 +142,24 @@ public class ToolsModelProcessor implements ModelProcessor
 
     /**
      * Default value of the flag indicating model object class path resolution is enabled by default.
+     *
      * @see #isDefaultModelObjectClasspathResolutionEnabled()
      */
     private static final Boolean DEFAULT_MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED = Boolean.TRUE;
 
-    /** Flag indicating model object class path resolution is enabled by default. */
+    /**
+     * Flag indicating model object class path resolution is enabled by default.
+     */
     private static volatile Boolean defaultModelObjectClasspathResolutionEnabled;
 
-    /** Flag indicating model object class path resolution is enabled. */
+    /**
+     * Flag indicating model object class path resolution is enabled.
+     */
     private Boolean modelObjectClasspathResolutionEnabled;
 
     /**
      * Constant for the name of the model context attribute backing property {@code headComment}.
+     *
      * @see #processModel(org.jomc.modlet.ModelContext, org.jomc.modlet.Model)
      * @see ModelContext#getAttribute(java.lang.String)
      * @since 1.6
@@ -155,6 +169,7 @@ public class ToolsModelProcessor implements ModelProcessor
 
     /**
      * Constant for the name of the system property controlling property {@code defaultHeadComment}.
+     *
      * @see #getDefaultHeadComment()
      * @since 1.6
      */
@@ -163,6 +178,7 @@ public class ToolsModelProcessor implements ModelProcessor
 
     /**
      * Default head comment the processor is applying by default.
+     *
      * @see #getDefaultHeadComment()
      * @since 1.6
      */
@@ -170,18 +186,21 @@ public class ToolsModelProcessor implements ModelProcessor
 
     /**
      * Head comment the processor is applying by default.
+     *
      * @since 1.6
      */
     private static volatile String defaultHeadComment;
 
     /**
      * Head comment the processor is applying.
+     *
      * @since 1.6
      */
     private String headComment;
 
     /**
      * Constant for the name of the model context attribute backing property {@code tailComment}.
+     *
      * @see #processModel(org.jomc.modlet.ModelContext, org.jomc.modlet.Model)
      * @see ModelContext#getAttribute(java.lang.String)
      * @since 1.6
@@ -191,6 +210,7 @@ public class ToolsModelProcessor implements ModelProcessor
 
     /**
      * Constant for the name of the system property controlling property {@code defaultTailComment}.
+     *
      * @see #getDefaultTailComment()
      * @since 1.6
      */
@@ -199,6 +219,7 @@ public class ToolsModelProcessor implements ModelProcessor
 
     /**
      * Default tail comment the processor is applying by default.
+     *
      * @see #getDefaultTailComment()
      * @since 1.6
      */
@@ -206,17 +227,21 @@ public class ToolsModelProcessor implements ModelProcessor
 
     /**
      * Tail comment the processor is applying by default.
+     *
      * @since 1.6
      */
     private static volatile String defaultTailComment;
 
     /**
      * Tail comment the processor is applying.
+     *
      * @since 1.6
      */
     private String tailComment;
 
-    /** Creates a new {@code ToolsModelProcessor} instance. */
+    /**
+     * Creates a new {@code ToolsModelProcessor} instance.
+     */
     public ToolsModelProcessor()
     {
         super();
@@ -224,9 +249,11 @@ public class ToolsModelProcessor implements ModelProcessor
 
     /**
      * Gets a flag indicating the processor is enabled by default.
-     * <p>The default enabled flag is controlled by system property
+     * <p>
+     * The default enabled flag is controlled by system property
      * {@code org.jomc.tools.modlet.ToolsModelProcessor.defaultEnabled} holding a value indicating the processor is
-     * enabled by default. If that property is not set, the {@code true} default is returned.</p>
+     * enabled by default. If that property is not set, the {@code true} default is returned.
+     * </p>
      *
      * @return {@code true}, if the processor is enabled by default; {@code false}, if the processor is disabled by
      * default.
@@ -289,10 +316,12 @@ public class ToolsModelProcessor implements ModelProcessor
 
     /**
      * Gets a flag indicating model object class path resolution is enabled by default.
-     * <p>The model object class path resolution default enabled flag is controlled by system property
+     * <p>
+     * The model object class path resolution default enabled flag is controlled by system property
      * {@code org.jomc.tools.modlet.ToolsModelProcessor.defaultModelObjectClasspathResolutionEnabled} holding a value
      * indicating model object class path resolution is enabled by default. If that property is not set, the
-     * {@code true} default is returned.</p>
+     * {@code true} default is returned.
+     * </p>
      *
      * @return {@code true}, if model object class path resolution is enabled by default; {@code false}, if model object
      * class path resolution is disabled by default.
@@ -358,9 +387,11 @@ public class ToolsModelProcessor implements ModelProcessor
 
     /**
      * Gets the head comment the processor is applying by default.
-     * <p>The default head comment is controlled by system property
+     * <p>
+     * The default head comment is controlled by system property
      * {@code org.jomc.tools.modlet.ToolsModelProcessor.defaultHeadComment} holding the head comment the processor is
-     * applying by default. If that property is not set, the {@code //} default is returned.</p>
+     * applying by default. If that property is not set, the {@code //} default is returned.
+     * </p>
      *
      * @return The head comment the processor is applying by default or {@code null}.
      *
@@ -424,9 +455,11 @@ public class ToolsModelProcessor implements ModelProcessor
 
     /**
      * Gets the tail comment the processor is applying by default.
-     * <p>The default tail comment is controlled by system property
+     * <p>
+     * The default tail comment is controlled by system property
      * {@code org.jomc.tools.modlet.ToolsModelProcessor.defaultTailComment} holding the tail comment the processor is
-     * applying by default. If that property is not set, the {@code null} default is returned.</p>
+     * applying by default. If that property is not set, the {@code null} default is returned.
+     * </p>
      *
      * @return The tail comment the processor is applying by default or {@code null}.
      *
@@ -521,7 +554,7 @@ public class ToolsModelProcessor implements ModelProcessor
 
         boolean contextModelObjectClasspathResolutionEnabled = this.isModelObjectClasspathResolutionEnabled();
         if ( contextModelObjectClasspathResolutionEnabled == DEFAULT_MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED
-             && context.getAttribute( MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME ) instanceof Boolean )
+                 && context.getAttribute( MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME ) instanceof Boolean )
         {
             contextModelObjectClasspathResolutionEnabled =
                 (Boolean) context.getAttribute( MODEL_OBJECT_CLASSPATH_RESOLUTION_ENABLED_ATTRIBUTE_NAME );
@@ -542,7 +575,7 @@ public class ToolsModelProcessor implements ModelProcessor
                                                                   context.getClassLoader() );
 
                     if ( classpathModule != null
-                         && modules.getModule( Modules.getDefaultClasspathModuleName() ) == null )
+                             && modules.getModule( Modules.getDefaultClasspathModuleName() ) == null )
                     {
                         modules.getModule().add( classpathModule );
                     }
@@ -598,8 +631,10 @@ public class ToolsModelProcessor implements ModelProcessor
 
     /**
      * Gets the default source code file location for a given specification.
-     * <p>If the specification provides a Java type name, this method returns a Java source code file location based on
-     * that Java type name.</p>
+     * <p>
+     * If the specification provides a Java type name, this method returns a Java source code file location based on
+     * that Java type name.
+     * </p>
      *
      * @param context The context to get the default location with.
      * @param modules The model to get the default location with.
@@ -607,7 +642,7 @@ public class ToolsModelProcessor implements ModelProcessor
      *
      * @return The default location for {@code specification} or {@code null}.
      *
-     * @throws NullPointerExeption if {@code context}, {@code modules} or {@code specification} is {@code null}.
+     * @throws NullPointerException if {@code context}, {@code modules} or {@code specification} is {@code null}.
      *
      * @see SourceFileType#getLocation()
      * @see Specification#getJavaTypeName()
@@ -648,8 +683,10 @@ public class ToolsModelProcessor implements ModelProcessor
 
     /**
      * Gets the default source code file location for a given implementation.
-     * <p>If the implementation provides a Java type name, this method returns a Java source code file location based on
-     * that Java type name.</p>
+     * <p>
+     * If the implementation provides a Java type name, this method returns a Java source code file location based on
+     * that Java type name.
+     * </p>
      *
      * @param context The context to get the default location with.
      * @param modules The model to get the default location with.
@@ -657,7 +694,7 @@ public class ToolsModelProcessor implements ModelProcessor
      *
      * @return The default location for {@code implementation} or {@code null}.
      *
-     * @throws NullPointerExeption if {@code context}, {@code modules} or {@code implementation} is {@code null}.
+     * @throws NullPointerException if {@code context}, {@code modules} or {@code implementation} is {@code null}.
      *
      * @see SourceFileType#getLocation()
      * @see Implementation#getJavaTypeName()
@@ -698,8 +735,10 @@ public class ToolsModelProcessor implements ModelProcessor
 
     /**
      * Gets the default source section name for a given specification.
-     * <p>If the specification provides a Java type name, this method returns a section name based on that Java type
-     * name.</p>
+     * <p>
+     * If the specification provides a Java type name, this method returns a section name based on that Java type
+     * name.
+     * </p>
      *
      * @param context The context to get the default section name with.
      * @param modules The model to get the default section name with.
@@ -707,7 +746,7 @@ public class ToolsModelProcessor implements ModelProcessor
      *
      * @return The default source section name for {@code specification} or {@code null}.
      *
-     * @throws NullPointerExeption if {@code context}, {@code modules} or {@code specification} is {@code null}.
+     * @throws NullPointerException if {@code context}, {@code modules} or {@code specification} is {@code null}.
      *
      * @see SourceSectionType#getName()
      * @see Specification#getJavaTypeName()
@@ -750,8 +789,10 @@ public class ToolsModelProcessor implements ModelProcessor
 
     /**
      * Gets the default source section name for a given implementation.
-     * <p>If the implementation provides a Java type name, this method returns a section name based that Java type
-     * name.</p>
+     * <p>
+     * If the implementation provides a Java type name, this method returns a section name based that Java type
+     * name.
+     * </p>
      *
      * @param context The context to get the default section name with.
      * @param modules The model to get the default section name with.
@@ -759,7 +800,7 @@ public class ToolsModelProcessor implements ModelProcessor
      *
      * @return The default source section name for {@code implementation} or {@code null}.
      *
-     * @throws NullPointerExeption if {@code context}, {@code modules} or {@code implementation} is {@code null}.
+     * @throws NullPointerException if {@code context}, {@code modules} or {@code implementation} is {@code null}.
      *
      * @see SourceSectionType#getName()
      * @see Implementation#getJavaTypeName()
@@ -835,7 +876,7 @@ public class ToolsModelProcessor implements ModelProcessor
         if ( ( DEFAULT_HEAD_COMMENT != null
                ? DEFAULT_HEAD_COMMENT.equals( contextHeadComment )
                : contextHeadComment == null )
-             && context.getAttribute( HEAD_COMMENT_ATTRIBUTE_NAME ) instanceof String )
+                 && context.getAttribute( HEAD_COMMENT_ATTRIBUTE_NAME ) instanceof String )
         {
             contextHeadComment = (String) context.getAttribute( HEAD_COMMENT_ATTRIBUTE_NAME );
         }
@@ -849,7 +890,7 @@ public class ToolsModelProcessor implements ModelProcessor
         if ( ( DEFAULT_TAIL_COMMENT != null
                ? DEFAULT_TAIL_COMMENT.equals( contextTailComment )
                : contextTailComment == null )
-             && context.getAttribute( TAIL_COMMENT_ATTRIBUTE_NAME ) instanceof String )
+                 && context.getAttribute( TAIL_COMMENT_ATTRIBUTE_NAME ) instanceof String )
         {
             contextTailComment = (String) context.getAttribute( TAIL_COMMENT_ATTRIBUTE_NAME );
         }
@@ -1009,7 +1050,7 @@ public class ToolsModelProcessor implements ModelProcessor
         if ( ( DEFAULT_HEAD_COMMENT != null
                ? DEFAULT_HEAD_COMMENT.equals( contextHeadComment )
                : contextHeadComment == null )
-             && context.getAttribute( HEAD_COMMENT_ATTRIBUTE_NAME ) instanceof String )
+                 && context.getAttribute( HEAD_COMMENT_ATTRIBUTE_NAME ) instanceof String )
         {
             contextHeadComment = (String) context.getAttribute( HEAD_COMMENT_ATTRIBUTE_NAME );
         }
@@ -1023,7 +1064,7 @@ public class ToolsModelProcessor implements ModelProcessor
         if ( ( DEFAULT_TAIL_COMMENT != null
                ? DEFAULT_TAIL_COMMENT.equals( contextTailComment )
                : contextTailComment == null )
-             && context.getAttribute( TAIL_COMMENT_ATTRIBUTE_NAME ) instanceof String )
+                 && context.getAttribute( TAIL_COMMENT_ATTRIBUTE_NAME ) instanceof String )
         {
             contextTailComment = (String) context.getAttribute( TAIL_COMMENT_ATTRIBUTE_NAME );
         }
@@ -1283,10 +1324,10 @@ public class ToolsModelProcessor implements ModelProcessor
     private static String getMessage( final Throwable t )
     {
         return t != null
-               ? t.getMessage() != null && t.getMessage().trim().length() > 0
-                 ? t.getMessage()
-                 : getMessage( t.getCause() )
-               : null;
+                   ? t.getMessage() != null && t.getMessage().trim().length() > 0
+                         ? t.getMessage()
+                         : getMessage( t.getCause() )
+                   : null;
 
     }
 

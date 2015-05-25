@@ -89,7 +89,8 @@ import org.jomc.util.VersionParser;
 /**
  * Processes class files.
  *
- * <p><b>Use Cases:</b><br/><ul>
+ * <p>
+ * <b>Use Cases:</b><br/><ul>
  * <li>{@link #commitModelObjects(org.jomc.modlet.ModelContext, java.io.File) }</li>
  * <li>{@link #commitModelObjects(org.jomc.model.Module, org.jomc.modlet.ModelContext, java.io.File) }</li>
  * <li>{@link #commitModelObjects(org.jomc.model.Specification, org.jomc.modlet.ModelContext, java.io.File) }</li>
@@ -116,12 +117,16 @@ import org.jomc.util.VersionParser;
 public class ClassFileProcessor extends JomcTool
 {
 
-    /** Empty byte array. */
+    /**
+     * Empty byte array.
+     */
     private static final byte[] NO_BYTES =
     {
     };
 
-    /** Creates a new {@code ClassFileProcessor} instance. */
+    /**
+     * Creates a new {@code ClassFileProcessor} instance.
+     */
     public ClassFileProcessor()
     {
         super();

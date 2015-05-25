@@ -115,7 +115,9 @@ public class TemplateParameterTypeTest
 
     }
 
-    /** Creates a new {@code TemplateParameterTypeTest} instance. */
+    /**
+     * Creates a new {@code TemplateParameterTypeTest} instance.
+     */
     public TemplateParameterTypeTest()
     {
         super();
