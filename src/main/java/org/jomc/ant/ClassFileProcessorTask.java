@@ -44,13 +44,19 @@ import org.jomc.tools.ClassFileProcessor;
 public class ClassFileProcessorTask extends JomcToolTask
 {
 
-    /** Controls processing of class files. */
+    /**
+     * Controls processing of class files.
+     */
     private boolean classProcessingEnabled = true;
 
-    /** Class of the {@code ClassFileProcessor} backing the task. */
+    /**
+     * Class of the {@code ClassFileProcessor} backing the task.
+     */
     private Class<? extends ClassFileProcessor> classFileProcessorClass;
 
-    /** Creates a new {@code ClassFileProcessorTask} instance. */
+    /**
+     * Creates a new {@code ClassFileProcessorTask} instance.
+     */
     public ClassFileProcessorTask()
     {
         super();
@@ -198,7 +204,9 @@ public class ClassFileProcessorTask extends JomcToolTask
 
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClassFileProcessorTask clone()
     {

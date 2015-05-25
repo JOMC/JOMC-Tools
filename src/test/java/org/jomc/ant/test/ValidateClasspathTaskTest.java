@@ -30,13 +30,11 @@
  */
 package org.jomc.ant.test;
 
-import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.jomc.ant.ClassProcessingException;
 import org.jomc.ant.ValidateClasspathTask;
 import org.jomc.ant.test.support.AntExecutionResult;
 import static org.jomc.ant.test.support.Assert.assertException;
-import static org.jomc.ant.test.support.Assert.assertExceptionMessage;
 import static org.jomc.ant.test.support.Assert.assertMessageLogged;
 import static org.jomc.ant.test.support.Assert.assertMessageNotLogged;
 import static org.jomc.ant.test.support.Assert.assertNoException;
@@ -51,27 +49,35 @@ import org.junit.Test;
 public class ValidateClasspathTaskTest extends ClassFileProcessorTaskTest
 {
 
-    /** Creates a new {@code ValidateClasspathTaskTest} instance. */
+    /**
+     * Creates a new {@code ValidateClasspathTaskTest} instance.
+     */
     public ValidateClasspathTaskTest()
     {
         super();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ValidateClasspathTask getJomcTask()
     {
         return (ValidateClasspathTask) super.getJomcTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ValidateClasspathTask newJomcTask()
     {
         return new ValidateClasspathTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getBuildFileName()
     {

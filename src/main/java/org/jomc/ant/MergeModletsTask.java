@@ -81,34 +81,54 @@ import org.jomc.modlet.ObjectFactory;
 public final class MergeModletsTask extends JomcTask
 {
 
-    /** The encoding of the modlet resource. */
+    /**
+     * The encoding of the modlet resource.
+     */
     private String modletEncoding;
 
-    /** File to write the merged modlet to. */
+    /**
+     * File to write the merged modlet to.
+     */
     private File modletFile;
 
-    /** The name of the merged modlet. */
+    /**
+     * The name of the merged modlet.
+     */
     private String modletName;
 
-    /** The version of the merged modlet. */
+    /**
+     * The version of the merged modlet.
+     */
     private String modletVersion;
 
-    /** The vendor of the merged modlet. */
+    /**
+     * The vendor of the merged modlet.
+     */
     private String modletVendor;
 
-    /** Resources to merge. */
+    /**
+     * Resources to merge.
+     */
     private Set<ModletResourceType> modletResources;
 
-    /** Included modlets. */
+    /**
+     * Included modlets.
+     */
     private Set<NameType> modletIncludes;
 
-    /** Excluded modlets. */
+    /**
+     * Excluded modlets.
+     */
     private Set<NameType> modletExcludes;
 
-    /** XSLT documents to use for transforming modlet objects. */
+    /**
+     * XSLT documents to use for transforming modlet objects.
+     */
     private List<TransformerResourceType> modletObjectStylesheetResources;
 
-    /** Creates a new {@code MergeModletsTask} instance. */
+    /**
+     * Creates a new {@code MergeModletsTask} instance.
+     */
     public MergeModletsTask()
     {
         super();
@@ -241,9 +261,11 @@ public final class MergeModletsTask extends JomcTask
 
     /**
      * Gets a set of resource names to merge.
-     * <p>This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
      * to the returned set will be present inside the object. This is why there is no {@code set} method for the
-     * modlet resources property.</p>
+     * modlet resources property.
+     * </p>
      *
      * @return A set of names of resources to merge.
      *
@@ -275,9 +297,11 @@ public final class MergeModletsTask extends JomcTask
 
     /**
      * Gets a set of modlet names to include.
-     * <p>This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
      * to the returned set will be present inside the object. This is why there is no {@code set} method for the
-     * modlet includes property.</p>
+     * modlet includes property.
+     * </p>
      *
      * @return A set of modlet names to include.
      *
@@ -309,9 +333,11 @@ public final class MergeModletsTask extends JomcTask
 
     /**
      * Gets a set of modlet names to exclude.
-     * <p>This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
      * to the returned set will be present inside the object. This is why there is no {@code set} method for the
-     * modlet excludes property.</p>
+     * modlet excludes property.
+     * </p>
      *
      * @return A set of modlet names to exclude.
      *
@@ -343,9 +369,11 @@ public final class MergeModletsTask extends JomcTask
 
     /**
      * Gets the XSLT documents to use for transforming modlet objects.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * modlet object stylesheet resources property.</p>
+     * modlet object stylesheet resources property.
+     * </p>
      *
      * @return The XSLT documents to use for transforming modlet objects.
      *
@@ -375,7 +403,9 @@ public final class MergeModletsTask extends JomcTask
         return modletObjectStylesheetResource;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void preExecuteTask() throws BuildException
     {
@@ -424,7 +454,7 @@ public final class MergeModletsTask extends JomcTask
                 resources.add( defaultResource );
             }
 
-            for ( ResourceType resource : resources )
+            for ( final ResourceType resource : resources )
             {
                 final URL[] urls = this.getResources( context, resource.getLocation() );
 
@@ -537,7 +567,7 @@ public final class MergeModletsTask extends JomcTask
                 suppressExceptionOnClose = true;
             }
 
-            for ( String defaultExclude : classLoader.getModletExcludes() )
+            for ( final String defaultExclude : classLoader.getModletExcludes() )
             {
                 final Modlet m = modlets.getModlet( defaultExclude );
                 if ( m != null )
@@ -592,7 +622,7 @@ public final class MergeModletsTask extends JomcTask
                     transformer.transform( source, result );
 
                     if ( result.getResult() instanceof JAXBElement<?>
-                         && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Modlet )
+                             && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Modlet )
                     {
                         mergedModlet = (Modlet) ( (JAXBElement<?>) result.getResult() ).getValue();
                     }
@@ -682,7 +712,7 @@ public final class MergeModletsTask extends JomcTask
             throw new NullPointerException( "modlet" );
         }
 
-        for ( NameType include : this.getModletIncludes() )
+        for ( final NameType include : this.getModletIncludes() )
         {
             if ( include.getName().equals( modlet.getName() ) )
             {
@@ -711,7 +741,7 @@ public final class MergeModletsTask extends JomcTask
             throw new NullPointerException( "modlet" );
         }
 
-        for ( NameType exclude : this.getModletExcludes() )
+        for ( final NameType exclude : this.getModletExcludes() )
         {
             if ( exclude.getName().equals( modlet.getName() ) )
             {
@@ -722,7 +752,9 @@ public final class MergeModletsTask extends JomcTask
         return false;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MergeModletsTask clone()
     {
@@ -732,7 +764,7 @@ public final class MergeModletsTask extends JomcTask
         if ( this.modletResources != null )
         {
             clone.modletResources = new HashSet<ModletResourceType>( this.modletResources.size() );
-            for ( ModletResourceType e : this.modletResources )
+            for ( final ModletResourceType e : this.modletResources )
             {
                 clone.modletResources.add( e.clone() );
             }
@@ -741,7 +773,7 @@ public final class MergeModletsTask extends JomcTask
         if ( this.modletExcludes != null )
         {
             clone.modletExcludes = new HashSet<NameType>( this.modletExcludes.size() );
-            for ( NameType e : this.modletExcludes )
+            for ( final NameType e : this.modletExcludes )
             {
                 clone.modletExcludes.add( e.clone() );
             }
@@ -750,7 +782,7 @@ public final class MergeModletsTask extends JomcTask
         if ( this.modletIncludes != null )
         {
             clone.modletIncludes = new HashSet<NameType>( this.modletIncludes.size() );
-            for ( NameType e : this.modletIncludes )
+            for ( final NameType e : this.modletIncludes )
             {
                 clone.modletIncludes.add( e.clone() );
             }
@@ -761,7 +793,7 @@ public final class MergeModletsTask extends JomcTask
             clone.modletObjectStylesheetResources =
                 new ArrayList<TransformerResourceType>( this.modletObjectStylesheetResources.size() );
 
-            for ( TransformerResourceType e : this.modletObjectStylesheetResources )
+            for ( final TransformerResourceType e : this.modletObjectStylesheetResources )
             {
                 clone.modletObjectStylesheetResources.add( e.clone() );
             }

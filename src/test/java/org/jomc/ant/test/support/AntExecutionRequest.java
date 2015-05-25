@@ -41,10 +41,14 @@ import org.apache.tools.ant.Project;
 public class AntExecutionRequest
 {
 
-    /** The {@code Project} to execute a target of. */
+    /**
+     * The {@code Project} to execute a target of.
+     */
     private final Project project;
 
-    /** The identifier of the target to execute. */
+    /**
+     * The identifier of the target to execute.
+     */
     private final String target;
 
     /**

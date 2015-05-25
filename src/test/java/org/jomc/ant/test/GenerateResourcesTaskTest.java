@@ -51,27 +51,35 @@ import org.junit.Test;
 public class GenerateResourcesTaskTest extends ResourceFileProcessorTaskTest
 {
 
-    /** Creates a new {@code GenerateResourcesTaskTest} instance. */
+    /**
+     * Creates a new {@code GenerateResourcesTaskTest} instance.
+     */
     public GenerateResourcesTaskTest()
     {
         super();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenerateResourcesTask getJomcTask()
     {
         return (GenerateResourcesTask) super.getJomcTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected GenerateResourcesTask newJomcTask()
     {
         return new GenerateResourcesTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getBuildFileName()
     {

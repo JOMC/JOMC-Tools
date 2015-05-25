@@ -48,27 +48,35 @@ import static org.junit.Assert.fail;
 public class JomcToolTaskTest extends JomcModelTaskTest
 {
 
-    /** Creates a new {@code JomcToolTaskTest} instance. */
+    /**
+     * Creates a new {@code JomcToolTaskTest} instance.
+     */
     public JomcToolTaskTest()
     {
         super();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JomcToolTask getJomcTask()
     {
         return (JomcToolTask) super.getJomcTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected JomcToolTask newJomcTask()
     {
         return new JomcToolTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getBuildFileName()
     {

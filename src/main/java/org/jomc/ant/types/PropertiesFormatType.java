@@ -39,9 +39,13 @@ package org.jomc.ant.types;
 public enum PropertiesFormatType
 {
 
-    /** Plain format. */
+    /**
+     * Plain format.
+     */
     PLAIN,
-    /** XML format. */
+    /**
+     * XML format.
+     */
     XML
 
 }

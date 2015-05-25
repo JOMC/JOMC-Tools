@@ -51,27 +51,35 @@ import org.junit.Test;
 public class ValidateClassesTaskTest extends ClassFileProcessorTaskTest
 {
 
-    /** Creates a new {@code ValidateClassesTaskTest} instance. */
+    /**
+     * Creates a new {@code ValidateClassesTaskTest} instance.
+     */
     public ValidateClassesTaskTest()
     {
         super();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ValidateClassesTask getJomcTask()
     {
         return (ValidateClassesTask) super.getJomcTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ValidateClassesTask newJomcTask()
     {
         return new ValidateClassesTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getBuildFileName()
     {

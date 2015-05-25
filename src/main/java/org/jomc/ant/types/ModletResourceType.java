@@ -41,7 +41,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class ModletResourceType extends ResourceType
 {
 
-    /** Creates a new {@code ModletResourceType} instance. */
+    /**
+     * Creates a new {@code ModletResourceType} instance.
+     */
     public ModletResourceType()
     {
         super();

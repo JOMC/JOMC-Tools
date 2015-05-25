@@ -43,37 +43,59 @@ import org.apache.tools.ant.BuildEvent;
 public class AntExecutionResult
 {
 
-    /** The characters written to the system output stream during execution of the target. */
+    /**
+     * The characters written to the system output stream during execution of the target.
+     */
     private String systemOutput;
 
-    /** The characters written to the system error stream during execution of the target. */
+    /**
+     * The characters written to the system error stream during execution of the target.
+     */
     private String systemError;
 
-    /** List of {@code buildStarted} events fired during execution of the target. */
+    /**
+     * List of {@code buildStarted} events fired during execution of the target.
+     */
     private List<BuildEvent> buildStartedEvents;
 
-    /** List of {@code buildFinished} events fired during execution of the target. */
+    /**
+     * List of {@code buildFinished} events fired during execution of the target.
+     */
     private List<BuildEvent> buildFinishedEvents;
 
-    /** List of {@code targetStarted} events fired during execution of the target. */
+    /**
+     * List of {@code targetStarted} events fired during execution of the target.
+     */
     private List<BuildEvent> targetStartedEvents;
 
-    /** List of {@code targetFinished} events fired during execution of the target. */
+    /**
+     * List of {@code targetFinished} events fired during execution of the target.
+     */
     private List<BuildEvent> targetFinishedEvents;
 
-    /** List of {@code taskStarted} events fired during execution of the target. */
+    /**
+     * List of {@code taskStarted} events fired during execution of the target.
+     */
     private List<BuildEvent> taskStartedEvents;
 
-    /** List of {@code taskFinished} events fired during execution of the target. */
+    /**
+     * List of {@code taskFinished} events fired during execution of the target.
+     */
     private List<BuildEvent> taskFinishedEvents;
 
-    /** List of {@code messageLogged} events fired during execution of the target. */
+    /**
+     * List of {@code messageLogged} events fired during execution of the target.
+     */
     private List<BuildEvent> messageLoggedEvents;
 
-    /** The throwable thrown by the execution of the target. */
+    /**
+     * The throwable thrown by the execution of the target.
+     */
     private Throwable throwable;
 
-    /**  Creates a new {@code AntExecutionResult}. */
+    /**
+     * Creates a new {@code AntExecutionResult}.
+     */
     public AntExecutionResult()
     {
         super();
@@ -143,9 +165,11 @@ public class AntExecutionResult
 
     /**
      * Gets the list of {@code buildStarted} events fired during execution of the target.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * build started events property.</p>
+     * build started events property.
+     * </p>
      *
      * @return The list of {@code buildStarted} events fired during execution of the target.
      */
@@ -161,9 +185,11 @@ public class AntExecutionResult
 
     /**
      * Gets the list of {@code buildFinished} events fired during execution of the target.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * build finished events property.</p>
+     * build finished events property.
+     * </p>
      *
      * @return The list of {@code buildFinished} events fired during execution of the target.
      */
@@ -179,9 +205,11 @@ public class AntExecutionResult
 
     /**
      * Gets the list of {@code targetStarted} events fired during execution of the target.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * target started events property.</p>
+     * target started events property.
+     * </p>
      *
      * @return The list of {@code targetStarted} events fired during execution of the target.
      */
@@ -197,9 +225,11 @@ public class AntExecutionResult
 
     /**
      * Gets the list of {@code targetFinished} events fired during execution of the target.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * target finished events property.</p>
+     * target finished events property.
+     * </p>
      *
      * @return The list of {@code targetFinished} events fired during execution of the target.
      */
@@ -215,9 +245,11 @@ public class AntExecutionResult
 
     /**
      * Gets the list of {@code taskStarted} events fired during execution of the target.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * task started events property.</p>
+     * task started events property.
+     * </p>
      *
      * @return The list of {@code taskStarted} events fired during execution of the target.
      */
@@ -233,9 +265,11 @@ public class AntExecutionResult
 
     /**
      * Gets the list of {@code taskFinished} events fired during execution of the target.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * task finished events property.</p>
+     * task finished events property.
+     * </p>
      *
      * @return The list of {@code taskFinished} events fired during execution of the target.
      */
@@ -251,9 +285,11 @@ public class AntExecutionResult
 
     /**
      * Gets the list of {@code messageLogged} events fired during execution of the target.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * message logged events property.</p>
+     * message logged events property.
+     * </p>
      *
      * @return The list of {@code messageLogger} events fired during execution of the target.
      */

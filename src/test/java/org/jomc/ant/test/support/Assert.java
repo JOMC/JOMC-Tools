@@ -47,7 +47,9 @@ import static org.junit.Assert.assertTrue;
 public abstract class Assert
 {
 
-    /** Creates a new {@code Assert} instance. */
+    /**
+     * Creates a new {@code Assert} instance.
+     */
     public Assert()
     {
         super();
@@ -288,7 +290,7 @@ public abstract class Assert
 
         BuildEvent messageLoggedEvent = null;
 
-        for ( BuildEvent e : result.getMessageLoggedEvents() )
+        for ( final BuildEvent e : result.getMessageLoggedEvents() )
         {
             if ( message.equals( e.getMessage() ) )
             {
@@ -316,7 +318,7 @@ public abstract class Assert
 
         BuildEvent messageLoggedEvent = null;
 
-        for ( BuildEvent e : result.getMessageLoggedEvents() )
+        for ( final BuildEvent e : result.getMessageLoggedEvents() )
         {
             if ( message.equals( e.getMessage() ) )
             {
@@ -343,7 +345,7 @@ public abstract class Assert
 
         BuildEvent messageLoggedEvent = null;
 
-        for ( BuildEvent e : result.getMessageLoggedEvents() )
+        for ( final BuildEvent e : result.getMessageLoggedEvents() )
         {
             if ( message.equals( e.getMessage() ) )
             {
@@ -376,7 +378,7 @@ public abstract class Assert
 
         BuildEvent messageLoggedEvent = null;
 
-        for ( BuildEvent e : result.getMessageLoggedEvents() )
+        for ( final BuildEvent e : result.getMessageLoggedEvents() )
         {
             if ( message.equals( e.getMessage() ) )
             {
@@ -402,7 +404,7 @@ public abstract class Assert
 
         BuildEvent messageLoggedEvent = null;
 
-        for ( BuildEvent e : result.getMessageLoggedEvents() )
+        for ( final BuildEvent e : result.getMessageLoggedEvents() )
         {
             if ( e.getMessage() != null && e.getMessage().contains( needle ) )
             {
@@ -431,7 +433,7 @@ public abstract class Assert
 
         BuildEvent messageLoggedEvent = null;
 
-        for ( BuildEvent e : result.getMessageLoggedEvents() )
+        for ( final BuildEvent e : result.getMessageLoggedEvents() )
         {
             if ( e.getMessage() != null && e.getMessage().contains( needle ) )
             {
@@ -459,7 +461,7 @@ public abstract class Assert
 
         BuildEvent messageLoggedEvent = null;
 
-        for ( BuildEvent e : result.getMessageLoggedEvents() )
+        for ( final BuildEvent e : result.getMessageLoggedEvents() )
         {
             if ( e.getMessage() != null && e.getMessage().contains( needle ) )
             {
@@ -492,7 +494,7 @@ public abstract class Assert
 
         BuildEvent messageLoggedEvent = null;
 
-        for ( BuildEvent e : result.getMessageLoggedEvents() )
+        for ( final BuildEvent e : result.getMessageLoggedEvents() )
         {
             if ( e.getMessage() != null && e.getMessage().contains( needle ) )
             {
@@ -518,7 +520,7 @@ public abstract class Assert
 
         BuildEvent messageLoggedEvent = null;
 
-        for ( BuildEvent e : result.getMessageLoggedEvents() )
+        for ( final BuildEvent e : result.getMessageLoggedEvents() )
         {
             if ( message.equals( e.getMessage() ) )
             {
@@ -528,7 +530,7 @@ public abstract class Assert
         }
 
         assertNull( getMessage( "unexpectedMessageLogged", messageLoggedEvent != null
-                                                           ? messageLoggedEvent.getMessage() : null ),
+                                                               ? messageLoggedEvent.getMessage() : null ),
                     messageLoggedEvent );
 
     }
@@ -549,7 +551,7 @@ public abstract class Assert
 
         BuildEvent messageLoggedEvent = null;
 
-        for ( BuildEvent e : result.getMessageLoggedEvents() )
+        for ( final BuildEvent e : result.getMessageLoggedEvents() )
         {
             if ( message.equals( e.getMessage() ) )
             {
@@ -574,7 +576,7 @@ public abstract class Assert
 
         BuildEvent messageLoggedEvent = null;
 
-        for ( BuildEvent e : result.getMessageLoggedEvents() )
+        for ( final BuildEvent e : result.getMessageLoggedEvents() )
         {
             if ( e.getMessage() != null && e.getMessage().contains( needle ) )
             {
@@ -584,7 +586,7 @@ public abstract class Assert
         }
 
         assertNull( getMessage( "unexpectedMessageLogged", messageLoggedEvent != null
-                                                           ? messageLoggedEvent.getMessage() : null ),
+                                                               ? messageLoggedEvent.getMessage() : null ),
                     messageLoggedEvent );
 
     }
@@ -606,7 +608,7 @@ public abstract class Assert
 
         BuildEvent messageLoggedEvent = null;
 
-        for ( BuildEvent e : result.getMessageLoggedEvents() )
+        for ( final BuildEvent e : result.getMessageLoggedEvents() )
         {
             if ( e.getMessage() != null && e.getMessage().contains( needle ) )
             {

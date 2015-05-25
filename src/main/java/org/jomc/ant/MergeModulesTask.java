@@ -79,31 +79,49 @@ import org.jomc.modlet.ModelValidationReport;
 public final class MergeModulesTask extends JomcModelTask
 {
 
-    /** The encoding of the module resource. */
+    /**
+     * The encoding of the module resource.
+     */
     private String moduleEncoding;
 
-    /** File to write the merged module to. */
+    /**
+     * File to write the merged module to.
+     */
     private File moduleFile;
 
-    /** The name of the merged module. */
+    /**
+     * The name of the merged module.
+     */
     private String moduleName;
 
-    /** The version of the merged module. */
+    /**
+     * The version of the merged module.
+     */
     private String moduleVersion;
 
-    /** The vendor of the merged module. */
+    /**
+     * The vendor of the merged module.
+     */
     private String moduleVendor;
 
-    /** Included modules. */
+    /**
+     * Included modules.
+     */
     private Set<NameType> moduleIncludes;
 
-    /** Excluded modules. */
+    /**
+     * Excluded modules.
+     */
     private Set<NameType> moduleExcludes;
 
-    /** XSLT documents to use for transforming model objects. */
+    /**
+     * XSLT documents to use for transforming model objects.
+     */
     private List<TransformerResourceType> modelObjectStylesheetResources;
 
-    /** Creates a new {@code MergeModulesTask} instance. */
+    /**
+     * Creates a new {@code MergeModulesTask} instance.
+     */
     public MergeModulesTask()
     {
         super();
@@ -236,9 +254,11 @@ public final class MergeModulesTask extends JomcModelTask
 
     /**
      * Gets a set of module names to include.
-     * <p>This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
      * to the returned set will be present inside the object. This is why there is no {@code set} method for the
-     * module includes property.</p>
+     * module includes property.
+     * </p>
      *
      * @return A set of module names to include.
      *
@@ -270,9 +290,11 @@ public final class MergeModulesTask extends JomcModelTask
 
     /**
      * Gets a set of module names to exclude.
-     * <p>This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
      * to the returned set will be present inside the object. This is why there is no {@code set} method for the
-     * module excludes property.</p>
+     * module excludes property.
+     * </p>
      *
      * @return A set of module names to exclude.
      *
@@ -304,9 +326,11 @@ public final class MergeModulesTask extends JomcModelTask
 
     /**
      * Gets the XSLT documents to use for transforming model objects.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * model object stylesheet resources property.</p>
+     * model object stylesheet resources property.
+     * </p>
      *
      * @return The XSLT documents to use for transforming model objects.
      *
@@ -336,7 +360,9 @@ public final class MergeModulesTask extends JomcModelTask
         return modelObjectStylesheetResource;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void preExecuteTask() throws BuildException
     {
@@ -384,7 +410,7 @@ public final class MergeModulesTask extends JomcModelTask
                 resources.add( defaultResource );
             }
 
-            for ( ResourceType resource : resources )
+            for ( final ResourceType resource : resources )
             {
                 final URL[] urls = this.getResources( context, resource.getLocation() );
 
@@ -563,7 +589,7 @@ public final class MergeModulesTask extends JomcModelTask
                     transformer.transform( source, result );
 
                     if ( result.getResult() instanceof JAXBElement<?>
-                         && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Module )
+                             && ( (JAXBElement<?>) result.getResult() ).getValue() instanceof Module )
                     {
                         mergedModule = (Module) ( (JAXBElement<?>) result.getResult() ).getValue();
                     }
@@ -653,7 +679,7 @@ public final class MergeModulesTask extends JomcModelTask
             throw new NullPointerException( "module" );
         }
 
-        for ( NameType include : this.getModuleIncludes() )
+        for ( final NameType include : this.getModuleIncludes() )
         {
             if ( include.getName().equals( module.getName() ) )
             {
@@ -682,7 +708,7 @@ public final class MergeModulesTask extends JomcModelTask
             throw new NullPointerException( "module" );
         }
 
-        for ( NameType exclude : this.getModuleExcludes() )
+        for ( final NameType exclude : this.getModuleExcludes() )
         {
             if ( exclude.getName().equals( module.getName() ) )
             {
@@ -693,7 +719,9 @@ public final class MergeModulesTask extends JomcModelTask
         return false;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MergeModulesTask clone()
     {
@@ -703,7 +731,7 @@ public final class MergeModulesTask extends JomcModelTask
         if ( this.moduleExcludes != null )
         {
             clone.moduleExcludes = new HashSet<NameType>( this.moduleExcludes.size() );
-            for ( NameType e : this.moduleExcludes )
+            for ( final NameType e : this.moduleExcludes )
             {
                 clone.moduleExcludes.add( e.clone() );
             }
@@ -712,7 +740,7 @@ public final class MergeModulesTask extends JomcModelTask
         if ( this.moduleIncludes != null )
         {
             clone.moduleIncludes = new HashSet<NameType>( this.moduleIncludes.size() );
-            for ( NameType e : this.moduleIncludes )
+            for ( final NameType e : this.moduleIncludes )
             {
                 clone.moduleIncludes.add( e.clone() );
             }
@@ -723,7 +751,7 @@ public final class MergeModulesTask extends JomcModelTask
             clone.modelObjectStylesheetResources =
                 new ArrayList<TransformerResourceType>( this.modelObjectStylesheetResources.size() );
 
-            for ( TransformerResourceType e : this.modelObjectStylesheetResources )
+            for ( final TransformerResourceType e : this.modelObjectStylesheetResources )
             {
                 clone.modelObjectStylesheetResources.add( e.clone() );
             }

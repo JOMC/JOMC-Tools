@@ -42,10 +42,14 @@ import org.apache.tools.ant.Location;
 public class SourceProcessingException extends BuildException
 {
 
-    /** Serial version UID for backwards compatibility with 1.2.x object streams. */
+    /**
+     * Serial version UID for backwards compatibility with 1.2.x object streams.
+     */
     private static final long serialVersionUID = -104232960403079592L;
 
-    /** Creates a new {@code SourceProcessingException} instance without descriptive information. */
+    /**
+     * Creates a new {@code SourceProcessingException} instance without descriptive information.
+     */
     public SourceProcessingException()
     {
         super();

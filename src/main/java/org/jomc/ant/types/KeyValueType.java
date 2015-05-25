@@ -46,16 +46,24 @@ import org.apache.tools.ant.Location;
 public class KeyValueType implements Cloneable
 {
 
-    /** The key of the type. */
+    /**
+     * The key of the type.
+     */
     private String key;
 
-    /** The value of the type. */
+    /**
+     * The value of the type.
+     */
     private String value;
 
-    /** The class of the type of {@code value}. */
+    /**
+     * The class of the type of {@code value}.
+     */
     private Class<?> type;
 
-    /** Creates a new {@code KeyValueType} instance. */
+    /**
+     * Creates a new {@code KeyValueType} instance.
+     */
     public KeyValueType()
     {
         super();
@@ -170,7 +178,7 @@ public class KeyValueType implements Cloneable
                         final Method valueOf = this.getType().getMethod( "valueOf", String.class );
 
                         if ( Modifier.isStatic( valueOf.getModifiers() )
-                             && valueOf.getReturnType().equals( this.getType() ) )
+                                 && valueOf.getReturnType().equals( this.getType() ) )
                         {
                             o = valueOf.invoke( null, o );
                         }

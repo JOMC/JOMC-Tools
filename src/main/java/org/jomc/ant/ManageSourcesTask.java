@@ -57,10 +57,14 @@ import org.jomc.tools.SourceFileProcessor;
 public final class ManageSourcesTask extends SourceFileProcessorTask
 {
 
-    /** The directory holding the source files to manage. */
+    /**
+     * The directory holding the source files to manage.
+     */
     private File sourcesDirectory;
 
-    /** Creates a new {@code ManageSourcesTask} instance. */
+    /**
+     * Creates a new {@code ManageSourcesTask} instance.
+     */
     public ManageSourcesTask()
     {
         super();
@@ -90,7 +94,9 @@ public final class ManageSourcesTask extends SourceFileProcessorTask
         this.sourcesDirectory = value;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void preExecuteTask() throws BuildException
     {
@@ -193,7 +199,9 @@ public final class ManageSourcesTask extends SourceFileProcessorTask
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManageSourcesTask clone()
     {

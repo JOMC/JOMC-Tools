@@ -93,52 +93,84 @@ import org.jomc.modlet.ModletProvider;
 public class JomcTask extends Task
 {
 
-    /** The class path to process. */
+    /**
+     * The class path to process.
+     */
     private Path classpath;
 
-    /** The identifier of the model to process. */
+    /**
+     * The identifier of the model to process.
+     */
     private String model;
 
-    /** {@code ModelContext} attributes to apply. */
+    /**
+     * {@code ModelContext} attributes to apply.
+     */
     private List<KeyValueType> modelContextAttributes;
 
-    /** The name of the {@code ModelContextFactory} implementation class backing the task. */
+    /**
+     * The name of the {@code ModelContextFactory} implementation class backing the task.
+     */
     private String modelContextFactoryClassName;
 
-    /** Controls processing of models. */
+    /**
+     * Controls processing of models.
+     */
     private boolean modelProcessingEnabled = true;
 
-    /** The location to search for modlets. */
+    /**
+     * The location to search for modlets.
+     */
     private String modletLocation;
 
-    /** The {@code http://jomc.org/modlet} namespace schema system id of the context backing the task. */
+    /**
+     * The {@code http://jomc.org/modlet} namespace schema system id of the context backing the task.
+     */
     private String modletSchemaSystemId;
 
-    /** The location to search for providers. */
+    /**
+     * The location to search for providers.
+     */
     private String providerLocation;
 
-    /** The location to search for platform providers. */
+    /**
+     * The location to search for platform providers.
+     */
     private String platformProviderLocation;
 
-    /** The global transformation parameters to apply. */
+    /**
+     * The global transformation parameters to apply.
+     */
     private List<KeyValueType> transformationParameters;
 
-    /** The global transformation parameter resources to apply. */
+    /**
+     * The global transformation parameter resources to apply.
+     */
     private List<PropertiesResourceType> transformationParameterResources;
 
-    /** The global transformation output properties to apply. */
+    /**
+     * The global transformation output properties to apply.
+     */
     private List<KeyValueType> transformationOutputProperties;
 
-    /** The flag indicating JAXP schema validation of modlet resources is enabled. */
+    /**
+     * The flag indicating JAXP schema validation of modlet resources is enabled.
+     */
     private boolean modletResourceValidationEnabled = true;
 
-    /** Property controlling the execution of the task. */
+    /**
+     * Property controlling the execution of the task.
+     */
     private Object _if;
 
-    /** Property controlling the execution of the task. */
+    /**
+     * Property controlling the execution of the task.
+     */
     private Object unless;
 
-    /** Creates a new {@code JomcTask} instance. */
+    /**
+     * Creates a new {@code JomcTask} instance.
+     */
     public JomcTask()
     {
         super();
@@ -279,11 +311,13 @@ public class JomcTask extends Task
 
     /**
      * Gets the {@code ModelContext} attributes to apply.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * model context attributes property.</p>
+     * model context attributes property.
+     * </p>
      *
-     * @return The  {@code ModelContext} attributes to apply.
+     * @return The {@code ModelContext} attributes to apply.
      *
      * @see #createModelContextAttribute()
      * @see #newModelContext(java.lang.ClassLoader)
@@ -461,9 +495,11 @@ public class JomcTask extends Task
 
     /**
      * Gets the global transformation parameters to apply.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * transformation parameters property.</p>
+     * transformation parameters property.
+     * </p>
      *
      * @return The global transformation parameters to apply.
      *
@@ -496,9 +532,11 @@ public class JomcTask extends Task
 
     /**
      * Gets the global transformation parameter resources to apply.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * transformation parameter resources property.</p>
+     * transformation parameter resources property.
+     * </p>
      *
      * @return The global transformation parameter resources to apply.
      *
@@ -531,9 +569,11 @@ public class JomcTask extends Task
 
     /**
      * Gets the global transformation output properties to apply.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * transformation output properties property.</p>
+     * transformation output properties property.
+     * </p>
      *
      * @return The global transformation output properties to apply.
      *
@@ -697,11 +737,13 @@ public class JomcTask extends Task
 
     /**
      * Creates an {@code URL} for a given resource location.
-     * <p>This method first searches the class path of the task for a single resource matching {@code location}. If
+     * <p>
+     * This method first searches the class path of the task for a single resource matching {@code location}. If
      * such a resource is found, the URL of that resource is returned. If no such resource is found, an attempt is made
      * to parse the given location to an URL. On successful parsing, that URL is returned. Failing that, the given
      * location is interpreted as a file name relative to the project's base directory. If that file is found, the URL
-     * of that file is returned. Otherwise {@code null} is returned.</p>
+     * of that file is returned. Otherwise {@code null} is returned.
+     * </p>
      *
      * @param location The resource location to create an {@code URL} from.
      *
@@ -763,11 +805,13 @@ public class JomcTask extends Task
 
     /**
      * Creates an array of {@code URL}s for a given resource location.
-     * <p>This method first searches the given context for resources matching {@code location}. If such resources are
+     * <p>
+     * This method first searches the given context for resources matching {@code location}. If such resources are
      * found, an array of URLs of those resources is returned. If no such resources are found, an attempt is made
      * to parse the given location to an URL. On successful parsing, that URL is returned. Failing that, the given
      * location is interpreted as a file name relative to the project's base directory. If that file is found, the URL
-     * of that file is returned. Otherwise an empty array is returned.</p>
+     * of that file is returned. Otherwise an empty array is returned.
+     * </p>
      *
      * @param context The context to search for resources.
      * @param location The resource location to create an array of {@code URL}s from.
@@ -836,7 +880,7 @@ public class JomcTask extends Task
         int i = 0;
         final URL[] urls = new URL[ uris.size() ];
 
-        for ( URI uri : uris )
+        for ( final URI uri : uris )
         {
             try
             {
@@ -858,9 +902,11 @@ public class JomcTask extends Task
 
     /**
      * Creates an {@code URL} for a given directory location.
-     * <p>This method first attempts to parse the given location to an URL. On successful parsing, that URL is returned.
+     * <p>
+     * This method first attempts to parse the given location to an URL. On successful parsing, that URL is returned.
      * Failing that, the given location is interpreted as a directory name relative to the project's base directory. If
-     * that directory is found, the URL of that directory is returned. Otherwise {@code null} is returned.</p>
+     * that directory is found, the URL of that directory is returned. Otherwise {@code null} is returned.
+     * </p>
      *
      * @param location The directory location to create an {@code URL} from.
      *
@@ -975,7 +1021,7 @@ public class JomcTask extends Task
                 final Transformer transformer = f.newTransformer( new StreamSource( in, url.toURI().toASCIIString() ) );
                 transformer.setErrorListener( errorListener );
 
-                for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
+                for ( final Map.Entry<Object, Object> e : System.getProperties().entrySet() )
                 {
                     transformer.setParameter( e.getKey().toString(), e.getValue() );
                 }
@@ -989,8 +1035,8 @@ public class JomcTask extends Task
 
                 for ( int i = 0, s0 = this.getTransformationParameterResources().size(); i < s0; i++ )
                 {
-                    for ( Map.Entry<Object, Object> e :
-                          this.getProperties( this.getTransformationParameterResources().get( i ) ).entrySet() )
+                    for ( final Map.Entry<Object, Object> e
+                              : this.getProperties( this.getTransformationParameterResources().get( i ) ).entrySet() )
                     {
                         transformer.setParameter( e.getKey().toString(), e.getValue() );
                     }
@@ -1010,8 +1056,9 @@ public class JomcTask extends Task
 
                 for ( int i = 0, s0 = resource.getTransformationParameterResources().size(); i < s0; i++ )
                 {
-                    for ( Map.Entry<Object, Object> e :
-                          this.getProperties( resource.getTransformationParameterResources().get( i ) ).entrySet() )
+                    for ( final Map.Entry<Object, Object> e
+                              : this.getProperties( resource.getTransformationParameterResources().get( i ) ).
+                        entrySet() )
                     {
                         transformer.setParameter( e.getKey().toString(), e.getValue() );
                     }
@@ -1372,7 +1419,7 @@ public class JomcTask extends Task
      * Throws a {@code BuildException} on a {@code null} value of a {@code name} property of a given {@code NameType}
      * collection.
      *
-     * @param names The collection holding the  {@code NameType} instances to test.
+     * @param names The collection holding the {@code NameType} instances to test.
      *
      * @throws NullPointerException if {@code names} is {@code null}.
      * @throws BuildException if a {@code name} property of a given {@code NameType} from the {@code names} collection
@@ -1385,7 +1432,7 @@ public class JomcTask extends Task
             throw new NullPointerException( "names" );
         }
 
-        for ( NameType n : names )
+        for ( final NameType n : names )
         {
             this.assertNotNull( "name", n.getName() );
         }
@@ -1395,7 +1442,7 @@ public class JomcTask extends Task
      * Throws a {@code BuildException} on a {@code null} value of a {@code key} property of a given {@code KeyValueType}
      * collection.
      *
-     * @param keys The collection holding the  {@code KeyValueType} instances to test.
+     * @param keys The collection holding the {@code KeyValueType} instances to test.
      *
      * @throws NullPointerException if {@code keys} is {@code null}.
      * @throws BuildException if a {@code key} property of a given {@code KeyValueType} from the {@code keys} collection
@@ -1408,7 +1455,7 @@ public class JomcTask extends Task
             throw new NullPointerException( "keys" );
         }
 
-        for ( KeyValueType k : keys )
+        for ( final KeyValueType k : keys )
         {
             this.assertNotNull( "key", k.getKey() );
         }
@@ -1432,7 +1479,7 @@ public class JomcTask extends Task
             throw new NullPointerException( "locations" );
         }
 
-        for ( ResourceType r : locations )
+        for ( final ResourceType r : locations )
         {
             assertNotNull( "location", r.getLocation() );
 
@@ -1445,7 +1492,9 @@ public class JomcTask extends Task
         }
     }
 
-    /** Logs a separator string. */
+    /**
+     * Logs a separator string.
+     */
     public final void logSeparator()
     {
         this.log( Messages.getMessage( "separator" ) );
@@ -1568,7 +1617,7 @@ public class JomcTask extends Task
                 this.logSeparator();
                 Marshaller marshaller = null;
 
-                for ( ModelValidationReport.Detail detail : report.getDetails() )
+                for ( final ModelValidationReport.Detail detail : report.getDetails() )
                 {
                     this.logMessage( detail.getLevel(), "o " + detail.getMessage() );
 
@@ -1620,7 +1669,7 @@ public class JomcTask extends Task
             {
                 clone.modelContextAttributes = new ArrayList<KeyValueType>( this.modelContextAttributes.size() );
 
-                for ( KeyValueType e : this.modelContextAttributes )
+                for ( final KeyValueType e : this.modelContextAttributes )
                 {
                     clone.modelContextAttributes.add( e.clone() );
                 }
@@ -1631,7 +1680,7 @@ public class JomcTask extends Task
                 clone.transformationParameters =
                     new ArrayList<KeyValueType>( this.transformationParameters.size() );
 
-                for ( KeyValueType e : this.transformationParameters )
+                for ( final KeyValueType e : this.transformationParameters )
                 {
                     clone.transformationParameters.add( e.clone() );
                 }
@@ -1642,7 +1691,7 @@ public class JomcTask extends Task
                 clone.transformationParameterResources =
                     new ArrayList<PropertiesResourceType>( this.transformationParameterResources.size() );
 
-                for ( PropertiesResourceType e : this.transformationParameterResources )
+                for ( final PropertiesResourceType e : this.transformationParameterResources )
                 {
                     clone.transformationParameterResources.add( e.clone() );
                 }
@@ -1653,7 +1702,7 @@ public class JomcTask extends Task
                 clone.transformationOutputProperties =
                     new ArrayList<KeyValueType>( this.transformationOutputProperties.size() );
 
-                for ( KeyValueType e : this.transformationOutputProperties )
+                for ( final KeyValueType e : this.transformationOutputProperties )
                 {
                     clone.transformationOutputProperties.add( e.clone() );
                 }

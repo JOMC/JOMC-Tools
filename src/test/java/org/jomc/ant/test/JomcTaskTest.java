@@ -85,28 +85,44 @@ import static org.junit.Assert.fail;
 public class JomcTaskTest
 {
 
-    /** Constant to prefix relative resource names with. */
+    /**
+     * Constant to prefix relative resource names with.
+     */
     private static final String ABSOLUTE_RESOURCE_NAME_PREFIX = "/org/jomc/ant/test/";
 
-    /** Cached default locale. */
+    /**
+     * Cached default locale.
+     */
     private static final Locale DEFAULT_LOCALE = Locale.getDefault();
 
-    /** Constant for the name of the system property holding the output directory for the test. */
+    /**
+     * Constant for the name of the system property holding the output directory for the test.
+     */
     private static final String OUTPUT_DIRECTORY_PROPERTY_NAME = "jomc.test.outputDirectory";
 
-    /** The {@code JomcTask} instance tests are performed with. */
+    /**
+     * The {@code JomcTask} instance tests are performed with.
+     */
     private JomcTask jomcTask;
 
-    /** The {@code Project} backing the test. */
+    /**
+     * The {@code Project} backing the test.
+     */
     private Project project;
 
-    /** The {@code AntExecutor} backing the test. */
+    /**
+     * The {@code AntExecutor} backing the test.
+     */
     private AntExecutor antExecutor;
 
-    /** The output directory of the instance. */
+    /**
+     * The output directory of the instance.
+     */
     private File outputDirectory;
 
-    /** Creates a new {@code JomcTaskTest} instance. */
+    /**
+     * Creates a new {@code JomcTaskTest} instance.
+     */
     public JomcTaskTest()
     {
         super();
@@ -373,7 +389,7 @@ public class JomcTaskTest
         System.out.println( "======================================================================" );
         System.out.println( "Log:" );
 
-        for ( BuildEvent e : r.getMessageLoggedEvents() )
+        for ( final BuildEvent e : r.getMessageLoggedEvents() )
         {
             System.out.println( ToStringBuilder.reflectionToString( e ) );
         }

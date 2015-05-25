@@ -45,7 +45,9 @@ import org.apache.tools.ant.BuildListener;
 public class DefaultAntExecutor implements AntExecutor
 {
 
-    /** Creates a new {@code DefaultAntExecutor}. */
+    /**
+     * Creates a new {@code DefaultAntExecutor}.
+     */
     public DefaultAntExecutor()
     {
         super();

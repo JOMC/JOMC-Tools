@@ -57,10 +57,14 @@ import org.jomc.tools.ResourceFileProcessor;
 public final class GenerateResourcesTask extends ResourceFileProcessorTask
 {
 
-    /** The directory to generate resource files to. */
+    /**
+     * The directory to generate resource files to.
+     */
     private File resourcesDirectory;
 
-    /** Creates a new {@code GenerateResourcesTask} instance. */
+    /**
+     * Creates a new {@code GenerateResourcesTask} instance.
+     */
     public GenerateResourcesTask()
     {
         super();
@@ -90,7 +94,9 @@ public final class GenerateResourcesTask extends ResourceFileProcessorTask
         this.resourcesDirectory = value;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void preExecuteTask() throws BuildException
     {
@@ -193,7 +199,9 @@ public final class GenerateResourcesTask extends ResourceFileProcessorTask
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenerateResourcesTask clone()
     {

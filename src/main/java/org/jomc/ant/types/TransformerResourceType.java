@@ -44,16 +44,24 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class TransformerResourceType extends ResourceType
 {
 
-    /** The transformation parameter resources to apply. */
+    /**
+     * The transformation parameter resources to apply.
+     */
     private List<PropertiesResourceType> transformationParameterResources;
 
-    /** The transformation parameters to apply. */
+    /**
+     * The transformation parameters to apply.
+     */
     private List<KeyValueType> transformationParameters;
 
-    /** The transformation output properties to apply. */
+    /**
+     * The transformation output properties to apply.
+     */
     private List<KeyValueType> transformationOutputProperties;
 
-    /** Creates a new {@code TransformerResourceType}. */
+    /**
+     * Creates a new {@code TransformerResourceType}.
+     */
     public TransformerResourceType()
     {
         super();
@@ -61,9 +69,11 @@ public class TransformerResourceType extends ResourceType
 
     /**
      * Gets the transformation parameters to apply.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * transformation parameters property.</p>
+     * transformation parameters property.
+     * </p>
      *
      * @return The transformation parameters to apply.
      *
@@ -95,9 +105,11 @@ public class TransformerResourceType extends ResourceType
 
     /**
      * Gets the transformation parameter resources to apply.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * transformation parameter resources property.</p>
+     * transformation parameter resources property.
+     * </p>
      *
      * @return The transformation parameter resources to apply.
      *
@@ -129,9 +141,11 @@ public class TransformerResourceType extends ResourceType
 
     /**
      * Gets the transformation output properties to apply.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * transformation output properties property.</p>
+     * transformation output properties property.
+     * </p>
      *
      * @return The transformation output properties to apply.
      *
@@ -176,7 +190,7 @@ public class TransformerResourceType extends ResourceType
             clone.transformationParameters =
                 new ArrayList<KeyValueType>( this.transformationParameters.size() );
 
-            for ( KeyValueType e : this.transformationParameters )
+            for ( final KeyValueType e : this.transformationParameters )
             {
                 clone.transformationParameters.add( e.clone() );
             }
@@ -187,7 +201,7 @@ public class TransformerResourceType extends ResourceType
             clone.transformationParameterResources =
                 new ArrayList<PropertiesResourceType>( this.transformationParameterResources.size() );
 
-            for ( PropertiesResourceType e : this.transformationParameterResources )
+            for ( final PropertiesResourceType e : this.transformationParameterResources )
             {
                 clone.transformationParameterResources.add( e.clone() );
             }
@@ -198,7 +212,7 @@ public class TransformerResourceType extends ResourceType
             clone.transformationOutputProperties =
                 new ArrayList<KeyValueType>( this.transformationOutputProperties.size() );
 
-            for ( KeyValueType e : this.transformationOutputProperties )
+            for ( final KeyValueType e : this.transformationOutputProperties )
             {
                 clone.transformationOutputProperties.add( e.clone() );
             }

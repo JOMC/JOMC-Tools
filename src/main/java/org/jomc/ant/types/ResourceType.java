@@ -41,19 +41,29 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class ResourceType implements Cloneable
 {
 
-    /** The location of the resource. */
+    /**
+     * The location of the resource.
+     */
     private String location;
 
-    /** Flag indicating the resource is optional. */
+    /**
+     * Flag indicating the resource is optional.
+     */
     private boolean optional;
 
-    /** Timeout value, in milliseconds, to be used when opening communications links to the resource. */
+    /**
+     * Timeout value, in milliseconds, to be used when opening communications links to the resource.
+     */
     private int connectTimeout = 60000;
 
-    /** Timeout value, in milliseconds, to be used when reading the resource. */
+    /**
+     * Timeout value, in milliseconds, to be used when reading the resource.
+     */
     private int readTimeout = 60000;
 
-    /** Creates a new {@code ResourceType} instance. */
+    /**
+     * Creates a new {@code ResourceType} instance.
+     */
     public ResourceType()
     {
         super();

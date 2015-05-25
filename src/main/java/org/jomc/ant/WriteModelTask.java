@@ -63,40 +63,55 @@ import org.jomc.modlet.ObjectFactory;
 public final class WriteModelTask extends JomcModelTask
 {
 
-    /** The identifier of a specification to write. */
+    /**
+     * The identifier of a specification to write.
+     */
     private String specification;
 
-    /** The identifier of an implementation to write. */
+    /**
+     * The identifier of an implementation to write.
+     */
     private String implementation;
 
-    /** The name of a module to write. */
+    /**
+     * The name of a module to write.
+     */
     private String module;
 
-    /** The encoding to use when writing the model. */
+    /**
+     * The encoding to use when writing the model.
+     */
     private String modelEncoding;
 
-    /** File to write the model to. */
+    /**
+     * File to write the model to.
+     */
     private File modelFile;
 
     /**
      * File to write the specification to.
+     *
      * @since 1.6
      */
     private File specificationModelFile;
 
     /**
      * File to write the instance to.
+     *
      * @since 1.6
      */
     private File instanceModelFile;
 
     /**
      * File to write the module to.
+     *
      * @since 1.6
      */
     private File moduleModelFile;
 
-    /** Creates a new {@code WriteModelTask} instance. */
+    /**
+     * Creates a new {@code WriteModelTask} instance.
+     */
     public WriteModelTask()
     {
         super();
@@ -425,7 +440,9 @@ public final class WriteModelTask extends JomcModelTask
         return m;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void executeTask() throws BuildException
     {
@@ -592,7 +609,9 @@ public final class WriteModelTask extends JomcModelTask
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WriteModelTask clone()
     {

@@ -30,12 +30,9 @@
  */
 package org.jomc.ant.test;
 
-import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.jomc.ant.WriteModelTask;
 import org.jomc.ant.test.support.AntExecutionResult;
-import static org.jomc.ant.test.support.Assert.assertException;
-import static org.jomc.ant.test.support.Assert.assertExceptionMessage;
 import static org.jomc.ant.test.support.Assert.assertMessageLogged;
 import static org.jomc.ant.test.support.Assert.assertMessageLoggedContaining;
 import static org.jomc.ant.test.support.Assert.assertNoException;
@@ -50,27 +47,35 @@ import org.junit.Test;
 public class WriteModelTaskTest extends JomcModelTaskTest
 {
 
-    /** Creates a new {@code WriteModelTaskTest} instance. */
+    /**
+     * Creates a new {@code WriteModelTaskTest} instance.
+     */
     public WriteModelTaskTest()
     {
         super();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WriteModelTask getJomcTask()
     {
         return (WriteModelTask) super.getJomcTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected WriteModelTask newJomcTask()
     {
         return new WriteModelTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getBuildFileName()
     {

@@ -42,10 +42,14 @@ import org.apache.tools.ant.Location;
 public class ResourceProcessingException extends BuildException
 {
 
-    /** Serial version UID for backwards compatibility with 1.2.x object streams. */
+    /**
+     * Serial version UID for backwards compatibility with 1.2.x object streams.
+     */
     private static final long serialVersionUID = 8129859658168732058L;
 
-    /** Creates a new {@code ResourceProcessingException} instance without descriptive information. */
+    /**
+     * Creates a new {@code ResourceProcessingException} instance without descriptive information.
+     */
     public ResourceProcessingException()
     {
         super();

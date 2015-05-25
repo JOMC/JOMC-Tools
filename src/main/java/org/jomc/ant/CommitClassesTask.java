@@ -63,13 +63,19 @@ import org.jomc.tools.ClassFileProcessor;
 public final class CommitClassesTask extends ClassFileProcessorTask
 {
 
-    /** The directory holding the class files to commit model objects to. */
+    /**
+     * The directory holding the class files to commit model objects to.
+     */
     private File classesDirectory;
 
-    /** XSLT documents to use for transforming model objects. */
+    /**
+     * XSLT documents to use for transforming model objects.
+     */
     private List<TransformerResourceType> modelObjectStylesheetResources;
 
-    /** Creates a new {@code CommitClassesTask} instance. */
+    /**
+     * Creates a new {@code CommitClassesTask} instance.
+     */
     public CommitClassesTask()
     {
         super();
@@ -101,9 +107,11 @@ public final class CommitClassesTask extends ClassFileProcessorTask
 
     /**
      * Gets the XSLT documents to use for transforming model objects.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * model object stylesheet resources property.</p>
+     * model object stylesheet resources property.
+     * </p>
      *
      * @return The XSLT documents to use for transforming model objects.
      *
@@ -133,7 +141,9 @@ public final class CommitClassesTask extends ClassFileProcessorTask
         return modelObjectStylesheetResource;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void preExecuteTask() throws BuildException
     {
@@ -198,7 +208,6 @@ public final class CommitClassesTask extends ClassFileProcessorTask
                         tool.transformModelObjects( s, context, this.getClassesDirectory(), transformers );
                     }
                 }
-
 
                 if ( i != null )
                 {
@@ -276,7 +285,9 @@ public final class CommitClassesTask extends ClassFileProcessorTask
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommitClassesTask clone()
     {
@@ -289,7 +300,7 @@ public final class CommitClassesTask extends ClassFileProcessorTask
             clone.modelObjectStylesheetResources =
                 new ArrayList<TransformerResourceType>( this.modelObjectStylesheetResources.size() );
 
-            for ( TransformerResourceType e : this.modelObjectStylesheetResources )
+            for ( final TransformerResourceType e : this.modelObjectStylesheetResources )
             {
                 clone.modelObjectStylesheetResources.add( e.clone() );
             }

@@ -41,10 +41,14 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class PropertiesResourceType extends ResourceType
 {
 
-    /** The format of the properties resource. */
+    /**
+     * The format of the properties resource.
+     */
     private PropertiesFormatType format;
 
-    /** Creates a new {@code PropertiesResourceType} instance. */
+    /**
+     * Creates a new {@code PropertiesResourceType} instance.
+     */
     public PropertiesResourceType()
     {
         super();

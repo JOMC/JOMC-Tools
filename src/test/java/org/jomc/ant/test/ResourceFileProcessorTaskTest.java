@@ -41,27 +41,35 @@ import org.jomc.ant.ResourceFileProcessorTask;
 public class ResourceFileProcessorTaskTest extends JomcToolTaskTest
 {
 
-    /** Creates a new {@code ResourceFileProcessorTaskTest} instance. */
+    /**
+     * Creates a new {@code ResourceFileProcessorTaskTest} instance.
+     */
     public ResourceFileProcessorTaskTest()
     {
         super();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceFileProcessorTask getJomcTask()
     {
         return (ResourceFileProcessorTask) super.getJomcTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ResourceFileProcessorTask newJomcTask()
     {
         return new ResourceFileProcessorTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getBuildFileName()
     {

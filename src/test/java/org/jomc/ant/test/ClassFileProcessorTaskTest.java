@@ -41,27 +41,35 @@ import org.jomc.ant.ClassFileProcessorTask;
 public class ClassFileProcessorTaskTest extends JomcToolTaskTest
 {
 
-    /** Creates a new {@code ClassFileProcessorTaskTest} instance. */
+    /**
+     * Creates a new {@code ClassFileProcessorTaskTest} instance.
+     */
     public ClassFileProcessorTaskTest()
     {
         super();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClassFileProcessorTask getJomcTask()
     {
         return (ClassFileProcessorTask) super.getJomcTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ClassFileProcessorTask newJomcTask()
     {
         return new ClassFileProcessorTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getBuildFileName()
     {

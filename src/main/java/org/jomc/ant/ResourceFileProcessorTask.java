@@ -45,16 +45,24 @@ import org.jomc.tools.ResourceFileProcessor;
 public class ResourceFileProcessorTask extends JomcToolTask
 {
 
-    /** The language of the default language properties file of generated resource bundle resources. */
+    /**
+     * The language of the default language properties file of generated resource bundle resources.
+     */
     private String resourceBundleDefaultLanguage;
 
-    /** Controls processing of resource files. */
+    /**
+     * Controls processing of resource files.
+     */
     private boolean resourceProcessingEnabled = true;
 
-    /** Class of the {@code ResourceFileProcessor} backing the task. */
+    /**
+     * Class of the {@code ResourceFileProcessor} backing the task.
+     */
     private Class<? extends ResourceFileProcessor> resourceFileProcessorClass;
 
-    /** Creates a new {@code ResourceFileProcessorTask} instance. */
+    /**
+     * Creates a new {@code ResourceFileProcessorTask} instance.
+     */
     public ResourceFileProcessorTask()
     {
         super();
@@ -236,7 +244,9 @@ public class ResourceFileProcessorTask extends JomcToolTask
 
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceFileProcessorTask clone()
     {

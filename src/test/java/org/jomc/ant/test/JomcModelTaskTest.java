@@ -46,27 +46,35 @@ import org.junit.Test;
 public class JomcModelTaskTest extends JomcTaskTest
 {
 
-    /** Creates a new {@code JomcModelTaskTest} instance. */
+    /**
+     * Creates a new {@code JomcModelTaskTest} instance.
+     */
     public JomcModelTaskTest()
     {
         super();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JomcModelTask getJomcTask()
     {
         return (JomcModelTask) super.getJomcTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected JomcModelTask newJomcTask()
     {
         return new JomcModelTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getBuildFileName()
     {

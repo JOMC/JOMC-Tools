@@ -70,25 +70,39 @@ import org.jomc.tools.modlet.ToolsModelProvider;
 public class JomcModelTask extends JomcTask
 {
 
-    /** Controls model object class path resolution. */
+    /**
+     * Controls model object class path resolution.
+     */
     private boolean modelObjectClasspathResolutionEnabled = true;
 
-    /** The location to search for modules. */
+    /**
+     * The location to search for modules.
+     */
     private String moduleLocation;
 
-    /** The location to search for transformers. */
+    /**
+     * The location to search for transformers.
+     */
     private String transformerLocation;
 
-    /** Module resources. */
+    /**
+     * Module resources.
+     */
     private Set<ModuleResourceType> moduleResources;
 
-    /** The flag indicating JAXP schema validation of model resources is enabled. */
+    /**
+     * The flag indicating JAXP schema validation of model resources is enabled.
+     */
     private boolean modelResourceValidationEnabled = true;
 
-    /** The flag indicating Java validation is enabled. */
+    /**
+     * The flag indicating Java validation is enabled.
+     */
     private boolean javaValidationEnabled = true;
 
-    /** Creates a new {@code JomcModelTask} instance. */
+    /**
+     * Creates a new {@code JomcModelTask} instance.
+     */
     public JomcModelTask()
     {
         super();
@@ -169,9 +183,11 @@ public class JomcModelTask extends JomcTask
 
     /**
      * Gets a set of module resources.
-     * <p>This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
      * to the returned set will be present inside the object. This is why there is no {@code set} method for the
-     * module resources property.</p>
+     * module resources property.
+     * </p>
      *
      * @return A set of module resources.
      *
@@ -228,11 +244,11 @@ public class JomcModelTask extends JomcTask
 
     /**
      * Gets a flag indicating Java validation is enabled.
-     * 
+     *
      * @return {@code true}, if Java validation is enabled; {@code false}, else.
-     * 
-     * @see #setJavaValidationEnabled(boolean) 
-     * 
+     *
+     * @see #setJavaValidationEnabled(boolean)
+     *
      * @since 1.4
      */
     public final boolean isJavaValidationEnabled()
@@ -283,7 +299,7 @@ public class JomcModelTask extends JomcTask
         ModelHelper.setModules( model, modules );
         Unmarshaller unmarshaller = null;
 
-        for ( ResourceType resource : this.getModuleResources() )
+        for ( final ResourceType resource : this.getModuleResources() )
         {
             final URL[] urls = this.getResources( context, resource.getLocation() );
 
@@ -436,7 +452,9 @@ public class JomcModelTask extends JomcTask
         return model;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void preExecuteTask() throws BuildException
     {
@@ -444,7 +462,9 @@ public class JomcModelTask extends JomcTask
         this.assertLocationsNotNull( this.getModuleResources() );
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ModelContext newModelContext( final ClassLoader classLoader ) throws ModelException
     {
@@ -488,11 +508,12 @@ public class JomcModelTask extends JomcTask
             }
         }
 
-
         return modelContext;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JomcModelTask clone()
     {
@@ -501,7 +522,7 @@ public class JomcModelTask extends JomcTask
         if ( this.moduleResources != null )
         {
             clone.moduleResources = new HashSet<ModuleResourceType>( this.moduleResources.size() );
-            for ( ModuleResourceType e : this.moduleResources )
+            for ( final ModuleResourceType e : this.moduleResources )
             {
                 clone.moduleResources.add( e.clone() );
             }

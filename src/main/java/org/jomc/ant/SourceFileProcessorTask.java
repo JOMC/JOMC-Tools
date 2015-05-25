@@ -44,13 +44,19 @@ import org.jomc.tools.SourceFileProcessor;
 public class SourceFileProcessorTask extends JomcToolTask
 {
 
-    /** Controls processing of source files. */
+    /**
+     * Controls processing of source files.
+     */
     private boolean sourceProcessingEnabled = true;
 
-    /** Class of the {@code SourceFileProcessor} backing the task. */
+    /**
+     * Class of the {@code SourceFileProcessor} backing the task.
+     */
     private Class<? extends SourceFileProcessor> sourceFileProcessorClass;
 
-    /** Creates a new {@code SourceFileProcessorTask} instance. */
+    /**
+     * Creates a new {@code SourceFileProcessorTask} instance.
+     */
     public SourceFileProcessorTask()
     {
         super();
@@ -199,7 +205,9 @@ public class SourceFileProcessorTask extends JomcToolTask
 
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SourceFileProcessorTask clone()
     {

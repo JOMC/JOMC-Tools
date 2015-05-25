@@ -49,7 +49,9 @@ import static org.junit.Assert.fail;
 public class KeyValueTypeTest
 {
 
-    /** Creates a new {@code KeyValueTypeTest} instance. */
+    /**
+     * Creates a new {@code KeyValueTypeTest} instance.
+     */
     public KeyValueTypeTest()
     {
         super();

@@ -49,27 +49,35 @@ import org.junit.Test;
 public class ValidateModelTaskTest extends JomcModelTaskTest
 {
 
-    /** Creates a new {@code ValidateModelTaskTest} instance. */
+    /**
+     * Creates a new {@code ValidateModelTaskTest} instance.
+     */
     public ValidateModelTaskTest()
     {
         super();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ValidateModelTask getJomcTask()
     {
         return (ValidateModelTask) super.getJomcTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ValidateModelTask newJomcTask()
     {
         return new ValidateModelTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getBuildFileName()
     {

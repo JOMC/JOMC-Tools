@@ -51,27 +51,35 @@ import org.junit.Test;
 public class CommitClassesTaskTest extends ClassFileProcessorTaskTest
 {
 
-    /** Creates a new {@code CommitClassesTaskTest} instance. */
+    /**
+     * Creates a new {@code CommitClassesTaskTest} instance.
+     */
     public CommitClassesTaskTest()
     {
         super();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommitClassesTask getJomcTask()
     {
         return (CommitClassesTask) super.getJomcTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected CommitClassesTask newJomcTask()
     {
         return new CommitClassesTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getBuildFileName()
     {

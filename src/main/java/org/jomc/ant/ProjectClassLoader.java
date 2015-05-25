@@ -77,48 +77,76 @@ import org.jomc.util.VersionParser;
 public class ProjectClassLoader extends URLClassLoader
 {
 
-    /** Constant to prefix relative resource names with. */
+    /**
+     * Constant to prefix relative resource names with.
+     */
     private static final String ABSOLUTE_RESOURCE_NAME_PREFIX = "/org/jomc/ant/";
 
-    /** Empty URL array. */
+    /**
+     * Empty URL array.
+     */
     private static final URL[] NO_URLS =
     {
     };
 
-    /** Set of modlet names to exclude. */
+    /**
+     * Set of modlet names to exclude.
+     */
     private Set<String> modletExcludes;
 
-    /** Excluded modlets. */
+    /**
+     * Excluded modlets.
+     */
     private Modlets excludedModlets;
 
-    /** Set of service class names to exclude. */
+    /**
+     * Set of service class names to exclude.
+     */
     private Set<String> serviceExcludes;
 
-    /** Excluded services. */
+    /**
+     * Excluded services.
+     */
     private Services excludedServices;
 
-    /** Set of schema public ids to exclude. */
+    /**
+     * Set of schema public ids to exclude.
+     */
     private Set<String> schemaExcludes;
 
-    /** Excluded schemas. */
+    /**
+     * Excluded schemas.
+     */
     private Schemas excludedSchemas;
 
-    /** Set of providers to exclude. */
+    /**
+     * Set of providers to exclude.
+     */
     private Set<String> providerExcludes;
 
-    /** Set of excluded providers. */
+    /**
+     * Set of excluded providers.
+     */
     private Set<String> excludedProviders;
 
-    /** The project the class loader is associated with. */
+    /**
+     * The project the class loader is associated with.
+     */
     private final Project project;
 
-    /** Set of modlet resource locations to filter. */
+    /**
+     * Set of modlet resource locations to filter.
+     */
     private Set<String> modletResourceLocations;
 
-    /** Set of provider resource locations to filter. */
+    /**
+     * Set of provider resource locations to filter.
+     */
     private Set<String> providerResourceLocations;
 
-    /** Set of temporary resources. */
+    /**
+     * Set of temporary resources.
+     */
     private final Set<File> temporaryResources = new HashSet<File>();
 
     /**
@@ -291,9 +319,11 @@ public class ProjectClassLoader extends URLClassLoader
 
     /**
      * Gets a set of modlet resource locations to filter.
-     * <p>This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
      * to the returned set will be present inside the object. This is why there is no {@code set} method for the
-     * modlet resource locations property.</p>
+     * modlet resource locations property.
+     * </p>
      *
      * @return A set of modlet resource locations to filter.
      */
@@ -309,9 +339,11 @@ public class ProjectClassLoader extends URLClassLoader
 
     /**
      * Gets a set of provider resource locations to filter.
-     * <p>This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
      * to the returned set will be present inside the object. This is why there is no {@code set} method for the
-     * provider resource locations property.</p>
+     * provider resource locations property.
+     * </p>
      *
      * @return A set of provider resource locations to filter.
      */
@@ -327,9 +359,11 @@ public class ProjectClassLoader extends URLClassLoader
 
     /**
      * Gets a set of modlet names to exclude.
-     * <p>This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
      * to the returned set will be present inside the object. This is why there is no {@code set} method for the
-     * modlet excludes property.</p>
+     * modlet excludes property.
+     * </p>
      *
      * @return A set of modlet names to exclude.
      */
@@ -357,9 +391,11 @@ public class ProjectClassLoader extends URLClassLoader
 
     /**
      * Gets a set of modlets excluded during resource loading.
-     * <p>This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
      * to the returned set will be present inside the object. This is why there is no {@code set} method for the
-     * excluded modlets property.</p>
+     * excluded modlets property.
+     * </p>
      *
      * @return A set of modlets excluded during resource loading.
      */
@@ -375,9 +411,11 @@ public class ProjectClassLoader extends URLClassLoader
 
     /**
      * Gets a set of provider names to exclude.
-     * <p>This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
      * to the returned set will be present inside the object. This is why there is no {@code set} method for the
-     * provider excludes property.</p>
+     * provider excludes property.
+     * </p>
      *
      * @return A set of providers to exclude.
      */
@@ -405,9 +443,11 @@ public class ProjectClassLoader extends URLClassLoader
 
     /**
      * Gets a set of providers excluded during resource loading.
-     * <p>This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
      * to the returned set will be present inside the object. This is why there is no {@code set} method for the
-     * excluded providers property.</p>
+     * excluded providers property.
+     * </p>
      *
      * @return A set of providers excluded during resource loading.
      */
@@ -423,9 +463,11 @@ public class ProjectClassLoader extends URLClassLoader
 
     /**
      * Gets a set of service class names to exclude.
-     * <p>This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
      * to the returned set will be present inside the object. This is why there is no {@code set} method for the
-     * service excludes property.</p>
+     * service excludes property.
+     * </p>
      *
      * @return A set of service class names to exclude.
      */
@@ -453,9 +495,11 @@ public class ProjectClassLoader extends URLClassLoader
 
     /**
      * Gets a set of services excluded during resource loading.
-     * <p>This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
      * to the returned set will be present inside the object. This is why there is no {@code set} method for the
-     * excluded services property.</p>
+     * excluded services property.
+     * </p>
      *
      * @return Services excluded during resource loading.
      */
@@ -471,9 +515,11 @@ public class ProjectClassLoader extends URLClassLoader
 
     /**
      * Gets a set of schema public identifiers to exclude.
-     * <p>This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
      * to the returned set will be present inside the object. This is why there is no {@code set} method for the
-     * schema excludes property.</p>
+     * schema excludes property.
+     * </p>
      *
      * @return A set of schema public identifiers to exclude.
      */
@@ -501,9 +547,11 @@ public class ProjectClassLoader extends URLClassLoader
 
     /**
      * Gets a set of schemas excluded during resource loading.
-     * <p>This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live set, not a snapshot. Therefore any modification you make
      * to the returned set will be present inside the object. This is why there is no {@code set} method for the
-     * excluded schemas property.</p>
+     * excluded schemas property.
+     * </p>
      *
      * @return Schemas excluded during resource loading.
      */
@@ -519,6 +567,7 @@ public class ProjectClassLoader extends URLClassLoader
 
     /**
      * Closes the class loader.
+     *
      * @throws IOException if closing the class loader fails.
      */
     @Override
@@ -543,6 +592,7 @@ public class ProjectClassLoader extends URLClassLoader
 
     /**
      * Removes temporary resources.
+     *
      * @throws Throwable if finalization fails.
      */
     @Override
@@ -575,7 +625,7 @@ public class ProjectClassLoader extends URLClassLoader
             final List<String> lines = IOUtils.readLines( in, "UTF-8" );
             final List<String> filteredLines = new ArrayList<String>( lines.size() );
 
-            for ( String line : lines )
+            for ( final String line : lines )
             {
                 if ( !this.getProviderExcludes().contains( line.trim() ) )
                 {
@@ -751,7 +801,7 @@ public class ProjectClassLoader extends URLClassLoader
         {
             final Schemas schemas = new Schemas();
 
-            for ( Schema s : modlet.getSchemas().getSchema() )
+            for ( final Schema s : modlet.getSchemas().getSchema() )
             {
                 if ( !this.getSchemaExcludes().contains( s.getPublicId() ) )
                 {
@@ -777,7 +827,7 @@ public class ProjectClassLoader extends URLClassLoader
         {
             final Services services = new Services();
 
-            for ( Service s : modlet.getServices().getService() )
+            for ( final Service s : modlet.getServices().getService() )
             {
                 if ( !this.getServiceExcludes().contains( s.getClazz() ) )
                 {
@@ -811,7 +861,7 @@ public class ProjectClassLoader extends URLClassLoader
             if ( m != null )
             {
                 if ( m.getVersion() != null && modlet.getVersion() != null
-                     && VersionParser.compare( m.getVersion(), modlet.getVersion() ) < 0 )
+                         && VersionParser.compare( m.getVersion(), modlet.getVersion() ) < 0 )
                 {
                     this.getExcludedModlets().getModlet().remove( m );
                     this.getExcludedModlets().getModlet().add( modlet );
@@ -870,7 +920,7 @@ public class ProjectClassLoader extends URLClassLoader
                 final List<String> lines = IOUtils.readLines( resource, "UTF-8" );
                 defaultExcludes = new HashSet<String>( lines.size() );
 
-                for ( String line : lines )
+                for ( final String line : lines )
                 {
                     final String trimmed = line.trim();
 
@@ -885,7 +935,7 @@ public class ProjectClassLoader extends URLClassLoader
 
             suppressExceptionOnClose = false;
             return defaultExcludes != null
-                   ? Collections.unmodifiableSet( defaultExcludes ) : Collections.<String>emptySet();
+                       ? Collections.unmodifiableSet( defaultExcludes ) : Collections.<String>emptySet();
 
         }
         finally

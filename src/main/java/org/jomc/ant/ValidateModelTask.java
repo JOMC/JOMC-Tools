@@ -45,7 +45,9 @@ import org.jomc.modlet.ModelValidationReport;
 public final class ValidateModelTask extends JomcModelTask
 {
 
-    /** Creates a new {@code ValidateModelTask} instance. */
+    /**
+     * Creates a new {@code ValidateModelTask} instance.
+     */
     public ValidateModelTask()
     {
         super();
@@ -82,7 +84,9 @@ public final class ValidateModelTask extends JomcModelTask
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ValidateModelTask clone()
     {

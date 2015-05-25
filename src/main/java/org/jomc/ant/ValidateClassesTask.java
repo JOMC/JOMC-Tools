@@ -57,10 +57,14 @@ import org.jomc.tools.ClassFileProcessor;
 public final class ValidateClassesTask extends ClassFileProcessorTask
 {
 
-    /** The directory holding the class files to validate model objects of. */
+    /**
+     * The directory holding the class files to validate model objects of.
+     */
     private File classesDirectory;
 
-    /** Creates a new {@code ValidateClassesTask} instance. */
+    /**
+     * Creates a new {@code ValidateClassesTask} instance.
+     */
     public ValidateClassesTask()
     {
         super();
@@ -90,7 +94,9 @@ public final class ValidateClassesTask extends ClassFileProcessorTask
         this.classesDirectory = value;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void preExecuteTask() throws BuildException
     {
@@ -233,7 +239,9 @@ public final class ValidateClassesTask extends ClassFileProcessorTask
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ValidateClassesTask clone()
     {

@@ -41,7 +41,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class ModuleResourceType extends ResourceType
 {
 
-    /** Creates a new {@code ModuleResourceType} instance. */
+    /**
+     * Creates a new {@code ModuleResourceType} instance.
+     */
     public ModuleResourceType()
     {
         super();

@@ -56,7 +56,9 @@ import org.jomc.tools.ClassFileProcessor;
 public final class ValidateClasspathTask extends ClassFileProcessorTask
 {
 
-    /** Creates a new {@code ValidateClasspathTask} instance. */
+    /**
+     * Creates a new {@code ValidateClasspathTask} instance.
+     */
     public ValidateClasspathTask()
     {
         super();
@@ -196,7 +198,9 @@ public final class ValidateClasspathTask extends ClassFileProcessorTask
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ValidateClasspathTask clone()
     {

@@ -41,10 +41,14 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class NameType implements Cloneable
 {
 
-    /** The name of the datatype. */
+    /**
+     * The name of the datatype.
+     */
     private String name;
 
-    /** Creates a new {@code NameType} instance. */
+    /**
+     * Creates a new {@code NameType} instance.
+     */
     public NameType()
     {
         super();

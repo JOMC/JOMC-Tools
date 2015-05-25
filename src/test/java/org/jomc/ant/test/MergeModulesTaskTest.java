@@ -53,27 +53,35 @@ import static org.junit.Assert.fail;
 public class MergeModulesTaskTest extends JomcModelTaskTest
 {
 
-    /** Creates a new {@code MergeModulesTaskTest} instance. */
+    /**
+     * Creates a new {@code MergeModulesTaskTest} instance.
+     */
     public MergeModulesTaskTest()
     {
         super();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MergeModulesTask getJomcTask()
     {
         return (MergeModulesTask) super.getJomcTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected MergeModulesTask newJomcTask()
     {
         return new MergeModulesTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getBuildFileName()
     {

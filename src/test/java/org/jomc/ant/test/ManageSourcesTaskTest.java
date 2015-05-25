@@ -51,27 +51,35 @@ import org.junit.Test;
 public class ManageSourcesTaskTest extends SourceFileProcessorTaskTest
 {
 
-    /** Creates a new {@code ManageSourcesTaskTest} instance. */
+    /**
+     * Creates a new {@code ManageSourcesTaskTest} instance.
+     */
     public ManageSourcesTaskTest()
     {
         super();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManageSourcesTask getJomcTask()
     {
         return (ManageSourcesTask) super.getJomcTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ManageSourcesTask newJomcTask()
     {
         return new ManageSourcesTask();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getBuildFileName()
     {
