@@ -56,7 +56,9 @@ public final class MainSourcesManageMojo extends AbstractSourcesManageMojo
      */
     private String manageMainSourcesExecutionStrategy;
 
-    /** Creates a new {@code MainSourcesManageMojo} instance. */
+    /**
+     * Creates a new {@code MainSourcesManageMojo} instance.
+     */
     public MainSourcesManageMojo()
     {
         super();

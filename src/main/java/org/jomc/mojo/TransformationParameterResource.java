@@ -40,7 +40,9 @@ package org.jomc.mojo;
 public final class TransformationParameterResource extends PropertiesResourceType
 {
 
-    /** Creates a new {@code TransformationParameterResource} instance. */
+    /**
+     * Creates a new {@code TransformationParameterResource} instance.
+     */
     public TransformationParameterResource()
     {
         super();

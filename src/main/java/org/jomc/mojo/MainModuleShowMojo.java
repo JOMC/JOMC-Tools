@@ -67,7 +67,9 @@ public final class MainModuleShowMojo extends AbstractModelShowMojo
      */
     private String showMainModuleExecutionStrategy;
 
-    /** Creates a new {@code MainModuleShowMojo} instance. */
+    /**
+     * Creates a new {@code MainModuleShowMojo} instance.
+     */
     public MainModuleShowMojo()
     {
         super();

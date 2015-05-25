@@ -40,7 +40,9 @@ package org.jomc.mojo;
 public final class VelocityPropertyResource extends PropertiesResourceType
 {
 
-    /** Creates a new {@code VelocityPropertyResource} instance. */
+    /**
+     * Creates a new {@code VelocityPropertyResource} instance.
+     */
     public VelocityPropertyResource()
     {
         super();

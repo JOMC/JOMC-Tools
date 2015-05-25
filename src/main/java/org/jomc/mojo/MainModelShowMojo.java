@@ -55,7 +55,9 @@ public final class MainModelShowMojo extends AbstractModelShowMojo
      */
     private String showMainModelExecutionStrategy;
 
-    /** Creates a new {@code MainModelShowMojo} instance. */
+    /**
+     * Creates a new {@code MainModelShowMojo} instance.
+     */
     public MainModelShowMojo()
     {
         super();

@@ -54,7 +54,9 @@ public final class MainClasspathValidateMojo extends AbstractClasspathValidateMo
      */
     private String validateMainClasspathExecutionStrategy;
 
-    /** Creates a new {@code MainClasspathValidateMojo} instance. */
+    /**
+     * Creates a new {@code MainClasspathValidateMojo} instance.
+     */
     public MainClasspathValidateMojo()
     {
         super();

@@ -61,12 +61,14 @@ public final class TestResourcesWriteMojo extends AbstractResourcesWriteMojo
      * Directory to write test resource files to.
      *
      * @parameter default-value="${project.build.directory}/generated-test-resources/jomc"
-     *            expression="${jomc.testResourcesOutputDirectory}"
+     * expression="${jomc.testResourcesOutputDirectory}"
      * @since 1.2
      */
     private File testResourcesOutputDirectory;
 
-    /** Creates a new {@code TestResourcesWriteMojo} instance. */
+    /**
+     * Creates a new {@code TestResourcesWriteMojo} instance.
+     */
     public TestResourcesWriteMojo()
     {
         super();

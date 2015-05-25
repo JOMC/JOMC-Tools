@@ -67,7 +67,9 @@ public final class TestInstanceShowMojo extends AbstractModelShowMojo
      */
     private String showTestInstanceExecutionStrategy;
 
-    /** Creates a new {@code TestInstanceShowMojo} instance. */
+    /**
+     * Creates a new {@code TestInstanceShowMojo} instance.
+     */
     public TestInstanceShowMojo()
     {
         super();

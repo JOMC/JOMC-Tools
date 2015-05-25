@@ -40,7 +40,9 @@ package org.jomc.mojo;
 public class TemplateParameter extends KeyValueType
 {
 
-    /** Creates a new {@code TemplateParameter} instance. */
+    /**
+     * Creates a new {@code TemplateParameter} instance.
+     */
     public TemplateParameter()
     {
         super();

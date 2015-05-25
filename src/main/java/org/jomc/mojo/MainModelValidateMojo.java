@@ -49,7 +49,9 @@ import org.jomc.modlet.ModelValidationReport;
 public final class MainModelValidateMojo extends AbstractJomcMojo
 {
 
-    /** Constant for the name of the tool backing the mojo. */
+    /**
+     * Constant for the name of the tool backing the mojo.
+     */
     private static final String TOOLNAME = "ModelValidator";
 
     /**
@@ -60,7 +62,9 @@ public final class MainModelValidateMojo extends AbstractJomcMojo
      */
     private String validateMainModelExecutionStrategy;
 
-    /** Creates a new {@code MainModelValidateMojo} instance. */
+    /**
+     * Creates a new {@code MainModelValidateMojo} instance.
+     */
     public MainModelValidateMojo()
     {
         super();

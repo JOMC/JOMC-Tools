@@ -48,7 +48,7 @@ public final class MainModuleAttachMojo extends AbstractAttachMojo
      * File of the attached module artifact.
      *
      * @parameter expression="${jomc.mainModuleArtifactFile}"
-     *            default-value="${project.build.outputDirectory}/META-INF/jomc.xml"
+     * default-value="${project.build.outputDirectory}/META-INF/jomc.xml"
      */
     private File mainModuleArtifactFile;
 
@@ -74,7 +74,9 @@ public final class MainModuleAttachMojo extends AbstractAttachMojo
      */
     private String attachMainModuleExecutionStrategy;
 
-    /** Creates a new {@code MainModuleAttachMojo} instance. */
+    /**
+     * Creates a new {@code MainModuleAttachMojo} instance.
+     */
     public MainModuleAttachMojo()
     {
         super();

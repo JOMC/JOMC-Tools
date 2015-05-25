@@ -44,11 +44,15 @@ import java.util.ResourceBundle;
 abstract class Messages
 {
 
-    /** Constant for the name of the resource bundle backing the tasks. */
+    /**
+     * Constant for the name of the resource bundle backing the tasks.
+     */
     private static final String RESOURCE_BUNDLE_NAME =
         Messages.class.getPackage().getName().replace( '.', '/' ) + "/Messages";
 
-    /** Creates a new {@code Messages} instance. */
+    /**
+     * Creates a new {@code Messages} instance.
+     */
     Messages()
     {
         super();
@@ -99,10 +103,10 @@ abstract class Messages
     static String getMessage( final Throwable t )
     {
         return t != null
-               ? t.getMessage() != null && t.getMessage().trim().length() > 0
-                 ? t.getMessage()
-                 : getMessage( t.getCause() )
-               : null;
+                   ? t.getMessage() != null && t.getMessage().trim().length() > 0
+                         ? t.getMessage()
+                         : getMessage( t.getCause() )
+                   : null;
 
     }
 

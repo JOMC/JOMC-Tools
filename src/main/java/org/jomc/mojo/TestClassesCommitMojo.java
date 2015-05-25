@@ -55,7 +55,9 @@ public final class TestClassesCommitMojo extends AbstractClassesCommitMojo
      */
     private String commitTestClassesExecutionStrategy;
 
-    /** Creates a new {@code TestClassesCommitMojo} instance. */
+    /**
+     * Creates a new {@code TestClassesCommitMojo} instance.
+     */
     public TestClassesCommitMojo()
     {
         super();

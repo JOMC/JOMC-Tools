@@ -40,7 +40,9 @@ package org.jomc.mojo;
 public class TransformationOutputProperty extends KeyValueType
 {
 
-    /** Creates a new {@code TransformationOutputProperty} instance. */
+    /**
+     * Creates a new {@code TransformationOutputProperty} instance.
+     */
     public TransformationOutputProperty()
     {
         super();

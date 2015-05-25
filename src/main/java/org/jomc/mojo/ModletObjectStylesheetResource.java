@@ -42,7 +42,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public final class ModletObjectStylesheetResource extends TransformerResourceType
 {
 
-    /** Creates a new {@code ModletObjectStylesheetResource} instance. */
+    /**
+     * Creates a new {@code ModletObjectStylesheetResource} instance.
+     */
     public ModletObjectStylesheetResource()
     {
         super();

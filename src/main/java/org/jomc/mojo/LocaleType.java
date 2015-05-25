@@ -42,16 +42,24 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class LocaleType implements Cloneable
 {
 
-    /** The language. */
+    /**
+     * The language.
+     */
     private String language;
 
-    /** The country. */
+    /**
+     * The country.
+     */
     private String country;
 
-    /** The variant. */
+    /**
+     * The variant.
+     */
     private String variant;
 
-    /** Creates a new {@code LocaleType} instance. */
+    /**
+     * Creates a new {@code LocaleType} instance.
+     */
     public LocaleType()
     {
         super();

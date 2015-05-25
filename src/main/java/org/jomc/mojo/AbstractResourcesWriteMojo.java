@@ -55,7 +55,9 @@ import org.jomc.tools.ResourceFileProcessor;
 public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo
 {
 
-    /** Constant for the name of the tool backing the class. */
+    /**
+     * Constant for the name of the tool backing the class.
+     */
     private static final String TOOLNAME = "ResourceFileProcessor";
 
     /**
@@ -65,7 +67,9 @@ public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo
      */
     private String resourceBundleDefaultLanguage;
 
-    /** Creates a new {@code AbstractResourcesWriteMojo} instance. */
+    /**
+     * Creates a new {@code AbstractResourcesWriteMojo} instance.
+     */
     public AbstractResourcesWriteMojo()
     {
         super();

@@ -55,7 +55,9 @@ public final class TestClassesValidateMojo extends AbstractClassesValidateMojo
      */
     private String validateTestClassesExecutionStrategy;
 
-    /** Creates a new {@code TestClassesValidateMojo} instance. */
+    /**
+     * Creates a new {@code TestClassesValidateMojo} instance.
+     */
     public TestClassesValidateMojo()
     {
         super();

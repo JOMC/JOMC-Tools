@@ -40,7 +40,9 @@ package org.jomc.mojo;
 public class ModelContextAttribute extends KeyValueType
 {
 
-    /** Creates a new {@code ModelContextAttribute} instance. */
+    /**
+     * Creates a new {@code ModelContextAttribute} instance.
+     */
     public ModelContextAttribute()
     {
         super();

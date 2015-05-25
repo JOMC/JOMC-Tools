@@ -44,22 +44,32 @@ import java.util.List;
 public class PropertiesResourceType extends ResourceType
 {
 
-    /** Constant for the plain properties file format. */
+    /**
+     * Constant for the plain properties file format.
+     */
     public static final String PLAIN_FORMAT = "plain";
 
-    /** Constant for the XML properties file format. */
+    /**
+     * Constant for the XML properties file format.
+     */
     public static final String XML_FORMAT = "xml";
 
-    /** Supported properties file format values. */
+    /**
+     * Supported properties file format values.
+     */
     private static final String[] FORMAT_VALUES =
     {
         PLAIN_FORMAT, XML_FORMAT
     };
 
-    /** The format of the properties resource. */
+    /**
+     * The format of the properties resource.
+     */
     private String format;
 
-    /** Creates a new {@code PropertiesResourceType} instance. */
+    /**
+     * Creates a new {@code PropertiesResourceType} instance.
+     */
     public PropertiesResourceType()
     {
         super();

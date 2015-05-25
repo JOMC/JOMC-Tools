@@ -40,7 +40,9 @@ package org.jomc.mojo;
 public class VelocityProperty extends KeyValueType
 {
 
-    /** Creates a new {@code VelocityProperty} instance. */
+    /**
+     * Creates a new {@code VelocityProperty} instance.
+     */
     public VelocityProperty()
     {
         super();

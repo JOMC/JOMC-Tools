@@ -40,7 +40,9 @@ package org.jomc.mojo;
 public final class TemplateParameterResource extends PropertiesResourceType
 {
 
-    /** Creates a new {@code TemplateParameterResource} instance. */
+    /**
+     * Creates a new {@code TemplateParameterResource} instance.
+     */
     public TemplateParameterResource()
     {
         super();

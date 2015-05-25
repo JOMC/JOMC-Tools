@@ -55,7 +55,9 @@ public final class MainClassesCommitMojo extends AbstractClassesCommitMojo
      */
     private String commitMainClassesExecutionStrategy;
 
-    /** Creates a new {@code MainClassesCommitMojo} instance. */
+    /**
+     * Creates a new {@code MainClassesCommitMojo} instance.
+     */
     public MainClassesCommitMojo()
     {
         super();

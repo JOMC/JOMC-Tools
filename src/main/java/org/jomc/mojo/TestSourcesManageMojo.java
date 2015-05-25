@@ -56,7 +56,9 @@ public final class TestSourcesManageMojo extends AbstractSourcesManageMojo
      */
     private String manageTestSourcesExecutionStrategy;
 
-    /** Creates a new {@code TestSourcesManageMojo} instance. */
+    /**
+     * Creates a new {@code TestSourcesManageMojo} instance.
+     */
     public TestSourcesManageMojo()
     {
         super();

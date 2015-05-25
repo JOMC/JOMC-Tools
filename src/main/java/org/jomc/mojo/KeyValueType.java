@@ -47,16 +47,24 @@ import org.jomc.modlet.ModelException;
 public class KeyValueType implements Cloneable
 {
 
-    /** The key of the type. */
+    /**
+     * The key of the type.
+     */
     private String key;
 
-    /** The value of the type. */
+    /**
+     * The value of the type.
+     */
     private String value;
 
-    /** The name of the class of the type of {@code value}. */
+    /**
+     * The name of the class of the type of {@code value}.
+     */
     private String type;
 
-    /** Creates a new {@code KeyValueType} instance. */
+    /**
+     * Creates a new {@code KeyValueType} instance.
+     */
     public KeyValueType()
     {
         super();

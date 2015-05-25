@@ -72,7 +72,8 @@ import org.jomc.modlet.Modlets;
 /**
  * Maven Shade Plugin {@code ResourceTransformer} implementation for shading JOMC resources.
  *
- * <p><b>Maven Shade Plugin Usage</b><pre>
+ * <p>
+ * <b>Maven Shade Plugin Usage</b><pre>
  * &lt;transformer implementation="org.jomc.mojo.JomcResourceTransformer"&gt;
  *   &lt;model&gt;http://jomc.org/model&lt;/model&gt;
  *   &lt;modelContextFactoryClassName&gt;class name&lt;/modelContextFactoryClassName&gt;
@@ -123,134 +124,206 @@ import org.jomc.modlet.Modlets;
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
  * @plexus.component role="org.apache.maven.plugins.shade.resource.ResourceTransformer"
- *                   role-hint="JOMC"
+ * role-hint="JOMC"
  */
 public class JomcResourceTransformer extends AbstractLogEnabled implements ResourceTransformer
 {
 
-    /** Type of a resource. */
+    /**
+     * Type of a resource.
+     */
     private enum ResourceType
     {
 
-        /** Model object resource. */
+        /**
+         * Model object resource.
+         */
         MODEL_OBJECT_RESOURCE,
-        /** Modlet object resource. */
+        /**
+         * Modlet object resource.
+         */
         MODLET_OBJECT_RESOURCE
 
     }
 
-    /** Prefix prepended to log messages. */
+    /**
+     * Prefix prepended to log messages.
+     */
     private static final String LOG_PREFIX = "[JOMC] ";
 
-    /** The identifier of the model to process. */
+    /**
+     * The identifier of the model to process.
+     */
     private String model = ModelObject.MODEL_PUBLIC_ID;
 
-    /** The encoding of the assembled module. */
+    /**
+     * The encoding of the assembled module.
+     */
     private String moduleEncoding;
 
-    /** The name of the assembled module. */
+    /**
+     * The name of the assembled module.
+     */
     private String moduleName;
 
-    /** The version of the assembled module. */
+    /**
+     * The version of the assembled module.
+     */
     private String moduleVersion;
 
-    /** The vendor of the assembled module. */
+    /**
+     * The vendor of the assembled module.
+     */
     private String moduleVendor;
 
-    /** The resource name of the assembled module. */
+    /**
+     * The resource name of the assembled module.
+     */
     private String moduleResource = DefaultModelProvider.getDefaultModuleLocation();
 
-    /** Names of resources to process. */
+    /**
+     * Names of resources to process.
+     */
     private String[] moduleResources =
     {
         DefaultModelProvider.getDefaultModuleLocation()
     };
 
-    /** Included modules. */
+    /**
+     * Included modules.
+     */
     private List<String> moduleIncludes;
 
-    /** Excluded modules. */
+    /**
+     * Excluded modules.
+     */
     private List<String> moduleExcludes;
 
-    /** The encoding of the assembled modlet. */
+    /**
+     * The encoding of the assembled modlet.
+     */
     private String modletEncoding;
 
-    /** The name of the assembled modlet. */
+    /**
+     * The name of the assembled modlet.
+     */
     private String modletName;
 
-    /** The version of the assembled modlet. */
+    /**
+     * The version of the assembled modlet.
+     */
     private String modletVersion;
 
-    /** The vendor of the assembled modlet. */
+    /**
+     * The vendor of the assembled modlet.
+     */
     private String modletVendor;
 
-    /** The resource name of the assembled modlet resources. */
+    /**
+     * The resource name of the assembled modlet resources.
+     */
     private String modletResource = DefaultModletProvider.getDefaultModletLocation();
 
-    /** Names of modlet resources to process. */
+    /**
+     * Names of modlet resources to process.
+     */
     private String[] modletResources =
     {
         DefaultModletProvider.getDefaultModletLocation()
     };
 
-    /** Included modlets. */
+    /**
+     * Included modlets.
+     */
     private List<String> modletIncludes;
 
-    /** Excluded modlets. */
+    /**
+     * Excluded modlets.
+     */
     private List<String> modletExcludes;
 
-    /** Location of a XSLT document to use for transforming the merged model document. */
+    /**
+     * Location of a XSLT document to use for transforming the merged model document.
+     */
     private String modelObjectStylesheet;
 
-    /** Location of a XSLT document to use for transforming the merged modlet document. */
+    /**
+     * Location of a XSLT document to use for transforming the merged modlet document.
+     */
     private String modletObjectStylesheet;
 
-    /** The location to search for providers. */
+    /**
+     * The location to search for providers.
+     */
     private String providerLocation;
 
-    /** The location to search for platform providers. */
+    /**
+     * The location to search for platform providers.
+     */
     private String platformProviderLocation;
 
-    /** The system id of the modlet schema. */
+    /**
+     * The system id of the modlet schema.
+     */
     private String modletSchemaSystemId;
 
-    /** The location to search for modlets. */
+    /**
+     * The location to search for modlets.
+     */
     private String modletLocation;
 
     /**
      * Name of the {@code ModelContext} implementation class.
+     *
      * @since 1.2
      */
     private String modelContextFactoryClassName;
 
     /**
      * {@code ModelContext} attributes to apply.
+     *
      * @since 1.2
      */
     private List<ModelContextAttribute> modelContextAttributes;
 
-    /** Modlet resources. */
+    /**
+     * Modlet resources.
+     */
     private Modlets modlets = new Modlets();
 
-    /** Model resources. */
+    /**
+     * Model resources.
+     */
     private Modules modules = new Modules();
 
-    /** Type of the currently processed resource or {@code null}. */
+    /**
+     * Type of the currently processed resource or {@code null}.
+     */
     private ResourceType currentResourceType;
 
-    /** The JOMC JAXB marshaller of the instance. */
+    /**
+     * The JOMC JAXB marshaller of the instance.
+     */
     private Marshaller jomcMarshaller;
 
-    /** The JOMC JAXB unmarshaller of the instance. */
+    /**
+     * The JOMC JAXB unmarshaller of the instance.
+     */
     private Unmarshaller jomcUnmarshaller;
 
-    /** The modlet JAXB marshaller of the instance. */
+    /**
+     * The modlet JAXB marshaller of the instance.
+     */
     private Marshaller modletMarshaller;
 
-    /** The modlet JAXB unmarshaller of the instance. */
+    /**
+     * The modlet JAXB unmarshaller of the instance.
+     */
     private Unmarshaller modletUnmarshaller;
 
-    /** Creates a new {@code JomcResourceTransformer} instance. */
+    /**
+     * Creates a new {@code JomcResourceTransformer} instance.
+     */
     public JomcResourceTransformer()
     {
         super();
@@ -266,7 +339,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
         {
             if ( this.moduleResources != null )
             {
-                for ( String r : this.moduleResources )
+                for ( final String r : this.moduleResources )
                 {
                     if ( name.equals( normalizeResourceName( r ) ) )
                     {
@@ -287,7 +360,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
 
             if ( !transformable && this.modletResources != null )
             {
-                for ( String r : this.modletResources )
+                for ( final String r : this.modletResources )
                 {
                     if ( name.equals( normalizeResourceName( r ) ) )
                     {
@@ -452,7 +525,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
 
                 if ( this.moduleExcludes != null )
                 {
-                    for ( String exclude : this.moduleExcludes )
+                    for ( final String exclude : this.moduleExcludes )
                     {
                         final Module excluded = this.modules.getModule( exclude );
 
@@ -472,7 +545,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
 
                 if ( this.getLogger() != null && this.getLogger().isInfoEnabled() )
                 {
-                    for ( Module m : this.modules.getModule() )
+                    for ( final Module m : this.modules.getModule() )
                     {
                         this.getLogger().info( LOG_PREFIX + Messages.getMessage( "includingModule", m.getName() ) );
                     }
@@ -513,7 +586,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
 
                 if ( this.modletExcludes != null )
                 {
-                    for ( String exclude : this.modletExcludes )
+                    for ( final String exclude : this.modletExcludes )
                     {
                         final Modlet excluded = this.modlets.getModlet( exclude );
 
@@ -533,7 +606,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
 
                 if ( this.getLogger() != null && this.getLogger().isInfoEnabled() )
                 {
-                    for ( Modlet m : this.modlets.getModlet() )
+                    for ( final Modlet m : this.modlets.getModlet() )
                     {
                         this.getLogger().info( LOG_PREFIX + Messages.getMessage( "includingModlet", m.getName() ) );
                     }
@@ -611,11 +684,13 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
 
     /**
      * Creates an {@code URL} for a given resource location.
-     * <p>This method first searches the class loader of the class for a single resource matching {@code location}. If
+     * <p>
+     * This method first searches the class loader of the class for a single resource matching {@code location}. If
      * such a resource is found, the URL of that resource is returned. If no such resource is found, an attempt is made
      * to parse the given location to an URL. On successful parsing, that URL is returned. Failing that, the given
      * location is interpreted as a file name. If that file is found, the URL of that file is returned. Otherwise an
-     * {@code IOException} is thrown.</p>
+     * {@code IOException} is thrown.
+     * </p>
      *
      * @param location The location to create an {@code URL} from.
      *
@@ -760,7 +835,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
             final JAXBSource source = new JAXBSource( marshaller, element );
             final JAXBResult result = new JAXBResult( unmarshaller );
 
-            for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
+            for ( final Map.Entry<Object, Object> e : System.getProperties().entrySet() )
             {
                 transformer.setParameter( e.getKey().toString(), e.getValue() );
             }
@@ -768,7 +843,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
             transformer.transform( source, result );
 
             if ( result.getResult() instanceof JAXBElement<?>
-                 && boundType.isInstance( ( (JAXBElement<?>) result.getResult() ).getValue() ) )
+                     && boundType.isInstance( ( (JAXBElement<?>) result.getResult() ).getValue() ) )
             {
                 @SuppressWarnings( "unchecked" ) final JAXBElement<T> e = (JAXBElement<T>) result.getResult();
                 transformed = e;
@@ -856,7 +931,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
             final JAXBSource source = new JAXBSource( marshaller, element );
             final JAXBResult result = new JAXBResult( unmarshaller );
 
-            for ( Map.Entry<Object, Object> e : System.getProperties().entrySet() )
+            for ( final Map.Entry<Object, Object> e : System.getProperties().entrySet() )
             {
                 transformer.setParameter( e.getKey().toString(), e.getValue() );
             }
@@ -864,7 +939,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
             transformer.transform( source, result );
 
             if ( result.getResult() instanceof JAXBElement<?>
-                 && boundType.isInstance( ( (JAXBElement<?>) result.getResult() ).getValue() ) )
+                     && boundType.isInstance( ( (JAXBElement<?>) result.getResult() ).getValue() ) )
             {
                 @SuppressWarnings( "unchecked" ) final JAXBElement<T> e = (JAXBElement<T>) result.getResult();
                 transformed = e;
@@ -936,7 +1011,7 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
 
         if ( this.modelContextAttributes != null )
         {
-            for ( ModelContextAttribute e : this.modelContextAttributes )
+            for ( final ModelContextAttribute e : this.modelContextAttributes )
             {
                 final Object object = e.getObject( modelContext );
 

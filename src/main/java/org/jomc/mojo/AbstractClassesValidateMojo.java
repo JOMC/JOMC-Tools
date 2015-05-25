@@ -51,10 +51,14 @@ import org.jomc.tools.ClassFileProcessor;
 public abstract class AbstractClassesValidateMojo extends AbstractJomcMojo
 {
 
-    /** Constant for the name of the tool backing the mojo. */
+    /**
+     * Constant for the name of the tool backing the mojo.
+     */
     private static final String TOOLNAME = "ClassFileProcessor";
 
-    /** Creates a new {@code AbstractClassesValidateMojo} instance. */
+    /**
+     * Creates a new {@code AbstractClassesValidateMojo} instance.
+     */
     public AbstractClassesValidateMojo()
     {
         super();

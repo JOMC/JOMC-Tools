@@ -61,12 +61,14 @@ public final class MainResourcesWriteMojo extends AbstractResourcesWriteMojo
      * Directory to write resource files to.
      *
      * @parameter default-value="${project.build.directory}/generated-resources/jomc"
-     *            expression="${jomc.mainResourcesOutputDirectory}"
+     * expression="${jomc.mainResourcesOutputDirectory}"
      * @since 1.2
      */
     private File mainResourcesOutputDirectory;
 
-    /** Creates a new {@code MainResourcesWriteMojo} instance. */
+    /**
+     * Creates a new {@code MainResourcesWriteMojo} instance.
+     */
     public MainResourcesWriteMojo()
     {
         super();

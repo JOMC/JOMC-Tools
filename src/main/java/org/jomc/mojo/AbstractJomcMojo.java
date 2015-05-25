@@ -120,10 +120,12 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     /**
      * Location to search for templates in addition to searching the class path of the plugin.
-     * <p>First an attempt is made to parse the location value to an URL. On successful parsing, that URL is used.
+     * <p>
+     * First an attempt is made to parse the location value to an URL. On successful parsing, that URL is used.
      * Otherwise the location value is interpreted as a directory name relative to the base directory of the project.
      * If that directory exists, that directory is used. If nothing is found at the given location, a warning message is
-     * logged.</p>
+     * logged.
+     * </p>
      *
      * @parameter expression="${jomc.templateLocation}"
      * @since 1.2
@@ -366,22 +368,32 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *   &lt;/velocityPropertyResource>
      * &lt;/velocityPropertyResources>
      * </pre>
-     * <p>The location value is used to first search the class path of the plugin and the project's main or test class
+     * <p>
+     * The location value is used to first search the class path of the plugin and the project's main or test class
      * path. If a class path resource is found, that resource is used. If no class path resource is found, an attempt is
      * made to parse the location value to an URL. On successful parsing, that URL is used. Otherwise the location value
      * is interpreted as a file name relative to the base directory of the project. If that file exists, that file is
      * used. If nothing is found at the given location, depending on the optional flag, a warning message is logged or a
-     * build failure is produced.</p>
-     * <p>The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
-     * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false</p>
-     * <p>The format value is used to specify the format of the properties resource. Supported values are {@code plain}
-     * and {@code xml}.<br/><b>Default value is:</b> plain</p>
-     * <p>The connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
+     * build failure is produced.
+     * </p>
+     * <p>
+     * The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
+     * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false
+     * </p>
+     * <p>
+     * The format value is used to specify the format of the properties resource. Supported values are {@code plain}
+     * and {@code xml}.<br/><b>Default value is:</b> plain
+     * </p>
+     * <p>
+     * The connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
      * communications links to the resource. A timeout of zero is interpreted as an infinite timeout.<br/>
-     * <b>Default value is:</b> 60000</p>
-     * <p>The readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the resource.
+     * <b>Default value is:</b> 60000
+     * </p>
+     * <p>
+     * The readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the resource.
      * A timeout of zero is interpreted as an infinite timeout.<br/>
-     * <b>Default value is:</b> 60000</p>
+     * <b>Default value is:</b> 60000
+     * </p>
      *
      * @parameter
      * @since 1.2
@@ -418,22 +430,32 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *   &lt;/templateParameterResource>
      * &lt;/templateParameterResources>
      * </pre>
-     * <p>The location value is used to first search the class path of the plugin and the project's main or test class
+     * <p>
+     * The location value is used to first search the class path of the plugin and the project's main or test class
      * path. If a class path resource is found, that resource is used. If no class path resource is found, an attempt is
      * made to parse the location value to an URL. On successful parsing, that URL is used. Otherwise the location value
      * is interpreted as a file name relative to the base directory of the project. If that file exists, that file is
      * used. If nothing is found at the given location, depending on the optional flag, a warning message is logged or a
-     * build failure is produced.</p>
-     * <p>The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
-     * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false</p>
-     * <p>The format value is used to specify the format of the properties resource. Supported values are {@code plain}
-     * and {@code xml}.<br/><b>Default value is:</b> plain</p>
-     * <p>The connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
+     * build failure is produced.
+     * </p>
+     * <p>
+     * The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
+     * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false
+     * </p>
+     * <p>
+     * The format value is used to specify the format of the properties resource. Supported values are {@code plain}
+     * and {@code xml}.<br/><b>Default value is:</b> plain
+     * </p>
+     * <p>
+     * The connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
      * communications links to the resource. A timeout of zero is interpreted as an infinite timeout.<br/>
-     * <b>Default value is:</b> 60000</p>
-     * <p>The readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the resource.
+     * <b>Default value is:</b> 60000
+     * </p>
+     * <p>
+     * The readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the resource.
      * A timeout of zero is interpreted as an infinite timeout.<br/>
-     * <b>Default value is:</b> 60000</p>
+     * <b>Default value is:</b> 60000
+     * </p>
      *
      * @parameter
      * @since 1.2
@@ -487,22 +509,32 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      *   &lt;/transformationParameterResource>
      * &lt;/transformationParameterResources>
      * </pre>
-     * <p>The location value is used to first search the class path of the plugin and the project's main or test class
+     * <p>
+     * The location value is used to first search the class path of the plugin and the project's main or test class
      * path. If a class path resource is found, that resource is used. If no class path resource is found, an attempt is
      * made to parse the location value to an URL. On successful parsing, that URL is used. Otherwise the location value
      * is interpreted as a file name relative to the base directory of the project. If that file exists, that file is
      * used. If nothing is found at the given location, depending on the optional flag, a warning message is logged or a
-     * build failure is produced.</p>
-     * <p>The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
-     * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false</p>
-     * <p>The format value is used to specify the format of the properties resource. Supported values are {@code plain}
-     * and {@code xml}.<br/><b>Default value is:</b> plain</p>
-     * <p>The connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
+     * build failure is produced.
+     * </p>
+     * <p>
+     * The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
+     * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false
+     * </p>
+     * <p>
+     * The format value is used to specify the format of the properties resource. Supported values are {@code plain}
+     * and {@code xml}.<br/><b>Default value is:</b> plain
+     * </p>
+     * <p>
+     * The connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
      * communications links to the resource. A timeout of zero is interpreted as an infinite timeout.<br/>
-     * <b>Default value is:</b> 60000</p>
-     * <p>The readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the resource.
+     * <b>Default value is:</b> 60000
+     * </p>
+     * <p>
+     * The readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the resource.
      * A timeout of zero is interpreted as an infinite timeout.<br/>
-     * <b>Default value is:</b> 60000</p>
+     * <b>Default value is:</b> 60000
+     * </p>
      *
      * @parameter
      * @since 1.2
@@ -521,7 +553,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      * Class name of the {@code ResourceFileProcessor} backing the goal.
      *
      * @parameter default-value="org.jomc.tools.ResourceFileProcessor"
-     *            expression="${jomc.resourceFileProcessorClassName}"
+     * expression="${jomc.resourceFileProcessorClassName}"
      * @since 1.2
      */
     private String resourceFileProcessorClassName;
@@ -624,7 +656,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
      */
     private MavenSession mavenSession;
 
-    /** Creates a new {@code AbstractJomcMojo} instance. */
+    /**
+     * Creates a new {@code AbstractJomcMojo} instance.
+     */
     public AbstractJomcMojo()
     {
         super();
@@ -632,6 +666,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     /**
      * {@inheritDoc}
+     *
      * @see #assertValidParameters()
      * @see #isExecutionPermitted()
      * @see #executeTool()
@@ -822,8 +857,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     /**
      * Gets an absolute {@code File} instance for a given name.
-     * <p>This method constructs a new {@code File} instance using the given name. If the resulting file is not
-     * absolute, the value of the {@code basedir} property of the current Maven project is prepended.</p>
+     * <p>
+     * This method constructs a new {@code File} instance using the given name. If the resulting file is not
+     * absolute, the value of the {@code basedir} property of the current Maven project is prepended.
+     * </p>
      *
      * @param name The name to get an absolute {@code File} instance for.
      *
@@ -1610,11 +1647,13 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     /**
      * Creates an {@code URL} for a given resource location.
-     * <p>This method first searches the given model context for a single resource matching {@code location}. If such a
+     * <p>
+     * This method first searches the given model context for a single resource matching {@code location}. If such a
      * resource is found, the URL of that resource is returned. If no such resource is found, an attempt is made to
      * parse the given location to an URL. On successful parsing, that URL is returned. Failing that, the given location
      * is interpreted as a file name relative to the project's base directory. If that file is found, the URL of that
-     * file is returned. Otherwise {@code null} is returned.</p>
+     * file is returned. Otherwise {@code null} is returned.
+     * </p>
      *
      * @param modelContext The model conext to search.
      * @param location The location to create an {@code URL} from.
@@ -1695,9 +1734,11 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
     /**
      * Creates an {@code URL} for a given directory location.
-     * <p>This method first attempts to parse the given location to an URL. On successful parsing, that URL is returned.
+     * <p>
+     * This method first attempts to parse the given location to an URL. On successful parsing, that URL is returned.
      * Failing that, the given location is interpreted as a directory name relative to the project's base directory.
-     * If that directory is found, the URL of that directory is returned. Otherwise {@code null} is returned.</p>
+     * If that directory is found, the URL of that directory is returned. Otherwise {@code null} is returned.
+     * </p>
      *
      * @param location The directory location to create an {@code URL} from.
      *

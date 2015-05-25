@@ -51,10 +51,14 @@ import org.apache.maven.project.MavenProjectHelper;
 public abstract class AbstractAttachMojo extends AbstractMojo
 {
 
-    /** Constant for the name of the tool backing the mojo. */
+    /**
+     * Constant for the name of the tool backing the mojo.
+     */
     private static final String TOOLNAME = "MavenProjectHelper";
 
-    /** Prefix prepended to log messages. */
+    /**
+     * Prefix prepended to log messages.
+     */
     private static final String LOG_PREFIX = "[JOMC] ";
 
     /**
@@ -101,7 +105,9 @@ public abstract class AbstractAttachMojo extends AbstractMojo
      */
     private boolean verbose;
 
-    /** Creates a new {@code AbstractAttachMojo} instance. */
+    /**
+     * Creates a new {@code AbstractAttachMojo} instance.
+     */
     public AbstractAttachMojo()
     {
         super();
@@ -233,9 +239,9 @@ public abstract class AbstractAttachMojo extends AbstractMojo
         final File attachment =
             new File( this.getSessionDirectory(),
                       ArtifactUtils.versionlessKey( this.getMavenProject().getArtifact() ).hashCode()
-                      + "-" + this.getArtifactClassifier()
-                      + "-" + this.getMavenSession().getStartTime().getTime()
-                      + "." + this.getArtifactType() );
+                          + "-" + this.getArtifactClassifier()
+                          + "-" + this.getMavenSession().getStartTime().getTime()
+                          + "." + this.getArtifactType() );
 
         try
         {
@@ -246,15 +252,15 @@ public abstract class AbstractAttachMojo extends AbstractMojo
             }
 
             if ( MojoDescriptor.MULTI_PASS_EXEC_STRATEGY.equals( this.getExecutionStrategy() )
-                 || !attachment.exists() )
+                     || !attachment.exists() )
             {
                 if ( this.isVerbose() && this.getLog().isInfoEnabled() )
                 {
                     this.getLog().info( LOG_PREFIX + Messages.getMessage( "separator" ) );
                     this.getLog().info( LOG_PREFIX + Messages.getMessage(
                         "processingProject", TOOLNAME, this.getMavenProject().getName() == null
-                                                       ? this.getMavenProject().getArtifactId()
-                                                       : this.getMavenProject().getName() ) );
+                                                           ? this.getMavenProject().getArtifactId()
+                                                           : this.getMavenProject().getName() ) );
 
                 }
 

@@ -44,16 +44,24 @@ import java.util.List;
 public class TransformerResourceType extends ResourceType
 {
 
-    /** Transformation parameter resources. */
+    /**
+     * Transformation parameter resources.
+     */
     private List<TransformationParameterResource> transformationParameterResources;
 
-    /** Transformation parameters. */
+    /**
+     * Transformation parameters.
+     */
     private List<TransformationParameter> transformationParameters;
 
-    /** Transformation output properties. */
+    /**
+     * Transformation output properties.
+     */
     private List<TransformationOutputProperty> transformationOutputProperties;
 
-    /** Creates a new {@code TransformerResourceType} instance. */
+    /**
+     * Creates a new {@code TransformerResourceType} instance.
+     */
     public TransformerResourceType()
     {
         super();
@@ -61,9 +69,11 @@ public class TransformerResourceType extends ResourceType
 
     /**
      * Gets the transformation parameter resource to apply.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * transformation parameter resources property.</p>
+     * transformation parameter resources property.
+     * </p>
      *
      * @return The transformation parameter resources to apply.
      */
@@ -79,9 +89,11 @@ public class TransformerResourceType extends ResourceType
 
     /**
      * Gets the transformation parameters to apply.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * transformation parameters property.</p>
+     * transformation parameters property.
+     * </p>
      *
      * @return The transformation parameters to apply.
      */
@@ -97,9 +109,11 @@ public class TransformerResourceType extends ResourceType
 
     /**
      * Gets the transformation output properties to apply.
-     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
+     * <p>
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make
      * to the returned list will be present inside the object. This is why there is no {@code set} method for the
-     * transformation output properties property.</p>
+     * transformation output properties property.
+     * </p>
      *
      * @return The transformation output properties to apply.
      */
@@ -128,7 +142,7 @@ public class TransformerResourceType extends ResourceType
             clone.transformationOutputProperties =
                 new ArrayList<TransformationOutputProperty>( this.transformationOutputProperties.size() );
 
-            for ( TransformationOutputProperty e : this.transformationOutputProperties )
+            for ( final TransformationOutputProperty e : this.transformationOutputProperties )
             {
                 clone.transformationOutputProperties.add( e.clone() );
             }
@@ -139,7 +153,7 @@ public class TransformerResourceType extends ResourceType
             clone.transformationParameterResources =
                 new ArrayList<TransformationParameterResource>( this.transformationParameterResources.size() );
 
-            for ( TransformationParameterResource e : this.transformationParameterResources )
+            for ( final TransformationParameterResource e : this.transformationParameterResources )
             {
                 clone.transformationParameterResources.add( e.clone() );
             }
@@ -150,7 +164,7 @@ public class TransformerResourceType extends ResourceType
             clone.transformationParameters =
                 new ArrayList<TransformationParameter>( this.transformationParameters.size() );
 
-            for ( TransformationParameter e : this.transformationParameters )
+            for ( final TransformationParameter e : this.transformationParameters )
             {
                 clone.transformationParameters.add( e.clone() );
             }

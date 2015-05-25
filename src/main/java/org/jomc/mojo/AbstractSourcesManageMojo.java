@@ -51,10 +51,14 @@ import org.jomc.tools.SourceFileProcessor;
 public abstract class AbstractSourcesManageMojo extends AbstractJomcMojo
 {
 
-    /** Constant for the name of the tool backing the class. */
+    /**
+     * Constant for the name of the tool backing the class.
+     */
     private static final String TOOLNAME = "SourceFileProcessor";
 
-    /** Creates a new {@code AbstractSourcesManageMojo} instance. */
+    /**
+     * Creates a new {@code AbstractSourcesManageMojo} instance.
+     */
     public AbstractSourcesManageMojo()
     {
         super();

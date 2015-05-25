@@ -40,7 +40,9 @@ package org.jomc.mojo;
 public class TransformationParameter extends KeyValueType
 {
 
-    /** Creates a new {@code TransformationParameter} instance. */
+    /**
+     * Creates a new {@code TransformationParameter} instance.
+     */
     public TransformationParameter()
     {
         super();

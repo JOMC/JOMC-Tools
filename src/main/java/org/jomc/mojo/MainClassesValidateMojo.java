@@ -55,7 +55,9 @@ public final class MainClassesValidateMojo extends AbstractClassesValidateMojo
      */
     private String validateMainClassesExecutionStrategy;
 
-    /** Creates a new {@code MainClassesValidateMojo} instance. */
+    /**
+     * Creates a new {@code MainClassesValidateMojo} instance.
+     */
     public MainClassesValidateMojo()
     {
         super();

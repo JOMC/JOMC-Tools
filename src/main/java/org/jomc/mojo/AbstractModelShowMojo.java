@@ -48,7 +48,9 @@ import org.jomc.modlet.ModelContext;
 public abstract class AbstractModelShowMojo extends AbstractJomcMojo
 {
 
-    /** Constant for the name of the tool backing the mojo. */
+    /**
+     * Constant for the name of the tool backing the mojo.
+     */
     private static final String TOOLNAME = "ModelProcessor";
 
     /**
@@ -65,7 +67,9 @@ public abstract class AbstractModelShowMojo extends AbstractJomcMojo
      */
     private String documentEncoding;
 
-    /** Creates a new {@code AbstractModelShowMojo} instance. */
+    /**
+     * Creates a new {@code AbstractModelShowMojo} instance.
+     */
     public AbstractModelShowMojo()
     {
         super();

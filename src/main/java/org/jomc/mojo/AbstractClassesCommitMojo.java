@@ -55,7 +55,9 @@ import org.jomc.tools.ClassFileProcessor;
 public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
 {
 
-    /** Constant for the name of the tool backing the mojo. */
+    /**
+     * Constant for the name of the tool backing the mojo.
+     */
     private static final String TOOLNAME = "ClassFileProcessor";
 
     /**
@@ -93,27 +95,37 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
      *   &lt;/modelObjectStylesheetResource>
      * &lt;/modelObjectStylesheetResources>
      * </pre>
-     * <p>The location value is used to first search the class path of the plugin and the project's main or test class
+     * <p>
+     * The location value is used to first search the class path of the plugin and the project's main or test class
      * path. If a class path resource is found, that resource is used. If no class path resource is found, an attempt is
      * made to parse the location value to an URL. On successful parsing, that URL is used. Otherwise the location value
      * is interpreted as a file name relative to the base directory of the project. If that file exists, that file is
      * used. If nothing is found at the given location, depending on the optional flag, a warning message is logged or a
-     * build failure is produced.</p>
-     * <p>The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
-     * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false</p>
-     * <p>The connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
+     * build failure is produced.
+     * </p>
+     * <p>
+     * The optional flag is used to flag the resource optional. When an optional resource is not found, a warning
+     * message is logged instead of producing a build failure.<br/><b>Default value is:</b> false
+     * </p>
+     * <p>
+     * The connectTimeout value is used to specify the timeout, in milliseconds, to be used when opening
      * communications links to the resource. A timeout of zero is interpreted as an infinite timeout.<br/>
-     * <b>Default value is:</b> 60000</p>
-     * <p>The readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the resource.
+     * <b>Default value is:</b> 60000
+     * </p>
+     * <p>
+     * The readTimeout value is used to specify the timeout, in milliseconds, to be used when reading the resource.
      * A timeout of zero is interpreted as an infinite timeout.<br/>
-     * <b>Default value is:</b> 60000</p>
+     * <b>Default value is:</b> 60000
+     * </p>
      *
      * @parameter
      * @since 1.2
      */
     private List<ModelObjectStylesheetResource> modelObjectStylesheetResources;
 
-    /** Creates a new {@code AbstractClassesCommitMojo} instance. */
+    /**
+     * Creates a new {@code AbstractClassesCommitMojo} instance.
+     */
     public AbstractClassesCommitMojo()
     {
         super();
