@@ -64,21 +64,21 @@ ${tool.getIndentation(0)}${smodel.getHeadComment()} <editor-fold defaultstate="c
 #end
 ${tool.getIndentation(0)}/*
 #if($with-project-name)
-${tool.getIndentation(0)} *   $with-project-name
+${tool.getIndentation(0)} * $with-project-name
 #end
 #if($with-vendor-copyright && $implementation.getVendor())
 #if($implementation.getCreateDate())
-${tool.getIndentation(0)} *   Copyright (C) $implementation.getVendor(), $tool.getIsoDate($implementation.getCreateDate().toGregorianCalendar())
+${tool.getIndentation(0)} * Copyright (C) $implementation.getVendor(), $tool.getIsoDate($implementation.getCreateDate().toGregorianCalendar())
 #else
-${tool.getIndentation(0)} *   Copyright (C) $implementation.getVendor(), ${isoDate}
+${tool.getIndentation(0)} * Copyright (C) $implementation.getVendor(), ${isoDate}
 #end
 #end
 #if($with-author-copyright && $implementation.getAuthors())
 #foreach($author in $implementation.getAuthors().getAuthor())
 #if($author.getCreateDate())
-${tool.getIndentation(0)} *   Copyright (C) $author.getName(), $tool.getIsoDate($author.getCreateDate().toGregorianCalendar())
+${tool.getIndentation(0)} * Copyright (C) $author.getName()#if($author.getMail()) #if(!$author.getMail().contains('<'))<#end$author.getMail()#if(!$author.getMail().contains('>'))>#end#end, $tool.getIsoDate($author.getCreateDate().toGregorianCalendar())
 #else
-${tool.getIndentation(0)} *   Copyright (C) $author.getName(), ${isoDate}
+${tool.getIndentation(0)} * Copyright (C) $author.getName()#if($author.getMail()) #if(!$author.getMail().contains('<'))<#end$author.getMail()#if(!$author.getMail().contains('>'))>#end#end, ${isoDate}
 #end
 #if($author.getDocumentation())
 ${tool.getIndentation(0)} * $author.getDocumentation().getText($tool.getLocale()).getJavadocComment($tool.getLineSeparator(), $tool.getIndentation(0))
@@ -86,34 +86,34 @@ ${tool.getIndentation(0)} *
 #end
 #end
 #end
-${tool.getIndentation(0)} *   All rights reserved.
+${tool.getIndentation(0)} * All rights reserved.
 ${tool.getIndentation(0)} *
-${tool.getIndentation(0)} *   Redistribution and use in source and binary forms, with or without
-${tool.getIndentation(0)} *   modification, are permitted provided that the following conditions
-${tool.getIndentation(0)} *   are met:
+${tool.getIndentation(0)} * Redistribution and use in source and binary forms, with or without
+${tool.getIndentation(0)} * modification, are permitted provided that the following conditions
+${tool.getIndentation(0)} * are met:
 ${tool.getIndentation(0)} *
-${tool.getIndentation(0)} *     o Redistributions of source code must retain the above copyright
-${tool.getIndentation(0)} *       notice, this list of conditions and the following disclaimer.
+${tool.getIndentation(0)} *   o Redistributions of source code must retain the above copyright
+${tool.getIndentation(0)} *     notice, this list of conditions and the following disclaimer.
 ${tool.getIndentation(0)} *
-${tool.getIndentation(0)} *     o Redistributions in binary form must reproduce the above copyright
-${tool.getIndentation(0)} *       notice, this list of conditions and the following disclaimer in
-${tool.getIndentation(0)} *       the documentation and/or other materials provided with the
-${tool.getIndentation(0)} *       distribution.
+${tool.getIndentation(0)} *   o Redistributions in binary form must reproduce the above copyright
+${tool.getIndentation(0)} *     notice, this list of conditions and the following disclaimer in
+${tool.getIndentation(0)} *     the documentation and/or other materials provided with the
+${tool.getIndentation(0)} *     distribution.
 ${tool.getIndentation(0)} *
-${tool.getIndentation(0)} *   THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
-${tool.getIndentation(0)} *   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-${tool.getIndentation(0)} *   AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
-${tool.getIndentation(0)} *   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT,
-${tool.getIndentation(0)} *   INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-${tool.getIndentation(0)} *   NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-${tool.getIndentation(0)} *   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-${tool.getIndentation(0)} *   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-${tool.getIndentation(0)} *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-${tool.getIndentation(0)} *   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+${tool.getIndentation(0)} * THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+${tool.getIndentation(0)} * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+${tool.getIndentation(0)} * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+${tool.getIndentation(0)} * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT,
+${tool.getIndentation(0)} * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+${tool.getIndentation(0)} * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+${tool.getIndentation(0)} * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+${tool.getIndentation(0)} * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+${tool.getIndentation(0)} * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+${tool.getIndentation(0)} * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ${tool.getIndentation(0)} *
 #if($with-revision-keyword)
 #set($D = "$")
-${tool.getIndentation(0)} *   ${D}$with-revision-keyword${D}
+${tool.getIndentation(0)} * ${D}$with-revision-keyword${D}
 ${tool.getIndentation(0)} *
 #end
 ${tool.getIndentation(0)} */
