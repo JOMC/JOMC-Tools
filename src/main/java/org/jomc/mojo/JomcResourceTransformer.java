@@ -53,6 +53,7 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
+import org.apache.maven.plugins.shade.relocation.Relocator;
 import org.apache.maven.plugins.shade.resource.ResourceTransformer;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.StringUtils;
@@ -466,7 +467,8 @@ public class JomcResourceTransformer extends AbstractLogEnabled implements Resou
         }
     }
 
-    public void processResource( final String name, final InputStream in, final List relocators ) throws IOException
+    public void processResource( final String name, final InputStream in, final List<Relocator> relocators )
+        throws IOException
     {
         this.processResource( in );
     }
