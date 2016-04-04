@@ -40,7 +40,7 @@
   <artifactId>jomc-tools</artifactId>
   <name>JOMC ⁑ Tools</name>
   <description>Object management and configuration tools.</description>
-  <url>${jomc.artifacts.url}/${project.artifactId}-${project.version}</url>
+  <url>${jomc.base.url}/${jomc.site.location}/${project.artifactId}-${project.version}</url>
   <build>
     <resources>
       <resource>
@@ -264,7 +264,7 @@
                 <includes>*.xsd</includes>
                 <serverId>${jomc.xml.distribution.id}</serverId>
                 <toDir>model</toDir>
-                <url>${jomc.xml.distribution.url}/tools</url>
+                <url>${jomc.xml.distribution.base.url}/tools</url>
               </configuration>
             </execution>
           </executions>
@@ -308,6 +308,11 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
+      <groupId>org.jomc</groupId>
+      <artifactId>jomc-jls</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>org.apache.velocity</groupId>
       <artifactId>velocity</artifactId>
       <scope>compile</scope>
@@ -335,9 +340,9 @@
   </dependencies>
   <distributionManagement>
     <site>
-      <id>${jomc.artifacts.distribution.id}</id>
-      <name>${jomc.artifacts.distribution.name}</name>
-      <url>${jomc.artifacts.distribution.url}/${project.artifactId}-${project.version}</url>
+      <id>${jomc.site.distribution.id}</id>
+      <name>${jomc.site.distribution.name}</name>
+      <url>${jomc.site.distribution.base.url}/${jomc.site.location}/${project.artifactId}-${project.version}</url>
     </site>
   </distributionManagement>
   <profiles>

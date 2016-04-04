@@ -58,7 +58,7 @@ import org.jomc.modlet.ModelContextFactory;
 import org.jomc.modlet.ModelException;
 import org.jomc.modlet.ModelValidationReport;
 import org.jomc.tools.JomcTool;
-import org.jomc.util.JavaIdentifier;
+import org.jomc.jls.JavaIdentifier;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

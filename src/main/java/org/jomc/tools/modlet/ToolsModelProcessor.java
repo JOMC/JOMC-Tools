@@ -53,7 +53,7 @@ import org.jomc.tools.model.SourceFileType;
 import org.jomc.tools.model.SourceFilesType;
 import org.jomc.tools.model.SourceSectionType;
 import org.jomc.tools.model.SourceSectionsType;
-import org.jomc.util.JavaTypeName;
+import org.jomc.jls.JavaTypeName;
 import static org.jomc.tools.modlet.ToolsModletConstants.ANNOTATIONS_SECTION_NAME;
 import static org.jomc.tools.modlet.ToolsModletConstants.CONSTRUCTORS_HEAD_TEMPLATE;
 import static org.jomc.tools.modlet.ToolsModletConstants.CONSTRUCTORS_SECTION_NAME;

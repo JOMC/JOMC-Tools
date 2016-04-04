@@ -707,7 +707,7 @@
      * @throws org.jomc.model.ModelObjectException if compiling the name of the type referenced by the template
      * parameter to a {@code JavaTypeName} fails.
      */
-    public org.jomc.util.JavaTypeName getJavaTypeName() throws org.jomc.model.ModelObjectException
+    public org.jomc.jls.JavaTypeName getJavaTypeName() throws org.jomc.model.ModelObjectException
     {
         final String typeName = this.getType() == null
                                     ? this.getAny() == null
@@ -717,7 +717,7 @@
 
         try
         {
-            return org.jomc.util.JavaTypeName.parse( typeName );
+            return org.jomc.jls.JavaTypeName.parse( typeName );
         }
         catch ( final java.text.ParseException e )
         {

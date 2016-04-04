@@ -75,7 +75,7 @@ import org.jomc.model.ModelObject;
 import org.jomc.model.Modules;
 import org.jomc.model.modlet.ModelHelper;
 import org.jomc.modlet.Model;
-import org.jomc.util.JavaIdentifier;
+import org.jomc.jls.JavaIdentifier;
 
 /**
  * Base tool class.

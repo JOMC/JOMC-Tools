@@ -53,7 +53,7 @@ import org.jomc.model.ModelObjectException;
 import org.jomc.model.Module;
 import org.jomc.model.Specification;
 import org.jomc.model.Text;
-import org.jomc.util.JavaTypeName;
+import org.jomc.jls.JavaTypeName;
 
 /**
  * Processes resource files.
