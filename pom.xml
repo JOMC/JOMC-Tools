@@ -41,7 +41,7 @@
   <packaging>maven-plugin</packaging>
   <name>JOMC ⁑ Maven Plugin</name>
   <description>Object management and configuration tools for Apache Maven.</description>
-  <url>${jomc.artifacts.url}/${project.artifactId}-${project.version}</url>
+  <url>${jomc.base.url}/${jomc.site.location}/${project.artifactId}-${project.version}</url>
   <build>
     <resources>
       <resource>
@@ -65,6 +65,11 @@
     <dependency>
       <groupId>org.jomc</groupId>
       <artifactId>jomc-model</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jomc</groupId>
+      <artifactId>jomc-jls</artifactId>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -131,9 +136,9 @@
   </dependencies>
   <distributionManagement>
     <site>
-      <id>${jomc.artifacts.distribution.id}</id>
-      <name>${jomc.artifacts.distribution.name}</name>
-      <url>${jomc.artifacts.distribution.url}/${project.artifactId}-${project.version}</url>
+      <id>${jomc.site.distribution.id}</id>
+      <name>${jomc.site.distribution.name}</name>
+      <url>${jomc.site.distribution.base.url}/${jomc.site.location}/${project.artifactId}-${project.version}</url>
     </site>
   </distributionManagement>
   <profiles>
