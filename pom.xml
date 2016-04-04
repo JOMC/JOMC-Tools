@@ -1116,26 +1116,6 @@
                 </execution>
               </executions>
             </plugin>
-            <!-- plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>wagon-maven-plugin</artifactId>
-              <executions>
-                <execution>
-                  <id>default-upload</id>
-                  <phase>deploy</phase>
-                  <goals>
-                    <goal>upload</goal>
-                  </goals>
-                  <configuration>
-                    <fromDir>${project.build.directory}</fromDir>
-                    <includes>jomc-*.zip*, *.gz*, *.bz2*</includes>
-                    <serverId>${jomc.frs.distribution.id}</serverId>
-                    <toDir>jomc-${jomc.base.version}</toDir>
-                    <url>${jomc.frs.distribution.url}</url>
-                  </configuration>
-                </execution>
-              </executions>
-            </plugin -->
           </plugins>
         </pluginManagement>
         <plugins>
