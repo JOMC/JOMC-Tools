@@ -174,11 +174,6 @@
       <!-- JOMC -->
       <dependency>
         <groupId>org.jomc</groupId>
-        <artifactId>jomc-jls</artifactId>
-        <version>${jomc-jls.artifact.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jomc</groupId>
         <artifactId>jomc-util</artifactId>
         <version>${jomc-util.artifact.version}</version>
       </dependency>
@@ -233,7 +228,6 @@
     </site>
   </distributionManagement>
   <properties>
-    <jomc-jls.artifact.version>1.7.0</jomc-jls.artifact.version>
     <jomc-util.artifact.version>1.9</jomc-util.artifact.version>
     <jomc-modlet.artifact.version>1.9</jomc-modlet.artifact.version>
     <jomc-model.artifact.version>1.9</jomc-model.artifact.version>
