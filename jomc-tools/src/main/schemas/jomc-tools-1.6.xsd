@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Copyright (C) 2005 Christian Schulte <cs@schulte.it>
+  All rights reserved.
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+    o Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+
+    o Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in
+      the documentation and/or other materials provided with the
+      distribution.
+
+  THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+  AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT,
+  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+  $JOMC$
+
+  Location: http://xml.jomc.org/tools/model/jomc-tools-1.6.xsd
+
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:tools="http://jomc.org/tools/model"
+            targetNamespace="http://jomc.org/tools/model"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified">
+  <xsd:annotation>
+    <xsd:documentation xml:lang="en"><![CDATA[
+
+  Copyright (C) 2005 Christian Schulte <cs@schulte.it>
+  All rights reserved.
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+    o Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+
+    o Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in
+      the documentation and/or other materials provided with the
+      distribution.
+
+  THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+  AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT,
+  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+  $JOMC$
+
+  Location: http://xml.jomc.org/tools/model/jomc-tools-1.6.xsd
+
+]]>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ************************************************************************************************************* -->
+  <xsd:complexType name="ToolsType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Base tools type.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="modelVersion" type="xsd:string" use="optional" default="1.6"/>
+  </xsd:complexType>
+  <!-- ************************************************************************************************************* -->
+  <xsd:element name="source-files" type="tools:SourceFilesType">
+    <xsd:key name="source-file-identifier-key">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">Identifier key of a source file.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:selector xpath="tools:source-file"/>
+      <xsd:field xpath="@identifier"/>
+    </xsd:key>
+  </xsd:element>
+  <xsd:complexType name="SourceFilesType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">List of source files.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tools:ToolsType">
+        <xsd:sequence>
+          <xsd:element ref="tools:source-file" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="final" type="xsd:boolean" use="optional" default="false">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Flag indicating the list of source files is the final node in an inheritance hierarchy.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="override" type="xsd:boolean" use="optional" default="false">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Flag indicating the list of source files is intended to override a super list of source files.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ************************************************************************************************************* -->
+  <xsd:element name="source-file" type="tools:SourceFileType">
+    <xsd:key name="source-file-template-parameter-key">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">Key of a source file template parameter.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:selector xpath="tools:template-parameter"/>
+      <xsd:field xpath="@name"/>
+    </xsd:key>
+  </xsd:element>
+  <xsd:complexType name="SourceFileType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Model of a source code file.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tools:ToolsType">
+        <xsd:sequence>
+          <xsd:element ref="tools:source-sections" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Sections of the source file.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="template-parameter" type="tools:TemplateParameterType" minOccurs="0" maxOccurs="unbounded"/>
+          <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="identifier" type="xsd:string" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Identifier of the source file.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="location" type="xsd:string" use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Location of the source file.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="template" type="xsd:string" use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Identifier of a template to use for creating the file.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="head-comment" type="xsd:string" use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Characters to use to start a comment in the source file.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="tail-comment" type="xsd:string" use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Characters to use to end a comment in the source file.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="final" type="xsd:boolean" use="optional" default="false">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Flag indicating the source file is the final node in an inheritance hierarchy.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="override" type="xsd:boolean" use="optional" default="false">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Flag indicating the source file is intended to override a super source file.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ************************************************************************************************************* -->
+  <xsd:element name="source-sections" type="tools:SourceSectionsType">
+    <xsd:key name="source-section-name-key">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">Name key of a section.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:selector xpath="tools:source-section"/>
+      <xsd:field xpath="@name"/>
+    </xsd:key>
+  </xsd:element>
+  <xsd:complexType name="SourceSectionsType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">List of source sections.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tools:ToolsType">
+        <xsd:sequence>
+          <xsd:element ref="tools:source-section" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ************************************************************************************************************* -->
+  <xsd:element name="source-section" type="tools:SourceSectionType">
+    <xsd:key name="source-section-template-parameter-key">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">Key of a source section template parameter.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:selector xpath="tools:template-parameter"/>
+      <xsd:field xpath="@name"/>
+    </xsd:key>
+  </xsd:element>
+  <xsd:complexType name="SourceSectionType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Model of a source code file section.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tools:ToolsType">
+        <xsd:sequence>
+          <xsd:element ref="tools:source-sections" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Child sections of the section.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="template-parameter" type="tools:TemplateParameterType" minOccurs="0" maxOccurs="unbounded"/>
+          <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Name of the section.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="head-template" type="xsd:string" use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Identifier of a template to use for rendering the content of this section preceding any child section content.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="tail-template" type="xsd:string" use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Identifier of a template to use for rendering the content of this section succeeding any child section content.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="indentationLevel" type="xsd:int" use="optional" default="0">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Indentation level of the section.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="optional" type="xsd:boolean" use="optional" default="false">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Flag indicating the section is optional.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="editable" type="xsd:boolean" use="optional" default="false">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Flag indicating the section is editable.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ************************************************************************************************************* -->
+  <xsd:complexType name="TemplateParameterType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Model of a template parameter.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tools:ToolsType">
+        <xsd:sequence>
+          <xsd:any namespace="##other" minOccurs="0" maxOccurs="1" processContents="lax"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:token" use="required"/>
+        <xsd:attribute name="type" type="xsd:token" use="optional"/>
+        <xsd:attribute name="value" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+</xsd:schema>

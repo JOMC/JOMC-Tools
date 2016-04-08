@@ -1,0 +1,7 @@
+# $JOMC$
+org.jomc.model.modlet.DefaultModelProvider
+org.jomc.model.modlet.DefaultModelProcessor
+org.jomc.model.modlet.DefaultModelValidator
+org.jomc.tools.modlet.ToolsModelProvider
+org.jomc.tools.modlet.ToolsModelProcessor
+org.jomc.tools.modlet.ToolsModelValidator

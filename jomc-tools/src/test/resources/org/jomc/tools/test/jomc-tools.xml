@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Copyright (C) 2005 Christian Schulte <cs@schulte.it>
+  All rights reserved.
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+    o Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+
+    o Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in
+      the documentation and/or other materials provided with the
+      distribution.
+
+  THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+  AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT,
+  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+  $JOMC$
+
+-->
+<module xmlns="http://jomc.org/model"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://jomc.org/model http://xml.jomc.org/model/jomc-1.2.xsd"
+        name="JOMC Tools"
+        version="${project.version}"
+        vendor="${project.organization.name}"
+        modelVersion="1.2">
+
+  <documentation defaultLanguage="en">
+    <text language="en">${project.description}</text>
+  </documentation>
+
+  <specifications>
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="org.jomc.tools.ResourceFileProcessor" class="org.jomc.tools.ResourceFileProcessor"
+                   classDeclaration="true" vendor="${project.organization.name}" version="${project.version}">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Test specification.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+    </specification>
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="org.jomc.tools.SourceFileProcessor" class="org.jomc.tools.SourceFileProcessor"
+                   classDeclaration="true" vendor="${project.organization.name}" version="${project.version}">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Test specification.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+    </specification>
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="org.jomc.tools.ClassFileProcessor" class="org.jomc.tools.ClassFileProcessor"
+                   classDeclaration="true" vendor="${project.organization.name}" version="${project.version}">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Test specification.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+    </specification>
+  </specifications>
+  <implementations>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="org.jomc.tools.ResourceFileProcessor" class="org.jomc.tools.ResourceFileProcessor"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}" final="true">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Test implementation.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="org.jomc.tools.ResourceFileProcessor" version="${project.version}"/>
+      </specifications>
+      <dependencies>
+        <dependency identifier="java.util.Locale" name="Locale" implementationName="default" version="1.1"/>
+        <dependency identifier="org.jomc.tools.ResourceFileProcessor" name="ResourceFileProcessor"/>
+      </dependencies>
+      <properties>
+        <property name="TestStringProperty" value="Test"/>
+        <property name="TestPrimitiveProperty" type="int" value="1"/>
+      </properties>
+      <messages>
+        <message name="TestMessage">
+          <template defaultLanguage="en">
+            <text language="en">Test</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="org.jomc.tools.SourceFileProcessor" class="org.jomc.tools.SourceFileProcessor"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}" final="true">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Test implementation.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="org.jomc.tools.SourceFileProcessor" version="${project.version}"/>
+      </specifications>
+      <dependencies>
+        <dependency identifier="java.util.Locale" name="Locale" implementationName="default" version="1.1"/>
+        <dependency identifier="org.jomc.tools.SourceFileProcessor" name="SourceFileProcessor"/>
+      </dependencies>
+      <properties>
+        <property name="TestStringProperty" value="Test"/>
+        <property name="TestPrimitiveProperty" type="int" value="1"/>
+      </properties>
+      <messages>
+        <message name="TestMessage">
+          <template defaultLanguage="en">
+            <text language="en">Test</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="org.jomc.tools.ClassFileProcessor" class="org.jomc.tools.ClassFileProcessor"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}" final="true">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Test implementation.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="org.jomc.tools.ClassFileProcessor" version="${project.version}"/>
+      </specifications>
+      <dependencies>
+        <dependency identifier="java.util.Locale" name="Locale" implementationName="default" version="1.1"/>
+        <dependency identifier="org.jomc.tools.ClassFileProcessor" name="ClassFileProcessor"/>
+      </dependencies>
+      <properties>
+        <property name="TestStringProperty" value="Test"/>
+        <property name="TestPrimitiveProperty" type="int" value="1"/>
+      </properties>
+      <messages>
+        <message name="TestMessage">
+          <template defaultLanguage="en">
+            <text language="en">Test</text>
+          </template>
+        </message>
+      </messages>
+    </implementation>
+  </implementations>
+</module>

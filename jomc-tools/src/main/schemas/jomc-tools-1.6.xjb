@@ -1,0 +1,875 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Copyright (C) 2005 Christian Schulte <cs@schulte.it>
+  All rights reserved.
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+    o Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+
+    o Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in
+      the documentation and/or other materials provided with the
+      distribution.
+
+  THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+  AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT,
+  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+  $JOMC$
+
+-->
+<jaxb:bindings xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+               xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+               xmlns:xs="http://www.w3.org/2001/XMLSchema"
+               xmlns:tools="http://jomc.org/tools/model"
+               xmlns:ci="http://jaxb.dev.java.net/plugin/code-injector"
+               xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
+               version="2.0">
+
+  <jaxb:bindings schemaLocation="jomc-tools-1.6.xsd">
+    <!-- *********************************************************************************************************** -->
+    <jaxb:bindings node="xs:complexType[@name='ToolsType']">
+      <ci:code><![CDATA[
+    /**
+     * Gets a single {@code JAXBElement} matching a namespace URI and local part from a given list of objects.
+     *
+     * @param any The list to search.
+     * @param namespaceURI The namespace URI of the {@code JAXBElement} to return.
+     * @param localPart The local part of the {@code JAXBElement} to return.
+     * @param type The class of the type the element is bound to.
+     * @param <T> The type the element is bound to.
+     *
+     * @return The {@code JAXBElement} matching {@code namespaceURI} and {@code localPart} from the {@code any} list or
+     * {@code null} if no such element is found.
+     *
+     * @throws NullPointerException if {@code any}, {@code namespaceURI}, {@code localPart} or {@code type} is
+     * {@code null}.
+     * @throws IllegalStateException if {@code any} contains more than one matching element.
+     */
+    protected <T> javax.xml.bind.JAXBElement<T> getAnyElement( final java.util.List<Object> any,
+                                                               final String namespaceURI,
+                                                               final String localPart,
+                                                               final Class<T> type )
+    {
+        if ( any == null )
+        {
+            throw new NullPointerException( "any" );
+        }
+        if ( namespaceURI == null )
+        {
+            throw new NullPointerException( "namespaceURI" );
+        }
+        if ( localPart == null )
+        {
+            throw new NullPointerException( "localPart" );
+        }
+        if ( type == null )
+        {
+            throw new NullPointerException( "type" );
+        }
+
+        javax.xml.bind.JAXBElement<?> anyElement = null;
+
+        for ( int i = 0, s0 = any.size(); i < s0; i++ )
+        {
+            final Object o = any.get( i );
+
+            if ( o instanceof javax.xml.bind.JAXBElement<?> )
+            {
+                final javax.xml.bind.JAXBElement<?> e = (javax.xml.bind.JAXBElement<?>) o;
+
+                if ( namespaceURI.equals( e.getName().getNamespaceURI() )
+                     && localPart.equals( e.getName().getLocalPart() ) )
+                {
+                    if ( anyElement == null )
+                    {
+                        anyElement = e;
+                    }
+                    else
+                    {
+                        throw new IllegalStateException( getMessage( "nonUniqueElement", this.getClass().getName(),
+                                                                     namespaceURI, localPart ) );
+
+                    }
+                }
+            }
+        }
+
+        if ( anyElement != null && anyElement.getValue() != null && anyElement.getValue().getClass().equals( type ) )
+        {
+            @SuppressWarnings( "unchecked" ) final javax.xml.bind.JAXBElement<T> e =
+                (javax.xml.bind.JAXBElement<T>) anyElement;
+
+            return e;
+        }
+
+        return null;
+    }
+
+    /**
+     * Gets a list containing all {@code JAXBElement}s matching a namespace URI and local part from a given list of
+     * objects.
+     *
+     * @param any The list to search.
+     * @param namespaceURI The namespace URI of the {@code JAXBElement}s to return.
+     * @param localPart The local part of the {@code JAXBElement}s to return.
+     * @param type The class of the type the elements are bound to.
+     * @param <T> The type the elements are bound to.
+     *
+     * @return An unmodifiable list of all {@code JAXBElement}s matching {@code namespaceURI} and {@code localPart} from
+     * the {@code any} list - an empty list if no such elements are found.
+     *
+     * @throws NullPointerException if {@code any}, {@code namespaceURI}, {@code localPart} or {@code type} is
+     * {@code null}.
+     */
+    protected <T> java.util.List<javax.xml.bind.JAXBElement<T>> getAnyElements( final java.util.List<Object> any,
+                                                                                final String namespaceURI,
+                                                                                final String localPart,
+                                                                                final Class<T> type )
+    {
+        if ( any == null )
+        {
+            throw new NullPointerException( "any" );
+        }
+        if ( namespaceURI == null )
+        {
+            throw new NullPointerException( "namespaceURI" );
+        }
+        if ( localPart == null )
+        {
+            throw new NullPointerException( "localPart" );
+        }
+        if ( type == null )
+        {
+            throw new NullPointerException( "type" );
+        }
+
+        final java.util.List<javax.xml.bind.JAXBElement<T>> anyElements =
+            new java.util.ArrayList<javax.xml.bind.JAXBElement<T>>( any.size() );
+
+        for ( int i = 0, s0 = any.size(); i < s0; i++ )
+        {
+            final Object o = any.get( i );
+
+            if ( o instanceof javax.xml.bind.JAXBElement<?> )
+            {
+                final javax.xml.bind.JAXBElement<?> e = (javax.xml.bind.JAXBElement<?>) o;
+
+                if ( namespaceURI.equals( e.getName().getNamespaceURI() )
+                     && localPart.equals( e.getName().getLocalPart() )
+                     && e.getValue() != null && e.getValue().getClass().equals( type ) )
+                {
+                    @SuppressWarnings( "unchecked" ) final javax.xml.bind.JAXBElement<T> anyElement =
+                        (javax.xml.bind.JAXBElement<T>) e;
+
+                    anyElements.add( anyElement );
+                }
+            }
+        }
+
+        return java.util.Collections.unmodifiableList( anyElements );
+    }
+
+    /**
+     * Gets a single object matching a class from a given list of objects.
+     *
+     * @param any The list to search.
+     * @param clazz The class to return an instance of.
+     * @param <T> The type of the object to return.
+     *
+     * @return The instance of {@code clazz} from the {@code any} list or {@code null}, if no such instance is found.
+     *
+     * @throws NullPointerException if {@code any} or {@code clazz} is {@code null}.
+     * @throws IllegalStateException if {@code any} contains more than one matching object.
+     */
+    protected <T> T getAnyObject( final java.util.List<Object> any, final Class<T> clazz )
+    {
+        if ( any == null )
+        {
+            throw new NullPointerException( "any" );
+        }
+        if ( clazz == null )
+        {
+            throw new NullPointerException( "clazz" );
+        }
+
+        T anyObject = null;
+
+        for ( int i = 0, s0 = any.size(); i < s0; i++ )
+        {
+            Object o = any.get( i );
+
+            if ( o instanceof javax.xml.bind.JAXBElement<?> )
+            {
+                o = ( (javax.xml.bind.JAXBElement<?>) o ).getValue();
+            }
+
+            if ( clazz.equals( o.getClass() ) )
+            {
+                if ( anyObject == null )
+                {
+                    @SuppressWarnings( "unchecked" ) final T object = (T) o;
+                    anyObject = object;
+                }
+                else
+                {
+                    throw new IllegalStateException( getMessage( "nonUniqueObject", this.getClass().getName(),
+                                                                 clazz.getName() ) );
+
+                }
+            }
+        }
+
+        return anyObject;
+    }
+
+    /**
+     * Gets a list containing all objects matching a class from a given list of objects.
+     *
+     * @param any The list to search.
+     * @param clazz The class to return all instances of.
+     * @param <T> The type of the objects to return.
+     *
+     * @return An unmodifiable list of all instances of {@code clazz} from the {@code any} list - an empty list if no
+     * such objects are found.
+     *
+     * @throws NullPointerException if {@code any} or {@code clazz} is {@code null}.
+     */
+    protected <T> java.util.List<T> getAnyObjects( final java.util.List<Object> any, final Class<T> clazz )
+    {
+        if ( any == null )
+        {
+            throw new NullPointerException( "any" );
+        }
+        if ( clazz == null )
+        {
+            throw new NullPointerException( "namespaceURI" );
+        }
+
+        final java.util.List<T> anyElements = new java.util.ArrayList<T>( any.size() );
+
+        for ( int i = 0, s0 = any.size(); i < s0; i++ )
+        {
+            Object o = any.get( i );
+
+            if ( o instanceof javax.xml.bind.JAXBElement<?> )
+            {
+                o = ( (javax.xml.bind.JAXBElement<?>) o ).getValue();
+            }
+
+            if ( clazz.equals( o.getClass() ) )
+            {
+                @SuppressWarnings( "unchecked" ) final T object = (T) o;
+                anyElements.add( object );
+            }
+        }
+
+        return java.util.Collections.unmodifiableList( anyElements );
+    }
+
+    private static String getMessage( final String key, final Object... args )
+    {
+        return java.text.MessageFormat.format( java.util.ResourceBundle.getBundle(
+            ToolsType.class.getName().replace( '.', '/' ), java.util.Locale.getDefault() ).
+            getString( key ), args );
+    }]]>
+      </ci:code>
+    </jaxb:bindings>
+    <!-- *********************************************************************************************************** -->
+    <jaxb:bindings node="xs:complexType[@name='SourceFilesType']">
+      <inheritance:implements>org.jomc.model.Inheritable</inheritance:implements>
+    </jaxb:bindings>
+    <jaxb:bindings node="xs:complexType[@name='SourceFilesType']">
+      <ci:code><![CDATA[
+    /**
+     * Gets a source file model for a given name from the list of source file models.
+     *
+     * @param identifier The identifier of the source file model to return.
+     *
+     * @return The first matching source file model or {@code null}, if no such source file model is found.
+     *
+     * @throws NullPointerException if {@code identifier} is {@code null}.
+     *
+     * @see #getSourceFile()
+     * @see SourceFileType#getIdentifier()
+     */
+    public SourceFileType getSourceFile( final String identifier )
+    {
+        if ( identifier == null )
+        {
+            throw new NullPointerException( "identifier" );
+        }
+
+        for ( int i = 0, s0 = this.getSourceFile().size(); i < s0; i++ )
+        {
+            final SourceFileType s = this.getSourceFile().get( i );
+
+            if ( identifier.equals( s.getIdentifier() ) )
+            {
+                return s;
+            }
+        }
+
+        return null;
+    }]]>
+      </ci:code>
+    </jaxb:bindings>
+    <!-- *********************************************************************************************************** -->
+    <jaxb:bindings node="xs:complexType[@name='SourceFileType']">
+      <inheritance:implements>org.jomc.model.Inheritable</inheritance:implements>
+    </jaxb:bindings>
+    <jaxb:bindings node="xs:complexType[@name='SourceFileType']">
+      <ci:code><![CDATA[
+    /**
+     * Gets a single {@code JAXBElement} matching a namespace URI and local part from the {@code any} property of the
+     * instance.
+     *
+     * @param namespaceURI The namespace URI of the {@code JAXBElement} to return.
+     * @param localPart The local part of the {@code JAXBElement} to return.
+     * @param type The class of the type the element is bound to.
+     * @param <T> The type the element is bound to.
+     *
+     * @return The {@code JAXBElement} matching {@code namespaceURI} and {@code localPart} from the {@code any} property
+     * of the instance or {@code null}, if no such element is found.
+     *
+     * @throws NullPointerException if {@code namespaceURI}, {@code localPart} or {@code type} is {@code null}.
+     * @throws IllegalStateException if the {@code any} property contains more than one matching element.
+     *
+     * @see #getAnyElement(java.util.List, java.lang.String, java.lang.String, java.lang.Class)
+     */
+    public <T> javax.xml.bind.JAXBElement<T> getAnyElement( final String namespaceURI, final String localPart,
+                                                            final Class<T> type )
+    {
+        return this.getAnyElement( this.getAny(), namespaceURI, localPart, type );
+    }
+
+    /**
+     * Gets a list containing all {@code JAXBElement}s matching a namespace URI and local part from the {@code any}
+     * property of the instance.
+     *
+     * @param namespaceURI The namespace URI of the {@code JAXBElement}s to return.
+     * @param localPart The local part of the {@code JAXBElement}s to return.
+     * @param type The class of the type the elements are bound to.
+     * @param <T> The type the elements are bound to.
+     *
+     * @return An unmodifiable list of all {@code JAXBElement}s matching {@code namespaceURI} and {@code localPart} from
+     * the {@code any} property of the instance - an empty list if no such elements are found.
+     *
+     * @throws NullPointerException if {@code namespaceURI}, {@code localPart} or {@code type} is {@code null}.
+     *
+     * @see #getAnyElements(java.util.List, java.lang.String, java.lang.String, java.lang.Class)
+     */
+    public <T> java.util.List<javax.xml.bind.JAXBElement<T>> getAnyElements( final String namespaceURI,
+                                                                             final String localPart,
+                                                                             final Class<T> type )
+    {
+        return this.getAnyElements( this.getAny(), namespaceURI, localPart, type );
+    }
+
+    /**
+     * Gets a single object matching a given class from the {@code any} property of the instance.
+     *
+     * @param clazz The class to return an instance of.
+     * @param <T> The type of the object to return.
+     *
+     * @return The instance of {@code clazz} from the {@code any} property of the instance or {@code null}, if no such
+     * instance is found.
+     *
+     * @throws NullPointerException if {@code clazz} is {@code null}.
+     * @throws IllegalStateException if the {@code any} property contains more than one matching object.
+     *
+     * @see #getAnyObject(java.util.List, java.lang.Class)
+     */
+    public <T> T getAnyObject( final Class<T> clazz )
+    {
+        return this.getAnyObject( this.getAny(), clazz );
+    }
+
+    /**
+     * Gets a list containing all objects matching a given class from the {@code any} property of the instance.
+     *
+     * @param clazz The class to return all instances of.
+     * @param <T> The type of the objects to return.
+     *
+     * @return An unmodifiable list of all instances of {@code clazz} from the {@code any} property of the instance -
+     * an empty list if no such objects are found.
+     *
+     * @throws NullPointerException if {@code clazz} is {@code null}.
+     *
+     * @see #getAnyObjects(java.util.List, java.lang.Class)
+     */
+    public <T> java.util.List<T> getAnyObjects( final Class<T> clazz )
+    {
+        return this.getAnyObjects( this.getAny(), clazz );
+    }
+
+    /**
+     * Gets a template parameter for a given name from the list of template parameters.
+     *
+     * @param name The name of the template parameter to return.
+     *
+     * @return The first matching template parameter or {@code null}, if no such template parameter is found.
+     *
+     * @throws NullPointerException if {@code name} is {@code null}.
+     *
+     * @see #getTemplateParameter()
+     * @see TemplateParameterType#getName()
+     * @since 1.6
+     */
+    public TemplateParameterType getTemplateParameter( final String name )
+    {
+        if ( name == null )
+        {
+            throw new NullPointerException( "name" );
+        }
+
+        for ( int i = 0, s0 = this.getTemplateParameter().size(); i < s0; i++ )
+        {
+            final TemplateParameterType t = this.getTemplateParameter().get( i );
+
+            if ( name.equals( t.getName() ) )
+            {
+                return t;
+            }
+        }
+
+        return null;
+    }]]>
+      </ci:code>
+    </jaxb:bindings>
+    <!-- *********************************************************************************************************** -->
+    <jaxb:bindings node="xs:complexType[@name='SourceSectionsType']">
+      <ci:code><![CDATA[
+    /**
+     * Gets a section for a given name recursively from the list of sections.
+     *
+     * @param name The name of the section to return.
+     *
+     * @return The first matching section or {@code null}, if no such section is found.
+     *
+     * @throws NullPointerException if {@code name} is {@code null}.
+     *
+     * @see #getSourceSection()
+     * @see SourceSectionType#getName()
+     * @see SourceSectionType#getSourceSections()
+     */
+    public SourceSectionType getSourceSection( final String name )
+    {
+        if ( name == null )
+        {
+            throw new NullPointerException( "name" );
+        }
+
+        return this.getSourceSection( this, name );
+    }
+
+    private SourceSectionType getSourceSection( final SourceSectionsType sourceSectionsType, final String name )
+    {
+        if ( sourceSectionsType != null )
+        {
+            for ( int i = 0, s0 = sourceSectionsType.getSourceSection().size(); i < s0; i++ )
+            {
+                final SourceSectionType s = sourceSectionsType.getSourceSection().get( i );
+
+                if ( name.equals( s.getName() ) )
+                {
+                    return s;
+                }
+
+                final SourceSectionType sourceSectionType = this.getSourceSection( s.getSourceSections(), name );
+                if ( sourceSectionType != null )
+                {
+                    return sourceSectionType;
+                }
+            }
+        }
+
+        return null;
+    }]]>
+      </ci:code>
+    </jaxb:bindings>
+    <!-- *********************************************************************************************************** -->
+    <jaxb:bindings node="xs:complexType[@name='SourceSectionType']">
+      <ci:code><![CDATA[
+    /**
+     * Gets a single {@code JAXBElement} matching a namespace URI and local part from the {@code any} property of the
+     * instance.
+     *
+     * @param namespaceURI The namespace URI of the {@code JAXBElement} to return.
+     * @param localPart The local part of the {@code JAXBElement} to return.
+     * @param type The class of the type the element is bound to.
+     * @param <T> The type the element is bound to.
+     *
+     * @return The {@code JAXBElement} matching {@code namespaceURI} and {@code localPart} from the {@code any} property
+     * of the instance or {@code null}, if no such element is found.
+     *
+     * @throws NullPointerException if {@code namespaceURI}, {@code localPart} or {@code type} is {@code null}.
+     * @throws IllegalStateException if the {@code any} property contains more than one matching element.
+     *
+     * @see #getAnyElement(java.util.List, java.lang.String, java.lang.String, java.lang.Class)
+     */
+    public <T> javax.xml.bind.JAXBElement<T> getAnyElement( final String namespaceURI, final String localPart,
+                                                            final Class<T> type )
+    {
+        return this.getAnyElement( this.getAny(), namespaceURI, localPart, type );
+    }
+
+    /**
+     * Gets a list containing all {@code JAXBElement}s matching a namespace URI and local part from the {@code any}
+     * property of the instance.
+     *
+     * @param namespaceURI The namespace URI of the {@code JAXBElement}s to return.
+     * @param localPart The local part of the {@code JAXBElement}s to return.
+     * @param type The class of the type the elements are bound to.
+     * @param <T> The type the elements are bound to.
+     *
+     * @return An unmodifiable list of all {@code JAXBElement}s matching {@code namespaceURI} and {@code localPart} from
+     * the {@code any} property of the instance - an empty list if no such elements are found.
+     *
+     * @throws NullPointerException if {@code namespaceURI}, {@code localPart} or {@code type} is {@code null}.
+     *
+     * @see #getAnyElements(java.util.List, java.lang.String, java.lang.String, java.lang.Class)
+     */
+    public <T> java.util.List<javax.xml.bind.JAXBElement<T>> getAnyElements( final String namespaceURI,
+                                                                             final String localPart,
+                                                                             final Class<T> type )
+    {
+        return this.getAnyElements( this.getAny(), namespaceURI, localPart, type );
+    }
+
+    /**
+     * Gets a single object matching a given class from the {@code any} property of the instance.
+     *
+     * @param clazz The class to return an instance of.
+     * @param <T> The type of the object to return.
+     *
+     * @return The instance of {@code clazz} from the {@code any} property of the instance or {@code null}, if no such
+     * instance is found.
+     *
+     * @throws NullPointerException if {@code clazz} is {@code null}.
+     * @throws IllegalStateException if the {@code any} property contains more than one matching object.
+     *
+     * @see #getAnyObject(java.util.List, java.lang.Class)
+     */
+    public <T> T getAnyObject( final Class<T> clazz )
+    {
+        return this.getAnyObject( this.getAny(), clazz );
+    }
+
+    /**
+     * Gets a list containing all objects matching a given class from the {@code any} property of the instance.
+     *
+     * @param clazz The class to return all instances of.
+     * @param <T> The type of the objects to return.
+     *
+     * @return An unmodifiable list of all instances of {@code clazz} from the {@code any} property of the instance -
+     * an empty list if no such objects are found.
+     *
+     * @throws NullPointerException if {@code clazz} is {@code null}.
+     *
+     * @see #getAnyObjects(java.util.List, java.lang.Class)
+     */
+    public <T> java.util.List<T> getAnyObjects( final Class<T> clazz )
+    {
+        return this.getAnyObjects( this.getAny(), clazz );
+    }
+
+    /**
+     * Gets a template parameter for a given name from the list of template parameters.
+     *
+     * @param name The name of the template parameter to return.
+     *
+     * @return The first matching template parameter or {@code null}, if no such template parameter is found.
+     *
+     * @throws NullPointerException if {@code name} is {@code null}.
+     *
+     * @see #getTemplateParameter()
+     * @see TemplateParameterType#getName()
+     * @since 1.6
+     */
+    public TemplateParameterType getTemplateParameter( final String name )
+    {
+        if ( name == null )
+        {
+            throw new NullPointerException( "name" );
+        }
+
+        for ( int i = 0, s0 = this.getTemplateParameter().size(); i < s0; i++ )
+        {
+            final TemplateParameterType t = this.getTemplateParameter().get( i );
+
+            if ( name.equals( t.getName() ) )
+            {
+                return t;
+            }
+        }
+
+        return null;
+    }]]>
+      </ci:code>
+    </jaxb:bindings>
+    <!-- *********************************************************************************************************** -->
+    <jaxb:bindings node="xs:complexType[@name='TemplateParameterType']">
+      <ci:code><![CDATA[
+    /**
+     * Gets the Java value of the template parameter.
+     * <p>
+     * The Java value of the template parameter is computed based on the following rules:
+     * <ol>
+     * <li>If property {@code any} is set, the Java value is computed based on the object returned by method
+     * {@code getAny()} by possibly unwrapping any {@code JAXBElement} instances. If that object declares a
+     * <blockquote><pre>public Object getJavaValue( ClassLoader )</pre></blockquote> method, the value returned by this
+     * method is the object returned by a call to that method. If that object does not declare such a method, the value
+     * returned by this method is that (possibly unwrapped) object.</li>
+     * <li>If property {@code value} is set, the Java value is computed based on the values of properties {@code type}
+     * and {@code value}. If property {@code type} is not set or equals {@code java.lang.String}, the value returned
+     * by this method is the string value returned by method {@code getValue()}. If property {@code type} equals a name
+     * of a Java primitive type, an instance of the wrapper class corresponding to that primitive type name is returned
+     * instantiated by passing the value of property {@code value} to the public constructor of that wrapper class
+     * taking a single {@code java.lang.String} argument. For all other values of property {@code type} an instance of
+     * a class with a name equal to the value of property {@code type} is returned, either instantiated by passing the
+     * value of property {@code value} to the public constructor of that class taking a single {@code java.lang.String}
+     * argument, or, failing that, by passing the value of property {@code value} to the static {@code valueOf} method
+     * of that class taking a single {@code java.lang.String} argument.</li>
+     * <li>If properties {@code any} and {@code value} are both {@code null}, this method returns {@code null}.</li>
+     * </ol></p>
+     *
+     * @param classLoader The class loader to use for getting the Java value; {@code null} to use the platform's
+     * bootstrap class loader.
+     *
+     * @return The Java value of the template parameter or {@code null}.
+     *
+     * @throws org.jomc.model.ModelObjectException if getting the Java value of the template parameter fails
+     * unexpectedly.
+     *
+     * @see #getJavaTypeName()
+     */
+    public Object getJavaValue( final ClassLoader classLoader ) throws org.jomc.model.ModelObjectException
+    {
+        try
+        {
+            if ( this.getAny() != null )
+            {
+                if ( this.getType() == null )
+                {
+                    throw new org.jomc.model.ModelObjectException( getMessage( "mandatoryType", this.getName() ) );
+                }
+
+                final Object anyObject = this.getAny() instanceof JAXBElement
+                                             ? ( (JAXBElement) this.getAny() ).getValue() : this.getAny();
+
+                return this.getJavaValue( classLoader, anyObject,
+                                          this.getJavaTypeName().getClass( classLoader, false ) );
+
+            }
+            else
+            {
+                if ( this.getJavaTypeName().isPrimitive() && this.getValue() == null )
+                {
+                    throw new org.jomc.model.ModelObjectException( getMessage( "mandatoryPrimitiveValue",
+                                                                               this.getName(), this.getType() ) );
+
+                }
+
+                return this.getJavaValue( this.getJavaTypeName().isPrimitive()
+                                              ? this.getJavaTypeName().getBoxedName().getClass( classLoader, false )
+                                              : this.getJavaTypeName().getClass( classLoader, false ),
+                                          this.getValue() );
+
+            }
+        }
+        catch ( final ClassNotFoundException e )
+        {
+            throw new org.jomc.model.ModelObjectException( getMessage( "classNotFound", this.getName(),
+                                                                       this.getType() ), e );
+
+        }
+    }
+
+    /**
+     * Gets the Java type name of the template parameter.
+     *
+     * @return The Java type name of the type referenced by the template parameter or {@code null}, if the template
+     * parameter does not reference a type.
+     *
+     * @throws org.jomc.model.ModelObjectException if compiling the name of the type referenced by the template
+     * parameter to a {@code JavaTypeName} fails.
+     */
+    public org.jomc.jls.JavaTypeName getJavaTypeName() throws org.jomc.model.ModelObjectException
+    {
+        final String typeName = this.getType() == null
+                                    ? this.getAny() == null
+                                          ? String.class.getName()
+                                          : Object.class.getName()
+                                    : this.getType();
+
+        try
+        {
+            return org.jomc.jls.JavaTypeName.parse( typeName );
+        }
+        catch ( final java.text.ParseException e )
+        {
+            throw new org.jomc.model.ModelObjectException( getMessage( "javaTypeNameParseException", typeName,
+                                                                       getMessage( e ) ), e );
+
+        }
+    }
+
+    private Object getJavaValue( final ClassLoader classLoader, final Object any, final Class<?> returnType )
+        throws org.jomc.model.ModelObjectException
+    {
+        if ( any != null )
+        {
+            final String methodName = "getJavaValue";
+
+            try
+            {
+                final java.lang.reflect.Method m = any.getClass().getMethod( methodName, ClassLoader.class );
+                final Object result = m.invoke( any, classLoader );
+
+                if ( result != null && !returnType.isAssignableFrom( result.getClass() ) )
+                {
+                    throw new org.jomc.model.ModelObjectException( getMessage( "illegalMethodInvocationResult",
+                                                                               methodName, any.getClass().getName(),
+                                                                               result.getClass().getName(),
+                                                                               returnType.getName() ) );
+
+                }
+
+                return result;
+            }
+            catch ( final IllegalAccessException e )
+            {
+                throw new org.jomc.model.ModelObjectException( getMessage( "methodAccessDenied", methodName,
+                                                                           any.getClass().getName() ), e );
+
+            }
+            catch ( final IllegalArgumentException e )
+            {
+                throw new AssertionError( e );
+            }
+            catch ( final InvocationTargetException e )
+            {
+                throw new org.jomc.model.ModelObjectException( getMessage( "methodInvocationFailure", methodName,
+                                                                           any.getClass().getName() ), e );
+
+            }
+            catch ( final SecurityException e )
+            {
+                throw new org.jomc.model.ModelObjectException( getMessage( "methodAccessDenied", methodName,
+                                                                           any.getClass().getName() ), e );
+
+            }
+            catch ( final NoSuchMethodException e )
+            {
+                // Optional method not provided.
+            }
+        }
+
+        return any;
+    }
+
+    private Object getJavaValue( final Class<?> type, final String value ) throws org.jomc.model.ModelObjectException
+    {
+        if ( value != null )
+        {
+            try
+            {
+                if ( type == Character.class )
+                {
+                    if ( value.length() != 1 )
+                    {
+                        throw new org.jomc.model.ModelObjectException( getMessage( "illegalValue", value,
+                                                                                   Character.class.getName() ) );
+
+                    }
+
+                    return type.getConstructor( char.class ).newInstance( value.charAt( 0 ) );
+                }
+                else if ( type == String.class )
+                {
+                    return value;
+                }
+                else
+                {
+                    try
+                    {
+                        return type.getConstructor( String.class ).newInstance( value );
+                    }
+                    catch ( final NoSuchMethodException e )
+                    {
+                        final java.lang.reflect.Method valueOf = type.getMethod( "valueOf", String.class );
+
+                        if ( !type.isAssignableFrom( valueOf.getReturnType() ) )
+                        {
+                            throw new org.jomc.model.ModelObjectException( getMessage(
+                                "notAssignable", valueOf.getReturnType().getName(), valueOf.getName(), type.getName(),
+                                type.getName(), this.getName() ) );
+
+                        }
+
+                        return valueOf.invoke( null, value );
+                    }
+                }
+            }
+            catch ( final InstantiationException e )
+            {
+                throw new org.jomc.model.ModelObjectException( getMessage( "instantiationException", type.getName() ),
+                                                               e );
+
+            }
+            catch ( final IllegalAccessException e )
+            {
+                throw new org.jomc.model.ModelObjectException( getMessage( "accessDenied", type.getName() ), e );
+            }
+            catch ( final IllegalArgumentException e )
+            {
+                throw new AssertionError( e );
+            }
+            catch ( final InvocationTargetException e )
+            {
+                throw new org.jomc.model.ModelObjectException( getMessage( "invocationFailure", type.getName() ), e );
+            }
+            catch ( final NoSuchMethodException e )
+            {
+                throw new org.jomc.model.ModelObjectException( getMessage( "constructorNotFound", type.getName() ), e );
+            }
+        }
+
+        return value;
+    }
+
+    private static String getMessage( final Throwable t )
+    {
+        return t != null
+                   ? t.getMessage() != null && t.getMessage().trim().length() > 0
+                         ? t.getMessage()
+                         : getMessage( t.getCause() )
+                   : null;
+
+    }
+
+    private static String getMessage( final String key, final Object... arguments )
+    {
+        return java.text.MessageFormat.format(
+            java.util.ResourceBundle.getBundle( TemplateParameterType.class.getName().replace( '.', '/' ),
+                                                java.util.Locale.getDefault() ).getString( key ),
+            arguments );
+
+    }
+]]></ci:code>
+    </jaxb:bindings>
+  </jaxb:bindings>
+</jaxb:bindings>

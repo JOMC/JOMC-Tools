@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+   Copyright (C) 2005 Christian Schulte <cs@schulte.it>
+   All rights reserved.
+
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions
+   are met:
+
+     o Redistributions of source code must retain the above copyright
+       notice, this list of conditions and the following disclaimer.
+
+     o Redistributions in binary form must reproduce the above copyright
+       notice, this list of conditions and the following disclaimer in
+       the documentation and/or other materials provided with the
+       distribution.
+
+   THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+   AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT,
+   INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+   NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+   $JOMC$
+
+-->
+<project name="validate-classes-test" xmlns:jomc="antlib:org.jomc.ant">
+
+  <!-- ************************************************************************************************************* -->
+  <property name="jomc.enabled" value="on"/>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="before-test">
+    <property name="empty.dir" location="${test.output.dir}/EMPTY"/>
+    <property name="no.dir" location="${test.output.dir}/DOES_NOT_EXIST"/>
+    <tempfile property="classes.dir" destdir="${test.output.dir}/classfiles" prefix="cp"/>
+
+    <delete dir="${no.dir}" includeemptydirs="true"/>
+    <delete dir="${classes.dir}" includeemptydirs="true"/>
+    <mkdir dir="${empty.dir}"/>
+    <mkdir dir="${classes.dir}"/>
+    <mkdir dir="${test.output.dir}"/>
+
+    <unzip src="${output.dir}/classfiles.zip" dest="${classes.dir}"/>
+
+    <path id="empty.classpath">
+      <pathelement path="${empty.dir}"/>
+    </path>
+
+    <path id="classes.classpath">
+      <pathelement location="${classes.dir}"/>
+    </path>
+
+    <path id="redundant.classpath">
+      <pathelement location="${test.classpath.dir}"/>
+    </path>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task">
+    <jomc:commit-classes classesDirectory="${classes.dir}"/>
+    <jomc:validate-classes classesDirectory="${classes.dir}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-if">
+    <jomc:commit-classes classesDirectory="${classes.dir}" if="${jomc.enabled}"/>
+    <jomc:validate-classes classesDirectory="${classes.dir}" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-unless">
+    <jomc:commit-classes classesDirectory="${classes.dir}" unless="off"/>
+    <jomc:validate-classes classesDirectory="${classes.dir}" unless="off"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-model-context-attribute-missing-key">
+    <jomc:validate-classes classesDirectory="${classes.dir}">
+      <jomc:modelContextAttribute/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-missing-key">
+    <jomc:validate-classes classesDirectory="${classes.dir}">
+      <jomc:transformationParameter/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-resource-missing-location">
+    <jomc:validate-classes classesDirectory="${classes.dir}">
+      <jomc:transformationParameterResource/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-output-property-missing-key">
+    <jomc:validate-classes classesDirectory="${classes.dir}">
+      <jomc:transformationOutputProperty/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-module-resource-missing-location">
+    <jomc:validate-classes classesDirectory="${classes.dir}">
+      <jomc:moduleResource/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-velocity-property-missing-key">
+    <jomc:validate-classes classesDirectory="${classes.dir}">
+      <jomc:velocityProperty/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-velocity-property-resource-missing-location">
+    <jomc:validate-classes classesDirectory="${classes.dir}">
+      <jomc:velocityPropertyResource/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-template-parameter-missing-key">
+    <jomc:validate-classes classesDirectory="${classes.dir}">
+      <jomc:templateParameter/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-template-parameter-resource-missing-location">
+    <jomc:validate-classes classesDirectory="${classes.dir}">
+      <jomc:templateParameterResource/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-missing-classes-directory">
+    <jomc:validate-classes if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-invalid-multiple-locale-elements">
+    <jomc:validate-classes classesDirectory="${empty.dir}">
+      <jomc:locale language="de" country="de" variant="ISO8859_1"/>
+      <jomc:locale language="de" country="de" variant="ISO8859_1"/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-class-processing-disabled">
+    <jomc:validate-classes classesDirectory="${empty.dir}" classProcessingEnabled="false" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-specification-not-found">
+    <jomc:validate-classes classesDirectory="${classes.dir}" specification="DOES NOT EXIST" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-implementation-not-found">
+    <jomc:validate-classes classesDirectory="${classes.dir}" implementation="DOES NOT EXIST" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-module-not-found">
+    <jomc:validate-classes classesDirectory="${classes.dir}" module="DOES NOT EXIST" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-validate-ant-tasks">
+    <jomc:commit-classes classesDirectory="${classes.dir}" if="${jomc.enabled}"/>
+    <jomc:validate-classes classesDirectory="${classes.dir}" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-validate-ant-tasks-with-redundant-resources">
+    <jomc:commit-classes classesDirectory="${classes.dir}" classpathref="redundant.classpath" if="${jomc.enabled}"/>
+    <jomc:validate-classes classesDirectory="${classes.dir}" classpathref="redundant.classpath" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-validate-illegal-ant-tasks">
+    <jomc:commit-classes classesDirectory="${classes.dir}" if="${jomc.enabled}"/>
+    <jomc:validate-classes classesDirectory="${classes.dir}"
+                           transformerLocation="org/jomc/ant/test/validation-test.xsl" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-validate-one-specification">
+    <jomc:commit-classes classesDirectory="${classes.dir}" specification="org.jomc.ant.test.JomcTask"
+                         if="${jomc.enabled}"/>
+    <jomc:validate-classes classesDirectory="${classes.dir}" specification="org.jomc.ant.test.JomcTask"
+                           if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-validate-one-illegal-specification">
+    <jomc:commit-classes classesDirectory="${classes.dir}" specification="org.jomc.ant.test.JomcTask"
+                         if="${jomc.enabled}"/>
+    <jomc:validate-classes classesDirectory="${classes.dir}" specification="org.jomc.ant.test.JomcTask"
+                           transformerLocation="org/jomc/ant/test/validation-test.xsl" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-validate-one-implementation">
+    <jomc:commit-classes classesDirectory="${classes.dir}" implementation="org.jomc.ant.test.JomcToolTask"
+                         if="${jomc.enabled}"/>
+    <jomc:validate-classes classesDirectory="${classes.dir}" implementation="org.jomc.ant.test.JomcToolTask"
+                           if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-validate-one-illegal-implementation">
+    <jomc:commit-classes classesDirectory="${classes.dir}" implementation="org.jomc.ant.test.JomcToolTask"
+                         if="${jomc.enabled}"/>
+    <jomc:validate-classes classesDirectory="${classes.dir}" implementation="org.jomc.ant.test.JomcToolTask"
+                           transformerLocation="org/jomc/ant/test/validation-test.xsl" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-validate-one-module">
+    <jomc:commit-classes classesDirectory="${classes.dir}" module="JOMC Ant Tasks Tests" if="${jomc.enabled}"/>
+    <jomc:validate-classes classesDirectory="${classes.dir}" module="JOMC Ant Tasks Tests" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-validate-one-illegal-module">
+    <jomc:commit-classes classesDirectory="${classes.dir}" module="JOMC Ant Tasks Tests" if="${jomc.enabled}"/>
+    <jomc:validate-classes classesDirectory="${classes.dir}" module="JOMC Ant Tasks Tests"
+                           transformerLocation="org/jomc/ant/test/validation-test.xsl" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-validate-ant-tasks-with-classpathref">
+    <jomc:commit-classes classesDirectory="${classes.dir}" classpathref="empty.classpath" if="${jomc.enabled}"/>
+    <jomc:validate-classes classesDirectory="${classes.dir}" classpathref="empty.classpath" if="${jomc.enabled}"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-validate-ant-tasks-with-nested-classpath">
+    <jomc:commit-classes classesDirectory="${classes.dir}" if="${jomc.enabled}">
+      <jomc:classpath>
+        <pathelement path="${empty.dir}"/>
+      </jomc:classpath>
+    </jomc:commit-classes>
+    <jomc:validate-classes classesDirectory="${classes.dir}" if="${jomc.enabled}">
+      <jomc:classpath>
+        <pathelement path="${empty.dir}"/>
+      </jomc:classpath>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-validate-ant-tasks-all-attributes">
+    <jomc:commit-classes classesDirectory="${classes.dir}"
+                         defaultTemplateProfile="TEST"
+                         inputEncoding="UTF-8"
+                         outputEncoding="UTF-8"
+                         defaultTemplateEncoding="UTF-8"
+                         templateProfile="TEST"
+                         indentation="\t"
+                         lineSeparator="\r\n"
+                         modelProcessingEnabled="false"
+                         modelObjectClasspathResolutionEnabled="false"
+                         moduleLocation="TEST"
+                         transformerLocation="TEST"
+                         specification="TEST"
+                         implementation="TEST"
+                         module="TEST"
+                         model="http://jomc.org/model"
+                         modletLocation="META-INF/jomc-modlet.xml"
+                         providerLocation="META-INF/services"
+                         platformProviderLocation="TEST"
+                         if="${jomc.enabled}"
+                         classFileProcessorClass="org.jomc.tools.ClassFileProcessor"
+                         templateLocation="${empty.dir}">
+      <jomc:classpath>
+        <pathelement path="${empty.dir}"/>
+      </jomc:classpath>
+    </jomc:commit-classes>
+    <jomc:validate-classes classesDirectory="${classes.dir}"
+                           defaultTemplateProfile="TEST"
+                           inputEncoding="UTF-8"
+                           outputEncoding="UTF-8"
+                           defaultTemplateEncoding="UTF-8"
+                           templateProfile="TEST"
+                           indentation="\t"
+                           lineSeparator="\r\n"
+                           modelProcessingEnabled="false"
+                           modelObjectClasspathResolutionEnabled="false"
+                           moduleLocation="TEST"
+                           transformerLocation="TEST"
+                           specification="TEST"
+                           implementation="TEST"
+                           module="TEST"
+                           model="http://jomc.org/model"
+                           modletLocation="META-INF/jomc-modlet.xml"
+                           providerLocation="META-INF/services"
+                           platformProviderLocation="TEST"
+                           if="${jomc.enabled}"
+                           classFileProcessorClass="org.jomc.tools.ClassFileProcessor"
+                           templateLocation="${empty.dir}"
+                           modletResourceValidationEnabled="false"
+                           modelResourceValidationEnabled="false"
+                           javaValidationEnabled="false">
+      <jomc:classpath>
+        <pathelement path="${empty.dir}"/>
+      </jomc:classpath>
+      <jomc:velocityProperty key="test" value="test"/>
+      <jomc:templateParameter key="test" value="test"/>
+      <jomc:locale language="de" country="de" variant="ISO8859-1"/>
+    </jomc:validate-classes>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-validate-ant-tasks-broken-model">
+    <jomc:validate-classes classesDirectory="${classes.dir}" moduleLocation="META-INF/jomc-broken.xml"
+                           if="${jomc.enabled}"/>
+  </target>
+</project>
