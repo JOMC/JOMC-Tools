@@ -57,7 +57,7 @@
             <dependency>
               <groupId>org.jomc</groupId>
               <artifactId>maven-jomc-plugin</artifactId>
-              <version>${maven-jomc-plugin.artifact.version}</version>
+              <version>${jomc-tools.version}</version>
             </dependency>
           </dependencies>
           <executions>
@@ -485,7 +485,7 @@
         <plugin>
           <groupId>org.jomc</groupId>
           <artifactId>maven-jomc-plugin</artifactId>
-          <version>${maven-jomc-plugin.artifact.version}</version>
+          <version>${jomc-tools.version}</version>
           <executions>
             <execution>
               <id>default-process-resources</id>
@@ -989,185 +989,185 @@
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-tools</artifactId>
-        <version>${jomc-tools.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-tools</artifactId>
         <classifier>schemas</classifier>
-        <version>${jomc-tools.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-tools</artifactId>
         <classifier>templates</classifier>
-        <version>${jomc-tools.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-tools</artifactId>
         <classifier>tests</classifier>
-        <version>${jomc-tools.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-tools</artifactId>
         <classifier>javadoc</classifier>
-        <version>${jomc-tools.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-tools</artifactId>
         <classifier>test-javadoc</classifier>
-        <version>${jomc-tools.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-tools</artifactId>
         <classifier>sources</classifier>
-        <version>${jomc-tools.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-tools</artifactId>
         <classifier>test-sources</classifier>
-        <version>${jomc-tools.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-tools</artifactId>
         <classifier>project</classifier>
-        <version>${jomc-tools.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-tools</artifactId>
         <classifier>site</classifier>
-        <version>${jomc-tools.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-tools</artifactId>
         <classifier>license</classifier>
         <type>txt</type>
-        <version>${jomc-tools.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
 
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>maven-jomc-plugin</artifactId>
-        <version>${maven-jomc-plugin.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>maven-jomc-plugin</artifactId>
         <classifier>tests</classifier>
-        <version>${maven-jomc-plugin.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>maven-jomc-plugin</artifactId>
         <classifier>javadoc</classifier>
-        <version>${maven-jomc-plugin.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>maven-jomc-plugin</artifactId>
         <classifier>test-javadoc</classifier>
-        <version>${maven-jomc-plugin.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>maven-jomc-plugin</artifactId>
         <classifier>sources</classifier>
-        <version>${maven-jomc-plugin.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>maven-jomc-plugin</artifactId>
         <classifier>test-sources</classifier>
-        <version>${maven-jomc-plugin.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>maven-jomc-plugin</artifactId>
         <classifier>project</classifier>
-        <version>${maven-jomc-plugin.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>maven-jomc-plugin</artifactId>
         <classifier>site</classifier>
-        <version>${maven-jomc-plugin.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>maven-jomc-plugin</artifactId>
         <classifier>license</classifier>
         <type>txt</type>
-        <version>${maven-jomc-plugin.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
 
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-ant-tasks</artifactId>
-        <version>${jomc-ant-tasks.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-ant-tasks</artifactId>
         <classifier>installer</classifier>
         <type>xml</type>
-        <version>${jomc-ant-tasks.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-ant-tasks</artifactId>
         <classifier>tests</classifier>
-        <version>${jomc-ant-tasks.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-ant-tasks</artifactId>
         <classifier>javadoc</classifier>
-        <version>${jomc-ant-tasks.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-ant-tasks</artifactId>
         <classifier>test-javadoc</classifier>
-        <version>${jomc-ant-tasks.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-ant-tasks</artifactId>
         <classifier>sources</classifier>
-        <version>${jomc-ant-tasks.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-ant-tasks</artifactId>
         <classifier>test-sources</classifier>
-        <version>${jomc-ant-tasks.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-ant-tasks</artifactId>
         <classifier>project</classifier>
-        <version>${jomc-ant-tasks.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-ant-tasks</artifactId>
         <classifier>site</classifier>
-        <version>${jomc-ant-tasks.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-ant-tasks</artifactId>
         <classifier>license</classifier>
         <type>txt</type>
-        <version>${jomc-ant-tasks.artifact.version}</version>
+        <version>${jomc-tools.version}</version>
       </dependency>
 
       <dependency>
@@ -1505,9 +1505,7 @@
     <jomc-util.artifact.version>1.9</jomc-util.artifact.version>
     <jomc-modlet.artifact.version>2.0-SNAPSHOT</jomc-modlet.artifact.version>
     <jomc-model.artifact.version>2.0-SNAPSHOT</jomc-model.artifact.version>
-    <jomc-tools.artifact.version>2.0-SNAPSHOT</jomc-tools.artifact.version>
-    <maven-jomc-plugin.artifact.version>2.0-SNAPSHOT</maven-jomc-plugin.artifact.version>
-    <jomc-ant-tasks.artifact.version>2.0-SNAPSHOT</jomc-ant-tasks.artifact.version>
+    <jomc-tools.version>2.0-SNAPSHOT</jomc-tools.version>
     <jomc-api.artifact.version>2.0-SNAPSHOT</jomc-api.artifact.version>
     <jomc-spi.artifact.version>2.0-SNAPSHOT</jomc-spi.artifact.version>
     <jomc-ri.artifact.version>2.0-SNAPSHOT</jomc-ri.artifact.version>
