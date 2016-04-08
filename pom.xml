@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Copyright (C) 2005 Christian Schulte <cs@schulte.it>
+  All rights reserved.
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+    o Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+
+    o Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in
+      the documentation and/or other materials provided with the
+      distribution.
+
+  THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+  AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT,
+  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+  $JOMC$
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <groupId>org.jomc</groupId>
+    <artifactId>jomc-pom</artifactId>
+    <version>1.1</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>jomc-tools-parent</artifactId>
+  <packaging>pom</packaging>
+  <name>JOMC Tools</name>
+  <version>2.0-SNAPSHOT</version>
+  <description>JOMC is an object management and configuration application programming interface with corresponding reference implementation and tools for managing object management and configuration code. This is the parent module of the JOMC artifacts.</description>
+  <url>${jomc.base.url}/${jomc.site.location}</url>
+  <inceptionYear>2005</inceptionYear>
+  <scm>
+    <connection>${jomc.scm.connection}/trunk</connection>
+    <developerConnection>${jomc.scm.developerConnection}/trunk</developerConnection>
+    <url>${jomc.scm.url}/trunk</url>
+  </scm>
+  <modules>
+    <module>jomc-tools</module>
+    <module>maven-jomc-plugin</module>
+    <module>jomc-ant-tasks</module>
+  </modules>
+  <dependencyManagement>
+    <dependencies>
+
+      <!-- Commons -->
+      <dependency>
+        <groupId>commons-cli</groupId>
+        <artifactId>commons-cli</artifactId>
+        <version>1.3.1</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-lang</groupId>
+        <artifactId>commons-lang</artifactId>
+        <version>2.6</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>2.2</version>
+      </dependency>
+
+      <!-- Maven -->
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-plugin-api</artifactId>
+        <version>2.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-project</artifactId>
+        <version>2.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-artifact</artifactId>
+        <version>2.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-core</artifactId>
+        <version>2.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-model</artifactId>
+        <version>2.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>${maven-shade-plugin.artifact.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>${maven-assembly-plugin.artifact.version}</version>
+      </dependency>
+
+      <!-- Apache Misc -->
+      <dependency>
+        <groupId>org.apache.velocity</groupId>
+        <artifactId>velocity</artifactId>
+        <version>1.7</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.bcel</groupId>
+        <artifactId>bcel</artifactId>
+        <version>5.2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.ant</groupId>
+        <artifactId>ant</artifactId>
+        <!--
+        https://issues.apache.org/bugzilla/show_bug.cgi?id=54843
+        -->
+        <version>1.8.4</version>
+      </dependency>
+
+      <!-- JAXB -->
+      <dependency>
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>2.2.3</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.xml.stream</groupId>
+        <artifactId>stax-api</artifactId>
+        <version>1.0-2</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.activation</groupId>
+        <artifactId>activation</artifactId>
+        <version>1.1.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-impl</artifactId>
+        <version>2.2.4-1</version>
+      </dependency>
+
+      <!-- Misc -->
+      <dependency>
+        <groupId>javax.annotation</groupId>
+        <artifactId>jsr250-api</artifactId>
+        <version>1.0</version>
+        <!--
+        https://issues.apache.org/jira/browse/MNG-5227
+        -->
+        <optional>true</optional>
+      </dependency>
+
+      <!-- Test -->
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+      </dependency>
+
+      <!-- JOMC -->
+      <dependency>
+        <groupId>org.jomc</groupId>
+        <artifactId>jomc-jls</artifactId>
+        <version>${jomc-jls.artifact.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jomc</groupId>
+        <artifactId>jomc-util</artifactId>
+        <version>${jomc-util.artifact.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jomc</groupId>
+        <artifactId>jomc-modlet</artifactId>
+        <version>${jomc-modlet.artifact.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jomc</groupId>
+        <artifactId>jomc-model</artifactId>
+        <version>${jomc-model.artifact.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jomc</groupId>
+        <artifactId>jomc-tools</artifactId>
+        <version>${jomc-tools.artifact.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jomc</groupId>
+        <artifactId>jomc-tools</artifactId>
+        <classifier>templates</classifier>
+        <version>${jomc-tools.artifact.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jomc</groupId>
+        <artifactId>maven-jomc-plugin</artifactId>
+        <version>${maven-jomc-plugin.artifact.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jomc</groupId>
+        <artifactId>jomc-ant-tasks</artifactId>
+        <version>${jomc-ant-tasks.artifact.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <distributionManagement>
+    <repository>
+      <id>sonatype-nexus-staging</id>
+      <name>Sonatype Nexus Release Repository</name>
+      <url>dav:https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+    </repository>
+    <snapshotRepository>
+      <id>sonatype-nexus-snapshots</id>
+      <name>Sonatype Nexus Snapshots</name>
+      <url>dav:https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <site>
+      <id>${jomc.site.distribution.id}</id>
+      <name>${jomc.site.distribution.name}</name>
+      <url>${jomc.site.distribution.base.url}/${jomc.site.location}</url>
+    </site>
+  </distributionManagement>
+  <properties>
+    <jomc-jls.artifact.version>1.7.0</jomc-jls.artifact.version>
+    <jomc-util.artifact.version>1.9</jomc-util.artifact.version>
+    <jomc-modlet.artifact.version>2.0-SNAPSHOT</jomc-modlet.artifact.version>
+    <jomc-model.artifact.version>2.0-SNAPSHOT</jomc-model.artifact.version>
+    <jomc-tools.artifact.version>2.0-SNAPSHOT</jomc-tools.artifact.version>
+    <maven-jomc-plugin.artifact.version>2.0-SNAPSHOT</maven-jomc-plugin.artifact.version>
+    <jomc-ant-tasks.artifact.version>2.0-SNAPSHOT</jomc-ant-tasks.artifact.version>
+    <!-- Parent. -->
+    <jomc.scm.location>jomc-tools</jomc.scm.location>
+    <jomc.site.location>jomc-tools/2.0-SNAPSHOT</jomc.site.location>
+    <jomc.trac.query>order=id&amp;version=2.0-SNAPSHOT&amp;component=JOMC Tools|${project.name}</jomc.trac.query>
+  </properties>
+</project>
