@@ -41,7 +41,7 @@
   <packaging>pom</packaging>
   <name>JOMC Tools</name>
   <version>2.0-SNAPSHOT</version>
-  <description>JOMC is an object management and configuration application programming interface with corresponding reference implementation and tools for managing object management and configuration code. This is the parent module of the JOMC artifacts.</description>
+  <description>Tools for managing object management and configuration code.</description>
   <url>${jomc.base.url}/${jomc.site.location}</url>
   <inceptionYear>2005</inceptionYear>
   <scm>
