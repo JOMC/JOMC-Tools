@@ -45,9 +45,9 @@
   <url>${jomc.base.url}/${jomc.site.location}</url>
   <inceptionYear>2005</inceptionYear>
   <scm>
-    <connection>${jomc.scm.connection}/trunk</connection>
-    <developerConnection>${jomc.scm.developerConnection}/trunk</developerConnection>
-    <url>${jomc.scm.url}/trunk</url>
+    <connection>${jomc.scm.connection}/branches/jomc-tools-1.x</connection>
+    <developerConnection>${jomc.scm.developerConnection}/branches/jomc-tools-1.x</developerConnection>
+    <url>${jomc.scm.url}/branches/jomc-tools-1.x</url>
   </scm>
   <modules>
     <module>jomc-tools</module>
