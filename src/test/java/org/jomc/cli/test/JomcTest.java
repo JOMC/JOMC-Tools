@@ -482,7 +482,7 @@ public class JomcTest
             "merge-modlets", "-xs", '"' + this.getTestModletStylesheet().getAbsolutePath() + '"', "-mdn",
             '"' + this.getTestModletName() + '"', "-d",
             '"' + this.getTestModletOutputDocument().getAbsolutePath() + '"',
-            "-mdexc=\"JOMC ⁑ Model" + File.pathSeparatorChar + "JOMC ⁑ Tools" + File.pathSeparatorChar
+            "-mdexc=\"JOMC ⁑ Model" + File.pathSeparatorChar + "JOMC Tools ⁑ Tools" + File.pathSeparatorChar
             + "JOMC ⁑ Modlet\"", "-cp", "."
         };
 

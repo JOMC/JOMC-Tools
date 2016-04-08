@@ -53,6 +53,13 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
+          <dependencies>
+            <dependency>
+              <groupId>org.jomc</groupId>
+              <artifactId>maven-jomc-plugin</artifactId>
+              <version>${maven-jomc-plugin.artifact.version}</version>
+            </dependency>
+          </dependencies>
           <executions>
             <execution>
               <id>default-shade</id>
