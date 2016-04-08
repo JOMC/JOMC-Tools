@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Copyright (C) Christian Schulte <cs@schulte.it>, 2005-206
+  All rights reserved.
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+    o Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+
+    o Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in
+      the documentation and/or other materials provided with the
+      distribution.
+
+  THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+  AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT,
+  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+  $JOMC$
+
+-->
+<module xmlns="http://jomc.org/model"
+        xmlns:tools="http://jomc.org/tools/model"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://jomc.org/model http://xml.jomc.org/model/jomc-1.2.xsd
+                            http://jomc.org/tools/model http://xml.jomc.org/tools/model/jomc-tools-1.2.xsd"
+        name="Module"
+        version="${project.version}"
+        vendor="${project.organization.name}"
+        modelVersion="1.2">
+
+  <documentation defaultLanguage="en">
+    <text language="en">${project.description}</text>
+  </documentation>
+
+  <specifications>
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="Specification" class="Specification" classDeclaration="true"
+                   vendor="${project.organization.name}" version="${project.version}">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Test specification.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <properties>
+        <property name="Property">
+          <documentation defaultLanguage="en">
+            <text language="en">Test property.</text>
+          </documentation>
+        </property>
+      </properties>
+    </specification>
+
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="SingletonSpecification" class="SingletonSpecification" classDeclaration="true"
+                   scope="Singleton" vendor="${project.organization.name}" version="${project.version}">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Test singleton specification.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <properties>
+        <property name="Property">
+          <documentation defaultLanguage="en">
+            <text language="en">Test property.</text>
+          </documentation>
+        </property>
+      </properties>
+    </specification>
+
+    <!-- *********************************************************************************************************** -->
+    <specification identifier="SpecificationWithSourceFilesModel" class="SpecificationWithSourceFilesModel"
+                   classDeclaration="true" vendor="${project.organization.name}" version="${project.version}">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Test specification.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <source-files xmlns="http://jomc.org/tools/model">
+        <source-file identifier="Source 1" location="Specification Source 1.java" template="Specification.java.vm">
+          <source-sections>
+            <source-section name="License Header" head-template="specification-license.vm" optional="true"/>
+            <source-section name="Annotations" head-template="specification-annotations.vm"/>
+            <source-section name="Documentation" head-template="specification-documentation.vm" optional="true"/>
+          </source-sections>
+        </source-file>
+        <source-file identifier="Source 2" location="Specification Source 2.java" template="Specification.java.vm">
+          <source-sections>
+            <source-section name="License Header" head-template="specification-license.vm" optional="true"/>
+            <source-section name="Annotations" head-template="specification-annotations.vm"/>
+            <source-section name="Documentation" head-template="specification-documentation.vm" optional="true"/>
+          </source-sections>
+        </source-file>
+      </source-files>
+    </specification>
+  </specifications>
+  <implementations>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="Implementation" class="Implementation" classDeclaration="true"
+                    name="${project.name}" version="${project.version}" vendor="${project.organization.name}"
+                    final="true">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Test implementation.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <dependencies>
+        <dependency name="Locale" identifier="java.util.Locale" version="1.1" bound="false"/>
+      </dependencies>
+      <properties>
+        <property name="property" value="TEST">
+          <documentation defaultLanguage="en">
+            <text language="en">Test property.</text>
+          </documentation>
+        </property>
+      </properties>
+      <messages>
+        <message name="message">
+          <template defaultLanguage="en">
+            <text language="en">TEST ''{0}''.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="test"/>
+          </arguments>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="ImplementationWithSourceFilesModel" class="ImplementationWithSourceFilesModel"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}" final="true">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Test implementation.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <dependencies>
+        <dependency name="Locale" identifier="java.util.Locale" version="1.1" bound="false"/>
+      </dependencies>
+      <properties>
+        <property name="property" value="TEST">
+          <documentation defaultLanguage="en">
+            <text language="en">Test property.</text>
+          </documentation>
+        </property>
+      </properties>
+      <messages>
+        <message name="message">
+          <template defaultLanguage="en">
+            <text language="en">TEST ''{0}''.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="test"/>
+          </arguments>
+        </message>
+      </messages>
+      <source-files xmlns="http://jomc.org/tools/model">
+        <source-file identifier="Source 1" location="Implementation Source 1.java" template="Implementation.java.vm">
+          <source-sections>
+            <source-section name="License Header" head-template="implementation-license.vm" optional="true"/>
+            <source-section name="Annotations" head-template="implementation-annotations.vm"/>
+            <source-section name="Documentation" head-template="implementation-documentation.vm" optional="true"/>
+            <source-section name="Constructors" head-template="implementation-constructors-head.vm"
+                            tail-template="implementation-constructors-tail.vm" indentationLevel="1">
+
+              <source-sections>
+                <source-section name="Default Constructor" head-template="implementation-default-constructor.vm"
+                                indentationLevel="2" editable="true"/>
+
+              </source-sections>
+            </source-section>
+            <source-section name="Dependencies" head-template="implementation-dependencies.vm" indentationLevel="1"/>
+            <source-section name="Properties" head-template="implementation-properties.vm" indentationLevel="1"/>
+            <source-section name="Messages" head-template="implementation-messages.vm" indentationLevel="1"/>
+          </source-sections>
+        </source-file>
+        <source-file identifier="Source 2" location="Implementation Source 2.java" template="Implementation.java.vm">
+          <source-sections>
+            <source-section name="License Header" head-template="implementation-license.vm" optional="true"/>
+            <source-section name="Annotations" head-template="implementation-annotations.vm"/>
+            <source-section name="Documentation" head-template="implementation-documentation.vm" optional="true"/>
+            <source-section name="Constructors" head-template="implementation-constructors-head.vm"
+                            tail-template="implementation-constructors-tail.vm" indentationLevel="1">
+
+              <source-sections>
+                <source-section name="Default Constructor" head-template="implementation-default-constructor.vm"
+                                indentationLevel="2" editable="true"/>
+
+              </source-sections>
+            </source-section>
+            <source-section name="Dependencies" head-template="implementation-dependencies.vm" indentationLevel="1"/>
+            <source-section name="Properties" head-template="implementation-properties.vm" indentationLevel="1"/>
+            <source-section name="Messages" head-template="implementation-messages.vm" indentationLevel="1"/>
+          </source-sections>
+        </source-file>
+      </source-files>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="ImplementationOfSpecification" class="ImplementationOfSpecification"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}" final="true">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Test implementation of test specification.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="Specification" version="${project.version}"/>
+      </specifications>
+      <dependencies>
+        <dependency name="Locale" identifier="java.util.Locale" version="1.1" bound="false"/>
+        <dependency name="Dependency" identifier="Specification" version="${project.version}" bound="false">
+          <properties>
+            <property name="Property">
+              <documentation defaultLanguage="en">
+                <text language="en">Test property.</text>
+              </documentation>
+            </property>
+          </properties>
+        </dependency>
+        <dependency name="BoundDependency" identifier="Specification" version="${project.version}" bound="true">
+          <properties>
+            <property name="Property">
+              <documentation defaultLanguage="en">
+                <text language="en">Test property.</text>
+              </documentation>
+            </property>
+          </properties>
+        </dependency>
+        <dependency name="NamedDependency" identifier="Specification" version="${project.version}"
+                    implementationName="${project.name}" bound="false">
+          <properties>
+            <property name="Property">
+              <documentation defaultLanguage="en">
+                <text language="en">Test property.</text>
+              </documentation>
+            </property>
+          </properties>
+        </dependency>
+        <dependency name="NamedBoundDependency" identifier="Specification" version="${project.version}"
+                    implementationName="${project.name}" bound="true">
+          <properties>
+            <property name="Property">
+              <documentation defaultLanguage="en">
+                <text language="en">Test property.</text>
+              </documentation>
+            </property>
+          </properties>
+        </dependency>
+      </dependencies>
+      <properties>
+        <property name="Property" value="TEST">
+          <documentation defaultLanguage="en">
+            <text language="en">Test property.</text>
+          </documentation>
+        </property>
+      </properties>
+      <messages>
+        <message name="message">
+          <template defaultLanguage="en">
+            <text language="en">TEST ''{0}''.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="test"/>
+          </arguments>
+        </message>
+      </messages>
+    </implementation>
+    <!-- *********************************************************************************************************** -->
+    <implementation identifier="ImplementationOfSingletonSpecification" class="ImplementationOfSingletonSpecification"
+                    classDeclaration="true" name="${project.name}" version="${project.version}"
+                    vendor="${project.organization.name}" final="true">
+
+      <documentation defaultLanguage="en">
+        <text language="en">Test implementation of test singleton specification.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <specifications>
+        <reference identifier="SingletonSpecification" version="${project.version}"/>
+      </specifications>
+      <dependencies>
+        <dependency name="Locale" identifier="java.util.Locale" version="1.1" bound="false"/>
+        <dependency name="Dependency" identifier="SingletonSpecification" version="${project.version}" bound="false"/>
+        <dependency name="BoundDependency" identifier="SingletonSpecification" version="${project.version}" bound="true"/>
+        <dependency name="NamedDependency" identifier="SingletonSpecification" version="${project.version}"
+                    implementationName="${project.name}" bound="false"/>
+        <dependency name="NamedBoundDependency" identifier="SingletonSpecification" version="${project.version}"
+                    implementationName="${project.name}" bound="true"/>
+      </dependencies>
+      <properties>
+        <property name="Property" value="TEST">
+          <documentation defaultLanguage="en">
+            <text language="en">Test property.</text>
+          </documentation>
+        </property>
+      </properties>
+      <messages>
+        <message name="message">
+          <template defaultLanguage="en">
+            <text language="en">TEST ''{0}''.</text>
+          </template>
+          <arguments>
+            <argument index="0" name="test"/>
+          </arguments>
+        </message>
+      </messages>
+    </implementation>
+  </implementations>
+</module>

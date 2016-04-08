@@ -1,0 +1,72 @@
+##
+##   Copyright (C) Christian Schulte <cs@schulte.it>, 2005-206
+##   All rights reserved.
+##
+##   Redistribution and use in source and binary forms, with or without
+##   modification, are permitted provided that the following conditions
+##   are met:
+##
+##     o Redistributions of source code must retain the above copyright
+##       notice, this list of conditions and the following disclaimer.
+##
+##     o Redistributions in binary form must reproduce the above copyright
+##       notice, this list of conditions and the following disclaimer in
+##       the documentation and/or other materials provided with the
+##       distribution.
+##
+##   THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+##   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+##   AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+##   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT,
+##   INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+##   NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+##   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+##   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+##   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+##   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+##
+##   $JOMC$
+##
+## @param model The model declaring the modules of the implementation to render.
+## @param modules The modules declaring the implementation to render.
+## @param imodel The inheritance model of the modules declaring the implementation to render.
+## @param smodel The source file model to render.
+## @param ssection The source section model to render.
+## @param implementation The implementation to render.
+## @param tool The tool merging the template.
+## @param toolName The name of the tool merging the template.
+## @param toolVersion The version of the tool merging the template.
+## @param toolUrl The URL to the site of the tool merging the template.
+## @param calendar A java.util.Calendar instance.
+## @param now The current timestamp formatted using the pattern "yyyy-MM-dd'T'HH:mm:ss.SSSZ".
+## @param year The current year formatted using the pattern "yyyy".
+## @param month The current month formatted using the pattern "MM".
+## @param day The current day formatted using the pattern "dd".
+## @param hour The current hour formatted using the pattern "HH".
+## @param minute The current minute formatted using the pattern "mm".
+## @param second The current second formatted using the pattern "ss".
+## @param timezone The current timezone formatted using the pattern "Z".
+## @param shortDate The current date formatted using a 'SHORT' format style.
+## @param mediumDate The current date formatted using a 'MEDIUM' format style.
+## @param longDate The current date formatted using a 'LONG' format style.
+## @param isoDate The current date formatted using an ISO-8601 format style.
+## @param shortTime The current time formatted using a 'SHORT' format style.
+## @param mediumTime The current time formatted using a 'MEDIUM' format style.
+## @param longTime The current time formatted using a 'LONG' format style.
+## @param isoTime The current time formatted using an ISO-8601 format style.
+## @param shortDateTime The current date and time formatted using a 'SHORT' format style.
+## @param mediumDateTime The current date and time formatted using a 'MEDIUM' format style.
+## @param longDateTime The current date and time formatted using a 'LONG' format style.
+## @param isoDateTime The current date and time formatted using an ISO-8601 format style.
+#if($with-editor-fold)
+${tool.getIndentation(1)}${smodel.getHeadComment()} <editor-fold defaultstate="collapsed" desc=" Generated Constructors ">#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+#end
+#if($with-javadoc)
+${tool.getIndentation(1)}/** Creates a new {@code $implementation.getJavaTypeName().getSimpleName()} instance. */
+#end
+#if($with-jsr-250)
+${tool.getIndentation(1)}@javax.annotation.Generated( value = "$toolName $toolVersion", comments = "See $toolUrl" )
+#end
+${tool.getIndentation(1)}public $implementation.getJavaTypeName().getSimpleName()()
+${tool.getIndentation(1)}{

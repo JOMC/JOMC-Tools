@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Copyright (C) Christian Schulte <cs@schulte.it>, 2005-206
+  All rights reserved.
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+    o Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+
+    o Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in
+      the documentation and/or other materials provided with the
+      distribution.
+
+  THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+  AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT,
+  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+  $JOMC$
+
+-->
+<project name="JOMC Ant Tasks Installer" default="install">
+
+  <!-- ************************************************************************************************************* -->
+  <property name="repo.dir" value="${java.io.tmpdir}/maven-repository"/>
+  <property name="lib.dir" value="${basedir}/lib"/>
+  <property name="build.lib.dir" value="${lib.dir}/build"/>
+
+  <property name="repository.url" value="http://repo.maven.apache.org/maven2"/>
+  <property name="maven-ant-tasks.version" value="2.1.3"/>
+  <property name="jomc.version" value="1.10"/>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="install" description="Downloads and installs JOMC Ant Tasks.">
+    <get src="${repository.url}/org/apache/maven/maven-ant-tasks/${maven-ant-tasks.version}/maven-ant-tasks-${maven-ant-tasks.version}.jar"
+         dest="${java.io.tmpdir}/maven-ant-tasks-${maven-ant-tasks.version}.jar"
+         usetimestamp="true"/>
+
+    <path id="maven.ant.tasks.classpath">
+      <fileset dir="${java.io.tmpdir}" includes="maven-ant-tasks-${maven-ant-tasks.version}.jar"/>
+    </path>
+
+    <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
+             uri="antlib:org.apache.maven.artifact.ant"
+             classpathref="maven.ant.tasks.classpath"/>
+
+    <mkdir dir="${repo.dir}"/>
+
+    <artifact:dependencies xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+      <artifact:localRepository xmlns:artifact="antlib:org.apache.maven.artifact.ant"
+                                path="${repo.dir}"/>
+
+
+      <artifact:remoteRepository xmlns:artifact="antlib:org.apache.maven.artifact.ant"
+                                 id="central"
+                                 url="${repository.url}"
+                                 layout="default">
+
+        <artifact:releases checksumPolicy="fail" enabled="true" updatePolicy="never"/>
+        <artifact:snapshots checksumPolicy="fail" enabled="true" updatePolicy="never"/>
+
+        <!-- artifact:authentication username="The username used to authenticate."
+                                     password="The password used in conjunction with the username to authenticate."
+                                     privateKey="The private key location used to authenticate."
+                                     passphrase="The passphrase used in conjunction with the privateKey to authenticate."
+                                     filePermissions="The permissions for files when they are created."
+                                     directoryPermissions="The permissions for directories when they are created.">
+
+          <artifact:configurtion/>
+          Extra configuration for the transport layer.
+          </artifact:configuration>
+        </artifact:authentication -->
+
+        <!-- artifact:proxy active="Whether this proxy configuration is the active one. Default value is: true."
+                            protocol="The proxy protocol. Default value is: http."
+                            username="The proxy user."
+                            password="The proxy password."
+                            port="The proxy port. Default value is: 8080."
+                            host="The proxy host."
+                            nonProxyHosts="The list of non-proxied hosts (delimited by |).">
+
+        </artifact:proxy -->
+
+      </artifact:remoteRepository>
+
+      <artifact:remoteRepository xmlns:artifact="antlib:org.apache.maven.artifact.ant"
+                                 id="m2.dev.java.net"
+                                 url="${repository.url}"
+                                 layout="default">
+
+        <artifact:releases checksumPolicy="fail" enabled="true" updatePolicy="never"/>
+        <artifact:snapshots checksumPolicy="fail" enabled="true" updatePolicy="never"/>
+
+        <!-- artifact:authentication username="The username used to authenticate."
+                                     password="The password used in conjunction with the username to authenticate."
+                                     privateKey="The private key location used to authenticate."
+                                     passphrase="The passphrase used in conjunction with the privateKey to authenticate."
+                                     filePermissions="The permissions for files when they are created."
+                                     directoryPermissions="The permissions for directories when they are created.">
+
+          <artifact:configurtion/>
+          Extra configuration for the transport layer.
+          </artifact:configuration>
+        </artifact:authentication -->
+
+        <!-- artifact:proxy active="Whether this proxy configuration is the active one. Default value is: true."
+                            protocol="The proxy protocol. Default value is: http."
+                            username="The proxy user."
+                            password="The proxy password."
+                            port="The proxy port. Default value is: 8080."
+                            host="The proxy host."
+                            nonProxyHosts="The list of non-proxied hosts (delimited by |).">
+
+        </artifact:proxy -->
+
+      </artifact:remoteRepository>
+
+      <artifact:dependency groupId="org.jomc" artifactId="jomc-ant-tasks" version="${jomc.version}" scope="runtime"/>
+    </artifact:dependencies>
+
+    <mkdir dir="${build.lib.dir}"/>
+    <copy todir="${build.lib.dir}" flatten="true">
+      <fileset dir="${repo.dir}" includes="**/*.jar"/>
+    </copy>
+
+    <path id="jomc.ant.tasks.classpath">
+      <fileset dir="${build.lib.dir}" includes="**/*.jar"/>
+    </path>
+
+    <typedef resource="org/jomc/ant/antlib.xml" uri="antlib:org.jomc.ant" classpathref="jomc.ant.tasks.classpath"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="clean" description="Removes JOMC Ant Tasks and any temporary files.">
+    <delete dir="${lib.dir}"/>
+    <delete dir="${repo.dir}"/>
+    <delete file="${java.io.tmpdir}/maven-ant-tasks-${maven-ant-tasks.version}.jar"/>
+  </target>
+
+</project>

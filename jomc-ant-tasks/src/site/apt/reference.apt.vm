@@ -1,0 +1,1821 @@
+ ------
+ Task and Type Reference
+ ------
+ Christian Schulte
+ ------
+ 2010-11-04
+ ------
+
+ ~~ Copyright (C) Christian Schulte <cs@schulte.it>, 2005-206
+ ~~ All rights reserved.
+ ~~
+ ~~ Redistribution and use in source and binary forms, with or without
+ ~~ modification, are permitted provided that the following conditions
+ ~~ are met:
+ ~~
+ ~~   o Redistributions of source code must retain the above copyright
+ ~~        notice, this list of conditions and the following disclaimer.
+ ~~
+ ~~   o Redistributions in binary form must reproduce the above copyright
+ ~~     notice, this list of conditions and the following disclaimer in
+ ~~     the documentation and/or other materials provided with the
+ ~~     distribution.
+ ~~
+ ~~ THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ ~~ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ ~~ AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+ ~~ THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ ~~ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ ~~ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ ~~ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ ~~ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ ~~ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ ~~ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ ~~
+ ~~ $JOMC$
+
+Task and Type Reference
+
+* <<<{commit-classes}>>>
+
+  This task commits model objects to class files. {{{M}[M]}}
+
+  The <<<commit-classes>>> task supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classesDirectory>>>                      | The directory holding the class files to   | <<Yes.>>               |
+|                                             | commit model objects to.                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classFileProcessorClass>>>               | Class of the ClassFileProcessor backing    | No. {{{A}[A]}}         |
+|                                             | the task.                                  |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element is supported.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classProcessingEnabled>>>                | A flag indicating the processing of        | No. Defaults to true.  |
+|                                             | classes is enabled.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<defaultTemplateEncoding>>>               | The default encoding to use for reading    | No.                    |
+|                                             | templates. <Since 1.3>                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<defaultTemplateProfile>>>                | The default template profile to use when   | No. {{{B}[B]}}         |
+|                                             | accessing templates.                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<if>>>                                    | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<implementation>>>                        | The identifier of an implementation to     | No. If the             |
+|                                             | process.                                   | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<indentation>>>                           | The indentation string ('\\t' for tab).    | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<inputEncoding>>>                         | The encoding to use for reading files.     | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<javaValidationEnabled>>>                 | A flag indicating Java validation is       | No. Defaults to true.  |
+|                                             | enabled.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
+|                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
+|                                             |                                            | separator.             |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
+|                                             | process.                                   | JOMC model public id.  |
+|                                             |                                            | {{{C}[C]}}             |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
+|                                             | implementation class backing the task.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+|                                             | resolution is enabled.                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
+|                                             | is enabled.                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelResourceValidationEnabled>>>        | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of model resources is enabled.             |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
+|                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletResourceValidationEnabled>>>       | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of modlet resources is enabled.            |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
+|                                             | schema system id.                          |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<module>>>                                | The identifier of a module to process.     | No. If the             |
+|                                             |                                            | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleLocation>>>                        | The class path location searched for       | No. {{{G}[G]}}         |
+|                                             | modules.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<outputEncoding>>>                        | The encoding to use for writing files.     | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<platformProviderLocation>>>              | The location searched for platform         | No. {{{H}[H]}}         |
+|                                             | provider resources.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<providerLocation>>>                      | The class path location searched for       | No. {{{I}[I]}}         |
+|                                             | providers.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<specification>>>                         | The identifier of a specification to       | No. If the             |
+|                                             | process.                                   | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateEncoding>>>                      | The encoding to use for reading templates. | No. <As of JOMC 1.3,   |
+|                                             |                                            | replaced by attribute  |
+|                                             |                                            |defaultTemplateEncoding.|
+|                                             |                                            | This attribute will be |
+|                                             |                                            | removed in JOMC 2.0.>  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateLocation>>>                      | Location to search for templates in        | No.                    |
+|                                             | addition to searching the class path of    |                        |
+|                                             | the task. The value is parsed to an URL    |                        |
+|                                             | first. On successful parsing, that URL is  |                        |
+|                                             | used. Failing that, the value is           |                        |
+|                                             | interpreted as a directory name relative   |                        |
+|                                             | to the project's base directory. If that   |                        |
+|                                             | directory is found, the URL of that        |                        |
+|                                             | directory is used. Otherwise a warning     |                        |
+|                                             | message is logged.                         |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateProfile>>>                       | The template profile to use when accessing | No. {{{B}[B]}}         |
+|                                             | templates.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
+|                                             | transformers.                              |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<unless>>>                                | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+  The <<<commit-classes>>> task supports the following nested elements:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Element>>                                 | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpath>>>                             | Class path to process.                     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<locale>>>                                | Locale of the task.                        | No.                    |
+|                                             | Type: {{LocaleType}}                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextAttribute>>>                 | ModelContext attribute to apply.           | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectStylesheetResource>>>         | XSLT document to use for transforming      | No.                    |
+|                                             | model objects.                             |                        |
+|                                             | Type: {{TransformerResourceType}}          |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleResource>>>                        | Additional module resource.                | No.                    |
+|                                             | Type: {{ModuleResourceType}}               |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateParameterResource>>>             | Properties resource holding properties     | No.                    |
+|                                             | passed to the template engine backing the  |                        |
+|                                             | task.                                      |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateParameter>>>                     | Parameter passed to the template engine    | No.                    |
+|                                             | backing the task.                          |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
+|                                             | be passed to all transformers of the task. |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
+|                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationOutputProperty>>>          | Transformation output property to be       | No.                    |
+|                                             | passed to all transformers of the task.    |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
+|                                             | to be used to configure the Velocity       |                        |
+|                                             | engine backing the task.                   |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityProperty>>>                      | Property to be used to configure the       | No.                    |
+|                                             | Velocity engine backing the task.          |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+** Example: Committing model objects to class files.
+
+---
+<jomc:commit-classes xmlns:jomc="antlib:org.jomc.ant"
+      classpathRef="this.module.runtime.classpath"
+      module="${this.module.name}"
+      classesDirectory="${this.module.classes.dir}"/>
+---
+
+* <<<{generate-resources}>>>
+
+  This task generates resource files. {{{N}[N]}}
+
+  The <<<generate-resources>>> task supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element is supported.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<defaultTemplateEncoding>>>               | The default encoding to use for reading    | No.                    |
+|                                             | templates. <Since 1.3>                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<defaultTemplateProfile>>>                | The default template profile to use when   | No. {{{B}[B]}}         |
+|                                             | accessing templates.                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<if>>>                                    | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<implementation>>>                        | The identifier of an implementation to     | No. If the             |
+|                                             | process.                                   | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<indentation>>>                           | The indentation string ('\\t' for tab).    | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<inputEncoding>>>                         | The encoding to use for reading files.     | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<javaValidationEnabled>>>                 | A flag indicating Java validation is       | No. Defaults to true.  |
+|                                             | enabled.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
+|                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
+|                                             |                                            | separator.             |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
+|                                             | process.                                   | JOMC model public id.  |
+|                                             |                                            | {{{C}[C]}}             |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
+|                                             | implementation class backing the task.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+|                                             | resolution is enabled.                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
+|                                             | is enabled.                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelResourceValidationEnabled>>>        | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of model resources is enabled.             |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
+|                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletResourceValidationEnabled>>>       | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of modlet resources is enabled.            |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
+|                                             | schema system id.                          |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<module>>>                                | The identifier of a module to process.     | No. If the             |
+|                                             |                                            | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleLocation>>>                        | The class path location searched for       | No. {{{G}[G]}}         |
+|                                             | modules.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<outputEncoding>>>                        | The encoding to use for writing files.     | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<platformProviderLocation>>>              | The location searched for platform         | No. {{{H}[H]}}         |
+|                                             | provider resources.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<providerLocation>>>                      | The class path location searched for       | No. {{{I}[I]}}         |
+|                                             | providers.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<resourceBundleDefaultLanguage>>>         | The language of the default language       | No.                    |
+|                                             | properties file of generated resource      |                        |
+|                                             | bundle resource files.                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<resourceFileProcessorClass>>>            | Class of the ResourceFileProcessor backing | No. {{{K}[K]}}         |
+|                                             | the task.                                  |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<resourceProcessingEnabled>>>             | A flag indicating the processing of        | No. Defaults to true.  |
+|                                             | resources is enabled.                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<resourcesDirectory>>>                    | The directory to generate resource files   | <<Yes.>>               |
+|                                             | to.                                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<specification>>>                         | The identifier of a specification to       | No. If the             |
+|                                             | process.                                   | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateEncoding>>>                      | The encoding to use for reading templates. | No. <As of JOMC 1.3,   |
+|                                             |                                            | replaced by attribute  |
+|                                             |                                            |defaultTemplateEncoding.|
+|                                             |                                            | This attribute will be |
+|                                             |                                            | removed in JOMC 2.0.>  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateLocation>>>                      | Location to search for templates in        | No.                    |
+|                                             | addition to searching the class path of    |                        |
+|                                             | the task. The value is parsed to an URL    |                        |
+|                                             | first. On successful parsing, that URL is  |                        |
+|                                             | used. Failing that, the value is           |                        |
+|                                             | interpreted as a directory name relative   |                        |
+|                                             | to the project's base directory. If that   |                        |
+|                                             | directory is found, the URL of that        |                        |
+|                                             | directory is used. Otherwise a warning     |                        |
+|                                             | message is logged.                         |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateProfile>>>                       | The template profile to use when accessing | No. {{{B}[B]}}         |
+|                                             | templates.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
+|                                             | transformers.                              |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<unless>>>                                | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+  The <<<generate-resources>>> task supports the following nested elements:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Element>>                                 | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpath>>>                             | Class path to process.                     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<locale>>>                                | Locale of the task.                        | No.                    |
+|                                             | Type: {{LocaleType}}                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextAttribute>>>                 | ModelContext attribute to apply.           | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleResource>>>                        | Additional module resource.                | No.                    |
+|                                             | Type: {{ModuleResourceType}}               |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateParameterResource>>>             | Properties resource holding properties     | No.                    |
+|                                             | passed to the template engine backing the  |                        |
+|                                             | task.                                      |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateParameter>>>                     | Parameter passed to the template engine    | No.                    |
+|                                             | backing the task.                          |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
+|                                             | be passed to all transformers of the task. |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
+|                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationOutputProperty>>>          | Transformation output property to be       | No.                    |
+|                                             | passed to all transformers of the task.    |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
+|                                             | to be used to configure the Velocity       |                        |
+|                                             | engine backing the task.                   |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityProperty>>>                      | Property to be used to configure the       | No.                    |
+|                                             | Velocity engine backing the task.          |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+** Example: Generating resource files.
+
+---
+<jomc:generate-resources xmlns:jomc="antlib:org.jomc.ant"
+      classpathRef="this.module.runtime.classpath"
+      module="${this.module.name}"
+      resourceBundleDefaultLanguage="en"
+      resourcesDirectory="${this.module.classes.dir}"/>
+---
+
+* <<<{manage-sources}>>>
+
+  This task manages source code files. {{{O}[O]}}
+
+  The <<<manage-sources>>> task supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element is supported.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<defaultTemplateEncoding>>>               | The default encoding to use for reading    | No.                    |
+|                                             | templates. <Since 1.3>                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<defaultTemplateProfile>>>                | The default template profile to use when   | No. {{{B}[B]}}         |
+|                                             | accessing templates.                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<if>>>                                    | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<implementation>>>                        | The identifier of an implementation to     | No. If the             |
+|                                             | process.                                   | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<indentation>>>                           | The indentation string ('\\t' for tab).    | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<inputEncoding>>>                         | The encoding to use for reading files.     | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<javaValidationEnabled>>>                 | A flag indicating Java validation is       | No. Defaults to true.  |
+|                                             | enabled.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
+|                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
+|                                             |                                            | separator.             |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
+|                                             | process.                                   | JOMC model public id.  |
+|                                             |                                            | {{{C}[C]}}             |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
+|                                             | implementation class backing the task.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+|                                             | resolution is enabled.                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
+|                                             | is enabled.                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelResourceValidationEnabled>>>        | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of model resources is enabled.             |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
+|                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletResourceValidationEnabled>>>       | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of modlet resources is enabled.            |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
+|                                             | schema system id.                          |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<module>>>                                | The identifier of a module to process.     | No. If the             |
+|                                             |                                            | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleLocation>>>                        | The class path location searched for       | No. {{{G}[G]}}         |
+|                                             | modules.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<outputEncoding>>>                        | The encoding to use for writing files.     | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<platformProviderLocation>>>              | The location searched for platform         | No. {{{H}[H]}}         |
+|                                             | provider resources.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<providerLocation>>>                      | The class path location searched for       | No. {{{I}[I]}}         |
+|                                             | providers.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<sourcesDirectory>>>                      | The directory holding the source files to  | <<Yes.>>               |
+|                                             | manage.                                    |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<sourceFileProcessorClass>>>              | Class of the SourceFileProcessor backing   | No. {{{M}[M]}}         |
+|                                             | the task.                                  |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<sourceProcessingEnabled>>>               | A flag indicating the processing of source | No. Defaults to true.  |
+|                                             | files is enabled.                          |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<specification>>>                         | The identifier of a specification to       | No. If the             |
+|                                             | process.                                   | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateEncoding>>>                      | The encoding to use for reading templates. | No. <As of JOMC 1.3,   |
+|                                             |                                            | replaced by attribute  |
+|                                             |                                            |defaultTemplateEncoding.|
+|                                             |                                            | This attribute will be |
+|                                             |                                            | removed in JOMC 2.0.>  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateLocation>>>                      | Location to search for templates in        | No.                    |
+|                                             | addition to searching the class path of    |                        |
+|                                             | the task. The value is parsed to an URL    |                        |
+|                                             | first. On successful parsing, that URL is  |                        |
+|                                             | used. Failing that, the value is           |                        |
+|                                             | interpreted as a directory name relative   |                        |
+|                                             | to the project's base directory. If that   |                        |
+|                                             | directory is found, the URL of that        |                        |
+|                                             | directory is used. Otherwise a warning     |                        |
+|                                             | message is logged.                         |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateProfile>>>                       | The template profile to use when accessing | No. {{{B}[B]}}         |
+|                                             | templates.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
+|                                             | transformers.                              |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<unless>>>                                | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+  The <<<manage-sources>>> task supports the following nested elements:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Element>>                                 | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpath>>>                             | Class path to process.                     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<locale>>>                                | Locale of the task.                        | No.                    |
+|                                             | Type: {{LocaleType}}                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextAttribute>>>                 | ModelContext attribute to apply.           | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleResource>>>                        | Additional module resource.                | No.                    |
+|                                             | Type: {{ModuleResourceType}}               |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateParameterResource>>>             | Properties resource holding properties     | No.                    |
+|                                             | passed to the template engine backing the  |                        |
+|                                             | task.                                      |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateParameter>>>                     | Parameter passed to the template engine    | No.                    |
+|                                             | backing the task.                          |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
+|                                             | be passed to all transformers of the task. |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
+|                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationOutputProperty>>>          | Transformation output property to be       | No.                    |
+|                                             | passed to all transformers of the task.    |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
+|                                             | to be used to configure the Velocity       |                        |
+|                                             | engine backing the task.                   |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityProperty>>>                      | Property to be used to configure the       | No.                    |
+|                                             | Velocity engine backing the task.          |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+** Example: Managing source files.
+
+---
+<jomc:manage-sources xmlns:jomc="antlib:org.jomc.ant"
+      classpathRef="this.module.runtime.classpath"
+      module="${this.module.name}"
+      sourcesDirectory="${this.module.src.dir}">
+
+  <jomc:locale language="en"/>
+</jomc:manage-sources>
+---
+
+* <<<{validate-classes}>>>
+
+  This task validates class file model objects. {{{P}[P]}}
+
+  The <<<validate-classes>>> task supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classesDirectory>>>                      | The directory holding the class files to   | <<Yes.>>               |
+|                                             | validate model objects of.                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classFileProcessorClass>>>               | Class of the ClassFileProcessor backing    | No. {{{A}[A]}}         |
+|                                             | the task.                                  |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element is supported.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classProcessingEnabled>>>                | A flag indicating the processing of        | No. Defaults to true.  |
+|                                             | classes is enabled.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<defaultTemplateEncoding>>>               | The default encoding to use for reading    | No.                    |
+|                                             | templates. <Since 1.3>                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<defaultTemplateProfile>>>                | The default template profile to use when   | No. {{{B}[B]}}         |
+|                                             | accessing templates.                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<if>>>                                    | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<implementation>>>                        | The identifier of an implementation to     | No. If the             |
+|                                             | process.                                   | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<inputEncoding>>>                         | The encoding to use for reading files.     | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<javaValidationEnabled>>>                 | A flag indicating Java validation is       | No. Defaults to true.  |
+|                                             | enabled.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<lineSeparator>>>                         | The line separator ('\r\n' for DOS, '\r'   | No.                    |
+|                                             | for Mac, '\n' for Unix).                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
+|                                             | process.                                   | JOMC model public id.  |
+|                                             |                                            | {{{C}[C]}}             |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
+|                                             | implementation class backing the task.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+|                                             | resolution is enabled.                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
+|                                             | is enabled.                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelResourceValidationEnabled>>>        | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of model resources is enabled.             |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
+|                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletResourceValidationEnabled>>>       | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of modlet resources is enabled.            |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
+|                                             | schema system id.                          |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<module>>>                                | The identifier of a module to process.     | No. If the             |
+|                                             |                                            | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleLocation>>>                        | The class path location searched for       | No. {{{G}[G]}}         |
+|                                             | modules.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<outputEncoding>>>                        | The encoding to use for writing files.     | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<platformProviderLocation>>>              | The location searched for platform         | No. {{{H}[H]}}         |
+|                                             | provider resources.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<providerLocation>>>                      | The class path location searched for       | No. {{{I}[I]}}         |
+|                                             | providers.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<specification>>>                         | The identifier of a specification to       | No. If the             |
+|                                             | process.                                   | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateEncoding>>>                      | The encoding to use for reading templates. | No. <As of JOMC 1.3,   |
+|                                             |                                            | replaced by attribute  |
+|                                             |                                            |defaultTemplateEncoding.|
+|                                             |                                            | This attribute will be |
+|                                             |                                            | removed in JOMC 2.0.>  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateLocation>>>                      | Location to search for templates in        | No.                    |
+|                                             | addition to searching the class path of    |                        |
+|                                             | the task. The value is parsed to an URL    |                        |
+|                                             | first. On successful parsing, that URL is  |                        |
+|                                             | used. Failing that, the value is           |                        |
+|                                             | interpreted as a directory name relative   |                        |
+|                                             | to the project's base directory. If that   |                        |
+|                                             | directory is found, the URL of that        |                        |
+|                                             | directory is used. Otherwise a warning     |                        |
+|                                             | message is logged.                         |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateProfile>>>                       | The template profile to use when accessing | No. {{{B}[B]}}         |
+|                                             | templates.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
+|                                             | transformers.                              |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<unless>>>                                | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+  The <<<validate-classes>>> task supports the following nested elements:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Element>>                                 | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpath>>>                             | Class path to process.                     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<locale>>>                                | Locale of the task.                        | No.                    |
+|                                             | Type: {{LocaleType}}                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextAttribute>>>                 | ModelContext attribute to apply.           | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleResource>>>                        | Additional module resource.                | No.                    |
+|                                             | Type: {{ModuleResourceType}}               |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateParameterResource>>>             | Properties resource holding properties     | No.                    |
+|                                             | passed to the template engine backing the  |                        |
+|                                             | task.                                      |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateParameter>>>                     | Parameter passed to the template engine    | No.                    |
+|                                             | backing the task.                          |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
+|                                             | be passed to all transformers of the task. |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
+|                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationOutputProperty>>>          | Transformation output property to be       | No.                    |
+|                                             | passed to all transformers of the task.    |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
+|                                             | to be used to configure the Velocity       |                        |
+|                                             | engine backing the task.                   |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityProperty>>>                      | Property to be used to configure the       | No.                    |
+|                                             | Velocity engine backing the task.          |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+** Example: Validating model objects of class files.
+
+---
+<jomc:validate-classes xmlns:jomc="antlib:org.jomc.ant"
+      classpathRef="this.module.runtime.classpath"
+      module="${this.module.name}"
+      classesDirectory="${this.module.classes.dir}"/>
+
+---
+
+* <<<{validate-classpath}>>>
+
+  This task validates classpath class file model objects. {{{Q}[Q]}}
+
+  The <<<validate-classpath>>> task supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classFileProcessorClass>>>               | Class of the ClassFileProcessor backing    | No. {{{A}[A]}}         |
+|                                             | the task.                                  |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element is supported.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classProcessingEnabled>>>                | A flag indicating the processing of        | No. Defaults to true.  |
+|                                             | classes is enabled.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<defaultTemplateEncoding>>>               | The default encoding to use for reading    | No.                    |
+|                                             | templates. <Since 1.3>                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<defaultTemplateProfile>>>                | The default template profile to use when   | No. {{{B}[B]}}         |
+|                                             | accessing templates.                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<if>>>                                    | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<implementation>>>                        | The identifier of an implementation to     | No. If the             |
+|                                             | process.                                   | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and  <<<module>>>      |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<indentation>>>                           | The indentation string ('\\t' for tab).    | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<inputEncoding>>>                         | The encoding to use for reading files.     | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<javaValidationEnabled>>>                 | A flag indicating Java validation is       | No. Defaults to true.  |
+|                                             | enabled.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<lineSeparator>>>                         | The line separator ('\\r\\n' for DOS,      | No. Defaults to the    |
+|                                             | '\\r' for Mac, '\\n' for Unix).            | system's line          |
+|                                             |                                            | separator.             |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
+|                                             | process.                                   | JOMC model public id.  |
+|                                             |                                            | {{{C}[C]}}             |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
+|                                             | implementation class backing the task.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+|                                             | resolution is enabled.                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
+|                                             | is enabled.                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelResourceValidationEnabled>>>        | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of model resources is enabled.             |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
+|                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletResourceValidationEnabled>>>       | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of modlet resources is enabled.            |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
+|                                             | schema system id.                          |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<module>>>                                | The identifier of a module to process.     | No. If the             |
+|                                             |                                            | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleLocation>>>                        | The class path location searched for       | No. {{{G}[G]}}         |
+|                                             | modules.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<outputEncoding>>>                        | The encoding to use for writing files.     | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<platformProviderLocation>>>              | The location searched for platform         | No. {{{H}[H]}}         |
+|                                             | provider resources.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<providerLocation>>>                      | The class path location searched for       | No. {{{I}[I]}}         |
+|                                             | providers.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<specification>>>                         | The identifier of a specification to       | No. If the             |
+|                                             | process.                                   | <<<implementation>>>,  |
+|                                             |                                            | <<<specification>>>    |
+|                                             |                                            | and <<<module>>>       |
+|                                             |                                            | attributes are not     |
+|                                             |                                            | set, all modules will  |
+|                                             |                                            | be processed.          |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateEncoding>>>                      | The encoding to use for reading templates. | No. <As of JOMC 1.3,   |
+|                                             |                                            | replaced by attribute  |
+|                                             |                                            |defaultTemplateEncoding.|
+|                                             |                                            | This attribute will be |
+|                                             |                                            | removed in JOMC 2.0.>  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateLocation>>>                      | Location to search for templates in        | No.                    |
+|                                             | addition to searching the class path of    |                        |
+|                                             | the task. The value is parsed to an URL    |                        |
+|                                             | first. On successful parsing, that URL is  |                        |
+|                                             | used. Failing that, the value is           |                        |
+|                                             | interpreted as a directory name relative   |                        |
+|                                             | to the project's base directory. If that   |                        |
+|                                             | directory is found, the URL of that        |                        |
+|                                             | directory is used. Otherwise a warning     |                        |
+|                                             | message is logged.                         |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateProfile>>>                       | The template profile to use when accessing | No. {{{B}[B]}}         |
+|                                             | templates.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
+|                                             | transformers.                              |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<unless>>>                                | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+  The <<<validate-classpath>>> task supports the following nested elements:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Element>>                                 | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpath>>>                             | Class path to process.                     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<locale>>>                                | Locale of the task.                        | No.                    |
+|                                             | Type: {{LocaleType}}                       |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextAttribute>>>                 | ModelContext attribute to apply.           | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleResource>>>                        | Additional module resource.                | No.                    |
+|                                             | Type: {{ModuleResourceType}}               |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateParameterResource>>>             | Properties resource holding properties     | No.                    |
+|                                             | passed to the template engine backing the  |                        |
+|                                             | task.                                      |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<templateParameter>>>                     | Parameter passed to the template engine    | No.                    |
+|                                             | backing the task.                          |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
+|                                             | be passed to all transformers of the task. |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
+|                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationOutputProperty>>>          | Transformation output property to be       | No.                    |
+|                                             | passed to all transformers of the task.    |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityPropertyResource>>>              | Properties resource holding properties to  | No.                    |
+|                                             | to be used to configure the Velocity       |                        |
+|                                             | engine backing the task.                   |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<velocityProperty>>>                      | Property to be used to configure the       | No.                    |
+|                                             | Velocity engine backing the task.          |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+** Example: Validating class file model objects of a class path.
+
+---
+<jomc:validate-classpath xmlns:jomc="antlib:org.jomc.ant"
+      classpathRef="this.module.runtime.classpath"/>
+
+---
+
+* <<<{validate-model}>>>
+
+  This task validates models. {{{R}[R]}}
+
+  The <<<validate-model>>> task supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element is supported.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<if>>>                                    | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<javaValidationEnabled>>>                 | A flag indicating Java validation is       | No. Defaults to true.  |
+|                                             | enabled.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
+|                                             | process.                                   | JOMC model public id.  |
+|                                             |                                            | {{{C}[C]}}             |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
+|                                             | implementation class backing the task.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+|                                             | resolution is enabled.                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
+|                                             | is enabled.                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelResourceValidationEnabled>>>        | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of model resources is enabled.             |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
+|                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletResourceValidationEnabled>>>       | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of modlet resources is enabled.            |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
+|                                             | schema system id.                          |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleLocation>>>                        | The class path location searched for       | No. {{{G}[G]}}         |
+|                                             | modules.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<platformProviderLocation>>>              | The location searched for platform         | No. {{{H}[H]}}         |
+|                                             | provider resources.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<providerLocation>>>                      | The class path location searched for       | No. {{{I}[I]}}         |
+|                                             | providers.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
+|                                             | transformers.                              |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<unless>>>                                | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+  The <<<validate-model>>> task supports the following nested elements:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Element>>                                 | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpath>>>                             | Class path to process.                     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextAttribute>>>                 | ModelContext attribute to apply.           | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleResource>>>                        | Additional module resource.                | No.                    |
+|                                             | Type: {{ModuleResourceType}}               |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
+|                                             | be passed to all transformers of the task. |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
+|                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationOutputProperty>>>          | Transformation output property to be       | No.                    |
+|                                             | passed to all transformers of the task.    |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+** Example: Validating a model.
+
+---
+<jomc:validate-model xmlns:jomc="antlib:org.jomc.ant"
+      classpathRef="this.module.runtime.classpath"/>
+
+---
+
+* <<<{merge-modlets}>>>
+
+  This task merges modlet resources. {{{S}[S]}}
+
+  The <<<merge-modlets>>> task supports the following attributes:
+
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                         | <<Description>>                            | <<Required>>           |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<classpathRef>>>                    | A reference to a class path to process.    | No. Either the         |
+|                                       |                                            | <<<classpathRef>>>     |
+|                                       |                                            | attribute or the       |
+|                                       |                                            | nested <<<classpath>>> |
+|                                       |                                            | element is supported.  |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<if>>>                              | Object controlling the execution of the    | No.                    |
+|                                       | task.                                      |                        |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<model>>>                           | The public identifier of the model to      | No. Defaults to the    |
+|                                       | process.                                   | JOMC model public id.  |
+|                                       |                                            | {{{C}[C]}}             |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextClassName>>>           | The name of the ModelContext               | No. {{{D}[D]}}         |
+|                                       | implementation class backing the task.     |                        |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<modelProcessingEnabled>>>          | A flag indicating the processing of models | No. Defaults to true.  |
+|                                       | is enabled.                                |                        |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<modletEncoding>>>                  | The encoding of the modlet resource.       | No. Defaults to the    |
+|                                       |                                            | system's default       |
+|                                       |                                            | encoding.              |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<modletFile>>>                      | The file to write the merged modlet to.    | <<Yes.>>               |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<modletLocation>>>                  | The class path location searched for       | No. {{{E}[E]}}         |
+|                                       | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------+
+| <<<modletResourceValidationEnabled>>> | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                       | of modlet resources is enabled.            |                        |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<modletName>>>                      | The name of the merged modlet.             | <<Yes.>>               |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<modletObjectStylesheet>>>          | The location of a style sheet to transform | No.                    |
+|                                       | the merged modlet with.                    |                        |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<modletSchemaSystemId>>>            | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
+|                                       | schema system id.                          |                        |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<modletVendor>>>                    | The vendor of the merged modlet.           | No.                    |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<modletVersion>>>                   | The version of the merged modlet.          | No.                    |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<platformProviderLocation>>>        | The location searched for platform         | No. {{{H}[H]}}         |
+|                                       | provider resources.                        |                        |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<providerLocation>>>                | The class path location searched for       | No. {{{I}[I]}}         |
+|                                       | providers.                                 |                        |
+*---------------------------------------+--------------------------------------------+------------------------+
+| <<<unless>>>                          | Object controlling the execution of the    | No.                    |
+|                                       | task.                                      |                        |
+*---------------------------------------+--------------------------------------------+------------------------+
+
+  The <<<merge-modlets>>> task supports the following nested elements:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Element>>                                 | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpath>>>                             | Class path to process.                     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextAttribute>>>                 | ModelContext attribute to apply.           | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletExclude>>>                         | Modlet to exclude.                         | No.                    |
+|                                             | Type: {{NameType}}                         |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletInclude>>>                         | Modlet to include.                         | No.                    |
+|                                             | Type: {{NameType}}                         |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletResource>>>                        | Modlet resource to merge.                  | No.                    |
+|                                             | Type: {{ModletResourceType}}               |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
+|                                             | be passed to all transformers of the task. |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
+|                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationOutputProperty>>>          | Transformation output property to be       | No.                    |
+|                                             | passed to all transformers of the task.    |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+** Example: Merging modlets.
+
+---
+<jomc:merge-modlets xmlns:jomc="antlib:org.jomc.ant"
+      classpathRef="this.module.runtime.classpath"
+      modletName="${this.module.name}"
+      modletVersion="${this.module.version}"
+      modletFile="${this.module.classes.dir}/META-INF/jomc-modlet.xml"/>
+
+---
+
+* <<<{merge-modules}>>>
+
+  This task merges module resources. {{{T}[T]}}
+
+  The <<<merge-modules>>> task supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element is supported.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<if>>>                                    | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
+|                                             | process.                                   | JOMC model public id.  |
+|                                             |                                            | {{{C}[C]}}             |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
+|                                             | implementation class backing the task.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectStylesheet>>>                 | The location of a style sheet to transform | No.                    |
+|                                             | the merged module with.                    |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+|                                             | resolution is enabled.                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
+|                                             | is enabled.                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelResourceValidationEnabled>>>        | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of model resources is enabled.             |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
+|                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletResourceValidationEnabled>>>       | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of modlet resources is enabled.            |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
+|                                             | schema system id.                          |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleEncoding>>>                        | The encoding of the module resource.       | No. Defaults to the    |
+|                                             |                                            | system's default       |
+|                                             |                                            | encoding.              |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleFile>>>                            | The file to write the merged module to.    | <<Yes.>>               |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleName>>>                            | The name of the merged module.             | <<Yes.>>               |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleLocation>>>                        | The class path location searched for       | No. {{{G}[G]}}         |
+|                                             | modules.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleVersion>>>                         | The version of the merged module.          | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleVendor>>>                          | The vendor of the merged module.           | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<platformProviderLocation>>>              | The location searched for platform         | No. {{{H}[H]}}         |
+|                                             | provider resources.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<providerLocation>>>                      | The class path location searched for       | No. {{{I}[I]}}         |
+|                                             | providers.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
+|                                             | transformers.                              |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<unless>>>                                | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+  The <<<merge-modules>>> task supports the following nested elements:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Element>>                                 | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpath>>>                             | Class path to process.                     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextAttribute>>>                 | ModelContext attribute to apply.           | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleExclude>>>                         | Module to exclude.                         | No.                    |
+|                                             | Type: {{NameType}}                         |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleInclude>>>                         | Module to include.                         | No.                    |
+|                                             | Type: {{NameType}}                         |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleResource>>>                        | Module resource to merge.                  | No.                    |
+|                                             | Type: {{ModuleResourceType}}               |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
+|                                             | be passed to all transformers of the task. |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
+|                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationOutputProperty>>>          | Transformation output property to be       | No.                    |
+|                                             | passed to all transformers of the task.    |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+** Example: Merging modules.
+
+---
+<jomc:merge-modules xmlns:jomc="antlib:org.jomc.ant"
+      classpathRef="this.module.runtime.classpath"
+      moduleName="${this.module.name}"
+      moduleVersion="${this.module.version}"
+      moduleFile="${this.module.classes.dir}/META-INF/jomc.xml"/>
+
+---
+
+* <<<{write-model}>>>
+
+  This task writes model objects. {{{U}[U]}}
+
+  The <<<write-model>>> task supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpathRef>>>                          | A reference to a class path to process.    | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element is supported.  |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<if>>>                                    | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<implementation>>>                        | The identifier of an implementation to     | No.                    |
+|                                             | write.                                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<instanceModelFile>>>                     | File to write the instance to.             | No.                    |
+|                                             | <Since 1.6>                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<model>>>                                 | The public identifier of the model to      | No. Defaults to the    |
+|                                             | process.                                   | JOMC model public id.  |
+|                                             |                                            | {{{C}[C]}}             |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextClassName>>>                 | The name of the ModelContext               | No. {{{D}[D]}}         |
+|                                             | implementation class backing the task.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelEncoding>>>                         | The encoding to use when writing the       | No.                    |
+|                                             | model.                                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelFile>>>                             | File to write the model to.                | No. If no file is set, |
+|                                             |                                            | the model will be      |
+|                                             |                                            | logged instead.        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelObjectClasspathResolutionEnabled>>> | A flag indicating model object class path  | No. Defaults to true.  |
+|                                             | resolution is enabled.                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelProcessingEnabled>>>                | A flag indicating the processing of models | No. Defaults to true.  |
+|                                             | is enabled.                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelResourceValidationEnabled>>>        | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of model resources is enabled.             |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletLocation>>>                        | The class path location searched for       | No. {{{E}[E]}}         |
+|                                             | modlets.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletResourceValidationEnabled>>>       | A flag indicating JAXP schema validation   | No. Defaults to true.  |
+|                                             | of modlet resources is enabled.            |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modletSchemaSystemId>>>                  | The http://jomc.org/modlet namespace       | No. {{{F}[F]}}         |
+|                                             | schema system id.                          |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<module>>>                                | The name of a module to write.             | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleLocation>>>                        | The class path location searched for       | No. {{{G}[G]}}         |
+|                                             | modules.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleModelFile>>>                       | File to write the module to.               | No.                    |
+|                                             | <Since 1.6>                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<platformProviderLocation>>>              | The location searched for platform         | No. {{{H}[H]}}         |
+|                                             | provider resources.                        |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<providerLocation>>>                      | The class path location searched for       | No. {{{I}[I]}}         |
+|                                             | providers.                                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<specification>>>                         | The identifier of a specification to       | No.                    |
+|                                             | write.                                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<specificationModelFile>>>                | File to write the specification to.        | No.                    |
+|                                             | <Since 1.6>                                |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformerLocation>>>                   | The class path location searched for       | No. {{{J}[J]}}         |
+|                                             | transformers.                              |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<unless>>>                                | Object controlling the execution of the    | No.                    |
+|                                             | task.                                      |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+  The <<<write-model>>> task supports the following nested elements:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Element>>                                 | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<classpath>>>                             | Class path to process.                     | No. Either the         |
+|                                             |                                            | <<<classpathRef>>>     |
+|                                             |                                            | attribute or the       |
+|                                             |                                            | nested <<<classpath>>> |
+|                                             |                                            | element can be used.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<modelContextAttribute>>>                 | ModelContext attribute to apply.           | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<moduleResource>>>                        | Additional module resource.                | No.                    |
+|                                             | Type: {{ModuleResourceType}}               |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameterResource>>>       | Properties resource holding properties to  | No.                    |
+|                                             | be passed to all transformers of the task. |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameter>>>               | Transformation parameter to be passed to   | No.                    |
+|                                             | all transformers of the task.              |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationOutputProperty>>>          | Transformation output property to be       | No.                    |
+|                                             | passed to all transformers of the task.    |                        |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+** Example: Writing a model.
+
+---
+<jomc:write-model xmlns:jomc="antlib:org.jomc.ant"
+      classpathRef="this.module.runtime.classpath"/>
+
+---
+
+* <<<{NameType}>>>
+
+  The <<<NameType>>> is used to specify names.
+
+  The <<<NameType>>> type supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<name>>>                                  | The name.                                  | <<Yes>>.               |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+* <<<{KeyValueType}>>>
+
+  The <<<KeyValueType>>> is used to specify a key value pair.
+
+  The <<<KeyValueType>>> type supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<key>>>                                   | The key.                                   | <<Yes>>.               |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<value>>>                                 | The value.                                 | No. If both, the       |
+|                                             |                                            | <<<value>>> attribute  |
+|                                             |                                            | and the <<<type>>>     |
+|                                             |                                            | attribute are not set, |
+|                                             |                                            | the key is mapped to   |
+|                                             |                                            | the null reference.    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<type>>>                                  | The name of the class of the type's        | No. If not set,        |
+|                                             | object.                                    | depending on the       |
+|                                             |                                            | <<<value>>> attribute, |
+|                                             |                                            | the key is either      |
+|                                             |                                            | mapped to the null     |
+|                                             |                                            | reference, if the      |
+|                                             |                                            | <<<value>>> attribute  |
+|                                             |                                            | is not set, or to the  |
+|                                             |                                            | value the <<<value>>>  |
+|                                             |                                            | attribute is set to.   |
+|                                             |                                            | If set, depending on   |
+|                                             |                                            | the <<<value>>>        |
+|                                             |                                            | attribute, the key     |
+|                                             |                                            | is either mapped to an |
+|                                             |                                            | object created using   |
+|                                             |                                            | the public no-arg      |
+|                                             |                                            | constructor of the     |
+|                                             |                                            | given class, if the    |
+|                                             |                                            | <<<value>>> attribute  |
+|                                             |                                            | is not set, or is      |
+|                                             |                                            | mapped to an object    |
+|                                             |                                            | created by invoking    |
+|                                             |                                            | either the public      |
+|                                             |                                            | constructor of the     |
+|                                             |                                            | given class taking a   |
+|                                             |                                            | single string argument |
+|                                             |                                            | or the static          |
+|                                             |                                            | <<<valueOf>>> method   |
+|                                             |                                            | of the given class     |
+|                                             |                                            | taking a single string |
+|                                             |                                            | argument passing the   |
+|                                             |                                            | value the <<<value>>>  |
+|                                             |                                            | attribute is set to.   |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+** Examples
+
+*----------------------------------------------------------------+---------------------------------------------------+
+| <<Element>>                                                    | <<Mapping>>                                       |
+*----------------------------------------------------------------+---------------------------------------------------+
+| \<element key="The Key"/\>                                     | "The Key" => null                                 |
+*----------------------------------------------------------------+---------------------------------------------------+
+| \<element key="The Key" value="The Value"/\>                   | "The Key" => "The Value"                          |
+*----------------------------------------------------------------+---------------------------------------------------+
+| \<element key="The Key" type="pkg.Class"/\>                    | "The Key" => new pkg.Class();                     |
+*----------------------------------------------------------------+---------------------------------------------------+
+| \<element key="The Key" value="The Value" type="pkg.Class"/\>  | 1. "The Key" => new pkg.Class( "The Value" );     |
+|                                                                | 2. "The Key" => pkg.Class.valueOf( "The Value" ); |
+*----------------------------------------------------------------+---------------------------------------------------+
+
+* <<<{LocaleType}>>>
+
+  The <<<LocaleType>>> is used to specify a locale.
+
+  The <<<LocaleType>>> type supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<language>>>                              | Lowercase two-letter ISO-639 code.         | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<country>>>                               | Uppercase two-letter ISO-3166 code.        | No.                    |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<variant>>>                               | Vendor and browser specific code.          | No.                    |
+|                                             | See description of class                   |                        |
+|                                             | <<<java.util.Locale>>>.                    |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+* <<<{ResourceType}>>>
+
+  The <<<ResourceType>>> is used to specify resources.
+
+  The <<<ResourceType>>> type supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<location>>>                              | Location of the resource. The location     | <<Yes>>.               |
+|                                             | value is used to first search the class    |                        |
+|                                             | path of the task. If a class path resource |                        |
+|                                             | is found, that resource is used. If no     |                        |
+|                                             | class path resource is found, an attempt   |                        |
+|                                             | is made to parse the location value to an  |                        |
+|                                             | URL. On successful parsing, that URL is    |                        |
+|                                             | used. Otherwise the location value is      |                        |
+|                                             | interpreted as a file name relative to the |                        |
+|                                             | base directory of the project. If that     |                        |
+|                                             | file exists, that file is used. If nothing |                        |
+|                                             | is found at the given location, depending  |                        |
+|                                             | on the optional flag, a warning message is |                        |
+|                                             | logged or a build failure is produced.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<optional>>>                              | The optional flag is used to flag the      | No. Defaults to false. |
+|                                             | resource optional. When an optional        |                        |
+|                                             | resource is not found, a warning message   |                        |
+|                                             | is logged instead of producing a build     |                        |
+|                                             | failure.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<connectTimeout>>>                        | Timeout value, in milliseconds, to be used | No. Defaults to 60000. |
+|                                             | when establishing communications links     |                        |
+|                                             | to the resource.                           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<readTimeout>>>                           | Timeout value, in milliseconds, to be used | No. Defaults to 60000. |
+|                                             | when reading the resource.                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+* <<<{ModletResourceType}>>>
+
+  The <<<ModletResourceType>>> is used to specify modlet resources.
+
+  The <<<ModletResourceType>>> type supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<location>>>                              | Location of the resource. The location     | <<Yes>>.               |
+|                                             | value is used to first search the class    |                        |
+|                                             | path of the task. If class path resources  |                        |
+|                                             | are found, those resources are used. If no |                        |
+|                                             | class path resources are found, an attempt |                        |
+|                                             | is made to parse the location value to an  |                        |
+|                                             | URL. On successful parsing, that URL is    |                        |
+|                                             | used. Otherwise the location value is      |                        |
+|                                             | interpreted as a file name relative to the |                        |
+|                                             | base directory of the project. If that     |                        |
+|                                             | file exists, that file is used. If nothing |                        |
+|                                             | is found at the given location, depending  |                        |
+|                                             | on the optional flag, a warning message is |                        |
+|                                             | logged or a build failure is produced.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<optional>>>                              | The optional flag is used to flag the      | No. Defaults to false. |
+|                                             | resource optional. When an optional        |                        |
+|                                             | resource is not found, a warning message   |                        |
+|                                             | is logged instead of producing a build     |                        |
+|                                             | failure.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<connectTimeout>>>                        | Timeout value, in milliseconds, to be used | No. Defaults to 60000. |
+|                                             | when establishing communications links     |                        |
+|                                             | to the resource.                           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<readTimeout>>>                           | Timeout value, in milliseconds, to be used | No. Defaults to 60000. |
+|                                             | when reading the resource.                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+* <<<{ModuleResourceType}>>>
+
+  The <<<ModuleResourceType>>> is used to specify module resources.
+
+  The <<<ModuleResourceType>>> type supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<location>>>                              | Location of the resource. The location     | <<Yes>>.               |
+|                                             | value is used to first search the class    |                        |
+|                                             | path of the task. If class path resources  |                        |
+|                                             | are found, those resources are used. If no |                        |
+|                                             | class path resources are found, an attempt |                        |
+|                                             | is made to parse the location value to an  |                        |
+|                                             | URL. On successful parsing, that URL is    |                        |
+|                                             | used. Otherwise the location value is      |                        |
+|                                             | interpreted as a file name relative to the |                        |
+|                                             | base directory of the project. If that     |                        |
+|                                             | file exists, that file is used. If nothing |                        |
+|                                             | is found at the given location, depending  |                        |
+|                                             | on the optional flag, a warning message is |                        |
+|                                             | logged or a build failure is produced.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<optional>>>                              | The optional flag is used to flag the      | No. Defaults to false. |
+|                                             | resource optional. When an optional        |                        |
+|                                             | resource is not found, a warning message   |                        |
+|                                             | is logged instead of producing a build     |                        |
+|                                             | failure.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<connectTimeout>>>                        | Timeout value, in milliseconds, to be used | No. Defaults to 60000. |
+|                                             | when establishing communications links     |                        |
+|                                             | to the resource.                           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<readTimeout>>>                           | Timeout value, in milliseconds, to be used | No. Defaults to 60000. |
+|                                             | when reading the resource.                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+* <<<{PropertiesResourceType}>>>
+
+  The <<<PropertiesResourceType>>> is used to specify properties resources.
+
+  The <<<PropertiesResourceType>>> type supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<location>>>                              | Location of the resource. The location     | <<Yes>>.               |
+|                                             | value is used to first search the class    |                        |
+|                                             | path of the task. If a class path resource |                        |
+|                                             | is found, that resource is used. If no     |                        |
+|                                             | class path resource is found, an attempt   |                        |
+|                                             | is made to parse the location value to an  |                        |
+|                                             | URL. On successful parsing, that URL is    |                        |
+|                                             | used. Otherwise the location value is      |                        |
+|                                             | interpreted as a file name relative to the |                        |
+|                                             | base directory of the project. If that     |                        |
+|                                             | file exists, that file is used. If nothing |                        |
+|                                             | is found at the given location, depending  |                        |
+|                                             | on the optional flag, a warning message is |                        |
+|                                             | logged or a build failure is produced.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<optional>>>                              | The optional flag is used to flag the      | No. Defaults to false. |
+|                                             | resource optional. When an optional        |                        |
+|                                             | resource is not found, a warning message   |                        |
+|                                             | is logged instead of producing a build     |                        |
+|                                             | failure.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<connectTimeout>>>                        | Timeout value, in milliseconds, to be used | No. Defaults to 60000. |
+|                                             | when establishing communications links     |                        |
+|                                             | to the resource.                           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<readTimeout>>>                           | Timeout value, in milliseconds, to be used | No. Defaults to 60000. |
+|                                             | when reading the resource.                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<format>>>                                | Format of the properties resource.         | No. Either <<<plain>>> |
+|                                             |                                            | or <<<xml>>>. Defaults |
+|                                             |                                            | to <<<plain>>>.        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+* <<<{TransformerResourceType}>>>
+
+  The <<<TransformerResourceType>>> is used to specify XSLT document resources.
+
+  The <<<TransformerResourceType>>> type supports the following attributes:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Attribute>>                               | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<location>>>                              | Location of the resource. The location     | <<Yes>>.               |
+|                                             | value is used to first search the class    |                        |
+|                                             | path of the task. If a class path resource |                        |
+|                                             | is found, that resource is used. If no     |                        |
+|                                             | class path resource is found, an attempt   |                        |
+|                                             | is made to parse the location value to an  |                        |
+|                                             | URL. On successful parsing, that URL is    |                        |
+|                                             | used. Otherwise the location value is      |                        |
+|                                             | interpreted as a file name relative to the |                        |
+|                                             | base directory of the project. If that     |                        |
+|                                             | file exists, that file is used. If nothing |                        |
+|                                             | is found at the given location, depending  |                        |
+|                                             | on the optional flag, a warning message is |                        |
+|                                             | logged or a build failure is produced.     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<optional>>>                              | The optional flag is used to flag the      | No. Defaults to false. |
+|                                             | resource optional. When an optional        |                        |
+|                                             | resource is not found, a warning message   |                        |
+|                                             | is logged instead of producing a build     |                        |
+|                                             | failure.                                   |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<connectTimeout>>>                        | Timeout value, in milliseconds, to be used | No. Defaults to 60000. |
+|                                             | when establishing communications links     |                        |
+|                                             | to the resource.                           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<readTimeout>>>                           | Timeout value, in milliseconds, to be used | No. Defaults to 60000. |
+|                                             | when reading the resource.                 |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+  The <<<TransformerResourceType>>> supports the following nested elements:
+
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<Element>>                                 | <<Description>>                            | <<Required>>           |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameterResource>>>       | Properties resource holding transformation | No.                    |
+|                                             | parameters to apply.                       |                        |
+|                                             | Type: {{PropertiesResourceType}}           |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationParameter>>>               | Transformation parameter to apply.         | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+| <<<transformationOutputProperty>>>          | Transformation output property to apply.   | No.                    |
+|                                             | Type: {{KeyValueType}}                     |                        |
+*---------------------------------------------+--------------------------------------------+------------------------+
+
+* References
+
+  \[{A}\] {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/ClassFileProcessor.html}ClassFileProcessor class.}}
+
+  \[{B}\] {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/JomcTool.html#getDefaultTemplateProfile()}Default template profile.}}
+
+  \[{C}\] {{{${project.url}/../jomc-model/apidocs/org/jomc/model/ModelObject.html#MODEL_PUBLIC_ID}JOMC model public identifier.}}
+
+  \[{D}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/ModelContext.html}ModelContext class.}}
+
+  \[{E}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/DefaultModletProvider.html#getDefaultModletLocation()}Class path location searched for modlets.}}
+
+  \[{F}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/ModelContext.html#getDefaultModletSchemaSystemId()}<<<http://jomc.org/modlet>>> namespace schema system id.}}
+
+  \[{G}\] {{{${project.url}/../jomc-model/apidocs/org/jomc/model/modlet/DefaultModelProvider.html#getDefaultModuleLocation()}Class path location searched for modules.}}
+
+  \[{H}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/DefaultModelContext.html#getDefaultPlatformProviderLocation()}Location searched for platform provider resources.}}
+
+  \[{I}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/DefaultModelContext.html#getDefaultProviderLocation()}Class path location searched for providers.}}
+
+  \[{J}\] {{{${project.url}/../jomc-model/apidocs/org/jomc/model/modlet/DefaultModelProcessor.html#getDefaultTransformerLocation()}Class path location searched for transformers.}}
+
+  \[{K}\] {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/ResourceFileProcessor.html}ResourceFileProcessor class.}}
+
+  \[{L}\] {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/SourceFileProcessor.html}SourceFileProcessor class.}}
+
+  \[{M}\] {{{${project.url}/apidocs/org/jomc/ant/CommitClassesTask.html}<<<commit-classes>>> task.}}
+
+  \[{N}\] {{{${project.url}/apidocs/org/jomc/ant/GenerateResourcesTask.html}<<<generate-resources>>> task.}}
+
+  \[{O}\] {{{${project.url}/apidocs/org/jomc/ant/ManageSourcesTask.html}<<<manage-sources>>> task.}}
+
+  \[{P}\] {{{${project.url}/apidocs/org/jomc/ant/ValidateClassesTask.html}<<<validate-classes>>> task.}}
+
+  \[{Q}\] {{{${project.url}/apidocs/org/jomc/ant/ValidateClasspathTask.html}<<<validate-classpath>>> task.}}
+
+  \[{R}\] {{{${project.url}/apidocs/org/jomc/ant/ValidateModelTask.html}<<<validate-model>>> task.}}
+
+  \[{S}\] {{{${project.url}/apidocs/org/jomc/ant/MergeModletsTask.html}<<<merge-modlets>>> task.}}
+
+  \[{T}\] {{{${project.url}/apidocs/org/jomc/ant/MergeModulesTask.html}<<<merge-modules>>> task.}}
+
+  \[{U}\] {{{${project.url}/apidocs/org/jomc/ant/WriteModelTask.html}<<<write-model>>> task.}}

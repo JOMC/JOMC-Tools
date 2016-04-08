@@ -1,0 +1,93 @@
+ ------
+ Customizing code generation
+ ------
+ Christian Schulte
+ ------
+ 2010-11-09
+ ------
+
+ ~~ Copyright (C) Christian Schulte <cs@schulte.it>, 2005-206
+ ~~ All rights reserved.
+ ~~
+ ~~ Redistribution and use in source and binary forms, with or without
+ ~~ modification, are permitted provided that the following conditions
+ ~~ are met:
+ ~~
+ ~~   o Redistributions of source code must retain the above copyright
+ ~~        notice, this list of conditions and the following disclaimer.
+ ~~
+ ~~   o Redistributions in binary form must reproduce the above copyright
+ ~~     notice, this list of conditions and the following disclaimer in
+ ~~     the documentation and/or other materials provided with the
+ ~~     distribution.
+ ~~
+ ~~ THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ ~~ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ ~~ AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+ ~~ THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ ~~ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ ~~ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ ~~ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ ~~ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ ~~ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ ~~ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ ~~
+ ~~ $JOMC$
+
+Customizing code generation
+
+  If you need to customize the generated code, simply provide custom templates to the JOMC Ant Tasks. This
+  is done by adding a template artifact to the classpath of the tasks and setting the <<<templateProfile>>> parameter of
+  the various tasks. As a starting point you can copy the default templates from the {{{${project.url}/../jomc-tools}JOMC Tools}}
+  artifact from directory
+  {{{${project.scm.url}/../jomc-tools/src/main/templates/org/jomc/tools/templates}org/jomc/tools/templates/jomc-java}}
+  to a <<<org/jomc/tools/templates/sub-directory>>> of your template artifact.
+
+  For example, copying the default templates to directory <<<org/jomc/tools/templates/custom-profile>>>, you need to set
+  the <<<templateProfile>>> parameter to <<<custom-profile>>> and add your template artifact to the classpath of the
+  tasks for the templates to be found.
+
+  See class {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/SourceFileProcessor.html}SourceFileProcessor}} for
+  details, especially the {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/JomcTool.html#getVelocityTemplate(java.lang.String)}getVelocityTemplate}}
+  method and the {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/SourceFileProcessor.html#getSourceFilesType(org.jomc.model.Specification)}getSourceFilesType}}
+  methods.
+
+* Controlling behaviour of the default templates
+
+  The behaviour of the default templates can be controlled using <<<templateParameter>>> nested elements. The default
+  values are shown below.
+
++-----------------+
+<!-- Flag indicating generated code to contain checks for illegal null references using the 'assert' keyword. -->
+<templateParameter key="with-assertions" value="true" type="java.lang.Boolean"/>
+
+<!-- Flag indicating generated code to contain copyright notices based on model object authors. -->
+<templateParameter key="with-author-copyright" value="true" type="java.lang.Boolean"/>
+
+<!-- Flag indicating generated code to contain editor folds for the Netbeans IDE and compatible editors. -->
+<templateParameter key="with-editor-fold" value="true" type="java.lang.Boolean"/>
+
+<!-- Flag indicating generated code to contain javadoc documentation. -->
+<templateParameter key="with-javadoc" value="true" type="java.lang.Boolean"/>
+
+<!-- Flag indicating generated code to contain '@author' javadoc documentation tags. -->
+<templateParameter key="with-javadoc-author" value="true" type="java.lang.Boolean"/>
+
+<!-- Flag indicating generated code to contain '@version' javadoc documentation tags. -->
+<templateParameter key="with-javadoc-version" value="true" type="java.lang.Boolean"/>
+
+<!-- Flag indicating generated code to contain JSR-250 '@Generated' annotations. -->
+<templateParameter key="with-jsr-250" value="true" type="java.lang.Boolean"/>
+
+<!-- Name of the project. -->
+<templateParameter key="with-project-name"/>
+
+<!-- SCM file identification keyword. The given value will be surrounded by '$' characters. -->
+<templateParameter key="with-revision-keyword" value="Id"/>
+
+<!-- Since 1.3: Flag indicating generated code to contain '@SuppressWarnings' annotations with the given value.  -->
+<templateParameter key="with-suppress-warnings" value="&quot;unused&quot;"/>
+
+<!-- Flag indicating generated code to contain copyright notices based on model object vendor information. -->
+<templateParameter key="with-vendor-copyright" value="true" type="java.lang.Boolean"/>
++-----------------+

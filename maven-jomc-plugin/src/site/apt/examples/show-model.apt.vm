@@ -1,0 +1,68 @@
+ ------
+ Displaying model information
+ ------
+ Christian Schulte
+ ------
+ 2010-04-26
+ ------
+
+ ~~ Copyright (C) Christian Schulte <cs@schulte.it>, 2005-206
+ ~~ All rights reserved.
+ ~~
+ ~~ Redistribution and use in source and binary forms, with or without
+ ~~ modification, are permitted provided that the following conditions
+ ~~ are met:
+ ~~
+ ~~   o Redistributions of source code must retain the above copyright
+ ~~        notice, this list of conditions and the following disclaimer.
+ ~~
+ ~~   o Redistributions in binary form must reproduce the above copyright
+ ~~     notice, this list of conditions and the following disclaimer in
+ ~~     the documentation and/or other materials provided with the
+ ~~     distribution.
+ ~~
+ ~~ THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ ~~ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ ~~ AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+ ~~ THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ ~~ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ ~~ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ ~~ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ ~~ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ ~~ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ ~~ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ ~~
+ ~~ $JOMC$
+
+Displaying model information
+
+  The JOMC Plugin provides eight goals to use for displaying and dumping model information. The <<<show-main-model>>>
+  goal is used to display or dump a project's main model. The <<<show-main-module>>> goal is used to display or dump a
+  module from the project's main model. The <<<show-main-instance>>> goal is used to display or dump an instance from
+  the project's main model. The <<<show-main-specification>>> goal is used to display or dump a specification from the
+  project's main model. The <<<show-test-model>>> goal is used to display or dump a project's test model. The
+  <<<show-test-module>>> goal is used to display or dump a module from the project's test model. The
+  <<<show-test-instance>>> goal is used to display or dump an instance from the project's test model.
+  The <<<show-test-specification>>> goal is used to display or dump a specification from the project's test model.
+
++-----------------+
+mvn process-resources jomc:show-main-model
+mvn process-resources jomc:show-main-model -Djomc.document=/tmp/main-model.xml
+mvn process-resources jomc:show-main-module -Djomc.identifier=<identifier>
+mvn process-resources jomc:show-main-module -Djomc.identifier=<identifier> -Djomc.document=/tmp/main-module.xml
+mvn process-resources jomc:show-main-instance -Djomc.identifier=<identifer>
+mvn process-resources jomc:show-main-instance -Djomc.identifier=<identifer> -Djomc.document=/tmp/main-instance.xml
+mvn process-resources jomc:show-main-specification -Djomc.identifier=<identifer>
+mvn process-resources jomc:show-main-specification -Djomc.identifier=<identifer> -Djomc.document=/tmp/main-specification.xml
++-----------------+
+
++-----------------+
+mvn process-test-resources jomc:show-test-model
+mvn process-test-resources jomc:show-test-model -Djomc.document=/tmp/test-model.xml
+mvn process-test-resources jomc:show-test-module -Djomc.identifier=<identifier>
+mvn process-test-resources jomc:show-test-module -Djomc.identifier=<identifier> -Djomc.document=/tmp/test-module.xml
+mvn process-test-resources jomc:show-test-instance -Djomc.identifier=<identifer>
+mvn process-test-resources jomc:show-test-instance -Djomc.identifier=<identifer> -Djomc.document=/tmp/test-instance.xml
+mvn process-test-resources jomc:show-test-specification -Djomc.identifier=<identifer>
+mvn process-test-resources jomc:show-test-specification -Djomc.identifier=<identifer> -Djomc.document=/tmp/test-specification.xml
++-----------------+

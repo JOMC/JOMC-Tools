@@ -1,0 +1,140 @@
+##
+##   Copyright (C) Christian Schulte <cs@schulte.it>, 2005-206
+##   All rights reserved.
+##
+##   Redistribution and use in source and binary forms, with or without
+##   modification, are permitted provided that the following conditions
+##   are met:
+##
+##     o Redistributions of source code must retain the above copyright
+##       notice, this list of conditions and the following disclaimer.
+##
+##     o Redistributions in binary form must reproduce the above copyright
+##       notice, this list of conditions and the following disclaimer in
+##       the documentation and/or other materials provided with the
+##       distribution.
+##
+##   THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+##   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+##   AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+##   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT,
+##   INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+##   NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+##   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+##   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+##   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+##   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+##
+##   $JOMC$
+##
+## @param model The model declaring the modules of the implementation to render.
+## @param modules The modules declaring the implementation to render.
+## @param imodel The inheritance model of the modules declaring the implementation to render.
+## @param smodel The source file model to render.
+## @param ssection The source section model to render.
+## @param implementation The implementation to render.
+## @param tool The tool merging the template.
+## @param toolName The name of the tool merging the template.
+## @param toolVersion The version of the tool merging the template.
+## @param toolUrl The URL to the site of the tool merging the template.
+## @param calendar A java.util.Calendar instance.
+## @param now The current timestamp formatted using the pattern "yyyy-MM-dd'T'HH:mm:ss.SSSZ".
+## @param year The current year formatted using the pattern "yyyy".
+## @param month The current month formatted using the pattern "MM".
+## @param day The current day formatted using the pattern "dd".
+## @param hour The current hour formatted using the pattern "HH".
+## @param minute The current minute formatted using the pattern "mm".
+## @param second The current second formatted using the pattern "ss".
+## @param timezone The current timezone formatted using the pattern "Z".
+## @param shortDate The current date formatted using a 'SHORT' format style.
+## @param mediumDate The current date formatted using a 'MEDIUM' format style.
+## @param longDate The current date formatted using a 'LONG' format style.
+## @param isoDate The current date formatted using an ISO-8601 format style.
+## @param shortTime The current time formatted using a 'SHORT' format style.
+## @param mediumTime The current time formatted using a 'MEDIUM' format style.
+## @param longTime The current time formatted using a 'LONG' format style.
+## @param isoTime The current time formatted using an ISO-8601 format style.
+## @param shortDateTime The current date and time formatted using a 'SHORT' format style.
+## @param mediumDateTime The current date and time formatted using a 'MEDIUM' format style.
+## @param longDateTime The current date and time formatted using a 'LONG' format style.
+## @param isoDateTime The current date and time formatted using an ISO-8601 format style.
+#set($dependencies = $modules.getDependencies($implementation.getIdentifier()))
+#if($dependencies)
+#if($with-editor-fold)
+${tool.getIndentation(1)}${smodel.getHeadComment()} <editor-fold defaultstate="collapsed" desc=" Generated Dependencies ">#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+#end
+#foreach($dependency in $dependencies.getDependency())
+#set($specification = $modules.getSpecification($dependency.getIdentifier()))
+#if($with-javadoc)
+${tool.getIndentation(1)}/**
+${tool.getIndentation(1)} * Gets the {@code <$dependency.getName()>} dependency.
+${tool.getIndentation(1)} * <p>
+#if($dependency.getImplementationName())
+${tool.getIndentation(1)} *   This method returns the {@code <$dependency.getImplementationName()>} object of the {@code <$dependency.getIdentifier()>} specification#if($dependency.getVersion()) at specification level $tool.getHtmlString($dependency.getVersion())#else at any specification level#end.
+#else
+${tool.getIndentation(1)} *   This method returns any available object of the {@code <$dependency.getIdentifier()>} specification#if($dependency.getVersion()) at specification level $tool.getHtmlString($dependency.getVersion())#else at any specification level#end.
+#end
+#if($specification.getScope())
+${tool.getIndentation(1)} *   That specification applies to {@code <$specification.getScope()>} scope. The $tool.getHtmlString($specification.getScope().toLowerCase($tool.getLocale())) object is returned whenever requested#if($dependency.isBound()) and bound to this instance#end.
+#else
+${tool.getIndentation(1)} *   That specification does not apply to any scope. A new object is returned whenever requested#if($dependency.isBound()) and bound to this instance#end.
+#end
+${tool.getIndentation(1)} * </p>
+#if($dependency.getProperties())
+${tool.getIndentation(1)} * <p><strong>Properties:</strong>
+${tool.getIndentation(1)} *   <table border="1" width="100%" cellpadding="3" cellspacing="0">
+${tool.getIndentation(1)} *     <tr class="TableSubHeadingColor">
+${tool.getIndentation(1)} *       <th align="left" scope="col" nowrap><b>Name</b></th>
+${tool.getIndentation(1)} *       <th align="left" scope="col" nowrap><b>Type</b></th>
+${tool.getIndentation(1)} *       <th align="left" scope="col" nowrap><b>Documentation</b></th>
+${tool.getIndentation(1)} *     </tr>
+#foreach($property in $dependency.getProperties().getProperty())
+${tool.getIndentation(1)} *     <tr class="TableRow">
+${tool.getIndentation(1)} *       <td align="left" valign="top" nowrap>{@code <$property.getName()>}</td>
+${tool.getIndentation(1)} *       <td align="left" valign="top" nowrap>{@code $property.getJavaTypeName().getName(true)}</td>
+${tool.getIndentation(1)} *       <td align="left" valign="top">#if($property.getDocumentation())$property.getDocumentation().getText($tool.getLocale()).getJavadocComment($tool.getLineSeparator(), $tool.getIndentation(1))#end</td>
+${tool.getIndentation(1)} *     </tr>
+#end
+${tool.getIndentation(1)} *   </table>
+${tool.getIndentation(1)} * </p>
+#end
+${tool.getIndentation(1)} * <dl>
+${tool.getIndentation(1)} *   <dt><b>Final:</b></dt><dd>$tool.getBooleanString($dependency.isFinal())</dd>
+${tool.getIndentation(1)} * </dl>
+#if($dependency.getDocumentation())
+${tool.getIndentation(1)} * @return $dependency.getDocumentation().getText($tool.getLocale()).getJavadocComment($tool.getLineSeparator(), $tool.getIndentation(1))
+#else
+${tool.getIndentation(1)} * @return The {@code <$dependency.getName()>} dependency.
+#end
+#if($dependency.isOptional())
+${tool.getIndentation(1)} * {@code null} if no object is available.
+#end
+${tool.getIndentation(1)} * @throws org.jomc.ObjectManagementException if getting the dependency instance fails.
+${tool.getIndentation(1)} */
+#end
+#if($dependency.isDeprecated())
+${tool.getIndentation(1)}@Deprecated
+#end
+#if($with-suppress-warnings)
+${tool.getIndentation(1)}@SuppressWarnings($with-suppress-warnings)
+#end
+#if($with-jsr-250)
+${tool.getIndentation(1)}@javax.annotation.Generated( value = "$toolName $toolVersion", comments = "See $toolUrl" )
+#end
+${tool.getIndentation(1)}$modules.getDependencyJavaModifierName($implementation.getIdentifier(),$dependency.getName()) $modules.getDependencyJavaTypeName($implementation.getIdentifier(), $dependency.getName()).getName(true) $dependency.getJavaGetterMethodName()()
+${tool.getIndentation(1)}{
+#if($dependency.isOptional() || !$with-assertions)
+${tool.getIndentation(2)}return ($modules.getDependencyJavaTypeName($implementation.getIdentifier(), $dependency.getName()).getName(true)) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "${tool.getJavaString($dependency.getName())}" );
+#else
+${tool.getIndentation(2)}final $modules.getDependencyJavaTypeName($implementation.getIdentifier(), $dependency.getName()).getName(true) _d = ($modules.getDependencyJavaTypeName($implementation.getIdentifier(), $dependency.getName()).getName(true)) org.jomc.ObjectManagerFactory.getObjectManager( this.getClass().getClassLoader() ).getDependency( this, "${tool.getJavaString($dependency.getName())}" );
+${tool.getIndentation(2)}assert _d != null : "'${tool.getJavaString($dependency.getName())}' dependency not found.";
+${tool.getIndentation(2)}return _d;
+#end
+${tool.getIndentation(1)}}
+#end
+#if($with-editor-fold)
+${tool.getIndentation(1)}${smodel.getHeadComment()} </editor-fold>#if(${smodel.getTailComment()} && ${smodel.getTailComment().length()} > 0) ${smodel.getTailComment()}#end
+
+#end
+#end
