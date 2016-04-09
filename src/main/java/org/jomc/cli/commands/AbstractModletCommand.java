@@ -78,12 +78,15 @@ import org.jomc.modlet.ModelException;
 import org.jomc.modlet.ModelValidationReport;
 import org.jomc.modlet.Modlet;
 import org.jomc.modlet.ModletObject;
+import org.jomc.modlet.ModletProcessor;
 import org.jomc.modlet.ModletProvider;
+import org.jomc.modlet.ModletValidator;
 import org.jomc.modlet.Modlets;
 import org.jomc.modlet.ObjectFactory;
 import org.jomc.modlet.Schema;
 import org.jomc.modlet.Schemas;
 import org.jomc.modlet.Service;
+import org.jomc.modlet.ServiceFactory;
 import org.jomc.modlet.Services;
 
 // SECTION-START[Documentation]
@@ -591,19 +594,15 @@ public abstract class AbstractModletCommand extends AbstractCommand
                         this.addURL( uri.toURL() );
                     }
 
-                    if ( commandLine.hasOption( getProviderLocationOption().getOpt() ) )
-                    {
-                        this.providerResourceLocations.add(
-                            commandLine.getOptionValue( getProviderLocationOption().getOpt() )
-                                + "/" + ModletProvider.class.getName() );
+                    final String providerLocation =
+                        commandLine.hasOption( getProviderLocationOption().getOpt() )
+                            ? commandLine.getOptionValue( getProviderLocationOption().getOpt() ) + "/"
+                            : DefaultModelContext.getDefaultProviderLocation() + "/";
 
-                    }
-                    else
-                    {
-                        this.providerResourceLocations.add(
-                            DefaultModelContext.getDefaultProviderLocation() + "/" + ModletProvider.class.getName() );
-
-                    }
+                    this.providerResourceLocations.add( providerLocation + ModletProcessor.class.getName() );
+                    this.providerResourceLocations.add( providerLocation + ModletProvider.class.getName() );
+                    this.providerResourceLocations.add( providerLocation + ModletValidator.class.getName() );
+                    this.providerResourceLocations.add( providerLocation + ServiceFactory.class.getName() );
 
                     if ( commandLine.hasOption( getModletLocationOption().getOpt() ) )
                     {

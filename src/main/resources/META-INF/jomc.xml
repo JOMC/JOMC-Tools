@@ -2551,7 +2551,7 @@
             <text language="en">Name of the 'shaded' application modlet.</text>
           </documentation>
         </property>
-        <property name="Provider Excludes" value="org.jomc.modlet.DefaultModletProvider" final="true">
+        <property name="Provider Excludes" value="org.jomc.modlet.DefaultModletProcessor:org.jomc.modlet.DefaultModletProvider:org.jomc.modlet.DefaultModletValidator:org.jomc.modlet.DefaultServiceFactory" final="true">
           <documentation defaultLanguage="en">
             <text language="en" type="text/x-javadoc">List of providers to exclude from any {@code META-INF/services} files separated by {@code :}.</text>
           </documentation>
