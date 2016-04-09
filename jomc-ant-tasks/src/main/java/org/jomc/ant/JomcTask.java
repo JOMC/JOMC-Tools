@@ -81,7 +81,10 @@ import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelContextFactory;
 import org.jomc.modlet.ModelException;
 import org.jomc.modlet.ModelValidationReport;
+import org.jomc.modlet.ModletProcessor;
 import org.jomc.modlet.ModletProvider;
+import org.jomc.modlet.ModletValidator;
+import org.jomc.modlet.ServiceFactory;
 
 /**
  * Base class for executing tasks.
@@ -1295,18 +1298,14 @@ public class JomcTask extends Task
                 classLoader.getModletResourceLocations().add( DefaultModletProvider.getDefaultModletLocation() );
             }
 
-            if ( this.getProviderLocation() != null )
-            {
-                classLoader.getProviderResourceLocations().add(
-                    this.getProviderLocation() + "/" + ModletProvider.class.getName() );
+            final String providerLocationPrefix = this.getProviderLocation() != null
+                                                      ? this.getProviderLocation() + "/"
+                                                      : DefaultModelContext.getDefaultProviderLocation() + "/";
 
-            }
-            else
-            {
-                classLoader.getProviderResourceLocations().add(
-                    DefaultModelContext.getDefaultProviderLocation() + "/" + ModletProvider.class.getName() );
-
-            }
+            classLoader.getProviderResourceLocations().add( providerLocationPrefix + ModletProcessor.class.getName() );
+            classLoader.getProviderResourceLocations().add( providerLocationPrefix + ModletProvider.class.getName() );
+            classLoader.getProviderResourceLocations().add( providerLocationPrefix + ModletValidator.class.getName() );
+            classLoader.getProviderResourceLocations().add( providerLocationPrefix + ServiceFactory.class.getName() );
 
             return classLoader;
         }
