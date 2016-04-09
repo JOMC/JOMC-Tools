@@ -1,2 +1,5 @@
 # $JOMC$
+org.jomc.modlet.DefaultModletProcessor
 org.jomc.modlet.DefaultModletProvider
+org.jomc.modlet.DefaultModletValidator
+org.jomc.modlet.DefaultServiceFactory
