@@ -335,12 +335,23 @@
       <includes>
         <include>org.jomc:jomc-api</include>
         <include>org.jomc:jomc-spi</include>
+      </includes>
+      <outputDirectory>jomc-${project.version}/lib</outputDirectory>
+      <useProjectArtifact>false</useProjectArtifact>
+      <useProjectAttachments>false</useProjectAttachments>
+      <useTransitiveDependencies>true</useTransitiveDependencies>
+    </dependencySet>
+    <dependencySet>
+      <directoryMode>0755</directoryMode>
+      <fileMode>0555</fileMode>
+      <scope>runtime</scope>
+      <includes>
         <include>org.jomc:jomc-util</include>
         <include>org.jomc:jomc-modlet</include>
         <include>org.jomc:jomc-model</include>
         <include>org.jomc:jomc-ri</include>
       </includes>
-      <outputDirectory>jomc-${project.version}/lib/jomc</outputDirectory>
+      <outputDirectory>jomc-${project.version}/lib/ri</outputDirectory>
       <useProjectArtifact>false</useProjectArtifact>
       <useProjectAttachments>false</useProjectAttachments>
       <useTransitiveDependencies>true</useTransitiveDependencies>
