@@ -2,7 +2,7 @@
 // <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
  * Java Object Management and Configuration
- * Copyright (C) Christian Schulte <cs@schulte.it>, 2005-206
+ * Copyright (C) Christian Schulte <cs@schulte.it>, 2009-206
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

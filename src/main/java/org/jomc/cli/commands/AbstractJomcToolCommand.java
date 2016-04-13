@@ -2,7 +2,7 @@
 // <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
  * Java Object Management and Configuration
- * Copyright (C) Christian Schulte <cs@schulte.it>, 2005-206
+ * Copyright (C) Christian Schulte <cs@schulte.it>, 2009-206
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,7 +66,7 @@ import org.jomc.tools.JomcTool;
  *   <dt><b>Stateless:</b></dt><dd>No</dd>
  * </dl>
  *
- * @author <a href="mailto:cs@schulte.it">Christian Schulte</a> 1.2
+ * @author <a href="mailto:cs@schulte.it">Christian Schulte</a> 1.0
  * @version 2.0-SNAPSHOT
  */
 // </editor-fold>

@@ -2,7 +2,7 @@
 // <editor-fold defaultstate="collapsed" desc=" Generated License ">
 /*
  * Java Object Management and Configuration
- * Copyright (C) Christian Schulte <cs@schulte.it>, 2005-206
+ * Copyright (C) Christian Schulte <cs@schulte.it>, 2009-206
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -67,10 +67,12 @@ public final class OptionFactory
 
     public Option getObject()
     {
-        final char valueSeparator = this.getValueSeparator() == ':' ? File.pathSeparatorChar : this.getValueSeparator();
+        final char valueSeparator = this.getValueSeparator() == ':'
+                                        ? File.pathSeparatorChar
+                                        : this.getValueSeparator();
 
-        final Option option =
-            new Option( this.getOpt(), this.getDescription( this.getLocale(), Character.toString( valueSeparator ) ) );
+        final Option option = new Option( this.getOpt(), this.getDescription( this.getLocale(),
+                                                                              Character.toString( valueSeparator ) ) );
 
         option.setArgs( this.getNumberOfArgs() );
         option.setLongOpt( this.getLongOpt() );
