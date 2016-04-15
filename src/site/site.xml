@@ -35,14 +35,14 @@
          xsi:schemaLocation="http://maven.apache.org/DECORATION/1.3.0 http://maven.apache.org/xsd/decoration-1.3.0.xsd">
   <body>
     <menu name="JOMC Tools" inherit="top">
-      <item name="Home" href="${project.url}/index.html"/>
+      <item name="Home" href="${this.url}/index.html"/>
       <item name="Download" href="http://repo,maven.apache.org/maven2/org/jomc/"/>
       <item name="Issues" href="http://www.jomc.org/project/issues"/>
     </menu>
     <menu name="Modules">
-      <item name="Tools" href="${project.url}/jomc-tools/index.html"/>
-      <item name="Ant Tasks" href="${project.url}/jomc-ant-tasks/index.html"/>
-      <item name="Maven Plugin" href="${project.url}/maven-jomc-plugin/index.html"/>
+      <item name="Tools" href="${this.url}/jomc-tools/index.html"/>
+      <item name="Ant Tasks" href="${this.url}/jomc-ant-tasks/index.html"/>
+      <item name="Maven Plugin" href="${this.url}/maven-jomc-plugin/index.html"/>
     </menu>
   </body>
 </project>
