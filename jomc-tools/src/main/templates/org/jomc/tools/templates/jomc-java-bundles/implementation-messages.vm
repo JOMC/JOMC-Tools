@@ -105,7 +105,6 @@ ${tool.getIndentation(1)}@javax.annotation.Generated( value = "$toolName $toolVe
 ${tool.getIndentation(1)}$modules.getMessageJavaModifierName($implementation.getIdentifier(), $message.getName()) static String $message.getJavaGetterMethodName()( final java.util.Locale locale#if($message.getArguments() && !$message.getArguments().getArgument().isEmpty())#set($i = 0)#foreach($argument in $message.getArguments().getArgument())#set($argument = $message.getArguments().getArgument($i))#set($i = $i + 1), final $argument.getJavaTypeName().getName(true) $argument.getJavaVariableName()#end#end )
 ${tool.getIndentation(1)}{
 ${tool.getIndentation(2)}java.io.BufferedReader reader = null;
-${tool.getIndentation(2)}boolean suppressExceptionOnClose = true;
 
 ${tool.getIndentation(2)}try
 ${tool.getIndentation(2)}{
@@ -114,13 +113,14 @@ ${tool.getIndentation(3)}final java.lang.StringBuilder builder = new java.lang.S
 ${tool.getIndentation(3)}reader = new java.io.BufferedReader( new java.io.StringReader( message ) );
 ${tool.getIndentation(3)}final String lineSeparator = System.getProperty( "line.separator", "\n" );
 
-${tool.getIndentation(3)}String line;
-${tool.getIndentation(3)}while ( ( line = reader.readLine() ) != null )
+${tool.getIndentation(3)}for( String line = reader.readLine(); line != null; line = reader.readLine() )
 ${tool.getIndentation(3)}{
 ${tool.getIndentation(4)}builder.append( lineSeparator ).append( line );
 ${tool.getIndentation(3)}}
 
-${tool.getIndentation(3)}suppressExceptionOnClose = false;
+${tool.getIndentation(3)}reader.close();
+${tool.getIndentation(3)}reader = null;
+
 ${tool.getIndentation(3)}return builder.length() > 0 ? builder.substring( lineSeparator.length() ) : "";
 ${tool.getIndentation(2)}}
 ${tool.getIndentation(2)}catch( final java.lang.ClassCastException e )
@@ -150,10 +150,7 @@ ${tool.getIndentation(4)}}
 ${tool.getIndentation(3)}}
 ${tool.getIndentation(3)}catch( final java.io.IOException e )
 ${tool.getIndentation(3)}{
-${tool.getIndentation(4)}if( !suppressExceptionOnClose )
-${tool.getIndentation(4)}{
-${tool.getIndentation(5)}throw new org.jomc.ObjectManagementException( e.getMessage(), e );
-${tool.getIndentation(4)}}
+${tool.getIndentation(4)}// Suppressed.
 ${tool.getIndentation(3)}}
 ${tool.getIndentation(2)}}
 ${tool.getIndentation(1)}}

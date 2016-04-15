@@ -61,7 +61,6 @@ public class ResourceProcessingExceptionTest
     public final void testResourceProcessingException() throws Exception
     {
         ObjectInputStream in = null;
-        boolean suppressExceptionOnClose = true;
 
         try
         {
@@ -69,7 +68,10 @@ public class ResourceProcessingExceptionTest
                 ABSOLUTE_RESOURCE_NAME_PREFIX + "ResourceProcessingException.ser" ) );
 
             final ResourceProcessingException e = (ResourceProcessingException) in.readObject();
-            suppressExceptionOnClose = false;
+
+            in.close();
+            in = null;
+
             System.out.println( e );
         }
         finally
@@ -83,10 +85,7 @@ public class ResourceProcessingExceptionTest
             }
             catch ( final IOException e )
             {
-                if ( !suppressExceptionOnClose )
-                {
-                    throw e;
-                }
+                // Suppressed.
             }
         }
     }

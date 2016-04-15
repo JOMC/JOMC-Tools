@@ -542,7 +542,6 @@ public class ResourceFileProcessor extends JomcTool
         RandomAccessFile randomAccessFile = null;
         FileChannel fileChannel = null;
         FileLock fileLock = null;
-        boolean suppressExceptionOnClose = true;
 
         final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
         properties.store( byteStream, comments );
@@ -559,16 +558,23 @@ public class ResourceFileProcessor extends JomcTool
             fileChannel.position( 0L );
             fileChannel.write( ByteBuffer.wrap( bytes ) );
             fileChannel.force( true );
-            suppressExceptionOnClose = false;
+
+            fileLock.release();
+            fileLock = null;
+
+            fileChannel.close();
+            fileChannel = null;
+
+            randomAccessFile.close();
+            randomAccessFile = null;
         }
         finally
         {
-            this.releaseAndClose( fileLock, fileChannel, randomAccessFile, suppressExceptionOnClose );
+            this.releaseAndClose( fileLock, fileChannel, randomAccessFile );
         }
     }
 
-    private void releaseAndClose( final FileLock fileLock, final FileChannel fileChannel,
-                                  final Closeable closeable, final boolean suppressExceptions )
+    private void releaseAndClose( final FileLock fileLock, final FileChannel fileChannel, final Closeable closeable )
         throws IOException
     {
         try
@@ -580,14 +586,7 @@ public class ResourceFileProcessor extends JomcTool
         }
         catch ( final IOException e )
         {
-            if ( suppressExceptions )
-            {
-                this.log( Level.SEVERE, null, e );
-            }
-            else
-            {
-                throw e;
-            }
+            this.log( Level.SEVERE, getMessage( e ), e );
         }
         finally
         {
@@ -600,14 +599,7 @@ public class ResourceFileProcessor extends JomcTool
             }
             catch ( final IOException e )
             {
-                if ( suppressExceptions )
-                {
-                    this.log( Level.SEVERE, null, e );
-                }
-                else
-                {
-                    throw e;
-                }
+                this.log( Level.SEVERE, getMessage( e ), e );
             }
             finally
             {
@@ -620,17 +612,20 @@ public class ResourceFileProcessor extends JomcTool
                 }
                 catch ( final IOException e )
                 {
-                    if ( suppressExceptions )
-                    {
-                        this.log( Level.SEVERE, null, e );
-                    }
-                    else
-                    {
-                        throw e;
-                    }
+                    this.log( Level.SEVERE, getMessage( e ), e );
                 }
             }
         }
+    }
+
+    private static String getMessage( final Throwable t )
+    {
+        return t != null
+                   ? t.getMessage() != null && t.getMessage().trim().length() > 0
+                         ? t.getMessage()
+                         : getMessage( t.getCause() )
+                   : null;
+
     }
 
     private static String getMessage( final String key, final Object... arguments )

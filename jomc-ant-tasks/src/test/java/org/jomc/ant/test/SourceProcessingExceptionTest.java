@@ -61,7 +61,6 @@ public class SourceProcessingExceptionTest
     public final void testSourceProcessingException() throws Exception
     {
         ObjectInputStream in = null;
-        boolean suppressExceptionOnClose = true;
 
         try
         {
@@ -69,8 +68,11 @@ public class SourceProcessingExceptionTest
                 ABSOLUTE_RESOURCE_NAME_PREFIX + "SourceProcessingException.ser" ) );
 
             final SourceProcessingException e = (SourceProcessingException) in.readObject();
+
+            in.close();
+            in = null;
+
             System.out.println( e );
-            suppressExceptionOnClose = false;
         }
         finally
         {
@@ -83,10 +85,7 @@ public class SourceProcessingExceptionTest
             }
             catch ( final IOException e )
             {
-                if ( !suppressExceptionOnClose )
-                {
-                    throw e;
-                }
+                // Suppressed.
             }
         }
     }

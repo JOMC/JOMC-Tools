@@ -448,7 +448,6 @@ public final class WriteModelTask extends JomcModelTask
     {
         BufferedReader reader = null;
         ProjectClassLoader classLoader = null;
-        boolean suppressExceptionOnClose = true;
 
         try
         {
@@ -537,15 +536,18 @@ public final class WriteModelTask extends JomcModelTask
                 marshaller.marshal( new ObjectFactory().createModel( displayModel ), writer );
 
                 reader = new BufferedReader( new StringReader( writer.toString() ) );
-                String line;
 
-                while ( ( line = reader.readLine() ) != null )
+                for ( String line = reader.readLine(); line != null; line = reader.readLine() )
                 {
                     this.log( line, Project.MSG_INFO );
                 }
+
+                reader.close();
+                reader = null;
             }
 
-            suppressExceptionOnClose = false;
+            classLoader.close();
+            classLoader = null;
         }
         catch ( final IOException e )
         {
@@ -576,14 +578,7 @@ public final class WriteModelTask extends JomcModelTask
             }
             catch ( final IOException e )
             {
-                if ( suppressExceptionOnClose )
-                {
-                    this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
-                }
-                else
-                {
-                    throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
-                }
+                this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
             }
             finally
             {
@@ -596,14 +591,7 @@ public final class WriteModelTask extends JomcModelTask
                 }
                 catch ( final IOException e )
                 {
-                    if ( suppressExceptionOnClose )
-                    {
-                        this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
-                    }
-                    else
-                    {
-                        throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
-                    }
+                    this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
                 }
             }
         }

@@ -198,13 +198,13 @@ public class ClassFileProcessorTest extends JomcToolTest
 
         InputStream in = null;
         JavaClass objectClass = null;
-        boolean suppressExceptionOnClose = true;
 
         try
         {
             in = object.openStream();
             objectClass = new ClassParser( in, object.toExternalForm() ).parse();
-            suppressExceptionOnClose = false;
+            in.close();
+            in = null;
         }
         finally
         {
@@ -217,10 +217,7 @@ public class ClassFileProcessorTest extends JomcToolTest
             }
             catch ( final IOException e )
             {
-                if ( !suppressExceptionOnClose )
-                {
-                    throw e;
-                }
+                // Suppressed.
             }
         }
 
@@ -1845,14 +1842,12 @@ public class ClassFileProcessorTest extends JomcToolTest
         assertTrue( targetDirectory.mkdirs() );
 
         ZipInputStream in = null;
-        boolean suppressExceptionOnClose = true;
 
         try
         {
             in = new ZipInputStream( resource.openStream() );
-            ZipEntry e;
 
-            while ( ( e = in.getNextEntry() ) != null )
+            for ( ZipEntry e = in.getNextEntry(); e != null; e = in.getNextEntry() )
             {
                 if ( e.isDirectory() )
                 {
@@ -1867,7 +1862,8 @@ public class ClassFileProcessorTest extends JomcToolTest
                 {
                     out = FileUtils.openOutputStream( dest );
                     IOUtils.copy( in, out );
-                    suppressExceptionOnClose = false;
+                    out.close();
+                    out = null;
                 }
                 finally
                 {
@@ -1877,22 +1873,15 @@ public class ClassFileProcessorTest extends JomcToolTest
                         {
                             out.close();
                         }
-
-                        suppressExceptionOnClose = true;
                     }
                     catch ( final IOException ex )
                     {
-                        if ( !suppressExceptionOnClose )
-                        {
-                            throw ex;
-                        }
+                        // Suppressed.
                     }
                 }
 
                 in.closeEntry();
             }
-
-            suppressExceptionOnClose = false;
         }
         finally
         {
@@ -1905,10 +1894,7 @@ public class ClassFileProcessorTest extends JomcToolTest
             }
             catch ( final IOException e )
             {
-                if ( !suppressExceptionOnClose )
-                {
-                    throw e;
-                }
+                // Suppressed.
             }
         }
     }

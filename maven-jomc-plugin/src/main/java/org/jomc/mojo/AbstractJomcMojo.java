@@ -1824,7 +1824,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
 
         InputStream in = null;
-        boolean suppressExceptionOnClose = true;
         final URL url = this.getResource( modelContext, resource.getLocation() );
         final ErrorListener errorListener = new ErrorListener()
         {
@@ -1956,7 +1955,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     transformer.setOutputProperty( e.getKey(), e.getValue() );
                 }
 
-                suppressExceptionOnClose = false;
+                in.close();
+                in = null;
+
                 return transformer;
             }
             else if ( resource.isOptional() )
@@ -2050,14 +2051,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
             catch ( final IOException e )
             {
-                if ( suppressExceptionOnClose )
-                {
-                    this.getLog().error( e );
-                }
-                else
-                {
-                    throw new MojoExecutionException( Messages.getMessage( e ), e );
-                }
+                this.getLog().error( e );
             }
         }
 
@@ -2092,7 +2086,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         }
 
         InputStream in = null;
-        boolean suppressExceptionOnClose = true;
         final URL url = this.getResource( modelContext, propertiesResourceType.getLocation() );
         final Properties properties = new Properties();
 
@@ -2120,6 +2113,9 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                 {
                     properties.loadFromXML( in );
                 }
+
+                in.close();
+                in = null;
             }
             else if ( propertiesResourceType.isOptional() )
             {
@@ -2136,8 +2132,6 @@ public abstract class AbstractJomcMojo extends AbstractMojo
                     "propertiesNotFound", propertiesResourceType.getLocation() ) );
 
             }
-
-            suppressExceptionOnClose = false;
         }
         catch ( final SocketTimeoutException e )
         {
@@ -2192,14 +2186,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
             catch ( final IOException e )
             {
-                if ( suppressExceptionOnClose )
-                {
-                    this.getLog().error( e );
-                }
-                else
-                {
-                    throw new MojoExecutionException( Messages.getMessage( e ), e );
-                }
+                this.getLog().error( e );
             }
         }
 
@@ -2395,17 +2382,15 @@ public abstract class AbstractJomcMojo extends AbstractMojo
         throws MojoExecutionException
     {
         BufferedReader reader = null;
-        boolean suppressExceptionOnClose = true;
 
         try
         {
             if ( this.isLoggable( level ) )
             {
-                String line;
                 reader = new BufferedReader( new StringReader( message == null ? "" : message ) );
                 boolean throwableLogged = false;
 
-                while ( ( line = reader.readLine() ) != null )
+                for ( String line = reader.readLine(); line != null; line = reader.readLine() )
                 {
                     final String mojoMessage =
                         Messages.getMessage( this.getLog().isDebugEnabled() ? "debugMessage" : "logMessage", line,
@@ -2430,9 +2415,10 @@ public abstract class AbstractJomcMojo extends AbstractMojo
 
                     throwableLogged = true;
                 }
-            }
 
-            suppressExceptionOnClose = false;
+                reader.close();
+                reader = null;
+            }
         }
         catch ( final IOException e )
         {
@@ -2450,10 +2436,7 @@ public abstract class AbstractJomcMojo extends AbstractMojo
             }
             catch ( final IOException e )
             {
-                if ( !suppressExceptionOnClose )
-                {
-                    throw new AssertionError( e );
-                }
+                this.getLog().error( e );
             }
         }
     }
