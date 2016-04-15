@@ -40,11 +40,11 @@
   <includeBaseDirectory>false</includeBaseDirectory>
   <fileSets>
     <fileSet>
-      <directory>${project.build.outputDirectory}/org/jomc/ant</directory>
+      <directory>${project.build.outputDirectory}/org/jomc/tools/ant</directory>
       <directoryMode>0755</directoryMode>
       <fileMode>0444</fileMode>
       <filtered>false</filtered>
-      <outputDirectory>org/jomc/ant/test</outputDirectory>
+      <outputDirectory>org/jomc/tools/ant/test</outputDirectory>
       <includes>
         <include>**/*.class/**</include>
       </includes>

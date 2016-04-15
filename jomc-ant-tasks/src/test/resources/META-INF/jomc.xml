@@ -33,7 +33,9 @@
 <module xmlns="http://jomc.org/model"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://jomc.org/model http://xml.jomc.org/model/jomc-1.2.xsd"
-        name="JOMC Ant Tasks Tests" version="${project.version}" vendor="${project.organization.name}"
+        name="JOMC Ant Tasks Tests" 
+        version="${project.version}"
+        vendor="${project.organization.name}"
         modelVersion="1.2">
 
   <documentation defaultLanguage="en">
@@ -42,216 +44,293 @@
 
   <specifications>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.test.ClassFileProcessorTask"
-                   class="org.jomc.ant.test.ClassFileProcessorTask"
-                   classDeclaration="true" multiplicity="Many"/>
+    <specification identifier="org.jomc.tools.ant.test.ClassFileProcessorTask"
+                   class="org.jomc.tools.ant.test.ClassFileProcessorTask"
+                   classDeclaration="true"
+                   multiplicity="Many">
+    </specification>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.test.CommitClassesTask" class="org.jomc.ant.test.CommitClassesTask"
-                   classDeclaration="true" multiplicity="Many"/>
+    <specification identifier="org.jomc.tools.ant.test.CommitClassesTask"
+                   class="org.jomc.tools.ant.test.CommitClassesTask"
+                   classDeclaration="true" 
+                   multiplicity="Many">
+    </specification>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.test.GenerateResourcesTask" class="org.jomc.ant.test.GenerateResourcesTask"
-                   classDeclaration="true" multiplicity="Many"/>
+    <specification identifier="org.jomc.tools.ant.test.GenerateResourcesTask"
+                   class="org.jomc.tools.ant.test.GenerateResourcesTask"
+                   classDeclaration="true" 
+                   multiplicity="Many">
+    </specification>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.test.JomcTask" class="org.jomc.ant.test.JomcTask"
-                   classDeclaration="true" multiplicity="Many"/>
+    <specification identifier="org.jomc.tools.ant.test.JomcTask"
+                   class="org.jomc.tools.ant.test.JomcTask"
+                   classDeclaration="true" 
+                   multiplicity="Many">
+    </specification>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.test.JomcToolTask" class="org.jomc.ant.test.JomcToolTask"
-                   classDeclaration="true" multiplicity="Many"/>
+    <specification identifier="org.jomc.tools.ant.test.JomcToolTask"
+                   class="org.jomc.tools.ant.test.JomcToolTask"
+                   classDeclaration="true" 
+                   multiplicity="Many">
+    </specification>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.test.ManageSourcesTask" class="org.jomc.ant.test.ManageSourcesTask"
-                   classDeclaration="true" multiplicity="Many"/>
+    <specification identifier="org.jomc.tools.ant.test.ManageSourcesTask"
+                   class="org.jomc.tools.ant.test.ManageSourcesTask"
+                   classDeclaration="true" 
+                   multiplicity="Many">
+    </specification>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.test.MergeModletsTask" class="org.jomc.ant.test.MergeModletsTask"
-                   classDeclaration="true" multiplicity="Many"/>
+    <specification identifier="org.jomc.tools.ant.test.MergeModletsTask"
+                   class="org.jomc.tools.ant.test.MergeModletsTask"
+                   classDeclaration="true" 
+                   multiplicity="Many">
+    </specification>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.test.MergeModulesTask" class="org.jomc.ant.test.MergeModulesTask"
-                   classDeclaration="true" multiplicity="Many"/>
+    <specification identifier="org.jomc.tools.ant.test.MergeModulesTask"
+                   class="org.jomc.tools.ant.test.MergeModulesTask"
+                   classDeclaration="true" 
+                   multiplicity="Many">
+    </specification>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.test.ResourceFileProcessorTask"
-                   class="org.jomc.ant.test.ResourceFileProcessorTask"
-                   classDeclaration="true" multiplicity="Many"/>
+    <specification identifier="org.jomc.tools.ant.test.ResourceFileProcessorTask"
+                   class="org.jomc.tools.ant.test.ResourceFileProcessorTask"
+                   classDeclaration="true" 
+                   multiplicity="Many">
+    </specification>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.test.SourceFileProcessorTask"
-                   class="org.jomc.ant.test.SourceFileProcessorTask"
-                   classDeclaration="true" multiplicity="Many"/>
+    <specification identifier="org.jomc.tools.ant.test.SourceFileProcessorTask"
+                   class="org.jomc.tools.ant.test.SourceFileProcessorTask"
+                   classDeclaration="true" 
+                   multiplicity="Many">
+    </specification>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.test.ValidateClassesTask" class="org.jomc.ant.test.ValidateClassesTask"
-                   classDeclaration="true" multiplicity="Many"/>
+    <specification identifier="org.jomc.tools.ant.test.ValidateClassesTask"
+                   class="org.jomc.tools.ant.test.ValidateClassesTask"
+                   classDeclaration="true" 
+                   multiplicity="Many">
+    </specification>
     <!-- *********************************************************************************************************** -->
-    <specification identifier="org.jomc.ant.test.ValidateClasspathTask" class="org.jomc.ant.test.ValidateClasspathTask"
-                   classDeclaration="true" multiplicity="Many"/>
-
+    <specification identifier="org.jomc.tools.ant.test.ValidateClasspathTask"
+                   class="org.jomc.tools.ant.test.ValidateClasspathTask"
+                   classDeclaration="true"
+                   multiplicity="Many">
+    </specification>
   </specifications>
   <implementations>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.test.ClassFileProcessorTask"
-                    class="org.jomc.ant.test.ClassFileProcessorTask"
-                    classDeclaration="true" name="${project.name}" version="${project.version}"
+    <implementation identifier="org.jomc.tools.ant.test.ClassFileProcessorTask"
+                    name="${project.name}"
+                    version="${project.version}"
+                    class="org.jomc.tools.ant.test.ClassFileProcessorTask"
+                    classDeclaration="true"  
                     vendor="${project.organization.name}">
-
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
-                createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte" 
+                version="1.0"
+                mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z">
+        </author>
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.test.ClassFileProcessorTask"/>
+        <reference identifier="org.jomc.tools.ant.test.ClassFileProcessorTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.test.CommitClassesTask" class="org.jomc.ant.test.CommitClassesTask"
-                    classDeclaration="true" name="${project.name}" version="${project.version}"
+    <implementation identifier="org.jomc.tools.ant.test.CommitClassesTask"
+                    name="${project.name}"
+                    version="${project.version}"
+                    class="org.jomc.tools.ant.test.CommitClassesTask"
+                    classDeclaration="true"
                     vendor="${project.organization.name}">
-
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
-                createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte" 
+                version="1.0"
+                mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z">
+        </author>
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.test.CommitClassesTask"/>
+        <reference identifier="org.jomc.tools.ant.test.CommitClassesTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.test.GenerateResourcesTask" class="org.jomc.ant.test.GenerateResourcesTask"
-                    classDeclaration="true" name="${project.name}" version="${project.version}"
+    <implementation identifier="org.jomc.tools.ant.test.GenerateResourcesTask"
+                    name="${project.name}"
+                    version="${project.version}"
+                    class="org.jomc.tools.ant.test.GenerateResourcesTask"
+                    classDeclaration="true"
                     vendor="${project.organization.name}">
-
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
-                createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte" 
+                version="1.0"
+                mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z">
+        </author>
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.test.GenerateResourcesTask"/>
+        <reference identifier="org.jomc.tools.ant.test.GenerateResourcesTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.test.JomcTask" class="org.jomc.ant.test.JomcTask"
-                    classDeclaration="true" name="${project.name}" version="${project.version}"
+    <implementation identifier="org.jomc.tools.ant.test.JomcTask"
+                    name="${project.name}"
+                    version="${project.version}"
+                    class="org.jomc.tools.ant.test.JomcTask"
+                    classDeclaration="true" 
                     vendor="${project.organization.name}">
-
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
-                createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte" 
+                version="1.0"
+                mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z">
+        </author>
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.test.JomcTask"/>
+        <reference identifier="org.jomc.tools.ant.test.JomcTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.test.JomcToolTask" class="org.jomc.ant.test.JomcToolTask"
-                    classDeclaration="true" name="${project.name}" version="${project.version}"
+    <implementation identifier="org.jomc.tools.ant.test.JomcToolTask"
+                    name="${project.name}"
+                    version="${project.version}"
+                    class="org.jomc.tools.ant.test.JomcToolTask"
+                    classDeclaration="true"
                     vendor="${project.organization.name}">
-
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
-                createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte"
+                version="1.0"
+                mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z">
+        </author>
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.test.JomcToolTask"/>
+        <reference identifier="org.jomc.tools.ant.test.JomcToolTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.test.ManageSourcesTask" class="org.jomc.ant.test.ManageSourcesTask"
-                    classDeclaration="true" name="${project.name}" version="${project.version}"
+    <implementation identifier="org.jomc.tools.ant.test.ManageSourcesTask"
+                    name="${project.name}"
+                    version="${project.version}"
+                    class="org.jomc.tools.ant.test.ManageSourcesTask"
+                    classDeclaration="true"
                     vendor="${project.organization.name}">
-
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
-                createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte" 
+                version="1.0"
+                mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z">
+        </author>
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.test.ManageSourcesTask"/>
+        <reference identifier="org.jomc.tools.ant.test.ManageSourcesTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.test.MergeModletsTask" class="org.jomc.ant.test.MergeModletsTask"
-                    classDeclaration="true" name="${project.name}" version="${project.version}"
+    <implementation identifier="org.jomc.tools.ant.test.MergeModletsTask"
+                    name="${project.name}"
+                    version="${project.version}"
+                    class="org.jomc.tools.ant.test.MergeModletsTask"
+                    classDeclaration="true"
                     vendor="${project.organization.name}">
-
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
-                createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte" 
+                version="1.0"
+                mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z">
+        </author>
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.test.MergeModletsTask"/>
+        <reference identifier="org.jomc.tools.ant.test.MergeModletsTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.test.MergeModulesTask" class="org.jomc.ant.test.MergeModulesTask"
-                    classDeclaration="true" name="${project.name}" version="${project.version}"
+    <implementation identifier="org.jomc.tools.ant.test.MergeModulesTask"
+                    name="${project.name}"
+                    version="${project.version}"
+                    class="org.jomc.tools.ant.test.MergeModulesTask"
+                    classDeclaration="true"
                     vendor="${project.organization.name}">
-
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
-                createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte" 
+                version="1.0"
+                mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z">
+        </author>
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.test.MergeModulesTask"/>
+        <reference identifier="org.jomc.tools.ant.test.MergeModulesTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.test.ResourceFileProcessorTask"
-                    class="org.jomc.ant.test.ResourceFileProcessorTask"
-                    classDeclaration="true" name="${project.name}" version="${project.version}"
+    <implementation identifier="org.jomc.tools.ant.test.ResourceFileProcessorTask"
+                    name="${project.name}"
+                    version="${project.version}"
+                    class="org.jomc.tools.ant.test.ResourceFileProcessorTask"
+                    classDeclaration="true" 
                     vendor="${project.organization.name}">
-
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
-                createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte" 
+                version="1.0"
+                mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z">
+        </author>
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.test.ResourceFileProcessorTask"/>
+        <reference identifier="org.jomc.tools.ant.test.ResourceFileProcessorTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.test.SourceFileProcessorTask"
-                    class="org.jomc.ant.test.SourceFileProcessorTask"
-                    classDeclaration="true" name="${project.name}" version="${project.version}"
+    <implementation identifier="org.jomc.tools.ant.test.SourceFileProcessorTask"
+                    name="${project.name}"
+                    version="${project.version}"
+                    class="org.jomc.tools.ant.test.SourceFileProcessorTask"
+                    classDeclaration="true"
                     vendor="${project.organization.name}">
-
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
-                createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte" 
+                version="1.0"
+                mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z">
+        </author>
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.test.SourceFileProcessorTask"/>
+        <reference identifier="org.jomc.tools.ant.test.SourceFileProcessorTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.test.ValidateClassesTask" class="org.jomc.ant.test.ValidateClassesTask"
-                    classDeclaration="true" name="${project.name}" version="${project.version}"
+    <implementation identifier="org.jomc.tools.ant.test.ValidateClassesTask"
+                    name="${project.name}"
+                    version="${project.version}"
+                    class="org.jomc.tools.ant.test.ValidateClassesTask"
+                    classDeclaration="true"
                     vendor="${project.organization.name}">
-
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
-                createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte" 
+                version="1.0"
+                mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z">
+        </author>
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.test.ValidateClassesTask"/>
+        <reference identifier="org.jomc.tools.ant.test.ValidateClassesTask"/>
       </specifications>
     </implementation>
     <!-- *********************************************************************************************************** -->
-    <implementation identifier="org.jomc.ant.test.ValidateClasspathTask" class="org.jomc.ant.test.ValidateClasspathTask"
-                    classDeclaration="true" name="${project.name}" version="${project.version}"
+    <implementation identifier="org.jomc.tools.ant.test.ValidateClasspathTask"
+                    name="${project.name}"
+                    version="${project.version}"
+                    class="org.jomc.tools.ant.test.ValidateClasspathTask"
+                    classDeclaration="true"
                     vendor="${project.organization.name}">
-
       <authors>
-        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
-                createDate="2005-07-25T19:56:45Z"/>
-
+        <author name="Christian Schulte" 
+                version="1.0"
+                mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z">
+        </author>
       </authors>
       <specifications>
-        <reference identifier="org.jomc.ant.test.ValidateClasspathTask"/>
+        <reference identifier="org.jomc.tools.ant.test.ValidateClasspathTask"/>
       </specifications>
     </implementation>
   </implementations>

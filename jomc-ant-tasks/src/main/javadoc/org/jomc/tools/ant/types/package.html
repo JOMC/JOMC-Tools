@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <!--
 
   Copyright (C) 2005 Christian Schulte <cs@schulte.it>
@@ -30,36 +30,19 @@
   $JOMC$
 
 -->
-<module xmlns="http://jomc.org/model"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://jomc.org/model http://xml.jomc.org/model/jomc-1.2.xsd"
-        name="JOMC Ant Tasks Tests" 
-        version="${project.version}"
-        vendor="${project.organization.name}"
-        modelVersion="1.2">
-
-  <documentation defaultLanguage="en">
-    <text language="en">${project.description}</text>
-  </documentation>
-
-  <implementations>
-    <!-- *********************************************************************************************************** -->
-    <implementation identifier="Broken" 
-                    name="${project.name}"
-                    version="${project.version}"
-                    class="Broken"
-                    classDeclaration="true"
-                    vendor="${project.organization.name}">
-      <authors>
-        <author name="Christian Schulte" 
-                version="1.0"
-                mail="cs@schulte.it"
-                createDate="2005-07-25T19:56:45Z">
-        </author>
-      </authors>
-      <specifications>
-        <reference identifier="DOES NOT EXIST"/>
-      </specifications>
-    </implementation>
-  </implementations>
-</module>
+<html>
+  <body>
+    Object management and configuration task data type classes for Apache Ant.
+    <p><b>Datatypes Overview</b><br/>
+    <ul>
+      <li>{@link org.jomc.tools.ant.types.KeyValueType}</li>
+      <li>{@link org.jomc.tools.ant.types.LocaleType}</li>
+      <li>{@link org.jomc.tools.ant.types.ModletResourceType}</li>
+      <li>{@link org.jomc.tools.ant.types.ModuleResourceType}</li>
+      <li>{@link org.jomc.tools.ant.types.NameType}</li>
+      <li>{@link org.jomc.tools.ant.types.PropertiesResourceType}</li>
+      <li>{@link org.jomc.tools.ant.types.ResourceType}</li>
+      <li>{@link org.jomc.tools.ant.types.TransformerResourceType}</li>
+    </ul>
+  </body>
+</html>

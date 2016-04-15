@@ -65,7 +65,7 @@
       <testResource>
         <filtering>false</filtering>
         <directory>${project.build.directory}</directory>
-        <targetPath>org/jomc/ant/test</targetPath>
+        <targetPath>org/jomc/tools/ant/test</targetPath>
         <includes>
           <include>classfiles.zip</include>
         </includes>

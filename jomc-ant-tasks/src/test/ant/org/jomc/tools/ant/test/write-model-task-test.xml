@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+   Copyright (C) 2005 Christian Schulte <cs@schulte.it>
+   All rights reserved.
+
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions
+   are met:
+
+     o Redistributions of source code must retain the above copyright
+       notice, this list of conditions and the following disclaimer.
+
+     o Redistributions in binary form must reproduce the above copyright
+       notice, this list of conditions and the following disclaimer in
+       the documentation and/or other materials provided with the
+       distribution.
+
+   THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+   AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT,
+   INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+   NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+   $JOMC$
+
+-->
+<project name="write-model-test" xmlns:jomc="antlib:org.jomc.tools.ant">
+
+  <!-- ************************************************************************************************************* -->
+  <property name="jomc.enabled" value="on"/>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="before-test">
+    <property name="empty.dir" location="${test.output.dir}/EMPTY"/>
+    <property name="no.dir" location="${test.output.dir}/DOES_NOT_EXIST"/>
+
+    <delete dir="${no.dir}" includeemptydirs="true"/>
+    <mkdir dir="${empty.dir}"/>
+    <mkdir dir="${test.output.dir}"/>
+
+    <path id="empty.classpath">
+      <pathelement path="${empty.dir}"/>
+    </path>
+
+    <path id="redundant.classpath">
+      <pathelement location="${test.classpath.dir}"/>
+    </path>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task">
+    <jomc:write-model/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-if">
+    <jomc:write-model if="on"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-execute-task-unless">
+    <jomc:write-model unless="off"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-model-context-attribute-missing-key">
+    <jomc:write-model>
+      <jomc:modelContextAttribute/>
+    </jomc:write-model>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-missing-key">
+    <jomc:write-model>
+      <jomc:transformationParameter/>
+    </jomc:write-model>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-parameter-resource-missing-location">
+    <jomc:write-model>
+      <jomc:transformationParameterResource/>
+    </jomc:write-model>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-transformation-output-property-missing-key">
+    <jomc:write-model>
+      <jomc:transformationOutputProperty/>
+    </jomc:write-model>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-module-resource-missing-location">
+    <jomc:write-model>
+      <jomc:moduleResource/>
+    </jomc:write-model>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-specification-not-found">
+    <jomc:write-model specification="DOES NOT EXIST"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-implementation-not-found">
+    <jomc:write-model implementation="DOES NOT EXIST"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-module-not-found">
+    <jomc:write-model module="DOES NOT EXIST"/>
+  </target>
+
+  <!-- ************************************************************************************************************* -->
+  <target name="test-write-model-all-attributes">
+    <jomc:write-model modelEncoding="US-ASCII"
+                      modelFile="${empty.dir}/model.xml"
+                      specification="org.jomc.tools.ant.test.ClassFileProcessorTask"
+                      specificationModelFile="${empty.dir}/specification.xml"
+                      implementation="org.jomc.tools.ant.test.ClassFileProcessorTask"
+                      instanceModelFile="${empty.dir}/instance.xml"
+                      module="JOMC Ant Tasks Tests"
+                      moduleLocation="META-INF/jomc.xml"
+                      moduleModelFile="${empty.dir}/module.xml"
+                      transformerLocation="TEST"
+                      modelObjectClasspathResolutionEnabled="false"
+                      model="http://jomc.org/model"
+                      modelContextFactoryClassName="org.jomc.modlet.DefaultModelContextFactory"
+                      modelProcessingEnabled="false"
+                      modletLocation="META-INF/jomc-modlet.xml"
+                      providerLocation="META-INF/services"
+                      modletSchemaSystemId="TEST"
+                      platformProviderLocation="TEST"
+                      modletResourceValidationEnabled="false"
+                      modelResourceValidationEnabled="false"
+                      javaValidationEnabled="false">
+      <jomc:classpath>
+        <pathelement path="${empty.dir}"/>
+      </jomc:classpath>
+      <jomc:transformationParameter key="test" value="test"/>
+    </jomc:write-model>
+  </target>
+</project>
