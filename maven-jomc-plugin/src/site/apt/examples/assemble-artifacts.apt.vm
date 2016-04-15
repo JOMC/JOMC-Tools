@@ -37,8 +37,8 @@
 Assembling JOMC artifacts
 
   Since version 1.2, the Maven JOMC Plugin provides a
-  {{{./../apidocs/org/jomc/mojo/JomcContainerDescriptorHandler.html}ContainerDescriptorHandler}} implementation for use
-  with the {{{http://maven.apache.org/plugins/maven-assembly-plugin/}Maven Assembly Plugin.}}.
+  {{{./../apidocs/org/jomc/mojo/JomcContainerDescriptorHandler.html}ContainerDescriptorHandler}} implementation
+  for use with the {{{http://maven.apache.org/plugins/maven-assembly-plugin/}Maven Assembly Plugin}}.
 
 +-----------------+
 <project>

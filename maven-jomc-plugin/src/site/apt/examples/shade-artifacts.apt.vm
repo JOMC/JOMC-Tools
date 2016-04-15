@@ -37,7 +37,7 @@
 Shading JOMC artifacts
 
   The Maven JOMC Plugin provides a {{{./../apidocs/org/jomc/mojo/JomcResourceTransformer.html}ResourceTransformer}}
-  implementation for use with the {{{http://maven.apache.org/plugins/maven-shade-plugin/}Maven Shade Plugin.}}.
+  implementation for use with the {{{http://maven.apache.org/plugins/maven-shade-plugin/}Maven Shade Plugin}}.
 
 +-----------------+
 <project>
