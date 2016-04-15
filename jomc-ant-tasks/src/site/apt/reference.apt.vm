@@ -1778,44 +1778,44 @@ Task and Type Reference
 
 * References
 
-  \[{A}\] {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/ClassFileProcessor.html}ClassFileProcessor class.}}
+  \[{A}\] {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/ClassFileProcessor.html}ClassFileProcessor class}}.
 
-  \[{B}\] {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/JomcTool.html#getDefaultTemplateProfile()}Default template profile.}}
+  \[{B}\] {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/JomcTool.html#getDefaultTemplateProfile()}Default template profile}}.
 
-  \[{C}\] {{{${project.url}/../jomc-model/apidocs/org/jomc/model/ModelObject.html#MODEL_PUBLIC_ID}JOMC model public identifier.}}
+  \[{C}\] {{{${project.url}/../jomc-model/apidocs/org/jomc/model/ModelObject.html#MODEL_PUBLIC_ID}JOMC model public identifier}}.
 
-  \[{D}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/ModelContext.html}ModelContext class.}}
+  \[{D}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/ModelContext.html}ModelContext class}}.
 
-  \[{E}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/DefaultModletProvider.html#getDefaultModletLocation()}Class path location searched for modlets.}}
+  \[{E}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/DefaultModletProvider.html#getDefaultModletLocation()}Class path location searched for modlets}}.
 
-  \[{F}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/ModelContext.html#getDefaultModletSchemaSystemId()}<<<http://jomc.org/modlet>>> namespace schema system id.}}
+  \[{F}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/ModelContext.html#getDefaultModletSchemaSystemId()}<<<http://jomc.org/modlet>>> namespace schema system id}}.
 
-  \[{G}\] {{{${project.url}/../jomc-model/apidocs/org/jomc/model/modlet/DefaultModelProvider.html#getDefaultModuleLocation()}Class path location searched for modules.}}
+  \[{G}\] {{{${project.url}/../jomc-model/apidocs/org/jomc/model/modlet/DefaultModelProvider.html#getDefaultModuleLocation()}Class path location searched for modules}}.
 
-  \[{H}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/DefaultModelContext.html#getDefaultPlatformProviderLocation()}Location searched for platform provider resources.}}
+  \[{H}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/DefaultModelContext.html#getDefaultPlatformProviderLocation()}Location searched for platform provider resources}}.
 
-  \[{I}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/DefaultModelContext.html#getDefaultProviderLocation()}Class path location searched for providers.}}
+  \[{I}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/DefaultModelContext.html#getDefaultProviderLocation()}Class path location searched for providers}}.
 
-  \[{J}\] {{{${project.url}/../jomc-model/apidocs/org/jomc/model/modlet/DefaultModelProcessor.html#getDefaultTransformerLocation()}Class path location searched for transformers.}}
+  \[{J}\] {{{${project.url}/../jomc-model/apidocs/org/jomc/model/modlet/DefaultModelProcessor.html#getDefaultTransformerLocation()}Class path location searched for transformers}}.
 
-  \[{K}\] {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/ResourceFileProcessor.html}ResourceFileProcessor class.}}
+  \[{K}\] {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/ResourceFileProcessor.html}ResourceFileProcessor class}}.
 
-  \[{L}\] {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/SourceFileProcessor.html}SourceFileProcessor class.}}
+  \[{L}\] {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/SourceFileProcessor.html}SourceFileProcessor class}}.
 
-  \[{M}\] {{{${project.url}/apidocs/org/jomc/ant/CommitClassesTask.html}<<<commit-classes>>> task.}}
+  \[{M}\] {{{${project.url}/apidocs/org/jomc/ant/CommitClassesTask.html}<<<commit-classes>>> task}}.
 
-  \[{N}\] {{{${project.url}/apidocs/org/jomc/ant/GenerateResourcesTask.html}<<<generate-resources>>> task.}}
+  \[{N}\] {{{${project.url}/apidocs/org/jomc/ant/GenerateResourcesTask.html}<<<generate-resources>>> task}}.
 
-  \[{O}\] {{{${project.url}/apidocs/org/jomc/ant/ManageSourcesTask.html}<<<manage-sources>>> task.}}
+  \[{O}\] {{{${project.url}/apidocs/org/jomc/ant/ManageSourcesTask.html}<<<manage-sources>>> task}}.
 
-  \[{P}\] {{{${project.url}/apidocs/org/jomc/ant/ValidateClassesTask.html}<<<validate-classes>>> task.}}
+  \[{P}\] {{{${project.url}/apidocs/org/jomc/ant/ValidateClassesTask.html}<<<validate-classes>>> task}}.
 
-  \[{Q}\] {{{${project.url}/apidocs/org/jomc/ant/ValidateClasspathTask.html}<<<validate-classpath>>> task.}}
+  \[{Q}\] {{{${project.url}/apidocs/org/jomc/ant/ValidateClasspathTask.html}<<<validate-classpath>>> task}}.
 
-  \[{R}\] {{{${project.url}/apidocs/org/jomc/ant/ValidateModelTask.html}<<<validate-model>>> task.}}
+  \[{R}\] {{{${project.url}/apidocs/org/jomc/ant/ValidateModelTask.html}<<<validate-model>>> task}}.
 
-  \[{S}\] {{{${project.url}/apidocs/org/jomc/ant/MergeModletsTask.html}<<<merge-modlets>>> task.}}
+  \[{S}\] {{{${project.url}/apidocs/org/jomc/ant/MergeModletsTask.html}<<<merge-modlets>>> task}}.
 
-  \[{T}\] {{{${project.url}/apidocs/org/jomc/ant/MergeModulesTask.html}<<<merge-modules>>> task.}}
+  \[{T}\] {{{${project.url}/apidocs/org/jomc/ant/MergeModulesTask.html}<<<merge-modules>>> task}}.
 
-  \[{U}\] {{{${project.url}/apidocs/org/jomc/ant/WriteModelTask.html}<<<write-model>>> task.}}
+  \[{U}\] {{{${project.url}/apidocs/org/jomc/ant/WriteModelTask.html}<<<write-model>>> task}}.
