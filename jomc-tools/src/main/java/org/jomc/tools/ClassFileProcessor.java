@@ -2390,13 +2390,13 @@ public class ClassFileProcessor extends JomcTool
 
             InputStream in = null;
             JavaClass javaClass = null;
-            boolean suppressExceptionOnClose = true;
 
             try
             {
                 in = classUrl.openStream();
                 javaClass = new ClassParser( in, classUrl.toExternalForm() ).parse();
-                suppressExceptionOnClose = false;
+                in.close();
+                in = null;
             }
             finally
             {
@@ -2409,14 +2409,7 @@ public class ClassFileProcessor extends JomcTool
                 }
                 catch ( final IOException e )
                 {
-                    if ( suppressExceptionOnClose )
-                    {
-                        this.log( Level.SEVERE, getMessage( e ), e );
-                    }
-                    else
-                    {
-                        throw e;
-                    }
+                    this.log( Level.SEVERE, getMessage( e ), e );
                 }
             }
 
@@ -2451,13 +2444,13 @@ public class ClassFileProcessor extends JomcTool
 
             InputStream in = null;
             JavaClass javaClass = null;
-            boolean suppressExceptionOnClose = true;
 
             try
             {
                 in = classUrl.openStream();
                 javaClass = new ClassParser( in, classUrl.toExternalForm() ).parse();
-                suppressExceptionOnClose = false;
+                in.close();
+                in = null;
             }
             finally
             {
@@ -2470,14 +2463,7 @@ public class ClassFileProcessor extends JomcTool
                 }
                 catch ( final IOException e )
                 {
-                    if ( suppressExceptionOnClose )
-                    {
-                        this.log( Level.SEVERE, getMessage( e ), e );
-                    }
-                    else
-                    {
-                        throw e;
-                    }
+                    this.log( Level.SEVERE, getMessage( e ), e );
                 }
             }
 
@@ -2590,7 +2576,6 @@ public class ClassFileProcessor extends JomcTool
         FileInputStream in = null;
         FileChannel fileChannel = null;
         FileLock fileLock = null;
-        boolean suppressExceptionOnClose = true;
 
         try
         {
@@ -2599,12 +2584,21 @@ public class ClassFileProcessor extends JomcTool
             fileLock = fileChannel.lock( 0, classFile.length(), true );
 
             final JavaClass javaClass = new ClassParser( in, classFile.getAbsolutePath() ).parse();
-            suppressExceptionOnClose = false;
+
+            fileLock.release();
+            fileLock = null;
+
+            fileChannel.close();
+            fileChannel = null;
+
+            in.close();
+            in = null;
+
             return javaClass;
         }
         finally
         {
-            this.releaseAndClose( fileLock, fileChannel, in, suppressExceptionOnClose );
+            this.releaseAndClose( fileLock, fileChannel, in );
         }
     }
 
@@ -2613,7 +2607,6 @@ public class ClassFileProcessor extends JomcTool
         RandomAccessFile randomAccessFile = null;
         FileChannel fileChannel = null;
         FileLock fileLock = null;
-        boolean suppressExceptionOnClose = true;
 
         final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
         javaClass.dump( byteStream );
@@ -2630,16 +2623,23 @@ public class ClassFileProcessor extends JomcTool
             fileChannel.position( 0L );
             fileChannel.write( ByteBuffer.wrap( bytes ) );
             fileChannel.force( true );
-            suppressExceptionOnClose = false;
+
+            fileLock.release();
+            fileLock = null;
+
+            fileChannel.close();
+            fileChannel = null;
+
+            randomAccessFile.close();
+            randomAccessFile = null;
         }
         finally
         {
-            this.releaseAndClose( fileLock, fileChannel, randomAccessFile, suppressExceptionOnClose );
+            this.releaseAndClose( fileLock, fileChannel, randomAccessFile );
         }
     }
 
-    private void releaseAndClose( final FileLock fileLock, final FileChannel fileChannel,
-                                  final Closeable closeable, final boolean suppressExceptions )
+    private void releaseAndClose( final FileLock fileLock, final FileChannel fileChannel, final Closeable closeable )
         throws IOException
     {
         try
@@ -2651,14 +2651,7 @@ public class ClassFileProcessor extends JomcTool
         }
         catch ( final IOException e )
         {
-            if ( suppressExceptions )
-            {
-                this.log( Level.SEVERE, null, e );
-            }
-            else
-            {
-                throw e;
-            }
+            this.log( Level.SEVERE, getMessage( e ), e );
         }
         finally
         {
@@ -2671,14 +2664,7 @@ public class ClassFileProcessor extends JomcTool
             }
             catch ( final IOException e )
             {
-                if ( suppressExceptions )
-                {
-                    this.log( Level.SEVERE, null, e );
-                }
-                else
-                {
-                    throw e;
-                }
+                this.log( Level.SEVERE, getMessage( e ), e );
             }
             finally
             {
@@ -2691,14 +2677,7 @@ public class ClassFileProcessor extends JomcTool
                 }
                 catch ( final IOException e )
                 {
-                    if ( suppressExceptions )
-                    {
-                        this.log( Level.SEVERE, null, e );
-                    }
-                    else
-                    {
-                        throw e;
-                    }
+                    this.log( Level.SEVERE, getMessage( e ), e );
                 }
             }
         }

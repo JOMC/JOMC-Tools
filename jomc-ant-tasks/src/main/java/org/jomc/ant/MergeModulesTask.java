@@ -384,7 +384,6 @@ public final class MergeModulesTask extends JomcModelTask
     public void executeTask() throws BuildException
     {
         ProjectClassLoader classLoader = null;
-        boolean suppressExceptionOnClose = true;
 
         try
         {
@@ -434,7 +433,6 @@ public final class MergeModulesTask extends JomcModelTask
                 for ( int i = urls.length - 1; i >= 0; i-- )
                 {
                     InputStream in = null;
-                    suppressExceptionOnClose = true;
 
                     try
                     {
@@ -469,7 +467,8 @@ public final class MergeModulesTask extends JomcModelTask
 
                         }
 
-                        suppressExceptionOnClose = false;
+                        in.close();
+                        in = null;
                     }
                     catch ( final SocketTimeoutException e )
                     {
@@ -510,20 +509,10 @@ public final class MergeModulesTask extends JomcModelTask
                         }
                         catch ( final IOException e )
                         {
-
-                            if ( suppressExceptionOnClose )
-                            {
-                                this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
-                            }
-                            else
-                            {
-                                throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
-                            }
+                            this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
                         }
                     }
                 }
-
-                suppressExceptionOnClose = true;
             }
 
             for ( final Iterator<Module> it = modules.getModule().iterator(); it.hasNext(); )
@@ -610,7 +599,13 @@ public final class MergeModulesTask extends JomcModelTask
             marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
             marshaller.setSchema( context.createSchema( this.getModel() ) );
             marshaller.marshal( new ObjectFactory().createModule( mergedModule ), this.getModuleFile() );
-            suppressExceptionOnClose = false;
+
+            classLoader.close();
+            classLoader = null;
+        }
+        catch ( final IOException e )
+        {
+            throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
         }
         catch ( final URISyntaxException e )
         {
@@ -649,14 +644,7 @@ public final class MergeModulesTask extends JomcModelTask
             }
             catch ( final IOException e )
             {
-                if ( suppressExceptionOnClose )
-                {
-                    this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
-                }
-                else
-                {
-                    throw new BuildException( Messages.getMessage( e ), e, this.getLocation() );
-                }
+                this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
             }
         }
     }

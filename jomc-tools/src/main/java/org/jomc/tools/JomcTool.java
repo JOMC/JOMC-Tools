@@ -3298,7 +3298,6 @@ public class JomcTool
 
         final String key = profileName + "|" + language;
         java.util.Properties profileProperties = map.get( key );
-        boolean suppressExceptionOnClose = true;
 
         if ( profileProperties == null )
         {
@@ -3323,6 +3322,9 @@ public class JomcTool
                     }
 
                     profileProperties.load( in );
+
+                    in.close();
+                    in = null;
                 }
                 else if ( this.getTemplateLocation() != null )
                 {
@@ -3340,13 +3342,14 @@ public class JomcTool
                     }
 
                     profileProperties.load( in );
+
+                    in.close();
+                    in = null;
                 }
                 else if ( this.isLoggable( Level.CONFIG ) )
                 {
                     this.log( Level.CONFIG, getMessage( "contextPropertiesNotFound", resourceName ), null );
                 }
-
-                suppressExceptionOnClose = false;
             }
             catch ( final FileNotFoundException e )
             {
@@ -3368,14 +3371,7 @@ public class JomcTool
                 }
                 catch ( final IOException e )
                 {
-                    if ( suppressExceptionOnClose )
-                    {
-                        this.log( Level.SEVERE, getMessage( e ), e );
-                    }
-                    else
-                    {
-                        throw e;
-                    }
+                    this.log( Level.SEVERE, getMessage( e ), e );
                 }
             }
         }
@@ -3479,7 +3475,6 @@ public class JomcTool
         }
 
         java.util.Properties profileProperties = map.get( profileName );
-        boolean suppressExceptionOnClose = true;
 
         if ( profileProperties == null )
         {
@@ -3505,6 +3500,9 @@ public class JomcTool
                     }
 
                     profileProperties.load( in );
+
+                    in.close();
+                    in = null;
                 }
                 else if ( this.getTemplateLocation() != null )
                 {
@@ -3524,13 +3522,14 @@ public class JomcTool
                     }
 
                     profileProperties.load( in );
+
+                    in.close();
+                    in = null;
                 }
                 else if ( this.isLoggable( Level.CONFIG ) )
                 {
                     this.log( Level.CONFIG, getMessage( "templateProfilePropertiesNotFound", resourceName ), null );
                 }
-
-                suppressExceptionOnClose = false;
             }
             catch ( final FileNotFoundException e )
             {
@@ -3554,14 +3553,7 @@ public class JomcTool
                 }
                 catch ( final IOException e )
                 {
-                    if ( suppressExceptionOnClose )
-                    {
-                        this.log( Level.SEVERE, getMessage( e ), e );
-                    }
-                    else
-                    {
-                        throw e;
-                    }
+                    this.log( Level.SEVERE, getMessage( e ), e );
                 }
             }
         }

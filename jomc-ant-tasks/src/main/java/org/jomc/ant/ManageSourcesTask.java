@@ -114,7 +114,6 @@ public final class ManageSourcesTask extends SourceFileProcessorTask
     public void processSourceFiles() throws BuildException
     {
         ProjectClassLoader classLoader = null;
-        boolean suppressExceptionOnClose = true;
 
         try
         {
@@ -157,7 +156,8 @@ public final class ManageSourcesTask extends SourceFileProcessorTask
                     tool.manageSourceFiles( this.getSourcesDirectory() );
                 }
 
-                suppressExceptionOnClose = false;
+                classLoader.close();
+                classLoader = null;
             }
             else
             {
@@ -187,14 +187,7 @@ public final class ManageSourcesTask extends SourceFileProcessorTask
             }
             catch ( final IOException e )
             {
-                if ( suppressExceptionOnClose )
-                {
-                    this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
-                }
-                else
-                {
-                    throw new SourceProcessingException( Messages.getMessage( e ), e, this.getLocation() );
-                }
+                this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
             }
         }
     }

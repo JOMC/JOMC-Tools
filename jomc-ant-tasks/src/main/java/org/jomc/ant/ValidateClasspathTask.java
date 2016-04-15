@@ -73,7 +73,6 @@ public final class ValidateClasspathTask extends ClassFileProcessorTask
     public void processClassFiles() throws BuildException
     {
         ProjectClassLoader classLoader = null;
-        boolean suppressExceptionOnClose = true;
 
         try
         {
@@ -156,7 +155,8 @@ public final class ValidateClasspathTask extends ClassFileProcessorTask
                     }
                 }
 
-                suppressExceptionOnClose = false;
+                classLoader.close();
+                classLoader = null;
             }
             else
             {
@@ -186,14 +186,7 @@ public final class ValidateClasspathTask extends ClassFileProcessorTask
             }
             catch ( final IOException e )
             {
-                if ( suppressExceptionOnClose )
-                {
-                    this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
-                }
-                else
-                {
-                    throw new ClassProcessingException( Messages.getMessage( e ), e, this.getLocation() );
-                }
+                this.logMessage( Level.SEVERE, Messages.getMessage( e ), e );
             }
         }
     }

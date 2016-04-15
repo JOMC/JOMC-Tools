@@ -616,13 +616,17 @@ public class ProjectClassLoader extends URLClassLoader
     private URL filterProviders( final URL resource ) throws IOException
     {
         InputStream in = null;
-        boolean suppressExceptionOnClose = true;
 
         try
         {
             URL filteredResource = resource;
             in = resource.openStream();
+
             final List<String> lines = IOUtils.readLines( in, "UTF-8" );
+
+            in.close();
+            in = null;
+
             final List<String> filteredLines = new ArrayList<String>( lines.size() );
 
             for ( final String line : lines )
@@ -650,7 +654,8 @@ public class ProjectClassLoader extends URLClassLoader
                 {
                     out = new FileOutputStream( tmpResource );
                     IOUtils.writeLines( filteredLines, System.getProperty( "line.separator", "\n" ), out, "UTF-8" );
-                    suppressExceptionOnClose = false;
+                    out.close();
+                    out = null;
                 }
                 finally
                 {
@@ -660,26 +665,16 @@ public class ProjectClassLoader extends URLClassLoader
                         {
                             out.close();
                         }
-
-                        suppressExceptionOnClose = true;
                     }
                     catch ( final IOException e )
                     {
-                        if ( suppressExceptionOnClose )
-                        {
-                            this.project.log( Messages.getMessage( e ), e, Project.MSG_ERR );
-                        }
-                        else
-                        {
-                            throw e;
-                        }
+                        this.project.log( Messages.getMessage( e ), e, Project.MSG_ERR );
                     }
                 }
 
                 filteredResource = tmpResource.toURI().toURL();
             }
 
-            suppressExceptionOnClose = false;
             return filteredResource;
         }
         finally
@@ -693,14 +688,7 @@ public class ProjectClassLoader extends URLClassLoader
             }
             catch ( final IOException e )
             {
-                if ( suppressExceptionOnClose )
-                {
-                    this.project.log( Messages.getMessage( e ), e, Project.MSG_ERR );
-                }
-                else
-                {
-                    throw e;
-                }
+                this.project.log( Messages.getMessage( e ), e, Project.MSG_ERR );
             }
         }
     }
@@ -708,15 +696,18 @@ public class ProjectClassLoader extends URLClassLoader
     private URL filterModlets( final URL resource ) throws ModelException, IOException, JAXBException
     {
         InputStream in = null;
-        boolean suppressExceptionOnClose = true;
 
         try
         {
             URL filteredResource = resource;
-            final ModelContext modelContext = ModelContextFactory.newInstance().newModelContext();
             in = resource.openStream();
+
+            final ModelContext modelContext = ModelContextFactory.newInstance().newModelContext();
             final JAXBElement<?> e =
                 (JAXBElement<?>) modelContext.createUnmarshaller( ModletObject.MODEL_PUBLIC_ID ).unmarshal( in );
+
+            in.close();
+            in = null;
 
             final Object o = e.getValue();
             Modlets modlets = null;
@@ -766,7 +757,6 @@ public class ProjectClassLoader extends URLClassLoader
                 }
             }
 
-            suppressExceptionOnClose = false;
             return filteredResource;
         }
         finally
@@ -780,14 +770,7 @@ public class ProjectClassLoader extends URLClassLoader
             }
             catch ( final IOException e )
             {
-                if ( suppressExceptionOnClose )
-                {
-                    this.project.log( Messages.getMessage( e ), e, Project.MSG_ERR );
-                }
-                else
-                {
-                    throw e;
-                }
+                this.project.log( Messages.getMessage( e ), e, Project.MSG_ERR );
             }
         }
     }
@@ -907,17 +890,20 @@ public class ProjectClassLoader extends URLClassLoader
 
     private static Set<String> readDefaultExcludes( final String location ) throws IOException
     {
-        InputStream resource = null;
-        boolean suppressExceptionOnClose = true;
+        InputStream in = null;
         Set<String> defaultExcludes = null;
 
         try
         {
-            resource = ProjectClassLoader.class.getResourceAsStream( location );
+            in = ProjectClassLoader.class.getResourceAsStream( location );
 
-            if ( resource != null )
+            if ( in != null )
             {
-                final List<String> lines = IOUtils.readLines( resource, "UTF-8" );
+                final List<String> lines = IOUtils.readLines( in, "UTF-8" );
+
+                in.close();
+                in = null;
+
                 defaultExcludes = new HashSet<String>( lines.size() );
 
                 for ( final String line : lines )
@@ -933,7 +919,6 @@ public class ProjectClassLoader extends URLClassLoader
                 }
             }
 
-            suppressExceptionOnClose = false;
             return defaultExcludes != null
                        ? Collections.unmodifiableSet( defaultExcludes ) : Collections.<String>emptySet();
 
@@ -942,17 +927,14 @@ public class ProjectClassLoader extends URLClassLoader
         {
             try
             {
-                if ( resource != null )
+                if ( in != null )
                 {
-                    resource.close();
+                    in.close();
                 }
             }
             catch ( final IOException e )
             {
-                if ( !suppressExceptionOnClose )
-                {
-                    throw e;
-                }
+                // Suppressed.
             }
         }
     }
