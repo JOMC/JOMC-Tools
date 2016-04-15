@@ -1772,20 +1772,20 @@ Task and Type Reference
 
   \[{L}\] {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/SourceFileProcessor.html}SourceFileProcessor class.}}
 
-  \[{M}\] {{{${project.url}/apidocs/org/jomc/ant/CommitClassesTask.html}<<<commit-classes>>> task.}}
+  \[{M}\] {{{${project.url}/apidocs/org/jomc/tools/ant/CommitClassesTask.html}<<<commit-classes>>> task.}}
 
-  \[{N}\] {{{${project.url}/apidocs/org/jomc/ant/GenerateResourcesTask.html}<<<generate-resources>>> task.}}
+  \[{N}\] {{{${project.url}/apidocs/org/jomc/tools/ant/GenerateResourcesTask.html}<<<generate-resources>>> task.}}
 
-  \[{O}\] {{{${project.url}/apidocs/org/jomc/ant/ManageSourcesTask.html}<<<manage-sources>>> task.}}
+  \[{O}\] {{{${project.url}/apidocs/org/jomc/tools/ant/ManageSourcesTask.html}<<<manage-sources>>> task.}}
 
-  \[{P}\] {{{${project.url}/apidocs/org/jomc/ant/ValidateClassesTask.html}<<<validate-classes>>> task.}}
+  \[{P}\] {{{${project.url}/apidocs/org/jomc/tools/ant/ValidateClassesTask.html}<<<validate-classes>>> task.}}
 
-  \[{Q}\] {{{${project.url}/apidocs/org/jomc/ant/ValidateClasspathTask.html}<<<validate-classpath>>> task.}}
+  \[{Q}\] {{{${project.url}/apidocs/org/jomc/tools/ant/ValidateClasspathTask.html}<<<validate-classpath>>> task.}}
 
-  \[{R}\] {{{${project.url}/apidocs/org/jomc/ant/ValidateModelTask.html}<<<validate-model>>> task.}}
+  \[{R}\] {{{${project.url}/apidocs/org/jomc/tools/ant/ValidateModelTask.html}<<<validate-model>>> task.}}
 
-  \[{S}\] {{{${project.url}/apidocs/org/jomc/ant/MergeModletsTask.html}<<<merge-modlets>>> task.}}
+  \[{S}\] {{{${project.url}/apidocs/org/jomc/tools/ant/MergeModletsTask.html}<<<merge-modlets>>> task.}}
 
-  \[{T}\] {{{${project.url}/apidocs/org/jomc/ant/MergeModulesTask.html}<<<merge-modules>>> task.}}
+  \[{T}\] {{{${project.url}/apidocs/org/jomc/tools/ant/MergeModulesTask.html}<<<merge-modules>>> task.}}
 
-  \[{U}\] {{{${project.url}/apidocs/org/jomc/ant/WriteModelTask.html}<<<write-model>>> task.}}
+  \[{U}\] {{{${project.url}/apidocs/org/jomc/tools/ant/WriteModelTask.html}<<<write-model>>> task.}}
