@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Copyright (C) Christian Schulte <cs@schulte.it>, 2005-206
+  All rights reserved.
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+    o Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+
+    o Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in
+      the documentation and/or other materials provided with the
+      distribution.
+
+  THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+  AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT,
+  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+  $JOMC$
+
+-->
+<module xmlns="http://jomc.org/model"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://jomc.org/model http://xml.jomc.org/model/jomc-1.2.xsd"
+        name="${project.name} ⁑ Tests" version="${project.version}" vendor="${project.organization.name}" modelVersion="1.2">
+
+  <documentation defaultLanguage="en">
+    <text language="en">${project.description}</text>
+  </documentation>
+
+  <implementations>
+    <!-- **********************************************************************************************************  -->
+    <implementation identifier="org.jomc.cli.test.JomcTest" name="${project.name} ⁑ Tests ⁑ JomcTest"
+                    class="org.jomc.cli.test.JomcTest" classDeclaration="true" vendor="${project.organization.name}"
+                    version="${project.version}" createDate="2009-07-25T19:56:45Z">
+      <documentation defaultLanguage="en">
+        <text language="en" type="text/x-javadoc">Tests the {@code Jomc} CLI class.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.0" mail="cs@schulte.it"
+                createDate="2005-07-25T19:56:45Z"/>
+
+      </authors>
+      <properties>
+        <property name="Test Model Document" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/resources/jomc.xml">
+          <documentation defaultLanguage="en">
+            <text language="en" type="text/x-javadoc">Valid model document.</text>
+          </documentation>
+        </property>
+        <property name="Test Model Document Illegal" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/resources/illegal-module.xml">
+          <documentation defaultLanguage="en">
+            <text language="en" type="text/x-javadoc">Model document with invalid model.</text>
+          </documentation>
+        </property>
+        <property name="Test Model Document Illegal Schema Constraints" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/resources/illegal-module-document.xml">
+          <documentation defaultLanguage="en">
+            <text language="en" type="text/x-javadoc">Model document not valid to the JOMC JAXP schema.</text>
+          </documentation>
+        </property>
+        <property name="Test Model Document Non Existent Classes" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/resources/module-nonexistent-classes.xml">
+          <documentation defaultLanguage="en">
+            <text language="en" type="text/x-javadoc">Model document referencing non-existent classes.</text>
+          </documentation>
+        </property>
+        <property name="Test Module Name" value="${project.name}">
+          <documentation defaultLanguage="en">
+            <text language="en" type="text/x-javadoc">Test module name.</text>
+          </documentation>
+        </property>
+        <property name="Test Model Stylesheet" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/resources/model-relocations.xsl">
+          <documentation defaultLanguage="en">
+            <text language="en" type="text/x-javadoc">Valid model object stylesheet.</text>
+          </documentation>
+        </property>
+        <property name="Test Model Output Document" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/transformed-model.xml">
+          <documentation defaultLanguage="en">
+            <text language="en" type="text/x-javadoc">File to write a transformed model to.</text>
+          </documentation>
+        </property>
+        <property name="Test Modlet Name" value="${project.name} ⁑ Tests">
+          <documentation defaultLanguage="en">
+            <text language="en" type="text/x-javadoc">Test module name.</text>
+          </documentation>
+        </property>
+        <property name="Test Modlet Stylesheet" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/resources/modlet-relocations.xsl">
+          <documentation defaultLanguage="en">
+            <text language="en" type="text/x-javadoc">Valid modlet object stylesheet.</text>
+          </documentation>
+        </property>
+        <property name="Test Modlet Output Document" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/transformed-modlet.xml">
+          <documentation defaultLanguage="en">
+            <text language="en" type="text/x-javadoc">File to write a transformed modlet to.</text>
+          </documentation>
+        </property>
+        <property name="Test Sources Directory" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/jomc-test-generated-sources">
+          <documentation defaultLanguage="en">
+            <text language="en" type="text/x-javadoc">Directory holding source code files to manage.</text>
+          </documentation>
+        </property>
+        <property name="Test Resources Directory" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/jomc-test-generated-resources">
+          <documentation defaultLanguage="en">
+            <text language="en" type="text/x-javadoc">Directory to generate resources to.</text>
+          </documentation>
+        </property>
+        <property name="Test Classes Directory" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/jomc-test-generated-classes">
+          <documentation defaultLanguage="en">
+            <text language="en" type="text/x-javadoc">Directory holding class files to commit to and to validate.</text>
+          </documentation>
+        </property>
+        <property name="Test Show Model Output Document" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/shown-model.xml">
+          <documentation defaultLanguage="en">
+            <text language="en" type="text/x-javadoc">File to write a model to.</text>
+          </documentation>
+        </property>
+        <property name="Test Show Specification Output Document" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/shown-specification.xml">
+          <documentation defaultLanguage="en">
+            <text language="en" type="text/x-javadoc">File to write a specification to.</text>
+          </documentation>
+        </property>
+        <property name="Test Show Instance Output Document" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/shown-instance.xml">
+          <documentation defaultLanguage="en">
+            <text language="en" type="text/x-javadoc">File to write an instance to.</text>
+          </documentation>
+        </property>
+        <property name="Test Show Specification And Instance Output Document" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/shown-specification-and-instance.xml">
+          <documentation defaultLanguage="en">
+            <text language="en" type="text/x-javadoc">File to write a model holding a specification and an instance to.</text>
+          </documentation>
+        </property>
+        <property name="Classes Directory" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/classes">
+          <documentation defaultLanguage="en">
+            <text language="en" type="text/x-javadoc">Directory holding class files.</text>
+          </documentation>
+        </property>
+        <property name="Resources Directory" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/resources">
+          <documentation defaultLanguage="en">
+            <text language="en" type="text/x-javadoc">Directory holding resources.</text>
+          </documentation>
+        </property>
+        <property name="Templates Directory" type="java.io.File" value="${jomc.test.outputDirectory}/JomcTest/templates">
+          <documentation defaultLanguage="en">
+            <text language="en" type="text/x-javadoc">Directory holding templates.</text>
+          </documentation>
+        </property>
+      </properties>
+    </implementation>
+    <!-- **********************************************************************************************************  -->
+    <implementation identifier="${project.name} ⁑ Tests ⁑ Command Execution Exception Test"
+                    name="${project.name} ⁑ Tests ⁑ Command Execution Exception Test"
+                    class="org.jomc.cli.commands.test.CommandExecutionExceptionTest" classDeclaration="true"
+                    vendor="${project.organization.name}" version="${project.version}" createDate="2012-01-13T04:07:45Z">
+
+      <documentation defaultLanguage="en">
+        <text language="en" type="text/x-javadoc">Test cases for class {@code org.jomc.cli.commands.CommandExecutionException}.</text>
+      </documentation>
+      <authors>
+        <author name="Christian Schulte" version="1.2" mail="cs@schulte.it"
+                createDate="2012-01-13T04:07:45Z"/>
+
+      </authors>
+    </implementation>
+  </implementations>
+</module>
