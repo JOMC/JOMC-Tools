@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <!--
 
   Copyright (C) 2005 Christian Schulte <cs@schulte.it>
@@ -30,21 +30,8 @@
   $JOMC$
 
 -->
-<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
-  <id>classfiles</id>
-  <formats>
-    <format>zip</format>
-  </formats>
-  <includeBaseDirectory>false</includeBaseDirectory>
-  <fileSets>
-    <fileSet>
-      <directory>${project.build.outputDirectory}/org/jomc/tools/cli</directory>
-      <directoryMode>0755</directoryMode>
-      <fileMode>0444</fileMode>
-      <filtered>false</filtered>
-      <outputDirectory>org/jomc/tools/cli</outputDirectory>
-    </fileSet>
-  </fileSets>
-</assembly>
+<html>
+  <body>
+    Object management and configuration tools command line interface test classes.
+  </body>
+</html>

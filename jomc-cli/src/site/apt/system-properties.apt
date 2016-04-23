@@ -6,7 +6,7 @@
  2012-01-24
  ------
 
- ~~ Copyright (C) Christian Schulte <cs@schulte.it>, 2012-24
+ ~~ Copyright (C) 2012 Christian Schulte <cs@schulte.it>
  ~~ All rights reserved.
  ~~
  ~~ Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,7 @@ System Properties Reference
 *---------------------------------------------*-------------------------------*----------------------------------------*
 | <<System Property>>                         | <<Type>>                      | <<Default>>                            |
 *---------------------------------------------*-------------------------------*----------------------------------------*
-| <<<org.jomc.cli.Jomc.defaultLogLevel>>>     | <<<java.util.logging.Level>>> | <<<WARNING>>>                          |
+| <<<org.jomc.tools.cli.Jomc.defaultLogLevel>>> | <<<java.util.logging.Level>>> | <<<WARNING>>>                        |
 *---------------------------------------------*-------------------------------*----------------------------------------*
-| <<<org.jomc.cli.commands.AbstractCommand.defaultLogLevel>>> | <<<java.util.logging.Level>>> | <<<WARNING>>>          |
+| <<<org.jomc.tools.cli.commands.AbstractCommand.defaultLogLevel>>> | <<<java.util.logging.Level>>> | <<<WARNING>>>    |
 *---------------------------------------------*-------------------------------*----------------------------------------*
