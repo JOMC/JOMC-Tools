@@ -30,12 +30,16 @@
  */
 package org.jomc.tools.ant;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -48,8 +52,6 @@ import java.util.List;
 import java.util.Set;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Path;
 import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
@@ -616,61 +618,57 @@ public class ProjectClassLoader extends URLClassLoader
     private URL filterProviders( final URL resource ) throws IOException
     {
         InputStream in = null;
+        BufferedReader reader = null;
+        OutputStream out = null;
+        BufferedWriter writer = null;
+        URL filteredResource = resource;
+        final List<String> filteredLines = new ArrayList<String>();
 
         try
         {
-            URL filteredResource = resource;
+            boolean filtered = false;
             in = resource.openStream();
+            reader = new BufferedReader( new InputStreamReader( in, "UTF-8" ) );
 
-            final List<String> lines = IOUtils.readLines( in, "UTF-8" );
-
-            in.close();
-            in = null;
-
-            final List<String> filteredLines = new ArrayList<String>( lines.size() );
-
-            for ( final String line : lines )
+            for ( String line = reader.readLine(); line != null; line = reader.readLine() )
             {
-                if ( !this.getProviderExcludes().contains( line.trim() ) )
+                String normalized = line.trim();
+
+                if ( !this.getProviderExcludes().contains( normalized ) )
                 {
-                    filteredLines.add( line.trim() );
+                    filteredLines.add( normalized );
                 }
                 else
                 {
-                    this.getExcludedProviders().add( line.trim() );
+                    filtered = true;
+                    this.getExcludedProviders().add( normalized );
                     this.getProject().log( Messages.getMessage( "providerExclusion", resource.toExternalForm(),
                                                                 line.trim() ), Project.MSG_DEBUG );
 
                 }
             }
 
-            if ( lines.size() != filteredLines.size() )
+            reader.close();
+            reader = null;
+            in = null;
+
+            if ( filtered )
             {
-                OutputStream out = null;
                 final File tmpResource = File.createTempFile( this.getClass().getName(), ".rsrc" );
                 this.temporaryResources.add( tmpResource );
 
-                try
+                out = new FileOutputStream( tmpResource );
+                writer = new BufferedWriter( new OutputStreamWriter( out, "UTF-8" ) );
+
+                for ( final String line : filteredLines )
                 {
-                    out = new FileOutputStream( tmpResource );
-                    IOUtils.writeLines( filteredLines, System.getProperty( "line.separator", "\n" ), out, "UTF-8" );
-                    out.close();
-                    out = null;
+                    writer.write( line );
+                    writer.newLine();
                 }
-                finally
-                {
-                    try
-                    {
-                        if ( out != null )
-                        {
-                            out.close();
-                        }
-                    }
-                    catch ( final IOException e )
-                    {
-                        this.project.log( Messages.getMessage( e ), e, Project.MSG_ERR );
-                    }
-                }
+
+                writer.close();
+                writer = null;
+                out = null;
 
                 filteredResource = tmpResource.toURI().toURL();
             }
@@ -681,14 +679,56 @@ public class ProjectClassLoader extends URLClassLoader
         {
             try
             {
-                if ( in != null )
+                if ( reader != null )
                 {
-                    in.close();
+                    reader.close();
                 }
             }
             catch ( final IOException e )
             {
                 this.project.log( Messages.getMessage( e ), e, Project.MSG_ERR );
+            }
+            finally
+            {
+                try
+                {
+                    if ( in != null )
+                    {
+                        in.close();
+                    }
+                }
+                catch ( final IOException e )
+                {
+                    this.project.log( Messages.getMessage( e ), e, Project.MSG_ERR );
+                }
+                finally
+                {
+                    try
+                    {
+                        if ( writer != null )
+                        {
+                            writer.close();
+                        }
+                    }
+                    catch ( final IOException e )
+                    {
+                        this.project.log( Messages.getMessage( e ), e, Project.MSG_ERR );
+                    }
+                    finally
+                    {
+                        try
+                        {
+                            if ( out != null )
+                            {
+                                out.close();
+                            }
+                        }
+                        catch ( final IOException e )
+                        {
+                            this.project.log( Messages.getMessage( e ), e, Project.MSG_ERR );
+                        }
+                    }
+                }
             }
         }
     }
@@ -891,51 +931,57 @@ public class ProjectClassLoader extends URLClassLoader
     private static Set<String> readDefaultExcludes( final String location ) throws IOException
     {
         InputStream in = null;
-        Set<String> defaultExcludes = null;
+        BufferedReader reader = null;
+        final Set<String> defaultExcludes = new HashSet<String>();
 
         try
         {
             in = ProjectClassLoader.class.getResourceAsStream( location );
             assert in != null : "Expected resource '" + location + "' not found.";
+            reader = new BufferedReader( new InputStreamReader( in, "UTF-8" ) );
 
-            if ( in != null )
+            for ( String line = reader.readLine(); line != null; line = reader.readLine() )
             {
-                final List<String> lines = IOUtils.readLines( in, "UTF-8" );
+                final String normalized = line.trim();
 
-                in.close();
-                in = null;
-
-                defaultExcludes = new HashSet<String>( lines.size() );
-
-                for ( final String line : lines )
+                if ( normalized.length() > 0 && !normalized.contains( "#" ) )
                 {
-                    final String trimmed = line.trim();
-
-                    if ( trimmed.contains( "#" ) || StringUtils.isEmpty( trimmed ) )
-                    {
-                        continue;
-                    }
-
-                    defaultExcludes.add( trimmed );
+                    defaultExcludes.add( line.trim() );
                 }
             }
 
-            return defaultExcludes != null
-                       ? Collections.unmodifiableSet( defaultExcludes ) : Collections.<String>emptySet();
+            reader.close();
+            reader = null;
+            in = null;
 
+            return Collections.unmodifiableSet( defaultExcludes );
         }
         finally
         {
             try
             {
-                if ( in != null )
+                if ( reader != null )
                 {
-                    in.close();
+                    reader.close();
                 }
             }
             catch ( final IOException e )
             {
                 // Suppressed.
+            }
+            finally
+            {
+                try
+                {
+                    if ( in != null )
+                    {
+                        in.close();
+                    }
+                }
+                catch ( final IOException e )
+                {
+                    // Suppressed.
+                }
             }
         }
     }
