@@ -207,7 +207,7 @@ public class JomcTest
         {
             "manage-sources", "-sd", '"' + testSourcesDirectory.getAbsolutePath() + '"', "-df",
             '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-mn",
-            "\"JOMC Tools ⁑ CLI\"", "-D", "-ls", "\r\n", "-idt", "\t"
+            "\"JOMC ⁑ CLI\"", "-D", "-ls", "\r\n", "-idt", "\t"
         };
 
         final String[] unsupportedOption = new String[]
@@ -257,13 +257,13 @@ public class JomcTest
         final String[] commitArgs = new String[]
         {
             "commit-classes", "-df", '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-cd",
-            '"' + classesDirectory.getAbsolutePath() + '"', "-mn", "\"JOMC Tools ⁑ CLI\"", "-D"
+            '"' + classesDirectory.getAbsolutePath() + '"', "-mn", "\"JOMC ⁑ CLI\"", "-D"
         };
 
         final String[] commitArgsNoDirectory = new String[]
         {
             "commit-classes", "-df", '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-cd",
-            '"' + nonExistentDirectory.getAbsolutePath() + '"', "-mn", "\"JOMC Tools ⁑ CLI\"", "-D"
+            '"' + nonExistentDirectory.getAbsolutePath() + '"', "-mn", "\"JOMC ⁑ CLI\"", "-D"
         };
 
         final String[] validateArgs = new String[]
@@ -304,7 +304,7 @@ public class JomcTest
         final String[] commitWithStylesheet = new String[]
         {
             "commit-classes", "-df", '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-cd",
-            '"' + classesDirectory.getAbsolutePath() + '"', "-mn", "\"JOMC Tools ⁑ CLI\"",
+            '"' + classesDirectory.getAbsolutePath() + '"', "-mn", "\"JOMC ⁑ CLI\"",
             "-D", "-stylesheet", '"' + new File( resourcesDirectory, "model-relocations.xsl" ).getAbsolutePath() + '"'
         };
 
@@ -348,7 +348,7 @@ public class JomcTest
         {
             "merge-modules", "-df", '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-xs",
             '"' + new File( resourcesDirectory, "model-relocations.xsl" ).getAbsolutePath() + '"', "-mn",
-            "\"JOMC Tools ⁑ CLI\"", "-d", '"' + targetDocument.getAbsolutePath() + '"', "-minc", "\"JOMC Tools ⁑ CLI\"",
+            "\"JOMC Tools ⁑ CLI\"", "-d", '"' + targetDocument.getAbsolutePath() + '"', "-minc", "\"JOMC ⁑ CLI\"",
             "-D"
         };
 
@@ -356,7 +356,7 @@ public class JomcTest
         {
             "merge-modules", "-df", '"' + new File( resourcesDirectory, "jomc.xml" ).getAbsolutePath() + '"', "-xs",
             '"' + new File( resourcesDirectory, "model-relocations.xsl" ).getAbsolutePath() + '"', "-mn",
-            "\"JOMC Tools ⁑ CLI\"", "-d", '"' + targetDocument.getAbsolutePath() + '"', "-mexc", "\"JOMC Tools ⁑ CLI\"",
+            "\"JOMC Tools ⁑ CLI\"", "-d", '"' + targetDocument.getAbsolutePath() + '"', "-mexc", "\"JOMC ⁑ CLI\"",
             "-D"
         };
 
@@ -386,7 +386,7 @@ public class JomcTest
         assertNotNull( "Merged module does not contain any included specifications.",
                        includedModule.getValue().getSpecifications() );
 
-        assertNotNull( "Merged module does not contain included 'org.jomc.tools.cli.Command' specification.",
+        assertNotNull( "Merged module does not contain included 'org.jomc.cli.Command' specification.",
                        includedModule.getValue().getSpecifications().getSpecification( Command.class ) );
 
         assertEquals( Command.STATUS_SUCCESS, Jomc.run( excludesArg ) );

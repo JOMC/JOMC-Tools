@@ -42,7 +42,6 @@
   <version>1.10-SNAPSHOT</version>
   <name>JOMC ⁑ CLI</name>
   <description>Object management and configuration tools command line interface.</description>
-  <url>${jomc.base.url}/${jomc.site.location}/${project.artifactId}-${project.version}</url>
   <build>
     <resources>
       <resource>
@@ -186,13 +185,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <distributionManagement>
-    <site>
-      <id>${jomc.site.distribution.id}</id>
-      <name>${jomc.site.distribution.name}</name>
-      <url>${jomc.site.distribution.base.url}/${jomc.site.location}/${project.artifactId}-${project.version}</url>
-    </site>
-  </distributionManagement>
   <properties>
     <org.apache.commons.cli.Option.UNLIMITED_VALUES>-2</org.apache.commons.cli.Option.UNLIMITED_VALUES>
   </properties>
