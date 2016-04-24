@@ -33,27 +33,32 @@ package org.jomc.mojo;
 import java.io.File;
 import java.util.logging.Level;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 
 /**
  * Manages a projects' test source files.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
- *
- * @phase process-test-resources
- * @goal manage-test-sources
- * @threadSafe
- * @requiresDependencyResolution test
  */
+@Mojo( name = "manage-test-sources",
+       defaultPhase = LifecyclePhase.PROCESS_TEST_RESOURCES,
+       requiresDependencyResolution = ResolutionScope.TEST,
+       threadSafe = true )
 public final class TestSourcesManageMojo extends AbstractSourcesManageMojo
 {
 
     /**
      * Execution strategy of the goal ({@code always} or {@code once-per-session}).
      *
-     * @parameter default-value="once-per-session" expression="${jomc.manageTestSourcesExecutionStrategy}"
      * @since 1.1
      */
+    @Parameter( name = "manageTestSourcesExecutionStrategy",
+                property = "jomc.manageTestSourcesExecutionStrategy",
+                defaultValue = "once-per-session" )
     private String manageTestSourcesExecutionStrategy;
 
     /**

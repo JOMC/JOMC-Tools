@@ -40,6 +40,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.jomc.model.Module;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelValidationReport;
@@ -62,20 +63,22 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
 
     /**
      * XSLT document to use for transforming model objects.
-     * <p>The value of the parameter is a location to search a XSLT document at. First the value is used to search the
+     * <p>
+     * The value of the parameter is a location to search a XSLT document at. First the value is used to search the
      * class path of the plugin. If a class path resource is found, a XSLT document is loaded from that resource. If no
      * class path resource is found, an attempt is made to parse the value to an URL. Succeeding that, an XSLT document
      * is loaded from that URL (since version 1.2). Failing that, the value is interpreted as a file name of a XSLT
      * document to load relative to the base directory of the project. If that file exists, a XSLT document is loaded
      * from that file. If no XSLT document is found at the given location, a build failure is produced.</p>
-     * <p><b>Note:</b> When upgrading to version 1.2, any project dependencies holding XSLT documents referenced by this
+     * <p>
+     * <b>Note:</b> When upgrading to version 1.2, any project dependencies holding XSLT documents referenced by this
      * parameter need to be added to the plugins' dependencies.</p>
-     * <p><strong>Deprecated:</strong> As of JOMC 1.2, please use the 'modelObjectStylesheetResources' parameter. This
+     * <p>
+     * <strong>Deprecated:</strong> As of JOMC 1.2, please use the 'modelObjectStylesheetResources' parameter. This
      * parameter will be removed in version 2.0.</p>
-     *
-     * @parameter
      */
     @Deprecated
+    @Parameter( name = "modelObjectStylesheet" )
     private String modelObjectStylesheet;
 
     /**
@@ -136,9 +139,9 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
      * <b>Default value is:</b> 60000
      * </p>
      *
-     * @parameter
      * @since 1.2
      */
+    @Parameter( name = "modelObjectStylesheetResources" )
     private List<ModelObjectStylesheetResource> modelObjectStylesheetResources;
 
     /**

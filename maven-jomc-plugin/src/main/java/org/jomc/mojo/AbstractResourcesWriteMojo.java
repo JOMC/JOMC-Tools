@@ -39,6 +39,7 @@ import javax.xml.transform.Source;
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.jomc.model.Module;
 import org.jomc.modlet.ModelContext;
@@ -62,9 +63,9 @@ public abstract class AbstractResourcesWriteMojo extends AbstractJomcMojo
 
     /**
      * The language of the default language properties file of generated resource bundle properties resources.
-     *
-     * @parameter expression="${jomc.resourceBundleDefaultLanguage}"
      */
+    @Parameter( name = "resourceBundleDefaultLanguage",
+                property = "jomc.resourceBundleDefaultLanguage" )
     private String resourceBundleDefaultLanguage;
 
     /**

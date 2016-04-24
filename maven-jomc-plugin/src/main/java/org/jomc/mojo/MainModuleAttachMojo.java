@@ -31,47 +31,53 @@
 package org.jomc.mojo;
 
 import java.io.File;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 
 /**
  * Attaches a project's main module artifact.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
- *
- * @phase process-resources
- * @goal attach-main-module
  */
+@Mojo( name = "attach-main-module",
+       defaultPhase = LifecyclePhase.PROCESS_RESOURCES )
 public final class MainModuleAttachMojo extends AbstractAttachMojo
 {
 
     /**
      * File of the attached module artifact.
-     *
-     * @parameter expression="${jomc.mainModuleArtifactFile}"
-     * default-value="${project.build.outputDirectory}/META-INF/jomc.xml"
      */
+    @Parameter( name = "mainModuleArtifactFile",
+                property = "jomc.mainModuleArtifactFile",
+                defaultValue = "${project.build.outputDirectory}/META-INF/jomc.xml" )
     private File mainModuleArtifactFile;
 
     /**
      * Classifier of the attached module artifact.
-     *
-     * @parameter expression="${jomc.mainModuleArtifactClassifier}" default-value="jomc-module"
      */
+    @Parameter( name = "mainModuleArtifactClassifier",
+                property = "jomc.mainModuleArtifactClassifier",
+                defaultValue = "jomc-module" )
     private String mainModuleArtifactClassifier;
 
     /**
      * Type of the attached module artifact.
-     *
-     * @parameter expression="${jomc.mainModuleArtifactType}" default-value="xml"
      */
+    @Parameter( name = "mainModuleArtifactType",
+                property = "jomc.mainModuleArtifactType",
+                defaultValue = "xml" )
     private String mainModuleArtifactType;
 
     /**
      * Execution strategy of the goal ({@code always} or {@code once-per-session}).
      *
-     * @parameter default-value="once-per-session" expression="${jomc.attachMainModuleExecutionStrategy}"
      * @since 1.1
      */
+    @Parameter( name = "attachMainModuleExecutionStrategy",
+                property = "jomc.attachMainModuleExecutionStrategy",
+                defaultValue = "once-per-session" )
     private String attachMainModuleExecutionStrategy;
 
     /**

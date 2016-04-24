@@ -33,6 +33,10 @@ package org.jomc.mojo;
 import java.io.File;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
 /**
@@ -40,30 +44,32 @@ import org.apache.maven.project.MavenProject;
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
- *
- * @phase process-resources
- * @goal write-main-resources
- * @threadSafe
- * @requiresDependencyResolution test
  */
+@Mojo( name = "write-main-resources",
+       defaultPhase = LifecyclePhase.PROCESS_RESOURCES,
+       requiresDependencyResolution = ResolutionScope.TEST,
+       threadSafe = true )
 public final class MainResourcesWriteMojo extends AbstractResourcesWriteMojo
 {
 
     /**
      * Execution strategy of the goal ({@code always} or {@code once-per-session}).
      *
-     * @parameter default-value="once-per-session" expression="${jomc.writeMainResourcesExecutionStrategy}"
      * @since 1.1
      */
+    @Parameter( name = "writeMainResourcesExecutionStrategy",
+                property = "jomc.writeMainResourcesExecutionStrategy",
+                defaultValue = "once-per-session" )
     private String writeMainResourcesExecutionStrategy;
 
     /**
      * Directory to write resource files to.
      *
-     * @parameter default-value="${project.build.directory}/generated-resources/jomc"
-     * expression="${jomc.mainResourcesOutputDirectory}"
      * @since 1.2
      */
+    @Parameter( name = "mainResourcesOutputDirectory",
+                property = "jomc.mainResourcesOutputDirectory",
+                defaultValue = "${project.build.directory}/generated-resources/jomc" )
     private File mainResourcesOutputDirectory;
 
     /**

@@ -32,27 +32,32 @@ package org.jomc.mojo;
 
 import java.io.File;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 
 /**
  * Validates a projects' main class file model objects.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
- *
- * @phase process-classes
- * @goal validate-main-classes
- * @threadSafe
- * @requiresDependencyResolution test
  */
+@Mojo( name = "validate-main-classes",
+       defaultPhase = LifecyclePhase.PROCESS_CLASSES,
+       requiresDependencyResolution = ResolutionScope.TEST,
+       threadSafe = true )
 public final class MainClassesValidateMojo extends AbstractClassesValidateMojo
 {
 
     /**
      * Execution strategy of the goal ({@code always} or {@code once-per-session}).
      *
-     * @parameter default-value="once-per-session" expression="${jomc.validateMainClassesExecutionStrategy}"
      * @since 1.1
      */
+    @Parameter( name = "validateMainClassesExecutionStrategy",
+                property = "jomc.validateMainClassesExecutionStrategy",
+                defaultValue = "once-per-session" )
     private String validateMainClassesExecutionStrategy;
 
     /**

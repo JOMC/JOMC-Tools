@@ -33,6 +33,10 @@ package org.jomc.mojo;
 import java.io.File;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
 /**
@@ -40,30 +44,32 @@ import org.apache.maven.project.MavenProject;
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
- *
- * @phase process-test-resources
- * @goal write-test-resources
- * @threadSafe
- * @requiresDependencyResolution test
  */
+@Mojo( name = "write-test-resources",
+       defaultPhase = LifecyclePhase.PROCESS_TEST_RESOURCES,
+       requiresDependencyResolution = ResolutionScope.TEST,
+       threadSafe = true )
 public final class TestResourcesWriteMojo extends AbstractResourcesWriteMojo
 {
 
     /**
      * Execution strategy of the goal ({@code always} or {@code once-per-session}).
      *
-     * @parameter default-value="once-per-session" expression="${jomc.writeTestResourcesExecutionStrategy}"
      * @since 1.1
      */
+    @Parameter( name = "writeTestResourcesExecutionStrategy",
+                property = "jomc.writeTestResourcesExecutionStrategy",
+                defaultValue = "once-per-session" )
     private String writeTestResourcesExecutionStrategy;
 
     /**
      * Directory to write test resource files to.
      *
-     * @parameter default-value="${project.build.directory}/generated-test-resources/jomc"
-     * expression="${jomc.testResourcesOutputDirectory}"
      * @since 1.2
      */
+    @Parameter( name = "testResourcesOutputDirectory",
+                property = "jomc.testResourcesOutputDirectory",
+                defaultValue = "${project.build.directory}/generated-test-resources/jomc" )
     private File testResourcesOutputDirectory;
 
     /**

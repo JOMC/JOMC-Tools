@@ -32,6 +32,10 @@ package org.jomc.mojo;
 
 import java.util.logging.Level;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelValidationReport;
 
@@ -40,12 +44,11 @@ import org.jomc.modlet.ModelValidationReport;
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
- *
- * @phase process-classes
- * @goal validate-main-model
- * @threadSafe
- * @requiresDependencyResolution test
  */
+@Mojo( name = "validate-main-model",
+       defaultPhase = LifecyclePhase.PROCESS_CLASSES,
+       requiresDependencyResolution = ResolutionScope.TEST,
+       threadSafe = true )
 public final class MainModelValidateMojo extends AbstractJomcMojo
 {
 
@@ -57,9 +60,11 @@ public final class MainModelValidateMojo extends AbstractJomcMojo
     /**
      * Execution strategy of the goal ({@code always} or {@code once-per-session}).
      *
-     * @parameter default-value="once-per-session" expression="${jomc.validateMainModelExecutionStrategy}"
      * @since 1.1
      */
+    @Parameter( name = "validateMainModelExecutionStrategy",
+                property = "jomc.validateMainModelExecutionStrategy",
+                defaultValue = "once-per-session" )
     private String validateMainModelExecutionStrategy;
 
     /**

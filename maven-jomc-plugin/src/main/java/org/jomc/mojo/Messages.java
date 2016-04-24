@@ -45,12 +45,6 @@ abstract class Messages
 {
 
     /**
-     * Constant for the name of the resource bundle backing the tasks.
-     */
-    private static final String RESOURCE_BUNDLE_NAME =
-        Messages.class.getPackage().getName().replace( '.', '/' ) + "/Messages";
-
-    /**
      * Creates a new {@code Messages} instance.
      */
     Messages()
@@ -77,7 +71,9 @@ abstract class Messages
 
         try
         {
-            return MessageFormat.format( ResourceBundle.getBundle( RESOURCE_BUNDLE_NAME ).getString( key ), arguments );
+            return MessageFormat.format( ResourceBundle.getBundle( Messages.class.getName() ).getString( key ),
+                                         arguments );
+
         }
         catch ( final MissingResourceException e )
         {
