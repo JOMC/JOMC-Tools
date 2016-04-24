@@ -1752,21 +1752,21 @@ Task and Type Reference
 
   \[{B}\] {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/JomcTool.html#getDefaultTemplateProfile()}Default template profile}}.
 
-  \[{C}\] {{{${project.url}/../jomc-model/apidocs/org/jomc/model/ModelObject.html#MODEL_PUBLIC_ID}JOMC model public identifier}}.
+  \[{C}\] {{{http://www.jomc.org/jomc-model/current/apidocs/org/jomc/model/ModelObject.html#MODEL_PUBLIC_ID}JOMC model public identifier}}.
 
-  \[{D}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/ModelContext.html}ModelContext class}}.
+  \[{D}\] {{{http://www.jomc.org/jomc-modlet/current/apidocs/org/jomc/modlet/ModelContext.html}ModelContext class}}.
 
-  \[{E}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/DefaultModletProvider.html#getDefaultModletLocation()}Class path location searched for modlets}}.
+  \[{E}\] {{{http://www.jomc.org/jomc-modlet/current/apidocs/org/jomc/modlet/DefaultModletProvider.html#getDefaultModletLocation()}Class path location searched for modlets}}.
 
-  \[{F}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/ModelContext.html#getDefaultModletSchemaSystemId()}<<<http://jomc.org/modlet>>> namespace schema system id}}.
+  \[{F}\] {{{http://www.jomc.org/jomc-modlet/current/apidocs/org/jomc/modlet/ModelContext.html#getDefaultModletSchemaSystemId()}<<<http://jomc.org/modlet>>> namespace schema system id}}.
 
-  \[{G}\] {{{${project.url}/../jomc-model/apidocs/org/jomc/model/modlet/DefaultModelProvider.html#getDefaultModuleLocation()}Class path location searched for modules}}.
+  \[{G}\] {{{http://www.jomc.org/jomc-model/current/apidocs/org/jomc/model/modlet/DefaultModelProvider.html#getDefaultModuleLocation()}Class path location searched for modules}}.
 
-  \[{H}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/DefaultModelContext.html#getDefaultPlatformProviderLocation()}Location searched for platform provider resources}}.
+  \[{H}\] {{{http://www.jomc.org/jomc-modlet/current/apidocs/org/jomc/modlet/DefaultModelContext.html#getDefaultPlatformProviderLocation()}Location searched for platform provider resources}}.
 
-  \[{I}\] {{{${project.url}/../jomc-modlet/apidocs/org/jomc/modlet/DefaultModelContext.html#getDefaultProviderLocation()}Class path location searched for providers}}.
+  \[{I}\] {{{http://www.jomc.org/jomc-modlet/current/apidocs/org/jomc/modlet/DefaultModelContext.html#getDefaultProviderLocation()}Class path location searched for providers}}.
 
-  \[{J}\] {{{${project.url}/../jomc-model/apidocs/org/jomc/model/modlet/DefaultModelProcessor.html#getDefaultTransformerLocation()}Class path location searched for transformers}}.
+  \[{J}\] {{{http://www.jomc.org/jomc-model/current/apidocs/org/jomc/model/modlet/DefaultModelProcessor.html#getDefaultTransformerLocation()}Class path location searched for transformers}}.
 
   \[{K}\] {{{${project.url}/../jomc-tools/apidocs/org/jomc/tools/ResourceFileProcessor.html}ResourceFileProcessor class}}.
 

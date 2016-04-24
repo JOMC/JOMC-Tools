@@ -466,7 +466,7 @@ public class JomcTest
             "merge-modlets", "-xs", '"' + new File( resourcesDirectory, "modlet-relocations.xsl" ).
             getAbsolutePath() + '"', "-mdn", "\"JOMC Tools ⁑ CLI ⁑ Tests\"", "-d",
             '"' + targetDocument.getAbsolutePath() + '"',
-            "-mdexc", "\"JOMC ⁑ Model" + File.pathSeparatorChar + "JOMC Tools ⁑ Tools" + File.pathSeparatorChar
+            "-mdexc", "\"JOMC ⁑ Model" + File.pathSeparatorChar + "JOMC Tools ⁑ Modlet" + File.pathSeparatorChar
                       + "JOMC ⁑ Modlet\"", "-cp", "."
         };
 

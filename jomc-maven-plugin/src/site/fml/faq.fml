@@ -34,7 +34,6 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://maven.apache.org/FML/1.0.1 http://maven.apache.org/xsd/fml-1.0.1.xsd"
       id="FAQ" title="Frequently Asked Questions">
-
   <part id="General">
     <faq id="about">
       <question>What is JOMC?</question>
@@ -42,7 +41,7 @@
         <p>
           JOMC is an object management and configuration application programming interface with corresponding reference
           implementation and tools for managing object management and configuration code.
-          See the <a href="${project.url}/../index.html">project's web site</a> for further information.
+          See the <a href="http://www.jomc.org">project's web site</a> for further information.
         </p>
       </answer>
     </faq>
