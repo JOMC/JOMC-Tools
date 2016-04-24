@@ -42,7 +42,6 @@
   <packaging>jar</packaging>
   <name>JOMC Tools ⁑ Ant Tasks</name>
   <description>Object management and configuration tools for Apache Ant.</description>
-  <url>${jomc.base.url}/${jomc.site.location}/${project.artifactId}-${project.version}</url>
   <build>
     <resources>
       <resource>
@@ -185,13 +184,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <distributionManagement>
-    <site>
-      <id>${jomc.site.distribution.id}</id>
-      <name>${jomc.site.distribution.name}</name>
-      <url>${jomc.site.distribution.base.url}/${jomc.site.location}/${project.artifactId}-${project.version}</url>
-    </site>
-  </distributionManagement>
   <profiles>
     <profile>
       <id>jdk15</id>

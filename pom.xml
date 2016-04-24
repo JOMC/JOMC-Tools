@@ -53,7 +53,7 @@
   <modules>
     <module>jomc-tools</module>
     <module>jomc-cli</module>
-    <module>maven-jomc-plugin</module>
+    <module>jomc-maven-plugin</module>
     <module>jomc-ant-tasks</module>
   </modules>
   <dependencyManagement>
@@ -206,12 +206,12 @@
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>maven-jomc-plugin</artifactId>
-        <version>${maven-jomc-plugin.artifact.version}</version>
+        <version>${jomc-maven-plugin.artifact.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jomc</groupId>
         <artifactId>jomc-ant-tasks</artifactId>
-        <version>${jomc-ant-tasks.artifact.version}</version>
+        <version>${jomc-maven-plugin.artifact.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -238,7 +238,7 @@
     <jomc-modlet.artifact.version>2.0-SNAPSHOT</jomc-modlet.artifact.version>
     <jomc-model.artifact.version>2.0-SNAPSHOT</jomc-model.artifact.version>
     <jomc-tools.artifact.version>2.0-SNAPSHOT</jomc-tools.artifact.version>
-    <maven-jomc-plugin.artifact.version>2.0-SNAPSHOT</maven-jomc-plugin.artifact.version>
+    <jomc-maven-plugin.artifact.version>2.0-SNAPSHOT</jomc-maven-plugin.artifact.version>
     <jomc-ant-tasks.artifact.version>2.0-SNAPSHOT</jomc-ant-tasks.artifact.version>
     <!-- Parent. -->
     <jomc.scm.location>jomc-tools</jomc.scm.location>
