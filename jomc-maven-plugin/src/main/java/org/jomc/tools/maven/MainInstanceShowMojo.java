@@ -32,6 +32,9 @@ package org.jomc.tools.maven;
 
 import javax.xml.bind.JAXBElement;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.jomc.model.Instance;
 import org.jomc.model.Modules;
 import org.jomc.model.modlet.ModelHelper;
@@ -43,28 +46,28 @@ import org.jomc.modlet.ModelContext;
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
- *
- * @goal show-main-instance
- * @threadSafe
- * @requiresDependencyResolution test
  * @since 1.1
  */
+@Mojo( name = "show-main-instance",
+       requiresDependencyResolution = ResolutionScope.TEST,
+       threadSafe = true )
 public final class MainInstanceShowMojo extends AbstractModelShowMojo
 {
 
     /**
      * Identifier of the instance to show.
-     *
-     * @parameter expression="${jomc.identifier}"
-     * @required
      */
+    @Parameter( name = "identifier",
+                property = "jomc.identifier",
+                required = true )
     private String identifier;
 
     /**
      * Execution strategy of the goal ({@code always} or {@code once-per-session}).
-     *
-     * @parameter default-value="once-per-session" expression="${jomc.showMainInstanceExecutionStrategy}"
      */
+    @Parameter( name = "showMainInstanceExecutionStrategy",
+                property = "jomc.showMainInstanceExecutionStrategy",
+                defaultValue = "once-per-session" )
     private String showMainInstanceExecutionStrategy;
 
     /**

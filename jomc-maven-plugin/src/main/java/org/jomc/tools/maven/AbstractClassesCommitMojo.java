@@ -40,6 +40,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.jomc.model.Module;
 import org.jomc.modlet.ModelContext;
 import org.jomc.modlet.ModelValidationReport;
@@ -118,9 +119,9 @@ public abstract class AbstractClassesCommitMojo extends AbstractJomcMojo
      * <b>Default value is:</b> 60000
      * </p>
      *
-     * @parameter
      * @since 1.2
      */
+    @Parameter( name = "modelObjectStylesheetResources" )
     private List<ModelObjectStylesheetResource> modelObjectStylesheetResources;
 
     /**

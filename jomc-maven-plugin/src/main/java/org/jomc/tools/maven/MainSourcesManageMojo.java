@@ -33,27 +33,32 @@ package org.jomc.tools.maven;
 import java.io.File;
 import java.util.logging.Level;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 
 /**
  * Manages a projects' main source files.
  *
  * @author <a href="mailto:cs@schulte.it">Christian Schulte</a>
  * @version $JOMC$
- *
- * @phase process-resources
- * @goal manage-main-sources
- * @threadSafe
- * @requiresDependencyResolution test
  */
+@Mojo( name = "manage-main-sources",
+       defaultPhase = LifecyclePhase.PROCESS_RESOURCES,
+       requiresDependencyResolution = ResolutionScope.TEST,
+       threadSafe = true )
 public final class MainSourcesManageMojo extends AbstractSourcesManageMojo
 {
 
     /**
      * Execution strategy of the goal ({@code always} or {@code once-per-session}).
      *
-     * @parameter default-value="once-per-session" expression="${jomc.manageMainSourcesExecutionStrategy}"
      * @since 1.1
      */
+    @Parameter( name = "manageMainSourcesExecutionStrategy",
+                property = "jomc.manageMainSourcesExecutionStrategy",
+                defaultValue = "once-per-session" )
     private String manageMainSourcesExecutionStrategy;
 
     /**
